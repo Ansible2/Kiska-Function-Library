@@ -1,3 +1,29 @@
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_dropCrate
+
+Description:
+	Executes drop crate action
+
+Parameters:
+
+	0: _crate <OBJECT> - The crate being dropped
+	1: _caller <OBJECT> - The person dropping the crate
+	2: _dropCrate_actionID <NUMBER> - The action ID for the drop action attached to the player so it can be removed
+
+Returns:
+	BOOL
+
+Examples:
+    (begin example)
+
+		[crate1,player,0] call KISKA_fnc_dropCrate;
+
+    (end)
+
+Author:
+	Ansible2 // Cipher
+---------------------------------------------------------------------------- */
+
 params [
 	["_crate",objNull,[objNull]],
 	["_player",player,[objNull]],

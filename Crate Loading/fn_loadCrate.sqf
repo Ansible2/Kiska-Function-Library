@@ -1,6 +1,37 @@
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_loadCrate
+
+Description:
+	Searches area and automatically finds closest suitable vehicle to load upon execution of action
+
+	Has lots of offset maths to it. Most of it was garbage guess work though...
+
+Parameters:
+
+	0: _crate <OBJECT> - The crate to load
+
+Returns:
+	BOOL
+
+Examples:
+    (begin example)
+
+		[crate1] call KISKA_fnc_loadCrate;
+
+    (end)
+
+Author:
+	Ansible2 // Cipher
+---------------------------------------------------------------------------- */
+
 params [
 	["_crate",objNull,[objNull]]
 ];
+
+if (isNull _crate) exitWith {
+	"_crate isNull" call BIS_fnc_error;
+	false
+};
 
 private _vehicle = (nearestObjects [_crate,DSO_vehicleTypes,10]) select 0;
 

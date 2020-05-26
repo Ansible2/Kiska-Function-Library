@@ -1,9 +1,34 @@
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_addUnloadCratesAction
+
+Description:
+	Adds unload action to vehicle when crate is initially loaded
+
+Parameters:
+
+	0: _vehicle <OBJECT> - The vehicle to add the action to
+
+Returns:
+	BOOL
+
+Examples:
+    (begin example)
+
+		[vehicle1] call KISKA_fnc_addUnloadCratesAction;
+
+    (end)
+
+Author:
+	Ansible2 // Cipher
+---------------------------------------------------------------------------- */
+
 params [
 	["_vehicle",objNull,[objNull]]
 ];
 
 if (isNull _vehicle) exitWith {
-	hint "Vehicle is dead";
+	"_vehicle isNull" call BIS_fnc_error;
+	false
 };
 
 private _unloadActionID = _vehicle addAction [

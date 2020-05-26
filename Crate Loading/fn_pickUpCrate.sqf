@@ -1,3 +1,28 @@
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_pickUpCrate
+
+Description:
+	Executes pick up action
+
+Parameters:
+
+	0: _crate <OBJECT> - The crate being picked up
+	1: _caller <OBJECT> - The person picking up the crate
+
+Returns:
+	BOOL
+
+Examples:
+    (begin example)
+
+		[crate1,player] call KISKA_fnc_pickUpCrate;
+
+    (end)
+
+Author:
+	Ansible2 // Cipher
+---------------------------------------------------------------------------- */
+
 params [
 	["_crate",objNull,[objNull]],
 	["_caller",player,[objNull]]
@@ -25,7 +50,7 @@ private _dropCrate_actionID = _caller addAction [
 		private _dropCrate_actionID = param [2,0,[123]];
 		private _crate = (param [3]) select 0;
 
-		[_crate,_player,_dropCrate_actionID] call KISKA_fnc_pickUpCrate;
+		[_crate,_player,_dropCrate_actionID] call KISKA_fnc_dropCrate;
 	},
 	[_crate],
 	15,
@@ -38,3 +63,5 @@ private _dropCrate_actionID = _caller addAction [
 
 // this is to remove the action from the crate if it is loaded while picked up
 _caller setVariable ["DSO_dropCrateActionID",_dropCrate_actionID];
+
+true
