@@ -189,6 +189,8 @@ class CfgFunctions
 			{};
 			class triggerWait
 			{};
+			class vehicleFactory
+			{};
 			class waitUntil
 			{};
 		};
