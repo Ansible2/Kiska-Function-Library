@@ -1,3 +1,41 @@
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_baseVehicleInfo
+
+Description:
+	Creates the basic globals for crate loading.
+	
+	To add vehicle support:
+		1. Add the vehicle type to the DSO_vehicleTypes array
+		2. Create a global Array of the specfic vehicles information formatted as:
+			- Name of the array needs to be 'DSOInfo_' plus the vehicle's type (see below for examples)
+				0: crate z offset
+					- Used to get crates at the right height in the vehicle
+				1: unload offset
+					- When unloading the crates, how far back should the crates be dropped
+				2: crate y offset
+					- This is used to determine the initial starting point for the first crate loaded
+				3: Max Crates
+					- What is the max number of crates the vehicle can hold
+				4: Unload action distance
+					- simply how far away you want the unload action to appear from a vehicle
+
+Parameters:
+	NONE
+
+Returns:
+	NOTHING
+
+Examples:
+    (begin example)
+
+		call KISKA_fnc_baseVehicleInfo;
+
+    (end)
+
+Author:
+	Ansible2 // Cipher
+---------------------------------------------------------------------------- */
+
 DSO_vehicleTypes = [
 	"Truck_01_base_F",
 	"Heli_Transport_03_base_F"

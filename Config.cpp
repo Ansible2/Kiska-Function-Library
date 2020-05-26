@@ -13,91 +13,6 @@ class CfgFunctions
 {
 	class Kiska
 	{
-		class Loadouts
-		{
-			file = "Kiska_functions\Loadouts";
-			class assignUnitLoadout
-			{};
-			class randomGear
-			{};
-			class randomLoadout
-			{};
-
-		};
-		class Utilities
-		{
-			file="Kiska_functions\Utilities";
-			class addArsenal
-			{};
-			class addContainerCargo
-			{};
-			class alivePlayers
-			{};
-			class balanceHeadless
-			{};
-			class dataLinkMsg
-			{};
-			class getContainerCargo
-			{};
-			class hintDiary
-			{};
-			class intel
-			{};
-			class isPatchLoaded
-			{};
-			class markPositions
-			{};
-			class podDrop
-			{};
-			class setTaskComplete
-			{};
-			class showHide
-			{};
-			class skipBrief
-			{
-				//preInit=1;
-			};
-			class staticLine
-			{};
-			class supplyDrop
-			{};
-			class triggerWait
-			{};
-			class waitUntil
-			{};
-		};
-		class MAC
-		{
-			file="Kiska_functions\MAC";
-			class homing
-			{};
-			class MACStrike
-			{};
-			class MACStrike_ADD
-			{};
-			class MACStrike_REM
-			{};
-		};
-		class Music
-		{
-			file = "Kiska_functions\Music";
-			class getMusicDuration
-			{};
-			class getMusicFromClass
-			{};
-			class getMusicPlaying
-			{};
-			class isMusicPlaying
-			{};
-			class musicEventHandlers
-			{
-				preInit = 1;
-			};
-			class playMusic
-			{};
-			class randomMusic
-			{};
-		};
 		class AI
 		{
 			file = "Kiska_functions\AI";
@@ -146,6 +61,69 @@ class CfgFunctions
 			class strapCargo
 			{};
 		};
+		class crateLoading
+		{
+			file = "Kiska_functions\Crate Loading";
+			class addCrateActions
+			{};
+			class addUnloadCratesAction
+			{};
+			class baseVehicleInfo
+			{};
+			class dropCrate
+			{};
+			class getVehicleInfo
+			{};
+			class loadCrate
+			{};
+			class pickUpCrate
+			{};
+			class removeUnloadAction
+			{}; 
+		};
+		class Loadouts
+		{
+			file = "Kiska_functions\Loadouts";
+			class assignUnitLoadout
+			{};
+			class randomGear
+			{};
+			class randomLoadout
+			{};
+
+		};
+		class MAC
+		{
+			file="Kiska_functions\MAC";
+			class homing
+			{};
+			class MACStrike
+			{};
+			class MACStrike_ADD
+			{};
+			class MACStrike_REM
+			{};
+		};
+		class Music
+		{
+			file = "Kiska_functions\Music";
+			class getMusicDuration
+			{};
+			class getMusicFromClass
+			{};
+			class getMusicPlaying
+			{};
+			class isMusicPlaying
+			{};
+			class musicEventHandlers
+			{
+				preInit = 1;
+			};
+			class playMusic
+			{};
+			class randomMusic
+			{};
+		};
 		class Respawn
 		{
 			file = "Kiska_functions\Respawn";
@@ -170,6 +148,48 @@ class CfgFunctions
 			class playsound3D
 			{};
 			class radioChatter
+			{};
+		};
+		class Utilities
+		{
+			file="Kiska_functions\Utilities";
+			class addArsenal
+			{};
+			class addContainerCargo
+			{};
+			class alivePlayers
+			{};
+			class balanceHeadless
+			{};
+			class dataLinkMsg
+			{};
+			class getContainerCargo
+			{};
+			class hintDiary
+			{};
+			class intel
+			{};
+			class isPatchLoaded
+			{};
+			class markPositions
+			{};
+			class podDrop
+			{};
+			class setTaskComplete
+			{};
+			class showHide
+			{};
+			class skipBrief
+			{
+				//preInit=1;
+			};
+			class staticLine
+			{};
+			class supplyDrop
+			{};
+			class triggerWait
+			{};
+			class waitUntil
 			{};
 		};
 			
