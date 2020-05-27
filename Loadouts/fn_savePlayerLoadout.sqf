@@ -3,7 +3,7 @@ if (!hasInterface) exitWith {
 };
 
 [
-	{!isNull player}
+	{!isNull player},
 	{
 		player addEventHandler ["Killed", {
 			params ["_unit"];
