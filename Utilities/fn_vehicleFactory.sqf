@@ -68,10 +68,12 @@ _vehicleTypes apply {
 				if !(_onCreateCode isEqualTo {}) then {
 					[_vehicle] call _onCreateCode;
 				};
+
+				hint "Vehicle Created";
 			}, 
 			{}, 
 			[_type,_spawnPosition,_onCreateCode], 
-			1, 
+			0.5, 
 			10, 
 			false, 
 			false, 
@@ -99,10 +101,12 @@ if !(_controlPanel getVariable ["KISKA_vehicleFactory",false]) then {
 			_entities apply {
 				[_x] remoteExec ["deleteVehicle",2];
 			};
+
+			hint "Pad Cleared";
 		}, 
 		{}, 
 		[_spawnPosition], 
-		1, 
+		0.5, 
 		20, 
 		false, 
 		false, 

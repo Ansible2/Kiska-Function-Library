@@ -3,7 +3,7 @@ Function: KISKA_fnc_radioChatter
 
 Description:
 	Plays a random radio ambient at the specified position.
-	This is a local effect and must be run on all systems that desire to hear it.
+	This is a global effect now and should be executed on one machine, preferably the server
 
 Parameters:
 	0: _source <OBJECT> - Where the sound is coming from
@@ -25,6 +25,10 @@ Author(s):
 ---------------------------------------------------------------------------- */
 if (!canSuspend) exitWith {
 	"Must be run in a scheduled environement" call BIS_fnc_error;
+};
+
+if (!isServer) then {
+	"It is recommended to run this on the server" call BIS_fnc_error;
 };
 
 params [

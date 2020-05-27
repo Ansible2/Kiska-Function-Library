@@ -90,6 +90,10 @@ class CfgFunctions
 			{};
 			class randomLoadout
 			{};
+			class savePlayerLoadout
+			{
+				postInit = 1;
+			};
 
 		};
 		class MAC

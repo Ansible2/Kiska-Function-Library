@@ -30,11 +30,11 @@ params [
 ];
 
 if (isNull _playerGroup) exitWith {
-	["_playerGroup isNull"] call BIS_fnc_error;
+	"_playerGroup " + (str _playerGroup) + "isNull" call BIS_fnc_error;
 };
 
 [
-	{!isNull player},
+	{!isNull player AND {!isNull (leader (_this select 0))}},
 	{	
 		
 		params ["_playerGroup","_groupName"];
