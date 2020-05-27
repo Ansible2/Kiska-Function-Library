@@ -66,7 +66,13 @@ if (_groupsAndNames isEqualTo []) exitWith {};
 			missionNamespace,
 			"PlayerDisconnected",
 			{
-				_thisArgs remoteExecCall ["KISKA_fnc_updateRallyAction",units (_thisArgs select 0)];
+				[
+					{
+						_this remoteExecCall ["KISKA_fnc_updateRallyAction",units (_this select 0)];
+					},
+					_thisArgs,
+					5
+				] call CBA_fnc_waitAndExecute;
 			}, 
 			_x
 		] call CBA_fnc_addBISEventHandler;
