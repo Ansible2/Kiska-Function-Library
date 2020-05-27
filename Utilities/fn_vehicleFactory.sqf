@@ -19,6 +19,9 @@ if (_vehicleTypes isEqualType "") then {
 	_vehicleTypes = [_vehicleTypes];
 };
 
+if (_spawnPosition isEqualType objNull) then {
+	_spawnPosition = getPosATL _spawnPosition;
+};
 
 _vehicleTypes apply {
 
@@ -44,17 +47,8 @@ _vehicleTypes apply {
 			("Spawn " + _displayName),
 			"\a3\ui_f\data\IGUI\Cfg\holdactions\holdAction_loaddevice_ca.paa", 
 			"\a3\ui_f\data\IGUI\Cfg\holdactions\holdAction_loaddevice_ca.paa", 
-			{}, 
-			{
-				private _spawnPosition = (_this select 3) select 1;
-
-				if !((_spawnPosition nearEntities ["landVehicle","air","ship"]) isEqualTo []) exitWith {
-					hint "Pad Must Be Clear Of Vehicles";
-					false
-				};
-
-				true
-			}, 
+			"true", 
+			"true", 
 			{}, 
 			{}, 
 			{
@@ -64,15 +58,20 @@ _vehicleTypes apply {
 					"_onCreateCode"
 				];
 
+				if !((_spawnPosition nearEntities [['landVehicle','air','ship'],10]) isEqualTo []) exitWith {
+					hint 'Pad Must Be Clear Of Vehicles';
+					false
+				};
+
 				private _vehicle = _type createVehicle _spawnPosition;
 
 				if !(_onCreateCode isEqualTo {}) then {
-					[_vehicle] call _onCreatedCode;
+					[_vehicle] call _onCreateCode;
 				};
 			}, 
 			{}, 
 			[_type,_spawnPosition,_onCreateCode], 
-			2, 
+			1, 
 			10, 
 			false, 
 			false, 
@@ -81,28 +80,34 @@ _vehicleTypes apply {
 	};
 };
 
-[
-	_controlPanel,
-	"<t color='#ba1000'>Clear Spawn</t>",
-	"\a3\ui_f\data\IGUI\Cfg\holdactions\holdAction_loaddevice_ca.paa", 
-	"\a3\ui_f\data\IGUI\Cfg\holdactions\holdAction_loaddevice_ca.paa", 
-	{}, 
-	{},
-	{}, 
-	{}, 
-	{
-		private _spawnPosition = (_this select 3) select 0;
-		private _entities = _spawnPosition nearEntities ["landVehicle","air","ship"];
 
-		_entities apply {
-			[_x] remoteExec ["deleteVehicle",2];
-		};
-	}, 
-	{}, 
-	[_spawnPosition], 
-	2, 
-	20, 
-	false, 
-	false, 
-	false
-] call BIS_fnc_holdActionAdd;
+if !(_controlPanel getVariable ["KISKA_vehicleFactory",false]) then {
+
+	[
+		_controlPanel,
+		"<t color='#ba1000'>Clear Spawn</t>",
+		"\a3\ui_f\data\IGUI\Cfg\holdactions\holdAction_loaddevice_ca.paa", 
+		"\a3\ui_f\data\IGUI\Cfg\holdactions\holdAction_loaddevice_ca.paa", 
+		"true", 
+		"true",
+		{}, 
+		{}, 
+		{
+			private _spawnPosition = (_this select 3) select 0;
+			private _entities = _spawnPosition nearEntities [['landVehicle','air','ship'],10];
+
+			_entities apply {
+				[_x] remoteExec ["deleteVehicle",2];
+			};
+		}, 
+		{}, 
+		[_spawnPosition], 
+		1, 
+		20, 
+		false, 
+		false, 
+		false
+	] call BIS_fnc_holdActionAdd;
+
+	_controlPanel setVariable ["KISKA_vehicleFactory",true];
+};
