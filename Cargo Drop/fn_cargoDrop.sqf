@@ -181,7 +181,7 @@ _vehicleToLoad setVariable ["KISKA_CargoStrapped",false,true];
 									_vehicleToDrop setPosATL [_vehiclePosition select 0,_vehiclePosition select 1,0];
 								};
 							},
-							{
+							{	// waitUntil a player is within 10 meters of vehicle (2D)
 								params ["_vehicleToDrop"];
 								!(((call CBA_fnc_players) findIf {(_x distance2D _vehicleToDrop) < 10}) isEqualTo -1)
 							},

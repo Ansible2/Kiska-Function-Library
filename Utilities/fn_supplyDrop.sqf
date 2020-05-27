@@ -35,30 +35,35 @@ params [
 ];
 
 if (_classNames isEqualTo []) exitWith {
-	["No classnames passed!"] call BIS_fnc_error;
+	"No classnames passed!" call BIS_fnc_error;
 };
 
 if (_radio != -1) then {
-	[_radio,"null"] remoteExecCall ["setRadioMsg",[0,-2] select isDedicated,true];
+	[_radio,"null"] remoteExec ["setRadioMsg",[0,-2] select isDedicated,true];
 };
 
-["Drop inbound."] remoteExecCall ["KISKA_fnc_dataLinkMsg",[0,-2] select isDedicated];
+["Drop inbound."] remoteExec ["KISKA_fnc_dataLinkMsg",[0,-2] select isDedicated];
 
+
+
+private _containersArray = [];
 {
+    // create Container
     private _container = createVehicle [_x,[0,0,0],[],0];
+    _containers pushBack _container;
 
+    // give the conatainer a random position above DZ
     private _dropZone = [_dropPosition,50] call CBA_fnc_randPos;
-
     _container setPosATL (_dropZone vectorAdd [random [-10,0,10],random [-10,0,10],_altittude]);
-
+    
+    // make it invincible
     [_container,false] remoteExec ["allowDamage",_container];
 
-    [[_container]] call KISKA_fnc_addArsenal;
-
+    // create it's parachutes
     private _chute = createVehicle ["b_parachute_02_F",[0,0,0]];
-
     _chute attachTo [_container,[0,0,0]];
 
+    // then guide it to the ground with a velocity loop
     private _handle = [
         {
             private _container = (_this select 0) select 0;
@@ -88,3 +93,45 @@ if (_radio != -1) then {
     ] call CBA_fnc_addPerFrameHandler;
 
 } forEach _classNames;
+
+// add arsenals to crates
+[_containersArray] call KISKA_fnc_addArsenal;
+
+private _firstContainer = _containersArray select 0;
+[
+    2,
+    {
+        // create smoke and flare markers near DZ
+        params ["_firstContainer"];
+
+        private _position = [_firstContainer,10] call CBA_fnc_randPos;
+
+        private _chemlight = createvehicle ["Chemlight_green_infinite",_position,[],0,"NONE"];
+        private _smoke = createvehicle ["G_40mm_SmokeBlue_infinite",_position,[],0,"NONE"];
+        private _flare = createvehicle ["F_40mm_Red",_position,[],0,"NONE"];
+        
+        // wait to delete markers
+        [
+            2,
+            {
+                private _chemlight = param [1];
+                private _smoke = param [2];
+
+                // delete markers, flare is temporary and therefore need not be deleteed
+                [_chemlight,_smoke] apply {
+                    if (!isNull _x) then {
+                        deleteVehicle _x;
+                    };
+                };
+                
+            },
+            {
+                // waitUntil player is within 25m of the first container
+                !(((call CBA_fnc_players) findIf {(_x distance2D (_this select 0)) < 25}) isEqualTo -1)
+            },
+            [_firstContainer,_chemlight,_smoke]
+        ] call KISKA_fnc_waitUntil;
+    },
+    {(getPosATL (_this select 0)) select 2 < 2},
+    [_firstContainer]
+] call KISKA_fnc_waitUntil;
