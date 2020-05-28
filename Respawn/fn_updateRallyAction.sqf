@@ -34,7 +34,7 @@ if (isNull _playerGroup) exitWith {
 };
 
 [
-	{!isNull player AND {!isNull (leader (_this select 0))}},
+	{!isNull player AND {alive (leader (_this select 0))}},
 	{	
 		
 		params ["_playerGroup","_groupName"];
