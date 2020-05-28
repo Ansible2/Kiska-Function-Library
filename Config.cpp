@@ -161,6 +161,8 @@ class CfgFunctions
 			{};
 			class addContainerCargo
 			{};
+			class addTeleportAction
+			{};
 			class alivePlayers
 			{};
 			class balanceHeadless
