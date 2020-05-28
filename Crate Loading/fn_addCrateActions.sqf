@@ -18,6 +18,8 @@ Examples:
 
 		[crate1] call KISKA_fnc_addCrateActions;
 
+		[[crate2,crate3]] call KISKA_fnc_addCrateActions;
+
     (end)
 
 Author:

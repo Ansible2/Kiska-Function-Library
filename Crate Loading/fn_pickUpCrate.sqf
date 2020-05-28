@@ -46,11 +46,11 @@ _crate setVariable ["DSO_cratePickedUp",true,true];
 private _dropCrate_actionID = _caller addAction [
 	"--Drop Crate",
 	{
-		private _player = param [0,player,[objNull]];
+		private _caller = param [0,player,[objNull]];
 		private _dropCrate_actionID = param [2,0,[123]];
 		private _crate = (param [3]) select 0;
 
-		[_crate,_player,_dropCrate_actionID] call KISKA_fnc_dropCrate;
+		[_crate,_caller,_dropCrate_actionID] call KISKA_fnc_dropCrate;
 	},
 	[_crate],
 	15,
@@ -63,5 +63,25 @@ private _dropCrate_actionID = _caller addAction [
 
 // this is to remove the action from the crate if it is loaded while picked up
 _caller setVariable ["DSO_dropCrateActionID",_dropCrate_actionID];
+
+[_crate,_caller,_dropCrate_actionID] spawn {
+	params ["_crate","_caller","_dropCrate_actionID"];
+
+	waitUntil {
+		if (!alive _caller OR {!(_crate getVariable ["DSO_cratePickedUp",true])} OR {!(incapacitatedState _caller isEqualTo "")} OR {_caller getVariable ["ace_isUnconscious",false]}) exitWith {
+			
+			if (!isNil {_caller getVariable "DSO_dropCrateActionID"}) then {
+				[_crate,_caller,_dropCrate_actionID] call KISKA_fnc_dropCrate;
+			};
+
+			true
+		};
+
+		sleep 0.25;
+
+		false
+	};
+
+};
 
 true

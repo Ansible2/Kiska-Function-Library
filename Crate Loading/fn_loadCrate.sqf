@@ -81,7 +81,7 @@ _crate setVariable ["DSO_crateLoaded",true,true];
 _vehicle setVariable ["DSO_numCratesLoaded",_cratesLoaded + 1,true];
 
 if (_cratesLoaded < 1) then {
-	[_vehicle] remoteExecCall ["fn_addUnloadAction",call CBA_fnc_players,true];
+	[_vehicle] remoteExecCall ["KISKA_fnc_addUnloadCratesAction",call CBA_fnc_players,true];
 };
 
 true

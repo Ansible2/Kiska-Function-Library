@@ -53,7 +53,7 @@ private _unloadActionID = _vehicle addAction [
 
 		_vehicle setVariable ["DSO_numCratesLoaded",0,true];
 
-		[_vehicle] remoteExecCall ["fn_removeUnloadAction",call CBA_fnc_players,true];
+		[_vehicle] remoteExecCall ["KISKA_fnc_removeUnloadAction",call CBA_fnc_players,true];
 	},
 	[],
 	10,
