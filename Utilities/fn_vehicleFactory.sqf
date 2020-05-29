@@ -130,7 +130,7 @@ if !(_controlPanel getVariable ["KISKA_vehicleFactory",false]) then {
 		{}, 
 		{}, 
 		{
-			params ["_spawnPosition","_clearRadius"];
+			(_this select 3) params ["_spawnPosition","_clearRadius"];
 			private _entities = _spawnPosition nearEntities [['landVehicle','air','ship'],_clearRadius];
 
 			_entities apply {

@@ -32,9 +32,8 @@ params [
 
 _player setVariable ["DSO_dropCrateActionID",nil];
 
-detach _crate;
-
 if !(_crate getVariable ["DSO_crateLoaded",false]) then {
+	detach _crate;
 	_crate enableSimulationGlobal true;
 };
 

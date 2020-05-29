@@ -37,7 +37,21 @@ if !(weaponLowered _caller) then {
 _caller forceWalk true;
 
 // attach box to player
-_crate attachTo [_caller,[0,1.5,1.2]];
+private _fn_getCrateAttachpoint = {
+	params ["_crateType"];
+
+	if (_crateType isEqualTo "B_supplyCrate_F") exitWith {
+		[0,2,1]
+	};
+	if (_crateType isEqualTo "B_CargoNet_01_ammo_F") exitWith {
+		[0,2,0.90]
+	};
+	// default
+	[0,2,0.80]
+};
+private _crateAttachPoint = [typeOf _crate] call _fn_getCrateAttachpoint;
+
+_crate attachTo [_caller,_crateAttachPoint];
 
 // publicly set the crate as picked up
 _crate setVariable ["DSO_cratePickedUp",true,true];

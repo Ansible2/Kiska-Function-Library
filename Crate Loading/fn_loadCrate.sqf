@@ -33,7 +33,12 @@ if (isNull _crate) exitWith {
 	false
 };
 
+// find nearest vehicle of the types provided
 private _vehicle = (nearestObjects [_crate,DSO_vehicleTypes,10]) select 0;
+
+if (isNil "_vehicle") exitWith {
+	hint "This vehicle can't be loaded";
+};
 
 if (_vehicle getVariable ["DSO_NumCratesLoaded",0] isEqualTo ([_vehicle,3] call KISKA_fnc_getVehicleInfo)) exitWith {
 	hint "Max crates loaded already"

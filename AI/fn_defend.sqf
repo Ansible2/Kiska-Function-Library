@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: CBA_fnc_taskDefend
+Function: KISKA_fnc_defend
 
 Description:
 A function for a group to defend a parsed location. Should be ran locally.
@@ -9,7 +9,7 @@ Units will mount nearby static machine guns and garrison in nearby buildings.
 0% chance to hold defensive positions in combat unless specified differently.
 
 Modifications:
-Used CBA waituntil and accounted for doMove command's inability to account for z-axis
+Used CBA waituntil and accounted for doMove command's inability to use z-axis
 
 Parameters:
 _group      - the group <GROUP, OBJECT>
@@ -24,7 +24,7 @@ None
 
 Examples:
 (begin example)
-	[this] call CBA_fnc_taskDefend
+	[this] call KISKA_fnc_defend
 (end)
 
 Author:
