@@ -57,6 +57,7 @@ if !(isNull attachedTo _crate) then {
 	detach _crate;
 };
 
+// get crate dimensions
 private _crateDimensions = 0 boundingBoxReal _crate;
 
 private _crateMinDimensions = _crateDimensions select 0;
@@ -65,7 +66,7 @@ private _crateMaxDimensions = _crateDimensions select 1;
 private _crateXValue = abs ((_crateMaxDimensions select 0) - (_crateMinDimensions select 0));
 private _crateYValue = abs ((_crateMaxDimensions select 1) - (_crateMinDimensions select 1));
 
-
+// get offsets
 private _crateZValue = ((boundingCenter _crate) select 2) - ([_vehicle,0] call KISKA_fnc_getVehicleInfo);/*compat*/
 
 private _crateOffset = [_vehicle,2] call KISKA_fnc_getVehicleInfo;

@@ -1,7 +1,39 @@
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_vehicleFactory
+
+Description:
+	Add an action to given object that allows the spawn of a vehicle
+
+Parameters:
+
+	0: _controlPanel <OBJECT> - The object to add the action to
+	1: _spawnPosition <OBJECT or ARRAY> - Where to spawn the vehicle
+	2: _vehicleTypes <ARRAY or STRING> - The types to create and action for (each will get its own action)
+	3: _clearRadius <NUMBER> - How far until pad is considered clear of entities 
+	4: _onCreateCode <CODE> - Code to run upon vehicle creation. Passed arg is the created vehicle 
+
+Returns:
+	NOTHING 
+
+Examples:
+    (begin example)
+
+		[player,(getPosATL player) vectorAdd [2,2,0],"B_MRAP_01_F"] spawn KISKA_fnc_vehicleFactory;
+
+    (end)
+
+Author:
+	Ansible2 // Cipher
+---------------------------------------------------------------------------- */
+if (!canSuspend) exitWith {
+	"Must be run in scheduled envrionment" call BIS_fnc_error;
+};
+
 params [
 	["_controlPanel",objNull,[objNull]],
 	["_spawnPosition",objNull,[[],objNull]],
 	["_vehicleTypes",[],[[],""]],
+	["_clearRadius",10,[123]],
 	["_onCreateCode",{},[{}]]
 ];
 
@@ -55,10 +87,11 @@ _vehicleTypes apply {
 				(_this select 3) params [
 					"_type",
 					"_spawnPosition",
+					"_clearRadius",
 					"_onCreateCode"
 				];
 
-				if !((_spawnPosition nearEntities [['landVehicle','air','ship'],10]) isEqualTo []) exitWith {
+				if !((_spawnPosition nearEntities [['landVehicle','air','ship'],_clearRadius]) isEqualTo []) exitWith {
 					hint 'Pad Must Be Clear Of Vehicles';
 					false
 				};
@@ -72,7 +105,7 @@ _vehicleTypes apply {
 				hint "Vehicle Created";
 			}, 
 			{}, 
-			[_type,_spawnPosition,_onCreateCode], 
+			[_type,_spawnPosition,_clearRadius,_onCreateCode], 
 			0.5, 
 			10, 
 			false, 
@@ -80,6 +113,8 @@ _vehicleTypes apply {
 			false
 		] call BIS_fnc_holdActionAdd;
 	};
+
+	sleep 0.1;
 };
 
 
@@ -95,8 +130,8 @@ if !(_controlPanel getVariable ["KISKA_vehicleFactory",false]) then {
 		{}, 
 		{}, 
 		{
-			private _spawnPosition = (_this select 3) select 0;
-			private _entities = _spawnPosition nearEntities [['landVehicle','air','ship'],10];
+			params ["_spawnPosition","_clearRadius"];
+			private _entities = _spawnPosition nearEntities [['landVehicle','air','ship'],_clearRadius];
 
 			_entities apply {
 				[_x] remoteExec ["deleteVehicle",2];
@@ -105,7 +140,7 @@ if !(_controlPanel getVariable ["KISKA_vehicleFactory",false]) then {
 			hint "Pad Cleared";
 		}, 
 		{}, 
-		[_spawnPosition], 
+		[_spawnPosition,_clearRadius], 
 		0.5, 
 		20, 
 		false, 

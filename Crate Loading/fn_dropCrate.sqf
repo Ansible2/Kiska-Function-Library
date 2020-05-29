@@ -34,7 +34,9 @@ _player setVariable ["DSO_dropCrateActionID",nil];
 
 detach _crate;
 
-_crate enableSimulationGlobal true;
+if !(_crate getVariable ["DSO_crateLoaded",false]) then {
+	_crate enableSimulationGlobal true;
+};
 
 _player removeAction _dropCrate_actionID;
 _player forceWalk false;

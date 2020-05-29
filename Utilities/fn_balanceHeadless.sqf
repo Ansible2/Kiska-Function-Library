@@ -163,6 +163,8 @@ true
 
 			_bestHeadless setVariable ["KISKA_hcLocalUnits",_newTotal];
 
+
+			// should change this to MPKilled eventhandler
 			_unitsInGroup apply {
 				if !((owner _x) isEqualTo _bestHeadlessID) then {
 					private _id = [

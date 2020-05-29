@@ -143,6 +143,8 @@ class CfgFunctions
 		class Sound
 		{
 			file = "Kiska_functions\Sound";
+			class ambientRadio
+			{};
 			class battleSound
 			{};
 			class playSoundNSub
