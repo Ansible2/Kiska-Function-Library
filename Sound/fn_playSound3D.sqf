@@ -5,7 +5,7 @@ Description:
 	Plays a sound 3D but the function accepts the sound name rather then just the file path.
 
 Parameters:
-	0: _sound <STRING> - The sound to play. Sound classname like the command playSound
+	0: _sound <STRING> - The sound to play. Sound classname like the command playSound or playMusic (this also accepts music tracks)
 	1: _origin <OBJECT or ARRAY> - The position (ASL) or object from which the sound comes from
 	2: _distance <NUMBER> - Distance at which the sound can be heard
 	3: _volume <NUMBER> - Range from 0-5
@@ -42,7 +42,7 @@ if (_sound isEqualTo "") exitWith {
 	false
 };
 
-if (!(isCLass (configFile / "CfgSounds" / _sound)) AND {!(isClass (missionConfigFile / "CfgSounds" / _sound))}) exitWith {
+if (!(isCLass (configFile / "CfgSounds" / _sound)) AND {!(isClass (missionConfigFile / "CfgSounds" / _sound))} AND {!(isClass (missionConfigFile / "cfgMusic" / _sound))} AND {!(isClass (configFile / "cfgMusic" / _sound))}) exitWith {
 	"_sound is undefined in config" call BIS_fnc_error;
 	false
 };
@@ -64,11 +64,24 @@ if (_distance < 0) exitWith {
 
 
 // get actual path of file form config
-private _soundPath = (getArray (configFile >> "CfgSounds" >> _sound >> "sound")) select 0;
+_fn_getSoundPath = {
+	params ["_sound"];
 
-if (isNil "_soundPath") then {
-	_soundPath = (getArray (missionConfigFile >> "CfgSounds" >> _sound >> "sound")) select 0;
+	if (isCLass (configFile / "CfgSounds" / _sound)) exitWith {
+		(getArray (configFile >> "CfgSounds" >> _sound >> "sound")) select 0
+	};
+	if (isCLass (missionConfigFile / "CfgSounds" / _sound)) exitWith {
+		(getArray (missionConfigFile >> "CfgSounds" >> _sound >> "sound")) select 0
+	};// need to test mission paths to see if they need getMissionpath
+	if (isCLass (configFile / "cfgMusic" / _sound)) exitWith {
+		(getArray (configFile >> "cfgMusic" >> _sound >> "sound")) select 0
+	};
+	if (isCLass (missionConfigFile / "cfgMusic" / _sound)) exitWith {
+		(getArray (missionConfigFile >> "cfgMusic" >> _sound >> "sound")) select 0
+	};
 };
+
+private _soundPath = [_sound] call _fn_getSoundPath;
 
 if !(_soundPath isEqualType "") exitWith {
 	"_sound is configed incorrectly" call BIS_fnc_error;

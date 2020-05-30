@@ -183,6 +183,8 @@ class CfgFunctions
 			{};
 			class podDrop
 			{};
+			class setDirRelative
+			{};
 			class setTaskComplete
 			{};
 			class showHide
