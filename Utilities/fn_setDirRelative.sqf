@@ -27,18 +27,20 @@ params [
 	["_positionsToLookAt",[],[objNull,[]]]
 ];
 
-if (_objectsToRotate isEqualTo [] OR {_objectsTorRotate isEqualType objNull AND {isNull _objectsToRotate}}) exitWith {
+if (_objectsToRotate isEqualTo [] OR {_objectsToRotate isEqualType objNull AND {isNull _objectsToRotate}}) exitWith {
 	"[KISKA_fnc_lookAtNearest] _objectsToRotate is undefined" call BIS_fnc_error;
+	false
 };
 
-if ((_positionsToLookAt isEqualType [] AND {!(_positionsToLookAt isEqualTypeArray [objNull,[]])}) OR {_positionsToLookAt isEqualTo []}) exitWith {
-	"[KISKA_fnc_lookAtNearest] _positionsToLookAt is configed improperly" call BIS_fnc_error;
+if (_objectsToRotate isEqualtype objNull) then {
+	_objectsToRotate = [_objectsToRotate];
 };
 
 _objectsToRotate apply {
 	private _nearestPosition = [_positionsToLookAt,_x] call BIS_fnc_nearestPosition;
 
 	_x setDir (_x getRelDir _nearestPosition);
+	_x doWatch _nearestPosition;
 };
 
 true

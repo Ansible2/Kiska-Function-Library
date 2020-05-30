@@ -14,7 +14,7 @@ Parameters:
 	4. _canUnitsMove <BOOL> - Can units walk (optional)
 	5. _enableDynamic <BOOL> - Should the units be dynamically simmed (Optional)
 	6. _side <SIDE> - Side of units (optional)
-	7. _debug <BOOL> - Do you want a debug indications of when and the number of units spawned (optional)
+	7. _debug <BOOL> - Do you want debug indications of when and the number of units spawned (optional)
 
 Returns:
 	_spawnedUnits <ARRAY> 
@@ -129,11 +129,15 @@ for "_i1" from 1 to _numberOfGroups do {
 		// units with different default sides then what was selected will not be set to the selected side without this command
 		[_unit] joinSilent _group;
 
-		// if spawn position is object, set the rotation of the unit to that of the object
+		// if spawn position is object, set the rotation of the unit to that of the object else random
 		if (_selectedSpawnPosition isEqualType objNull) then {
-			_unit setDir (getDir _selectedSpawnPosition)
+			private _dir = getDir _selectedSpawnPosition;
+			_unit setDir _dir;
+			_unit doWatch (_unit getRelPos [50,_dir]);
 		} else {
-			_unit setDir (floor (random 360));
+			private _randomDir = floor (random 360);
+			_unit setDir _randomDir;
+			_unit doWatch (_unit getRelPos [50,_randomDir]);
 		};
 
 		// set a random stance and stop unit in place
