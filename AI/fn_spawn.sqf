@@ -131,9 +131,8 @@ for "_i1" from 1 to _numberOfGroups do {
 
 		// if spawn position is object, set the rotation of the unit to that of the object else random
 		if (_selectedSpawnPosition isEqualType objNull) then {
-			private _dir = getDir _selectedSpawnPosition;
-			_unit setDir _dir;
-			_unit doWatch (_unit getRelPos [50,_dir]);
+			_unit setDir (getDir _selectedSpawnPosition);
+			_unit doWatch (_selectedSpawnPosition getRelPos [50,0]);
 		} else {
 			private _randomDir = floor (random 360);
 			_unit setDir _randomDir;

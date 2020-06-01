@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_setDirRelative
+Function: KISKA_fnc_lookHere
 
 Description:
 	Takes objects and sets their direction towards the nearest object or position within a set
@@ -14,7 +14,7 @@ Returns:
 Examples:
     (begin example)
 
-		[player,[[0,0,0]]] call KISKA_fnc_setDirRelative;
+		[player,[[0,0,0]]] call KISKA_fnc_lookHere;
 
     (end)
 

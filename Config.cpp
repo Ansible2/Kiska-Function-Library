@@ -183,7 +183,7 @@ class CfgFunctions
 			{};
 			class podDrop
 			{};
-			class setDirRelative
+			class lookHere
 			{};
 			class setTaskComplete
 			{};
