@@ -129,6 +129,8 @@ for "_i1" from 1 to _numberOfGroups do {
 		// units with different default sides then what was selected will not be set to the selected side without this command
 		[_unit] joinSilent _group;
 
+		doStop _unit;
+
 		// if spawn position is object, set the rotation of the unit to that of the object else random
 		if (_selectedSpawnPosition isEqualType objNull) then {
 			_unit setDir (getDir _selectedSpawnPosition);
@@ -141,7 +143,6 @@ for "_i1" from 1 to _numberOfGroups do {
 
 		// set a random stance and stop unit in place
 		_unit setUnitPos (selectRandomWeighted ["up",0.7,"middle",0.3]);
-		doStop _unit;
 		if !(_canUnitsMove) then {
 			_unit disableAI "path";
 		};

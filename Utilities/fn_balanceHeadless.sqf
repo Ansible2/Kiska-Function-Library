@@ -9,7 +9,7 @@ Description:
 
 Parameters:
 	 
-	0: _checkInterval <NUMBER> - How often to check for HCs
+	0: _checkInterval <NUMBER> - How often to redistribute
 
 Returns:
 	BOOL
@@ -17,7 +17,7 @@ Returns:
 Examples:
     (begin example)
 
-		[60] spawn KISKA_fnc_balanceHeadless;
+		[120] spawn KISKA_fnc_balanceHeadless;
 
     (end)
 
@@ -32,7 +32,7 @@ if (!canSuspend) exitWith {
 };
 
 params [
-	["_checkInterval",60,[123]]
+	["_checkInterval",120,[123]]
 ];
 
 private _headlessClients = entities "HeadlessClient_F";
@@ -63,24 +63,33 @@ if !((missionNamespace getVariable ["KISKA_hcExcluded",[]]) isEqualTo []) then {
 	KISKA_hcExcluded = _excluded;
 };
 
+// everyone goes basck to 0 for even redistribution
+_headlessClients apply {
+	_x setVariable ["KISKA_hcLocalUnitsCount",0];
+};
+
 allGroups apply {
 	private _group = _x;
 
 	if !(_group in (missionNamespace getVariable ["KISKA_hcExcluded",[]])) then {
-		private _localUnitCountArray = [];
+		// each headless client has a count of how many local units it has
+		private _localUnitsCountArray = [];
+		// an array of each of the headless client entities 
 		private _headlessArray = [];
 
 		_headlessClients apply {
-			_localUnitCountArray pushBack (_x getVariable ["KISKA_hcLocalUnits",0]);
+			_localUnitsCountArray pushBack (_x getVariable ["KISKA_hcLocalUnitsCount",0]);
 			_headlessArray pushBackUnique _x;
 		};
 
-		private _leastUnits = selectMin _localUnitCountArray;
-		private _index = _localUnitCountArray findIf {_leastUnits isEqualTo _x};
+		// see who has the least units
+		private _leastUnits = selectMin _localUnitsCountArray;
+		// get the index of them in _headlessArray so that we can see how many local units they have in _localUnitsCountArray
+		private _index = _localUnitsCountArray findIf {_leastUnits isEqualTo _x};
+		// select that headless client
 		private _bestHeadless = _headlessArray select _index;
+		// And lastly get their actual ID
 		private _bestHeadlessID = owner _bestHeadless;
-
-		private _migrated = _group setGroupOwner _bestHeadlessID;
 		
 		// verify units are migrated before proceeding
 		waitUntil {
@@ -91,116 +100,58 @@ allGroups apply {
 			false
 		};
 
-		private _newTotal = _leastUnits + (count (units _group));
+		// get the units migrated and how many
+		private _unitsInGroup = units _group;
+		private _newTotal = _leastUnits + (count _unitsInGroup);
 		
-		_bestHeadless setVariable ["KISKA_hcLocalUnits",_newTotal];
+		// update HC global count of its local units
+		_bestHeadless setVariable ["KISKA_hcLocalUnitsCount",_newTotal];
+
+		// add the units to a global attached to the HC so they can be referenced and subtracted at death
+		private _localUnitsArray = _bestHeadless getVariable ["KISKA_hcLocalUnits",[]];
+		_unitsInGroup apply {
+			_localUnitsArray pushBack _x;
+
+			// add a MP eventhandler that runs on the server for when the AI is killed so that theu can be subtracted from the count and array of local units
+			_x addMPEventHandler ["MPKilled",{
+				
+				params ["_unit"];
+
+				if (isServer) then {
+					private _headlessClients = entities "HeadlessClient_F";
+
+					_headlessClients apply {
+						private _headlessClient = _x;
+						private _localUnitsArray = _headlessClient getVariable ["KISKA_hcLocalUnits",[]];
+
+						if (_unit in _localUnitsArray) exitWith {
+
+							/* For eventual smarter redistribution of totals...
+
+								// get current total local units
+								private _localUnitsCount = _headlessClient getVariable "KISKA_hcLocalUnitsCount";
+								_localUnitsCount = _localUnitsCount - 1;
+								// set new total
+								_headlessClient setVariable ["KISKA_hcLocalUnitsCount",_localUnitsCount];
+							*/
+
+							// take unit out of array
+							_localUnitsArray deleteAt (_localUnitsArray findIf {_x isEqualTo _unit});
+
+							_unit removeMPEventHandler ["MPKilled",_thisEventHandler];
+
+							true
+						};
+					};
+				};
+
+			}];
+		};
 	};
 
 	uiSleep 0.5;
 };
 
-true
+sleep _checkInterval;
 
-// not until you can have this properly rebalance how many units each HC has and tell the server about it (like if someone dies)
-/*
-
-	if (!isServer OR {!isMultiplayer}) exitWith {false};
-
-	params [
-		["_checkInterval",60,[123]]
-	];
-
-	private _headlessClients = entities "HeadlessClient_F";
-
-	if (_headlessClients isEqualTo []) exitWith {
-		[
-			{
-				_this spawn KISKA_fnc_balanceHeadless;
-			},
-			[_checkInterval],
-			_checkInterval
-		] call CBA_fnc_waitAndExecute;
-	};
-
-	if !((missionNamespace getVariable ["KISKA_hcExcluded",[]]) isEqualTo []) then {
-		private _excluded = missionNamespace getVariable ["KISKA_hcExcluded",[]];
-
-		{
-			if !(_x isEqualTypeAny [grpNull,objNull]) then {
-				[(str _x) + " is not object or group"] call BIS_fnc_error
-			};
-
-			if (_x isEqualType objNull) then {
-				_excluded set [_forEachIndex,group _x];
-			};
-		} forEach _excluded;
-
-		KISKA_hcExcluded = _excluded;
-	};
-
-
-	allGroups apply {
-		private _group = _x;
-
-		if !(_group in (missionNamespace getVariable ["KISKA_hcExcluded",[]])) then {
-			private _localUnitCountArray = [];
-			private _headlessArray = [];
-
-			_headlessClients apply {
-				_localUnitCountArray pushBack (_x getVariable ["KISKA_hcLocalUnits",0]);
-				_headlessArray pushBackUnique _x;
-			};
-
-			private _leastUnits = selectMin _localUnitCountArray;
-			private _index = _localUnitCountArray findIf {_leastUnits isEqualTo _x};
-			private _bestHeadless = _headlessArray select _index;
-			private _bestHeadlessID = owner _bestHeadless;
-
-			_group setGroupOwner _bestHeadlessID;
-			private _unitsInGroup = units _group;
-			private _numberOfUnits = count _unitsInGroup;
-			private _newTotal = _leastUnits + _numberOfUnits;
-
-			_bestHeadless setVariable ["KISKA_hcLocalUnits",_newTotal];
-
-
-			// should change this to MPKilled eventhandler
-			_unitsInGroup apply {
-				if !((owner _x) isEqualTo _bestHeadlessID) then {
-					private _id = [
-						_x, 
-						"KILLED",
-						{
-							params ["_deadGuy"];
-
-							private _numberOfLocalUnits = _thisArgs getVariable ["KISKA_hcLocalUnits",1];
-							_thisArgs setVariable ["KISKA_hcLocalUnits",_numberOfLocalUnits - 1];
-
-							_deadGuy removeEventHandler ["KILLED",_thisID];
-						},
-						_bestHeadless
-					] call CBA_fnc_addBISEventHandler;
-					
-					if !(isNil {_x getVariable "KISKA_hcKilledEH_ID"}) then {
-						_x removeEventHandler ["KILLED",(_x getVariable "KISKA_hcKilledEH_ID")];
-					};
-					
-					_x setVariable ["KISKA_hcKilledEH_ID",_id];
-				};
-			};
-		};
-
-		uiSleep 0.1;
-	};
-
-
-	[
-		{
-			_this call KISKA_fnc_balanceHeadless;
-		},
-		[_checkInterval],
-		_checkInterval
-	] call CBA_fnc_waitAndExecute;
-
-	true
-*/
+[_checkInterval] spawn KISKA_fnc_balanceHeadless;

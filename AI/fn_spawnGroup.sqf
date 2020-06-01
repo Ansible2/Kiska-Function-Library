@@ -18,7 +18,7 @@ Returns:
 Examples:
     (begin example)
 
-		_spawnedGroup = [4, _listOfUnitTypes, OPFOR, [0,0,], true] call KISKA_fnc_spawnGroup;
+		_spawnedGroup = [4, _listOfUnitTypes, OPFOR, [0,0,0], true] call KISKA_fnc_spawnGroup;
 
     (end)
 
