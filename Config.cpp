@@ -20,6 +20,8 @@ class CfgFunctions
 			{};
 			class arty
 			{};
+			class attack
+			{};
 			class changeAI
 			{};
 			class defend

@@ -32,7 +32,7 @@ if !(isServer) exitWith {
 params [
 	["_objects",[],[[],grpNull,objNull]],
 	["_show",true,[true]],
-	["_enableDynamicSim",true,[true]]
+	["_enableDynamicSim",false,[true]]
 ];
 
 if (_objects isEqualTo []) exitWith {
@@ -52,9 +52,13 @@ _objects apply {
 		[_x,_show] remoteExecCall ["allowDamage",_x];
 		_x hideObjectGlobal !(_show);
 		_x enableSimulationGlobal _show;
-
-		if (_enableDynamicSim AND {dynamicSimulationSystemEnabled} AND {!(dynamicSimulationEnabled (group _x))}) then {
-			(group _x) enableDynamicSimulation true;
+		
+		_x enableDynamicSimulation _enableDynamicSim;
+		
+		if (dynamicSimulationEnabled _group AND {!(_enableDynamicSim)}) then {
+			_group enableDynamicSimulation false;
+		} else {
+			_group enableDynamicSimulation _enableDynamicSim;
 		};
 	};
 };
