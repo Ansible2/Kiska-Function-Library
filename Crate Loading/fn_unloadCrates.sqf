@@ -44,7 +44,7 @@ if (_attachedCrates isEqualTo []) exitWith {
 
 hint "Unloaded";
 
-_vehicle removeAction (_this select 2);
+_vehicle removeAction (_vehicle getVariable "DSO_unloadActionID");
 
 _vehicle setVariable ["DSO_loadedCrates",[],true];
 
