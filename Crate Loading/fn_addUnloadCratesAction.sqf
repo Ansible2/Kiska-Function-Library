@@ -34,7 +34,7 @@ if (isNull _vehicle) exitWith {
 private _unloadActionID = _vehicle addAction [
 	"--Unload Crate(s)",
 	{
-		[_vehicle] call KISKA_fnc_unloadCrates;
+		[_this select 0] call KISKA_fnc_unloadCrates;
 	},
 	[],
 	10,
