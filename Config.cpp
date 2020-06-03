@@ -81,6 +81,8 @@ class CfgFunctions
 			class pickUpCrate
 			{};
 			class removeUnloadAction
+			{};
+			class unloadCrates
 			{}; 
 		};
 		class Loadouts

@@ -38,29 +38,36 @@ private _vehicle = (nearestObjects [_crate,DSO_vehicleTypes,10]) select 0;
 
 if (isNil "_vehicle") exitWith {
 	hint "This vehicle can't be loaded";
+	false
 };
 
-if (_vehicle getVariable ["DSO_NumCratesLoaded",0] isEqualTo ([_vehicle,3] call KISKA_fnc_getVehicleInfo)) exitWith {
-	hint "Max crates loaded already"
+private _cratesLoaded = _vehicle getVariable ["DSO_loadedCrates",[]];
+private _numCratesLoaded = count _cratesLoaded;
+
+if (_numCratesLoaded isEqualTo ([_vehicle,3] call KISKA_fnc_getVehicleInfo)) exitWith {
+	hint "Max crates loaded already";
+	false
 };
 
 if !(isNil {player getVariable "DSO_dropCrateActionID"}) then {
 	player removeAction (player getVariable "DSO_dropCrateActionID");
 };
 
+// if crate is picked up, set it to not be
 if (_crate getVariable ["DSO_cratePickedUp",false]) then {
-	_crate setVariable ["DSO_cratePickedUp",false];
+	_crate setVariable ["DSO_cratePickedUp",false,true];
 };
 
 if (isForcedWalk player) then {
 	player forceWalk false;
 };
 
-private _cratesLoaded = _vehicle getVariable ["DSO_numCratesLoaded",0];
+
 
 if !(isNull attachedTo _crate) then {
 	detach _crate;
 };
+
 
 // get crate dimensions
 private _crateDimensions = 0 boundingBoxReal _crate;
@@ -76,18 +83,38 @@ private _crateZValue = ((boundingCenter _crate) select 2) - ([_vehicle,0] call K
 
 private _crateOffset = [_vehicle,2] call KISKA_fnc_getVehicleInfo;
 
-if (_cratesLoaded > 0) then {
-	_crateOffset = ((selectMin [-_crateYValue,-_crateXValue]) * _cratesLoaded) + _crateOffset;
+if (_numCratesLoaded > 0) then {
+	_crateOffset = ((selectMin [-_crateYValue,-_crateXValue]) * _numCratesLoaded) + _crateOffset;
 };
 
 _crate attachTo [_vehicle,[0,_crateOffset,_crateZValue]]; /*compat*/
 
+
+
+// set public vars
 _crate setVariable ["DSO_crateLoaded",true,true];
+// add crate to vehicles list
+_cratesLoaded pushBack _crate;
+_vehicle setVariable ["DSO_loadedCrates",_cratesLoaded,true];
 
-_vehicle setVariable ["DSO_numCratesLoaded",_cratesLoaded + 1,true];
 
-if (_cratesLoaded < 1) then {
+// add unload action and event handler if first crate
+if (_numCratesLoaded < 1) then {
 	[_vehicle] remoteExecCall ["KISKA_fnc_addUnloadCratesAction",call CBA_fnc_players,true];
+
+	// add eventHandler
+	private _handleID = _vehicle addMPEventHandler ["MPKilled",{
+				
+		params ["_vehicle"];
+
+		if (isServer) then {
+			if !(_vehicle getVariable ["DSO_loadedCrates",[]] isEqualTo []) then {
+				[_vehicle] call KISKA_fnc_unloadCrates;
+			};
+
+			[_vehicle,["MPKilled",_thisEventHandler]] remoteExecCall ["removeMPEventHandler",_vehicle];
+		};
+	}];
 };
 
 true

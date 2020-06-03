@@ -14,7 +14,7 @@ Returns:
 Examples:
     (begin example)
 
-		[crate1,player,0] call KISKA_fnc_removeUnloadAction;
+		[vehicle1] call KISKA_fnc_removeUnloadAction;
 
     (end)
 

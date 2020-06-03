@@ -34,26 +34,7 @@ if (isNull _vehicle) exitWith {
 private _unloadActionID = _vehicle addAction [
 	"--Unload Crate(s)",
 	{
-		hint "Unloaded";
-
-		params ["_vehicle"];
-
-		private _attachedCrates = attachedObjects _vehicle; // this needs to be filtered eventually
-
-		{
-			detach _x;
-
-			_x setPosATL (_vehicle getRelPos [([_vehicle,1] call KISKA_fnc_getVehicleInfo) + (_forEachindex * 1.75),180]);
-
-			_x setVariable ["DSO_crateLoaded",false,true];
-
-		} forEach _attachedCrates;
-
-		_vehicle removeAction (_this select 2);
-
-		_vehicle setVariable ["DSO_numCratesLoaded",0,true];
-
-		[_vehicle] remoteExecCall ["KISKA_fnc_removeUnloadAction",call CBA_fnc_players,true];
+		[_vehicle] call KISKA_fnc_unloadCrates;
 	},
 	[],
 	10,

@@ -9,10 +9,10 @@ Parameters:
 
 	0: _group <GROUP or OBJECT> - Unit(s) to attack
 	1: _position <OBJECT, LOCATION, GROUP, or ARRAY> - The position to attack
-	2: _behaviour <BOOL> - What behaviour will the attacker(s) have
-	2: _combatMode <BOOL> - What combatMode will the attacker(s) have
-	2: _radius <BOOL> - Radius for waypoint placement
-	2: _override <BOOL> - Clear units current waypoints
+	2: _radius <NUMBER> - Radius for waypoint placement
+	3: _behaviour <STRING> - What behaviour will the attacker(s) have
+	4: _combatMode <STRING> - What combatMode will the attacker(s) have
+	5: _override <BOOL> - Clear units current waypoints
 
 Returns:
 	NOTHING
@@ -20,7 +20,7 @@ Returns:
 Examples:
     (begin example)
 
-		[group1,attackPosition,"COMBAT","RED"] call KISKA_fnc_attack;
+		[group1,attackPosition,100,"COMBAT","RED"] call KISKA_fnc_attack;
 
     (end)
 
@@ -31,10 +31,10 @@ Author:
 
 params [
 	["_group",grpNull,[objNull,grpNull]],
-	["_position",objNull,[[],objNull,locationNull,grpNull]], 
+	["_position",objNull,[[],objNull,locationNull,grpNull]],
+	["_radius",-1,[123]], 
 	["_behaviour","COMBAT",[""]],
 	["_combatMode","RED",[""]],
-	["_radius", -1,[123]], 
 	["_override",false,[true]]
 ];
 
