@@ -167,7 +167,7 @@ class CfgFunctions
 			file="Kiska_functions\Utilities";
 			class addArsenal
 			{};
-			class addContainerCargo
+			class pasteContainerCargo
 			{};
 			class addTeleportAction
 			{};
@@ -177,7 +177,7 @@ class CfgFunctions
 			{};
 			class dataLinkMsg
 			{};
-			class getContainerCargo
+			class copyContainerCargo
 			{};
 			class hintDiary
 			{};

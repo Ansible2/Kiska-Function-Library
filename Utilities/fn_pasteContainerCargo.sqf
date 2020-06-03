@@ -1,14 +1,14 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_addContainerCargo
+Function: KISKA_fnc_pasteContainerCargo
 
 Description:
-	Takes a cargo array formatted from KISKA_fnc_getContainerCargo and adds it to another container.
+	Takes a cargo array formatted from KISKA_fnc_copyContainerCargo and adds it to another container.
 	Exact ammo counts will be preserved even inside of an item such as magazines inside of a vest or backpack.
 
 Parameters:
 
 	0: _containerToLoad <OBJECT> - The container to add the cargo to.
-	1: _cargo <ARRAY> - An array of various items, magazines, and weapons formatted from KISKA_fnc_getContainerCargo
+	1: _cargo <ARRAY> - An array of various items, magazines, and weapons formatted from KISKA_fnc_copyContainerCargo
 
 Returns:
 	BOOL
@@ -16,7 +16,7 @@ Returns:
 Examples:
     (begin example)
 
-		[container,[otherContainer] call KISKA_fnc_getContainerCargo] call KISKA_fnc_addContainerCargo;
+		[container,[otherContainer] call KISKA_fnc_getContainerCargo] call KISKA_fnc_pasteContainerCargo;
 
     (end)
 

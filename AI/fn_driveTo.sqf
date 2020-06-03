@@ -29,7 +29,7 @@ params [
 	["_crew",[],[[],grpNull,objNull]],
 	["_vehicle",objNull,[objNull]],
 	["_dismountPoint",objNull,[[],objNull]],
-	["_completionRadius",5,[123]],
+	["_completionRadius",10,[123]],
 	["_codeOnComplete",{},[{}]]
 ];
 
@@ -54,18 +54,23 @@ if (_crew isEqualType objNull) then {
 
 private "_driverGroup";
 {
-	if (_forEachIndex isEqualTo 0) then {
-		_driverGroup = group _x
-		_x moveInDriver _vehicle;
-	} else {
-		_x moveInAny _vehicle;
+	if !(_x in (crew _vehicle)) then {
+		if (_forEachIndex isEqualTo 0) then {
+			_driverGroup = group _x;
+			_x moveInDriver _vehicle;
+		} else {
+			_x moveInAny _vehicle;
+		};
 	};
 
-} forEach _crew
+} forEach _crew;
 
 [_driverGroup] call CBA_fnc_clearWaypoints;
 
-[_driverGroup,_dismountPoint,_completionRadius,"MOVE"] call CBA_fnc_addWaypoint; // double check radius
+
+[_driverGroup,_dismountPoint,-1,"MOVE","UNCHANGED","NO CHANGE","UNCHANGED","NO CHANGE","",[0,0,0],_completionRadius] call CBA_fnc_addWaypoint;
+
+
 
 [
 	1,
@@ -76,12 +81,12 @@ private "_driverGroup";
 			[_x,_vehicle] remoteExec ["leaveVehicle",_x];
 		};
 
-		if !(_codeOnComplete isEqualTo {}) then {
+		if !(_codeOnComplete isEqualTo {}) then {	
 			[_vehicle,_crew] call _codeOnComplete;
 		};
 	},
-	{(_this select 0) distance _dismountPoint <= (_this select 3)}
-	[_vehicle,_crew,_codeOnComplete,_completionRadius]
+	{((_this select 0) distance (_this select 4)) <= (_this select 3)},
+	[_vehicle,_crew,_codeOnComplete,_completionRadius,_dismountPoint]
 ] call KISKA_fnC_waitUntil;
 
 true

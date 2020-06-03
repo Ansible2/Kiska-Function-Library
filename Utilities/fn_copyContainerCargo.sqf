@@ -1,8 +1,8 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_getContainerCargo
+Function: KISKA_fnc_copyContainerCargo
 
 Description:
-	Saves the cargo of a container in a formatterd array to be used with KISKA_fnc_addContainerCargo for copying cargos of containers.
+	Saves the cargo of a container in a formatterd array to be used with KISKA_fnc_pasteContainerCargo for copying cargos of containers.
 	Exact ammo counts will be preserved even inside of an item such as magazines inside of a vest or backpack.
 
 Parameters:
@@ -10,12 +10,12 @@ Parameters:
 	0: _primaryContainer <OBJECT> - The container to save the cargo of
 
 Returns:
-	_totalCargo <ARRAY> - Formatted array of all items in cargo space of a container. Used with KISKA_fnc_addContainerCargo. Will return [] if no cargo is present
+	_totalCargo <ARRAY> - Formatted array of all items in cargo space of a container. Used with KISKA_fnc_pasteContainerCargo. Will return [] if no cargo is present
 
 Examples:
     (begin example)
 
-		[container] call KISKA_fnc_getContainerCargo;
+		[container] call KISKA_fnc_copyContainerCargo;
 
     (end)
 
@@ -75,7 +75,7 @@ private _totalCargo = [
 ];
 
 if (_totalCargo isEqualTo [[[],[]],[],[],[]]) exitWith {
-	diag_log ("OPTRE_fnc_getContainerCargo: No cargo found in " + str _primaryContainer);
+	diag_log ("KISKA_fnc_copyContainerCargo: No cargo found in " + str _primaryContainer);
 	[]
 };
 
