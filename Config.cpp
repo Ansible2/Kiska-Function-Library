@@ -26,6 +26,8 @@ class CfgFunctions
 			{};
 			class defend
 			{};
+			class driveTo
+			{};
 			class heliPatrol
 			{};
 			class patrolSpecific

@@ -44,7 +44,7 @@ DSO_vehicleTypes = [
 
 DSOInfo_Truck_01_base_F = [
 	0.5, 	// crate z offset
-	6,    	// unload offset	
+	7,    	// unload offset	
 	0.5, 	// crate y offset
 	3,    	// max crates
 	8   	// unload action distance
