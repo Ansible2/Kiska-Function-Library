@@ -30,6 +30,7 @@ params [
 	["_vehicle",objNull,[objNull]],
 	["_dismountPoint",objNull,[[],objNull]],
 	["_completionRadius",10,[123]],
+	["_speed","NORMAL",[""]],
 	["_codeOnComplete",{},[{}]]
 ];
 
@@ -68,8 +69,7 @@ private "_driverGroup";
 [_driverGroup] call CBA_fnc_clearWaypoints;
 
 
-[_driverGroup,_dismountPoint,-1,"MOVE","UNCHANGED","NO CHANGE","UNCHANGED","NO CHANGE","",[0,0,0],_completionRadius] call CBA_fnc_addWaypoint;
-
+[_driverGroup,_dismountPoint,-1,"MOVE","UNCHANGED","NO CHANGE",_speed,"NO CHANGE","",[0,0,0],_completionRadius] call CBA_fnc_addWaypoint;
 
 
 [
