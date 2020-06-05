@@ -37,6 +37,7 @@ params [
 	["_radio",objNull,[objNull]],
 	["_duration",300,[123]],
 	["_range",200,[123]],
+	["_volume",3,[123]],
 	["_radioChannel","",[""]],
 	["_public",false,[true,123,[]]],
 	["_sounds",[],[[]]]
@@ -135,7 +136,7 @@ waitUntil {
 	missionNamespace setVariable [_usedNamespace,_usedSounds,_public];
 
 	// play sound
-	[_randomNews,_radio,30,3,true] spawn KISKA_fnc_playSound3d;
+	[_randomNews,_radio,30,_volume,true] spawn KISKA_fnc_playSound3d;
 	
 	sleep (random [30,35,40]);
 

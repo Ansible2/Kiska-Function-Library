@@ -68,11 +68,11 @@ if (_vehicles isEqualType objNull) then {
 				"--Strap Vehicle",  
 				{
 					private _vehicleToLoad = param [0,objNull,[objNull]];
-					private _args = param [3,[],[[]]];
+					private _aircraftClass = param [3];
 
-					["KISKA_cargoStrapped_Event",[_vehicleToLoad,_args select 0]] call CBA_fnc_serverEvent;
+					["KISKA_cargoStrapped_Event",[_vehicleToLoad,_aircraftClass]] call CBA_fnc_serverEvent;
 				}, 
-				[_aircraftInfo select 0], 
+				_aircraftInfo select 0, 
 				1.5,  
 				false,  
 				false,  
@@ -91,7 +91,7 @@ if (_vehicles isEqualType objNull) then {
 					
 					["KISKA_cargoUnstrapped_Event",[_vehicleToUnLoad]] call CBA_fnc_serverEvent;
 				}, 
-				[], 
+				nil, 
 				1.5,  
 				false,  
 				false,  
@@ -110,7 +110,7 @@ if (_vehicles isEqualType objNull) then {
 						
 					["KISKA_cargoDrop_Event",[_vehicleToUnLoad]] call CBA_fnc_serverEvent;
 				}, 
-				[], 
+				nil, 
 				2,  
 				false,  
 				false,  

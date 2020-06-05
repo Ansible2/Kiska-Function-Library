@@ -36,7 +36,7 @@ private _unloadActionID = _vehicle addAction [
 	{
 		[_this select 0] call KISKA_fnc_unloadCrates;
 	},
-	[],
+	nil,
 	10,
 	true,
 	true,

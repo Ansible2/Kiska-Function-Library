@@ -54,7 +54,7 @@ _crates apply {
 
 				[_crate,_personGrabbing] call KISKA_fnc_pickUpCrate;
 			},
-			[],
+			nil,
 			10,
 			true,
 			true,
@@ -69,7 +69,7 @@ _crates apply {
 				params ["_crate"];
 				[_crate] call KISKA_fnc_loadCrate;
 			},
-			[],
+			nil,
 			10,
 			true,
 			true,

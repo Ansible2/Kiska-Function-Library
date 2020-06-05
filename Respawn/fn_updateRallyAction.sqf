@@ -62,13 +62,13 @@ if (isNull _playerGroup) exitWith {
 			private _actionId = _leader addaction [
 				"<t color='#4287f5'>Place Rally Point</t>",
 				{
-					private _groupName = ((_this select 3) select 0);
+					private _groupName = param [3];
 
 					[_this select 1, ([_groupName,"spawnMarker"] joinString "_"), ([_groupName,"Respawn Beacon"] joinString " ")] remoteExec ["KISKA_fnc_updateRespawnMarker",2]; 		
 
 					hint "Rally Point Updated";
 				},
-				[_groupName],
+				_groupName,
 				1.5,
 				false,
 				true

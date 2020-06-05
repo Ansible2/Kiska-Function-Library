@@ -62,11 +62,11 @@ private _dropCrate_actionID = _caller addAction [
 	{
 		private _caller = param [0,player,[objNull]];
 		private _dropCrate_actionID = param [2,0,[123]];
-		private _crate = (param [3]) select 0;
+		private _crate = param [3];
 
 		[_crate,_caller,_dropCrate_actionID] call KISKA_fnc_dropCrate;
 	},
-	[_crate],
+	_crate,
 	15,
 	true,
 	true,
