@@ -55,10 +55,10 @@ _objects apply {
 		
 		_x enableDynamicSimulation _enableDynamicSim;
 		
-		if (dynamicSimulationEnabled _group AND {!(_enableDynamicSim)}) then {
-			_group enableDynamicSimulation false;
+		if (dynamicSimulationEnabled _x AND {!(_enableDynamicSim)}) then {
+			_x enableDynamicSimulation false;
 		} else {
-			_group enableDynamicSimulation _enableDynamicSim;
+			_x enableDynamicSimulation _enableDynamicSim;
 		};
 	};
 };
