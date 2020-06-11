@@ -2,7 +2,11 @@
 Function: KISKA_fnc_addRespawnEventHandlers
 
 Description:
-	Adds the respawn eventHandlers for KISKA's rally point system
+	Adds the respawn eventHandlers for KISKA's rally point system.
+	
+	Initialized by KISKA_fnc_initializeRespawnSystem
+	
+	Called recursively upon respawn
 
 Parameters:
 	NONE
@@ -12,13 +16,12 @@ Returns:
 
 Examples:
     (begin example)
-		Initialized by KISKA_fnc_initializeRespawnSystem
+		
     (end)
 
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-
 
 if !(isMultiplayer OR {!hasInterface}) exitWith {};
 
@@ -29,23 +32,29 @@ if !(isMultiplayer OR {!hasInterface}) exitWith {};
 			params ["_corpse"];
 			
 			private _actionId = missionNamespace getVariable "KISKA_spawnId";
-			missionNamespace setVariable ["KISKA_spawnId",nil];
 
 			if !(isNil {_actionId}) then {
 				_corpse removeAction _actionId;
+				missionNamespace setVariable ["KISKA_spawnId",nil];
 			};
+
+			_corpse removeEventHandler ["Killed",_thisEventHandler];
 		}];
 
 		player addEventHandler ["Respawn", {
 			params ["_newUnit"];
 			
 			private _spawnInfo = missionNamespace getVariable "KISKA_spawnInfo";
-			missionNamespace setVariable ["KISKA_spawnInfo",nil];
 			
 			if !(isNil {_spawnInfo}) then {
+				missionNamespace setVariable ["KISKA_spawnInfo",nil];
 				_spawnInfo pushBack _newUnit;
 				_spawnInfo call KISKA_fnc_updateRallyAction;
 			};
+
+			_newUnit removeEventHandler ["Respawn",_thisEventHandler];
+
+			call KISKA_fnc_addRespawnEventHandlers;
 		}];
 	}
 ] call CBA_fnc_waitUntilAndExecute;

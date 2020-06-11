@@ -9,7 +9,7 @@ Description:
 
 Parameters:
 	 
-	0: _checkInterval <NUMBER> - How often to redistribute
+	0: _checkInterval <NUMBER> - How often to redistribute, if -1, will not loop
 
 Returns:
 	BOOL
@@ -17,7 +17,7 @@ Returns:
 Examples:
     (begin example)
 
-		[120] spawn KISKA_fnc_balanceHeadless;
+		[] spawn KISKA_fnc_balanceHeadless;
 
     (end)
 
@@ -32,7 +32,7 @@ if (!canSuspend) exitWith {
 };
 
 params [
-	["_checkInterval",120,[123]]
+	["_checkInterval",-1,[123]]
 ];
 
 private _headlessClients = entities "HeadlessClient_F";
@@ -112,7 +112,7 @@ allGroups apply {
 		_unitsInGroup apply {
 			_localUnitsArray pushBack _x;
 
-			// add a MP eventhandler that runs on the server for when the AI is killed so that theu can be subtracted from the count and array of local units
+			// add a MP eventhandler that runs on the server for when the AI is killed so that they can be subtracted from the count and array of local units
 			_x addMPEventHandler ["MPKilled",{
 				
 				params ["_unit"];
@@ -152,6 +152,9 @@ allGroups apply {
 	uiSleep 0.5;
 };
 
-sleep _checkInterval;
 
-[_checkInterval] spawn KISKA_fnc_balanceHeadless;
+if (_checkInterval > 0 AND {_checkInterval != -1}) then {
+	sleep _checkInterval;
+
+	[_checkInterval] spawn KISKA_fnc_balanceHeadless;
+};
