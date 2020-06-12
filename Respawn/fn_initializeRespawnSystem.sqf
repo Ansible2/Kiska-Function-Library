@@ -51,11 +51,12 @@ if (_groupsAndNames isEqualTo []) exitWith {};
 				// takes a bit of time to sync, this adds some wiggle so the leader of the group has been properly broadcasted
 				[
 					{
-						_this remoteExecCall ["KISKA_fnc_updateRallyAction",units (_this select 0)];
+						_this remoteExec ["KISKA_fnc_updateRallyAction",units (_this select 0)];
 					},
 					_thisArgs,
-					5
+					3
 				] call CBA_fnc_waitAndExecute;
+				
 
 				remoteExecCall ["KISKA_fnc_addRespawnEventHandlers",_owner];
 			}, 
@@ -68,10 +69,10 @@ if (_groupsAndNames isEqualTo []) exitWith {};
 			{
 				[
 					{
-						_this remoteExecCall ["KISKA_fnc_updateRallyAction",units (_this select 0)];
+						_this remoteExec ["KISKA_fnc_updateRallyAction",units (_this select 0)];
 					},
 					_thisArgs,
-					5
+					3
 				] call CBA_fnc_waitAndExecute;
 			}, 
 			_x

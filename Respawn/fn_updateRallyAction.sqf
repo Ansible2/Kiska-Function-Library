@@ -20,9 +20,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-
-
-if (!isMultiplayer OR {!hasInterface}) exitWith {false};
+if (!isMultiplayer OR {!hasInterface} OR {!canSuspend}) exitWith {};
 
 params [
 	["_playerGroup",grpNull,[grpNull]],
@@ -33,51 +31,54 @@ if (isNull _playerGroup) exitWith {
 	"_playerGroup " + (str _playerGroup) + "isNull" call BIS_fnc_error;
 };
 
-[
-	{!isNull player AND {alive (leader (_this select 0))}},
-	{	
-		
-		params ["_playerGroup","_groupName"];
 
-		if !((group player) isEqualTo _playerGroup) exitWith {
-			["player is not in group"] call BIS_fnc_error;
-		};
+private _player = call KISKA_fnc_getPlayerObject;
 
-		// if group name is undefined just use the groupId
-		if (_groupName isEqualTo "") then {_groupName = groupId _playerGroup};
+// waitUntil leader is alive
+waitUntil {
+	if (alive (leader _playerGroup)) exitWith {true};
+	sleep 1;
+	false
+};
 
-		private _leader = leader _playerGroup;
-		
-		// remover the action if you are not the leader, add it if you are
-		if (!(isNil "KISKA_spawnId") AND {!local _leader}) then {
-			
-			player removeAction (missionNamespace getVariable "KISKA_spawnId");
 
-			missionNamespace setVariable ["KISKA_spawnId",nil];
-			missionNamespace setVariable ["KISKA_spawnInfo",nil];
-		};
-		
-		if ((isNil "KISKA_spawnId") AND {local _leader}) then {
-			
-			private _actionId = _leader addaction [
-				"<t color='#4287f5'>Place Rally Point</t>",
-				{
-					private _groupName = param [3];
+if !((group _player) isEqualTo _playerGroup) exitWith {
+	"player is not in group" call BIS_fnc_error;
+};
 
-					[_this select 1, ([_groupName,"spawnMarker"] joinString "_"), ([_groupName,"Respawn Beacon"] joinString " ")] remoteExec ["KISKA_fnc_updateRespawnMarker",2]; 		
+// if group name is undefined just use the groupId
+if (_groupName isEqualTo "") then {_groupName = groupId _playerGroup};
 
-					hint "Rally Point Updated";
-				},
-				_groupName,
-				1.5,
-				false,
-				true
-			];
 
-			// update global variables
-			missionNamespace setVariable ["KISKA_spawnId",_actionId];
-			missionNamespace setVariable ["KISKA_spawnInfo",[_playerGroup,_groupName]];
-		};
-	},
-	[_playerGroup,_groupName]
-] call CBA_fnc_waitUntilAndExecute;
+private _leader = leader _playerGroup;
+// remove the action if you are not the leader and have it
+if ((!isNil "KISKA_spawnId") AND {!local _leader}) then {
+	
+	_player removeAction KISKA_spawnId;
+
+	KISKA_spawnId = nil;
+	KISKA_spawnInfo = nil;
+};
+
+// if you do not have the action registered and are the leader, add the action
+if ((isNil "KISKA_spawnId") AND {local _leader}) then {
+	
+	private _actionId = _player addaction [
+		"<t color='#4287f5'>Place Rally Point</t>",
+		{
+			private _groupName = param [3];
+
+			[_this select 1, ([_groupName,"spawnMarker"] joinString "_"), ([_groupName,"Respawn Beacon"] joinString " ")] remoteExec ["KISKA_fnc_updateRespawnMarker",2]; 		
+
+			hint "Rally Point Updated";
+		},
+		_groupName,
+		1.5,
+		false,
+		true
+	];
+
+	// update global variables
+	KISKA_spawnId = _actionId;
+	KISKA_spawnInfo = [_playerGroup,_groupName]; 
+};

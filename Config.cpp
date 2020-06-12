@@ -167,17 +167,17 @@ class CfgFunctions
 			file="Kiska_functions\Utilities";
 			class addArsenal
 			{};
-			class pasteContainerCargo
-			{};
 			class addTeleportAction
 			{};
 			class alivePlayers
 			{};
 			class balanceHeadless
 			{};
+			class copyContainerCargo
+			{};
 			class dataLinkMsg
 			{};
-			class copyContainerCargo
+			class getPlayerObject
 			{};
 			class hintDiary
 			{};
@@ -186,6 +186,8 @@ class CfgFunctions
 			class isPatchLoaded
 			{};
 			class markPositions
+			{};
+			class pasteContainerCargo
 			{};
 			class podDrop
 			{};
