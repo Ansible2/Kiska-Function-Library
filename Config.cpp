@@ -175,6 +175,8 @@ class CfgFunctions
 			{};
 			class copyContainerCargo
 			{};
+			class cruiseMissile
+			{};
 			class dataLinkMsg
 			{};
 			class getPlayerObject
