@@ -7,7 +7,7 @@ Description:
 Parameters:
 
 	0: _controlPanel <OBJECT> - The object to add the action to
-	1: _spawnPosition <OBJECT or ARRAY> - Where to spawn the vehicle
+	1: _spawnPosition <OBJECT or ARRAY> - Where to spawn the vehicle (ATL)
 	2: _vehicleTypes <ARRAY or STRING> - The types to create and action for (each will get its own action)
 	3: _clearRadius <NUMBER> - How far until pad is considered clear of entities 
 	4: _onCreateCode <CODE> - Code to run upon vehicle creation. Passed arg is the created vehicle 
@@ -55,6 +55,7 @@ if (_spawnPosition isEqualType objNull) then {
 	_spawnPosition = getPosATL _spawnPosition;
 };
 
+
 _vehicleTypes apply {
 
 	private _type = _x;
@@ -70,7 +71,7 @@ _vehicleTypes apply {
 			if !(_altText isEqualTo "") then {
 				_displayName = _altText;
 			} else {
-				_displayName = "Unkown Vehicle";
+				_displayName = "Unknown Vehicle";
 			};	
 		};
 		
@@ -91,7 +92,7 @@ _vehicleTypes apply {
 					"_onCreateCode"
 				];
 
-				if !((_spawnPosition nearEntities [['landVehicle','air','ship'],_clearRadius]) isEqualTo []) exitWith {
+				if !(((ATLToASL _spawnPosition) nearEntities [['landVehicle','air','ship'],_clearRadius]) isEqualTo []) exitWith {
 					hint 'Pad Must Be Clear Of Vehicles';
 					false
 				};
@@ -131,7 +132,7 @@ if !(_controlPanel getVariable ["KISKA_vehicleFactory",false]) then {
 		{}, 
 		{
 			(_this select 3) params ["_spawnPosition","_clearRadius"];
-			private _entities = _spawnPosition nearEntities [['landVehicle','air','ship'],_clearRadius];
+			private _entities = (ATLToASL _spawnPosition) nearEntities [['landVehicle','air','ship'],_clearRadius];
 
 			_entities apply {
 				[_x] remoteExec ["deleteVehicle",2];

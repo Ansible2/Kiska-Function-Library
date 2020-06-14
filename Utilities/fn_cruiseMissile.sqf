@@ -34,8 +34,8 @@ if (isNull _launcher) exitWith {
 	"_launcher must not be null object" call BIS_fnc_error;
 };
 
-if !(typeOf _launcher == "B_Ship_MRLS_01_F (VLS1)") exitWith {
-	"_launcher must be type B_Ship_MRLS_01_F (VLS1)" call BIS_fnc_error;
+if !(typeOf _launcher == "B_Ship_MRLS_01_F") exitWith {
+	"_launcher must be type 'B_Ship_MRLS_01_F'" call BIS_fnc_error;
 }; 
 
 if (_hangTime <= 0) exitWith {
