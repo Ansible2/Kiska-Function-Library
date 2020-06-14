@@ -96,7 +96,7 @@ _vehicleTypes apply {
 					false
 				};
 
-				private _vehicle = _type createVehicle _spawnPosition;
+				private _vehicle = createVehicle [_type,_spawnPosition,[],0,"CAN_COLLIDE"];
 
 				if !(_onCreateCode isEqualTo {}) then {
 					[_vehicle] call _onCreateCode;
