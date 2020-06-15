@@ -98,10 +98,8 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 					
 					// get target alt
 					private _targetAlt = (getPosWorldVisual _target) select 2;
-					
-					systemChat str [_currentRotTolerance,_rotationTolerance,_currentPitchTolerance,_pitchTolerance,_targetAlt];
-					
-					if ((_currentPitchTolerance <= _pitchTolerance AND {_currentRotTolerance <= _rotationTolerance} AND {_targetALt >= _engageAltitude}) OR {(_turret distance _target) >= (_searchDistance * 0.75)} OR {!alive _target}) exitWith {hint "exit"; true};
+										
+					if ((_currentPitchTolerance <= _pitchTolerance AND {_currentRotTolerance <= _rotationTolerance} AND {_targetALt >= _engageAltitude}) OR {(_turret distance _target) >= (_searchDistance * 0.75)} OR {!alive _target}) exitWith {true};
 
 					sleep 0.25; 
 					
@@ -110,8 +108,6 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 
 				if ((_turret distance _target) <= _searchDistance AND {alive _target}) then {
 					//sleep 0.5;
-
-					hint "aligned";
 
 					// track if unit actually got off shots
 					private _firedShots = false;
@@ -127,7 +123,6 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 							if !(_target getVariable ["KISKA_CIWS_engaged",false]) then {
 								_target setVariable ["KISKA_CIWS_engaged",true];
 							};
-							hint "buuuuurrrrrt";
 							// update if unit fired
 							if (!_firedShots) then {
 								_firedShots = true;
@@ -139,7 +134,7 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 						sleep 0.01;
 					};
 
-					sleep 0.5;
+					sleep 0.5 + ((_turret distance _target) / 1000);
 
 					// only delete if shots were fired
 					if (_firedShots) then {

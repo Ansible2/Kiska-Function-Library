@@ -6,7 +6,7 @@ Description:
 
 Parameters:
 	0: _launcher <OBJECT> - The VLS launcher to have the missile originate from
-	1: _target <OBJECT> - Target to hit missile with 
+	1: _target <OBJECT or ARRAY> - Target to hit missile with, can also be a position (AGL)
 	2: _hangTime <NUMBER> - (OPTIONAL) How long should the missile climb before diverting to target. Default 6 seconds
 
 Returns:
@@ -15,7 +15,7 @@ Returns:
 Examples:
     (begin example)
 
-		[VLS_1,target_1,6] spawn KISKA_fnc_initializeRespawnSystem;
+		[VLS_1,target_1,6] spawn KISKA_fnc_cruiseMissile;
 
     (end)
 
@@ -48,11 +48,21 @@ private _missile = "ammo_Missile_Cruise_01" createVehicle [_launcherPosition sel
   
 _missile setVectorDirAndUp [[0, 0, 1], [1, 0, 0]];
 
-private _laserTarget = "LaserTargetW" createVehicle (position _target);    
+private _targetPosition = [_target,getPosWorld _target] select (_target isEqualType objNull);
+
+private _laserTarget =  createVehicle ["LaserTargetW",_targetPosition,[],0,"CAN_COLLIDE"];    
 blufor reportRemoteTarget [_laserTarget, 3600];  
   
 _missile setShotParents [_launcher,gunner _launcher];  
 
 sleep _hangTime;
   
-_missile setMissileTarget _laserTarget; 
+_missile setMissileTarget _laserTarget;
+
+waitUntil {
+	if (!alive _missile) exitWith {true};
+	sleep 3;
+	false
+};
+
+deleteVehicle _laserTarget;
