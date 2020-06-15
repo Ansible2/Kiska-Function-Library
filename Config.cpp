@@ -24,6 +24,8 @@ class CfgFunctions
 			{};
 			class changeAI
 			{};
+			class ciws
+			{};
 			class defend
 			{};
 			class driveTo

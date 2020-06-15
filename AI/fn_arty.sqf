@@ -25,6 +25,8 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_arty";
+
 if (!canSuspend) exitWith {
 	"Must be run in scheduleded envrionment" call BIS_fnc_error;
 };
@@ -44,13 +46,15 @@ if (_rounds < 1) exitWith {["Less then one round"] call BIS_fnc_error};
 
 private _ammo = getArtilleryAmmo [_gun] select 0; 
 
-for "_i" from 0 to _rounds do {
+for "_i" from 1 to _rounds do {
 
 	private _dir = round random _ranDir; 
 	private _dis = round random _ranDis;
 	private _tgt = _target getRelPos [_dis, _dir]; 
 	_gun doArtilleryFire [_tgt,_ammo,1]; 
 	_rounds = _rounds - 1;
-
-	sleep (floor random _fireTime);
+	
+	if (_i != _rounds) then {
+		sleep (floor random _fireTime);
+	};
 };
