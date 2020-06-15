@@ -20,7 +20,8 @@ Examples:
     (end)
 
 Author:
-	Ansible2 // Cipher
+	Arma 3 Discord,
+	modified by - Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 if (!canSuspend) exitWith {};
 
