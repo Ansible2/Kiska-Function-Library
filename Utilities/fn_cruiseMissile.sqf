@@ -5,7 +5,7 @@ Description:
 	Spawns a cruise missile at designated launcher and then guides it to a target 
 
 Parameters:
-	0: _launcher <OBJECT> - The VLS launcher to have the missile originate from
+	0: _launcher <OBJECT or ARRAY> - The VLS launcher to have the missile originate from (or position)
 	1: _target <OBJECT or ARRAY> - Target to hit missile with, can also be a position (AGL)
 	2: _hangTime <NUMBER> - (OPTIONAL) How long should the missile climb before diverting to target. Default 6 seconds
 
@@ -26,8 +26,8 @@ Author:
 if (!canSuspend) exitWith {};
 
 params [
-	["_launcher",objNull,[objNull]],
-	["_target",objNull,[objNull]],
+	["_launcher",objNull,[objNull,[]]],
+	["_target",objNull,[objNull,[]]],
 	["_hangTime",6,[123]]
 ];
 
@@ -43,7 +43,7 @@ if (_hangTime <= 0) exitWith {
 	"_hangTime cannot be zero or negative" call BIS_fnc_error;
 };
 
-private _launcherPosition = position _launcher;  
+private _launcherPosition = [_launcher,position _launcher] select (_launcher isEqualType objNull);  
 private _missile = "ammo_Missile_Cruise_01" createVehicle [_launcherPosition select 0, _launcherPosition select 1, (_launcherPosition select 2) + 20];  
   
 _missile setVectorDirAndUp [[0, 0, 1], [1, 0, 0]];
