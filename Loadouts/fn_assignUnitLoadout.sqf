@@ -4,7 +4,7 @@ Function: KISKA_fnc_assignUnitLoadout
 Description:
 	Searches for a global variable loadout array to assign to units based on its classname and a prefix
 
-	See examples
+	See examples...
 
 Parameters:
 
@@ -17,11 +17,11 @@ Returns:
 Examples:
     (begin example)
 
-		_loadout = getUnitLoadout player;
+		_loadout1 = getUnitLoadout player;
 
-		// this is an array of potential loadouts (other arrays)
+		// this is an array of potential loadouts (formatted from the command 'getUnitLoadout')
 		JTFS_I_E_Soldier_TL_F = [
-			_loadout
+			_loadout1
 		];
 
 		unit1 = "I_E_Soldier_TL_F" createVehicle (position player);

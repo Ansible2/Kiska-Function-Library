@@ -7,7 +7,7 @@ Description:
 Parameters:
 
 	0: _units <OBJECT, GROUP, or ARRAY> - ...
-	1: _loadoutArray <ARRAY> - An array containing each loadout array. Should be used with getUnitLoadout or its return syntax
+	1: _loadoutArray <ARRAY> - An array containing each loadout array. To be used with getUnitLoadout return syntax
 
 Returns:
 	_unitsChanged <ARRAY> - All the units changed 

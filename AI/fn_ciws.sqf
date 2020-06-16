@@ -127,7 +127,7 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 							if (!_firedShots) then {
 								_firedShots = true;
 							};
-							// turret shoots
+							// turret shoots 1 round
 							_turret fireAtTarget [_target,currentWeapon _turret];
 						};
 

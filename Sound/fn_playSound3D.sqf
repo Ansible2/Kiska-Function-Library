@@ -2,7 +2,7 @@
 Function: KISKA_fnc_playSound3D
 
 Description:
-	Plays a sound 3D but the function accepts the sound name rather then just the file path.
+	Plays a sound 3D but the function accepts the CFGSounds name rather then the file path.
 
 Parameters:
 	0: _sound <STRING> - The sound to play. Sound classname like the command playSound or playMusic (this also accepts music tracks)

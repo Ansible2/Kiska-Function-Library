@@ -2,22 +2,22 @@
 Function: KISKA_fnc_baseVehicleInfo
 
 Description:
-	Creates the basic globals for crate loading.
+	Creates the basic globals for crate loading. This information if added to in mission, will need to be synced between the server and clients in multiplayer
 	
 	To add vehicle support:
-		1. Add the vehicle type to the DSO_vehicleTypes array
+		1. Add the vehicle type to the DSO_vehicleTypes global array
 		2. Create a global Array of the specfic vehicles information formatted as:
-			- Name of the array needs to be 'DSOInfo_' plus the vehicle's type (see below for examples)
+			- NAME of the array needs to be 'DSOInfo_' plus the vehicle's type, this can also be a base class to support multiple vehicles of the same type (see below for examples)
 				0: crate z offset
 					- Used to get crates at the right height in the vehicle
 				1: unload offset
-					- When unloading the crates, how far back should the crates be dropped
+					- When unloading the crates, how far back should the crates be dropped (offset is from vehicles CENTER, zero is NOT the rear)
 				2: crate y offset
-					- This is used to determine the initial starting point for the first crate loaded
+					- This is used to determine the initial starting point for the first crate loaded, all other crates get stacked behind this one until max is reached
 				3: Max Crates
 					- What is the max number of crates the vehicle can hold
 				4: Unload action distance
-					- simply how far away you want the unload action to appear from a vehicle
+					- simply how far away you want the unload action to be available from a vehicle
 
 Parameters:
 	NONE

@@ -5,8 +5,6 @@ Description:
 	Adds the respawn eventHandlers for KISKA's rally point system.
 	
 	Initialized by KISKA_fnc_initializeRespawnSystem.
-	
-	Called recursively upon respawn.
 
 Parameters:
 	NONE
@@ -26,6 +24,7 @@ Author:
 if !(isMultiplayer OR {!hasInterface}) exitWith {};
 
 private _player = call KISKA_fnc_getPlayerObject;
+
 if (isNull _player) exitWith {};
 
 

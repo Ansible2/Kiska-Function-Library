@@ -14,7 +14,7 @@ Returns:
 Examples:
     (begin example)
 
-		[vehicle] call KISKA_fnc_cargoDrop;
+		[vehicle1] call KISKA_fnc_cargoDrop;
 
     (end)
 

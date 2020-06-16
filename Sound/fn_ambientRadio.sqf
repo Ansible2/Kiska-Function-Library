@@ -2,15 +2,19 @@
 Function: KISKA_fnc_ambientRadio
 
 Description:
-	Play news on an object.
+	Play news on an object, ot your own assortment of sounds.
 	Function is global and should run on one machine.
-	Once players move out of a range, the broadcasts will stop.
+	Once players move out of a range, the broadcasts will stop and will not come back
 
 Parameters:
 	0: _radio <OBJECT> - The object that will be playing the news
 	1: _duration <NUMBER> - How long should this broadcast last?
 	2: _range <NUMBER> - How far away (2D) should players be before the broadcasts will stop?
-	3: _sounds <ARRAY> - What sounds do you want to play? This will default to a slection below of sounds. Sounds need to be defined in cfgSounds.
+	3: _volume <NUMBER> - The volume of the sounds
+	4: _radioChannel <STRING> - What channel to use. This is to have a synced channel across multiple radios; they won't play the same thing twice
+	5: _public <BOOL, NUMBER, or ARRAY> - Does the radioChannel info need to be network synced (publicVariable)
+	6: _sounds <ARRAY> - What sounds do you want to play? This will default to a slection below of sounds. Sounds need to be defined in cfgSounds.
+	
 
 Returns:
 	NOTHING

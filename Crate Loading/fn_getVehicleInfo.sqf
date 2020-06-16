@@ -22,7 +22,7 @@ Returns:
 Examples:
     (begin example)
 
-		_info = [vehicle1,1] call KISKA_fnc_getVehicleInfo;
+		_crateZOffset = [vehicle1,0] call KISKA_fnc_getVehicleInfo;
 
     (end)
 

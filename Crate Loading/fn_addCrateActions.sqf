@@ -2,9 +2,9 @@
 Function: KISKA_fnc_addCrateActions
 
 Description:
-	Adds actions required for crate loading an unloading to specific crates.
+	Adds actions required for crate loading and unloading to specific crates.
 
-	This is the "init" script, all other functions are in series with this one.
+	This is the "init" script, all other functions are in series with this one. So simply run it on a crate and make sure the vehicle info is defined
 
 Parameters:
 

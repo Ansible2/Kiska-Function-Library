@@ -2,7 +2,7 @@
 Function: KISKA_fnc_patrolSpecific
 
 Description:
-	Creates a cycle of waypoints for a patrol
+	Creates a cycle of waypoints for a patrol using a predetermined set of possible points
 
 Parameters:
 

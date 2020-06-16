@@ -7,6 +7,8 @@ Description:
     It will then move to engage the players if it has weapons or just stalk them if not.
     The infantry will continually stalk the players until dead.
 
+    This is very simple and will likely see a new iteration that uses lineIntersects to actually simulate pilots seeing players
+
 Parameters:
 	0: _helicopter <OBJECT> - The patrolling helicopter
 	1: _patrolPoints <ARRAY> - An Array of patrol points (OBJECTs or positions)

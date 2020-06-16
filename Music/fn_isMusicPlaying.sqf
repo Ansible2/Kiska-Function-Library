@@ -2,7 +2,7 @@
 Function: KISKA_fnc_getMusicPlaying
 
 Description:
-	Returns the class of the music that is currently playing
+	Returns the classname of the music that is currently playing
 
 Parameters:
 	NONE

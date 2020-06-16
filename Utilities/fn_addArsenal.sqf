@@ -2,7 +2,7 @@
 Function: KISKA_fnc_addArsenal
 
 Description:
-	Adds both BIS and ACE arsenals to several or a single objects
+	Adds both BIS and ACE arsenals to several or a single object
 
 Parameters:
 

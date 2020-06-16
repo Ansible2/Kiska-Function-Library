@@ -2,10 +2,14 @@
 Function: KISKA_fnc_randomMusic
 
 Description:
-	Starts playing a random assortment of curated music tracks to all players on a server. 
+	Starts playing a random assortment of curated music tracks to all players on a server.
+	This is essentially a multipleyer jukebox. Should only be executed on the server.
+
 	All songs will be played in a random order and then loop back to play in another random order infinitely. 
-	It will not interrupt music commanded to plaay by other means.
-	Has quiet time space too between tracks.
+	
+	It will not interrupt music commanded to play by other means.
+	
+	You can define quiet time space between tracks.
 
 Parameters:
 
@@ -19,19 +23,24 @@ Returns:
 Examples:
     (begin example)
 		
-		// spaced tracks by 20 seconds each
+		// space tracks by 20 seconds exactly each
 		[arrayOfTracks,20] spawn KISKA_fnc_randomMusic;
 
+   	(end)
+
+	(begin example)
+		
 		// space tracks by UP TO 20 seconds each
-		[arrayOfTracks,[20]] spawn KISKA_fnc_randomMusic;  
+		[arrayOfTracks,[20]] spawn KISKA_fnc_randomMusic; 
 
-    (end)
+   	(end)
 
-Author:
+	Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-
-if !(isServer) exitWith {};
+if !(isServer) exitWith {
+	"Must be run on server" call BIS_fnc_error;
+};
 
 params [
 	["_musicTracks",[],[[]]],
@@ -40,10 +49,10 @@ params [
 ];
 
 if (_musicTracks isEqualTo [] AND {_usedMusicTracks isEqualTo []}) exitWith {
-	["No music tracks were passed"] call BIS_fnc_error;
+	"No music tracks were passed" call BIS_fnc_error;
 };
 
-// check if _timeBetween is an array and if it is the correct formats or if it is just a single number
+// check if _timeBetween is an array AND if it is the correct formats OR if it is just a single number
 if ((_timeBetween isEqualType []) AND {!((count _timeBetween) isEqualTo 1) AND {!((count _timeBetween) isEqualTo 3) OR !(_timeBetween isEqualTypeParams [1,2,3])}}) exitWIth {
 	["_timeBetween array is incorrect format or types"] call BIS_fnc_error;
 };
