@@ -2,7 +2,7 @@
 Function: KISKA_fnc_ciws
 
 Description:
-	Fires a number of rounds from artillery piece at target with random disperstion values
+	Fires a number of rounds from AAA piece at target with random disperstion values
 
 Parameters:
 	0: _turret : <OBJECT> - The CIWS turret
@@ -12,8 +12,7 @@ Parameters:
 	4: _doNotFireBelowAngle : <NUMBER> - Below what angle should the turret NOT fire (keep it from firing at ground accidently)
 	5: _pitchTolerance : <NUMBER> - How accurate does the turrets pitch need to be to engage the target
 	6: _rotationTolerance : <NUMBER> - How accurate does the turrets rotation need to be to engage the target
-
-
+	7: _soundAlarm : <BOOL> - Play air raid siren and sound alarm when incoming detected
 
 Returns:
 	Nothing
@@ -42,7 +41,8 @@ params [
 	["_searchInterval",2,[123]],
 	["_doNotFireBelowAngle",5,[123]],
 	["_pitchTolerance",3,[123]],
-	["_rotationTolerance",10,[123]]
+	["_rotationTolerance",10,[123]],
+	["_soundAlarm",true,[false]]
 ];
 
 if (isNull _turret) exitWith {
@@ -52,21 +52,42 @@ if !(_turret isKindOf "AAA_System_01_base_F") exitWith {
 	"Improper turret type used" call BIS_fnc_error
 };
 
+private _fn_incoming = {
+	params ["_turret"];
+
+	private _incoming = _turret nearObjects ["RocketBase",_searchDistance];
+	_incoming = _incoming + (_turret nearObjects ["MissileBase",_searchDistance]);
+	_incoming = _incoming + (_turret nearObjects ["ShellBase",_searchDistance]);
+
+	_incoming
+};
+
 _turret setVariable ["KISKA_runCIWS",true];
 
 while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 	// nearestObjects and nearEntities do not work here
 	// get incoming projectiles
-	private _incoming = _turret nearObjects ["RocketBase",_searchDistance];
-	_incoming = _incoming + (_turret nearObjects ["MissileBase",_searchDistance]);
-	_incoming = _incoming + (_turret nearObjects ["ShellBase",_searchDistance]);
+	private _incoming = call _fn_incoming;
 	
 	// if projectiles are present then proceed, else sleep
 	if !(_incoming isEqualTo []) then {
 		
-		for "_i" from 0 to ((count _incoming) - 1) do {
+		//_turret setVariable ["KISKA_CIWS_incoming",_incoming];
+
+		// while there are still targets in the air; this was orginally a simple for loop, but the alarm sound requires the extra complication of
+		/// searchin for incoming projectiles constantly after the first is detected
+		while {
+			_incoming = [_turret] call _fn_incoming;
+			if !(_incoming isEqualTo []) then {true} else {false}
+		} do {
+			// check if sound alarm requested and that the alarm is not already sounding
+			if (_soundAlarm AND {!(_turret getVariable ["KISKA_CIWS_alarmSounding",false])}) then {
+				// sound alarm
+				[_turret] spawn KISKA_fnc_ciwsAlarm;
+			};
+
 			_turret setCombatMode "RED";
-			private _target = _incoming select _i;
+			private _target = _incoming select 0;
 			private _targetDistance = _target distance _turret;
 
 			if (_targetDistance > 25 AND {!(_target getVariable ["KISKA_CIWS_engaged",false])}) then {
@@ -74,10 +95,10 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 					// keep turret rotating to target
 					_turret doWatch _target;
 
-					//// turrett pitch
+					//// turret pitch
 					
 					// get turrets pitch angle (0.6 offset is baked into source anim)
-					private _turretPitchAngle = (deg (_turret animationSourcePhase "maingun")) + 0.6; // opposite is rad
+					private _turretPitchAngle = (deg (_turret animationSourcePhase "maingun")) + 0.6;
 					// get the angle needed to target
 					private _angleToTarget = acos ((_turret distance2D _target) / (_turret distance _target));
 					// get the difference between turrets current pitch and the targets actual angle
@@ -107,7 +128,6 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 				};
 
 				if ((_turret distance _target) <= _searchDistance AND {alive _target}) then {
-					//sleep 0.5;
 
 					// track if unit actually got off shots
 					private _firedShots = false;
@@ -148,10 +168,14 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 				} else {
 					sleep 0.5;
 				};
-				sleep 0.5;
 			};
+			sleep 1;
 		};
-
+		
+		// allow turn off alarm
+		if (_soundAlarm) then {
+			_turret setVariable ["KISKA_CIWS_allClear",true];
+		};
 	} else {
 		sleep _searchInterval;
 	};

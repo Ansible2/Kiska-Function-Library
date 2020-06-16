@@ -24,8 +24,6 @@ class CfgFunctions
 			{};
 			class changeAI
 			{};
-			class ciws
-			{};
 			class defend
 			{};
 			class driveTo
@@ -65,6 +63,15 @@ class CfgFunctions
 			class cargoDrop
 			{};
 			class strapCargo
+			{};
+		};
+		class CIWS
+		{
+			class CIWS
+			{};
+			class ciwsAlarm
+			{};
+			class ciwsSiren
 			{};
 		};
 		class crateLoading

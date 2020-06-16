@@ -23,7 +23,9 @@ Author:
 	Arma 3 Discord,
 	modified by - Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-if (!canSuspend) exitWith {};
+if (!canSuspend) exitWith {
+	"Must be run in scheduled envrionment" call BIS_fnc_error
+};
 
 params [
 	["_launcher",objNull,[objNull,[]]],
