@@ -77,7 +77,7 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 					//// turrett pitch
 					
 					// get turrets pitch angle (0.6 offset is baked into source anim)
-					private _turretPitchAngle = (deg (_turret animationSourcePhase "maingun")) + 0.6;
+					private _turretPitchAngle = (deg (_turret animationSourcePhase "maingun")) + 0.6; // opposite is rad
 					// get the angle needed to target
 					private _angleToTarget = acos ((_turret distance2D _target) / (_turret distance _target));
 					// get the difference between turrets current pitch and the targets actual angle
