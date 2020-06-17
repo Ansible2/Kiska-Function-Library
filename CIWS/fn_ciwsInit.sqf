@@ -83,7 +83,7 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 			// check if sound alarm requested and that the alarm is not already sounding
 			if (_soundAlarm AND {!(_turret getVariable ["KISKA_CIWS_alarmSounding",false])}) then {
 				// sound alarm
-				[_turret] spawn KISKA_fnc_ciwsInitAlarm;
+				[_turret] spawn KISKA_fnc_ciwsAlarm;
 			};
 
 			_turret setCombatMode "RED";
@@ -132,7 +132,7 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 					// track if unit actually got off shots
 					private _firedShots = false;
 
-					for "_y" from 0 to (random [50,100,150]) do {
+					for "_i" from 0 to (random [50,100,150]) do {
 						// keep watching target
 						_turret doWatch _target;
 						private _turretPitchAngle = (deg (_turret animationSourcePhase "maingun")) + 0.6;
