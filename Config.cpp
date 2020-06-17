@@ -67,7 +67,8 @@ class CfgFunctions
 		};
 		class CIWS
 		{
-			class CIWS
+			file = "Kiska_functions\CIWS";
+			class ciwsInit
 			{};
 			class ciwsAlarm
 			{};

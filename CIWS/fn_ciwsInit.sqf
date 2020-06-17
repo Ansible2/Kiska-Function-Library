@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_ciws
+Function: KISKA_fnc_ciwsInit
 
 Description:
 	Fires a number of rounds from AAA piece at target with random disperstion values
@@ -20,7 +20,7 @@ Returns:
 Examples:
     (begin example)
 
-		null = [turret,3000,100] spawn KISKA_fnc_ciws;
+		null = [turret,3000,100] spawn KISKA_fnc_ciwsInit;
 
     (end)
 
@@ -28,7 +28,7 @@ Author:
 	DayZMedic,
 	modified/optimized by Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_ciws";
+scriptName "KISKA_fnc_ciwsInit";
 
 if (!canSuspend) exitWith {
 	"Must be run in scheduled envrionment" call BIS_fnc_error
@@ -83,7 +83,7 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 			// check if sound alarm requested and that the alarm is not already sounding
 			if (_soundAlarm AND {!(_turret getVariable ["KISKA_CIWS_alarmSounding",false])}) then {
 				// sound alarm
-				[_turret] spawn KISKA_fnc_ciwsAlarm;
+				[_turret] spawn KISKA_fnc_ciwsInitAlarm;
 			};
 
 			_turret setCombatMode "RED";
