@@ -20,7 +20,6 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-
 params ["_turret"];
 
 waitUntil {

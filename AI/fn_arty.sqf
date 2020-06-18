@@ -37,12 +37,12 @@ params [
 	["_rounds",1,[1]],
 	["_ranDis",0,[1]],
 	["_ranDir",360,[1]],
-	["_fireTime",[9,10,11],[[],1]]
+	["_fireTime",[10,11,12],[[],1]]
 ];
 
 if (!alive _gun OR {!alive (gunner _gun)}) exitWith {};
 
-if (_rounds < 1) exitWith {["Less then one round"] call BIS_fnc_error};
+if (_rounds < 1) exitWith {"Less then one round" call BIS_fnc_error};
 
 private _ammo = getArtilleryAmmo [_gun] select 0; 
 

@@ -75,6 +75,7 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 		// while there are still targets in the air; this was orginally a simple for loop, but the alarm sound requires the extra complication of
 		/// searching for incoming projectiles constantly after the first is detected
 		while {
+			sleep 1;
 			_incoming = [_turret] call _fn_incoming;
 			if !(_incoming isEqualTo []) then {true} else {false}
 		} do {
@@ -167,7 +168,6 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 					sleep 0.5;
 				};
 			};
-			sleep 1;
 		};
 		
 		// allow turn off alarm

@@ -38,6 +38,8 @@ class CfgFunctions
 			{};
 			class spawnGroup
 			{};
+			class vlsFireAt
+			{};
 		};
 		class Buildings
 		{
