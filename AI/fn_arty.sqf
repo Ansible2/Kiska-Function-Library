@@ -33,14 +33,16 @@ if (!canSuspend) exitWith {
 
 params [
 	["_gun",objNull,[objNull]],
-	["_target",objNull],
+	["_target",objNull,[objNull]],
 	["_rounds",1,[1]],
 	["_ranDis",0,[1]],
 	["_ranDir",360,[1]],
 	["_fireTime",[10,11,12],[[],1]]
 ];
 
-if (!alive _gun OR {!alive (gunner _gun)}) exitWith {};
+if (!alive _gun OR {!alive (gunner _gun)}) exitWith {
+	"_gun or gunner not alive" call BIS_fnc_error;
+};
 
 if (_rounds < 1) exitWith {"Less then one round" call BIS_fnc_error};
 

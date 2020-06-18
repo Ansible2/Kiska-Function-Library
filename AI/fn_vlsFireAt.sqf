@@ -14,7 +14,7 @@ Returns:
 Examples:
     (begin example)
 
-		[VLS_1,target_1] spawn KISKA_fnc_vlsFireAt;
+		[VLS_1,target_1] call KISKA_fnc_vlsFireAt;
 
     (end)
 

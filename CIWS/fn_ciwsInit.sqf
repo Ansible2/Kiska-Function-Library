@@ -53,7 +53,7 @@ if !(_turret isKindOf "AAA_System_01_base_F") exitWith {
 };
 
 private _fn_incoming = {
-	params ["_turret"];
+	params ["_turret","_searchDistance"];
 
 	private _incoming = _turret nearObjects ["RocketBase",_searchDistance];
 	_incoming = _incoming + (_turret nearObjects ["MissileBase",_searchDistance]);
@@ -67,7 +67,7 @@ _turret setVariable ["KISKA_runCIWS",true];
 while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 	// nearestObjects and nearEntities do not work here
 	// get incoming projectiles
-	private _incoming = call _fn_incoming;
+	private _incoming = [_turret,_searchDistance] call _fn_incoming;
 	
 	// if projectiles are present then proceed, else sleep
 	if !(_incoming isEqualTo []) then {
@@ -76,7 +76,7 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 		/// searching for incoming projectiles constantly after the first is detected
 		while {
 			sleep 1;
-			_incoming = [_turret] call _fn_incoming;
+			_incoming = [_turret,_searchDistance] call _fn_incoming;
 			if !(_incoming isEqualTo []) then {true} else {false}
 		} do {
 			// check if sound alarm requested and that the alarm is not already sounding
@@ -170,9 +170,23 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 			};
 		};
 		
-		// allow turn off alarm
+		// turn off alarm if used
 		if (_soundAlarm) then {
-			_turret setVariable ["KISKA_CIWS_allClear",true];
+			// used a wait and exec to create a new thread so that this could be evaluated independently
+			// the goal is to reduce alarm sound overlap by keeping it going if the rounds are close together
+			[
+				{
+					params ["_turret","_searchDistance","_fn_incoming"];
+					
+					private _incoming = [_turret,_searchDistance] call _fn_incoming;
+					
+					if (_incoming isEqualTo []) then {
+						_turret setVariable ["KISKA_CIWS_allClear",true];
+					};
+				},
+				[_turret,_searchDistance,_fn_incoming],
+				5
+			] call CBA_fnc_waitAndExecute;
 		};
 	} else {
 		sleep _searchInterval;
