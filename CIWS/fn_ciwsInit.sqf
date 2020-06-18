@@ -72,10 +72,8 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 	// if projectiles are present then proceed, else sleep
 	if !(_incoming isEqualTo []) then {
 		
-		//_turret setVariable ["KISKA_CIWS_incoming",_incoming];
-
 		// while there are still targets in the air; this was orginally a simple for loop, but the alarm sound requires the extra complication of
-		/// searchin for incoming projectiles constantly after the first is detected
+		/// searching for incoming projectiles constantly after the first is detected
 		while {
 			_incoming = [_turret] call _fn_incoming;
 			if !(_incoming isEqualTo []) then {true} else {false}
@@ -98,9 +96,9 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 					//// turret pitch
 					
 					// get turrets pitch angle (0.6 offset is baked into source anim)
-					private _turretPitchAngle = (deg (_turret animationSourcePhase "maingun")) + 0.6;
+					private _turretPitchAngle = abs ((deg (_turret animationSourcePhase "maingun")) + 0.6);
 					// get the angle needed to target
-					private _angleToTarget = acos ((_turret distance2D _target) / (_turret distance _target));
+					private _angleToTarget = abs (acos ((_turret distance2D _target) / (_turret distance _target)));
 					// get the difference between turrets current pitch and the targets actual angle
 					private _currentPitchTolerance = (selectMax [_turretPitchAngle,_angleToTarget]) - (selectMin [_turretPitchAngle,_angleToTarget]);
 					
@@ -114,7 +112,7 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 					// get relative rotational angle to the target
 					private _relativeDir = _turret getDir _target;				
 					// get the degree between where the target is at relative to the turret position and its actual gun
-					private _currentRotTolerance = (selectMax [_turretDir,_relativeDir]) - (selectMin [_turretDir,_relativeDir]);
+					private _currentRotTolerance = (_turretDir max _relativeDir) - (_turretDir min _relativeDir);
 
 					
 					// get target alt
