@@ -53,12 +53,17 @@ _objects apply {
 		_x hideObjectGlobal !(_show);
 		_x enableSimulationGlobal _show;
 		
-		_x enableDynamicSimulation _enableDynamicSim;
+		if (_x isKindOf "Man" AND {!((dynamicSimulationEnabled (group _x)) isEqualTo _enableDynamicSim)}) then {
+			(group _x) enableDynamicSimulation _enableDynamicSim;
+		};
 		
 		if (dynamicSimulationEnabled _x AND {!(_enableDynamicSim)}) then {
 			_x enableDynamicSimulation false;
 		} else {
 			_x enableDynamicSimulation _enableDynamicSim;
+		};
+		if (isDedicated AND {canSuspend}) then {
+			sleep 0.1;
 		};
 	};
 };

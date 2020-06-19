@@ -68,6 +68,8 @@ _headlessClients apply {
 	_x setVariable ["KISKA_hcLocalUnitsCount",0];
 };
 
+["Headless ReBalance Is Beginning"] remoteExec ["hint",call CBA_fnc_players];
+
 allGroups apply {
 	private _group = _x;
 
@@ -152,6 +154,7 @@ allGroups apply {
 	uiSleep 0.5;
 };
 
+["Headless ReBalance Is COMPLETE"] remoteExec ["hint",call CBA_fnc_players];
 
 if (_checkInterval > 0 AND {_checkInterval != -1}) then {
 	sleep _checkInterval;
