@@ -40,6 +40,11 @@ params [
     ["_randomPatrol",true,[true]]
 ];
 
+if (isNull _helicopter) exitWith {
+    "_helicopter isNull" call BIS_fnc_error;
+    false
+};
+
 if (_patrolHeight > _spotDistance3D) exitWith {
     "_patrolHeight is higher then _spotDistance3D. Nothing will be spotted" call BIS_fnc_error;
     false
@@ -50,7 +55,14 @@ if !(_patrolPoints isEqualTypeAny [objNull,[]]) exitWith {
     false
 };
 
-private _helicopterGroup = group (currentPilot _helicopter);
+private _pilot = currentPilot _helipcopter;
+
+if (isNull _pilot) exitWith {
+    "No pilot found in helicopter" call BIS_fnc_error;
+    false
+};
+
+private _helicopterGroup = group _pilot;
 
 _helicopter flyInHeight _patrolHeight;
 
