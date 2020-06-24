@@ -58,6 +58,8 @@ private _fn_incoming = {
 	private _incoming = _turret nearObjects ["RocketBase",_searchDistance];
 	_incoming = _incoming + (_turret nearObjects ["MissileBase",_searchDistance]);
 	_incoming = _incoming + (_turret nearObjects ["ShellBase",_searchDistance]);
+	// rocket arty (sepcically Zamak arty) do not fall under these bases
+	_incoming = _incoming + (_turret nearObjects ["R_230mm_HE",_searchDistance]);
 
 	_incoming
 };

@@ -50,7 +50,7 @@ private _containersArray = [];
 {
     // create Container
     private _container = createVehicle [_x,[0,0,0],[],0];
-    _containers pushBack _container;
+    _containersArray pushBack _container;
 
     // give the conatainer a random position above DZ
     private _dropZone = [_dropPosition,50] call CBA_fnc_randPos;
@@ -88,7 +88,7 @@ private _containersArray = [];
                 [_this select 1] call CBA_fnc_removePerFrameHandler;
             };
         }, 
-        0.5, 
+        1, 
         [_container,_chute]
     ] call CBA_fnc_addPerFrameHandler;
 
