@@ -55,7 +55,7 @@ if !(_patrolPoints isEqualTypeAny [objNull,[]]) exitWith {
     false
 };
 
-private _pilot = currentPilot _helipcopter;
+private _pilot = currentPilot _helicopter;
 
 if (isNull _pilot) exitWith {
     "No pilot found in helicopter" call BIS_fnc_error;

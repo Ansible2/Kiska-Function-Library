@@ -56,5 +56,5 @@ if (_taskID isEqualType []) then {
 if ([_taskID] call BIS_fnc_taskExists) then {
     [_taskID,"SUCCEEDED",_showNotification] call BIS_fnc_taskSetState;	
 } else {
-    [_owner, [[_taskID,_taskID_parent],_taskID] select (_taskID_parent isEqualTo ""), _description, _destination, "SUCCEEDED", _priority, _showNotification, _type, _visibleIn3D] call BIS_fnc_taskCreate;
+    [_owner,[[_taskID,_taskID_parent],_taskID] select (_taskID_parent isEqualTo ""), _description, _destination, "SUCCEEDED", _priority, _showNotification, _type, _visibleIn3D] call BIS_fnc_taskCreate;
 };
