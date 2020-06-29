@@ -58,7 +58,8 @@ private "_driverGroup";
 	if !(_x in (crew _vehicle)) then {
 		if (_forEachIndex isEqualTo 0) then {
 			_driverGroup = group _x;
-			_x moveInDriver _vehicle;
+			[_x,_vehicle] remoteExec ["moveInDriver",_x];
+			//_x moveInDriver _vehicle;
 		} else {
 			_x moveInAny _vehicle;
 		};

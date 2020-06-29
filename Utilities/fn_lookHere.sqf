@@ -7,6 +7,7 @@ Description:
 Parameters:
 	0: _objectsToRotate <OBJECT or ARRAY> - The objects to setDir on 
 	1: _positionsToLookAt <OBJECT or ARRAY> - The positions or objects to search for nearest
+	2: _setDirection <BOOL> - Also set objects direction relative to the look position
 
 Returns:
 	BOOL
@@ -24,7 +25,8 @@ Author:
 
 params [
 	["_objectsToRotate",[],[objNull,[]]],
-	["_positionsToLookAt",[],[objNull,[]]]
+	["_positionsToLookAt",[],[objNull,[]]],
+	["_setDirection",true,[true]]
 ];
 
 if (_objectsToRotate isEqualTo [] OR {_objectsToRotate isEqualType objNull AND {isNull _objectsToRotate}}) exitWith {
@@ -38,8 +40,11 @@ if (_objectsToRotate isEqualtype objNull) then {
 
 _objectsToRotate apply {
 	private _nearestPosition = [_positionsToLookAt,_x] call BIS_fnc_nearestPosition;
-
-	_x setDir (_x getRelDir _nearestPosition);
+	
+	if (_setDirection) then {
+		_x setDir (_x getRelDir _nearestPosition);
+	};
+	
 	_x doWatch _nearestPosition;
 };
 

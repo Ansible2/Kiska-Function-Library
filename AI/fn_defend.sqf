@@ -35,8 +35,8 @@ Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 
 params [
-	["_group", grpNull, [grpNull, objNull]],
-	["_position", [], [[], objNull, grpNull, locationNull], 3],
+	["_group",grpNull,[grpNull,objNull]],
+	["_position",[],[[],objNull,grpNull,locationNull],3],
 	["_radius", 50, [0]],
 	["_threshold", 3, [0]],
 	["_patrol", 0.1, [true, 0]],
@@ -84,7 +84,8 @@ if (_patrol > 0 && {count _units > 1}) then {
 	_units deleteAt (_units find (leader _group));
 };
 
-{
+
+_units apply {
 	// 31% chance to occupy nearest free static weapon
 	if ((random 1 < 0.31) && { !(_statics isEqualto []) }) then {
 		_x assignAsGunner (_statics deleteAt 0);
@@ -142,7 +143,7 @@ if (_patrol > 0 && {count _units > 1}) then {
 			};
 		};
 	};
-} forEach _units;
+};
 
 // Unassigned (or combat reacted) units will patrol
 [_group, _position, _radius, 5, "sad", "safe", "red", "limited"] call CBA_fnc_taskPatrol;
