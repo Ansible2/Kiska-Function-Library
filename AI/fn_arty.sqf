@@ -28,7 +28,7 @@ Author:
 scriptName "KISKA_fnc_arty";
 
 if (!canSuspend) exitWith {
-	"Must be run in scheduleded envrionment" call BIS_fnc_error;
+	"Must be run in scheduled envrionment" call BIS_fnc_error;
 };
 
 params [
