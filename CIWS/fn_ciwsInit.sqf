@@ -37,7 +37,7 @@ if (!canSuspend) exitWith {
 params [
 	["_turret",objNull,[objNull]],
 	["_searchDistance",3000,[123]],
-	["_engageAltitude",100,[123]],
+	["_engageAltitude",50,[123]],
 	["_searchInterval",2,[123]],
 	["_doNotFireBelowAngle",5,[123]],
 	["_pitchTolerance",3,[123]],

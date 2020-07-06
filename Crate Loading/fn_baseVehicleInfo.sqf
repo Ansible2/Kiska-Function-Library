@@ -37,15 +37,24 @@ Author:
 ---------------------------------------------------------------------------- */
 
 DSO_vehicleTypes = [
-	"Truck_01_base_F",
+	"Truck_01_cargo_base_F",
+	"B_Truck_01_transport_F",
 	"Heli_Transport_03_base_F",
 	"I_Heli_Transport_02_F"
 ];
 
-DSOInfo_Truck_01_base_F = [
+DSOInfo_Truck_01_cargo_base_F = [
 	0.5, 	// crate z offset
 	7,    	// unload offset	
 	0.5, 	// crate y offset
+	3,    	// max crates
+	8   	// unload action distance
+];
+
+DSOInfo_B_Truck_01_transport_F = [
+	0.5, 	// crate z offset
+	7,    	// unload offset	
+	-0.1,	// crate y offset
 	3,    	// max crates
 	8   	// unload action distance
 ];
