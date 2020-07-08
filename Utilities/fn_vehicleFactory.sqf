@@ -16,11 +16,11 @@ Returns:
 	NOTHING 
 
 Examples:
-    (begin example)
+	(begin example)
 
 		[player,(getPosATL player) vectorAdd [2,2,0],"B_MRAP_01_F"] spawn KISKA_fnc_vehicleFactory;
 
-    (end)
+	(end)
 
 Author:
 	Ansible2 // Cipher
@@ -52,7 +52,7 @@ if (_vehicleTypes isEqualType "") then {
 };
 
 if (_spawnPosition isEqualType objNull) then {
-	_spawnPosition = getPosATL _spawnPosition;
+	_spawnPosition = getPosASL _spawnPosition;
 };
 
 
@@ -92,12 +92,12 @@ _vehicleTypes apply {
 					"_onCreateCode"
 				];
 
-				if !(((ATLToASL _spawnPosition) nearEntities [['landVehicle','air','ship'],_clearRadius]) isEqualTo []) exitWith {
+				if !(((ASLToAGL _spawnPosition) nearEntities [['landVehicle','air','ship'],_clearRadius]) isEqualTo []) exitWith {
 					hint 'Pad Must Be Clear Of Vehicles';
 					false
 				};
 
-				private _vehicle = createVehicle [_type,_spawnPosition,[],0,"CAN_COLLIDE"];
+				private _vehicle = createVehicle [_type,ASLToATL _spawnPosition,[],0,"CAN_COLLIDE"];
 
 				if !(_onCreateCode isEqualTo {}) then {
 					[_vehicle] call _onCreateCode;
@@ -132,7 +132,7 @@ if !(_controlPanel getVariable ["KISKA_vehicleFactory",false]) then {
 		{}, 
 		{
 			(_this select 3) params ["_spawnPosition","_clearRadius"];
-			private _entities = (ATLToASL _spawnPosition) nearEntities [['landVehicle','air','ship'],_clearRadius];
+			private _entities = (ASLToAGL _spawnPosition) nearEntities [['landVehicle','air','ship'],_clearRadius];
 
 			_entities apply {
 				[_x] remoteExec ["deleteVehicle",2];
