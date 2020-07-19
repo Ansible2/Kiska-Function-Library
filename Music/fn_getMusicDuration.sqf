@@ -26,7 +26,7 @@ params [
 ];
 
 if (_trackClass isEqualTo "") exitWith {
-	["No class string passed"] call BIS_fnc_error;
+	"No class string passed" call BIS_fnc_error;
 };
 
 private _duration = getNumber (configFile >> "cfgMusic" >> _trackClass >> "duration");

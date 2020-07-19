@@ -20,6 +20,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+
 if (!isMultiplayer OR {!hasInterface} OR {!canSuspend}) exitWith {};
 
 params [

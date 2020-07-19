@@ -37,7 +37,7 @@ if (_groupsAndNames isEqualTo []) exitWith {};
 
 {
 	if !(_x isEqualType []) exitWith {
-		[["Index",str _forEachIndex,"is not array!"] joinString " "] call BIS_fnc_error;
+		(["Index",str _forEachIndex,"is not array!"] joinString " ") call BIS_fnc_error;
 	};
 
 	if (_x isEqualTypeParams [grpNull,""] OR {_x isEqualTypeParams [grpNull]}) then {

@@ -54,7 +54,7 @@ if (_musicTracks isEqualTo [] AND {_usedMusicTracks isEqualTo []}) exitWith {
 
 // check if _timeBetween is an array AND if it is the correct formats OR if it is just a single number
 if ((_timeBetween isEqualType []) AND {!((count _timeBetween) isEqualTo 1) AND {!((count _timeBetween) isEqualTo 3) OR !(_timeBetween isEqualTypeParams [1,2,3])}}) exitWIth {
-	["_timeBetween array is incorrect format or types"] call BIS_fnc_error;
+	"_timeBetween array is incorrect format or types" call BIS_fnc_error;
 };
 
 if (_musicTracks isEqualTo []) then {

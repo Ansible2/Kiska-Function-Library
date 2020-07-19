@@ -37,14 +37,16 @@ if !(isNil _varString) then {
 	(missionNamespace getVariable _varString) call BIS_fnc_removeRespawnPosition;
 };
 
-private _id = [missionNamespace, getPosWorld _caller, _markerText] call BIS_fnc_addRespawnPosition;
+private _position = ASLToAGL (getPosASL _caller);
+
+private _id = [missionNamespace,_position, _markerText] call BIS_fnc_addRespawnPosition;
 
 // set the varstring constructed above to the value of the id so it can be used later when the postion is removed and another created
 missionNamespace setVariable [_varString,_id];
 
 // check if marker is created already
 if (getMarkerType _marker isEqualTo "") then {
-	(["|",_marker,"|",str (getPosWorld _caller),"|respawn_inf|ICON|[1,1]|0|Solid|","color",str (side _caller),"|1|",_markerText] joinString "") call BIS_fnc_stringToMarker;
+	(["|",_marker,"|",str _position,"|respawn_inf|ICON|[1,1]|0|Solid|","color",str (side _caller),"|1|",_markerText] joinString "") call BIS_fnc_stringToMarker;
 } else {
 	_marker setMarkerPos _caller;
 };

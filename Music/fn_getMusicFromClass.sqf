@@ -26,7 +26,7 @@ params [
 ];
 
 if (_musicClass isEqualTo "") exitWith {
-	["no class string passed"] call BIS_fnc_error;
+	"no class string passed" call BIS_fnc_error;
 };
 
 private _configCondition = ["getText (_x >> 'musicClass') == ",str _musicCLass] joinString "";

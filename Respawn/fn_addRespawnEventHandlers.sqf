@@ -30,6 +30,8 @@ if (isNull _player) exitWith {};
 
 _player addEventHandler ["Killed", {
 	params ["_corpse"];
+
+	KISKA_playerGroup = group _corpse;
 	
 	if (!isNil "KISKA_spawnId") then {
 		_corpse removeAction KISKA_spawnId;
@@ -40,6 +42,11 @@ _player addEventHandler ["Killed", {
 
 
 _player addEventHandler ["Respawn", {
+	params ["_unit"];
+	
+	if (!isNull KISKA_playerGroup AND (!((group _unit) isEqualTo KISKA_playerGroup))) then {
+		[_unit] joinSilent KISKA_playerGroup;
+	};
 	
 	if (!isNil "KISKA_spawnInfo") then {
 		private _spawnInfo = KISKA_spawnInfo;

@@ -36,6 +36,12 @@ if (_attachedCrates isEqualTo []) exitWith {
 {
 	detach _x;
 
+	if (local _vehicle AND {local _x}) then {
+		_vehicle disableCollisionWith _x;
+	} else {
+		[_vehicle,_x] remoteExecCall ["disableCollisionWith",[_x,_vehicle]];
+	};
+
 	_x setPosATL (_vehicle getRelPos [([_vehicle,1] call KISKA_fnc_getVehicleInfo) + (_forEachindex * 1.75),180]);
 
 	_x setVariable ["DSO_crateLoaded",false,true];

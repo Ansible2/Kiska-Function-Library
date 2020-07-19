@@ -5,7 +5,7 @@ Description:
 	Balances AI among all logged Headless Clients in a very simple fashion.
 	Designed to be run once and also should only be done when all HC are logged onto the server.
 
-	Excluded groups and objects can be added to the array KISKA_hcExcluded.
+	Excluded groups and units can be added to the array KISKA_hcExcluded.
 
 Parameters:
 	 
@@ -113,7 +113,7 @@ allGroups apply {
 		private _localUnitsArray = _bestHeadless getVariable ["KISKA_hcLocalUnits",[]];
 		_unitsInGroup apply {
 			_localUnitsArray pushBack _x;
-
+		/*
 			// add a MP eventhandler that runs on the server for when the AI is killed so that they can be subtracted from the count and array of local units
 			_x addMPEventHandler ["MPKilled",{
 				
@@ -128,15 +128,6 @@ allGroups apply {
 
 						if (_unit in _localUnitsArray) exitWith {
 
-							/* For eventual smarter redistribution of totals...
-
-								// get current total local units
-								private _localUnitsCount = _headlessClient getVariable "KISKA_hcLocalUnitsCount";
-								_localUnitsCount = _localUnitsCount - 1;
-								// set new total
-								_headlessClient setVariable ["KISKA_hcLocalUnitsCount",_localUnitsCount];
-							*/
-
 							// take unit out of array
 							_localUnitsArray deleteAt (_localUnitsArray findIf {_x isEqualTo _unit});
 
@@ -148,13 +139,49 @@ allGroups apply {
 				};
 
 			}];
+		*/
 		};
 	};
 
 	uiSleep 0.5;
 };
 
-["Headless ReBalance Is COMPLETE"] remoteExec ["hint",call CBA_fnc_players];
+addMissionEventHandler ["EntityKilled", {
+	params ["_unit"];
+
+	if (_unit isKindOf "MAN" AND {!(local _unit)} AND {!(_unit in allPlayers)}) then {
+		
+		private _owner = owner _unit;
+		private _allHeadlessClients = entities "HeadlessClient_F";
+		private _index = _allHeadlessClients findIf {_owner isEqualTo (owner _x)};
+		
+		if (_index isEqualTo -1) then {
+			private _headlessClient = _allHeadlessClients select _index;
+			private _localUnitsArray = _headlessClient getVariable ["KISKA_hcLocalUnits",[]];
+
+			if (_unit in _localUnitsArray) then {
+				private _localUnitsCount = _headlessClient getVariable ["KISKA_hcLocalUnitsCount",1];
+				_headlessClient setVariable ["KISKA_hcLocalUnitsCount",_localUnitsCount - 1];
+				/* 
+					For eventual smarter redistribution of totals...
+
+					// get current total local units
+					private _localUnitsCount = _headlessClient getVariable "KISKA_hcLocalUnitsCount";
+					_localUnitsCount = _localUnitsCount - 1;
+					// set new total
+					_headlessClient setVariable ["KISKA_hcLocalUnitsCount",_localUnitsCount];
+				*/
+
+				// take unit out of array
+				_localUnitsArray deleteAt (_localUnitsArray findIf {_x isEqualTo _unit});
+
+			};
+		};
+		
+	};
+}];
+
+["Headless ReBalance Is COMPLETE"] remoteExec ["hint",(call CBA_fnc_players)];
 
 if (_checkInterval > 0 AND {_checkInterval != -1}) then {
 	sleep _checkInterval;

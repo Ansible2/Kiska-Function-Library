@@ -153,6 +153,14 @@ class CfgFunctions
 			{};
 			class initializeRespawnSystem
 			{};
+			class keepInGroup
+			{
+				postInit = 1;
+			};
+			class rallyPointActionLoop
+			{};
+			class respawnStateMachine
+			{};
 			class updateRallyAction
 			{};
 			class updateRespawnMarker
