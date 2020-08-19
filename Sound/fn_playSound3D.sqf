@@ -42,7 +42,7 @@ if (_sound isEqualTo "") exitWith {
 	false
 };
 
-if (!(isCLass (configFile / "CfgSounds" / _sound)) AND {!(isClass (missionConfigFile / "CfgSounds" / _sound))} AND {!(isClass (missionConfigFile / "cfgMusic" / _sound))} AND {!(isClass (configFile / "cfgMusic" / _sound))}) exitWith {
+if (!(isClass (configFile / "CfgSounds" / _sound)) AND {!(isClass (missionConfigFile / "CfgSounds" / _sound))} AND {!(isClass (missionConfigFile / "cfgMusic" / _sound))} AND {!(isClass (configFile / "cfgMusic" / _sound))}) exitWith {
 	"_sound is undefined in config" call BIS_fnc_error;
 	false
 };
@@ -71,13 +71,13 @@ _fn_getSoundPath = {
 		(getArray (configFile >> "CfgSounds" >> _sound >> "sound")) select 0
 	};
 	if (isCLass (missionConfigFile / "CfgSounds" / _sound)) exitWith {
-		(getArray (missionConfigFile >> "CfgSounds" >> _sound >> "sound")) select 0
-	};// need to test mission paths to see if they need getMissionpath
+		getMissionPath ((getArray (missionConfigFile >> "CfgSounds" >> _sound >> "sound")) select 0)
+	};
 	if (isCLass (configFile / "cfgMusic" / _sound)) exitWith {
 		(getArray (configFile >> "cfgMusic" >> _sound >> "sound")) select 0
 	};
 	if (isCLass (missionConfigFile / "cfgMusic" / _sound)) exitWith {
-		(getArray (missionConfigFile >> "cfgMusic" >> _sound >> "sound")) select 0
+		getMissionPath ((getArray (missionConfigFile >> "cfgMusic" >> _sound >> "sound")) select 0)
 	};
 };
 
