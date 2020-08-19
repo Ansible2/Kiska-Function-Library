@@ -86,58 +86,60 @@ private _chuteType = ["CUP_T10_Parachute_backpack","Steerable_Parachute_F"] sele
 
 			private _aircraft = objectParent _unit;
 			
-			//[_unit] remoteExec ["unassignVehicle",_unit];
-			[_unit,_aircraft] remoteExec ["leaveVehicle",_unit];
-			[_unit] remoteExec ["moveOut",_unit];
-			
-			// determine the side of the aircraft to eject on
-			private _sideOfAircraft = [10,-10] select ((_index mod 2) isEqualTo 0);
-			
+			if !(isNull _aircraft) then {
+				//[_unit] remoteExec ["unassignVehicle",_unit];
+				[_unit,_aircraft] remoteExec ["leaveVehicle",_unit];
+				[_unit] remoteExec ["moveOut",_unit];
+				
+				// determine the side of the aircraft to eject the person on
+				private _sideOfAircraft = [10,-10] select ((_index mod 2) isEqualTo 0);
+				
 
-			// delay chute open to create some distance with plane
-			[
-				{
-					params [
-						"_unit",
-						"_aircraft",
-						"_sideOfAircraft"
-					];
+				// delay chute open to create some distance with plane
+				[
+					{
+						params [
+							"_unit",
+							"_aircraft",
+							"_sideOfAircraft"
+						];
 
-					_unit setPosATL ((getPosATLVisual _unit) vectorAdd (_aircraft vectorModelToWorldVisual [_sideOfAircraft,0,0]));
+						_unit setPosATL ((getPosATLVisual _unit) vectorAdd (_aircraft vectorModelToWorldVisual [_sideOfAircraft,0,0]));
 
-					[_unit,["OpenParachute", _unit]] remoteExec ["action",_unit];
-				},
-				[_unit,_aircraft,_sideOfAircraft],
-				1
-			] call CBA_fnc_waitAndExecute;
+						[_unit,["OpenParachute", _unit]] remoteExec ["action",_unit];
+					},
+					[_unit,_aircraft,_sideOfAircraft],
+					1
+				] call CBA_fnc_waitAndExecute;
 
 
-			// wait a bit to start loop and allow damage
-			[
-				{
-					params ["_unit","_loadout"];
-					[_unit,false] remoteExec ["allowDamage",_unit];
+				// wait a bit to start loop and allow damage
+				[
+					{
+						params ["_unit","_loadout"];
+						[_unit,false] remoteExec ["allowDamage",_unit];
 
-					// waitUntil unit hits ground to give his backpack back
-					[
-						1,
-						{
-							(_this select 0) setUnitLoadout (_this select 1);
-						},
-						{
-							((getPosATLVisual (_this select 0)) select 2) < 1
-						},
-						[_unit,_loadout],
-						true
-					] call KISKA_fnc_waitUntil;
-				},
-				[_unit,_loadout],
-				3
-			] call CBA_fnc_waitAndExecute;
+						// waitUntil unit hits ground to give his backpack back
+						[
+							2,
+							{
+								(_this select 0) setUnitLoadout (_this select 1);
+							},
+							{
+								((getPosATLVisual (_this select 0)) select 2) < 1
+							},
+							[_unit,_loadout],
+							true
+						] call KISKA_fnc_waitUntil;
+					},
+					[_unit,_loadout],
+					3
+				] call CBA_fnc_waitAndExecute;
+			};
 
 		},
 		[_x,_chuteType,_forEachIndex],
-		_forEachIndex / 5
+		_forEachIndex / 5 // simple delay time for seperation of units
 	] call CBA_fnc_waitAndExecute;
 	
 } forEach ([_dropArrayFiltered,_dropArray] select (_dropArrayFiltered isEqualTo []));
