@@ -121,7 +121,11 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 					// get target alt
 					private _targetAlt = (getPosWorldVisual _target) select 2;
 										
-					if ((_currentPitchTolerance <= _pitchTolerance AND {_currentRotTolerance <= _rotationTolerance} AND {_targetALt >= _engageAltitude}) OR {(_turret distance _target) >= (_searchDistance * 0.75)} OR {!alive _target}) exitWith {true};
+					if ((_currentPitchTolerance <= _pitchTolerance AND 
+						{_currentRotTolerance <= _rotationTolerance} AND 
+						{_targetALt >= _engageAltitude}) OR 
+						{(_turret distance _target) >= (_searchDistance * 0.75)} OR {!alive _target}) 
+					exitWith {true};
 
 					sleep 0.25; 
 					
