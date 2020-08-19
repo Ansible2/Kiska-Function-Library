@@ -63,8 +63,6 @@ player addEventHandler ["Respawn", {
 	null = [] spawn KISKA_fnc_rallyPointActionLoop;
 }];
 
-while {alive player} do {
+while {sleep 5; alive player} do {
 	call KISKA_fnc_updateRallyAction2;
-
-	sleep 5;
 };
