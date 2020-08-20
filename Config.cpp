@@ -11,7 +11,7 @@ class CfgPatches
 
 class CfgFunctions
 {
-	class Kiska
+	class KISKA
 	{
 		class AI
 		{
@@ -230,6 +230,8 @@ class CfgFunctions
 			class triggerWait
 			{};
 			class vehicleFactory
+			{};
+			class viewDistanceLimiter
 			{};
 			class waitUntil
 			{};
