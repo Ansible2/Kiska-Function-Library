@@ -62,15 +62,15 @@ if !(_weaponsInContainer isEqualTo []) then {
 };
 
 private _totalCargo = [
-	// itemCargo
+
 	getItemCargo _primaryContainer,
-	// magazineCargo
+
 	magazinesAmmoCargo _primaryContainer,
-	// weaponCargo
+
 	_weaponsCargo,
-	// backpackCargo
+
 	getBackpackCargo _primaryContainer,
-	// containers
+	// containers within containers
 	_containersInfo
 ];
 

@@ -67,16 +67,16 @@ if (_distance < 0) exitWith {
 _fn_getSoundPath = {
 	params ["_sound"];
 
-	if (isCLass (configFile / "CfgSounds" / _sound)) exitWith {
+	if (isClass (configFile / "CfgSounds" / _sound)) exitWith {
 		(getArray (configFile >> "CfgSounds" >> _sound >> "sound")) select 0
 	};
-	if (isCLass (missionConfigFile / "CfgSounds" / _sound)) exitWith {
+	if (isClass (missionConfigFile / "CfgSounds" / _sound)) exitWith {
 		getMissionPath ((getArray (missionConfigFile >> "CfgSounds" >> _sound >> "sound")) select 0)
 	};
-	if (isCLass (configFile / "cfgMusic" / _sound)) exitWith {
+	if (isClass (configFile / "cfgMusic" / _sound)) exitWith {
 		(getArray (configFile >> "cfgMusic" >> _sound >> "sound")) select 0
 	};
-	if (isCLass (missionConfigFile / "cfgMusic" / _sound)) exitWith {
+	if (isClass (missionConfigFile / "cfgMusic" / _sound)) exitWith {
 		getMissionPath ((getArray (missionConfigFile >> "cfgMusic" >> _sound >> "sound")) select 0)
 	};
 };

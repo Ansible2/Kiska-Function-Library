@@ -43,9 +43,9 @@ if !(isServer) exitWith {
 };
 
 params [
-	["_musicTracks",[],[[]]],
-	["_timeBetween",[300,420,540],[[],123]],
-	["_usedMusicTracks",[],[[]]]
+	["_musicTracks",missionNamespace getVariable ["KISKA_randomMusic_tracks",[]],[[]]],
+	["_timeBetween",missionNamespace getVariable ["KISKA_randomMusic_timeBetween",[300,420,540]],[[],123]],
+	["_usedMusicTracks",missionNamespace getVariable ["KISKA_randomMusic_usedTracks",[]],[[]]]
 ];
 
 if (_musicTracks isEqualTo [] AND {_usedMusicTracks isEqualTo []}) exitWith {
@@ -66,9 +66,11 @@ private _selectedTrack = selectRandom _musicTracks;
 
 // clear array of selected Track
 _musicTracks deleteAt (_musicTracks findIf {_x isEqualTo _selectedTrack});
+KISKA_randomMusic_tracks = _musicTracks;
 
 // store track as used
 _usedMusicTracks pushBackUnique _selectedTrack;
+KISKA_randomMusic_usedTracks = _usedTracks;
 
 // get duration of track
 private _durationOfTrack = getNumber (configFile >> "cfgMusic" >> _selectedTrack >> "duration");
@@ -76,7 +78,6 @@ private _durationOfTrack = getNumber (configFile >> "cfgMusic" >> _selectedTrack
 
 // decide how much time should be between tracks
 private "_randomWaitTime";
-
 if (_timeBetween isEqualType []) then {
 	if (_timeBetween isEqualTypeArray [1,2,3]) then {
 		_randomWaitTime = round (random _timeBetween);
@@ -86,9 +87,10 @@ if (_timeBetween isEqualType []) then {
 } else {
 	_randomWaitTime = _timeBetween;
 };
+KISKA_randomMusic_timeBetween = _timeBetween;
+
 
 private "_waitTime";
-
 if (isNil "KISKA_musicSystemIntialized") then {
 	_waitTime = 0;
 	KISKA_musicSystemIntialized = true;
@@ -96,12 +98,16 @@ if (isNil "KISKA_musicSystemIntialized") then {
 	_waitTime = _durationOfTrack + _randomWaitTime;
 };
 
+
 [
 	{
-		[_this select 0,0,false,0.5] remoteExec ["KISKA_fnc_playMusic",[0,-2] select isDedicated];
+		// dont play this music if the system is stopped
+		if (KISKA_musicSystemIntialized) then {
+			[_this select 0,0,false,0.5] remoteExec ["KISKA_fnc_playMusic",[0,-2] select isDedicated];
 
-		[_this select 1,_this select 2,_this select 3] spawn KISKA_fnc_randomMusic;
+			[] spawn KISKA_fnc_randomMusic;
+		};
 	},
-	[_selectedTrack,_musicTracks,_timeBetween,_usedMusicTracks],
+	[_selectedTrack],
 	_waitTime
 ] call CBA_fnc_waitAndExecute;

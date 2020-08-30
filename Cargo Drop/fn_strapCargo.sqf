@@ -30,4 +30,5 @@ params [
 
 private _aircraft = nearestObject [_vehicleToLoad,_aircraftType];
 
-[_vehicleToLoad,_aircraft,true] remoteExecCall ["BIS_fnc_attachToRelative",_vehicleToLoad];
+//[_vehicleToLoad,_aircraft,true] remoteExecCall ["BIS_fnc_attachToRelative",_vehicleToLoad];
+_vehicleToLoad attachTo [_aircraft];

@@ -113,7 +113,18 @@ _units apply {
 					if (surfaceIsWater _pos) exitwith {};
 
 					_unit doMove _pos;
-					//waituntil {unitReady _unit};
+					waituntil {unitReady _unit};
+					// doMove does not accout for height of a position, so we force it the AI there
+					if !((getPosATL _unit) isEqualTo _pos) then {
+						_unit setPosATL _pos;
+					};
+
+					if (random 1 < _hold) then {
+						_unit disableAI "PATH";
+					} else {
+						doStop _unit;
+					};
+				/*
 					[
 						{unitReady (_this select 0)},
 						{
@@ -123,7 +134,7 @@ _units apply {
 								["_hold", 0, [true, 0]]
 							];
 							
-							if (str (getPosATL _unit) != str _pos) then {
+							if !((getPosATL _unit) isEqualTo _pos) then {
 								_unit setPosATL _pos;
 							};
 
@@ -135,6 +146,7 @@ _units apply {
 						},
 						[_unit,_pos,_hold]
 					] call CBA_fnc_waitUntilAndExecute;
+				*/
 
 					// This command causes AI to repeatedly attempt to crouch when engaged
 					// If ever fixed by BI then consider uncommenting
