@@ -95,6 +95,7 @@ while {sleep KISKA_VD_freq; KISKA_VD_run} do {
 	if (KISKA_VD_viewDist != viewDistance) then {
 		//null = [] spawn KISKA_fnc_adjustViewDistance;
 		setViewDistance KISKA_VD_viewDist;
+		
 		//hint "adjusted overall to: " + (str KISKA_VD_viewDist);
 	};
 
@@ -102,10 +103,12 @@ while {sleep KISKA_VD_freq; KISKA_VD_run} do {
 	if (diag_fps < KISKA_VD_fps) then {
 		// not at target fps
 		call _fn_moveDown;
+		
 		//systemChat str (getObjectViewDistance select 0);
 	} else {
 		// at target fps
 		call _fn_moveUp;
+		
 		//systemChat str (getObjectViewDistance select 0);
 	};
 };

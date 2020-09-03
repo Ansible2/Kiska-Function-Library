@@ -20,8 +20,6 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-
-
 if !(isMultiplayer) exitWith {};
 
 params [
