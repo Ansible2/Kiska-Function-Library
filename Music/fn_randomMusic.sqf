@@ -70,7 +70,7 @@ KISKA_randomMusic_tracks = _musicTracks;
 
 // store track as used
 _usedMusicTracks pushBackUnique _selectedTrack;
-KISKA_randomMusic_usedTracks = _usedTracks;
+KISKA_randomMusic_usedTracks = _usedMusicTracks;
 
 // get duration of track
 private _durationOfTrack = getNumber (configFile >> "cfgMusic" >> _selectedTrack >> "duration");
@@ -91,6 +91,7 @@ KISKA_randomMusic_timeBetween = _timeBetween;
 
 
 private "_waitTime";
+// if it is the intial running of the system
 if (isNil "KISKA_musicSystemIntialized") then {
 	_waitTime = 0;
 	KISKA_musicSystemIntialized = true;
@@ -105,7 +106,7 @@ if (isNil "KISKA_musicSystemIntialized") then {
 		if (KISKA_musicSystemIntialized) then {
 			[_this select 0,0,false,0.5] remoteExec ["KISKA_fnc_playMusic",[0,-2] select isDedicated];
 
-			[] spawn KISKA_fnc_randomMusic;
+			null = [] spawn KISKA_fnc_randomMusic;
 		};
 	},
 	[_selectedTrack],
