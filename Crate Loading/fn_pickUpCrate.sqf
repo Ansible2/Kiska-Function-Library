@@ -56,7 +56,7 @@ _crate attachTo [_caller,_crateAttachPoint];
 // publicly set the crate as picked up
 _crate setVariable ["DSO_cratePickedUp",true,true];
 
-// add a drop action to players
+// add a drop action to the player
 private _dropCrate_actionID = _caller addAction [
 	"--Drop Crate",
 	{
@@ -84,6 +84,7 @@ _caller setVariable ["DSO_dropCrateActionID",_dropCrate_actionID];
 	waitUntil {
 		if (!alive _caller OR {!(_crate getVariable ["DSO_cratePickedUp",true])} OR {!(incapacitatedState _caller isEqualTo "")} OR {_caller getVariable ["ace_isUnconscious",false]}) exitWith {
 			
+			// checking if the crate has already been dropped by the player
 			if (!isNil {_caller getVariable "DSO_dropCrateActionID"}) then {
 				[_crate,_caller,_dropCrate_actionID] call KISKA_fnc_dropCrate;
 			};
@@ -95,7 +96,6 @@ _caller setVariable ["DSO_dropCrateActionID",_dropCrate_actionID];
 
 		false
 	};
-
 };
 
 true
