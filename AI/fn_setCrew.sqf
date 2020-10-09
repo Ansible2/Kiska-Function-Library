@@ -21,9 +21,8 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-
 params [
-	["_crew",grpNull,[[],grpNull]],
+	["_crew",grpNull,[[],grpNull,objNull]],
 	["_vehicle",objNull,[objNull]]
 ];
 
