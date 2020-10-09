@@ -88,6 +88,6 @@ private "_driverGroup";
 	},
 	{((_this select 0) distance (_this select 4)) <= (_this select 3)},
 	[_vehicle,_crew,_codeOnComplete,_completionRadius,_dismountPoint]
-] call KISKA_fnC_waitUntil;
+] call KISKA_fnc_waitUntil;
 
 true

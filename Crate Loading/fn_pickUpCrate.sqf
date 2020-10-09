@@ -22,7 +22,6 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-
 params [
 	["_crate",objNull,[objNull]],
 	["_caller",player,[objNull]]

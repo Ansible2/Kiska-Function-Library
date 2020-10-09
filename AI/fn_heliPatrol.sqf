@@ -127,6 +127,7 @@ _helicopter flyInHeight _patrolHeight;
                 };
                 
             },
+            // waitUntil helicopter is about to land
             {(getPosATLVisual (_this select 0) select 2) < 2},
             [_helicopter,_helicopterGroup,_nearestPlayer,_groups]
         ] call KISKA_fnc_waitUntil;

@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_civRandomGear
+Function: KISKA_fnc_randomGear
 
 Description:
 	Randomizes gear based upon input arrays for each slot. Designed with civillians in mind.
@@ -17,7 +17,7 @@ Returns:
 Examples:
     (begin example)
 
-		[_unit] call KISKA_fnc_civRandomGear;
+		[_unit] call KISKA_fnc_randomGear;
 
     (end)
 

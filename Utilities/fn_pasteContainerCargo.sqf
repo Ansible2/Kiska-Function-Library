@@ -3,7 +3,7 @@ Function: KISKA_fnc_pasteContainerCargo
 
 Description:
 	Takes a cargo array formatted from KISKA_fnc_copyContainerCargo and adds it to another container.
-	Exact ammo counts will be preserved even inside of an item such as magazines inside of a vest or backpack.
+	Exact ammo counts will be preserved even inside of an item, such as magazines inside of a vest or backpack.
 
 Parameters:
 
@@ -16,7 +16,7 @@ Returns:
 Examples:
     (begin example)
 
-		[container,[otherContainer] call KISKA_fnc_getContainerCargo] call KISKA_fnc_pasteContainerCargo;
+		[container,([otherContainer] call KISKA_fnc_copyContainerCargo)] call KISKA_fnc_pasteContainerCargo;
 
     (end)
 
