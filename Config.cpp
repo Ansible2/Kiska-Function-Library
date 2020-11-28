@@ -196,6 +196,16 @@ class CfgFunctions
 			class radioChatter
 			{};
 		};
+		class Supports
+		{
+			file="Kiska_functions\Supports";
+			class callForArtillery
+			{};
+			class CAS
+			{};
+			class supportRadioGlobal
+			{};
+		};
 		class Utilities
 		{
 			file="Kiska_functions\Utilities";
