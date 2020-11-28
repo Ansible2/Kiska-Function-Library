@@ -203,6 +203,7 @@ class CfgFunctions
 			{};
 			class CAS
 			{};
+			class paratroopers
 			class supportRadioGlobal
 			{};
 		};
