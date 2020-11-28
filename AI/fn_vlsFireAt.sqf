@@ -5,7 +5,7 @@ Description:
 	Orders VLS to fire at a target
 
 Parameters:
-	0: _launcher <OBJECT> - The VLS launcher to have the missile originate from (or position)
+	0: _launcher <OBJECT> - The VLS launcher to have the missile originate from
 	1: _target <OBJECT or ARRAY> - Target to hit missile with, can also be a position (AGL)
 
 Returns:
