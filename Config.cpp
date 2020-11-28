@@ -255,6 +255,8 @@ class CfgFunctions
 			{};
 			class pushBackToArray
 			{};
+			class reassignCurator
+			{};
 			class removeArsenal
 			{};
 			class lookHere
