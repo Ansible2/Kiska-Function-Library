@@ -5,14 +5,12 @@ Description:
 	Spawns a supply drop near the requested position. Crates will parachute in.
 
 Parameters:
-
 	0: _classNames <ARRAY> - Classnames of boxes you want dropped. Also determines the number of crates
 	1: _altittude <NUMBER> - Start height of drop
 	2: _dropPosition <OBJECT, GROUP, ARRAY, LOCATION, TASK> - Position you want the drop to be near
-	3. _radio <NUMBER> - This is used to get rid of the trigger if called from it as a limited support. 1 = ALPHA, 2 = BRAVO, etc. -1 for nothing
 
 Returns:
-	NOTHING
+	<ARRAY> - The containers dropped
 
 Examples:
     (begin example)
@@ -21,117 +19,106 @@ Examples:
 
     (end)
 
-Author:
+Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-
-if (!isServer) exitWith {};
+scriptName "KISKA_fnc_supplyDrop";
 
 params [
-	["_classNames",[],[[]]],
+	["_classNames",["B_supplyCrate_F"],[[]]],
 	["_altittude",100,[1]],
-    ["_dropPosition",objNull,[objNull,[],grpNull,locationNull,taskNull]],
-	["_radio",-1,[1]]
+    ["_dropPosition",objNull,[objNull,[],grpNull,locationNull,taskNull]]
 ];
 
 if (_classNames isEqualTo []) exitWith {
 	"No classnames passed!" call BIS_fnc_error;
 };
 
-if (_radio != -1) then {
-	[_radio,"null"] remoteExec ["setRadioMsg",[0,-2] select isDedicated,true];
-};
-
-["Drop inbound."] remoteExec ["KISKA_fnc_dataLinkMsg",[0,-2] select isDedicated];
-
-
-
 private _containersArray = [];
-{
+private ["_container_temp","_dropZone_temp","_chute_temp"];
+_classNames apply {
     // create Container
-    private _container = createVehicle [_x,[0,0,0],[],0];
-    _containersArray pushBack _container;
+    _container_temp = createVehicle [_x,[0,0,0],[],0];
+
+    _containersArray pushBack _container_temp;
 
     // give the conatainer a random position above DZ
-    private _dropZone = [_dropPosition,50] call CBA_fnc_randPos;
-    _container setPosATL (_dropZone vectorAdd [random [-10,0,10],random [-10,0,10],_altittude]);
-    
+    _dropZone_temp = [_dropPosition,50] call CBAP_fnc_randPos;    
     // make it invincible
-    [_container,false] remoteExec ["allowDamage",_container];
+    _container_temp allowDamage false;
 
     // create it's parachutes
-    private _chute = createVehicle ["b_parachute_02_F",[0,0,0]];
-    _chute attachTo [_container,[0,0,0]];
+    _chute_temp = createVehicle ["b_parachute_02_F",[0,0,0]];
+	_chute_temp setPosATL (_dropZone_temp vectorAdd [random [-10,0,10],random [-10,0,10],_altittude]);
+    _container_temp attachTo [_chute_temp,[0,0,0]];
 
-    // then guide it to the ground with a velocity loop
-    private _handle = [
-        {
-            private _container = (_this select 0) select 0;
+    // speed up the drop
+	null = [_chute_temp,_container_temp] spawn {
+		params ["_chute","_container"];
 
-            if !(attachedObjects _container isEqualTo []) then {
-                private _velocitySpace = velocityModelSpace _container;
-                _container setVelocityModelSpace [0,0,-25];
-            };
+		// give chute time to deploy
+		sleep 3;
 
-            if ((getPosATLVisual _container select 2) < 20) then {
-                detach ((_this select 0) select 1);
-                [
-                    {
-                        params ["_container"];
-                        [_container,true] remoteExec ["allowDamage",_container];
-                        [_container,true] remoteExec ["enableDynamicSimulation",2];                        
-                    },
-                    [_container],
-                    5  
-                ] call CBA_fnc_waitAndExecute;
+		private "_chuteVelocity";
+		private _chuteHeight = (getPosATLVisual _chute) select 2;
+		while {_chuteHeight > 80} do {
+			_chuteVelocity = velocityModelSpace _chute;
+			if (_chuteHeight > 500) then {
+				_chute setVelocityModelSpace (_chuteVelocity vectorDiff [0,0,90]);
+			} else {
+				_chute setVelocityModelSpace (_chuteVelocity vectorDiff [0,0,35]);
+			};
+            _chuteHeight = (getPosATLVisual _chute) select 2;
+			sleep 0.25;
+		};
 
-                [_this select 1] call CBA_fnc_removePerFrameHandler;
-            };
-        }, 
-        1, 
-        [_container,_chute]
-    ] call CBA_fnc_addPerFrameHandler;
+		waitUntil {
+			_chuteHeight = (getPosATL _chute) select 2;
+			if (_chuteHeight < 10) exitWith {
+				detach _container;
+				true
+			};
+			sleep 1;
+			false
+		};
+	};
+};
 
-} forEach _classNames;
 
-// add arsenals to crates
+KISKA_fnc_SD_markDropPosition = {
+    params ["_firstContainer"];
+	
+	private _containerHeight = (getPosATL _firstContainer) select 2;
+	waitUntil {
+		if (_containerHeight < 5) exitWith {true};
+		sleep 2;
+		_containerHeight = (getPosATL _firstContainer) select 2;
+		false
+	};
+
+    private _position = [_firstContainer,10] call CBAP_fnc_randPos;
+    private _chemlight = createvehicle ["Chemlight_green_infinite",_position,[],0,"NONE"];
+    private _smoke = createvehicle ["G_40mm_SmokeBlue_infinite",_position,[],0,"NONE"];
+	private _deleteTime = time + 60;
+    waitUntil {
+        // waitUntil a player is within 10m of the first container
+        if (!(((call CBA_fnc_players) findIf {(_x distance2D _firstContainer) <= 10}) isEqualTo -1) OR {time > _deleteTime}) exitWith {true};
+        
+        sleep 2;
+        false
+    };
+    // delete markers
+    [_chemlight,_smoke] apply {
+        if (!isNull _x) then {
+            deleteVehicle _x;
+        };
+    };
+};
+
+// give the containers arsenals
 [_containersArray] call KISKA_fnc_addArsenal;
 
-private _firstContainer = _containersArray select 0;
-[
-    2,
-    {
-        // create smoke and flare markers near DZ
-        params ["_firstContainer"];
+null = [_containersArray select 0] spawn KISKA_fnc_SD_markDropPosition;
 
-        private _position = [_firstContainer,10] call CBA_fnc_randPos;
 
-        private _chemlight = createvehicle ["Chemlight_green_infinite",_position,[],0,"NONE"];
-        private _smoke = createvehicle ["G_40mm_SmokeBlue_infinite",_position,[],0,"NONE"];
-        private _flare = createvehicle ["F_40mm_Red",_position,[],0,"NONE"];
-        
-        // wait to delete markers
-        [
-            2,
-            {
-                private _chemlight = param [1];
-                private _smoke = param [2];
-
-                // delete markers, flare is temporary and therefore need not be deleteed
-                [_chemlight,_smoke] apply {
-                    if (!isNull _x) then {
-                        deleteVehicle _x;
-                    };
-                };
-                
-            },
-            {
-                // waitUntil player is within 25m of the first container
-                !(((call CBA_fnc_players) findIf {(_x distance2D (_this select 0)) < 25}) isEqualTo -1)
-            },
-            [_firstContainer,_chemlight,_smoke]
-        ] call KISKA_fnc_waitUntil;
-    },
-    {(getPosATL (_this select 0)) select 2 < 2},
-    [_firstContainer]
-] call KISKA_fnc_waitUntil;
+_containersArray

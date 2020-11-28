@@ -213,7 +213,15 @@ class CfgFunctions
 			{};
 			class dataLinkMsg
 			{};
+			class deleteAtArray
+			{};
+			class findConfigAny
+			{};
 			class getPlayerObject
+			{};
+			class getVariableTarget
+			{};
+			class getVariableTarget_sendBack
 			{};
 			class hintDiary
 			{};
@@ -226,6 +234,8 @@ class CfgFunctions
 			class pasteContainerCargo
 			{};
 			class podDrop
+			{};
+			class pushBackToArray
 			{};
 			class removeArsenal
 			{};
