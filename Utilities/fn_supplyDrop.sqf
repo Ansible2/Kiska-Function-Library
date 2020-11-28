@@ -43,7 +43,7 @@ _classNames apply {
     _containersArray pushBack _container_temp;
 
     // give the conatainer a random position above DZ
-    _dropZone_temp = [_dropPosition,50] call CBAP_fnc_randPos;    
+    _dropZone_temp = [_dropPosition,50] call CBA_fnc_randPos;    
     // make it invincible
     _container_temp allowDamage false;
 
@@ -96,7 +96,7 @@ KISKA_fnc_SD_markDropPosition = {
 		false
 	};
 
-    private _position = [_firstContainer,10] call CBAP_fnc_randPos;
+    private _position = [_firstContainer,10] call CBA_fnc_randPos;
     private _chemlight = createvehicle ["Chemlight_green_infinite",_position,[],0,"NONE"];
     private _smoke = createvehicle ["G_40mm_SmokeBlue_infinite",_position,[],0,"NONE"];
 	private _deleteTime = time + 60;

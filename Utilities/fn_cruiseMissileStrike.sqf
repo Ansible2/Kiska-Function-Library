@@ -32,7 +32,7 @@ params [
 ];
 
 // get firing position and give it some alititude
-private _missileLaunchPosition = [_target,1000] call CBAP_fnc_randPos;
+private _missileLaunchPosition = [_target,1000] call CBA_fnc_randPos;
 _missileLaunchPosition = _missileLaunchPosition vectorAdd [0,0,1000];
 private _launcher = createVehicle ["B_Ship_MRLS_01_F",_missileLaunchPosition vectorDiff [0,0,7],[],0,"FLY"];
 createVehicleCrew _launcher;
