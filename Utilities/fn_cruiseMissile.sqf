@@ -5,7 +5,7 @@ Description:
 	Spawns a cruise missile at designated "launcher" and then guides it to a target 
 
 Parameters:
-	0: _launcher <OBJECT or ARRAY> - The VLS launcher to have the missile originate from (or position)
+	0: _launcher <OBJECT> - The VLS launcher to have the missile originate from (or position)
 	1: _target <OBJECT or ARRAY> - Target to hit missile with, can also be a position (AGL)
 	2: _hangTime <NUMBER> - (OPTIONAL) How long should the missile climb before diverting to target. Default 6 seconds
 
@@ -28,7 +28,7 @@ if (!canSuspend) exitWith {
 };
 
 params [
-	["_launcher",objNull,[objNull,[]]],
+	["_launcher",objNull,[objNull]],
 	["_target",objNull,[objNull,[]]],
 	["_hangTime",6,[123]]
 ];
@@ -41,13 +41,7 @@ if (_hangTime <= 0) exitWith {
 	"_hangTime cannot be zero or negative" call BIS_fnc_error;
 };
 
-// get launcher position
-private "_launcherPosition";
-if (_launcher isEqualType objNull) then {
-	_launcherPosition = getPosWorld _launcher;
-} else {
-	_launcherPosition = _launcher;
-};
+private _launcherPosition = getPosWorld _launcher;
 private _missile = "ammo_Missile_Cruise_01" createVehicle [_launcherPosition select 0, _launcherPosition select 1, (_launcherPosition select 2) + 20];  
 
 // create launch effect
@@ -66,19 +60,17 @@ if (_target isEqualType objNull) then {
 };
 
 private _laserTarget =  createVehicle ["LaserTargetW",_targetPosition,[],0,"CAN_COLLIDE"];    
-blufor reportRemoteTarget [_laserTarget, 3600];  
+BLUFOR reportRemoteTarget [_laserTarget, 3600];  
   
 _missile setShotParents [_launcher,gunner _launcher];  
 
 sleep _hangTime;
-
 deleteVehicle _boosterSmoke;
-
 _missile setMissileTarget _laserTarget;
 
 waitUntil {
 	if (!alive _missile) exitWith {true};
-	sleep 3;
+	sleep 10;
 	false
 };
 

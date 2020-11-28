@@ -211,6 +211,8 @@ class CfgFunctions
 			{};
 			class cruiseMissile
 			{};
+			class cruiseMissileStrike
+			{};
 			class dataLinkMsg
 			{};
 			class deleteAtArray
