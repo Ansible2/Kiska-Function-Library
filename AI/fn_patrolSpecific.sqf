@@ -31,7 +31,6 @@ Author:
 	Ansible2 // Cipher,
 	Spectre
 ---------------------------------------------------------------------------- */
-
 params [
 	["_group",grpNull,[grpNull,objNull]],
 	["_numWaypoints",5,[1]],
