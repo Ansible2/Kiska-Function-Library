@@ -204,6 +204,7 @@ class CfgFunctions
 			class CAS
 			{};
 			class paratroopers
+			{};
 			class supportRadioGlobal
 			{};
 		};
@@ -211,6 +212,8 @@ class CfgFunctions
 		{
 			file="Kiska_functions\Utilities";
 			class addArsenal
+			{};
+			class addMagRepack
 			{};
 			class addTeleportAction
 			{};
@@ -227,6 +230,8 @@ class CfgFunctions
 			class dataLinkMsg
 			{};
 			class deleteAtArray
+			{};
+			class doMagRepack
 			{};
 			class findConfigAny
 			{};
