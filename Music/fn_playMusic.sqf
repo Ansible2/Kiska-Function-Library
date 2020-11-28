@@ -25,7 +25,6 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-
 if !(hasInterface) exitWith {};
 
 if !(canSuspend) exitWith {
@@ -40,7 +39,8 @@ params [
 	["_fadeTime",3,[1]]
 ];
 
-if (!(isCLass (configFile / "cfgMusic" / _track)) AND {!(isClass (missionConfigFile / "cfgMusic" / _track))}) exitWith {
+private _trackConfig = [["cfgMusic",_track]] call KISKA_fnc_findConfigAny;
+if (isNull _trackConfig) exitWith {
 	"_track is undefined in music config" call BIS_fnc_error;
 };
 
@@ -54,19 +54,14 @@ if (_musicPlaying) then {
 };
 
 if (_startTime < 0) then {
-	private _duration = getNumber (configFile >> "cfgMusic" >> _track >> "duration"); // will return 0 if undefined
-	
-	if (isNil "_duration") then {
-		_duration = getNumber (missionConfigFile >> "cfgMusic" >> _track >> "duration");
-	};
+	private _duration = [_track] call KISKA_fnc_getMusicDuration;
 
 	_startTIme = round (random [0, _duration / 2, _duration]);
 };
 
-sleep (_fadeTime + 0.1);
+uiSleep (_fadeTime + 0.1);
 
 playMusic [_track,_startTime];
-	
+
 0 fadeMusic 0;
-		
 _fadeTime fadeMusic _volume;

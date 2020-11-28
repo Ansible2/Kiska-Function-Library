@@ -20,7 +20,6 @@ Examples:
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-
 private _track = missionNamespace getVariable ["KISKA_currentTrack",""];
 
 _track

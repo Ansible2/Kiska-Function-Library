@@ -23,16 +23,10 @@ Author(s):
 if (!hasInterface) exitWith {};
 
 addMusicEventHandler ["MusicStart", {
-	params [
-		["_trackClassName","",[""]]
-	];
-	
-	KISKA_musicPlaying = true;
-	KISKA_currentTrack = _trackClassName;
+	_this call KISKA_fnc_musicStartEvent;
 }];
 
 
 addMusicEventHandler ["MusicStop", {
-	KISKA_musicPlaying = false;
-	KISKA_currentTrack = "";
+	call KISKA_fnc_musicStopEvent;
 }];

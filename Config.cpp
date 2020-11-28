@@ -129,6 +129,8 @@ class CfgFunctions
 		class Music
 		{
 			file = "Kiska_functions\Music";
+			class getCurrentRandomMusicTrack
+			{};
 			class getMusicDuration
 			{};
 			class getMusicFromClass
@@ -141,9 +143,21 @@ class CfgFunctions
 			{
 				preInit = 1;
 			};
+			class musicStartEvent
+			{};
+			class musicStopEvent
+			{};
 			class playMusic
 			{};
 			class randomMusic
+			{};
+			class setCurrentRandomMusicTrack
+			{};
+			class stopRandomMusicServer
+			{};
+			class stopRandomMusicClient
+			{};
+			class stopMusic
 			{};
 		};
 		class Respawn
