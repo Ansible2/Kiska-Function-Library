@@ -1,3 +1,4 @@
+#include "..\ViewDistanceLimiterCommonDefines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_handleVdlGuiCheckbox
 
@@ -18,21 +19,27 @@ Examples:
 		_this call KISKA_fnc_handleVdlGuiCheckbox
 	(end)
 
-Author:
+Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 if (!hasInterface) exitWith {};
 
-#include "..\ViewDistanceLimiterCommonDefines.hpp"
+disableSerialization;
 
 params ["_control","_checked"];
+
+// turn number into bool
+_checked = [false,true] select _checked;
 
 if (_checked) then {
 	if !(call KISKA_fnc_isVDLSystemRunning) then {
 		null = [] spawn KISKA_fnc_viewDistanceLimiter;
+		hint "VDL system starting...";
 	} else {
 		VDL_GLOBAL_RUN = true;
+		hint "VDL system resuming...";
 	};
 } else {
 	VDL_GLOBAL_RUN = false;
+	hint "VDL system turning off...";
 };

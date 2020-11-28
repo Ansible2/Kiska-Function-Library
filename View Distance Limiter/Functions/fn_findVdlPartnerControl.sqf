@@ -1,3 +1,4 @@
+#include "..\ViewDistanceLimiterCommonDefines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_findVdlPartnerControl
 
@@ -15,12 +16,13 @@ Examples:
 		_partnerControl = [myControl] call KISKA_fnc_adjustVdlControls;	
 	(end)
 
-Author:
+Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 if (!hasInterface) exitWith {};
 
-#include "..\ViewDistanceLimiterCommonDefines.hpp"
+disableSerialization;
+
 
 #define CONTROL(IDC) (findDisplay VIEW_DISTANCE_LIMITER_DIALOG_IDD) displayCtrl IDC
 

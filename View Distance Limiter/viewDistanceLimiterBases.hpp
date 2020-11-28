@@ -80,7 +80,7 @@
 
 #define TOOLTIP_COLOR_BOX tooltipColorBox[] = {1,1,1,1} // the box frame
 #define TOOLTIP_COLOR_TEXT tooltipColorText[] = {1,1,1,1}
-#define TOOLTIP_COLOR_SHADE tooltipColorShade[] = PROFILE_BACKGROUND_COLOR(0.65) // the interior fill of the box
+#define TOOLTIP_COLOR_SHADE tooltipColorShade[] = {-1,-1,-1,1} // the interior fill of the box
 
 
 class VDL_RSC_EDIT_BASE
@@ -148,8 +148,8 @@ class VDL_RSC_BUTTON_BASE
 	colorDisabled[] = {1,1,1,0.25};
 	colorBackground[] = {0,0,0,0.5};
 	colorBackgroundDisabled[] = {0,0,0,0.5};
-	colorBackgroundActive[] = {0,0,0,1};
-	colorFocused[] = {0,0,0,1};
+	colorBackgroundActive[] = PROFILE_BACKGROUND_COLOR(1);
+	colorFocused[] = {0,0,0,0.5};
 	colorShadow[] = {0,0,0,0};
 	colorBorder[] = {0,0,0,1};
 	TOOLTIP_COLOR_BOX;
@@ -298,52 +298,3 @@ class VDL_RSC_CHECKBOX_BASE
 		1
 	};
 };
-
-
-// define your bas classes here too.
-// they can be named anything so just copy the default one over to here or use with a #include
-
-
-#define BUTTON_COLOR_BACKGROUND {}
-#define BUTTON_COLOR_TEXT {}
-#define BUTTON_COLOR_FOCUSED {}
-/*
-	colorText[] = {1,1,1,1};
-	colorDisabled[] = {1,1,1,0.25};
-	colorBackground[] = {0,0,0,0.5};
-	colorBackgroundDisabled[] = {0,0,0,0.5};
-	colorBackgroundActive[] = {0,0,0,1};
-	colorFocused[] = {0,0,0,1};
-	colorShadow[] = {0,0,0,0};
-	colorBorder[] = {0,0,0,1};
-*/
-
-#define SLIDER_COLOR {}
-#define SLIDER_COLOR_DISABLE {}
-#define SLIDER_COLOR_DISABLED {}
-#define SLIDER_COLOR_ACTIVE {}
-/*
-	color[] = {1,1,1,0.6};
-	colorActive[] = {1,1,1,1};
-	colorDisable[] = {1,1,1,0.4};
-	colorDisabled[] = {1,1,1,0.2};
-	shadow = 0;
-*/
-
-
-
-#define EDIT_BOX_COLOR_BACKGROUND {}
-#define EDIT_BOX_COLOR_TEXT {}
-#define EDIT_BOX_COLOR_ACTIVE {}
-/*
-	colorBackground[] = {0,0,0,0};
-	colorText[] = {0.95,0.95,0.95,1};
-	colorDisabled[] = {1,1,1,0.25};
-	colorSelection[] =
-	{
-		"(profilenamespace getvariable ['GUI_BCG_RGB_R',0.13])",
-		"(profilenamespace getvariable ['GUI_BCG_RGB_G',0.54])",
-		"(profilenamespace getvariable ['GUI_BCG_RGB_B',0.21])",
-		1
-	};
-*/

@@ -18,10 +18,12 @@ Examples:
 		[displayNumber] call KISKA_fnc_handleVdlDialogOpen;
 	(end)
 
-Author:
+Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 if (!hasInterface) exitWith {};
+
+disableSerialization;
 
 #include "..\ViewDistanceLimiterCommonDefines.hpp"
 

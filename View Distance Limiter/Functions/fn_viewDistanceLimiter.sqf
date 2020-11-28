@@ -29,12 +29,14 @@ Examples:
 
 	(end)
 
-Author:
+Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 if (!hasInterface OR {!canSuspend}) exitWith {
 	"Must be run in scheduled environment." call BIS_fnc_error;
 };
+
+disableSerialization;
 
 #include "..\ViewDistanceLimiterCommonDefines.hpp"
 

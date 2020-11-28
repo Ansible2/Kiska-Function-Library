@@ -16,10 +16,12 @@ Examples:
 		_this call KISKA_fnc_setAllVdlButton;
 	(end)
 
-Author:
+Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 if (!hasInterface) exitWith {};
+
+disableSerialization;
 
 params ["_control"];
 private _partnerControls = [_control] call KISKA_fnc_findVDLPartnerControl;

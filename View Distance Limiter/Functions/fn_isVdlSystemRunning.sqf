@@ -16,10 +16,12 @@ Examples:
 		_isSystemRunning = call KISKA_fnc_isVdlSystemRunning;
 	(end)
 
-Author:
+Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 if (!hasInterface) exitWith {false};
+
+disableSerialization;
 
 #include "..\ViewDistanceLimiterCommonDefines.hpp"
 

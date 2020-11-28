@@ -1,3 +1,5 @@
+#include "..\controlTypes.hpp"
+#include "..\ViewDistanceLimiterCommonDefines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_setAllVdlButton
 
@@ -16,13 +18,12 @@ Examples:
 		[_controlToRead] call KISKA_fnc_setVdlValue;
 	(end)
 
-Author:
+Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 if (!hasInterface) exitWith {};
 
-#include "..\controlTypes.hpp"
-#include "..\ViewDistanceLimiterCommonDefines.hpp"
+disableSerialization;
 
 params [
 	["_controlToRead",controlNull,[controlNull]]
