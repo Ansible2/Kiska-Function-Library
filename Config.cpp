@@ -213,6 +213,8 @@ class CfgFunctions
 			{};
 			class podDrop
 			{};
+			class removeArsenal
+			{};
 			class lookHere
 			{};
 			class setTaskComplete
