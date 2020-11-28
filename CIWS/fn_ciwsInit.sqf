@@ -52,14 +52,16 @@ if !(_turret isKindOf "AAA_System_01_base_F") exitWith {
 	"Improper turret type used" call BIS_fnc_error
 };
 
+
+private _incoming = [];
 private _fn_incoming = {
 	params ["_turret","_searchDistance"];
 
-	private _incoming = _turret nearObjects ["RocketBase",_searchDistance];
-	_incoming = _incoming + (_turret nearObjects ["MissileBase",_searchDistance]);
-	_incoming = _incoming + (_turret nearObjects ["ShellBase",_searchDistance]);
-	// rocket arty (sepcically Zamak arty) do not fall under these bases
-	_incoming = _incoming + (_turret nearObjects ["R_230mm_HE",_searchDistance]);
+	_incoming = _turret nearObjects ["RocketBase",_searchDistance];
+	_incoming append (_turret nearObjects ["MissileBase",_searchDistance]);
+	_incoming append (_turret nearObjects ["ShellBase",_searchDistance]);
+	// rocket arty (specically Zamak arty) do not fall under these bases
+	_incoming append (_turret nearObjects ["R_230mm_HE",_searchDistance]);
 
 	_incoming
 };
@@ -69,7 +71,7 @@ _turret setVariable ["KISKA_runCIWS",true];
 while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 	// nearestObjects and nearEntities do not work here
 	// get incoming projectiles
-	private _incoming = [_turret,_searchDistance] call _fn_incoming;
+	[_turret,_searchDistance] call _fn_incoming;
 	
 	// if projectiles are present then proceed, else sleep
 	if !(_incoming isEqualTo []) then {
@@ -78,7 +80,7 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 		/// searching for incoming projectiles constantly after the first is detected
 		while {
 			sleep 1;
-			_incoming = [_turret,_searchDistance] call _fn_incoming;
+			[_turret,_searchDistance] call _fn_incoming;
 			if !(_incoming isEqualTo []) then {true} else {false}
 		} do {
 			// check if sound alarm requested and that the alarm is not already sounding
@@ -101,7 +103,7 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 					// get turrets pitch angle (0.6 offset is baked into source anim)
 					private _turretPitchAngle = abs ((deg (_turret animationSourcePhase "maingun")) + 0.6);
 					// get the angle needed to target
-					private _angleToTarget = abs (acos ((_turret distance2D _target) / (_turret distance _target)));
+					private _angleToTarget = abs (acos ((_turret distance2D _target) / (_turret vectorDistance _target)));
 					// get the difference between turrets current pitch and the targets actual angle
 					private _currentPitchTolerance = (selectMax [_turretPitchAngle,_angleToTarget]) - (selectMin [_turretPitchAngle,_angleToTarget]);
 					
@@ -121,10 +123,13 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 					// get target alt
 					private _targetAlt = (getPosWorldVisual _target) select 2;
 										
-					if ((_currentPitchTolerance <= _pitchTolerance AND 
+					if (
+						(_currentPitchTolerance <= _pitchTolerance AND 
 						{_currentRotTolerance <= _rotationTolerance} AND 
 						{_targetALt >= _engageAltitude}) OR 
-						{(_turret distance _target) >= (_searchDistance * 0.75)} OR {!alive _target}) 
+						{(_turret distance _target) >= (_searchDistance * 0.75)} OR 
+						{isNull _target}
+					) 
 					exitWith {true};
 
 					sleep 0.25; 
@@ -132,7 +137,7 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 					false
 				};
 
-				if ((_turret distance _target) <= _searchDistance AND {alive _target}) then {
+				if ((_turret distance _target) <= _searchDistance AND {!isNull _target}) then {
 
 					// track if unit actually got off shots
 					private _firedShots = false;
