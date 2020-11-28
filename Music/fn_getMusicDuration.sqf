@@ -20,6 +20,8 @@ Examples:
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_getMusicDuration";
+
 params [
 	["_track","",["",configNull]]
 ];

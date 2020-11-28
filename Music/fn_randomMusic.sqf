@@ -40,8 +40,15 @@ Examples:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 #define SLEEP_BUFFER 3
+
+scriptName "KISKA_fnc_randomMusic";
+
 if !(isServer) exitWith {
-	"Must be run on server" call BIS_fnc_error;
+	"KISKA_fnc_randomMusic Must be run on server" call BIS_fnc_error;
+};
+
+if (!canSuspend) exitWith {
+	"KISKA_fnc_randomMusic must be run in scheduled" call BIS_fnc_error;
 };
 
 params [
@@ -82,15 +89,10 @@ if !(isDedicated) then {
 
 // play song
 private _targetId = [0,-2] select isDedicated;
+// volume is at 0.5 because ambient tracks should be a bit less pronounced
 null = [_selectedTrack,0,_doInterrupt,0.5] remoteExec ["KISKA_fnc_playMusic",_targetId];
 null = [_selectedTrack] remoteExecCall ["KISKA_fnc_setCurrentRandomMusicTrack",_targetId];
 
-/*
-// if it is the intial running of the system
-if (isNil "KISKA_musicSystemIsRunning") then {
-	KISKA_musicSystemIsRunning = true;
-};
-*/
 
 // clear array of selected Track
 _musicTracks deleteAt (_musicTracks findIf {_x isEqualTo _selectedTrack});

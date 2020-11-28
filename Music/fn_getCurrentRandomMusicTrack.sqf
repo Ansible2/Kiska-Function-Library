@@ -23,6 +23,8 @@ Examples:
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_getCurrentRandomMusicTrack";
+
 private _return = missionNamespace getVariable ["KISKA_currentRandomTrack",""];
 
 _return
