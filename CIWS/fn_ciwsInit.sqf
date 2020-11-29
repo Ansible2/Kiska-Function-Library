@@ -68,6 +68,23 @@ private _fn_incoming = {
 
 _turret setVariable ["KISKA_runCIWS",true];
 
+private [
+	"_target",
+	"_targetDistance",
+	"_turretPitchAngle",
+	"_angleToTarget",
+	"_currentPitchTolerance",
+	"_turretVector",
+	"_turretDir",
+	"_relativeDir",
+	"_currentRotTolerance",
+	"_targetAlt",
+	"_firedShots",
+	"_turretPitchAngle",
+	"_targetPos",
+	"_targetBoom"
+];	
+
 while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 	// nearestObjects and nearEntities do not work here
 	// get incoming projectiles
@@ -90,8 +107,8 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 			};
 
 			_turret setCombatMode "RED";
-			private _target = _incoming select 0;
-			private _targetDistance = _target distance _turret;
+			_target = _incoming select 0;
+			_targetDistance = _target distance _turret;
 
 			if (_targetDistance > 25 AND {!(_target getVariable ["KISKA_CIWS_engaged",false])}) then {
 				waitUntil {
@@ -101,27 +118,27 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 					//// turret pitch
 					
 					// get turrets pitch angle (0.6 offset is baked into source anim)
-					private _turretPitchAngle = abs ((deg (_turret animationSourcePhase "maingun")) + 0.6);
+					_turretPitchAngle = abs ((deg (_turret animationSourcePhase "maingun")) + 0.6);
 					// get the angle needed to target
-					private _angleToTarget = abs (acos ((_turret distance2D _target) / (_turret vectorDistance _target)));
+					_angleToTarget = abs (acos ((_turret distance2D _target) / (_turret vectorDistance _target)));
 					// get the difference between turrets current pitch and the targets actual angle
-					private _currentPitchTolerance = (selectMax [_turretPitchAngle,_angleToTarget]) - (selectMin [_turretPitchAngle,_angleToTarget]);
+					_currentPitchTolerance = (selectMax [_turretPitchAngle,_angleToTarget]) - (selectMin [_turretPitchAngle,_angleToTarget]);
 					
 
 					//// turret rotation
 					
 					// get turrets rotational angle
-					private _turretVector = _turret weaponDirection (currentWeapon _turret);
-					private _turretDir = (_turretVector select 0) atan2 (_turretVector select 1);
+					_turretVector = _turret weaponDirection (currentWeapon _turret);
+					_turretDir = (_turretVector select 0) atan2 (_turretVector select 1);
 					_turretDir = [_turretDir] call CBA_fnc_simplifyAngle;
 					// get relative rotational angle to the target
-					private _relativeDir = _turret getDir _target;				
+					_relativeDir = _turret getDir _target;				
 					// get the degree between where the target is at relative to the turret position and its actual gun
-					private _currentRotTolerance = (_turretDir max _relativeDir) - (_turretDir min _relativeDir);
+					_currentRotTolerance = (_turretDir max _relativeDir) - (_turretDir min _relativeDir);
 
 					
 					// get target alt
-					private _targetAlt = (getPosWorldVisual _target) select 2;
+					_targetAlt = (getPosWorldVisual _target) select 2;
 										
 					if (
 						(_currentPitchTolerance <= _pitchTolerance AND 
@@ -140,12 +157,12 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 				if ((_turret distance _target) <= _searchDistance AND {!isNull _target}) then {
 
 					// track if unit actually got off shots
-					private _firedShots = false;
+					_firedShots = false;
 
 					for "_i" from 0 to (random [50,100,150]) do {
 						// keep watching target
 						_turret doWatch _target;
-						private _turretPitchAngle = (deg (_turret animationSourcePhase "maingun")) + 0.6;
+						_turretPitchAngle = (deg (_turret animationSourcePhase "maingun")) + 0.6;
 						
 						// only fire above specified angle
 						if (_turretPitchAngle >= _doNotFireBelowAngle) then {
@@ -168,8 +185,8 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 
 					// only delete if shots were fired
 					if (_firedShots) then {
-						private _targetPos = getPosWorldVisual _target;
-						private _targetBoom = getText (configFile >> "CfgAmmo" >> (typeOf _target) >> "explosionEffects");
+						_targetPos = getPosWorldVisual _target;
+						_targetBoom = getText (configFile >> "CfgAmmo" >> (typeOf _target) >> "explosionEffects");
 						createVehicle [_targetBoom,_targetPos,[],0,"CAN_COLLIDE"];
 						createVehicle ["HelicopterExploBig",_targetPos,[],0,"CAN_COLLIDE"];
 						
