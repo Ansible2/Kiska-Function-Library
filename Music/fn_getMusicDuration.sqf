@@ -13,7 +13,7 @@ Returns:
 Examples:
     (begin example)
 
-		["LeadTrack01_F_Curator"] call KISKA_fnc_getMusicDuration;
+		_duration = ["LeadTrack01_F_Curator"] call KISKA_fnc_getMusicDuration;
 
     (end)
 
