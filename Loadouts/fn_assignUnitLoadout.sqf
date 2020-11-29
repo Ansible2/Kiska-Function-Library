@@ -7,7 +7,6 @@ Description:
 	See examples...
 
 Parameters:
-
 	0: _prefix <STRING> - The string prefix you put on the end to the units className
 	1: _units <ARRAY, GROUP, or OBJECT> - The unit(s) to apply the function to
 
@@ -26,7 +25,7 @@ Examples:
 
 		unit1 = "I_E_Soldier_TL_F" createVehicle (position player);
 
-		["JTFS_",unit1] spawn KISKA_fnc_assignUnitLoadout
+		null = ["JTFS_",unit1] spawn KISKA_fnc_assignUnitLoadout
 
     (end)
 
