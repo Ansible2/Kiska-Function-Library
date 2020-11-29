@@ -243,6 +243,8 @@ class CfgFunctions
 			{};
 			class hintDiary
 			{};
+			class isAdminOrHost
+			{};
 			class intel
 			{};
 			class isPatchLoaded
