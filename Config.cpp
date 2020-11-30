@@ -195,6 +195,8 @@ class CfgFunctions
 			{};
 			class radioChatter
 			{};
+			class supportRadioGlobal
+			{};
 		};
 		class Supports
 		{
@@ -204,8 +206,6 @@ class CfgFunctions
 			class CAS
 			{};
 			class paratroopers
-			{};
-			class supportRadioGlobal
 			{};
 		};
 		class Utilities
