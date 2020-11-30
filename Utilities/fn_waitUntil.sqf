@@ -11,7 +11,7 @@ Parameters:
 	2: _condition <CODE> - Code that must evaluate as a BOOL
 	3. _parameters <ARRAY> - An array of local parameters that can be accessed with _this
 	4. _unscheduled <BOOL> - Run in unscheduled environment
-	5. _trigger <BOOL> - Make a trigger instead of other waitUntil methods. Requires _unscheduled to be TRUE. _parameters are acsesssed with: thisTrigger getVariable "KISK_args"
+	5. _trigger <BOOL> - Make a trigger instead of other waitUntil methods. Requires _unscheduled to be TRUE. _parameters are acsesssed with: thisTrigger getVariable "KISKA_args"
 
 Returns:
 	BOOL
@@ -35,8 +35,6 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-
-
 params [
 	["_interval",0.5,[0]],
 	["_function",{},[{}]],
@@ -63,13 +61,7 @@ if (_unscheduled) then {
 
 			[
 				{
-					params [
-						["_interval",0.5,[0]],
-						["_function",{},[{}]],
-						["_condition",true,[{},true]],
-						["_parameters",[],[[]]],
-						["_unscheduled",true,[true]]
-					];
+					params ["_interval","_function","_condition","_parameters","_unscheduled"];
 
 					if (_parameters call _condition) then {_parameters call _function} else {_this call KISKA_fnc_waitUntil};
 				},
@@ -83,13 +75,8 @@ if (_unscheduled) then {
 } else {
 
 	[_interval,_function,_condition,_parameters] spawn {
-		params [
-			["_interval",0.5,[0]],
-			["_function",{},[{}]],
-			["_condition",true,[{},true]],
-			["_parameters",[],[[]]]
-		];
-
+		params ["_interval","_function","_condition","_parameters"];
+		
 		waitUntil {
 			sleep _interval;
 			
