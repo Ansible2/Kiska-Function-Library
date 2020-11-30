@@ -71,7 +71,7 @@ if (isNull _unitWithCurator) then {
 				
 				null = [_curatorObject] remoteExec ["unAssignCurator",2];
 				
-				sleep 2;
+				sleep 5;
 				false
 			};
 		};
