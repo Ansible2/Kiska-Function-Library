@@ -97,7 +97,8 @@ _planeClassWeapons apply {
 if (_weaponsToUse isEqualTo []) exitwith {
 	["No weapon of types %2 found on '%1', moving to default Aircraft",_planeClass,_attackTypesString] call BIS_fnc_error;
 	// exit to default aircraft type 
-	null = [_attackPosition,_attackTypeID,_attackDirection,"B_Plane_CAS_01_F"] spawn KISKA_fnc_CAS;
+	_this set [3,"B_Plane_CAS_01_F"];
+	null = _this spawn KISKA_fnc_CAS;
 };
 
 
@@ -107,7 +108,7 @@ if (_weaponsToUse isEqualTo []) exitwith {
 
 ---------------------------------------------------------------------------- */
 KISKA_fnc_casAttack = {
-	params ["_plane","_dummyTarget","_weaponsToUse","_attackTypeID"];
+	params ["_plane","_dummyTarget","_weaponsToUse","_attackTypeID","_attackPosition","_breakOffDistance"];
 	
 	private ["_weapon_temp","_weaponArray_temp"];
 	private _pilot = currentPilot _plane;
@@ -118,6 +119,7 @@ KISKA_fnc_casAttack = {
 		_weaponArray_temp = _weaponsToUse select (_weaponsToUse findIf {(_x select 2) == "machinegun"});
 		_weapon_temp = _weaponArray_temp select 0;
 		for "_i" from 1 to _numRounds do {
+			if ((_plane distance _attackPosition) < _breakOffDistance) exitWith {};
 			_pilot fireAtTarget [_dummyTarget,_weapon_temp];
 			sleep 0.03;
 		};
@@ -128,6 +130,7 @@ KISKA_fnc_casAttack = {
 		_weaponArray_temp = _weaponsToUse select (_weaponsToUse findIf {(_x select 2) == "rocketlauncher"});
 		_weapon_temp = _weaponArray_temp select 0;
 		for "_i" from 1 to _numRounds do {
+			if ((_plane distance _attackPosition) < _breakOffDistance) exitWith {};
 			_pilot fireAtTarget [_dummyTarget,_weapon_temp];
 			sleep 0.5;
 		};
@@ -240,7 +243,7 @@ while {!(_plane getVariable ["KISKA_completedFiring",false])} do {
 			_plane dowatch laserTarget _dummyTarget;
 			_plane dotarget laserTarget _dummyTarget;
 
-			null = [_plane,_dummyTarget,_weaponsToUse,_attackTypeID] spawn KISKA_fnc_casAttack;
+			null = [_plane,_dummyTarget,_weaponsToUse,_attackTypeID,_attackPosition,_breakOffDistance] spawn KISKA_fnc_casAttack;
 		} else {
 			// ensures strafing effect with the above setVelocityTransformation
 			if !("bomblauncher" in _attackTypesString) then {
