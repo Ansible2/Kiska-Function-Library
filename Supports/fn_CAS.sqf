@@ -97,7 +97,7 @@ _planeClassWeapons apply {
 if (_weaponsToUse isEqualTo []) exitwith {
 	["No weapon of types %2 found on '%1', moving to default Aircraft",_planeClass,_attackTypesString] call BIS_fnc_error;
 	// exit to default aircraft type 
-	null = [_attackPosition,_attackTypeID,_attackDirection,"B_Plane_CAS_01_F"] spawn BLWK_fnc_CAS;
+	null = [_attackPosition,_attackTypeID,_attackDirection,"B_Plane_CAS_01_F"] spawn KISKA_fnc_CAS;
 };
 
 
@@ -106,7 +106,7 @@ if (_weaponsToUse isEqualTo []) exitwith {
 	Define attack function
 
 ---------------------------------------------------------------------------- */
-BLWK_fnc_casAttack = {
+KISKA_fnc_casAttack = {
 	params ["_plane","_dummyTarget","_weaponsToUse","_attackTypeID"];
 	
 	private ["_weapon_temp","_weaponArray_temp"];
@@ -135,22 +135,22 @@ BLWK_fnc_casAttack = {
 	
 	if (_attackTypeID isEqualTo GUN_RUN_ID) exitWith {
 		[200] call _fn_fireGun;
-		_plane setVariable ["BLWK_completedFiring",true];
+		_plane setVariable ["KISKA_completedFiring",true];
 	};
 	if (_attackTypeID isEqualTo ROCKETS_ID) exitWith {
 		[8] call _fn_fireRockets;
-		_plane setVariable ["BLWK_completedFiring",true];
+		_plane setVariable ["KISKA_completedFiring",true];
 	};
 	if (_attackTypeID isEqualTo GUNS_AND_ROCKETS_ID) exitWith {
 		[100] call _fn_fireGun;
 		[4] call _fn_fireRockets;
-		_plane setVariable ["BLWK_completedFiring",true];
+		_plane setVariable ["KISKA_completedFiring",true];
 	};
 	if (_attackTypeID isEqualTo BOMBS_ID) exitWith {
 		_weaponArray_temp = _weaponsToUse select (_weaponsToUse findIf {(_x select 2) == "bomblauncher"});
 		_weapon_temp = _weaponArray_temp select 0;
 		_pilot fireAtTarget [_dummyTarget,_weapon_temp];
-		_plane setVariable ["BLWK_completedFiring",true];
+		_plane setVariable ["KISKA_completedFiring",true];
 	};
 };
 
@@ -206,7 +206,7 @@ private _timeAfterFlight = time + _flightTime;
 private _planeVectorUp = vectorUpVisual _plane;
 
 private ["_interval","_planeVectorDirTo","_planeVectorDirFrom"];
-while {!(_plane getVariable ["BLWK_completedFiring",false])} do {
+while {!(_plane getVariable ["KISKA_completedFiring",false])} do {
 	//--- Set the plane approach vector
 	_interval = linearConversion [_startTime,_timeAfterFlight,time,0,1];
 	_planeVectorDirTo = _planePositionASL vectorFromTo _attackPosition;
@@ -229,24 +229,24 @@ while {!(_plane getVariable ["BLWK_completedFiring",false])} do {
 		
 		
 		//private "_dummyTarget";
-		if !(_plane getVariable ["BLWK_startedFiring",false]) then {
-			_plane setVariable ["BLWK_startedFiring",true];
+		if !(_plane getVariable ["KISKA_startedFiring",false]) then {
+			_plane setVariable ["KISKA_startedFiring",true];
 			// create a target to shoot at
 			private _dummyTargetClass = ["LaserTargetE","LaserTargetW"] select (_planeSide getfriend west > 0.6);
 			private _dummyTarget = createvehicle [_dummyTargetClass,[0,0,0],[],0,"NONE"];
-			_plane setVariable ["BLWK_casDummyTarget",_dummyTarget];
+			_plane setVariable ["KISKA_casDummyTarget",_dummyTarget];
 			_dummyTarget setPosASL _attackPosition;	
 			_plane reveal laserTarget _dummyTarget;
 			_plane dowatch laserTarget _dummyTarget;
 			_plane dotarget laserTarget _dummyTarget;
 
-			null = [_plane,_dummyTarget,_weaponsToUse,_attackTypeID] spawn BLWK_fnc_casAttack;
+			null = [_plane,_dummyTarget,_weaponsToUse,_attackTypeID] spawn KISKA_fnc_casAttack;
 		} else {
 			// ensures strafing effect with the above setVelocityTransformation
 			if !("bomblauncher" in _attackTypesString) then {
 				// for some reason, private variables outside the main if here do not work
 				// had to use this method of storing the target instead
-				private _dummyTarget = _plane getVariable "BLWK_casDummyTarget";
+				private _dummyTarget = _plane getVariable "KISKA_casDummyTarget";
 				_attackPosition = AGLToASL(_dummyTarget getPos [0.1,(getDirVisual _plane)]);
 				_dummyTarget setPosASL _attackPosition;
 			};
