@@ -14,7 +14,7 @@ Returns:
 
 Examples:
     (begin example)
-		Initialized by KISKA_fnc_initializeRespawnSystem
+		[player,myMarker,myMarkerText] call KISKA_fnc_updateRespawnMarker;
     (end)
 
 Author:
