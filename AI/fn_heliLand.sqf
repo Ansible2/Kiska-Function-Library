@@ -14,11 +14,11 @@ Returns:
 
 Examples:
     (begin example)
-		[] call KISKA_fnc_heliLand;
+		[myHeli,position player] call KISKA_fnc_heliLand;
     (end)
 
 Author:
-	Karel Moricky
+	Karel Moricky,
 	Modified By: Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_heliLand";
@@ -38,6 +38,8 @@ if !(_unit isKindOf "Helicopter") then {
 	"KISKA_fnc_heliLand: _unit isn't a helicopter" call BIS_fnc_error;
 	false
 };
+
+_unit setVariable ["KISKA_heliLanded",false];
 
 if (_landingPosition isEqualType objNull) then {
 	_landingPosition = getPosATL _landingPosition;
@@ -62,10 +64,14 @@ null = [_unit,_landingPosition,_landMode] spawn {
 		} else {
 			_unitAlt = (getPosATL _unit) select 2;
 			if (isTouchingGround _unit OR {_unitAlt < 0.1}) then {
-				_landed = true;				
-				sleep 1;
+				_landed = true;
+				// reinforce land
+				// sometimes, the helicopter will "land" but immediately take off again
+				// this is why the thing is told to land again
+				sleep 2;
 				// keep engine running
 				_unit engineon true;
+				_unit land _landMode;
 			};
 		};
 
