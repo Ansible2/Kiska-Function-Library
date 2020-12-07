@@ -28,6 +28,8 @@ class CfgFunctions
 			{};
 			class driveTo
 			{};
+			class heliLand
+			{};
 			class heliPatrol
 			{};
 			class patrolSpecific
