@@ -249,6 +249,8 @@ class CfgFunctions
 			{};
 			class isPatchLoaded
 			{};
+			class log
+			{};
 			class markPositions
 			{};
 			class pasteContainerCargo
