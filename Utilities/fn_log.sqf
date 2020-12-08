@@ -36,4 +36,5 @@ if (_message isEqualType [] AND {_joinString}) then {
 
 diag_log _message;
 
+
 _message
