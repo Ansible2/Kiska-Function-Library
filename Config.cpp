@@ -237,6 +237,8 @@ class CfgFunctions
 			{};
 			class findConfigAny
 			{};
+			class findIfBool
+			{};
 			class getPlayerObject
 			{};
 			class getVariableTarget
