@@ -46,6 +46,7 @@ _vehicle setVariable ["KISKA_doAAA",true];
 while {_vehicle getVariable "KISKA_doAAA"} do {
 	_entitiesInRadius = nearEntities ["air",_radius];
 
+	// if any air units are found
 	if (_entitiesInRadius isEqualTo []) then {
 		private _index = _entitiesInRadius findIf {
 			[side _x,_AAAside] call BIS_fnc_sideIsEnemy;
@@ -53,6 +54,7 @@ while {_vehicle getVariable "KISKA_doAAA"} do {
 
 		// if an enemy aircraft is found AND _vehicle is not already engaging
 		if (_index != -1 AND {!_doFire}) then {
+			_doFire = true;
 			_gunner enableAI "WEAPONAIM";
 		} else {
 			_doFire = false;
