@@ -66,7 +66,7 @@ if (_dropArray isEqualType []) then {
 
 private _chuteType = ["B_Parachute","CUP_T10_Parachute_backpack"] select (isClass (configfile >> "CfgVehicles" >> "CUP_T10_Parachute_backpack"));
 
-localNamespace setVariable ["KISKA_fnc_staticline_doEJect",{
+localNamespace setVariable ["KISKA_fnc_staticline_doEject",{
 	params ["_unit","_chuteType","_index","_invincibleOnDrop"];
 
 	sleep (_index / 5); // delay for getting a spread of units
