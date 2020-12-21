@@ -16,6 +16,8 @@ class CfgFunctions
 		class AI
 		{
 			file = "Kiska_functions\AI";
+			class AAAZone
+			{};
 			class airAssault
 			{};
 			class arty
