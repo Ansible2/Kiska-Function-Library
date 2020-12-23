@@ -34,6 +34,7 @@ Examples:
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_setTaskComplete";
 
 params [
     ["_taskID","",["",[]]],

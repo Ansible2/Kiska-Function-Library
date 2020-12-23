@@ -6,7 +6,6 @@ Description:
 	Exact ammo counts will be preserved even inside of an item, such as magazines inside of a vest or backpack.
 
 Parameters:
-
 	0: _containerToLoad <OBJECT> - The container to add the cargo to.
 	1: _cargo <ARRAY> - An array of various items, magazines, and weapons formatted from KISKA_fnc_copyContainerCargo
 
@@ -23,6 +22,8 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_pasteContainerCargo";
+
 params [
 	["_containerToLoad",objNull,[objNull]],
 	["_cargo",[],[[]]]
