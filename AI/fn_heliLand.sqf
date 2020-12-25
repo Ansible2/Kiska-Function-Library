@@ -21,7 +21,8 @@ Author:
 	Karel Moricky,
 	Modified By: Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_heliLand";
+#define SCRIPT_NAME "KISKA_fnc_heliLand"
+scriptName SCRIPT_NAME;
 
 params [
 	["_unit",objNull,[objNull]],
@@ -30,12 +31,13 @@ params [
 ];
 
 if (isNull _unit) exitWith {
-	"KISKA_fnc_heliLand: _unit isNull" call BIS_fnc_error;
+	[SCRIPT_NAME,[_unit,"is a null object"],true,true] call KISKA_fnc_log;
 	false
 };
 
-if !(_unit isKindOf "Helicopter") then {
-	"KISKA_fnc_heliLand: _unit isn't a helicopter" call BIS_fnc_error;
+// need to expand to VTOL
+if (!(_unit isKindOf "Helicopter") AND {(_unit isKindOf "VTOL_Base_F")}) then {
+	[SCRIPT_NAME,[_unit,"is not a helicopter or VTOL, exiting..."],true,true] call KISKA_fnc_log;
 	false
 };
 

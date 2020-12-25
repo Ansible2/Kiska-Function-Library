@@ -19,7 +19,7 @@ Parameters:
 	
 
 Returns:
-	BOOL
+	<BOOL> - True if helicopter will patrol, false if problem encountered
 
 Examples:
     (begin example)
@@ -29,7 +29,8 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-
+#define SCRIPT_NAME "KISKA_fnc_heliPatrol"
+scriptName SCRIPT_NAME;
 
 params [
     ["_helicopter",objNull,[objNull]],
@@ -41,24 +42,24 @@ params [
 ];
 
 if (isNull _helicopter) exitWith {
-    "_helicopter isNull" call BIS_fnc_error;
+    [SCRIPT_NAME,[_helicopter,"is a null object"],true,true] call KISKA_fnc_log;
     false
 };
 
 if (_patrolHeight > _spotDistance3D) exitWith {
-    "_patrolHeight is higher then _spotDistance3D. Nothing will be spotted" call BIS_fnc_error;
+    [SCRIPT_NAME,[_patrolHeight,"is higher then",_spotDistance3D,": The helicopter can't spot anything"],true,true] call KISKA_fnc_log;
     false
 };
 
 if !(_patrolPoints isEqualTypeAny [objNull,[]]) exitWith {
-    "_patrolPoints need to be either objects or groups" call BIS_fnc_error;
+    [SCRIPT_NAME,[_patrolPoints,"need to be either positions or objects, exiting..."],true,true] call KISKA_fnc_log;
     false
 };
 
 private _pilot = currentPilot _helicopter;
 
 if (isNull _pilot) exitWith {
-    "No pilot found in helicopter" call BIS_fnc_error;
+    [SCRIPT_NAME,["No pilot found in",_helicopter],true,true] call KISKA_fnc_log;
     false
 };
 

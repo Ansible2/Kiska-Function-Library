@@ -9,7 +9,7 @@ Parameters:
 	1: _vehicle : <OBJECT> - The vehicle to put units into
 
 Returns:
-	BOOL
+	<BOOL> - True if crew was set, false if problem encountered
 
 Examples:
     (begin example)
@@ -21,9 +21,13 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+#define SCRIPT_NAME "KISKA_fnc_setCrew"
+scriptName SCRIPT_NAME;
+
 params [
 	["_crew",grpNull,[[],grpNull,objNull]],
-	["_vehicle",objNull,[objNull]]
+	["_vehicle",objNull,[objNull]],
+	["_deleteCrewIfNull",true,[true]]
 ];
 
 if (_crew isEqualType grpNull) then {_crew = units _crew};
@@ -31,15 +35,18 @@ if (_crew isEqualType grpNull) then {_crew = units _crew};
 if (_crew isEqualType objNull) then {_crew = [_crew]};
 
 if (_crew isEqualTo []) exitWith {
-	"_crew is undefined" call BIS_fnc_error;
+	[SCRIPT_NAME,["Found that",_crew,"is not defined, exiting..."],true,true] call KISKA_fnc_log;
 	false
 };
 
 if (isNull _vehicle OR {!(alive _vehicle)}) exitWith {
-	"Vehicle isNull, crew will be deleted" call BIS_fnc_error;
+	[SCRIPT_NAME,["Found that",_vehicle,"is either null or dead already, exiting..."]] call KISKA_fnc_log;
 	
-	_crew apply {
-		deleteVehicle _x;
+	if (_deleteCrewIfNull) then {
+		[SCRIPT_NAME,["Deleting crew of",_vehicle,":",_crew]] call KISKA_fnc_log;
+		_crew apply {
+			deleteVehicle _x;
+		};
 	};
 
 	false
@@ -48,7 +55,10 @@ if (isNull _vehicle OR {!(alive _vehicle)}) exitWith {
 _crew apply {
 	private _movedIn = _x moveInAny _vehicle;
 
-	if !(_movedIn) then {deleteVehicle _x};
+	if !(_movedIn) then {
+		[SCRIPT_NAME,["Deleted excess unit",_x]] call KISKA_fnc_log;
+		deleteVehicle _x
+	};
 };
 
 true

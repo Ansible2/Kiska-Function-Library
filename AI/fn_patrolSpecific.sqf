@@ -5,7 +5,6 @@ Description:
 	Creates a cycle of waypoints for a patrol using a predetermined set of possible points
 
 Parameters:
-
 	0: _group <GROUP or OBJECT> - The group or unit to give waypoints to
 	1: _numWaypoints <NUMBER> - The number of waypoints 
 	2: _postions <ARRAY> - An array of possible positions to patrol between, can be either positions or objects
@@ -18,19 +17,20 @@ Parameters:
 	7: _formation <STRING> - setWaypointFormation, takes "NO CHANGE", "COLUMN", "STAG COLUMN", "WEDGE", "ECH LEFT", "ECH RIGHT", "VEE", "LINE", "FILE", and "DIAMOND"
 
 Returns:
-	BOOL 
+	<BOOL> - True if units will patrol, false if problem encountered
 
 Examples:
     (begin example)
-
 		[_group,5,_positionsArray] call KISKA_fnc_patrolSpecific;
-
     (end)
 
 Author:
 	Ansible2 // Cipher,
 	Spectre
 ---------------------------------------------------------------------------- */
+#define SCRIPT_NAME "KISKA_fnc_patrolSpecific"
+scriptName SCRIPT_NAME;
+
 params [
 	["_group",grpNull,[grpNull,objNull]],
 	["_numWaypoints",5,[1]],
@@ -43,27 +43,27 @@ params [
 ];
 
 if !(local _group) exitWith {
-	"_group must be local to execution machine" call BIS_fnc_error;
+	[SCRIPT_NAME,["Found that",_group,"was not local, exiting..."],true,true] call KISKA_fnc_log;
 	false
 };
 
 if (isNull _group) exitwith {
-	"Null _group" call BIS_fnc_error;
+	[SCRIPT_NAME,["Found that",_group,"was null, exiting..."],true,true] call KISKA_fnc_log;
 	false
 };
 
 if (_numWaypoints < 2) exitwith {
-	"_numWaypoints must be at least 2" call BIS_fnc_error;
+	[SCRIPT_NAME,[_numWaypoints,"is not above 2, needs to be atleast 2, exiting..."],true,true] call KISKA_fnc_log;
 	false
 };
 
 if (_positions isEqualTo []) exitwith {
-	"Empty _position array" call BIS_fnc_error;
+	[SCRIPT_NAME,[_positions,": No positions passed, exiting..."],true,true] call KISKA_fnc_log;
 	false
 };
 
 if ((count _positions) < 1) exitwith {
-	"Not enough potential positions inside of _positions array" call BIS_fnc_error;
+	[SCRIPT_NAME,[_positions,": Need more positions to be passed. Exiting..."],true,true] call KISKA_fnc_log;
 	false
 };
 

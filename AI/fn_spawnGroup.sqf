@@ -5,7 +5,6 @@ Description:
 	Spawns a group, adds to curator, and sets to aware. Based on selected unit types
 
 Parameters:
-
 	0: _numberOfUnits <NUMBER> - Number of units to spawn
 	1: _unitTypes <ARRAY> - Unit types to select randomly from (can be weighted array)
 	2: _side <SIDE> - ...
@@ -13,19 +12,18 @@ Parameters:
 	4. _enableDynamicSimulation <BOOL> - ... (optional)
 
 Returns:
-	_spawnedGroup <GROUP> 
+	<GROUP> - The group created by the function
 
 Examples:
     (begin example)
-
 		_spawnedGroup = [4, _listOfUnitTypes, OPFOR, [0,0,0], true] call KISKA_fnc_spawnGroup;
-
     (end)
 
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_spawnGroup";
+#define SCRIPT_NAME "KISKA_fnc_spawnGroup"
+scriptName SCRIPT_NAME;
 
 params [
 	["_numberOfUnits",1,[1]],
@@ -37,7 +35,7 @@ params [
 
 // Verify params
 if (_numberOfUnits < 1) exitWith {
-	["Less then one unit to spawn"] call BIS_fnc_error;
+	[SCRIPT_NAME,["_numberOfUnits is",_numberOfUnits,":","needs to be atleast 1. Exiting..."]] call KISKA_fnc_log;
 };
 
 // filter out bad unit types
@@ -52,13 +50,13 @@ private _weightedArray = _unitTypes isEqualTypeParams ["",1];
 				_unitTypesFiltered pushBack (_unitTypes select (_forEachIndex + 1));
 			};
 		} else {
-			["Unit type %1 is invalid",_x] call BIS_fnc_error;
+			[SCRIPT_NAME,["Found invalid class",_x]] call KISKA_fnc_log;
 		};
 	};
 } forEach _unitTypes;
 
 if (_unitTypesFiltered isEqualTo []) exitWith {
-	["No valid unitTypes passed"] call BIS_fnc_error;
+	[SCRIPT_NAME,["Did not find any valid unit types in",_unitTypes],true,true] call KISKA_fnc_log;
 };
 
 
@@ -88,7 +86,7 @@ _group setBehaviour "AWARE";
 _group setCombatMode "RED";
 
 allCurators apply {
-	_x addCuratorEditableObjects [units _group,false]; // look into adding in something to check if the object is a vehicle and adjust this accordingly in the future
+	[_x,[_spawnedUnits,false]] remoteExecCall ["addCuratorEditableObjects",2];
 };
 
 if (_enableDynamicSimulation) then {

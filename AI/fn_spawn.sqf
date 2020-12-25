@@ -5,7 +5,6 @@ Description:
 	Randomly spawns units on an array of positions.
 
 Parameters:
-
 	0: _numberOfUnits <NUMBER> - Number of units to spawn
 	1: _numberOfUnitsPerGroup <NUMBER> - Number of units per group
 	2: _unitTypes <ARRAY> - Unit types to select randomly from (can be weighted or unweighted array)
@@ -14,10 +13,9 @@ Parameters:
 	4. _canUnitsMove <BOOL> - Can units walk (optional)
 	5. _enableDynamic <BOOL> - Should the units be dynamically simmed (Optional)
 	6. _side <SIDE> - Side of units (optional)
-	7. _debug <BOOL> - Do you want debug indications of when and the number of units spawned (optional)
 
 Returns:
-	_spawnedUnits <ARRAY> 
+	<ARRAY> - All units spawned by the function
 
 Examples:
     (begin example)
@@ -29,7 +27,8 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_spawn";
+#define SCRIPT_NAME "KISKA_fnc_spawn"
+scriptName SCRIPT_NAME;
 
 params [
 	["_numberOfUnits",1,[1]],
@@ -39,31 +38,24 @@ params [
 
 	["_canUnitsMove",false,[true]],
 	["_enableDynamic",true,[true]],
-	["_side",OPFOR,[sideUnknown]],
-	["_debug",false,[true]]									
+	["_side",OPFOR,[sideUnknown]]								
 ];
 
 // Verify Params
 
 // Check atleast one unit to spawn
 if (_numberOfUnits < 1) exitWith {
-	"Less than 1 unit to spawn" call BIS_fnc_error;
+	[SCRIPT_NAME,["_numberOfUnits is",_numberOfUnits,":","needs to be atleast 1. Exiting..."]] call KISKA_fnc_log;
 };
 
 // Is there at least on position to spawn on
 if (count _spawnPositions < 1) exitwith {
-	if (_debug) then {
-		["No spawnpoints found"] remoteExecCall ["systemChat", [0,-2] select isDedicated];
-	};
-
-	"Less then 1 spawn position" call BIS_fnc_error;
+	[SCRIPT_NAME,["_spawnPositions is",_spawnPositions,":","needs to be atleast 1. Exiting..."]] call KISKA_fnc_log;
 };
 
 // Re adjust number of units if there are not enough spawn points
 if (count _spawnPositions < _numberOfUnits) then {
-	if (_debug) then {
-		["Not enough spawn points, will spawn max number"] remoteExecCall ["systemChat", [0,-2] select isDedicated];
-	};
+	[SCRIPT_NAME,["Count of _spawnPositions is",_spawnPositions,"and _numberOfUnits is",_numberOfUnits,": ReAdjusting _numberOfUnits to _spawnPositions"]] call KISKA_fnc_log;
 
 	_numberOfUnits = count _spawnPositions;
 };
@@ -81,14 +73,14 @@ private _weightedArray = _unitTypes isEqualTypeParams ["",1];
 				_unitTypesFiltered pushBack (_unitTypes select (_forEachIndex + 1));
 			};
 		} else {
-			["Unit type %1 is invalid",_x] call BIS_fnc_error;
+			[SCRIPT_NAME,["Found invalid class",_x]] call KISKA_fnc_log;
 		};
 	};
 } forEach _unitTypes;
 
 // exit if no valid types
 if (_unitTypesFiltered isEqualTo []) exitWith {
-	"No valid unit types passed" call BIS_fnc_error;
+	[SCRIPT_NAME,["Did not find any valid unit types in",_unitTypes],true,true] call KISKA_fnc_log;
 };
 
 
@@ -98,9 +90,16 @@ private _spawnedUnits = [];
 
 private _numberOfGroups = ceil (_numberOfUnits/_numberOfUnitsPerGroup);
 
+private [
+	"_group",
+	"_unit",
+	"_selectedSpawnPosition",
+	"_selectedUnitType"
+];
+
 for "_i1" from 1 to _numberOfGroups do {
 	// create group
-	private _group = createGroup [_side,true];
+	_group = createGroup [_side,true];
 	_group setCombatMode "RED";
 	if (_enableDynamic) then {
 		_group enableDynamicSimulation true;
@@ -112,11 +111,10 @@ for "_i1" from 1 to _numberOfGroups do {
 		if ((count _spawnedUnits) isEqualTo _numberOfUnits) exitWith {};
 
 		// get spawn position
-		private _selectedSpawnPosition = selectRandom _spawnPositions;
+		_selectedSpawnPosition = selectRandom _spawnPositions;
 		_spawnPositions deleteAt (_spawnPositions findIf {_x isEqualTo _selectedSpawnPosition});
 
 		// get unit type
-		private "_selectedUnitType";
 		if (_weightedArray) then {
 			_selectedUnitType = selectRandomWeighted _unitTypesFiltered;
 		} else {
@@ -124,7 +122,7 @@ for "_i1" from 1 to _numberOfGroups do {
 		};
 
 		// create unit and make sure it was made
-		private _unit = _group createUnit [_selectedUnitType,_selectedSpawnPosition,[],0,"Can_Collide"];
+		_unit = _group createUnit [_selectedUnitType,_selectedSpawnPosition,[],0,"Can_Collide"];
 
 		// units with different default sides then what was selected will not be set to the selected side without this command
 		[_unit] joinSilent _group;
@@ -161,11 +159,9 @@ for "_i1" from 1 to _numberOfGroups do {
 
 // add to zeus
 allCurators apply {
-	_x addCuratorEditableObjects [_spawnedUnits,false];
+	[_x,[_spawnedUnits,false]] remoteExecCall ["addCuratorEditableObjects",2];
 };
 
-if (_debug) then {
-	[["Enemies spawned:",str (count _spawnedUnits)] joinString " "] remoteExecCall ["systemChat", allPlayers];
-};
+[SCRIPT_NAME,["Spawned",(count _spawnedUnits)]] call KISKA_fnc_log;
 
 _spawnedUnits
