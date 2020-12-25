@@ -17,18 +17,18 @@ Returns:
 
 Examples:
     (begin example)
-
 		null = [vehicle, target, 2, 100, 360, [9,10,11]] spawn KISKA_fnc_arty;
-
     (end)
 
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_arty";
+#define SCRIPT_NAME "KISKA_fnc_arty"
+scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
-	"Must be run in scheduled envrionment" call BIS_fnc_error;
+	_this spawn KISKA_fnc_arty;
+	[SCRIPT_NAME,"ReExevuting in scheduled environment",false,true] call KISKA_fnc_log;
 };
 
 params [
@@ -41,10 +41,12 @@ params [
 ];
 
 if (!alive _gun OR {!alive (gunner _gun)}) exitWith {
-	"_gun or gunner not alive" call BIS_fnc_error;
+	[SCRIPT_NAME,[_gun,"or its gunner are not alive, exiting..."]] call KISKA_fnc_log;
 };
 
-if (_rounds < 1) exitWith {"Less then one round" call BIS_fnc_error};
+if (_rounds < 1) exitWith {
+	[SCRIPT_NAME,[_gun,"was told to fire less than 1 round, exiting..."],true,true] call KISKA_fnc_log;
+};
 
 private _ammo = getArtilleryAmmo [_gun] select 0; 
 
@@ -57,6 +59,6 @@ for "_i" from 1 to _rounds do {
 	_rounds = _rounds - 1;
 	
 	if (_i != _rounds) then {
-		sleep (floor random _fireTime);
+		sleep (round random _fireTime);
 	};
 };

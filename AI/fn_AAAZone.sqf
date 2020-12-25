@@ -27,7 +27,7 @@ scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
 	null = _this spawn KISKA_fnc_AAAZone;
-	"KISKA_fnc_AAAZone: Needs to be run in scheduled environment" call BIS_fnc_error;
+	[SCRIPT_NAME,"ReExecuting in scheduled environment",true,true] call KISKA_fnc_log;
 };
 
 params [
@@ -87,7 +87,7 @@ while {sleep _checkTime; _vehicle getVariable ["KISKA_doAAA",true]} do {
 		[SCRIPT_NAME,"Found entities in radius"] call KISKA_fnc_log;
 		
 		private _index = _entitiesInRadius findIf {
-			[SCRIPT_NAME,["Side of",_x,"is",side _x,": side of AAA is",_AAASide]] call KISKA_fnc_log;
+			//[SCRIPT_NAME,["Side of",_x,"is",side _x,": side of AAA is",_AAASide]] call KISKA_fnc_log;
 			
 			[side _x,_AAAside] call BIS_fnc_sideIsEnemy;
 		};

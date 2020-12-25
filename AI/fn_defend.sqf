@@ -2,37 +2,37 @@
 Function: KISKA_fnc_defend
 
 Description:
-A function for a group to defend a parsed location. Should be ran locally.
+	A function for a group to defend a parsed location. Should be ran locally.
 
-Units will mount nearby static machine guns and garrison in nearby buildings.
-10% chance to patrol the radius unless specified differently (100% when no available building positions).
-0% chance to hold defensive positions in combat unless specified differently.
+	Units will mount nearby static machine guns and garrison in nearby buildings.
+	10% chance to patrol the radius unless specified differently (100% when no available building positions).
+	0% chance to hold defensive positions in combat unless specified differently.
 
 Modifications:
-Used CBA waituntil and accounted for doMove command's inability to use z-axis
+	Accounted for doMove command's inability to use z-axis
 
 Parameters:
-_group      - the group <GROUP, OBJECT>
-_position   - centre of area to defend <ARRAY, OBJECT, LOCATION, GROUP> (Default: _group)
-_radius     - radius of area to defend <NUMBER> (Default: 50)
-_threshold  - minimum building positions required to be considered for garrison <NUMBER> (Default: 3)
-_patrol     - chance for each unit to patrol instead of garrison, true for default, false for 0% <NUMBER, BOOLEAN> (Default: 0.1)
-_hold       - chance for each unit to hold their garrison in combat, true for 100%, false for 0% <NUMBER, BOOLEAN> (Default: 0)
+	0: _group <GROUP or OBJECT> - The group to do the defending
+	1: _position <OBJECT, LOCATION, GROUP, or ARRAY> - centre of area to defend <ARRAY, OBJECT, LOCATION, GROUP> (Default: _group)
+	2: _radius <NUMBER> - radius of area to defend <NUMBER> (Default: 50)
+	3: _threshold <NUMBER> - minimum building positions required to be considered for garrison <NUMBER> (Default: 3)
+	4: _patrol <NUMBER or BOOL> - chance for each unit to patrol instead of garrison, true for default, false for 0% <NUMBER, BOOLEAN> (Default: 0.1)
+	5: _hold <NUMBER or BOOL> - chance for each unit to hold their garrison in combat, true for 100%, false for 0% <NUMBER, BOOLEAN> (Default: 0)
 
 Returns:
-None
+	NOTHING
 
 Examples:
-(begin example)
-	[this] call KISKA_fnc_defend
-(end)
+    (begin example)
+		[this] call KISKA_fnc_defend
+    (end)
 
 Author:
-Rommel, SilentSpike
-
-Modified By:
-Ansible2 // Cipher
+	Rommel,
+	Modified by: Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+#define SCRIPT_NAME "KISKA_fnc_defend"
+scriptName SCRIPT_NAME;
 
 params [
 	["_group",grpNull,[grpNull,objNull]],
@@ -45,7 +45,10 @@ params [
 
 // Input validation stuff here
 _group = _group call CBA_fnc_getGroup;
-if !(local _group) exitWith {}; // Don't create waypoints on each machine
+// Don't create waypoints on each machine
+if !(local _group) exitWith {
+	[SCRIPT_NAME,["Found that",_group,"was not local, exiting..."],true,true] call KISKA_fnc_log;
+};
 
 _position = [_position, _group] select (_position isEqualTo []);
 _position = _position call CBA_fnc_getPos;

@@ -9,7 +9,7 @@ Parameters:
 	1: _vehicle : <OBJECT> - The vehicle to put units into
 	2: _dismountPoint : <OBJECT or ARRAY> - The position to move to, can be object or position array
 	3: _completionRadius : <NUMBER> - The radius at which the waypoint is complete and the units can disembark from the _dismountPoint, -1 for exact placement
-	3: _codeOnComplete : <CODE> - Code to run upon completion of disembark, passed args is the vehicle (OBJECT) and crew (ARRAY)
+	4: _codeOnComplete : <CODE> - Code to run upon completion of disembark, passed args is the vehicle (OBJECT) and crew (ARRAY)
 
 Returns:
 	BOOL
