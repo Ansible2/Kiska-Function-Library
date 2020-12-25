@@ -33,7 +33,7 @@ params [
 	["_scriptName","",[""]],
 	["_message","",[]],
 	["_joinString",true,[true]],
-	["_logWithError",false,[true]],
+	["_logWithError",missionNamespace getVariable ["KISKA_logWithError",false],[true]],
 	["_forceLog",false,[true]]
 ];
 
