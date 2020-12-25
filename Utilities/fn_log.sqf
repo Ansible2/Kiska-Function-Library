@@ -2,13 +2,18 @@
 Function: KISKA_fnc_log
 
 Description:
-	Prints a log with a script name to console
+	Prints a log with a script name to console.
+
+	Whether or not something is logged depends on whether the script is set in
+	 the KISKA_logScripts array. If the script name (or "all") is found in the array
+	 a log is printed.
 
 Parameters:
 	0: _scriptName <STRING> - The name of the script from where this message is being called
 	1: _message <ANY> - The message to send. If array and _joinString is true, will be used with the joinString command
 	2: _joinString <BOOL> - Should this message joined into a string if an array
 	3: _logWithError <BOOL> - Show error message on screen (BIS_fnc_error)
+	4: _forceLog <BOOL> - Print log regardless of KISKA_logScripts content
 
 Returns:
 	<ANY> - The message sent
@@ -16,7 +21,7 @@ Returns:
 Examples:
     (begin example)
 		private _myvar = 1;
-		["myScript",["Hello Number",_myvar]] call KISKA_fnc_updateRespawnMarker;
+		["myScript",["Hello Number",_myvar],true,false,true] call KISKA_fnc_log;
 
 		- prints "Hello Number 1" to console
     (end)
@@ -28,8 +33,21 @@ params [
 	["_scriptName","",[""]],
 	["_message","",[]],
 	["_joinString",true,[true]],
-	["_logWithError",false,[true]]
+	["_logWithError",false,[true]],
+	["_forceLog",false,[true]]
 ];
+
+if !(_forceLog) then {
+	_forceLog = [
+		missionNamespace getVariable ["KISKA_logScripts",["all"]],
+		{
+			_x == "all" OR {_x == (_thisArgs select 0)}
+		},
+		[_scriptName]
+	] call KISKA_fnc_findIfBool;
+};
+
+if !(_forceLog) exitWith {};
 
 diag_log ("KISKA Log......: " + _scriptName);
 if (_message isEqualType [] AND {_joinString}) then {
