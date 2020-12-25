@@ -8,6 +8,7 @@ Parameters:
 	0: _scriptName <STRING> - The name of the script from where this message is being called
 	1: _message <ANY> - The message to send. If array and _joinString is true, will be used with the joinString command
 	2: _joinString <BOOL> - Should this message joined into a string if an array
+	3: _logWithError <BOOL> - Show error message on screen (BIS_fnc_error)
 
 Returns:
 	<ANY> - The message sent
@@ -26,7 +27,8 @@ Author:
 params [
 	["_scriptName","",[""]],
 	["_message","",[]],
-	["_joinString",true,[true]]
+	["_joinString",true,[true]],
+	["_logWithError",false,[true]]
 ];
 
 diag_log ("KISKA Log......: " + _scriptName);
@@ -36,5 +38,8 @@ if (_message isEqualType [] AND {_joinString}) then {
 
 diag_log _message;
 
+if (_logWithError) then {
+	(_scriptName + " : " + _message) call BIS_fnc_error;
+};
 
 _message
