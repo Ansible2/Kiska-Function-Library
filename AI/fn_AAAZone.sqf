@@ -85,29 +85,36 @@ while {sleep _checkTime; _vehicle getVariable ["KISKA_doAAA",true]} do {
 	// if any air units are found
 	if !(_entitiesInRadius isEqualTo []) then {
 		[SCRIPT_NAME,"Found entities in radius"] call KISKA_fnc_log;
+		
 		private _index = _entitiesInRadius findIf {
 			[SCRIPT_NAME,["Side of",_x,"is",side _x,": side of AAA is",_AAASide]] call KISKA_fnc_log;
+			
 			[side _x,_AAAside] call BIS_fnc_sideIsEnemy;
 		};
 
 		// if an enemy aircraft is found AND _vehicle is not already engaging
 		if (_index != -1 AND {!_doFire}) then {
 			[SCRIPT_NAME,["Found a unit to engage and not already doing so, weapon aim on for",_gunner]] call KISKA_fnc_log;
+			
 			_doFire = true;
 			[true] call _fn_controlShots
 		} else {
 			// only disable if no targets are found and already engaging
 			[SCRIPT_NAME,["Did not meet fire standards. Do fire?",_doFire,"Index?",_index]] call KISKA_fnc_log;
+			
 			if (_index isEqualTo -1 AND {_doFire}) then {
 				[SCRIPT_NAME,"No enemy targets to engage anymore. Disabling weapon aim and _doFire to false"] call KISKA_fnc_log;
+				
 				_doFire = false;
 				[false] call _fn_controlShots
 			};
 		};
 	} else {
 		[SCRIPT_NAME,"No entities in area found"] call KISKA_fnc_log;
+		
 		if (_doFire) then {
 			[SCRIPT_NAME,"Setting _doFire to false"] call KISKA_fnc_log;
+			
 			_doFire = false;
 		};
 	};
@@ -115,8 +122,10 @@ while {sleep _checkTime; _vehicle getVariable ["KISKA_doAAA",true]} do {
 	// if vehicle is dead or gunner is absent
 	if !(alive _gunner) exitWith {
 		[SCRIPT_NAME,["_gunner",_gunner,"is no longer alive, exiting"]] call KISKA_fnc_log;
+		
 		if (alive _vehicle) then {
 			[SCRIPT_NAME,["_vehicle",_vehicle,"is still alive, setting KISKA_doAAA to nil"]] call KISKA_fnc_log;
+			
 			_vehicle setVariable ["KISKA_doAAA",nil];
 		};
 	};
