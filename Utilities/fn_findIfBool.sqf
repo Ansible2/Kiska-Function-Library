@@ -9,6 +9,7 @@ Parameters:
 	0: _array : <ARRAY> - The array to check
 	1: _codeToCheck : <CODE> - The code to check against the array indexes.
 		Needs to return a BOOl
+	2: _thisArgs : <ARRAY> - Any local arguements that can be passed
 
 Returns:
 	<BOOL> - True if an index meets the condition, false if not
@@ -22,11 +23,13 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_findIfBool";
+#define SCRIPT_NAME "KISKA_fnc_findIfBool"
+scriptName SCRIPT_NAME;
 
 params [
 	["_array",[],[[]]],
-	["_codeToCheck",{},[{}]]
+	["_codeToCheck",{},[{}]],
+	["_thisArgs",[],[[]]]
 ];
 
 private _index = _array findIf _codeToCheck;
