@@ -4,7 +4,7 @@ Function: KISKA_fnc_getVariableTarget
 Description:
 	The send back component of KISKA_fnc_getVariableTarget that is executed on the target.
 
-	Shouldn't be called on its own
+	Shouldn't be called on its own.
 
 Parameters:
 	0: _namespace : <NAMESPACE, OBJECT, STRING, GROUP, CONTROL, or LOCATION> - The namespace to get the variable from 
