@@ -37,17 +37,41 @@ params [
 ];
 
 if (isNull _vehicle) exitWith {
-	"KISKA_fnc_AAAZone: _vehicle isNull" call BIS_fnc_error;
+	[SCRIPT_NAME,[_vehicle,"isNull"],true,true] call KISKA_fnc_log;
+};
+
+if (!local _vehicle) exitWith {
+	[SCRIPT_NAME,[_vehicle,"is not local to machine, executing on owner"],true] call KISKA_fnc_log;
+	_this remoteExec ["KISKA_fnc_AAAZone",_vehicle];
 };
 
 private _gunner = gunner _vehicle;
 if (isNull _gunner) exitWith {
-	"KISKA_fnc_AAAZone: _vehicle does not have a gunner" call BIS_fnc_error;
+	[SCRIPT_NAME,[_vehicle,"does not have a gunner"],true,true] call KISKA_fnc_log;
 };
-// stop gunner from engaging targets
-_gunner disableAI "WEAPONAIM";
-_gunner disableAI "AUTOTARGET";
-_gunner disableAI "TARGET";
+
+private _gunnerGroup = group _gunner;
+if (isNull _gunnerGroup) exitWith {
+	[SCRIPT_NAME,[_gunnerGroup,"is a null group"],true,true] call KISKA_fnc_log;
+};
+
+private _fn_controlShots = {
+	params ["_doShoot"];
+
+	if (_doShoot) then {
+		[_gunner,"WEAPONAIM"] remoteExecCall ["enableAI"_gunner];
+		[_gunnerGroup,"RED"] remoteExecCall ["setCombatMode",_gunnerGroup];
+	} else {
+		[_gunner,"WEAPONAIM"] remoteExecCall ["disableAI"_gunner];
+		[_gunnerGroup,"BLUE"] remoteExecCall ["setCombatMode",_gunnerGroup];
+		//[_gunner,"AUTOTARGET"] remoteExecCall ["disableAI"_gunner];
+		//[_gunner,"TARGET"] remoteExecCall ["disableAI"_gunner];
+	};
+};
+
+// disable unit
+[false] call _fn_controlShots
+
 
 private _AAAside = side _vehicle;
 [SCRIPT_NAME,["_AAAside is",_AAASide]] call KISKA_fnc_log;
@@ -70,18 +94,14 @@ while {sleep _checkTime; _vehicle getVariable ["KISKA_doAAA",true]} do {
 		if (_index != -1 AND {!_doFire}) then {
 			[SCRIPT_NAME,["Found a unit to engage and not already doing so, weapon aim on for",_gunner]] call KISKA_fnc_log;
 			_doFire = true;
-			_gunner enableAI "WEAPONAIM";
-			_gunner enableAI "AUTOTARGET";
-			_gunner enableAI "TARGET";
+			[true] call _fn_controlShots
 		} else {
 			// only disable if no targets are found and already engaging
 			[SCRIPT_NAME,["Did not meet fire standards. Do fire?",_doFire,"Index?",_index]] call KISKA_fnc_log;
 			if (_index isEqualTo -1 AND {_doFire}) then {
 				[SCRIPT_NAME,"No enemy targets to engage anymore. Disabling weapon aim and _doFire to false"] call KISKA_fnc_log;
 				_doFire = false;
-				_gunner disableAI "WEAPONAIM";
-				_gunner disableAI "AUTOTARGET";
-				_gunner disableAI "TARGET";
+				[false] call _fn_controlShots
 			};
 		};
 	} else {
@@ -106,7 +126,5 @@ while {sleep _checkTime; _vehicle getVariable ["KISKA_doAAA",true]} do {
 };
 
 if (alive _gunner) then {
-	_gunner enableAI "WEAPONAIM";
-	_gunner enableAI "AUTOTARGET";
-	_gunner enableAI "TARGET";
+	[true] call _fn_controlShots
 };
