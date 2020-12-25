@@ -31,6 +31,7 @@ Author:
 scriptName "KISKA_fnc_ciwsInit";
 
 if (!canSuspend) exitWith {
+	_this spawn KISKA_fnc_ciwsInit;
 	"Must be run in scheduled envrionment" call BIS_fnc_error
 };
 
@@ -120,7 +121,7 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 					// get turrets pitch angle (0.6 offset is baked into source anim)
 					_turretPitchAngle = abs ((deg (_turret animationSourcePhase "maingun")) + 0.6);
 					// get the angle needed to target
-					_angleToTarget = abs (acos ((_turret distance2D _target) / (_turret vectorDistance _target)));
+					_angleToTarget = abs (acos ((_turret distance2D _target) / (_turret distance _target)));
 					// get the difference between turrets current pitch and the targets actual angle
 					_currentPitchTolerance = (selectMax [_turretPitchAngle,_angleToTarget]) - (selectMin [_turretPitchAngle,_angleToTarget]);
 					
@@ -144,7 +145,9 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 						(_currentPitchTolerance <= _pitchTolerance AND 
 						{_currentRotTolerance <= _rotationTolerance} AND 
 						{_targetALt >= _engageAltitude}) OR 
+
 						{(_turret distance _target) >= (_searchDistance * 0.75)} OR 
+
 						{isNull _target}
 					) 
 					exitWith {true};
@@ -187,8 +190,10 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 					if (_firedShots) then {
 						_targetPos = getPosWorldVisual _target;
 						_targetBoom = getText (configFile >> "CfgAmmo" >> (typeOf _target) >> "explosionEffects");
-						createVehicle [_targetBoom,_targetPos,[],0,"CAN_COLLIDE"];
-						createVehicle ["HelicopterExploBig",_targetPos,[],0,"CAN_COLLIDE"];
+						if (_targetBoom != "") then {
+							createVehicle [_targetBoom,_targetPos,[],0,"FLY"];
+						};
+						createVehicle ["HelicopterExploBig",_targetPos,[],0,"FLY"];
 						
 						deleteVehicle _target;
 					};
