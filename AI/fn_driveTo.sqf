@@ -2,7 +2,7 @@
 Function: KISKA_fnc_driveTo
 
 Description:
-	Units will drive to point and get out of vehicle
+	Units will drive to point and get out of vehicle.
 
 Parameters:
 	0: _crew : <GROUP, ARRAY, or OBJECT> - The units to move into the vehicle and drive
@@ -24,6 +24,8 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+#define SCRIPT_NAME "KISKA_fnc_driveTo"
+scriptName SCRIPT_NAME;
 
 params [
 	["_crew",[],[[],grpNull,objNull]],
@@ -35,12 +37,12 @@ params [
 ];
 
 if ((_crew isEqualTypeAny [grpNull,objNull] AND {isNull _crew}) OR {_crew isEqualTo []}) exitWith {
-	"_crew is undefined" call BIS_fnc_error;
+	[SCRIPT_NAME,["_crew for",_vehicle,"is undefined"],true,true] call KISKA_fnc_log;
 	false
 };
 
 if (isNull _vehicle) exitWith {
-	"_vehicle isNull" call BIS_fnc_error;
+	[SCRIPT_NAME,["_vehicle",_vehicle,"is null"],true,true] call KISKA_fnc_log;
 	false
 };
 
@@ -54,12 +56,12 @@ if (_crew isEqualType objNull) then {
 
 
 private "_driverGroup";
+private _vehicleCrew = crew _vehicle;
 {
-	if !(_x in (crew _vehicle)) then {
+	if !(_x in _vehicleCrew) then {
 		if (_forEachIndex isEqualTo 0) then {
 			_driverGroup = group _x;
-			[_x,_vehicle] remoteExec ["moveInDriver",_x];
-			//_x moveInDriver _vehicle;
+			[_x,_vehicle] remoteExecCall ["moveInDriver",_x];
 		} else {
 			_x moveInAny _vehicle;
 		};
@@ -77,9 +79,11 @@ private "_driverGroup";
 	1,
 	{
 		params ["_vehicle","_crew","_codeOnComplete"];
+		
+		[SCRIPT_NAME,["_vehicle",_vehicle,"has reached its destination"]] call KISKA_fnc_log;
 
 		_crew apply {
-			[_x,_vehicle] remoteExec ["leaveVehicle",_x];
+			[_x,_vehicle] remoteExecCall ["leaveVehicle",_x];
 		};
 
 		if !(_codeOnComplete isEqualTo {}) then {	
@@ -89,5 +93,6 @@ private "_driverGroup";
 	{((_this select 0) distance (_this select 4)) <= (_this select 3)},
 	[_vehicle,_crew,_codeOnComplete,_completionRadius,_dismountPoint]
 ] call KISKA_fnc_waitUntil;
+
 
 true
