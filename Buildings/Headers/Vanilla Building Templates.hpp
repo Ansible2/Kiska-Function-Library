@@ -578,3 +578,238 @@ class Land_i_House_Small_02_V3_F =
 		};
 	};
 };
+
+class Land_i_House_Small_01_V3_F =
+{
+	class KISKA_DSO_templates = 
+	{
+		template_1[] = 
+		{
+			"Land_i_House_Small_01_V3_F",
+			["Land_Shoot_House_Wall_F",[0.578613,-4.62988,5.63434],0],
+			["Land_Shoot_House_Wall_F",[-2.88672,-4.62988,5.63434],0]
+		};
+
+		template_2[] = 
+		{
+			"Land_i_House_Small_01_V3_F",
+			["Land_SandbagBarricade_01_hole_F",[-2.67676,-3.61426,5.24506],0],
+			["Land_SandbagBarricade_01_F",[-3.26709,4.28857,5.24189],180],
+			["Land_BagFence_Short_F",[2.71143,1.43555,4.28369],0]
+		};
+
+		template_3[] = 
+		{
+			"Land_i_House_Small_01_V3_F",
+			["Land_Shoot_House_Wall_F",[-2.59106,-4.63086,5.33345],0],
+			["Land_SandbagBarricade_01_hole_F",[0.283691,-3.83154,5.24697],0]
+		};
+
+		template_4[] = 
+		{
+			"Land_i_House_Small_01_V3_F",
+			["Land_Shoot_House_Wall_F",[0.420654,-4.62354,5.33345],0],
+			["Land_BagFence_Short_F",[2.71802,-0.537598,4.27223],0],
+			["Land_SandbagBarricade_01_F",[2.34521,3.14209,5.24367],90]
+		};
+	};
+};
+
+class Land_d_Shop_02_V1_F =
+{
+	class KISKA_DSO_templates = 
+	{
+		template_1[] = 
+		{
+			"Land_d_Shop_02_V1_F",
+			["Land_BagFence_Round_F",[-4.02124,0.479004,6.53927],22.8804],
+			["Land_BagFence_Long_F",[3.55591,-2.6333,2.64664],90],
+			["Land_BagFence_Short_F",[3.53735,-0.316895,2.64161],90],
+			["Land_SandbagBarricade_01_half_F",[2.70972,-0.0102539,6.78525],46.9813],
+			["Land_SandbagBarricade_01_half_F",[-1.68384,-0.59375,6.78897],228.578]
+		};
+
+		template_2[] = 
+		{
+			"Land_d_Shop_02_V1_F",
+			["Land_BagFence_Round_F",[-4.13159,0.552734,6.4715],30.1279],
+			["Land_BagFence_Long_F",[5.57251,-2.46191,6.5388],90],
+			["Land_BagFence_End_F",[4.95483,-3.89453,6.53065],180],
+			["Land_BagFence_Short_F",[5.60303,-0.145996,6.53177],90],
+			["Land_Shoot_House_Wall_Long_F",[4.12817,-2.64795,3.37999],270],
+			["Land_SandbagBarricade_01_hole_F",[-1.36572,1.41113,3.51556],90],
+			["Land_SandbagBarricade_01_half_F",[-3.18018,3.5625,6.78288],89.4727]
+		};
+
+		template_3[] = 
+		{
+			"Land_d_Shop_02_V1_F",
+			["Land_BagFence_Round_F",[-4.10205,0.51416,6.49154],30.1279],
+			["Land_BagFence_Round_F",[0.359375,2.09619,6.53439],214.617],
+			["Land_BagFence_Long_F",[-1.9873,-1.03662,6.47912],52.2995],
+			["Land_Shoot_House_Wall_F",[4.05029,-3.32422,3.90283],270],
+			["Land_SandbagBarricade_01_F",[-1.52808,1.29883,3.51306],90],
+			["Land_SandbagBarricade_01_half_F",[3.2019,-1.32861,2.89632],270]
+		};
+
+		template_4[] = 
+		{
+			"Land_d_Shop_02_V1_F",
+			["Land_BagFence_Round_F",[-4.43872,-3.16455,2.97485],34.1643],
+			["Land_BagFence_Round_F",[-4.09863,0.337891,6.5392],34.1643],
+			["I_HMG_01_high_F",[-3.87451,1.1582,7.76505],211.354],
+			["Land_Shoot_House_Wall_Long_F",[4.1084,-2.56494,3.37999],270],
+			["Land_BagFence_Long_F",[5.58179,-2.46191,6.5388],90],
+			["Land_BagFence_End_F",[4.96411,-3.89453,6.53065],180],
+			["Land_BagFence_Short_F",[5.6123,-0.145996,6.53177],90]
+		};
+	};
+};
+
+class Land_i_House_Small_03_V1_F =
+{
+	class KISKA_DSO_templates = 
+	{
+		template_1[] = 
+		{
+			"Land_i_House_Small_03_V1_F",
+			["Land_PierLadder_F",[-6.51978,-0.976074,5.54948],90],
+			["Land_BagFence_Round_F",[2.52954,-6.41504,8.72362],0],
+			["I_HMG_01_high_F",[2.34253,-5.13477,9.95281],180],
+			["Land_Shoot_House_Wall_F",[4.02051,-6.76172,6.35981],0],
+			["Land_HBarrier_3_F",[4.73389,-5.17139,9.10265],90],
+			["Land_HBarrier_3_F",[-0.580566,-6.10938,9.10265],0],
+			["Land_BagFence_Long_F",[5.22559,-2.0376,8.72362],90],
+			["I_static_AT_F",[3.62378,-2.0249,9.28962],89.9964],
+			["Land_BagFence_Short_F",[-2.01123,-4.50928,8.7186],90],
+			["Land_HBarrier_3_F",[4.73389,1.14355,9.10265],90],
+			["Land_SandbagBarricade_01_F",[-2.60156,4.34814,6.29004],180]
+		};
+
+		template_2[] = 
+		{
+			"Land_i_House_Small_03_V1_F",
+			["Land_BagFence_Long_F",[5.66431,-5.12158,8.72362],90],
+			["Land_BagFence_Long_F",[4.33716,-6.66406,8.72362],0],
+			["Land_BagFence_Long_F",[-2.03564,-5.396,8.72362],90],
+			["Land_BagFence_Long_F",[1.43848,-6.66992,8.72362],0],
+			["Land_BagFence_Short_F",[-0.917969,-6.72656,8.7186],0],
+			["I_GMG_01_high_F",[1.66187,-5.21582,9.95331],182.741],
+			["Land_BagFence_Round_F",[-5.03491,4.39893,8.72362],135],
+			["Land_BagFence_Round_F",[5.05981,4.30908,8.72362],230],
+			["Land_PierLadder_F",[-6.54614,-0.976074,5.54948],90],
+			["Land_Shoot_House_Wall_F",[5.74536,3.03369,6.35981],90],
+			["Land_SandbagBarricade_01_F",[-2.71899,4.30811,6.29004],180]
+		};
+
+		template_3[] = 
+		{
+			"Land_i_House_Small_03_V1_F",
+			["Land_SandbagBarricade_01_hole_F",[3.81299,-6.03467,6.29254],0],
+			["Land_Shoot_House_Wall_F",[5.74243,3.27002,6.35981],90],
+			["Land_BagFence_Short_F",[-2.13501,0.688965,5.4186],180],
+			["Land_SandbagBarricade_01_F",[3.79272,4.36084,6.29004],180]
+		};
+
+		template_4[] = 
+		{
+			"Land_i_House_Small_03_V1_F",
+			["I_HMG_01_F",[2.67212,-5.89746,9.51318],179.997],
+			["Land_HBarrier_3_F",[-0.504395,-6.09326,9.10265],0],
+			["Land_BagFence_Long_F",[-1.92065,-3.92236,8.72362],90],
+			["Land_BagFence_Long_F",[-1.51782,5.07813,8.72362],0],
+			["Land_BagFence_Long_F",[1.375,5.07813,8.72362],0],
+			["Land_BagFence_Long_F",[-4.41162,5.07813,8.72362],0],
+			["Land_BagFence_Long_F",[4.27588,5.07813,8.72362],0],
+			["Land_PierLadder_F",[-6.71436,0.833984,5.6799],90],
+			["Land_Shoot_House_Wall_F",[-2.56543,5.18799,6.35981],0],
+			["Land_Shoot_House_Wall_F",[-4.10425,-2.60156,6.35981],0],
+			["Land_BagFence_Short_F",[-5.79102,3.94434,8.7186],90],
+			["Land_BagFence_Short_F",[-2.0564,0.719238,5.4186],180],
+			["Land_HBarrier_3_F",[-3.32813,-1.90283,9.10265],0],
+			["Land_HBarrier_3_F",[5.146,-5.21582,9.10265],90],
+			["Land_BagFence_Short_F",[5.43994,3.95752,8.7186],90]
+		};
+
+		template_5[] = 
+		{
+			"Land_i_House_Small_03_V1_F",
+			["Land_BagFence_Round_F",[4.95508,-6.03564,8.72362],315],
+			["Land_BagFence_Round_F",[-1.36914,-5.98926,8.72362],45],
+			["Land_BagFence_Round_F",[1.73047,1.57324,8.72362],180],
+			["Land_BagFence_Round_F",[1.66724,-2.1499,8.72362],0],
+			["B_Mortar_01_F",[1.66602,-0.535645,9.06182],0.000173805],
+			["Land_PierLadder_F",[-6.65942,0.833984,5.6799],90],
+			["Land_Shoot_House_Wall_F",[-3.77588,-2.61182,6.35981],0],
+			["Land_SandbagBarricade_01_hole_F",[4.89136,-0.308105,6.29254],270],
+			["Land_SandbagBarricade_01_half_F",[4.45874,-0.319824,8.9733],90],
+			["Land_SandbagBarricade_01_half_F",[-1.11841,-0.193848,8.9733],270]
+		};
+	};
+};
+
+class Land_Unfinished_Building_01_F =
+{
+	class KISKA_DSO_templates = 
+	{
+		template_1[] = 
+		{
+			"Land_Unfinished_Building_01_F",
+			["Land_CncBarrier_stripes_F",[2.95435,-3.08643,3.08714],0],
+			["Land_CncBarrier_stripes_F",[4.57886,-1.22949,3.08714],90],
+			["Land_BagFence_Long_F",[4.66235,-0.810059,6.61578],90],
+			["Land_BagFence_Long_F",[3.0376,-3.26611,6.61578],0],
+			["Land_BagFence_Long_F",[1.16992,4.09961,9.91309],90],
+			["Land_BagFence_Long_F",[-4.79077,4.2876,9.91309],90],
+			["I_GMG_01_F",[-1.729,5.23438,10.684],0.00269894],
+			["Land_Shoot_House_Wall_F",[1.32715,2.49121,4.19197],90],
+			["Land_Shoot_House_Wall_Long_F",[-2.84399,-3.32959,4.19197],0],
+			["Land_Shoot_House_Wall_Long_F",[-5.24023,-1.104,4.19197],90]
+		};
+
+		template_2[] = 
+		{
+			"Land_Unfinished_Building_01_F",
+			["Land_BagFence_Long_F",[-3.62988,2.04346,9.91309],0],
+			["Land_BagFence_Long_F",[-4.93018,3.72705,9.91309],270],
+			["Land_BagFence_Long_F",[2.65039,-4.93701,6.61578],0],
+			["Land_BagFence_End_F",[1.60205,-4.31592,6.60613],270],
+			["I_HMG_01_high_F",[-3.63574,-0.338867,4.34864],272.084],
+			["I_HMG_01_high_F",[2.75562,-3.49756,7.84436],178.055],
+			["I_static_AT_F",[-3.62817,3.40039,10.4808],226.645],
+			["Land_Shoot_House_Wall_Long_Stand_F",[-1.00757,-3.29932,4.67311],0],
+			["Land_Shoot_House_Wall_Long_F",[1.2644,-0.946777,4.19197],270],
+			["Land_BagFence_Corner_F",[4.31836,-3.01514,6.61756],270],
+			["Land_BagFence_Short_F",[4.43359,-4.24609,6.61075],90]
+		};
+
+		template_3[] = 
+		{
+			"Land_Unfinished_Building_01_F",
+			["Land_BagFence_Round_F",[2.99463,-3.97949,6.61578],0],
+			["Land_BagFence_Round_F",[-0.195313,3.97998,9.91278],270],
+			["Land_BagFence_Round_F",[-4.00146,3.97998,9.91278],90],
+			["Land_BagFence_Long_F",[-2.10107,5.84717,9.91309],0],
+			["Land_BagFence_Long_F",[-3.25635,-3.41943,7.48278],0],
+			["Land_BagFence_Long_F",[-2.18945,1.95703,9.91309],0],
+			["Land_BagFence_Long_F",[2.93359,1.46729,7.31676],0],
+			["Land_BagFence_Long_F",[2.93359,1.46729,6.61578],0],
+			["I_Mortar_01_F",[-2.55029,3.66846,10.2535],359.998],
+			["I_HMG_01_F",[0.493164,3.15186,7.40499],89.9975],
+			["Land_Shoot_House_Wall_Long_Stand_F",[2.95264,1.57178,4.37697],180],
+			["I_GMG_01_high_F",[2.79736,-2.94531,7.84426],180.002]
+		};
+
+		template_4[] = 
+		{
+			"Land_Unfinished_Building_01_F",
+			["I_HMG_01_high_F",[-4.02393,-0.330078,4.34864],270.001],
+			["Land_BagFence_Round_F",[2.84912,-4.5542,6.61578],0],
+			["Land_BagFence_Long_F",[4.56299,-0.270996,6.61578],90.4367],
+			["Land_BagFence_Long_F",[2.97363,1.59375,6.61578],0],
+			["Land_BagFence_End_F",[4.12354,-3.69824,6.60613],270],
+			["I_HMG_01_high_F",[2.82861,-3.58496,7.84453],180.001],
+			["Land_Shoot_House_Wall_Long_F",[-2.9248,-3.28369,4.37697],0]
+		};
+	};
+};
