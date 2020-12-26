@@ -21,6 +21,10 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+#define SCRIPT_NAME "KISKA_fnc_vlsFireAt"
+scriptName SCRIPT_NAME;
+
+
 params [
 	["_launcher",objNull,[objNull]],
 	["_target",objNull,[objNull,[]]]
@@ -28,15 +32,15 @@ params [
 
 // verify Params
 if (isNull _launcher) exitWith {
-	"_launcher isNull" call BIS_fnc_error;
+	[SCRIPT_NAME,["Found that _launcher",_launcher,"is a null object. Exiting..."]] call KISKA_fnc_log;
 	false
 };
 if !((typeOf _launcher) == "B_Ship_MRLS_01_F") exitWith {
-	"_launcher is not type 'B_Ship_MRLS_01_F'" call BIS_fnc_error;
+	[SCRIPT_NAME,[typeOf _launcher,"is not correct type of B_Ship_MRLS_01_F. Exiting..."]] call KISKA_fnc_log;
 	false
 };
 if (_target isEqualType objNull AND {isNull _target}) exitWith {
-	"_target isNull" call BIS_fnc_error;
+	[SCRIPT_NAME,["Found that _target",_target,"is a null object. Exiting..."]] call KISKA_fnc_log;
 	false
 };
 
