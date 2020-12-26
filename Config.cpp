@@ -50,7 +50,7 @@ class CfgFunctions
 			file = "Kiska_functions\Buildings";
 			class createAndSetObject
 			{};
-			class getBuildingTemplate
+			class exportBuildingTemplate
 			{};
 			class getObjectOffsets
 			{};
