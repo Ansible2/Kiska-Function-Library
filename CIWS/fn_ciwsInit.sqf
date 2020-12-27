@@ -97,15 +97,6 @@ private _fn_isNullTarget = {
 	isNull _target
 };
 
-/*
-private _fn_watchTarget = {
-	params ["_turret","_target"];
-
-	while {sleep 0.1; alive _target} do {
-		_turret doWatch _target;
-	};
-};
-*/
 
 // turrets don't like to watch objects consistently, so we'll use their position instead for doWatch
 private _fn_updateTargetPos = {
@@ -212,8 +203,6 @@ private _fn_whileTargetsIncoming = {
 			[SCRIPT_NAME,[_turret,"target,",_target,"did not meet params"]] call KISKA_fnc_log;
 			//sleep 0.5;
 		};
-
-		//_turret doWatch objNull;
 	};
 
 };
@@ -225,12 +214,14 @@ private _fn_fireAtTarget = {
 		
 		// track if unit actually got off shots
 		_firedShots = false;
-		private _engagedBy = _target getVariable ["KISKA_CIWS_engagedBy",objNull];
-		
+		private "_engagedBy";
 		for "_i" from 1 to (random [50,100,150]) do {
+
 			if (isNull _target) exitWith {
 				[SCRIPT_NAME,[_turret,"target became null"]] call KISKA_fnc_log;
 			};
+
+			_engagedBy = _target getVariable ["KISKA_CIWS_engagedBy",objNull];
 
 			// check if target was engaged by another turret
 			if (!(isNull _engagedBy) AND {!(_engagedBy isEqualTo _turret)}) exitWith {
@@ -238,7 +229,7 @@ private _fn_fireAtTarget = {
 			};
 
 			// keep watching target
-			_turret doWatch _target;
+			_turret lookAt _target;
 			_turretPitchAngle = (deg (_turret animationSourcePhase "maingun")) + 0.6;
 			
 			// only fire above specified angle
@@ -262,13 +253,6 @@ private _fn_fireAtTarget = {
 		};
 
 		if (!(isNull _target) AND {_firedShots}) then {
-			/*
-			// sleeping for explosion effect
-			private _sleepTime = ((_turret distance _target) / 1000);
-			[SCRIPT_NAME,[_turret,"sleep",_sleepTime]] call KISKA_fnc_log;
-			sleep _sleepTime;
-			*/
-
 			call _fn_updateTargetPos;
 			createVehicle ["HelicopterExploBig",_targetPos,[],0,"FLY"];
 			[SCRIPT_NAME,[_turret,"destroyed target",_target]] call KISKA_fnc_log;
