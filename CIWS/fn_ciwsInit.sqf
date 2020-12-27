@@ -28,11 +28,12 @@ Author:
 	DayZMedic,
 	modified/optimized by Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_ciwsInit";
+#define SCRIPT_NAME "KISKA_fnc_ciwsInit"
+scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
 	_this spawn KISKA_fnc_ciwsInit;
-	"Must be run in scheduled envrionment" call BIS_fnc_error
+	[SCRIPT_NAME,"Was not run in scheduled; running in scheduled",false,true] call KISKA_fnc_log;
 };
 
 params [
@@ -47,30 +48,17 @@ params [
 ];
 
 if (isNull _turret) exitWith {
-	"_turret isNull" call BIS_fnc_error
+	[SCRIPT_NAME,[_turret,"is a null object. Exiting..."],true,true] call KISKA_fnc_log;
 };
 if !(_turret isKindOf "AAA_System_01_base_F") exitWith {
-	"Improper turret type used" call BIS_fnc_error
-};
-
-
-private _incoming = [];
-private _fn_incoming = {
-	params ["_turret","_searchDistance"];
-
-	_incoming = _turret nearObjects ["RocketBase",_searchDistance];
-	_incoming append (_turret nearObjects ["MissileBase",_searchDistance]);
-	_incoming append (_turret nearObjects ["ShellBase",_searchDistance]);
-	// rocket arty (specically Zamak arty) do not fall under these bases
-	_incoming append (_turret nearObjects ["R_230mm_HE",_searchDistance]);
-
-	_incoming
+	[SCRIPT_NAME,[typeOf _turret,"is not the proper type (AAA_System_01_base_F). Exiting..."],true,true] call KISKA_fnc_log;
 };
 
 _turret setVariable ["KISKA_runCIWS",true];
 
+[SCRIPT_NAME,[_turret,"set KISKA_runCIWS to true"]] call KISKA_fnc_log;
+
 private [
-	"_target",
 	"_targetDistance",
 	"_turretPitchAngle",
 	"_angleToTarget",
@@ -83,145 +71,245 @@ private [
 	"_firedShots",
 	"_turretPitchAngle",
 	"_targetPos",
-	"_targetBoom"
+	"_targetBoom",
+	"_targetIndex"
 ];	
 
-while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
+private _incoming = [];
+private _fn_updateIncomingList = {
 	// nearestObjects and nearEntities do not work here
+	[SCRIPT_NAME,[_turret,"is searching for incoming within",_searchDistance]] call KISKA_fnc_log;
+
+	_incoming = _turret nearObjects ["RocketBase",_searchDistance];
+	_incoming append (_turret nearObjects ["MissileBase",_searchDistance]);
+	_incoming append (_turret nearObjects ["ShellBase",_searchDistance]);
+	// rocket arty (specically Zamak arty) do not fall under these bases
+	_incoming append (_turret nearObjects ["R_230mm_HE",_searchDistance]);
+
+	[SCRIPT_NAME,[_turret,"found",_incoming]] call KISKA_fnc_log;
+
+	_incoming
+};
+
+private _target = objNull;
+
+private _fn_isNullTarget = {
+	isNull _target
+};
+
+/*
+private _fn_watchTarget = {
+	params ["_turret","_target"];
+
+	while {sleep 0.1; alive _target} do {
+		_turret doWatch _target;
+	};
+};
+*/
+
+// turrets don't like to watch objects consistently, so we'll use their position instead for doWatch
+private _fn_updateTargetPos = {
+	_targetPos = getPosWorldVisual _target;
+};
+
+private _fn_waitToFireOnTarget = {
+
+	waitUntil {
+		if (call _fn_isNullTarget) exitWith {
+			[SCRIPT_NAME,[_turret,"stopped waiting on null target"]] call KISKA_fnc_log;
+			true
+		};
+		// keep turret rotating to target
+		[SCRIPT_NAME,[_turret,"trying to get an angle on",_target]] call KISKA_fnc_log;
+		call _fn_updateTargetPos;
+		_turret lookAt _targetPos;
+		
+		//// turret pitch
+		// get turrets pitch angle (0.6 offset is baked into source anim)
+		_turretPitchAngle = abs ((deg (_turret animationSourcePhase "maingun")) + 0.6);
+		// get the angle needed to target
+		_angleToTarget = abs (acos ((_turret distance2D _target) / (_turret distance _target)));
+		// get the difference between turrets current pitch and the targets actual angle
+		_currentPitchTolerance = (selectMax [_turretPitchAngle,_angleToTarget]) - (selectMin [_turretPitchAngle,_angleToTarget]);
+		[SCRIPT_NAME,["_turret:",_turret,"_turretPitchAngle:",_turretPitchAngle,"_angleToTarget:",_angleToTarget,"_currentPitchTolerance:",_currentPitchTolerance]] call KISKA_fnc_log;
+
+		//// turret rotation
+		
+		// get turrets rotational angle
+		_turretVector = _turret weaponDirection (currentWeapon _turret);
+		_turretDir = (_turretVector select 0) atan2 (_turretVector select 1);
+		_turretDir = [_turretDir] call CBA_fnc_simplifyAngle;
+		// get relative rotational angle to the target
+		_relativeDir = _turret getDir _target;				
+		// get the degree between where the target is at relative to the turret position and its actual gun
+		_currentRotTolerance = (_turretDir max _relativeDir) - (_turretDir min _relativeDir);
+		[SCRIPT_NAME,["_turret:",_turret,"_turretVector:",_turretVector,"_turretDir:",_turretDir,"_relativeDir:",_relativeDir,"_currentRotTolerance:",_currentRotTolerance]] call KISKA_fnc_log;
+		
+		// get target alt
+		_targetAlt = (getPosWorldVisual _target) select 2;
+
+		if (call _fn_isNullTarget) exitWith {
+			[SCRIPT_NAME,[_turret,"stopped waiting on null target"]] call KISKA_fnc_log;
+			true
+		};
+
+		if (
+			(_currentPitchTolerance <= _pitchTolerance AND 
+			{_currentRotTolerance <= _rotationTolerance} AND 
+			{_targetALt >= _engageAltitude}) OR 
+
+			{(_turret distance _target) >= (_searchDistance * 0.75)}
+		) 
+		exitWith {
+			[SCRIPT_NAME,[_turret,"got an angle on",_target]] call KISKA_fnc_log;
+			true
+		};
+
+		sleep 0.25;
+		[SCRIPT_NAME,[_turret,"sleep 0.25"]] call KISKA_fnc_log;
+
+		false
+	};
+};
+
+private _fn_whileTargetsIncoming = {
+	[SCRIPT_NAME,[_turret,"found targets"]] call KISKA_fnc_log;
+	
+	// while there are still targets in the air; this was orginally a simple for loop, but the alarm sound requires the extra complication of
+	/// searching for incoming projectiles constantly after the first is detected
+	while {
+		[SCRIPT_NAME,[_turret,"sleep 0.5, _fn_whileTargetsIncoming"]] call KISKA_fnc_log;
+		sleep 0.5;	
+		call _fn_updateIncomingList;
+		// if projectiles are still incoming
+		if !(_incoming isEqualTo []) then {true} else {false}
+	} do {
+		// check if sound alarm requested and that the alarm is not already sounding
+		if (_soundAlarm AND {!(_turret getVariable ["KISKA_CIWS_alarmSounding",false])}) then {
+			// sound alarm
+			[_turret] spawn KISKA_fnc_ciwsAlarm;
+		};
+
+		_turret setCombatMode "RED";
+		
+		[SCRIPT_NAME,[_turret,"searching through targets"]] call KISKA_fnc_log;
+		_targetIndex = _incoming findIf {
+			(isNull (_x getVariable ["KISKA_CIWS_engagedBy",objNull])) AND
+			{(_x distance _turret) > 25}
+		};
+		
+		if (_targetIndex != -1) then {
+			_target = _incoming select _targetIndex;
+			_targetDistance = _target distance _turret;
+
+			[SCRIPT_NAME,[_turret,"found target",_target,"at",_targetDistance]] call KISKA_fnc_log;
+			
+			call _fn_waitToFireOnTarget
+
+			call _fn_fireAtTarget
+
+		} else {
+			[SCRIPT_NAME,[_turret,"target,",_target,"did not meet params"]] call KISKA_fnc_log;
+			//sleep 0.5;
+		};
+
+		//_turret doWatch objNull;
+	};
+
+};
+
+private _fn_fireAtTarget = {
+
+	if (!(isNull _target) AND {(_turret distance _target) <= _searchDistance}) then {
+		[SCRIPT_NAME,[_turret,"got params met on",_target]] call KISKA_fnc_log;
+		
+		// track if unit actually got off shots
+		_firedShots = false;
+		private _engagedBy = _target getVariable ["KISKA_CIWS_engagedBy",objNull];
+		
+		for "_i" from 1 to (random [50,100,150]) do {
+			if (isNull _target) exitWith {
+				[SCRIPT_NAME,[_turret,"target became null"]] call KISKA_fnc_log;
+			};
+
+			// check if target was engaged by another turret
+			if (!(isNull _engagedBy) AND {!(_engagedBy isEqualTo _turret)}) exitWith {
+				[SCRIPT_NAME,[_turret,"will not engage",_target,"; It's already being engaged by",_engagedBy]] call KISKA_fnc_log;
+			};
+
+			// keep watching target
+			_turret doWatch _target;
+			_turretPitchAngle = (deg (_turret animationSourcePhase "maingun")) + 0.6;
+			
+			// only fire above specified angle
+			if (_turretPitchAngle >= _doNotFireBelowAngle) then {
+				// ensure target is not reEngaged
+				if (isNull _engagedBy) then {
+					_target setVariable ["KISKA_CIWS_engagedBy",_turret];
+				};
+
+				// turret shoots 1 round
+				_turret fireAtTarget [_target,currentWeapon _turret];
+				// update if unit fired
+				if (!_firedShots) then {
+					_firedShots = true;
+				};
+
+				[SCRIPT_NAME,[_turret,"fired at",_target,"shot number",_i]] call KISKA_fnc_log;
+			};
+
+			sleep 0.01;
+		};
+
+		if (!(isNull _target) AND {_firedShots}) then {
+			/*
+			// sleeping for explosion effect
+			private _sleepTime = ((_turret distance _target) / 1000);
+			[SCRIPT_NAME,[_turret,"sleep",_sleepTime]] call KISKA_fnc_log;
+			sleep _sleepTime;
+			*/
+
+			call _fn_updateTargetPos;
+			createVehicle ["HelicopterExploBig",_targetPos,[],0,"FLY"];
+			[SCRIPT_NAME,[_turret,"destroyed target",_target]] call KISKA_fnc_log;
+			deleteVehicle _target;
+		};
+	} else {
+		[SCRIPT_NAME,[_turret,"target",_target,"did not meet params"]] call KISKA_fnc_log;
+	};
+};
+
+
+while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 	// get incoming projectiles
-	[_turret,_searchDistance] call _fn_incoming;
+	call _fn_updateIncomingList;
 	
 	// if projectiles are present then proceed, else sleep
 	if !(_incoming isEqualTo []) then {
+		[SCRIPT_NAME,[_turret,"found targets"]] call KISKA_fnc_log;
 		
-		// while there are still targets in the air; this was orginally a simple for loop, but the alarm sound requires the extra complication of
-		/// searching for incoming projectiles constantly after the first is detected
-		while {
-			sleep 1;
-			[_turret,_searchDistance] call _fn_incoming;
-			if !(_incoming isEqualTo []) then {true} else {false}
-		} do {
-			// check if sound alarm requested and that the alarm is not already sounding
-			if (_soundAlarm AND {!(_turret getVariable ["KISKA_CIWS_alarmSounding",false])}) then {
-				// sound alarm
-				[_turret] spawn KISKA_fnc_ciwsAlarm;
-			};
+		call _fn_whileTargetsIncoming;
 
-			_turret setCombatMode "RED";
-			_target = _incoming select 0;
-			_targetDistance = _target distance _turret;
-
-			if (_targetDistance > 25 AND {!(_target getVariable ["KISKA_CIWS_engaged",false])}) then {
-				waitUntil {
-					// keep turret rotating to target
-					_turret doWatch _target;
-
-					//// turret pitch
-					
-					// get turrets pitch angle (0.6 offset is baked into source anim)
-					_turretPitchAngle = abs ((deg (_turret animationSourcePhase "maingun")) + 0.6);
-					// get the angle needed to target
-					_angleToTarget = abs (acos ((_turret distance2D _target) / (_turret distance _target)));
-					// get the difference between turrets current pitch and the targets actual angle
-					_currentPitchTolerance = (selectMax [_turretPitchAngle,_angleToTarget]) - (selectMin [_turretPitchAngle,_angleToTarget]);
-					
-
-					//// turret rotation
-					
-					// get turrets rotational angle
-					_turretVector = _turret weaponDirection (currentWeapon _turret);
-					_turretDir = (_turretVector select 0) atan2 (_turretVector select 1);
-					_turretDir = [_turretDir] call CBA_fnc_simplifyAngle;
-					// get relative rotational angle to the target
-					_relativeDir = _turret getDir _target;				
-					// get the degree between where the target is at relative to the turret position and its actual gun
-					_currentRotTolerance = (_turretDir max _relativeDir) - (_turretDir min _relativeDir);
-
-					
-					// get target alt
-					_targetAlt = (getPosWorldVisual _target) select 2;
-										
-					if (
-						(_currentPitchTolerance <= _pitchTolerance AND 
-						{_currentRotTolerance <= _rotationTolerance} AND 
-						{_targetALt >= _engageAltitude}) OR 
-
-						{(_turret distance _target) >= (_searchDistance * 0.75)} OR 
-
-						{isNull _target}
-					) 
-					exitWith {true};
-
-					sleep 0.25; 
-					
-					false
-				};
-
-				if ((_turret distance _target) <= _searchDistance AND {!isNull _target}) then {
-
-					// track if unit actually got off shots
-					_firedShots = false;
-
-					for "_i" from 0 to (random [50,100,150]) do {
-						// keep watching target
-						_turret doWatch _target;
-						_turretPitchAngle = (deg (_turret animationSourcePhase "maingun")) + 0.6;
-						
-						// only fire above specified angle
-						if (_turretPitchAngle >= _doNotFireBelowAngle) then {
-							// ensure target is not reEngaged
-							if !(_target getVariable ["KISKA_CIWS_engaged",false]) then {
-								_target setVariable ["KISKA_CIWS_engaged",true];
-							};
-							// update if unit fired
-							if (!_firedShots) then {
-								_firedShots = true;
-							};
-							// turret shoots 1 round
-							_turret fireAtTarget [_target,currentWeapon _turret];
-						};
-
-						sleep 0.01;
-					};
-
-					sleep 0.5 + ((_turret distance _target) / 1000);
-
-					// only delete if shots were fired
-					if (_firedShots) then {
-						_targetPos = getPosWorldVisual _target;
-						_targetBoom = getText (configFile >> "CfgAmmo" >> (typeOf _target) >> "explosionEffects");
-						if (_targetBoom != "") then {
-							createVehicle [_targetBoom,_targetPos,[],0,"FLY"];
-						};
-						createVehicle ["HelicopterExploBig",_targetPos,[],0,"FLY"];
-						
-						deleteVehicle _target;
-					};
-				} else {
-					sleep 0.5;
-				};
-			};
-		};
-		
 		// turn off alarm if used
 		if (_soundAlarm) then {
 			// used a wait and exec to create a new thread so that this could be evaluated independently
 			// the goal is to reduce alarm sound overlap by keeping it going if the rounds are close together
 			[
 				{
-					params ["_turret","_searchDistance","_fn_incoming"];
+					params ["_turret","_searchDistance","_fn_updateIncomingList"];
 					
-					private _incoming = [_turret,_searchDistance] call _fn_incoming;
+					private _incoming = call _fn_updateIncomingList;
 					
 					if (_incoming isEqualTo []) then {
 						_turret setVariable ["KISKA_CIWS_allClear",true];
 					};
 				},
-				[_turret,_searchDistance,_fn_incoming],
+				[_turret,_searchDistance,_fn_updateIncomingList],
 				5
 			] call CBA_fnc_waitAndExecute;
 		};
 	} else {
+		[SCRIPT_NAME,[_turret,"sleep 0.5, the target did not meet params"]] call KISKA_fnc_log;
 		sleep _searchInterval;
 	};
 };
