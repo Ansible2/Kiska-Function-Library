@@ -29,6 +29,8 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+if !(missionNamespace getVariable ["KISKA_doLog",false]) exitWith {};
+
 params [
 	["_scriptName","",[""]],
 	["_message","",[]],
@@ -49,7 +51,13 @@ if !(_forceLog) then {
 
 if !(_forceLog) exitWith {};
 
-diag_log ("KISKA Log......: " + _scriptName);
+// only start a new header message with script name when another script interrupts
+private _currentLoggedScript = missionNamespace getVariable ["KISKA_currentLoggedScript",""];
+if (_currentLoggedScript != _scriptName) then {
+	missionNamespace setVariable ["KISKA_currentLoggedScript",_scriptName];
+	diag_log ("KISKA Start Logging Script......: " + _scriptName);
+};
+
 if (_message isEqualType [] AND {_joinString}) then {
 	_message = _message joinString " ";
 };
@@ -59,5 +67,6 @@ diag_log _message;
 if (_logWithError) then {
 	(_scriptName + " : " + _message) call BIS_fnc_error;
 };
+
 
 _message
