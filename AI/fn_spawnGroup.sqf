@@ -85,6 +85,7 @@ for "_i" from 1 to _numberOfUnits do {
 _group setBehaviour "AWARE";
 _group setCombatMode "RED";
 
+private _spawnedUnits = units _group;
 allCurators apply {
 	[_x,[_spawnedUnits,false]] remoteExecCall ["addCuratorEditableObjects",2];
 };
