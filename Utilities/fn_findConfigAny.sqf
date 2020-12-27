@@ -23,14 +23,15 @@ Examples:
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_findConfigAny";
+#define SCRIPT_NAME "KISKA_fnc_findConfigAny"
+scriptName SCRIPT_NAME;
 
 params [
 	["_pathArray",[],[[]]]
 ];
 
 if (_pathArray isEqualTo []) exitWith {
-	"_pathArray is empty array!" call BIS_fnc_error;
+	[SCRIPT_NAME,"_pathArray is empty array!"] call KISKA_fnc_log;
 };
 
 private "_config_temp";
