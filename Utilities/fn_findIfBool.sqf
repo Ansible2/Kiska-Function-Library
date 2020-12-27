@@ -16,7 +16,7 @@ Returns:
 
 Examples:
     (begin example)
-		// returns true for an alive player
+		// returns true if any player is alive
 		[allPlayers,{alive _x}] call KISKA_fnc_findIfBool;
     (end)
 
