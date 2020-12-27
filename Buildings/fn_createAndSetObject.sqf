@@ -1,9 +1,46 @@
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_createAndSetObject
+
+Description:
+	Used in KISKA_fnc_selectAndSpawnBuildingTemplate to create each object
+     on the building.
+
+Parameters:
+	0: _createObjectInfo : <ARRAY> - The objects info to create it
+    1: _building : <OBJECT> - The building the objects is on
+
+Returns:
+	<OBJECT> - The created object
+
+Examples:
+    (begin example)
+		_object = [_arrayOfInfo,myBuilding] call KISKA_fnc_createAndSetObject;
+    (end)
+
+Author(s):
+	Ansible2 // Cipher
+---------------------------------------------------------------------------- */
+#define SCRIPT_NAME "KISKA_fnc_createAndSetObject"
+scriptName SCRIPT_NAME;
+
 params [
     ["_createObjectInfo",[],[[]]],
     ["_building",objNull,[objNull]]
 ];
 
-_createObjectInfo params ["_objectClassname","_objectPostionRelative","_objectVectorRelative","_isSimpleObject","_isSimulated","_isDynamic"];
+if (isNull _building) exitWith {
+    [SCRIPT_NAME,"_building is a null object",false,true] call KISKA_fnc_log;
+    objNull
+};
+
+_createObjectInfo params [
+    "_objectClassname",
+    "_objectPostionRelative",
+    "_objectVectorRelative",
+    ["_isSimpleObject",false],
+    ["_isSimulated",true],
+    ["_isDynamic",false]
+];
 
 //create Object
 private "_createdObject";
@@ -21,7 +58,7 @@ if (is3DEN) then {
             _createdObject enableDynamicSimulation true;
         } else {
             if !(_isSimulated) then {
-                [_createdObject,false] remoteExec ["enableSimulationGlobal",2];
+                [_createdObject,false] remoteExecCall ["enableSimulationGlobal",2];
             };
         }; 
     };
