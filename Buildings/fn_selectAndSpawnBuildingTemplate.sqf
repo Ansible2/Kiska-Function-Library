@@ -42,7 +42,6 @@ private _buildingTemplate = _templateClass call BIS_fnc_getCfgDataArray;
 private _buildingClass = _buildingTemplate deleteAt 0;
 private _spawnedObjects = []; // this should be pushBack to the master array, once done, get its index in the master and attach it to a missionNamespace variable so that all the objects can be deleted after the DSO is complete
 
-private "_object";
 _buildingTemplate apply {
     _object = [_x,_building] call KISKA_fnc_createAndSetObject;
     
