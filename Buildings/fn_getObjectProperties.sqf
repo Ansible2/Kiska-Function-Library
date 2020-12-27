@@ -14,7 +14,7 @@ Returns:
 
 Examples:
     (begin example)
-		_offsetDump = [_capturedObjects,_building] call KISKA_fnc_getObjectOffsets;
+		_offsetDump = [_capturedObjects,_building] call KISKA_fnc_getObjectProperties;
     (end)
 
 Author(s):
