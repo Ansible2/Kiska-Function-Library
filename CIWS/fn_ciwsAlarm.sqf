@@ -20,9 +20,14 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+#define WAIT_FOR_AIRRAIDSTART 6.4
+#define WAIT_TO_LOOP_SOUND 10.8
+#define SCRIPT_NAME "KISKA_fnc_ciwsAlarm"
+scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
-	"Must be run in scheduled envrionment" call BIS_fnc_error;
+	null = _this spawn KISKA_fnc_ciwsAlarm;
+	[SCRIPT_NAME,"Was not run in scheduled; running in scheduled",false,true] call KISKA_fnc_log;
 };
 
 params [
@@ -30,7 +35,7 @@ params [
 ];
 
 if (isNull _turret) exitWith {
-	"_turret isNull" call BIS_fnc_error
+	[SCRIPT_NAME,[_turret,"is a null object. Exiting..."],true,true] call KISKA_fnc_log;
 };
 
 
@@ -44,19 +49,21 @@ _turret setVariable ["KISKA_CIWS_alarmSounding",true];
 // start Sirens
 [_turret] spawn KISKA_fnc_ciwsSiren;
 
-// wait to start looping airRaid so that sounds overlap some
-sleep 6.4;
+// To make the sounds appear to be synched, wait a bit to start the loop audio
+sleep WAIT_FOR_AIRRAIDSTART;
 
 // start the air raid loop
 waitUntil {
-	// check if loop should end
+	// check if loop should end and play audio if it should
 	if (_turret getVariable "KISKA_CIWS_allClear") exitWith {
 		["KISKA_airRaidEnd",_turret,1000,3] call KISKA_fnc_playSound3d;
 		_turret setVariable ["KISKA_CIWS_alarmSounding",false];
 		true
 	};
 
+	// play looped audio again
 	["KISKA_airRaidLoop",_turret,1000,3] call KISKA_fnc_playSound3d;
-	sleep 10.8;
+	// sound should wait to loop back to end audio or loop sound
+	sleep WAIT_TO_LOOP_SOUND;
 	false
 };
