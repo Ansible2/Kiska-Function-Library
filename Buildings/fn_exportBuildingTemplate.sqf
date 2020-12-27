@@ -17,7 +17,6 @@ Returns:
 
 Examples:
     (begin example)
-		// returns true if any player is alive
 		_template = [myBuilding] call KISKA_fnc_exportBuildingTemplate;
     (end)
 
@@ -49,7 +48,7 @@ private _capturedObjects = (_building nearObjects _objectCaptureRadius) select {
     {(_x isKindOf "static") OR {_x isKindOf "staticWeapon"} OR {_x isKindOf "thing"}}
 };
 
-private _offsetDump = [_capturedObjects,_building] call KISKA_fnc_getObjectOffsets;
+private _offsetDump = [_capturedObjects,_building] call KISKA_fnc_getObjectProperties;
 if (_copyToClipboard) then {
     copyToClipboard str _offsetDump;
 };

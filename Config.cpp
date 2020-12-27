@@ -52,7 +52,7 @@ class CfgFunctions
 			{};
 			class exportBuildingTemplate
 			{};
-			class getObjectOffsets
+			class getObjectProperties
 			{};
 			class selectAndSpawnBuildingTemplate
 			{};
