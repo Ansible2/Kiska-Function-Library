@@ -40,6 +40,7 @@ params [
 ];
 
 if !(_forceLog) then {
+	// set _forceLog to true if the scripts name is in the log array KISKA_logScripts
 	_forceLog = [
 		missionNamespace getVariable ["KISKA_logScripts",["all"]],
 		{
@@ -55,7 +56,7 @@ if !(_forceLog) exitWith {};
 private _currentLoggedScript = missionNamespace getVariable ["KISKA_currentLoggedScript",""];
 if (_currentLoggedScript != _scriptName) then {
 	missionNamespace setVariable ["KISKA_currentLoggedScript",_scriptName];
-	diag_log ("KISKA Start Logging Script......: " + _scriptName);
+	diag_log ("KISKA Start Logging Script......................: " + _scriptName);
 };
 
 if (_message isEqualType [] AND {_joinString}) then {
