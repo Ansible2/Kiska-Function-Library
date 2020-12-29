@@ -125,7 +125,6 @@ private _fn_waitToFireOnTarget = {
 		[SCRIPT_NAME,["_turret:",_turret,"_turretPitchAngle:",_turretPitchAngle,"_angleToTarget:",_angleToTarget,"_currentPitchTolerance:",_currentPitchTolerance]] call KISKA_fnc_log;
 
 		//// turret rotation
-		
 		// get turrets rotational angle
 		_turretVector = _turret weaponDirection (currentWeapon _turret);
 		_turretDir = (_turretVector select 0) atan2 (_turretVector select 1);
@@ -258,6 +257,7 @@ private _fn_fireAtTarget = {
 			[SCRIPT_NAME,[_turret,"destroyed target",_target]] call KISKA_fnc_log;
 			deleteVehicle _target;
 		};
+
 	} else {
 		[SCRIPT_NAME,[_turret,"target",_target,"did not meet params"]] call KISKA_fnc_log;
 	};
@@ -292,6 +292,7 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 				5
 			] call CBA_fnc_waitAndExecute;
 		};
+		
 	} else {
 		[SCRIPT_NAME,[_turret,"sleep 0.5, the target did not meet params"]] call KISKA_fnc_log;
 		sleep _searchInterval;
