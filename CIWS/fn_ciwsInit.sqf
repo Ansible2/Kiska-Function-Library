@@ -118,10 +118,37 @@ private _fn_isNullTarget = {
 	isNull _target
 };
 
+private _fn_checkIfStopAlarm = {
+	[
+		{
+			params ["_turret","_searchDistance","_engageTypes"];
+			private _incoming = [];
+
+			_engageTypes apply {
+				_x params [
+					"_type",
+					["_isEntity",false]
+				];
+
+				if (_isEntity) then {
+					_incoming append (_turret nearEntities [_type,_searchDistance]);
+				} else {
+					_incoming append (_turret nearObjects [_type,_searchDistance]);
+				};
+			};	
+			
+			if (_incoming isEqualTo []) then {
+				_turret setVariable ["KISKA_CIWS_allClear",true];
+			};
+		},
+		[_turret,_searchDistance,_engageTypes],
+		5
+	] call CBA_fnc_waitAndExecute;
+};
 
 // turrets don't like to watch objects consistently, so we'll use their position instead for doWatch
 private _fn_updateTargetPos = {
-	_targetPos = getPosATLVisual _target;
+	_targetPos = unitAimPositionVisual _target;
 };
 
 private _fn_waitToFireOnTarget = {
@@ -307,17 +334,14 @@ private _fn_fireAtTarget = {
 		// reset lookAt
 		_turret lookAt objNull;
 
-		if (!(isNull _target) AND {_firedShots}) then {
-			//call _fn_updateTargetPos;
-			//createVehicle ["HelicopterExploBig",_targetPos,[],0,"FLY"];
-			
+		if (!(isNull _target) AND {_firedShots}) then {		
 			triggerAmmo _target;
-			
-			[SCRIPT_NAME,[_turret,"destroyed target",_target]] call KISKA_fnc_log;
 			
 			if (alive _target) then {
 				deleteVehicle _target;
 			};
+
+			[SCRIPT_NAME,[_turret,"destroyed target",_target]] call KISKA_fnc_log;
 		};
 
 	} else {
@@ -340,19 +364,7 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 		if (_soundAlarm) then {
 			// used a wait and exec to create a new thread so that this could be evaluated independently
 			// the goal is to reduce alarm sound overlap by keeping it going if the rounds are close together
-			[
-				{
-					params ["_turret","_searchDistance","_fn_updateIncomingList"];
-					
-					private _incoming = call _fn_updateIncomingList;
-					
-					if (_incoming isEqualTo []) then {
-						_turret setVariable ["KISKA_CIWS_allClear",true];
-					};
-				},
-				[_turret,_searchDistance,_fn_updateIncomingList],
-				5
-			] call CBA_fnc_waitAndExecute;
+			call _fn_checkIfStopAlarm
 		};
 		
 	} else {
