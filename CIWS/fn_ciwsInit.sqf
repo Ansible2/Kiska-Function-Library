@@ -148,7 +148,7 @@ private _fn_checkIfStopAlarm = {
 
 // turrets don't like to watch objects consistently, so we'll use their position instead for doWatch
 private _fn_updateTargetPos = {
-	_targetPos = unitAimPositionVisual _target;
+	_targetPos = getPosVisual _target;
 };
 
 private _fn_waitToFireOnTarget = {
