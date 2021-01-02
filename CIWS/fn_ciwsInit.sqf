@@ -161,6 +161,12 @@ private _fn_waitToFireOnTarget = {
 		};
 		// keep turret rotating to target
 		[SCRIPT_NAME,[_turret,"trying to get an angle on",_target]] call KISKA_fnc_log;
+		
+		if (call _fn_isNullTarget) exitWith {
+			[SCRIPT_NAME,[_turret,"stopped waiting on null target #1"]] call KISKA_fnc_log;
+			true
+		};
+		
 		call _fn_updateTargetPos;
 		_turret lookAt _targetPos;
 		
@@ -189,16 +195,16 @@ private _fn_waitToFireOnTarget = {
 		_targetAlt = _targetPos select 2;
 
 		if (call _fn_isNullTarget) exitWith {
-			[SCRIPT_NAME,[_turret,"stopped waiting on null target"]] call KISKA_fnc_log;
+			[SCRIPT_NAME,[_turret,"stopped waiting on null target #2"]] call KISKA_fnc_log;
 			true
 		};
 
 		if (
 			(_currentPitchTolerance <= _pitchTolerance AND 
 			{_currentRotTolerance <= _rotationTolerance} AND 
-			{_targetALt >= _engageAboveAltitude}) OR 
+			{_targetALt >= _engageAboveAltitude})/* OR 
 
-			{(_turret distance _target) >= (_searchDistance * 0.75)}
+			{(_turret distance _target) >= (_searchDistance * 0.75)}*/
 		) 
 		exitWith {
 			[SCRIPT_NAME,[_turret,"got an angle on",_target]] call KISKA_fnc_log;
@@ -348,6 +354,10 @@ private _fn_fireAtTarget = {
 		};
 
 	} else {
+		// reset lookAt
+		_turret lookAt objNull;
+		_turret disableAI "WEAPONAIM";
+		
 		[SCRIPT_NAME,[_turret,"target",_target,"did not meet params"]] call KISKA_fnc_log;
 	};
 };
@@ -359,8 +369,6 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 	
 	// if projectiles are present then proceed, else sleep
 	if !(_incoming isEqualTo []) then {
-		[SCRIPT_NAME,[_turret,"found targets"]] call KISKA_fnc_log;
-		
 		call _fn_whileTargetsIncoming;
 
 		// turn off alarm if used
