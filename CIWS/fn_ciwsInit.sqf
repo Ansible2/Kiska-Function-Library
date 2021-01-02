@@ -7,12 +7,16 @@ Description:
 Parameters:
 	0: _turret : <OBJECT> - The CIWS turret
 	1: _searchDistance : <NUMBER> - How far out will the CIWS be notified of a target
-	2: _engageAltitude : <NUMBER> - What altittiude (AGL) does the target need to be above to be engaged
+	2: _engageAboveAltitude : <NUMBER> - What altittiude (AGL) does the target need to be above to be engaged
 	3: _searchInterval : <NUMBER> - Time between checks for targets in area
 	4: _doNotFireBelowAngle : <NUMBER> - Below what angle should the turret NOT fire (keep it from firing at ground accidently)
-	5: _pitchTolerance : <NUMBER> - How accurate does the turrets pitch need to be to engage the target
-	6: _rotationTolerance : <NUMBER> - How accurate does the turrets rotation need to be to engage the target
+	5: _pitchTolerance : <NUMBER> - if the turret's pitch is within this margin of degrees to the target, it can engage
+	6: _rotationTolerance : <NUMBER> - if the turret's rotation is within this margin of degrees to the target, it can engage
 	7: _soundAlarm : <BOOL> - Play air raid siren and sound alarm when incoming detected
+	8: _engageTypes : <ARRAY> - This array decides what types of objects or entities should be engaged by the CIWS
+								 these are formatted as an array or string inside, using an array allows the
+								 decision to define a type as supported by nearEntities (which is much faster then the default nearObjects)
+								 simply by setting it as ["myEntityType",true]
 
 Returns:
 	Nothing
@@ -29,6 +33,8 @@ Author:
 	modified/optimized by Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 #define SCRIPT_NAME "KISKA_fnc_ciwsInit"
+#define DEFAULT_ENGAGE_TYPES [["RocketBase",false],["MissileBase",false],["ShellBase",false],["R_230mm_HE",false]]
+
 scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
@@ -39,12 +45,13 @@ if (!canSuspend) exitWith {
 params [
 	["_turret",objNull,[objNull]],
 	["_searchDistance",3000,[123]],
-	["_engageAltitude",50,[123]],
+	["_engageAboveAltitude",50,[123]],
 	["_searchInterval",2,[123]],
 	["_doNotFireBelowAngle",5,[123]],
 	["_pitchTolerance",3,[123]],
 	["_rotationTolerance",10,[123]],
-	["_soundAlarm",true,[false]]
+	["_soundAlarm",true,[false]],
+	["_engageTypes",DEFAULT_ENGAGE_TYPES,[]]
 ];
 
 if (isNull _turret) exitWith {
@@ -55,6 +62,10 @@ if !(_turret isKindOf "AAA_System_01_base_F") exitWith {
 };
 
 _turret setVariable ["KISKA_runCIWS",true];
+
+// make sure turret only fires when we tell it to
+// possibly add this as a param in the future
+//_turret setCombatMode "BLUE";
 
 [SCRIPT_NAME,[_turret,"set KISKA_runCIWS to true"]] call KISKA_fnc_log;
 
@@ -80,11 +91,21 @@ private _fn_updateIncomingList = {
 	// nearestObjects and nearEntities do not work here
 	[SCRIPT_NAME,[_turret,"is searching for incoming within",_searchDistance]] call KISKA_fnc_log;
 
-	_incoming = _turret nearObjects ["RocketBase",_searchDistance];
-	_incoming append (_turret nearObjects ["MissileBase",_searchDistance]);
-	_incoming append (_turret nearObjects ["ShellBase",_searchDistance]);
-	// rocket arty (specically Zamak arty) do not fall under these bases
-	_incoming append (_turret nearObjects ["R_230mm_HE",_searchDistance]);
+	_incoming = [];
+
+	_engageTypes apply {
+		_x params [
+			"_type",
+			["_isEntity",false]
+		];
+
+		if (_isEntity) then {
+			_incoming append (_turret nearEntities [_type,_searchDistance]);
+		} else {
+			_incoming append (_turret nearObjects [_type,_searchDistance]);
+		};
+
+	};
 
 	[SCRIPT_NAME,[_turret,"found",_incoming]] call KISKA_fnc_log;
 
@@ -100,7 +121,7 @@ private _fn_isNullTarget = {
 
 // turrets don't like to watch objects consistently, so we'll use their position instead for doWatch
 private _fn_updateTargetPos = {
-	_targetPos = getPosWorldVisual _target;
+	_targetPos = getPosATLVisual _target;
 };
 
 private _fn_waitToFireOnTarget = {
@@ -136,7 +157,8 @@ private _fn_waitToFireOnTarget = {
 		[SCRIPT_NAME,["_turret:",_turret,"_turretVector:",_turretVector,"_turretDir:",_turretDir,"_relativeDir:",_relativeDir,"_currentRotTolerance:",_currentRotTolerance]] call KISKA_fnc_log;
 		
 		// get target alt
-		_targetAlt = (getPosWorldVisual _target) select 2;
+		call _fn_updateTargetPos;
+		_targetAlt = _targetPos select 2;
 
 		if (call _fn_isNullTarget) exitWith {
 			[SCRIPT_NAME,[_turret,"stopped waiting on null target"]] call KISKA_fnc_log;
@@ -146,7 +168,7 @@ private _fn_waitToFireOnTarget = {
 		if (
 			(_currentPitchTolerance <= _pitchTolerance AND 
 			{_currentRotTolerance <= _rotationTolerance} AND 
-			{_targetALt >= _engageAltitude}) OR 
+			{_targetALt >= _engageAboveAltitude}) OR 
 
 			{(_turret distance _target) >= (_searchDistance * 0.75)}
 		) 
@@ -179,8 +201,6 @@ private _fn_whileTargetsIncoming = {
 			// sound alarm
 			[_turret] spawn KISKA_fnc_ciwsAlarm;
 		};
-
-		_turret setCombatMode "RED";
 		
 		[SCRIPT_NAME,[_turret,"searching through targets"]] call KISKA_fnc_log;
 		_targetIndex = _incoming findIf {
@@ -214,7 +234,18 @@ private _fn_fireAtTarget = {
 		// track if unit actually got off shots
 		_firedShots = false;
 		private "_engagedBy";
-		for "_i" from 1 to (random [50,100,150]) do {
+		private _numberOfShots = random [50,100,150];
+		[SCRIPT_NAME,["_numberOfShots is:",_numberOfShots]] call KISKA_fnc_log;
+
+		private _shotMin = _numberOfShots / 3;
+		[SCRIPT_NAME,["_shotMin is:",_shotMin]] call KISKA_fnc_log; 
+
+		private _explodeAtShot = round (random [_shotMin,_shotMin * 2,_numberOfShots]);
+		[SCRIPT_NAME,["_explodeAtShot is:",_explodeAtShot]] call KISKA_fnc_log; 
+
+		private _didExplode = false;
+
+		for "_i" from 1 to _numberOfShots do {
 
 			if (isNull _target) exitWith {
 				[SCRIPT_NAME,[_turret,"target became null"]] call KISKA_fnc_log;
@@ -240,6 +271,28 @@ private _fn_fireAtTarget = {
 
 				// turret shoots 1 round
 				_turret fireAtTarget [_target,currentWeapon _turret];
+				
+				// create explosion
+				if (!_didExplode AND {_i >= _explodeAtShot}) then {
+					[SCRIPT_NAME,"Reached explosion, updating target pos"] call KISKA_fnc_log; 
+					call _fn_updateTargetPos;
+					
+					// delay explosion because bullets take time to reach their target
+					null = [_turret,_targetPos] spawn {
+						params ["_turret","_targetPos"];
+
+						// bullet travels about 1m every 0.0005s
+						private _sleep = (0.0005 * (_turret distance _targetPos));
+						sleep _sleep;
+						createVehicle ["HelicopterExploBig",_targetPos,[],0,"FLY"];
+					};
+
+					// stop target so it doesn't hit something 
+					_target setVelocity [0,0,0];
+
+					_didExplode = true;
+				};
+
 				// update if unit fired
 				if (!_firedShots) then {
 					_firedShots = true;
@@ -251,11 +304,20 @@ private _fn_fireAtTarget = {
 			sleep 0.01;
 		};
 
+		// reset lookAt
+		_turret lookAt objNull;
+
 		if (!(isNull _target) AND {_firedShots}) then {
-			call _fn_updateTargetPos;
-			createVehicle ["HelicopterExploBig",_targetPos,[],0,"FLY"];
+			//call _fn_updateTargetPos;
+			//createVehicle ["HelicopterExploBig",_targetPos,[],0,"FLY"];
+			
+			triggerAmmo _target;
+			
 			[SCRIPT_NAME,[_turret,"destroyed target",_target]] call KISKA_fnc_log;
-			deleteVehicle _target;
+			
+			if (alive _target) then {
+				deleteVehicle _target;
+			};
 		};
 
 	} else {
