@@ -7,28 +7,30 @@ Description:
 
 	Excluded groups and units can be added to the array KISKA_hcExcluded.
 
-Parameters:
-	 
+Parameters:	 
 	0: _checkInterval <NUMBER> - How often to redistribute, if -1, will not loop
 
 Returns:
-	BOOL
+	NOTHING
 
 Examples:
     (begin example)
-
-		[] spawn KISKA_fnc_balanceHeadless;
-
+		null = [] spawn KISKA_fnc_balanceHeadless;
     (end)
 
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-if (!isServer OR {!isMultiplayer}) exitWith {false};
+#define SCRIPT_NAME "KISKA_fnc_ciwsInit"
+scriptName SCRIPT_NAME;
+
+if (!isServer OR {!isMultiplayer}) exitWith {
+	[SCRIPT_NAME,"Needs to be run on server in multiplayer",false,true] call KISKA_fnc_log;
+};
 
 if (!canSuspend) exitWith {
-	"Must be run in a scheduled environement" call BIS_fnc_error;
-	false
+	[SCRIPT_NAME,"Was not run in scheduled; running in scheduled",false,true] call KISKA_fnc_log;
+	_this spawn KISKA_fnc_balanceHeadless;
 };
 
 params [
@@ -38,29 +40,33 @@ params [
 private _headlessClients = entities "HeadlessClient_F";
 
 if (_headlessClients isEqualTo []) exitWith {
-	[
-		{
-			_this spawn KISKA_fnc_balanceHeadless;
-		},
-		[_checkInterval],
-		_checkInterval
-	] call CBA_fnc_waitAndExecute;
+	if (_checkInterval > 0) then {
+		[
+			{
+				_this spawn KISKA_fnc_balanceHeadless;
+			},
+			[_checkInterval],
+			_checkInterval
+		] call CBA_fnc_waitAndExecute;
+	};
 };
 
 if !((missionNamespace getVariable ["KISKA_hcExcluded",[]]) isEqualTo []) then {
 	private _excluded = missionNamespace getVariable ["KISKA_hcExcluded",[]];
 
-	{
-		if !(_x isEqualTypeAny [grpNull,objNull]) then {
-			[(str _x) + " is not object or group"] call BIS_fnc_error
-		};
+	if !(_excluded isEqualTo []) then {
+		{
+			if !(_x isEqualTypeAny [grpNull,objNull]) then {
+				[SCRIPT_NAME,[_x,"is not an object or group in KISKA_hcExcluded!"],true,true] call KISKA_fnc_log;
+			};
 
-		if (_x isEqualType objNull) then {
-			_excluded set [_forEachIndex,group _x];
-		};
-	} forEach _excluded;
+			if (_x isEqualType objNull) then {
+				_excluded set [_forEachIndex,group _x];
+			};
+		} forEach _excluded;
+	};
 
-	KISKA_hcExcluded = _excluded;
+	missionNamespace setVariable ["KISKA_hcExcluded",_excluded];
 };
 
 // everyone goes basck to 0 for even redistribution
@@ -68,7 +74,7 @@ _headlessClients apply {
 	_x setVariable ["KISKA_hcLocalUnitsCount",0];
 };
 
-["Headless ReBalance Is Beginning"] remoteExec ["hint",call CBA_fnc_players];
+["Headless ReBalance Is Beginning"] remoteExecCall ["hint",0];
 
 allGroups apply {
 	private _group = _x;
@@ -150,7 +156,6 @@ addMissionEventHandler ["EntityKilled", {
 	params ["_unit"];
 
 	if (_unit isKindOf "MAN" AND {!(local _unit)} AND {!(_unit in allPlayers)}) then {
-		
 		private _owner = owner _unit;
 		private _allHeadlessClients = entities "HeadlessClient_F";
 		private _index = _allHeadlessClients findIf {_owner isEqualTo (owner _x)};
@@ -174,14 +179,13 @@ addMissionEventHandler ["EntityKilled", {
 
 				// take unit out of array
 				_localUnitsArray deleteAt (_localUnitsArray findIf {_x isEqualTo _unit});
-
 			};
 		};
 		
 	};
 }];
 
-["Headless ReBalance Is COMPLETE"] remoteExec ["hint",(call CBA_fnc_players)];
+["Headless ReBalance Is COMPLETE"] remoteExecCall ["hint",0];
 
 if (_checkInterval > 0 AND {_checkInterval != -1}) then {
 	sleep _checkInterval;
