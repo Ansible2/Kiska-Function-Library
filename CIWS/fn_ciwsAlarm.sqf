@@ -38,6 +38,10 @@ if (isNull _turret) exitWith {
 	[SCRIPT_NAME,[_turret,"is a null object. Exiting..."],true,true] call KISKA_fnc_log;
 };
 
+if (_turret getVariable ["KISKA_CIWS_alarmSounding",false]) exitWith {
+	[SCRIPT_NAME,[_turret,"already has its alarm sounding"]] call KISKA_fnc_log;
+};
+
 
 // set turret to engaging targets
 _turret setVariable ["KISKA_CIWS_allClear",false];

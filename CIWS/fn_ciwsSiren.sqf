@@ -22,9 +22,18 @@ Author:
 ---------------------------------------------------------------------------- */
 params ["_turret"];
 
+if (_turret getVariable ["KISKA_CIWS_sirenSounding",false]) exitWith {
+	[SCRIPT_NAME,[_turret,"already has its siren sounding"]] call KISKA_fnc_log;
+};
+
+_turret setVariable ["KISKA_CIWS_sirenSounding",true];
+
 waitUntil {
 	["KISKA_Siren",_turret,1000,2] call KISKA_fnc_playSound3d;
 	sleep 8;
 	if (_turret getVariable "KISKA_CIWS_allClear") exitWith {true};
+
 	false
 };
+
+_turret setVariable ["KISKA_CIWS_sirenSounding",false];
