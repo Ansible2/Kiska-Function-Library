@@ -32,9 +32,9 @@ Author:
 	DayZMedic,
 	modified/optimized by Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_ciwsInit"
 #define DEFAULT_ENGAGE_TYPES [["RocketBase",false],["MissileBase",false],["ShellBase",false],["R_230mm_HE",false]]
 
+#define SCRIPT_NAME "KISKA_fnc_ciwsInit"
 scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
