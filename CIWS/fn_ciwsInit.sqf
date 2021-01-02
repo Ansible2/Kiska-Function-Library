@@ -152,6 +152,7 @@ private _fn_updateTargetPos = {
 };
 
 private _fn_waitToFireOnTarget = {
+	_turret enableAI "WEAPONAIM";
 
 	waitUntil {
 		if (call _fn_isNullTarget) exitWith {
@@ -226,7 +227,7 @@ private _fn_whileTargetsIncoming = {
 		// check if sound alarm requested and that the alarm is not already sounding
 		if (_soundAlarm AND {!(_turret getVariable ["KISKA_CIWS_alarmSounding",false])}) then {
 			// sound alarm
-			[_turret] spawn KISKA_fnc_ciwsAlarm;
+			null = [_turret] spawn KISKA_fnc_ciwsAlarm;
 		};
 		
 		[SCRIPT_NAME,[_turret,"searching through targets"]] call KISKA_fnc_log;
@@ -254,7 +255,6 @@ private _fn_whileTargetsIncoming = {
 };
 
 private _fn_fireAtTarget = {
-
 	if (!(isNull _target) AND {(_turret distance _target) <= _searchDistance}) then {
 		[SCRIPT_NAME,[_turret,"got params met on",_target]] call KISKA_fnc_log;
 		
@@ -333,6 +333,9 @@ private _fn_fireAtTarget = {
 
 		// reset lookAt
 		_turret lookAt objNull;
+		// sometimes the turret locks up in its aiming animations (becomes slow to aim)
+		// this is used as a sort of reset
+		_turret disableAI "WEAPONAIM";
 
 		if (!(isNull _target) AND {_firedShots}) then {		
 			triggerAmmo _target;
