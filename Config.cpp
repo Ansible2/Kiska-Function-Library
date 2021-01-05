@@ -167,9 +167,15 @@ class CfgFunctions
 		class Respawn
 		{
 			file = "Kiska_functions\Respawn";
-			class addRespawnEventHandlers
+			class addRallyPointDiaryEntry
+			{
+				postInit = 1;
+			};
+			class allowGroupRally
 			{};
-			class initializeRespawnSystem
+			class disallowGroupRally
+			{};
+			class isGroupRallyAllowed
 			{};
 			class keepInGroup
 			{
@@ -177,11 +183,9 @@ class CfgFunctions
 			};
 			class rallyPointActionLoop
 			{};
-			class respawnStateMachine
-			{};
-			class updateRallyAction
-			{};
 			class updateRespawnMarker
+			{};
+			class updateRespawnMarkerQuery
 			{};
 		};
 		class Sound
