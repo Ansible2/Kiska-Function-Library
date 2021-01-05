@@ -20,10 +20,20 @@ Examples:
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-waitUntil {!isNull player};
+#define KISKA_DIARY "KISKA Systems"
 
-player createDiarySubject ["VDL_entry","View Distance Limiter",""];
+if (!hasInterface) exitWith {};
 
-player createDiaryRecord ["VDL_entry", ["View Distance Limiter", 
+waitUntil {
+    if !(isNull player) exitWith {true};
+    sleep 0.1;
+    false
+};
+
+if !(player diarySubjectExists KISKA_DIARY) then {
+	player createDiarySubject [KISKA_DIARY, KISKA_DIARY];
+};
+
+player createDiaryRecord [KISKA_DIARY, ["View Distance Limiter", 
 	"<execute expression='openMap false; call KISKA_fnc_openVdlDialog;'>OPEN VDL DIALOG</execute>"
 ]];

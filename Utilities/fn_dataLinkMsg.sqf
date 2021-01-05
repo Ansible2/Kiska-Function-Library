@@ -23,6 +23,8 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+#define KISKA_DIARY "KISKA Systems"
+scriptName "KISKA_fnc_datalinkMsg";
 
 if !(hasInterface) exitWith {};
 
@@ -40,12 +42,12 @@ params [
 		};
 
 		[["DATALINK",1.1,[0.75,0,0,1]],_message,false] call CBA_fnc_notify;
-
-		if !(player diarySubjectExists "DATALINK") then {
-			player createDiarySubject ["DATALINK", "DATALINK"];
+		
+		if !(player diarySubjectExists KISKA_DIARY) then {
+			player createDiarySubject [KISKA_DIARY, KISKA_DIARY];
 		};
 
-		player createDiaryRecord ["DATALINK",["Messages","-"+_message]];
+		player createDiaryRecord [KISKA_DIARY,["Datalink Messages","-"+_message]];
 
 	}, 
 	[_message,_playSound], 
