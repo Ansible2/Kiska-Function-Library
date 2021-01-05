@@ -1,15 +1,44 @@
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_rallyPointActionLoop
+
+Description:
+	Adds a rally point action to the player object. The action is only available
+	 to the group leader at that moment. If a player joins a group or is no longer
+	 the leader of their group, they gain or lose the action respectively.
+
+Parameters:
+	NONE
+
+Returns:
+	NOTHING
+
+Examples:
+    (begin example)
+		null = [] spawn KISKA_fnc_rallyPointActionLoop;
+    (end)
+
+Author:
+	Ansible2 // Cipher
+---------------------------------------------------------------------------- */
+#define SCRIPT_NAME "KISKA_fnc_rallyPointActionLoop"
+scriptName SCRIPT_NAME;
+
+if (!hasInterface) exitWith {
+	[SCRIPT_NAME,"Was run on machine without interface, needs an interface",false,true] call KISKA_fnc_log;
+};
+
 If (!isMultiplayer) exitWith {
-	"KISKA rally point system does not run in singlePlayer" call BIS_fnc_error;
+	[SCRIPT_NAME,"KISKA rally point system does not run in singlePlayer",false,true] call KISKA_fnc_log;
 };
 
 if (!canSuspend) exitWith {
-	"Must run in scheduled environment" call BIS_fnc_error;
+	[SCRIPT_NAME,"Must run in scheduled environment",false,true] call KISKA_fnc_log;
 };
 
 waitUntil {sleep 2; !isNull player;};
 
 
-KISKA_fnc_updateRallyAction2 = {
+KISKA_fnc_respawn_updateRallyAction = {
 	private _playerIsLeader = (leader (group player)) isEqualTo player;
 
 	if (!_playerIsLeader AND {!isNil "KISKA_spawnId"}) exitWith {
@@ -25,7 +54,7 @@ KISKA_fnc_updateRallyAction2 = {
 					private _caller = param [1];
 					private _groupName = missionNamespace getVariable ["KISKA_respawnGroupID",groupId (group _caller)];
 
-					[_caller, ([_groupName,"spawnMarker"] joinString "_"), ([_groupName,"Respawn Beacon"] joinString " ")] remoteExec ["KISKA_fnc_updateRespawnMarker",2]; 		
+					null = [_caller, ([_groupName,"spawnMarker"] joinString "_"), ([_groupName,"Respawn Beacon"] joinString " ")] remoteExecCall ["KISKA_fnc_updateRespawnMarker",2]; 		
 
 					hint "Rally Point Updated";
 				},
@@ -64,5 +93,5 @@ player addEventHandler ["Respawn", {
 }];
 
 while {sleep 5; alive player} do {
-	call KISKA_fnc_updateRallyAction2;
+	call KISKA_fnc_respawn_updateRallyAction;
 };
