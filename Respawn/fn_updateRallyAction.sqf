@@ -69,7 +69,7 @@ if ((isNil "KISKA_spawnId") AND {local _leader}) then {
 		{
 			private _groupName = param [3];
 
-			[_this select 1, ([_groupName,"spawnMarker"] joinString "_"), ([_groupName,"Respawn Beacon"] joinString " ")] remoteExec ["KISKA_fnc_updateRespawnMarker",2]; 		
+			[_this select 1, ([_groupName,"spawnMarker"] joinString "_"), ([_groupName,"Respawn Beacon"] joinString " ")] remoteExecCall ["KISKA_fnc_updateRespawnMarker",2]; 		
 
 			hint "Rally Point Updated";
 		},
