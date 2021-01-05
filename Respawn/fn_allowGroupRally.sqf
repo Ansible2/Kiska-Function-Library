@@ -1,4 +1,25 @@
-// give the group an ability to rally
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_allowGroupRally
+
+Description:
+	Adds group to the KISKA_rallyAllowedGroups array on the server which allows
+	 its members to place down rally points.
+
+Parameters:
+	0: _groupToAdd <GROUP or OBJECT> - The group or the unit whose group to add
+
+Returns:
+	<BOOL> - True if allowed, false if not allowed or error
+
+Examples:
+    (begin example)
+		// allows player's group to drop a rally point (if they're the server)
+		[player] call KISKA_fnc_allowGroupRally;
+    (end)
+
+Author:
+	Ansible2 // Cipher
+---------------------------------------------------------------------------- */
 #define SCRIPT_NAME "KISKA_fnc_allowGroupRally"
 scriptName SCRIPT_NAME;
 
