@@ -164,9 +164,9 @@ class CfgFunctions
 			class stopMusic
 			{};
 		};
-		class Respawn
+		class Rally
 		{
-			file = "Kiska_functions\Respawn";
+			file = "Kiska_functions\Rally";
 			class addRallyPointDiaryEntry
 			{
 				postInit = 1;
@@ -177,16 +177,22 @@ class CfgFunctions
 			{};
 			class isGroupRallyAllowed
 			{};
-			class keepInGroup
-			{
-				postInit = 1;
-			};
-			class rallyPointActionLoop
-			{};
 			class updateRespawnMarker
 			{};
 			class updateRespawnMarkerQuery
 			{};
+		};
+		class Respawn
+		{
+			file = "Kiska_functions\Respawn";
+			class keepInGroup
+			{
+				postInit = 1;
+			};
+			/*
+			class rallyPointActionLoop
+			{};
+			*/			
 		};
 		class Sound
 		{
