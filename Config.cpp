@@ -302,7 +302,7 @@ class CfgFunctions
 		};
 		class ViewDistanceLimiter
 		{
-			file = "KISKA_functions\View Distance Limiter\Functions";
+			file = "KISKA_functions\GUIs\View Distance Limiter\Functions";
 			class addOpenVdlGuiDiary
 			{
 				postInit = 1;
@@ -330,4 +330,4 @@ class CfgFunctions
 	};
 };
 
-#include "View Distance Limiter\ViewDistanceLimiterDialog.hpp"
+#include "GUIs\View Distance Limiter\ViewDistanceLimiterDialog.hpp"

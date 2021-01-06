@@ -1,5 +1,3 @@
-// keys
-#include "dikCodes.hpp"
 // Control types
 #define CT_STATIC           0
 #define CT_BUTTON           1

@@ -1,4 +1,4 @@
-#include "..\controlTypes.hpp"
+#include "..\..\Common GUI Headers\controlTypes.hpp"
 #include "..\ViewDistanceLimiterCommonDefines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_setAllVdlButton

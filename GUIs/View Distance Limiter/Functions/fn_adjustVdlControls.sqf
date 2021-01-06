@@ -1,3 +1,4 @@
+#include "..\..\Common GUI Headers\controlTypes.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_adjustVdlControls
 
@@ -26,8 +27,6 @@ Author(s):
 if (!hasInterface) exitWith {};
 
 disableSerialization;
-
-#include "..\controlTypes.hpp"
 
 params ["_control","_value"];
 

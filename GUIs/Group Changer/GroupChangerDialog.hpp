@@ -1,12 +1,33 @@
-class KISKA_GCH_background: RscText
+#include "GroupChangerCommonDefines.hpp"
+
+class KISKA_GCH_dialog
 {
-	idc = 1000;
-	x = 0.347656 * safezoneW + safezoneX;
-	y = 0.25 * safezoneH + safezoneY;
-	w = 0.304688 * safezoneW;
-	h = 0.520833 * safezoneH;
-	colorBackground[] = {-1,-1,-1,0.25};
+	idd = GROUP_CHANGER_DIALOG_IDD
+	movingEnabled = true;
+	enableSimulation = true;
+	onLoad = "[_this select 0] call KISKA_fnc_handleGCHDialogOpen"
+	onUnload = "hintSilent ''";
+
+	class controlsBackground
+	{
+		class KISKA_GCH_background: RscText
+		{
+			idc = -1;
+			x = 0.347656 * safezoneW + safezoneX;
+			y = 0.25 * safezoneH + safezoneY;
+			w = 0.304688 * safezoneW;
+			h = 0.520833 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0.25};
+		};
+	};
+
+	class controls
+	{
+
+	};
 };
+
+
 class KISKA_GCH_joinGroup_button: RscButton
 {
 	idc = 1600;
