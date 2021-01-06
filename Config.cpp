@@ -34,6 +34,8 @@ class CfgFunctions
 			{};
 			class heliPatrol
 			{};
+			class lookHere
+			{};
 			class patrolSpecific
 			{};
 			class setCrew
@@ -279,8 +281,6 @@ class CfgFunctions
 			{};
 			class removeArsenal
 			{};
-			class lookHere
-			{};
 			class setTaskComplete
 			{};
 			class showHide
@@ -300,9 +300,13 @@ class CfgFunctions
 			class waitUntil
 			{};
 		};
-		class DynamicViewDistance
+		class ViewDistanceLimiter
 		{
 			file = "KISKA_functions\View Distance Limiter\Functions";
+			class addOpenVdlGuiDiary
+			{
+				postInit = 1;
+			};
 			class adjustVdlControls
 			{};
 			class findVdlPartnerControl
@@ -325,3 +329,5 @@ class CfgFunctions
 			
 	};
 };
+
+#include "View Distance Limiter\ViewDistanceLimiterDialog.hpp"
