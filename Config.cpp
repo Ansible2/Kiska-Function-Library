@@ -331,3 +331,4 @@ class CfgFunctions
 };
 
 #include "GUIs\View Distance Limiter\ViewDistanceLimiterDialog.hpp"
+#include "GUIs\Group Changer\GroupChangerDialog.hpp"
