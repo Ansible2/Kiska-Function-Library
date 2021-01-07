@@ -7,7 +7,7 @@ class KISKA_GCH_dialog
 	idd = GROUP_CHANGER_DIALOG_IDD
 	movingEnabled = true;
 	enableSimulation = true;
-	onLoad = "[_this select 0] call KISKA_fnc_GCH_onLoad"
+	onLoad = "[_this select 0] call KISKA_fnc_GCH_dialogOnLoad"
 
 	class controlsBackground
 	{
@@ -127,15 +127,28 @@ class KISKA_GCH_dialog
 			h = 0.0208333 * safezoneH;
 			tooltip = "Will leave your current group and create a new one. If nobody is left in it, it will be deleted."; //--- ToDo: Localize;
 		};
-		class KISKA_GCH_close_button: RscButton
+		class KISKA_GCH_close_button: RscButtonMenu
 		{
 			idc = GROUP_CHANGER_CLOSE_BUTTON_IDC;
-			text = "X"; //--- ToDo: Localize;
+			text = ""; //--- ToDo: Localize;
 			x = 0.640625 * safezoneW + safezoneX;
 			y = 0.229167 * safezoneH + safezoneY;
 			w = 0.0117188 * safezoneW;
 			h = 0.0208333 * safezoneH;
-			colorBackground[] = {1,-1,-1,1};
+			textureNoShortcut = "\A3\3den\Data\Displays\Display3DEN\search_END_ca.paa";
+			class ShortcutPos
+			{
+				left = 0;
+				top = 0;
+				w = 0.0117188 * safezoneW;
+				h = 0.0208333 * safezoneH;
+			};
+			animTextureNormal = "#(argb,8,8,3)color(1,0,0,0.57)";
+			animTextureDisabled = "";
+			animTextureOver = "#(argb,8,8,3)color(1,0,0,0.57)";
+			animTextureFocused = "";
+			animTexturePressed = "#(argb,8,8,3)color(1,0,0,0.57)";
+			animTextureDefault = "";
 		};
 
 		/* -------------------------------------------------------------------------
@@ -194,7 +207,7 @@ class KISKA_GCH_dialog
 		class KISKA_GCH_leaderIsPlayer_text_indicator: RscText
 		{
 			idc = GROUP_CHANGER_LEADER_IS_PLAYER_INDICATOR_IDC;
-			text = "YES"; //--- ToDo: Localize;
+			text = ""; //--- ToDo: Localize;
 			x = 0.587891 * safezoneW + safezoneX;
 			y = 0.645833 * safezoneH + safezoneY;
 			w = 0.0585937 * safezoneW;
