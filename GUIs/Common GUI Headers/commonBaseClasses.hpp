@@ -693,7 +693,7 @@ class KISKA_RscSlider
 	w = 0.3;
 	h = 0.025;
 };
-class RscSliderH: KISKA_RscSlider
+class KISKA_RscSliderH: KISKA_RscSlider
 {
 };
 class KISKA_RscXSliderH

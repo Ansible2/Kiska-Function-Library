@@ -1,26 +1,24 @@
 #include "GroupChangerCommonDefines.hpp"
-#include "GroupChangerDialogBases.hpp"
-
 
 class KISKA_GCH_dialog
 {
-	idd = GROUP_CHANGER_DIALOG_IDD
+	idd = GROUP_CHANGER_DIALOG_IDD;
 	movingEnabled = true;
 	enableSimulation = true;
-	onLoad = "[_this select 0] call KISKA_fnc_GCH_dialogOnLoad"
+	onLoad = "[_this select 0] call KISKA_fnc_GCH_dialogOnLoad";
 
 	class controlsBackground
 	{
-		class KISKA_GCH_background: RscText
+		class KISKA_GCH_background: KISKA_RscText
 		{
 			idc = -1;
 			x = 0.347656 * safezoneW + safezoneX;
 			y = 0.25 * safezoneH + safezoneY;
 			w = 0.304688 * safezoneW;
 			h = 0.520833 * safezoneH;
-			colorBackground[] = PROFILE_BACKGROUND_COLOR(1);
+			colorBackground[] = {-1,-1,-1,0.25};
 		};
-		class KISKA_GCH_headerText: RscText
+		class KISKA_GCH_headerText: KISKA_RscText
 		{
 			idc = -1;
 			text = "Group Changer"; //--- ToDo: Localize;
@@ -28,9 +26,9 @@ class KISKA_GCH_dialog
 			y = 0.229167 * safezoneH + safezoneY;
 			w = 0.292969 * safezoneW;
 			h = 0.0208333 * safezoneH;
-			colorBackground[] = {-1,-1,-1,1};
+			colorBackground[] = PROFILE_BACKGROUND_COLOR(1);
 		};
-		class KISKA_GCH_sideGroups_text: RscText
+		class KISKA_GCH_sideGroups_headerText: KISKA_RscText
 		{
 			idc = -1;
 			text = "Side's Groups"; //--- ToDo: Localize;
@@ -38,9 +36,9 @@ class KISKA_GCH_dialog
 			y = 0.260417 * safezoneH + safezoneY;
 			w = 0.140625 * safezoneW;
 			h = 0.0208333 * safezoneH;
-			colorBackground[] = {-1,-1,-1,1};
+			colorBackground[] = PROFILE_BACKGROUND_COLOR(1);
 		};
-		class KISKA_GCH_currentGroup_text: RscText
+		class KISKA_GCH_currentGroup_headerText: KISKA_RscText
 		{
 			idc = -1;
 			text = "Current Group's Players"; //--- ToDo: Localize;
@@ -48,9 +46,9 @@ class KISKA_GCH_dialog
 			y = 0.260417 * safezoneH + safezoneY;
 			w = 0.09375 * safezoneW;
 			h = 0.0208333 * safezoneH;
-			colorBackground[] = {-1,-1,-1,1};
+			colorBackground[] = PROFILE_BACKGROUND_COLOR(1);
 		};
-		class KISKA_GCH_canRally_text: RscText
+		class KISKA_GCH_canRally_text: KISKA_RscText
 		{
 			idc = -1;
 			text = "Group Can Rally:"; //--- ToDo: Localize;
@@ -60,7 +58,7 @@ class KISKA_GCH_dialog
 			h = 0.0208333 * safezoneH;
 			colorBackground[] = {-1,-1,-1,1};
 		};
-		class KISKA_GCH_showAI_text: RscText
+		class KISKA_GCH_showAI_text: KISKA_RscText
 		{
 			idc = -1;
 			text = "Show AI:"; //--- ToDo: Localize;
@@ -70,7 +68,7 @@ class KISKA_GCH_dialog
 			h = 0.0208333 * safezoneH;
 			colorBackground[] = {-1,-1,-1,1};
 		};
-		class KISKA_GCH_groupLeader_text: RscText
+		class KISKA_GCH_groupLeader_text: KISKA_RscText
 		{
 			idc = -1;
 			text = "Group Leader:"; //--- ToDo: Localize;
@@ -80,7 +78,7 @@ class KISKA_GCH_dialog
 			h = 0.0208333 * safezoneH;
 			colorBackground[] = {-1,-1,-1,1};
 		};
-		class KISKA_GCH_canBeDeleted_text: RscText
+		class KISKA_GCH_canBeDeleted_text: KISKA_RscText
 		{
 			idc = -1;
 			text = "Group Can Be Deleted:"; //--- ToDo: Localize;
@@ -90,7 +88,7 @@ class KISKA_GCH_dialog
 			h = 0.0208333 * safezoneH;
 			colorBackground[] = {-1,-1,-1,1};
 		};
-		class KISKA_GCH_leaderIsPlayer_text: RscText
+		class KISKA_GCH_leaderIsPlayer_text: KISKA_RscText
 		{
 			idc = -1;
 			text = "Group Leader Is Player:"; //--- ToDo: Localize;
@@ -108,7 +106,7 @@ class KISKA_GCH_dialog
 		/* -------------------------------------------------------------------------
 			Button Controls
 		------------------------------------------------------------------------- */
-		class KISKA_GCH_joinGroup_button: RscButton
+		class KISKA_GCH_joinGroup_button: KISKA_RscButton
 		{
 			idc = GROUP_CHANGER_JOIN_GROUP_BUTTON_IDC;
 			text = "Join Group"; //--- ToDo: Localize;
@@ -117,7 +115,7 @@ class KISKA_GCH_dialog
 			w = 0.0703125 * safezoneW;
 			h = 0.0208333 * safezoneH;
 		};
-		class KISKA_GCH_leaveGroup_button: RscButton
+		class KISKA_GCH_leaveGroup_button: KISKA_RscButton
 		{
 			idc = GROUP_CHANGER_LEAVE_GROUP_BUTTON_IDC;
 			text = "Leave Group"; //--- ToDo: Localize;
@@ -127,7 +125,7 @@ class KISKA_GCH_dialog
 			h = 0.0208333 * safezoneH;
 			tooltip = "Will leave your current group and create a new one. If nobody is left in it, it will be deleted."; //--- ToDo: Localize;
 		};
-		class KISKA_GCH_close_button: RscButtonMenu
+		class KISKA_GCH_close_button: KISKA_RscButtonMenu
 		{
 			idc = GROUP_CHANGER_CLOSE_BUTTON_IDC;
 			text = ""; //--- ToDo: Localize;
@@ -154,7 +152,7 @@ class KISKA_GCH_dialog
 		/* -------------------------------------------------------------------------
 			Listbox Controls
 		------------------------------------------------------------------------- */
-		class KISKA_GCH_sideGroups_listBox: RscListbox
+		class KISKA_GCH_sideGroups_listBox: KISKA_RscListbox
 		{
 			idc = GROUP_CHANGER_SIDE_GROUPS_LISTBOX_IDC;
 			x = 0.353516 * safezoneW + safezoneX;
@@ -162,7 +160,7 @@ class KISKA_GCH_dialog
 			w = 0.140625 * safezoneW;
 			h = 0.427083 * safezoneH;
 		};
-		class KISKA_GCH_currentGroup_listBox: RscListbox
+		class KISKA_GCH_currentGroup_listBox: KISKA_RscListbox
 		{
 			idc = GROUP_CHANGER_CURRENT_GROUP_LISTBOX_IDC;
 			x = 0.5 * safezoneW + safezoneX;
@@ -174,7 +172,7 @@ class KISKA_GCH_dialog
 		/* -------------------------------------------------------------------------
 			Indicator Controls
 		------------------------------------------------------------------------- */
-		class KISKA_GCH_canRally_indicator: RscText
+		class KISKA_GCH_canRally_indicator: KISKA_RscText
 		{
 			idc = GROUP_CHANGER_CAN_RALLY_INDICATOR_IDC;
 			text = ""; //--- ToDo: Localize;
@@ -184,7 +182,7 @@ class KISKA_GCH_dialog
 			h = 0.0208333 * safezoneH;
 			colorBackground[] = {-1,-1,-1,1};
 		};
-		class KISKA_GCH_groupLeaderName_indicator: RscText
+		class KISKA_GCH_groupLeaderName_indicator: KISKA_RscText
 		{
 			idc = GROUP_CHANGER_LEADER_NAME_INDICATOR_IDC;
 			text = "Some Unit Name"; //--- ToDo: Localize;
@@ -194,7 +192,7 @@ class KISKA_GCH_dialog
 			h = 0.0208333 * safezoneH;
 			colorBackground[] = {-1,-1,-1,1};
 		};
-		class KISKA_GCH_canBeDeleted_indicator: RscText
+		class KISKA_GCH_canBeDeleted_indicator: KISKA_RscText
 		{
 			idc = GROUP_CHANGER_CAN_BE_DELETED_INDICATOR_IDC;
 			text = "YES"; //--- ToDo: Localize;
@@ -204,7 +202,7 @@ class KISKA_GCH_dialog
 			h = 0.0208333 * safezoneH;
 			colorBackground[] = {-1,-1,-1,1};
 		};
-		class KISKA_GCH_leaderIsPlayer_text_indicator: RscText
+		class KISKA_GCH_leaderIsPlayer_text_indicator: KISKA_RscText
 		{
 			idc = GROUP_CHANGER_LEADER_IS_PLAYER_INDICATOR_IDC;
 			text = ""; //--- ToDo: Localize;
@@ -218,7 +216,7 @@ class KISKA_GCH_dialog
 		/* -------------------------------------------------------------------------
 			Misc Controls
 		------------------------------------------------------------------------- */
-		class KISKA_GCH_showAI_checkBox: RscCheckbox
+		class KISKA_GCH_showAI_checkBox: KISKA_RscCheckbox
 		{
 			idc = GROUP_CHANGER_SHOW_AI_CHECKBOX_IDC;
 			x = 0.634766 * safezoneW + safezoneX;
@@ -228,21 +226,3 @@ class KISKA_GCH_dialog
 		};
 	};
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

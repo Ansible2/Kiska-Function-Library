@@ -105,6 +105,13 @@ class CfgFunctions
 			class unloadCrates
 			{}; 
 		};
+		class GroupChanger
+		{
+			file = "KISKA_functions\GUIs\Group Changer\Functions";
+			
+			class GCH_dialogOnload
+			{};
+		};
 		class Loadouts
 		{
 			file = "Kiska_functions\Loadouts";
@@ -330,5 +337,6 @@ class CfgFunctions
 	};
 };
 
+#include "GUIs\Common GUI Headers\commonBaseClasses.hpp"
 #include "GUIs\View Distance Limiter\ViewDistanceLimiterDialog.hpp"
 #include "GUIs\Group Changer\GroupChangerDialog.hpp"
