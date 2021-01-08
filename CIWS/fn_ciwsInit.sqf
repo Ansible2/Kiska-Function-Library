@@ -39,7 +39,7 @@ scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
 	_this spawn KISKA_fnc_ciwsInit;
-	[SCRIPT_NAME,"Was not run in scheduled; running in scheduled",false,true] call KISKA_fnc_log;
+	[SCRIPT_NAME,"Was not run in scheduled; running in scheduled",false,true,true] call KISKA_fnc_log;
 };
 
 params [
@@ -55,10 +55,10 @@ params [
 ];
 
 if (isNull _turret) exitWith {
-	[SCRIPT_NAME,[_turret,"is a null object. Exiting..."],true,true] call KISKA_fnc_log;
+	[SCRIPT_NAME,[_turret,"is a null object. Exiting..."],true,true,true] call KISKA_fnc_log;
 };
 if !(_turret isKindOf "AAA_System_01_base_F") exitWith {
-	[SCRIPT_NAME,[typeOf _turret,"is not the proper type (AAA_System_01_base_F). Exiting..."],true,true] call KISKA_fnc_log;
+	[SCRIPT_NAME,[typeOf _turret,"is not the proper type (AAA_System_01_base_F). Exiting..."],true,true,true] call KISKA_fnc_log;
 };
 
 _turret setVariable ["KISKA_runCIWS",true];

@@ -25,7 +25,7 @@ Author:
 scriptName SCRIPT_NAME;
 
 if !(isServer) exitWith {
-	[SCRIPT_NAME,"Needs to be run on the server",false,true] call KISKA_fnc_log;
+	[SCRIPT_NAME,"Needs to be run on the server",false,true,true] call KISKA_fnc_log;
 
 	false
 };
@@ -43,7 +43,7 @@ if (_allowedGroups isEqualTo []) exitWith {
 _groupToRemove = [_groupToRemove] call CBA_fnc_getGroup;
 
 if (isNull _groupToRemove) exitWith {
-	[SCRIPT_NAME,"_groupToRemove was null",false,true] call KISKA_fnc_log;
+	[SCRIPT_NAME,"_groupToRemove was null",false,true,true] call KISKA_fnc_log;
 
 	false
 };

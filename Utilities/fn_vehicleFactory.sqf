@@ -134,7 +134,7 @@ if !(_controlPanel getVariable ["KISKA_vehicleFactory",false]) then {
 			private _entities = (ASLToAGL _spawnPosition) nearEntities [['landVehicle','air','ship'],_clearRadius];
 
 			_entities apply {
-				[_x] remoteExec ["deleteVehicle",2];
+				[_x] remoteExecCall ["deleteVehicle",2];
 			};
 
 			hint "Pad Cleared";

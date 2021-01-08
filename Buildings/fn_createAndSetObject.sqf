@@ -29,7 +29,7 @@ params [
 ];
 
 if (isNull _building) exitWith {
-    [SCRIPT_NAME,"_building is a null object",false,true] call KISKA_fnc_log;
+    [SCRIPT_NAME,"_building is a null object",false,true,true] call KISKA_fnc_log;
     objNull
 };
 

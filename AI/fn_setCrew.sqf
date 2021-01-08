@@ -35,7 +35,7 @@ if (_crew isEqualType grpNull) then {_crew = units _crew};
 if (_crew isEqualType objNull) then {_crew = [_crew]};
 
 if (_crew isEqualTo []) exitWith {
-	[SCRIPT_NAME,["Found that",_crew,"is not defined, exiting..."],true,true] call KISKA_fnc_log;
+	[SCRIPT_NAME,["Found that",_crew,"is not defined, exiting..."],true,true,true] call KISKA_fnc_log;
 	false
 };
 

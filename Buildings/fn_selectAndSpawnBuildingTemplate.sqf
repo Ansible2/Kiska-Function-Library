@@ -30,7 +30,7 @@ private _buildingClass = typeof _building;
 
 private _configPath = [["KISKA_fortificationTemplates",_buildingClass]] call KISKA_fnc_findConfigAny;
 if (isNull _configPath) exitWith {
-    [SCRIPT_NAME,["Did not find building templates for",_buildingClass],true,true] call KISKA_fnc_log;
+    [SCRIPT_NAME,["Did not find building templates for",_buildingClass],true,true,true] call KISKA_fnc_log;
     []
 };
 

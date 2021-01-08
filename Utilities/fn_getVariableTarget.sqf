@@ -24,16 +24,16 @@ Examples:
 			// need to call for direct return
 			_serversSomeVariable = ["someVariable",missionNamespace,"",2] call KISKA_fnc_getVariableTarget;
 		};
-
     (end)
 
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_getVariableTarget";
+#define SCRIPT_NAME "KISKA_fnc_getVariableTarget"
+scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
-	"KISKA_fnc_getVariableTarget: must be run scheduled" call BIS_fnc_error;
+	[SCRIPT_NAME,"Must be run in scheduled environment",false,true,true] call KISKA_fnc_log;
 	-1
 };
 
@@ -46,8 +46,10 @@ params [
 ];
 
 if (_variableName isEqualTo "") exitWith {
-	"KISKA_fnc_getVariableTarget: _variableName is empty string ''" call BIS_fnc_error;
+	[SCRIPT_NAME,"_variableName is empty",false,true,true] call KISKA_fnc_log;
+	-1
 };
+
 if (_saveVariable isEqualTo "") then {
 	_saveVariable = "KISKA_getVariableTarget_" + _variableName;
 };
@@ -56,15 +58,16 @@ if (_saveVariable isEqualTo "") then {
 
 waitUntil {
 	if (!isNil {missionNamespace getVariable _saveVariable}) exitWith {
-		diag_log ("KISKA_fnc_getVariableTarget: Got variable " + _saveVariable + " from target");
+		[SCRIPT_NAME,["Got variable",_saveVariable,"from target",_target],false,false,true] call KISKA_fnc_log;
 		true
 	};
 	sleep 0.25;
-	diag_log "KISKA_fnc_getVariableTarget: Waiting for variable from target";
+	[SCRIPT_NAME,["Waiting for variable from target:",_target],false,false,true] call KISKA_fnc_log;
 	false
 };
 
 private _return = missionNamespace getVariable _saveVariable;
 missionNamespace setVariable [_saveVariable,nil]; // set to nil so that any other requesters don't get a duplicate
+
 
 _return

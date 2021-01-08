@@ -24,7 +24,7 @@ Author:
 scriptName SCRIPT_NAME;
 
 if !(isServer) exitWith {
-	[SCRIPT_NAME,"Needs to be run on server for proper returns",false,true] call KISKA_fnc_log;
+	[SCRIPT_NAME,"Needs to be run on server for proper returns",false,true,true] call KISKA_fnc_log;
 
 	false
 };
@@ -36,7 +36,7 @@ params [
 _groupToCheck = [_groupToCheck] call CBA_fnc_getGroup;
 
 if (isNull _groupToCheck) exitWith {
-	[SCRIPT_NAME,"_groupToCheck was null",false,true] call KISKA_fnc_log;
+	[SCRIPT_NAME,"_groupToCheck was null",false,true,true] call KISKA_fnc_log;
 
 	false
 };

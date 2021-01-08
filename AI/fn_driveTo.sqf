@@ -37,12 +37,12 @@ params [
 ];
 
 if ((_crew isEqualTypeAny [grpNull,objNull] AND {isNull _crew}) OR {_crew isEqualTo []}) exitWith {
-	[SCRIPT_NAME,["_crew for",_vehicle,"is undefined"],true,true] call KISKA_fnc_log;
+	[SCRIPT_NAME,["_crew for",_vehicle,"is undefined"],true,true,true] call KISKA_fnc_log;
 	false
 };
 
 if (isNull _vehicle) exitWith {
-	[SCRIPT_NAME,["_vehicle",_vehicle,"is null"],true,true] call KISKA_fnc_log;
+	[SCRIPT_NAME,["_vehicle",_vehicle,"is null"],true,true,true] call KISKA_fnc_log;
 	false
 };
 

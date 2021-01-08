@@ -27,7 +27,7 @@ scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
 	null = _this spawn KISKA_fnc_AAAZone;
-	[SCRIPT_NAME,"ReExecuting in scheduled environment",true,true] call KISKA_fnc_log;
+	[SCRIPT_NAME,"ReExecuting in scheduled environment",true,true,true] call KISKA_fnc_log;
 };
 
 params [
@@ -37,7 +37,7 @@ params [
 ];
 
 if (isNull _vehicle) exitWith {
-	[SCRIPT_NAME,[_vehicle,"isNull"],true,true] call KISKA_fnc_log;
+	[SCRIPT_NAME,[_vehicle,"isNull"],true,true,true] call KISKA_fnc_log;
 };
 
 if (!local _vehicle) exitWith {
@@ -47,12 +47,12 @@ if (!local _vehicle) exitWith {
 
 private _gunner = gunner _vehicle;
 if (isNull _gunner) exitWith {
-	[SCRIPT_NAME,[_vehicle,"does not have a gunner"],true,true] call KISKA_fnc_log;
+	[SCRIPT_NAME,[_vehicle,"does not have a gunner"],true,true,true] call KISKA_fnc_log;
 };
 
 private _gunnerGroup = group _gunner;
 if (isNull _gunnerGroup) exitWith {
-	[SCRIPT_NAME,[_gunnerGroup,"is a null group"],true,true] call KISKA_fnc_log;
+	[SCRIPT_NAME,[_gunnerGroup,"is a null group"],true,true,true] call KISKA_fnc_log;
 };
 
 private _fn_controlShots = {
