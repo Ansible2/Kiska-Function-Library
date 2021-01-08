@@ -58,11 +58,11 @@ if (_saveVariable isEqualTo "") then {
 
 waitUntil {
 	if (!isNil {missionNamespace getVariable _saveVariable}) exitWith {
-		[SCRIPT_NAME,["Got variable",_saveVariable,"from target",_target],false,false,true] call KISKA_fnc_log;
+		[SCRIPT_NAME,["Got variable",_saveVariable,"from target",_target],true,false,true] call KISKA_fnc_log;
 		true
 	};
 	sleep 0.25;
-	[SCRIPT_NAME,["Waiting for variable from target:",_target],false,false,true] call KISKA_fnc_log;
+	[SCRIPT_NAME,["Waiting for variable from target:",_target],true,false,true] call KISKA_fnc_log;
 	false
 };
 
