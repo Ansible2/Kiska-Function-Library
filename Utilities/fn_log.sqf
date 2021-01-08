@@ -20,6 +20,7 @@ Returns:
 
 Examples:
     (begin example)
+		missionNamespace setVariable ["KISKA_doLog",true];
 		private _myvar = 1;
 		["myScript",["Hello Number",_myvar],true,false,true] call KISKA_fnc_log;
 
