@@ -286,6 +286,10 @@ class CfgFunctions
 			{};
 			class reassignCurator
 			{};
+			class remoteReturn_receive
+			{};
+			class remoteReturn_send
+			{};
 			class removeArsenal
 			{};
 			class setTaskComplete
