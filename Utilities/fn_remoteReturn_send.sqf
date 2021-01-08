@@ -48,9 +48,9 @@ params [
 // create a unique ID for use with KISKA_fnc_getVariableTarget
 private _messageNumber = missionNamespace getVariable ["KISKA_remoteReturnQueue_count",0];
 _messageNumber = _messageNumber + 1;
-private _uniqueId = ["KISKA_RR",clientOwner,"_",_messageNumber] joinString [""];
+private _uniqueId = ["KISKA_RR",clientOwner,"_",_messageNumber] joinString "";
 
-[_code,_args,_scheduled,_uniqueId,clientOwner] remoteExecCall ["KISKA_fnc_remoteReturn_receive",_target];
+[_code,_args,_scheduled,_uniqueId] remoteExecCall ["KISKA_fnc_remoteReturn_receive",_target];
 
 waitUntil {
 	if (!isNil {missionNamespace getVariable _uniqueId}) exitWith {

@@ -60,6 +60,7 @@ if (_sendBackTarget isEqualTo 0) then {
 
 private _compiledCode = compileFinal _code;
 if (_scheduled) then {
+	
 	[_compiledCode,_args,_uniqueId,_sendBackTarget] spawn {
 		params ["_code","_args","_uniqueId","_sendBackTarget"];
 
@@ -76,9 +77,9 @@ if (_scheduled) then {
 
 	private "_return";
 	if (_args isEqualTo []) then {
-		_return = call _code;
+		_return = call _compiledCode;
 	} else {
-		_return = _args call _code;
+		_return = _args call _compiledCode;
 	};
 
 	missionNamespace setVariable [_uniqueId,_return,_sendBackTarget];
