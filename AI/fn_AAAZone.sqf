@@ -27,7 +27,7 @@ scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
 	null = _this spawn KISKA_fnc_AAAZone;
-	[SCRIPT_NAME,"ReExecuting in scheduled environment",true,true,true] call KISKA_fnc_log;
+	[SCRIPT_NAME,"ReExecuting in scheduled environment",false,true,true] call KISKA_fnc_log;
 };
 
 params [
