@@ -26,30 +26,35 @@ params ["_control"];
 _control ctrlAddEventHandler ["LBSelChanged",{
 	params ["_control", "_selectedIndex"];
 
-	private _selectedgroup = uiNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
-	
-	if !(isNull _selectedgroup) then {
-		
-		private _canDelete = isGroupDeletedWhenEmpty _selectedgroup;
-		private _fn_setGroupAutoDelete = {
-			if (local _group) then {
-				_group deleteGroupWhenEmpty _canDelete;
-			} else {
-				[_group, _canDelete] remoteExecCall ["KISKA_fnc_GCH_groupDeleteQuery",2];
-			};
-		};
-		
+	if (call KISKA_fnc_isAdminOrHost) then {
 
-		if (_selectedIndex isEqualTo 0) then {
-			// if not already set to be exempt from auto-deletion
-			if (_canDelete) then {
-				call _fn_setGroupAutoDelete;
+		private _selectedgroup = uiNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
+		
+		if !(isNull _selectedgroup) then {
+			
+			private _canDelete = isGroupDeletedWhenEmpty _selectedgroup;
+			private _fn_setGroupAutoDelete = {
+				if (local _group) then {
+					_group deleteGroupWhenEmpty _canDelete;
+				} else {
+					[_group, _canDelete] remoteExecCall ["KISKA_fnc_GCH_groupDeleteQuery",2];
+				};
 			};
-		} else {
-			// if not already set to not be auto-deleted
-			if !(_canDelete) then {
-				call _fn_setGroupAutoDelete;
+			
+
+			if (_selectedIndex isEqualTo 0) then {
+				// if not already set to be exempt from auto-deletion
+				if (_canDelete) then {
+					call _fn_setGroupAutoDelete;
+				};
+			} else {
+				// if not already set to not be auto-deleted
+				if !(_canDelete) then {
+					call _fn_setGroupAutoDelete;
+				};
 			};
 		};
+	} else {
+		hint "You must be the admin or host to change this setting";
 	};
 }];
