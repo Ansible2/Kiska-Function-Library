@@ -45,7 +45,7 @@ params [
 	["_scheduled",false,[true]]
 ];
 
-// create a unique ID for use with KISKA_fnc_getVariableTarget
+// create a unique variable ID for network tranfer
 private _messageNumber = missionNamespace getVariable ["KISKA_remoteReturnQueue_count",0];
 _messageNumber = _messageNumber + 1;
 private _uniqueId = ["KISKA_RR",clientOwner,"_",_messageNumber] joinString "";
@@ -65,10 +65,6 @@ waitUntil {
 private _return = missionNamespace getVariable _uniqueId;
 // set to nil so that any other requesters don't get a duplicate
 missionNamespace setVariable [_uniqueId,nil];
-
-// since time can pass, this needs to be up to date when changing it
-_messageNumber = missionNamespace getVariable ["KISKA_remoteReturnQueue_count",0];
-missionNamespace setVariable ["KISKA_remoteReturnQueue_count",_messageNumber - 1];
 
 
 _return
