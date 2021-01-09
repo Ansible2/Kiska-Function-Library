@@ -2,8 +2,8 @@
 Function: KISKA_fnc_isGroupRallyAllowed
 
 Description:
-	Checks if a group is in the KISKA_rallyAllowedGroups array on the server which allows
-	 its members to place down rally points.
+	Checks if a group is has KISKA_canRally saved to its namespace on the server
+	 which allows its members to place down rally points.
 
 Parameters:
 	0: _groupToCheck <GROUP or OBJECT> - The group or the unit whose group you want to check
@@ -41,13 +41,7 @@ if (isNull _groupToCheck) exitWith {
 	false
 };
 
-private _isRallyAllowed = [
-	missionNamespace getVariable ["KISKA_rallyAllowedGroups",[]],
-	{
-		_x isEqualTo (_thisArgs select 0);
-	},
-	[_groupToCheck]
-] call KISKA_fnc_findIfBool;
+private _isRallyAllowed = _groupToCheck getVariable ["KISKA_canRally",false];
 
 
 _isRallyAllowed

@@ -2,8 +2,7 @@
 Function: KISKA_fnc_disallowGroupRally
 
 Description:
-	Removes a group from the KISKA_rallyAllowedGroups array on the server which allows
-	 its members to place down rally points.
+	Removes a groups ability to rally an deletes its marker if requested.
 
 Parameters:
 	0: _groupToRemove <GROUP or OBJECT> - The group or the unit whose group to remove
@@ -35,11 +34,6 @@ params [
 	["_deleteMarker",true,[true]]
 ];
 
-private _allowedGroups = missionNamespace getVariable ["KISKA_rallyAllowedGroups",[]];
-if (_allowedGroups isEqualTo []) exitWith {
-	true
-};
-
 _groupToRemove = [_groupToRemove] call CBA_fnc_getGroup;
 
 if (isNull _groupToRemove) exitWith {
@@ -48,16 +42,7 @@ if (isNull _groupToRemove) exitWith {
 	false
 };
 
-private _index = _allowedGroups findIf {
-	_x isEqualTo _groupToRemove
-};
-
-if (_index isEqualTo -1) exitWith {
-	true
-};
-
-_allowedGroups deleteAt _index;
-
+_groupToRemove setVariable ["KISKA_canRally",false];
 
 if (_deleteMarker) then {
 	private _markerID = _groupToRemove getVariable ["KISKA_groupRespawnMarkerID",[]];

@@ -2,8 +2,8 @@
 Function: KISKA_fnc_allowGroupRally
 
 Description:
-	Adds group to the KISKA_rallyAllowedGroups array on the server which allows
-	 its members to place down rally points.
+	Adds group's ability to place rally points by setting "KISKA_canRally" in
+	 the group space to true.
 
 Parameters:
 	0: _groupToAdd <GROUP or OBJECT> - The group or the unit whose group to add
@@ -41,9 +41,7 @@ if (isNull _groupToAdd) exitWith {
 	false
 };
 
-private _allowedGroups = missionNamespace getVariable ["KISKA_rallyAllowedGroups",[]];
-_allowedGroups pushBackUnique _groupToAdd;
-missionNamespace setVariable ["KISKA_rallyAllowedGroups",_allowedGroups];
+_groupToAdd setVariable ["KISKA_canRally",true];
 
 
 true
