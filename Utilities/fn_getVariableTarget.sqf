@@ -11,9 +11,6 @@ Parameters:
 	1: _namespace : <NAMESPACE, OBJECT, STRING, GROUP, CONTROL, or LOCATION> - The namespace to get the variable from
 	2: _defaultValue : <ANY> - If the variable does not exist for the target, what should be returned instead
 	3: _target : <NUMBER, OBJECT, GROUP, or STRING> - Where the _target is local will be where the variable is taken from
-	4: _saveVariable : <STRING> - A unique string name for the variable to be saved in 
-	 (this is available only to machine where this function was called) 
-	 if nothing is defined, a unique one is generated
 
 Returns:
 	<ANY> - Whatever the variable is
@@ -41,8 +38,7 @@ params [
 	["_variableName","",[""]],
 	["_namespace",missionNamespace,[missionNamespace,objNull,grpNull,"",controlNull,locationNull]],
 	["_defaultValue",-1],
-	["_target",2,[123,objNull,grpNull,""]],
-	["_saveVariable","",[""]]
+	["_target",2,[123,objNull,grpNull,""]]
 ];
 
 if (_variableName isEqualTo "") exitWith {
@@ -50,9 +46,12 @@ if (_variableName isEqualTo "") exitWith {
 	-1
 };
 
-if (_saveVariable isEqualTo "") then {
-	_saveVariable = "KISKA_getVariableTarget_" + _variableName;
-};
+
+// create a unique variable ID for network tranfer
+private _messageNumber = missionNamespace getVariable ["KISKA_getVarTargetQueue_count",0];
+_messageNumber = _messageNumber + 1;
+private _saveVariable = ["KISKA_GVT",clientOwner,"_",_messageNumber] joinString "";
+
 
 [_namespace,_variableName,_saveVariable,_defaultValue,clientOwner] remoteExecCall ["KISKA_fnc_getVariableTarget_sendBack",_target];
 
@@ -67,7 +66,7 @@ waitUntil {
 };
 
 private _return = missionNamespace getVariable _saveVariable;
-missionNamespace setVariable [_saveVariable,nil]; // set to nil so that any other requesters don't get a duplicate
+missionNamespace setVariable [_saveVariable,nil]; 
 
 
 _return
