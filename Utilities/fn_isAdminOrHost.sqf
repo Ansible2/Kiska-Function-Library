@@ -20,6 +20,9 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_isAdminOrHost";
 
+// singleplayer is always true
+if !(isMultiplayer) exitWith {true};
+
 if (!(call BIS_fnc_admin > 0) AND {clientOwner != 2}) then {
 	false
 } else {
