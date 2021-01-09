@@ -28,11 +28,11 @@ private _allGroupsCached = allGroups;
 private _sideGroups = _allGroupsCached select {(side _x) isEqualTo _playerSide};
 private _sideGroupIds = [];
 private _fn_popSideGroupIds = {
+	_sideGroupIds = [];
 	_sideGroups apply {
 		_sideGroupIds pushBack (groupId _x);
 	};
 };
-call _fn_popSideGroupIds;
 
 uiNamespace setVariable ["KISKA_GCH_sideGroupsArray",_sideGroups];
 
@@ -70,8 +70,9 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 	[true,true,true,true,true] call KISKA_fnc_GCH_updateCurrentGroupSection;
 }];
 
+call _fn_updateSideGroupList;
 
-
+private _allGroupsCompare = [];
 // loop to update list
 while {!isNull (uiNamespace getVariable "KISKA_GCH_display")} do {
 	// if a group list changed, then update
@@ -81,8 +82,9 @@ while {!isNull (uiNamespace getVariable "KISKA_GCH_display")} do {
 		// check to see if players side groups actually needs to be updated
 		// if no group was added to the side, no need to update
 		private _sideGroups_compare = _allGroupsCached select {(side _x) isEqualTo _playerSide};
+		
 		if !(_sideGroups_compare isEqualTo _sideGroups) then {
-			_sideGroups = _sideGroups_compare;
+			_sideGroups = +_sideGroups_compare;
 			uiNamespace setVariable ["KISKA_GCH_sideGroupsArray",_sideGroups];
 			call _fn_updateSideGroupList;
 		};

@@ -22,6 +22,10 @@ Author:
 #define SCRIPT_NAME "KISKA_fnc_GCH_leaveGroupButton"
 scriptName SCRIPT_NAME;
 
-private _side - side player;
-private _newGroup = createGroup [_side, false];
-[player] joinSilent _newGroup;
+params ["_control"];
+
+_control ctrlAddEventHandler ["ButtonClick",{
+	private _side = side player;
+	private _newGroup = createGroup [_side, false];
+	[player] joinSilent _newGroup;
+}];

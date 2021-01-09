@@ -19,6 +19,8 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+missionNamespace setVariable ["KISKA_doLog",true];
+
 #define SCRIPT_NAME "KISKA_fnc_GCH_dialogOnLoad"
 scriptName SCRIPT_NAME;
 
@@ -59,7 +61,7 @@ uiNamespace setVariable ["KISKA_GCH_canBeDeletedCombo_ctrl",_canBeDeletedCombo_c
 // can rally
 private _canRallyCombo_ctrl = _display displayCtrl GCH_CAN_RALLY_COMBO_IDC;
 uiNamespace setVariable ["KISKA_GCH_canRallyCombo_ctrl",_canRallyCombo_ctrl];
-[_canBeDeletedCombo_ctrl] call KISKA_fnc_GCHOnLoad_canRallyCombo;
+[_canRallyCombo_ctrl] call KISKA_fnc_GCHOnLoad_canRallyCombo;
 
 
 /* ----------------------------------------------------------------------------
@@ -72,7 +74,7 @@ uiNamespace setVariable ["KISKA_GCH_currentGroupListBox_ctrl",_currentGroupListB
 // side groups list
 private _sidesGroupListBox_ctrl = _display displayCtrl GCH_SIDE_GROUPS_LISTBOX_IDC;
 uiNamespace setVariable ["KISKA_GCH_sidesGroupListBox_ctrl",_sidesGroupListBox_ctrl];
-[_sidesGroupListBox_ctrl] call KISKA_fnc_GCHOnLoad_sideGroupsList;
+null = [_sidesGroupListBox_ctrl] spawn KISKA_fnc_GCHOnLoad_sideGroupsList;
 
 
 /* ----------------------------------------------------------------------------

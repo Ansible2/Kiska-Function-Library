@@ -84,11 +84,11 @@ if (_updateCanDeleteCombo) then {
 
 if (_updateCanRallyCombo) then {
 	null = [_selectedGroup] spawn {
-		params ["_group"];
+		params ["_selectedGroup"];
 		
 		private _groupCanRally = [
 			"KISKA_canRally",
-			_group,
+			_selectedGroup,
 			false,
 			2
 		] call KISKA_fnc_getVariableTarget; 

@@ -22,13 +22,18 @@ Author:
 #define SCRIPT_NAME "KISKA_fnc_GCH_joinGroupButton"
 scriptName SCRIPT_NAME;
 
-;
+params ["_control"];
 
 _control ctrlAddEventHandler ["ButtonClick",{
-	private _sidesGroupListBox_ctrl = uiNamespace getVariable "KISKA_GCH_sidesGroupListBox_ctrl";
-	private _index = lbCurSel _sidesGroupListBox_ctrl;
+	private _selectedGroup = uiNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
 
-	[player] joinSilent _newGroup;
+	if !(isNull _selectedGroup) then {
+		if !((group player) isEqualTo _selectedGroup) then {
+			[player] joinSilent _newGroup;
+			[true,true] call KISKA_fnc_GCH_updateCurrentGroupSection;
+		};
+	} else {
+		hint "The group you are trying to join does not exist";
+	};
 
-	[true,true] call KISKA_fnc_GCH_updateCurrentGroupSection;
 }];

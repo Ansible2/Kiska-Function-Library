@@ -23,4 +23,6 @@ scriptName SCRIPT_NAME;
 
 params ["_control"];
 
-(uiNamespace getVariable "KISKA_GCH_display") closeDisplay 2;
+_control ctrlAddEventHandler ["ButtonClick",{
+	(uiNamespace getVariable "KISKA_GCH_display") closeDisplay 2;
+}];
