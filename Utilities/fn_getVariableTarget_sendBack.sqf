@@ -43,7 +43,7 @@ if (_sendBackTarget isEqualTo 0) then {
 				_getVariableValue,
 				"locally."
 			],
-			false,
+			true,
 			false,
 			true
 		] call KISKA_fnc_log;
@@ -60,7 +60,7 @@ if (_sendBackTarget isEqualTo 0) then {
 				"---Value sent was",
 				_getVariableValue
 			],
-			false,
+			true,
 			false,
 			true
 		] call KISKA_fnc_log;
