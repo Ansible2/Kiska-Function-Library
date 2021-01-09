@@ -206,7 +206,6 @@ class KISKA_GCH_dialog
 			y = 0.666667 * safezoneH + safezoneY;
 			w = 0.0878906 * safezoneW;
 			h = 0.0208333 * safezoneH;
-			maxChars = 20;
 			colorBackground[] = {-1,-1,-1,CHANGER_TRANSPARENCY};
 		};
 

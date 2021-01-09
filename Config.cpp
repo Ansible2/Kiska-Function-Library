@@ -109,7 +109,11 @@ class CfgFunctions
 		{
 			file = "KISKA_functions\GUIs\Group Changer\Functions";
 			
+			class GCH_groupDeleteQuery
+			{};
 			class GCH_isAllowedToEdit
+			{};
+			class GCH_updateCurrentGroupList
 			{};
 			class GCHOnLoad
 			{};
@@ -118,8 +122,6 @@ class CfgFunctions
 			class GCHOnLoad_canRallyCombo
 			{};
 			class GCHOnLoad_closeButton
-			{};
-			class GCHOnLoad_currentGroupList
 			{};
 			class GCHOnLoad_joinGroupButton
 			{};

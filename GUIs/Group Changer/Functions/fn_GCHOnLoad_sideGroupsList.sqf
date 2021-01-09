@@ -23,7 +23,6 @@ scriptName SCRIPT_NAME;
 
 params ["_control"];
 
-
 private _playerSide = side player;
 private _allGroupsCached = allGroups;
 private _sideGroups = _allGroupsCached select {(side _x) isEqualTo _playerSide};
@@ -33,10 +32,9 @@ private _fn_popSideGroupIds = {
 		_sideGroupIds pushBack (groupId _x);
 	};
 };
+call _fn_popSideGroupIds;
 
 uiNamespace setVariable ["KISKA_GCH_sideGroupsArray",_sideGroups];
-
-uiNamespace setVariable ["KISKA_GCH_sideGroupsIdsArray",_sideGroupIds];
 
 
 private _fn_updateSideGroupList = {
@@ -68,28 +66,56 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 	private _sideGroups = uiNamespace getVariable ["KISKA_GCH_sideGroupsArray",_sideGroups];
 	private _sideGroupsIndex = _control lbValue _selectedIndex;
 	private _selectedGroup = _sideGroups select _sideGroupsIndex;
+	uiNamespace setVariable ["KISKA_GCH_selectedGroup",_selectedGroup];
 
+	// units list
 	private _groupUnits = units _selectedGroup;
-	if !(uiNamespace setVariable ["KISKA_GCH_showAI",_checked]) then {
+	if !(uiNamespace getVariable "KISKA_GCH_showAI") then {
 		_groupUnits = _groupUnits select (isPlayer _x);
 	};
+	private _currentGroupListBox_ctrl = uiNamespace getVariable "KISKA_GCH_currentGroupListBox_ctrl";
+	private "_index";
+	_groupUnits apply {
+		_index = _currentGroupListBox_ctrl lbAdd (name _x);
+		if !(isPlayer _x) then {
+			_currentGroupListBox_ctrl lbSetColor [_index,[0,0.31,0.65,1]];
+		};
+	};
+	
 
+	// leader name indicator
 	private _leaderName = name (leader _selectedGroup);
+	private _leaderNameIndicator_ctrl = uiNamespace getVariable "KISKA_GCH_leaderNameIndicator_ctrl";
+	_leaderNameIndicator_ctrl ctrlSetText _leaderName;
+
+	// group Id edit box/indicator
 	private _groupId = groupId _selectedGroup;
+	private _leaderNameIndicator_ctrl = uiNamespace getVariable "KISKA_GCH_groupIdEdit_ctrl";
+	_leaderNameIndicator_ctrl ctrlSetText _groupId;
+
+	// can delete combo
+	private _canBeDeletedCombo_ctrl = uiNamespace getVariable "KISKA_GCH_canBeDeletedCombo_ctrl";
 	private _canDeleteWhenEmpty = isGroupDeletedWhenEmpty _selectedGroup;
+	_canBeDeletedCombo_ctrl lbSetCurSel ([0,1] select _canDeleteWhenEmpty);
+	
 
-	private _currentGroupListBox_ctrl = uiNamespace getVariable "KISKA_GCH_currentGroupListBox_ctrl"; 
-
+	// can rally combo BIS_fnc_commsMenuToggleAvailability
 	null = [_selectedGroup] spawn {
+		params ["_group"];
+		
 		private _groupCanRally = [
 			"KISKA_canRally",
-			_this select 0,
+			_group,
 			false,
 			2
 		] call KISKA_fnc_getVariableTarget; 
 		
 		// make sure the menu is still open as it takes time to get a message from the server
-		if (!isNull (uiNamespace getVariable "KISKA_GCH_display")) then {
+		// also make sure the same group is selected in the list
+		if (
+			!isNull (uiNamespace getVariable "KISKA_GCH_display") AND
+			{_selectedGroup isEqualTo (uiNamespace getVariable "KISKA_GCH_selectedGroup")}
+		) then {
 			private _canRallyCombo_ctrl = uiNamespace getVariable "KISKA_GCH_canRallyCombo_ctrl";
 			_canRallyCombo_ctrl lbSetCurSel ([0,1] select _groupCanRally);
 		};

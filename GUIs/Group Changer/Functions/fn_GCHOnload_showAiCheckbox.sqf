@@ -12,7 +12,7 @@ Returns:
 
 Examples:
     (begin example)
-        [_display] call KISKA_fnc_GCHOnLoad_showAiCheckbox;
+        [_control] call KISKA_fnc_GCHOnLoad_showAiCheckbox;
     (end)
 
 Author:
@@ -26,20 +26,14 @@ params ["_control"];
 _control ctrlAddEventHandler ["onCheckedChanged",{
 	params ["_control", "_checked"];
 
-	private _currentGroupListBox_ctrl = uiNamespace getVariable "KISKA_GCH_currentGroupListBox_ctrl"; 
-	
-	// get bool from _checked number
+	// convert from number to bool
 	_checked = [false,true] select _checked;
-	if (_checked) then {
-		
-	} else {
-
-	};
+	[_checked] call KISKA_fnc_GCH_updateCurrentGroupList;
 
 	// save for the future
 	uiNamespace setVariable ["KISKA_GCH_showAI",_checked];
 }];
 
 
-// set checked or not
+// set checked or not initially on open
 _control ctrlSetChecked (uiNamespace getVariable ["KISKA_GCH_showAI",false]);

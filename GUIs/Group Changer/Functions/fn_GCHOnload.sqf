@@ -65,15 +65,14 @@ uiNamespace setVariable ["KISKA_GCH_canRallyCombo_ctrl",_canRallyCombo_ctrl];
 /* ----------------------------------------------------------------------------
 	List Boxes
 ---------------------------------------------------------------------------- */
+// current group unit list
+private _currentGroupListBox_ctrl = _display displayCtrl GCH_CURRENT_GROUP_LISTBOX_IDC;
+uiNamespace setVariable ["KISKA_GCH_currentGroupListBox_ctrl",_currentGroupListBox_ctrl];
+
 // side groups list
 private _sidesGroupListBox_ctrl = _display displayCtrl GCH_SIDE_GROUPS_LISTBOX_IDC;
 uiNamespace setVariable ["KISKA_GCH_sidesGroupListBox_ctrl",_sidesGroupListBox_ctrl];
 [_sidesGroupListBox_ctrl] call KISKA_fnc_GCHOnLoad_sideGroupsList;
-
-// current group unit list
-private _currentGroupListBox_ctrl = _display displayCtrl GCH_CURRENT_GROUP_LISTBOX_IDC;
-uiNamespace setVariable ["KISKA_GCH_currentGroupListBox_ctrl",_currentGroupListBox_ctrl];
-[_currentGroupListBox_ctrl] call KISKA_fnc_GCHOnLoad_currentGroupList;
 
 
 /* ----------------------------------------------------------------------------
@@ -131,7 +130,8 @@ _display displayAddEventHandler ["unload",{
 		"KISKA_GCH_leaderIsPlayerIndicator_ctrl",
 		"KISKA_GCH_showAiCheckBox_ctrl",
 		"KISKA_GCH_sideGroupsIdsArray",
-		"KISKA_GCH_sideGroupsArray"
+		"KISKA_GCH_sideGroupsArray",
+		"KISKA_GCH_selectedGroup"
 	] apply {
 		uiNamespace setVariable [_x,nil];
 	};
