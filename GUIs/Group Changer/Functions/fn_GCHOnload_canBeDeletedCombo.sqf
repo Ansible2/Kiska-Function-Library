@@ -58,3 +58,6 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 		hint "You must be the admin or host to change this setting";
 	};
 }];
+
+_control lbAdd "NO";
+_control lbAdd "YES";
