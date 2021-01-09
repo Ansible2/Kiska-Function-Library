@@ -109,7 +109,27 @@ class CfgFunctions
 		{
 			file = "KISKA_functions\GUIs\Group Changer\Functions";
 			
-			class GCH_dialogOnload
+			class GCH_isAllowedToEdit
+			{};
+			class GCHOnLoad
+			{};
+			class GCHOnLoad_canBeDeletedCombo
+			{};
+			class GCHOnLoad_canRallyCombo
+			{};
+			class GCHOnLoad_closeButton
+			{};
+			class GCHOnLoad_currentGroupList
+			{};
+			class GCHOnLoad_joinGroupButton
+			{};
+			class GCHOnLoad_leaveGroupButton
+			{};
+			class GCHOnLoad_setGroupIdButton
+			{};
+			class GCHOnLoad_showAiCheckbox
+			{};
+			class GCHOnLoad_sideGroupsList
 			{};
 		};
 		class Loadouts
