@@ -90,7 +90,7 @@ uiNamespace setVariable ["KISKA_GCH_leaveGroupButton_ctrl",_leaveGroupButton_ctr
 
 // close button
 private _closeButton_ctrl = _display displayCtrl GCH_CLOSE_BUTTON_IDC;
-uiNamespace setVariable ["KISKA_GCH_closeButton_ctrl",_closeButton_ctrl];
+//uiNamespace setVariable ["KISKA_GCH_closeButton_ctrl",_closeButton_ctrl];
 [_closeButton_ctrl] call KISKA_fnc_GCHOnLoad_closeButton;
 
 // set leader button
@@ -119,19 +119,15 @@ _display displayAddEventHandler ["unload",{
 	// clear uiNamespace variables
 	[
 		"KISKA_GCH_display",
-		"KISKA_GCH_joinGroupButton_ctrl",
-		"KISKA_GCH_leaveGroupButton_ctrl",
-		"KISKA_GCH_closeButton_ctrl",
-		"KISKA_GCH_sidesGroupListBox_ctrl",
-		"KISKA_GCH_currentGroupListBox_ctrl",
-		"KISKA_GCH_canRallyIndicator_ctrl",
+		"KISKA_GCH_selectedGroup",
+		"KISKA_GCH_groupUnitList",
 		"KISKA_GCH_leaderNameIndicator_ctrl",
-		"KISKA_GCH_canBeDeletedIndicator_ctrl",
-		"KISKA_GCH_leaderIsPlayerIndicator_ctrl",
-		"KISKA_GCH_showAiCheckBox_ctrl",
-		"KISKA_GCH_sideGroupsIdsArray",
+		"KISKA_GCH_groupIdEdit_ctrl",
+		"KISKA_GCH_canBeDeletedCombo_ctrl",
+		"KISKA_GCH_canRallyCombo_ctrl",
+		"KISKA_GCH_sidesGroupListBox_ctrl",
 		"KISKA_GCH_sideGroupsArray",
-		"KISKA_GCH_selectedGroup"
+		"KISKA_GCH_sidesGroupListBox_ctrl"
 	] apply {
 		uiNamespace setVariable [_x,nil];
 	};
