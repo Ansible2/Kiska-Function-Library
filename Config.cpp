@@ -113,7 +113,7 @@ class CfgFunctions
 			{};
 			class GCH_isAllowedToEdit
 			{};
-			class GCH_updateCurrentGroupList
+			class GCH_updateCurrentGroupSection
 			{};
 			class GCHOnLoad
 			{};
