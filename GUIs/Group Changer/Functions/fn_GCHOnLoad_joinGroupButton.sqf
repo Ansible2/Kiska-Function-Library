@@ -22,7 +22,7 @@ Author:
 #define SCRIPT_NAME "KISKA_fnc_GCH_joinGroupButton"
 scriptName SCRIPT_NAME;
 
-params ["_control"]
+;
 
 _control ctrlAddEventHandler ["ButtonClick",{
 	private _sidesGroupListBox_ctrl = uiNamespace getVariable "KISKA_GCH_sidesGroupListBox_ctrl";

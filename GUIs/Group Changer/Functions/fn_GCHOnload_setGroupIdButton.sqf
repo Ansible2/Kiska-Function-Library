@@ -23,7 +23,7 @@ Author:
 #define SCRIPT_NAME "KISKA_fnc_GCH_setGroupIdButton"
 scriptName SCRIPT_NAME;
 
-params ["_control"]
+params ["_control"];
 
 _control ctrlAddEventHandler ["ButtonClick",{
 	private _editBox_ctrl = uiNamespace getVariable "KISKA_GCH_groupIdEdit_ctrl";
