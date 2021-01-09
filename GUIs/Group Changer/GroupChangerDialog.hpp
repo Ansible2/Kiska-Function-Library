@@ -17,7 +17,7 @@ class KISKA_GCH_dialog
 	idd = GCH_DIALOG_IDD;
 	movingEnabled = true;
 	enableSimulation = true;
-	onLoad = "[_this select 0] call KISKA_fnc_GCH_dialogOnLoad";
+	onLoad = "[_this select 0] call KISKA_fnc_GCHOnload";
 
 	class controlsBackground
 	{
