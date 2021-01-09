@@ -61,66 +61,13 @@ private _fn_updateSideGroupList = {
 _control ctrlAddEventHandler ["LBSelChanged",{
 	params ["_control", "_selectedIndex"];
 
-	
 	// get selected group
-	private _sideGroups = uiNamespace getVariable ["KISKA_GCH_sideGroupsArray",_sideGroups];
+	private _sideGroups = uiNamespace getVariable "KISKA_GCH_sideGroupsArray";
 	private _sideGroupsIndex = _control lbValue _selectedIndex;
 	private _selectedGroup = _sideGroups select _sideGroupsIndex;
 	uiNamespace setVariable ["KISKA_GCH_selectedGroup",_selectedGroup];
 
-	// units list
-	private _groupUnits = units _selectedGroup;
-	if !(uiNamespace getVariable "KISKA_GCH_showAI") then {
-		_groupUnits = _groupUnits select (isPlayer _x);
-	};
-	private _currentGroupListBox_ctrl = uiNamespace getVariable "KISKA_GCH_currentGroupListBox_ctrl";
-	private "_index";
-	_groupUnits apply {
-		_index = _currentGroupListBox_ctrl lbAdd (name _x);
-		if !(isPlayer _x) then {
-			_currentGroupListBox_ctrl lbSetColor [_index,[0,0.31,0.65,1]];
-		};
-	};
-	
-
-	// leader name indicator
-	private _leaderName = name (leader _selectedGroup);
-	private _leaderNameIndicator_ctrl = uiNamespace getVariable "KISKA_GCH_leaderNameIndicator_ctrl";
-	_leaderNameIndicator_ctrl ctrlSetText _leaderName;
-
-	// group Id edit box/indicator
-	private _groupId = groupId _selectedGroup;
-	private _leaderNameIndicator_ctrl = uiNamespace getVariable "KISKA_GCH_groupIdEdit_ctrl";
-	_leaderNameIndicator_ctrl ctrlSetText _groupId;
-
-	// can delete combo
-	private _canBeDeletedCombo_ctrl = uiNamespace getVariable "KISKA_GCH_canBeDeletedCombo_ctrl";
-	private _canDeleteWhenEmpty = isGroupDeletedWhenEmpty _selectedGroup;
-	_canBeDeletedCombo_ctrl lbSetCurSel ([0,1] select _canDeleteWhenEmpty);
-	
-
-	// can rally combo BIS_fnc_commsMenuToggleAvailability
-	null = [_selectedGroup] spawn {
-		params ["_group"];
-		
-		private _groupCanRally = [
-			"KISKA_canRally",
-			_group,
-			false,
-			2
-		] call KISKA_fnc_getVariableTarget; 
-		
-		// make sure the menu is still open as it takes time to get a message from the server
-		// also make sure the same group is selected in the list
-		if (
-			!isNull (uiNamespace getVariable "KISKA_GCH_display") AND
-			{_selectedGroup isEqualTo (uiNamespace getVariable "KISKA_GCH_selectedGroup")}
-		) then {
-			private _canRallyCombo_ctrl = uiNamespace getVariable "KISKA_GCH_canRallyCombo_ctrl";
-			_canRallyCombo_ctrl lbSetCurSel ([0,1] select _groupCanRally);
-		};
-	};
-
+	[true,true,true,true,true] call KISKA_fnc_GCH_updateCurrentGroupSection;
 }];
 
 
