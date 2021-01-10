@@ -34,23 +34,25 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 			
 			private _canDelete = isGroupDeletedWhenEmpty _selectedgroup;
 			private _fn_setGroupAutoDelete = {
-				if (local _group) then {
-					_group deleteGroupWhenEmpty _canDelete;
+				params ["_allowDelete"];
+
+				if (local _selectedgroup) then {
+					_selectedgroup deleteGroupWhenEmpty _allowDelete;
 				} else {
-					[_group, _canDelete] remoteExecCall ["KISKA_fnc_GCH_groupDeleteQuery",2];
+					[_selectedgroup, _allowDelete] remoteExecCall ["KISKA_fnc_GCH_groupDeleteQuery",2];
 				};
 			};
 			
 
 			if (_selectedIndex isEqualTo 0) then {
-				// if not already set to be exempt from auto-deletion
+				// if you can delete the group, set to false
 				if (_canDelete) then {
-					call _fn_setGroupAutoDelete;
+					[false] call _fn_setGroupAutoDelete;
 				};
 			} else {
-				// if not already set to not be auto-deleted
+				// If you can't delete the group, set to true
 				if !(_canDelete) then {
-					call _fn_setGroupAutoDelete;
+					[true] call _fn_setGroupAutoDelete;
 				};
 			};
 		};

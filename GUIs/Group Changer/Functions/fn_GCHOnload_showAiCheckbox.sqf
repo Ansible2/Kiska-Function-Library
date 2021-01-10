@@ -23,16 +23,16 @@ scriptName SCRIPT_NAME;
 
 params ["_control"];
 
-_control ctrlAddEventHandler ["onCheckedChanged",{
+_control ctrlAddEventHandler ["CheckedChanged",{
 	params ["_control", "_checked"];
 
 	// convert from number to bool
 	_checked = [false,true] select _checked;
 	uiNamespace setVariable ["KISKA_GCH_showAI",_checked];
 
-	[true] call KISKA_fnc_GCH_updateCurrentGroupList;
+	[true] call KISKA_fnc_GCH_updateCurrentGroupSection;
 }];
 
 
 // set checked or not initially on open
-_control ctrlSetChecked (uiNamespace getVariable ["KISKA_GCH_showAI",true]);
+_control cbSetChecked (uiNamespace getVariable ["KISKA_GCH_showAI",true]);
