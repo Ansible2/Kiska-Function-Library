@@ -93,7 +93,13 @@ if (_updateUnitList) then {
 
 
 if (_updateLeaderIndicator) then {
-	private _leaderName = name (leader _selectedGroup);
+	private _leader = leader _selectedGroup;
+	private "_leaderName";
+	if (isNull _leader) then {
+		_leaderName = "NO LEADER";
+	} else {
+		_leaderName = name _leader;
+	};
 	private _leaderNameIndicator_ctrl = uiNamespace getVariable "KISKA_GCH_leaderNameIndicator_ctrl";
 	_leaderNameIndicator_ctrl ctrlSetText _leaderName;
 };
