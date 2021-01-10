@@ -109,6 +109,8 @@ class CfgFunctions
 		{
 			file = "KISKA_functions\GUIs\Group Changer\Functions";
 			
+			class GCH_addDiaryEntry
+			{};
 			class GCH_groupDeleteQuery
 			{};
 			class GCH_isAllowedToEdit
@@ -136,6 +138,8 @@ class CfgFunctions
 			class GCHOnLoad_showAiCheckbox
 			{};
 			class GCHOnLoad_sideGroupsList
+			{};
+			class openGCHDialog
 			{};
 		};
 		class Loadouts
