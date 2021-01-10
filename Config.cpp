@@ -113,6 +113,8 @@ class CfgFunctions
 			{};
 			class GCH_isAllowedToEdit
 			{};
+			class GCH_setLeaderRemote
+			{};
 			class GCH_updateCurrentGroupSection
 			{};
 			class GCHOnLoad
@@ -128,6 +130,8 @@ class CfgFunctions
 			class GCHOnLoad_leaveGroupButton
 			{};
 			class GCHOnLoad_setGroupIdButton
+			{};
+			class GCHOnLoad_setLeaderButton
 			{};
 			class GCHOnLoad_showAiCheckbox
 			{};
