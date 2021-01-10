@@ -18,7 +18,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_GCHOnLoad_canBeDeletedCombo"
+#define SCRIPT_NAME "KISKA_fnc_GCHOnLoad_closeButton"
 scriptName SCRIPT_NAME;
 
 params ["_control"];
