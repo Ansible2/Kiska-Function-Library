@@ -90,5 +90,5 @@ while {!isNull (uiNamespace getVariable "KISKA_GCH_display")} do {
 		};
 	};
 
-	sleep 2;
+	sleep 1;
 };
