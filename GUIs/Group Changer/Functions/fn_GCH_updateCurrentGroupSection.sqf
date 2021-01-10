@@ -20,6 +20,11 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+#define COLOR_BLUE [0,0.24,0.59,1]
+#define COLOR_RED [1,0,0,0.62]
+#define COLOR_GREEN [0,1,0,0.6]
+#define COLOR_YELLOW [1,1,0,0.8]
+
 #define SCRIPT_NAME "KISKA_fnc_GCH_updateCurrentGroupSection"
 scriptName SCRIPT_NAME;
 
@@ -41,15 +46,33 @@ if (_updateUnitList) then {
 
 	private _groupUnits = units _selectedGroup;
 	if !(uiNamespace getVariable "KISKA_GCH_showAI") then {
-		_groupUnits = _groupUnits select (isPlayer _x);
+		_groupUnits = _groupUnits select {isPlayer _x};
 	};
 
 	uiNamespace setVariable ["KISKA_GCH_groupUnitList",_groupUnits];
 
 	if !(count _groupUnits > 0) exitWith {};
 
+	
+	private ["_index","_team"];
+	private _fn_setTeamColor = {
+		// don't change white team
+		if (_team == "MAIN" OR {_team == ""}) exitWith {};
 
-	private "_index";
+		if (_team == "GREEN") exitWith {
+			_currentGroupListBox_ctrl lbSetColor [_index,COLOR_GREEN];
+		};
+		if (_team == "YELLOW") exitWith {
+			_currentGroupListBox_ctrl lbSetColor [_index,COLOR_YELLOW];
+		};
+		if (_team == "RED") exitWith {
+			_currentGroupListBox_ctrl lbSetColor [_index,COLOR_RED];
+		};
+		if (_team == "BLUE") exitWith {
+			_currentGroupListBox_ctrl lbSetColor [_index,COLOR_BLUE];
+		};
+	};
+
 	{
 		_index = _currentGroupListBox_ctrl lbAdd (name _x);
 		// store index value in array before we sort alphabetically
@@ -57,8 +80,12 @@ if (_updateUnitList) then {
 		
 		// color AI Green
 		if !(isPlayer _x) then {
-			_currentGroupListBox_ctrl lbSetColor [_index,[0,0.81,0,1]];
+			_currentGroupListBox_ctrl lbSetTooltip [_index,"AI"];
 		};
+
+		_team = assignedTeam _x;
+		call _fn_setTeamColor;
+		
 	} forEach _groupUnits;
 
 	lbSort _currentGroupListBox_ctrl;
