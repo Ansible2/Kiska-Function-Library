@@ -29,7 +29,7 @@ _control ctrlAddEventHandler ["ButtonClick",{
 
 	if !(isNull _selectedGroup) then {
 		if !((group player) isEqualTo _selectedGroup) then {
-			[player] joinSilent _newGroup;
+			[player] joinSilent _selectedGroup;
 			[true,true] call KISKA_fnc_GCH_updateCurrentGroupSection;
 		};
 	} else {
