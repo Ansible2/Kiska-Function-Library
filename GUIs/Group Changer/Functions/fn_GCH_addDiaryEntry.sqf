@@ -36,6 +36,6 @@ if !(player diarySubjectExists KISKA_DIARY) then {
 	player createDiarySubject [KISKA_DIARY, KISKA_DIARY];
 };
 
-player createDiaryRecord [KISKA_DIARY, ["View Distance Limiter", 
+player createDiaryRecord [KISKA_DIARY, ["Group Manager GUI", 
 	"<execute expression='openMap false; call KISKA_fnc_openGCHDialog;'>Open Group Changer Dialog</execute>"
 ]];

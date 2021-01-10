@@ -110,7 +110,9 @@ class CfgFunctions
 			file = "KISKA_functions\GUIs\Group Changer\Functions";
 			
 			class GCH_addDiaryEntry
-			{};
+			{
+				postInit = 1;
+			};
 			class GCH_groupDeleteQuery
 			{};
 			class GCH_isAllowedToEdit
