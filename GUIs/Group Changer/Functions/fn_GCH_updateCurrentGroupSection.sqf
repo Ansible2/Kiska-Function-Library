@@ -50,14 +50,18 @@ if (_updateUnitList) then {
 
 
 	private "_index";
-	_groupUnits apply {
+	{
 		_index = _currentGroupListBox_ctrl lbAdd (name _x);
-
+		// store index value in array before we sort alphabetically
+		_currentGroupListBox_ctrl lbSetValue [_index,_forEachIndex];
+		
 		// color AI Green
 		if !(isPlayer _x) then {
 			_currentGroupListBox_ctrl lbSetColor [_index,[0,0.81,0,1]];
 		};
-	};
+	} forEach _groupUnits;
+
+	lbSort _currentGroupListBox_ctrl;
 };
 
 
