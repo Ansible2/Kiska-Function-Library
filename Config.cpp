@@ -44,6 +44,8 @@ class CfgFunctions
 			{};
 			class spawnGroup
 			{};
+			class spawnVehicle
+			{};
 			class vlsFireAt
 			{};
 		};
