@@ -42,24 +42,24 @@ params [
 ];
 
 if (isNull _helicopter) exitWith {
-    [SCRIPT_NAME,[_helicopter,"is a null object"],true,true,true] call KISKA_fnc_log;
+    ["_helicopter is a null object",true] call KISKA_fnc_log;
     false
 };
 
 if (_patrolHeight > _spotDistance3D) exitWith {
-    [SCRIPT_NAME,[_patrolHeight,"is higher then",_spotDistance3D,": The helicopter can't spot anything"],true,true,true] call KISKA_fnc_log;
+    [[_patrolHeight," is higher then ",_spotDistance3D,". The helicopter can't spot anything"],true] call KISKA_fnc_log;
     false
 };
 
 if !(_patrolPoints isEqualTypeAny [objNull,[]]) exitWith {
-    [SCRIPT_NAME,[_patrolPoints,"need to be either positions or objects, exiting..."],true,true,true] call KISKA_fnc_log;
+    [[_patrolPoints," need to be either positions or objects, exiting..."],true] call KISKA_fnc_log;
     false
 };
 
 private _pilot = currentPilot _helicopter;
 
 if (isNull _pilot) exitWith {
-    [SCRIPT_NAME,["No pilot found in",_helicopter],true,true,true] call KISKA_fnc_log;
+    [["No pilot found in ",_helicopter],true] call KISKA_fnc_log;
     false
 };
 

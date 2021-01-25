@@ -20,10 +20,12 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_ciwsSiren";
+
 params ["_turret"];
 
 if (_turret getVariable ["KISKA_CIWS_sirenSounding",false]) exitWith {
-	[SCRIPT_NAME,[_turret,"already has its siren sounding"]] call KISKA_fnc_log;
+	[[_turret," already has its siren sounding"],true] call KISKA_fnc_log;
 };
 
 _turret setVariable ["KISKA_CIWS_sirenSounding",true];

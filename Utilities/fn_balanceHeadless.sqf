@@ -25,11 +25,11 @@ Author:
 scriptName SCRIPT_NAME;
 
 if (!isServer OR {!isMultiplayer}) exitWith {
-	[SCRIPT_NAME,"Needs to be run on server in multiplayer",false,true,true] call KISKA_fnc_log;
+	["Needs to be run on server in multiplayer",true] call KISKA_fnc_log;
 };
 
 if (!canSuspend) exitWith {
-	[SCRIPT_NAME,"Was not run in scheduled; running in scheduled",false,true,true] call KISKA_fnc_log;
+	["Was not run in scheduled; running in scheduled",true] call KISKA_fnc_log;
 	_this spawn KISKA_fnc_balanceHeadless;
 };
 
@@ -57,7 +57,7 @@ if !((missionNamespace getVariable ["KISKA_hcExcluded",[]]) isEqualTo []) then {
 	if !(_excluded isEqualTo []) then {
 		{
 			if !(_x isEqualTypeAny [grpNull,objNull]) then {
-				[SCRIPT_NAME,[_x,"is not an object or group in KISKA_hcExcluded!"],true,true,true] call KISKA_fnc_log;
+				[[_x," is not an object or group in KISKA_hcExcluded!"],true] call KISKA_fnc_log;
 			};
 
 			if (_x isEqualType objNull) then {

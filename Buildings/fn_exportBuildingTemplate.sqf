@@ -33,7 +33,7 @@ params [
 ];
 
 if (isNull _building) exitWith {
-    [SCRIPT_NAME,"_building isNull",false,true,true] call KISKA_fnc_log;
+    ["_building isNull",true] call KISKA_fnc_log;
 };
 
 if (_objectCaptureRadius <= 0) then {

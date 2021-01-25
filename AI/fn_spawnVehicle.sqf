@@ -42,11 +42,11 @@ params [
 
 
 if (_vehicleClass isEqualTo "") exitWith {
-	[SCRIPT_NAME,"_vehicleClass is empty string, exiting...",false,true,true] call KISKA_fnc_log;
+	["_vehicleClass is empty string, exiting...",true] call KISKA_fnc_log;
 };
 
 if (_group isEqualType grpNull AND {isNull _group}) exitWith {
-	[SCRIPT_NAME,["Tried to spawn class:",_vehicleClass,"but the _group is type GROUP and the group is null, exiting..."],false,true,true] call KISKA_fnc_log;
+	[["Tried to spawn class: ",_vehicleClass," but the _group is type GROUP and the group is null, exiting..."],true] call KISKA_fnc_log;
 };
 
 // make a group if side is provided

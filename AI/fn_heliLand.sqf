@@ -31,13 +31,13 @@ params [
 ];
 
 if (isNull _unit) exitWith {
-	[SCRIPT_NAME,[_unit,"is a null object"],true,true,true] call KISKA_fnc_log;
+	["_unit is a null object",true] call KISKA_fnc_log;
 	false
 };
 
 // need to expand to VTOL
 if (!(_unit isKindOf "Helicopter") AND {(_unit isKindOf "VTOL_Base_F")}) then {
-	[SCRIPT_NAME,[_unit,"is not a helicopter or VTOL, exiting..."],true,true,true] call KISKA_fnc_log;
+	[[_unit," is not a helicopter or VTOL, exiting..."],true] call KISKA_fnc_log;
 	false
 };
 

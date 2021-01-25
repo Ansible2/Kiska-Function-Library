@@ -30,7 +30,7 @@ Author(s):
 scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
-	[SCRIPT_NAME,"Must be run in scheduled environment",false,true,true] call KISKA_fnc_log;
+	["Must be run in scheduled environment",true] call KISKA_fnc_log;
 	-1
 };
 
@@ -42,7 +42,7 @@ params [
 ];
 
 if (_variableName isEqualTo "") exitWith {
-	[SCRIPT_NAME,"_variableName is empty",false,true,true] call KISKA_fnc_log;
+	["_variableName is empty",true] call KISKA_fnc_log;
 	-1
 };
 
@@ -57,11 +57,11 @@ private _saveVariable = ["KISKA_GVT",clientOwner,"_",_messageNumber] joinString 
 
 waitUntil {
 	if (!isNil {missionNamespace getVariable _saveVariable}) exitWith {
-		[SCRIPT_NAME,["Got variable",_saveVariable,"from target",_target],true,false,true] call KISKA_fnc_log;
+		[["Got variable ",_saveVariable," from target ",_target],false] call KISKA_fnc_log;
 		true
 	};
 	sleep 0.25;
-	[SCRIPT_NAME,["Waiting for variable from target:",_target],true,false,true] call KISKA_fnc_log;
+	[["Waiting for variable from target: ",_target],false] call KISKA_fnc_log;
 	false
 };
 

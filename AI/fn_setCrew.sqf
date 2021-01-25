@@ -35,15 +35,15 @@ if (_crew isEqualType grpNull) then {_crew = units _crew};
 if (_crew isEqualType objNull) then {_crew = [_crew]};
 
 if (_crew isEqualTo []) exitWith {
-	[SCRIPT_NAME,["Found that",_crew,"is not defined, exiting..."],true,true,true] call KISKA_fnc_log;
+	[["Found that ",_crew," is not defined, exiting..."],true] call KISKA_fnc_log;
 	false
 };
 
 if (isNull _vehicle OR {!(alive _vehicle)}) exitWith {
-	[SCRIPT_NAME,["Found that",_vehicle,"is either null or dead already, exiting..."]] call KISKA_fnc_log;
+	[["Found that ",_vehicle," is either null or dead already, exiting..."]] call KISKA_fnc_log;
 	
 	if (_deleteCrewIfNull) then {
-		[SCRIPT_NAME,["Deleting crew of",_vehicle,":",_crew]] call KISKA_fnc_log;
+		[["Deleting crew of ",_vehicle,":",_crew]] call KISKA_fnc_log;
 		_crew apply {
 			deleteVehicle _x;
 		};
@@ -56,7 +56,7 @@ _crew apply {
 	private _movedIn = _x moveInAny _vehicle;
 
 	if !(_movedIn) then {
-		[SCRIPT_NAME,["Deleted excess unit",_x]] call KISKA_fnc_log;
+		[["Deleted excess unit: ",_x]] call KISKA_fnc_log;
 		deleteVehicle _x
 	};
 };

@@ -34,8 +34,7 @@ Author:
 scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
-	[SCRIPT_NAME,"Must be run in scheduled environment",false,true,true] call KISKA_fnc_log;
-	
+	["Must be run in scheduled environment",true] call KISKA_fnc_log;
 };
 
 params [
@@ -54,11 +53,11 @@ private _uniqueId = ["KISKA_RR",clientOwner,"_",_messageNumber] joinString "";
 
 waitUntil {
 	if (!isNil {missionNamespace getVariable _uniqueId}) exitWith {
-		[SCRIPT_NAME,["Got variable",_uniqueId,"from target",_target],true,false,true] call KISKA_fnc_log;
+		[["Got variable ",_uniqueId," from target ",_target],false] call KISKA_fnc_log;
 		true
 	};
 	sleep 0.25;
-	[SCRIPT_NAME,["Waiting for",_uniqueId,"from target:",_target],true,false,true] call KISKA_fnc_log;
+	[["Waiting for ",_uniqueId," from target: ",_target],false] call KISKA_fnc_log;
 	false
 };
 

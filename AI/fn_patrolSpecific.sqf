@@ -43,27 +43,27 @@ params [
 ];
 
 if !(local _group) exitWith {
-	[SCRIPT_NAME,["Found that",_group,"was not local, exiting..."],true,true,true] call KISKA_fnc_log;
+	[["Found that ",_group," was not local, exiting..."],true] call KISKA_fnc_log;
 	false
 };
 
 if (isNull _group) exitwith {
-	[SCRIPT_NAME,["Found that",_group,"was null, exiting..."],true,true,true] call KISKA_fnc_log;
+	[["Found that ",_group," was null, exiting..."],true] call KISKA_fnc_log;
 	false
 };
 
 if (_numWaypoints < 2) exitwith {
-	[SCRIPT_NAME,[_numWaypoints,"is not above 2, needs to be atleast 2, exiting..."],true,true,true] call KISKA_fnc_log;
+	[[_numWaypoints," is not above 2, needs to be atleast 2, exiting..."],true] call KISKA_fnc_log;
 	false
 };
 
 if (_positions isEqualTo []) exitwith {
-	[SCRIPT_NAME,[_positions,": No positions passed, exiting..."],true,true,true] call KISKA_fnc_log;
+	[[_positions,". No positions passed, exiting..."],true] call KISKA_fnc_log;
 	false
 };
 
 if ((count _positions) < 1) exitwith {
-	[SCRIPT_NAME,[_positions,": Need more positions to be passed. Exiting..."],true,true,true] call KISKA_fnc_log;
+	[[_positions,". Need more positions to be passed. Exiting..."],true] call KISKA_fnc_log;
 	false
 };
 

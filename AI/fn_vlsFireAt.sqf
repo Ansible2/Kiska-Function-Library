@@ -32,15 +32,15 @@ params [
 
 // verify Params
 if (isNull _launcher) exitWith {
-	[SCRIPT_NAME,["Found that _launcher",_launcher,"is a null object. Exiting..."]] call KISKA_fnc_log;
+	[["Found that _launcher ",_launcher," is a null object. Exiting..."],true] call KISKA_fnc_log;
 	false
 };
 if !((typeOf _launcher) == "B_Ship_MRLS_01_F") exitWith {
-	[SCRIPT_NAME,[typeOf _launcher,"is not correct type of B_Ship_MRLS_01_F. Exiting..."]] call KISKA_fnc_log;
+	[[typeOf _launcher," is not correct type of B_Ship_MRLS_01_F. Exiting..."],true] call KISKA_fnc_log;
 	false
 };
 if (_target isEqualType objNull AND {isNull _target}) exitWith {
-	[SCRIPT_NAME,["Found that _target",_target,"is a null object. Exiting..."]] call KISKA_fnc_log;
+	[["Found that _target ",_target," is a null object. Exiting..."],true] call KISKA_fnc_log;
 	false
 };
 

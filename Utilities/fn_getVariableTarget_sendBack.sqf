@@ -37,15 +37,13 @@ if (_sendBackTarget isEqualTo 0) then {
 		[
 			SCRIPT_NAME,
 			[
-				"Did not send back _saveVariable:",
+				"Did not send back _saveVariable: ",
 				_saveVariable,
-				"to 0 target, saved value, which is:",
+				" to 0 target, saved value, which is: ",
 				_getVariableValue,
-				"locally."
+				" locally."
 			],
-			true,
-			false,
-			true
+			false
 		] call KISKA_fnc_log;
 	} else {
 		missionNamespace setVariable [_saveVariable,_getVariableValue,remoteExecutedOwner];
@@ -53,16 +51,14 @@ if (_sendBackTarget isEqualTo 0) then {
 		[
 			SCRIPT_NAME,
 			[
-				"Sent back _saveVariable:",
+				"Sent back _saveVariable: ",
 				_saveVariable,
-				"to",
+				" to ",
 				remoteExecutedOwner,
-				"---Value sent was",
+				" ---Value sent was ",
 				_getVariableValue
 			],
-			true,
-			false,
-			true
+			false
 		] call KISKA_fnc_log;
 	};
 } else {
@@ -75,15 +71,13 @@ if (_sendBackTarget isEqualTo 0) then {
 	[
 		SCRIPT_NAME,
 		[
-			"Sent back _saveVariable:",
+			"Sent back _saveVariable: ",
 			_saveVariable,
-			"to",
+			" to ",
 			_sendBackTarget,
-			"---Value sent was",
+			" ---Value sent was ",
 			_getVariableValue
 		],
-		false,
-		false,
-		true
+		false
 	] call KISKA_fnc_log;
 };

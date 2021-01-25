@@ -35,7 +35,7 @@ params [
 
 // Verify params
 if (_numberOfUnits < 1) exitWith {
-	[SCRIPT_NAME,["_numberOfUnits is",_numberOfUnits,":","needs to be atleast 1. Exiting..."]] call KISKA_fnc_log;
+	[["_numberOfUnits is ",_numberOfUnits," needs to be atleast 1. Exiting..."],true] call KISKA_fnc_log;
 };
 
 // filter out bad unit types
@@ -50,13 +50,13 @@ private _weightedArray = _unitTypes isEqualTypeParams ["",1];
 				_unitTypesFiltered pushBack (_unitTypes select (_forEachIndex + 1));
 			};
 		} else {
-			[SCRIPT_NAME,["Found invalid class",_x]] call KISKA_fnc_log;
+			[["Found invalid class",_x]] call KISKA_fnc_log;
 		};
 	};
 } forEach _unitTypes;
 
 if (_unitTypesFiltered isEqualTo []) exitWith {
-	[SCRIPT_NAME,["Did not find any valid unit types in",_unitTypes],true,true,true] call KISKA_fnc_log;
+	[["Did not find any valid unit types in ",_unitTypes],,true] call KISKA_fnc_log;
 };
 
 

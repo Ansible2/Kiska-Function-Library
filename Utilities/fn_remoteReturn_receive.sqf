@@ -38,20 +38,20 @@ private _sendBackTarget = remoteExecutedOwner;
 // setVariable handling
 if (_sendBackTarget isEqualTo 0) then {
 	
-	[SCRIPT_NAME,["Found _sendBackTarget isEqualTo 0 for",_uniqueId],true,false,true] call KISKA_fnc_log;
+	[["Found _sendBackTarget isEqualTo 0 for ",_uniqueId],false] call KISKA_fnc_log;
 	
 	// if it's multiplayer, do not send all connected the value, just put it on server
 	if (isMultiplayer) then {
-		[SCRIPT_NAME,"Found to be multiplayer, setting target to 2",false,false,true] call KISKA_fnc_log;
+		["Found to be multiplayer, setting target to 2 ",false] call KISKA_fnc_log;
 		_sendBackTarget = 2;
 	};
 } else {
 
-	[SCRIPT_NAME,["Found _sendBackTarget ise",_sendBackTarget,"for",_uniqueId],true,false,true] call KISKA_fnc_log;
+	[["Found _sendBackTarget ise ",_sendBackTarget," for ",_uniqueId],false] call KISKA_fnc_log;
 	
 	// setVariable in single player does not work with 2 to set on the local machine 
 	if (!isMultiplayer AND {_sendBackTarget isEqualTo 2}) then {
-		[SCRIPT_NAME,["Not multiplayer and _sendBackTarget is 2, setting",_uniqueId,"to 0 target"],false,false,true] call KISKA_fnc_log;
+		[["Not multiplayer and _sendBackTarget is 2, setting ",_uniqueId," to 0 target"],false] call KISKA_fnc_log;
 		_sendBackTarget = 0;
 	};
 };

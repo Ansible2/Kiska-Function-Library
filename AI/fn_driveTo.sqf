@@ -37,12 +37,12 @@ params [
 ];
 
 if ((_crew isEqualTypeAny [grpNull,objNull] AND {isNull _crew}) OR {_crew isEqualTo []}) exitWith {
-	[SCRIPT_NAME,["_crew for",_vehicle,"is undefined"],true,true,true] call KISKA_fnc_log;
+	[["_crew for ",_vehicle," is undefined"],true] call KISKA_fnc_log;
 	false
 };
 
 if (isNull _vehicle) exitWith {
-	[SCRIPT_NAME,["_vehicle",_vehicle,"is null"],true,true,true] call KISKA_fnc_log;
+	["_vehicle is null",true] call KISKA_fnc_log;
 	false
 };
 
@@ -80,7 +80,7 @@ private _vehicleCrew = crew _vehicle;
 	{
 		params ["_vehicle","_crew","_codeOnComplete"];
 		
-		[SCRIPT_NAME,["_vehicle",_vehicle,"has reached its destination"]] call KISKA_fnc_log;
+		[["_vehicle ",_vehicle," has reached its destination"]] call KISKA_fnc_log;
 
 		_crew apply {
 			[_x,_vehicle] remoteExecCall ["leaveVehicle",_x];

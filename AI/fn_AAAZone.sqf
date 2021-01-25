@@ -27,7 +27,7 @@ scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
 	null = _this spawn KISKA_fnc_AAAZone;
-	[SCRIPT_NAME,"ReExecuting in scheduled environment",false,true,true] call KISKA_fnc_log;
+	["ReExecuting in scheduled environment",true] call KISKA_fnc_log;
 };
 
 params [
@@ -37,22 +37,22 @@ params [
 ];
 
 if (isNull _vehicle) exitWith {
-	[SCRIPT_NAME,[_vehicle,"isNull"],true,true,true] call KISKA_fnc_log;
+	[[_vehicle," isNull"],true] call KISKA_fnc_log;
 };
 
 if (!local _vehicle) exitWith {
-	[SCRIPT_NAME,[_vehicle,"is not local to machine, executing on owner"],true] call KISKA_fnc_log;
+	[[_vehicle," is not local to machine, executing on owner"],false] call KISKA_fnc_log;
 	_this remoteExec ["KISKA_fnc_AAAZone",_vehicle];
 };
 
 private _gunner = gunner _vehicle;
 if (isNull _gunner) exitWith {
-	[SCRIPT_NAME,[_vehicle,"does not have a gunner"],true,true,true] call KISKA_fnc_log;
+	[[_vehicle," does not have a gunner"],true] call KISKA_fnc_log;
 };
 
 private _gunnerGroup = group _gunner;
 if (isNull _gunnerGroup) exitWith {
-	[SCRIPT_NAME,[_gunnerGroup,"is a null group"],true,true,true] call KISKA_fnc_log;
+	["_gunnerGroup is null",true] call KISKA_fnc_log;
 };
 
 private _fn_controlShots = {
@@ -74,7 +74,7 @@ private _fn_controlShots = {
 
 
 private _AAAside = side _vehicle;
-[SCRIPT_NAME,["_AAAside is",_AAASide]] call KISKA_fnc_log;
+[["_AAAside is ",_AAASide]] call KISKA_fnc_log;
 private _doFire = false;
 private "_entitiesInRadius";
 
@@ -84,36 +84,36 @@ while {sleep _checkTime; _vehicle getVariable ["KISKA_doAAA",true]} do {
 
 	// if any air units are found
 	if !(_entitiesInRadius isEqualTo []) then {
-		[SCRIPT_NAME,"Found entities in radius"] call KISKA_fnc_log;
+		["Found entities in radius"] call KISKA_fnc_log;
 		
 		private _index = _entitiesInRadius findIf {
-			//[SCRIPT_NAME,["Side of",_x,"is",side _x,": side of AAA is",_AAASide]] call KISKA_fnc_log;
+			//[["Side of",_x,"is",side _x,": side of AAA is",_AAASide]] call KISKA_fnc_log;
 			
 			[side _x,_AAAside] call BIS_fnc_sideIsEnemy;
 		};
 
 		// if an enemy aircraft is found AND _vehicle is not already engaging
 		if (_index != -1 AND {!_doFire}) then {
-			[SCRIPT_NAME,["Found a unit to engage and not already doing so, weapon aim on for",_gunner]] call KISKA_fnc_log;
+			[["Found a unit to engage and not already doing so, weapon aim on for",_gunner]] call KISKA_fnc_log;
 			
 			_doFire = true;
 			[true] call _fn_controlShots;
 		} else {
 			// only disable if no targets are found and already engaging
-			[SCRIPT_NAME,["Did not meet fire standards. Do fire?",_doFire,"Index?",_index]] call KISKA_fnc_log;
+			[["Did not meet fire standards. Do fire? ",_doFire," Index? ",_index]] call KISKA_fnc_log;
 			
 			if (_index isEqualTo -1 AND {_doFire}) then {
-				[SCRIPT_NAME,"No enemy targets to engage anymore. Disabling weapon aim and _doFire to false"] call KISKA_fnc_log;
+				["No enemy targets to engage anymore. Disabling weapon aim and _doFire to false"] call KISKA_fnc_log;
 				
 				_doFire = false;
 				[false] call _fn_controlShots;
 			};
 		};
 	} else {
-		[SCRIPT_NAME,"No entities in area found"] call KISKA_fnc_log;
+		["No entities in area found"] call KISKA_fnc_log;
 		
 		if (_doFire) then {
-			[SCRIPT_NAME,"Setting _doFire to false"] call KISKA_fnc_log;
+			["Setting _doFire to false"] call KISKA_fnc_log;
 			
 			_doFire = false;
 		};
@@ -121,16 +121,16 @@ while {sleep _checkTime; _vehicle getVariable ["KISKA_doAAA",true]} do {
 
 	// if vehicle is dead or gunner is absent
 	if !(alive _gunner) exitWith {
-		[SCRIPT_NAME,["_gunner",_gunner,"is no longer alive, exiting"]] call KISKA_fnc_log;
+		[["_gunner ",_gunner," is no longer alive, exiting"]] call KISKA_fnc_log;
 		
 		if (alive _vehicle) then {
-			[SCRIPT_NAME,["_vehicle",_vehicle,"is still alive, setting KISKA_doAAA to nil"]] call KISKA_fnc_log;
+			[["_vehicle ",_vehicle," is still alive, setting KISKA_doAAA to nil"]] call KISKA_fnc_log;
 			
 			_vehicle setVariable ["KISKA_doAAA",nil];
 		};
 	};
 	if !(alive _vehicle) exitWith {
-		[SCRIPT_NAME,["_vehicle",_vehicle,"is no longer alive, exiting"]] call KISKA_fnc_log;
+		[["_vehicle ",_vehicle," is no longer alive, exiting"]] call KISKA_fnc_log;
 	};
 };
 

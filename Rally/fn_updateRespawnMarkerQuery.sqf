@@ -27,7 +27,7 @@ if !(hasInterface) exitWith {};
 
 private _group = group player;
 if (isNull _group) exitWith {
-	[SCRIPT_NAME,"_group was found to be null",false,true,true] call KISKA_fnc_log;
+	["_group was found to be null",true] call KISKA_fnc_log;
 };
 
 private _groupLeader = leader _group;

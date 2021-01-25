@@ -31,7 +31,7 @@ params [
 ];
 
 if (_pathArray isEqualTo []) exitWith {
-	[SCRIPT_NAME,"_pathArray is empty array!"] call KISKA_fnc_log;
+	["_pathArray is empty array!",true] call KISKA_fnc_log;
 };
 
 private "_config_temp";

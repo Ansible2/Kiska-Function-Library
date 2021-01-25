@@ -27,7 +27,7 @@ scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
 	null = _this spawn KISKA_fnc_ciwsAlarm;
-	[SCRIPT_NAME,"Was not run in scheduled; running in scheduled",false,true,true] call KISKA_fnc_log;
+	["Was not run in scheduled; running in scheduled",true] call KISKA_fnc_log;
 };
 
 params [
@@ -35,11 +35,11 @@ params [
 ];
 
 if (isNull _turret) exitWith {
-	[SCRIPT_NAME,[_turret,"is a null object. Exiting..."],true,true,true] call KISKA_fnc_log;
+	[[_turret," is a null object. Exiting..."],true] call KISKA_fnc_log;
 };
 
 if (_turret getVariable ["KISKA_CIWS_alarmSounding",false]) exitWith {
-	[SCRIPT_NAME,[_turret,"already has its alarm sounding"]] call KISKA_fnc_log;
+	[[_turret," already has its alarm sounding"],true] call KISKA_fnc_log;
 };
 
 

@@ -26,7 +26,7 @@ Author:
 scriptName SCRIPT_NAME;
 
 if (!isServer) exitWith {
-	[SCRIPT_NAME,"Must be run on server",false,true,true] call KISKA_fnc_log;
+	["Must be run on server",true] call KISKA_fnc_log;
 };
 
 params ["_group","_canDelete"];

@@ -39,7 +39,7 @@ scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
 	_this spawn KISKA_fnc_ciwsInit;
-	[SCRIPT_NAME,"Was not run in scheduled; running in scheduled",false,true,true] call KISKA_fnc_log;
+	["Was not run in scheduled; running in scheduled",true] call KISKA_fnc_log;
 };
 
 params [
@@ -55,10 +55,10 @@ params [
 ];
 
 if (isNull _turret) exitWith {
-	[SCRIPT_NAME,[_turret,"is a null object. Exiting..."],true,true,true] call KISKA_fnc_log;
+	[[_turret," is a null object. Exiting..."],true] call KISKA_fnc_log;
 };
 if !(_turret isKindOf "AAA_System_01_base_F") exitWith {
-	[SCRIPT_NAME,[typeOf _turret,"is not the proper type (AAA_System_01_base_F). Exiting..."],true,true,true] call KISKA_fnc_log;
+	[[typeOf _turret," is not the proper type (AAA_System_01_base_F). Exiting..."],true] call KISKA_fnc_log;
 };
 
 _turret setVariable ["KISKA_runCIWS",true];
@@ -67,7 +67,7 @@ _turret setVariable ["KISKA_runCIWS",true];
 // possibly add this as a param in the future
 //_turret setCombatMode "BLUE";
 
-[SCRIPT_NAME,[_turret,"set KISKA_runCIWS to true"]] call KISKA_fnc_log;
+[[_turret," set KISKA_runCIWS to true"],false] call KISKA_fnc_log;
 
 private [
 	"_targetDistance",
@@ -89,7 +89,7 @@ private [
 private _incoming = [];
 private _fn_updateIncomingList = {
 	// nearestObjects and nearEntities do not work here
-	[SCRIPT_NAME,[_turret,"is searching for incoming within",_searchDistance]] call KISKA_fnc_log;
+	[[_turret," is searching for incoming within ",_searchDistance],false] call KISKA_fnc_log;
 
 	_incoming = [];
 
@@ -107,7 +107,7 @@ private _fn_updateIncomingList = {
 
 	};
 
-	[SCRIPT_NAME,[_turret,"found",_incoming]] call KISKA_fnc_log;
+	[[_turret," found ",_incoming],false] call KISKA_fnc_log;
 
 	_incoming
 };
@@ -156,14 +156,14 @@ private _fn_waitToFireOnTarget = {
 
 	waitUntil {
 		if (call _fn_isNullTarget) exitWith {
-			[SCRIPT_NAME,[_turret,"stopped waiting on null target"]] call KISKA_fnc_log;
+			[[_turret," stopped waiting on null target"],false] call KISKA_fnc_log;
 			true
 		};
 		// keep turret rotating to target
-		[SCRIPT_NAME,[_turret,"trying to get an angle on",_target]] call KISKA_fnc_log;
+		[[_turret," trying to get an angle on ",_target],false] call KISKA_fnc_log;
 		
 		if (call _fn_isNullTarget) exitWith {
-			[SCRIPT_NAME,[_turret,"stopped waiting on null target #1"]] call KISKA_fnc_log;
+			[[_turret," stopped waiting on null target #1"],false] call KISKA_fnc_log;
 			true
 		};
 		
@@ -177,7 +177,7 @@ private _fn_waitToFireOnTarget = {
 		_angleToTarget = abs (acos ((_turret distance2D _target) / (_turret distance _target)));
 		// get the difference between turrets current pitch and the targets actual angle
 		_currentPitchTolerance = (selectMax [_turretPitchAngle,_angleToTarget]) - (selectMin [_turretPitchAngle,_angleToTarget]);
-		[SCRIPT_NAME,["_turret:",_turret,"_turretPitchAngle:",_turretPitchAngle,"_angleToTarget:",_angleToTarget,"_currentPitchTolerance:",_currentPitchTolerance]] call KISKA_fnc_log;
+		[["_turret: ",_turret," _turretPitchAngle: ",_turretPitchAngle," _angleToTarget: ",_angleToTarget," _currentPitchTolerance: ",_currentPitchTolerance],false] call KISKA_fnc_log;
 
 		//// turret rotation
 		// get turrets rotational angle
@@ -188,14 +188,14 @@ private _fn_waitToFireOnTarget = {
 		_relativeDir = _turret getDir _target;				
 		// get the degree between where the target is at relative to the turret position and its actual gun
 		_currentRotTolerance = (_turretDir max _relativeDir) - (_turretDir min _relativeDir);
-		[SCRIPT_NAME,["_turret:",_turret,"_turretVector:",_turretVector,"_turretDir:",_turretDir,"_relativeDir:",_relativeDir,"_currentRotTolerance:",_currentRotTolerance]] call KISKA_fnc_log;
+		[["_turret: ",_turret," _turretVector: ",_turretVector," _turretDir: ",_turretDir," _relativeDir: ",_relativeDir," _currentRotTolerance: ",_currentRotTolerance],false] call KISKA_fnc_log;
 		
 		// get target alt
 		call _fn_updateTargetPos;
 		_targetAlt = _targetPos select 2;
 
 		if (call _fn_isNullTarget) exitWith {
-			[SCRIPT_NAME,[_turret,"stopped waiting on null target #2"]] call KISKA_fnc_log;
+			[[_turret," stopped waiting on null target #2"],false] call KISKA_fnc_log;
 			true
 		};
 
@@ -207,24 +207,24 @@ private _fn_waitToFireOnTarget = {
 			{(_turret distance _target) >= (_searchDistance * 0.75)}*/
 		) 
 		exitWith {
-			[SCRIPT_NAME,[_turret,"got an angle on",_target]] call KISKA_fnc_log;
+			[[_turret," got an angle on ",_target],false] call KISKA_fnc_log;
 			true
 		};
 
 		sleep 0.25;
-		[SCRIPT_NAME,[_turret,"sleep 0.25"]] call KISKA_fnc_log;
+		[[_turret," sleep 0.25"],false] call KISKA_fnc_log;
 
 		false
 	};
 };
 
 private _fn_whileTargetsIncoming = {
-	[SCRIPT_NAME,[_turret,"found targets"]] call KISKA_fnc_log;
+	[[_turret," found targets"],false] call KISKA_fnc_log;
 	
 	// while there are still targets in the air; this was orginally a simple for loop, but the alarm sound requires the extra complication of
 	/// searching for incoming projectiles constantly after the first is detected
 	while {
-		[SCRIPT_NAME,[_turret,"sleep 0.5, _fn_whileTargetsIncoming"]] call KISKA_fnc_log;
+		[[_turret," sleep 0.5, _fn_whileTargetsIncoming"],false] call KISKA_fnc_log;
 		sleep 0.5;	
 		call _fn_updateIncomingList;
 		// if projectiles are still incoming
@@ -236,7 +236,7 @@ private _fn_whileTargetsIncoming = {
 			null = [_turret] spawn KISKA_fnc_ciwsAlarm;
 		};
 		
-		[SCRIPT_NAME,[_turret,"searching through targets"]] call KISKA_fnc_log;
+		[[_turret," searching through targets"],false] call KISKA_fnc_log;
 		_targetIndex = _incoming findIf {
 			(isNull (_x getVariable ["KISKA_CIWS_engagedBy",objNull])) AND
 			{(_x distance _turret) > 25}
@@ -246,14 +246,14 @@ private _fn_whileTargetsIncoming = {
 			_target = _incoming select _targetIndex;
 			_targetDistance = _target distance _turret;
 
-			[SCRIPT_NAME,[_turret,"found target",_target,"at",_targetDistance]] call KISKA_fnc_log;
+			[[_turret," found target ",_target," at ",_targetDistance],false] call KISKA_fnc_log;
 			
 			call _fn_waitToFireOnTarget
 
 			call _fn_fireAtTarget
 
 		} else {
-			[SCRIPT_NAME,[_turret,"target,",_target,"did not meet params"]] call KISKA_fnc_log;
+			[[_turret," target, ",_target," did not meet params"],false] call KISKA_fnc_log;
 			//sleep 0.5;
 		};
 	};
@@ -262,33 +262,33 @@ private _fn_whileTargetsIncoming = {
 
 private _fn_fireAtTarget = {
 	if (!(isNull _target) AND {(_turret distance _target) <= _searchDistance}) then {
-		[SCRIPT_NAME,[_turret,"got params met on",_target]] call KISKA_fnc_log;
+		[[_turret," got params met on ",_target],false] call KISKA_fnc_log;
 		
 		// track if unit actually got off shots
 		_firedShots = false;
 		private "_engagedBy";
 		private _numberOfShots = random [50,100,150];
-		[SCRIPT_NAME,["_numberOfShots is:",_numberOfShots]] call KISKA_fnc_log;
+		[["_numberOfShots is:",_numberOfShots]] call KISKA_fnc_log;
 
 		private _shotMin = _numberOfShots / 3;
-		[SCRIPT_NAME,["_shotMin is:",_shotMin]] call KISKA_fnc_log; 
+		[["_shotMin is: ",_shotMin],false] call KISKA_fnc_log; 
 
 		private _explodeAtShot = round (random [_shotMin,_shotMin * 2,_numberOfShots]);
-		[SCRIPT_NAME,["_explodeAtShot is:",_explodeAtShot]] call KISKA_fnc_log; 
+		[["_explodeAtShot is: ",_explodeAtShot],false] call KISKA_fnc_log; 
 
 		private _didExplode = false;
 
 		for "_i" from 1 to _numberOfShots do {
 
 			if (isNull _target) exitWith {
-				[SCRIPT_NAME,[_turret,"target became null"]] call KISKA_fnc_log;
+				[[_turret," target became null"],false] call KISKA_fnc_log;
 			};
 
 			_engagedBy = _target getVariable ["KISKA_CIWS_engagedBy",objNull];
 
 			// check if target was engaged by another turret
 			if (!(isNull _engagedBy) AND {!(_engagedBy isEqualTo _turret)}) exitWith {
-				[SCRIPT_NAME,[_turret,"will not engage",_target,"; It's already being engaged by",_engagedBy]] call KISKA_fnc_log;
+				[[_turret," will not engage ",_target,"; It's already being engaged by ",_engagedBy],false] call KISKA_fnc_log;
 			};
 
 			// keep watching target
@@ -307,7 +307,7 @@ private _fn_fireAtTarget = {
 				
 				// create explosion
 				if (!_didExplode AND {_i >= _explodeAtShot}) then {
-					[SCRIPT_NAME,"Reached explosion, updating target pos"] call KISKA_fnc_log; 
+					["Reached explosion, updating target pos",false] call KISKA_fnc_log; 
 					call _fn_updateTargetPos;
 					
 					// delay explosion because bullets take time to reach their target
@@ -331,7 +331,7 @@ private _fn_fireAtTarget = {
 					_firedShots = true;
 				};
 
-				[SCRIPT_NAME,[_turret,"fired at",_target,"shot number",_i]] call KISKA_fnc_log;
+				[[_turret," fired at ",_target," shot number ",_i],false] call KISKA_fnc_log;
 			};
 
 			sleep 0.01;
@@ -350,7 +350,7 @@ private _fn_fireAtTarget = {
 				deleteVehicle _target;
 			};
 
-			[SCRIPT_NAME,[_turret,"destroyed target",_target]] call KISKA_fnc_log;
+			[[_turret," destroyed target ",_target],false] call KISKA_fnc_log;
 		};
 
 	} else {
@@ -358,7 +358,7 @@ private _fn_fireAtTarget = {
 		_turret lookAt objNull;
 		_turret disableAI "WEAPONAIM";
 		
-		[SCRIPT_NAME,[_turret,"target",_target,"did not meet params"]] call KISKA_fnc_log;
+		[[_turret," target ",_target," did not meet params"],false] call KISKA_fnc_log;
 	};
 };
 
@@ -379,7 +379,7 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 		};
 		
 	} else {
-		[SCRIPT_NAME,[_turret,"sleep 0.5, the target did not meet params"]] call KISKA_fnc_log;
+		[[_turret," sleep 0.5, the target did not meet params"],false] call KISKA_fnc_log;
 		sleep _searchInterval;
 	};
 };

@@ -44,11 +44,11 @@ Examples:
 scriptName SCRIPT_NAME;
 
 if !(isServer) exitWith {
-	[SCRIPT_NAME,"Was not executed on server, exiting...",false,true,true] call KISKA_fnc_log;
+	["Was not executed on server, exiting...",true] call KISKA_fnc_log;
 };
 
 if (!canSuspend) exitWith {
-	[SCRIPT_NAME,"Was not executed in a scheduled environment, exiting...",false,true,true] call KISKA_fnc_log;
+	["Was not executed in a scheduled environment, exiting...",true] call KISKA_fnc_log;
 };
 
 params [
@@ -60,12 +60,12 @@ params [
 ];
 
 if (_musicTracks isEqualTo [] AND {_usedMusicTracks isEqualTo []}) exitWith {
-	[SCRIPT_NAME,"No music tracks were passed! Can't start.",false,true,true] call KISKA_fnc_log;
+	["No music tracks were passed! Can't start.",true] call KISKA_fnc_log;
 };
 
 // check if _timeBetween is an array AND if it is the correct formats OR if it is just a single number
 if ((_timeBetween isEqualType []) AND {!((count _timeBetween) isEqualTo 1) AND {!((count _timeBetween) isEqualTo 3) OR !(_timeBetween isEqualTypeParams [1,2,3])}}) exitWith {
-	[SCRIPT_NAME,[_timeBetween,"is not the correct format for _timeBetween"],true,true,true] call KISKA_fnc_log;
+	[[_timeBetween," is not the correct format for _timeBetween"],true] call KISKA_fnc_log;
 };
 
 if (_musicTracks isEqualTo []) then {
@@ -165,7 +165,7 @@ if (missionNamespace getVariable ["KISKA_musicSystemIsRunning",true]) then {
 	};
 
 	if (_startTime isEqualTo KISKA_randomMusicStartTIme) then {
-		[SCRIPT_NAME,"Sleep has finished, executing new randomMusic"] call KISKA_fnc_log
+		["Sleep has finished, executing new randomMusic",false] call KISKA_fnc_log;
 		// the globals in params are not passed to allow for changes while music is playing
 		null = [true,_selectedTrack] spawn KISKA_fnc_randomMusic; 
 	};

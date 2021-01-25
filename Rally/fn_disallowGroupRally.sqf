@@ -24,7 +24,7 @@ Author:
 scriptName SCRIPT_NAME;
 
 if !(isServer) exitWith {
-	[SCRIPT_NAME,"Needs to be run on the server",false,true,true] call KISKA_fnc_log;
+	["Needs to be run on the server",true] call KISKA_fnc_log;
 
 	false
 };
@@ -37,7 +37,7 @@ params [
 _groupToRemove = [_groupToRemove] call CBA_fnc_getGroup;
 
 if (isNull _groupToRemove) exitWith {
-	[SCRIPT_NAME,"_groupToRemove was null",false,true,true] call KISKA_fnc_log;
+	["_groupToRemove was null",true] call KISKA_fnc_log;
 
 	false
 };
@@ -49,7 +49,7 @@ if (_deleteMarker) then {
 	// if marker ID exitsts
 	if !(_markerID isEqualTo []) then {
 		private _marker = _groupToRemove getVariable "KISKA_groupRespawnMarker";
-		[SCRIPT_NAME,["Found marker id",_markerID,"for group",_groupToRemove,"---Will remove marker",_marker]] call KISKA_fnc_log;
+		[["Found marker id ",_markerID," for group ",_groupToRemove," ---Will remove marker ",_marker],false] call KISKA_fnc_log;
 		
 		_markerID call BIS_fnc_removeRespawnPosition;
 		deleteMarker _marker;

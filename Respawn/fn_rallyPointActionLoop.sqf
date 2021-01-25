@@ -24,15 +24,15 @@ Author:
 scriptName SCRIPT_NAME;
 
 if (!hasInterface) exitWith {
-	[SCRIPT_NAME,"Was run on machine without interface, needs an interface",false,true,true] call KISKA_fnc_log;
+	["Was run on machine without interface, needs an interface",false] call KISKA_fnc_log;
 };
 
 If (!isMultiplayer) exitWith {
-	[SCRIPT_NAME,"KISKA rally point system does not run in singlePlayer",false,true,true] call KISKA_fnc_log;
+	["KISKA rally point system does not run in singlePlayer",true] call KISKA_fnc_log;
 };
 
 if (!canSuspend) exitWith {
-	[SCRIPT_NAME,"Must run in scheduled environment",false,true,true] call KISKA_fnc_log;
+	["Must run in scheduled environment",true] call KISKA_fnc_log;
 };
 
 waitUntil {sleep 2; !isNull player;};

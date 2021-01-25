@@ -45,17 +45,17 @@ params [
 
 // Check atleast one unit to spawn
 if (_numberOfUnits < 1) exitWith {
-	[SCRIPT_NAME,["_numberOfUnits is",_numberOfUnits,":","needs to be atleast 1. Exiting..."]] call KISKA_fnc_log;
+	[["_numberOfUnits is ",_numberOfUnits," needs to be atleast 1. Exiting..."],true] call KISKA_fnc_log;
 };
 
 // Is there at least on position to spawn on
 if (count _spawnPositions < 1) exitwith {
-	[SCRIPT_NAME,["_spawnPositions is",_spawnPositions,":","needs to be atleast 1. Exiting..."]] call KISKA_fnc_log;
+	["_spawnPositions does not have enough positions",true] call KISKA_fnc_log;
 };
 
 // Re adjust number of units if there are not enough spawn points
 if (count _spawnPositions < _numberOfUnits) then {
-	[SCRIPT_NAME,["Count of _spawnPositions is",_spawnPositions,"and _numberOfUnits is",_numberOfUnits,": ReAdjusting _numberOfUnits to _spawnPositions"]] call KISKA_fnc_log;
+	[["Count of _spawnPositions is ",_spawnPositions," and _numberOfUnits is ",_numberOfUnits," ReAdjusting _numberOfUnits to _spawnPositions"]] call KISKA_fnc_log;
 
 	_numberOfUnits = count _spawnPositions;
 };
@@ -73,14 +73,14 @@ private _weightedArray = _unitTypes isEqualTypeParams ["",1];
 				_unitTypesFiltered pushBack (_unitTypes select (_forEachIndex + 1));
 			};
 		} else {
-			[SCRIPT_NAME,["Found invalid class",_x]] call KISKA_fnc_log;
+			[["Found invalid class ",_x]] call KISKA_fnc_log;
 		};
 	};
 } forEach _unitTypes;
 
 // exit if no valid types
 if (_unitTypesFiltered isEqualTo []) exitWith {
-	[SCRIPT_NAME,["Did not find any valid unit types in",_unitTypes],true,true,true] call KISKA_fnc_log;
+	[["Did not find any valid unit types in ",_unitTypes],true] call KISKA_fnc_log;
 };
 
 
@@ -162,6 +162,6 @@ allCurators apply {
 	[_x,[_spawnedUnits,false]] remoteExecCall ["addCuratorEditableObjects",2];
 };
 
-[SCRIPT_NAME,["Spawned",(count _spawnedUnits)]] call KISKA_fnc_log;
+[["Spawned",(count _spawnedUnits)]] call KISKA_fnc_log;
 
 _spawnedUnits
