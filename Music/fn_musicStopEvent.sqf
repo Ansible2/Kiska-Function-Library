@@ -34,7 +34,7 @@ if (_stopAudio) then {
 	playMusic "";
 };
 
-["Music stopped"] call KISKA_fnc_log;
+["Music stopped",false] call KISKA_fnc_log;
 
 missionNamespace setVariable ["KISKA_musicPlaying",false];
 missionNamespace setVariable ["KISKA_currentTrack",""];
