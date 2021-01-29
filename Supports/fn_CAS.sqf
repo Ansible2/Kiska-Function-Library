@@ -12,6 +12,7 @@ Parameters:
 	4: _attackHeight : <NUMBER> - At what height should the aircraft start firing
 	5: _spawnDistance : <NUMBER> - How far away to spawn the aircraft
 	6: _breakOffDistance : <NUMBER> - The distance to target at which the aircraft should definately disengage and fly away (to not crash)
+	7: _allowDamage : <BOOL> - Allow damage of both the crew and aircraft
 
 Returns:
 	NOTHING
@@ -59,7 +60,8 @@ params [
 	["_planeClass","B_Plane_CAS_01_dynamicLoadout_F",[""]],
 	["_attackHeight",1300,[123]],
 	["_spawnDistance",2000,[123]],
-	["_breakOffDistance",500,[123]]
+	["_breakOffDistance",500,[123]],
+	["_allowDamage",false,[true]]
 ];
 
 if (_attackPosition isEqualType objNull AND {isNull _attackPosition} OR {_attackPosition isEqualTo []}) exitWith {
@@ -271,7 +273,14 @@ _planeSpawnPosition set [2,_attackHeight];
 private _planeSide = (getnumber (_planeCfg >> "side")) call BIS_fnc_sideType;
 private _planeArray = [_planeSpawnPosition,_attackDirection,_planeClass,_planeSide] call BIS_fnc_spawnVehicle;
 private _plane = _planeArray select 0;
+private _crew = _planeArray select 1;
 
+if !(_allowDamage) then {
+	_plane allowDamage false;
+	_crew apply {
+		_x allowDamage false;
+	};
+};
 
 
 // update the planes pylons
@@ -398,15 +407,20 @@ for "_i" from 1 to 4 do {
 };
 
 // give the plane some time to get out of audible distance before deletion
-sleep 45;
+sleep 60;
 
 // delete
-if (alive _plane) then {
-	private _group = group _plane;
-	private _crew = crew _plane;
-	_crew apply {
+_crew apply {
+	if (!isNull _x) then {
 		_plane deleteVehicleCrew _x;
-	};	
+	};
+};
+
+if (alive _plane) then {
 	deletevehicle _plane;
+};
+
+private _group = _planeArray select 2;
+if (!isNull _group) then {
 	deletegroup _group;
 };
