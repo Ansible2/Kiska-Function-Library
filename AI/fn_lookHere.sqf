@@ -22,6 +22,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_lookHere";
 
 params [
 	["_objectsToRotate",[],[objNull,[]]],
@@ -30,7 +31,7 @@ params [
 ];
 
 if (_objectsToRotate isEqualTo [] OR {_objectsToRotate isEqualType objNull AND {isNull _objectsToRotate}}) exitWith {
-	"[KISKA_fnc_lookAtNearest] _objectsToRotate is undefined" call BIS_fnc_error;
+	["_objectsToRotate is undefined",true] call KISKA_fnc_log;
 	false
 };
 
@@ -47,5 +48,6 @@ _objectsToRotate apply {
 	
 	_x doWatch _nearestPosition;
 };
+
 
 true
