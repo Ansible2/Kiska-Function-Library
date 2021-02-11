@@ -8,7 +8,7 @@ Description:
 	Reutrns the first one it finds.
 
 Parameters:
-	0: _pathArray : <ARRAY> - The global array in string format
+	0: _pathArray : <ARRAY> - The array in string format
 
 Returns:
 	<CONFIG> - The first config path if found or configNull if not

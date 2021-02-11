@@ -2,11 +2,10 @@
 Function: KISKA_fnc_attack
 
 Description:
-	Modified version of CBA_fnc_taskAttack,
-	Now allows setting of different behaviour and combatMode
+	Modified version of CBA_fnc_taskAttack.
+	Now allows setting of different behaviour and combatMode.
 
 Parameters:
-
 	0: _group <GROUP or OBJECT> - Unit(s) to attack
 	1: _position <OBJECT, LOCATION, GROUP, or ARRAY> - The position to attack
 	2: _radius <NUMBER> - Radius for waypoint placement
