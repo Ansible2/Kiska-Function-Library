@@ -118,6 +118,8 @@ private _fn_isNullTarget = {
 	isNull _target
 };
 
+// used a wait and exec to create a new thread so that this could be evaluated independently
+// the goal is to reduce alarm sound overlap by keeping it going if the rounds are close together
 private _fn_checkIfStopAlarm = {
 	[
 		{
@@ -363,6 +365,9 @@ private _fn_fireAtTarget = {
 };
 
 
+_turret disableAI "AutoTarget";
+_turret disableAI "Target";
+
 while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 	// get incoming projectiles
 	call _fn_updateIncomingList;
@@ -373,8 +378,6 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 
 		// turn off alarm if used
 		if (_soundAlarm) then {
-			// used a wait and exec to create a new thread so that this could be evaluated independently
-			// the goal is to reduce alarm sound overlap by keeping it going if the rounds are close together
 			call _fn_checkIfStopAlarm
 		};
 		
@@ -382,4 +385,9 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 		[[_turret," sleep 0.5, the target did not meet params"],false] call KISKA_fnc_log;
 		sleep _searchInterval;
 	};
+};
+
+if (alive _turret) then {
+	_turret enableAI "AutoTarget";
+	_turret enableAI "Target";
 };
