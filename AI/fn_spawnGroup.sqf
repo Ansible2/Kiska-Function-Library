@@ -50,13 +50,13 @@ private _weightedArray = _unitTypes isEqualTypeParams ["",1];
 				_unitTypesFiltered pushBack (_unitTypes select (_forEachIndex + 1));
 			};
 		} else {
-			[["Found invalid class",_x]] call KISKA_fnc_log;
+			[["Found invalid class ",_x]] call KISKA_fnc_log;
 		};
 	};
 } forEach _unitTypes;
 
 if (_unitTypesFiltered isEqualTo []) exitWith {
-	[["Did not find any valid unit types in ",_unitTypes],,true] call KISKA_fnc_log;
+	[["Did not find any valid unit types in ",_unitTypes],true] call KISKA_fnc_log;
 };
 
 
