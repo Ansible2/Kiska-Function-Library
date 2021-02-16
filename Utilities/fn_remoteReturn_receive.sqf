@@ -24,8 +24,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_remoteReturn_receive"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_remoteReturn_receive";
 
 params [
 	["_code","",[""]],

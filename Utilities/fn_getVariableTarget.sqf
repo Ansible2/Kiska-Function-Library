@@ -50,6 +50,7 @@ if (_variableName isEqualTo "") exitWith {
 // create a unique variable ID for network tranfer
 private _messageNumber = missionNamespace getVariable ["KISKA_getVarTargetQueue_count",0];
 _messageNumber = _messageNumber + 1;
+missionNamespace setVariable ["KISKA_getVarTargetQueue_count",_messageNumber];
 private _saveVariable = ["KISKA_GVT",clientOwner,"_",_messageNumber] joinString "";
 
 

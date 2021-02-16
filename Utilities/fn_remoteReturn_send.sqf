@@ -47,6 +47,7 @@ params [
 // create a unique variable ID for network tranfer
 private _messageNumber = missionNamespace getVariable ["KISKA_remoteReturnQueue_count",0];
 _messageNumber = _messageNumber + 1;
+missionNamespace setVariable ["KISKA_remoteReturnQueue_count",_messageNumber];
 private _uniqueId = ["KISKA_RR",clientOwner,"_",_messageNumber] joinString "";
 
 [_code,_args,_scheduled,_uniqueId] remoteExecCall ["KISKA_fnc_remoteReturn_receive",_target];
