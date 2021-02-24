@@ -98,7 +98,7 @@ if !(missionNamespace getVariable ["KISKA_musicSystemIsRunning",false]) then {
 };
 
 // clear array of selected Track
-_musicTracks deleteAt (_musicTracks findIf {_x isEqualTo _selectedTrack});
+_musicTracks deleteAt (_musicTracks find _selectedTrack);
 KISKA_randomMusic_tracks = _musicTracks;
 // store track as used
 _usedMusicTracks pushBackUnique _selectedTrack;
@@ -136,7 +136,6 @@ if (_randomWaitTime < SLEEP_BUFFER) then {
 private _waitTime = _durationOfTrack + _randomWaitTime;
 
 [
-	SCRIPT_NAME,
 	[
 		"Random wait time is:",
 		_randomWaitTime,
@@ -145,7 +144,7 @@ private _waitTime = _durationOfTrack + _randomWaitTime;
 		"--- Wait time is:",
 		_waitTime
 	],
-	true
+	false
 ] call KISKA_fnc_log;
 
 // dont play this music if the system is stopped or another random music system was started
