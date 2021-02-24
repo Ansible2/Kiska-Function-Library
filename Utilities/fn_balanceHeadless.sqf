@@ -15,7 +15,7 @@ Returns:
 
 Examples:
     (begin example)
-		null = [] spawn KISKA_fnc_balanceHeadless;
+		[] spawn KISKA_fnc_balanceHeadless;
     (end)
 
 Author:

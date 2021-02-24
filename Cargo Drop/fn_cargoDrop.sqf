@@ -132,7 +132,7 @@ KISKA_fnc_CD_deployChutes = {
 	_mainChute hideObjectGlobal true;
 
 	// speed up the drop
-	null = [_mainChute] spawn {
+	[_mainChute] spawn {
 		params ["_mainChute"];
 
 		private "_chuteVelocity";

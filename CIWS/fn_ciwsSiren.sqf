@@ -13,7 +13,7 @@ Returns:
 Examples:
     (begin example)
 
-		null = [turret1] spawn KISKA_fnc_ciwsSiren;
+		[turret1] spawn KISKA_fnc_ciwsSiren;
 
     (end)
 

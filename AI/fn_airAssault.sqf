@@ -18,7 +18,7 @@ Returns:
 Examples:
     (begin example)
 
-		null = [airCraftGroupName,[waypointPos_1, waypointPos_2, waypointPos_3], LandingPos ,LoiterPos , FinalDeletetionPos] spawn KISKA_fnc_airAssault;
+		[airCraftGroupName,[waypointPos_1, waypointPos_2, waypointPos_3], LandingPos ,LoiterPos , FinalDeletetionPos] spawn KISKA_fnc_airAssault;
 
     (end)
 

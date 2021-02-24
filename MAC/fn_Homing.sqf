@@ -1,8 +1,8 @@
 //example for original function
-// null = [(getPosASL mkr vectorAdd [50,100,2000]),"ammo_Missile_Cruise_01",mkr,200,false,[0,0,0],1000,"",true] spawn BIS_fnc_EXP_camp_guidedProjectile;
+// [(getPosASL mkr vectorAdd [50,100,2000]),"ammo_Missile_Cruise_01",mkr,200,false,[0,0,0],1000,"",true] spawn BIS_fnc_EXP_camp_guidedProjectile;
 
 //example for new script
-// null = [(getPosASL mkr vectorAdd [50,500,1500]),"ammo_Missile_Cruise_01",mkr,200,true,[0,0,0.25],5,"",true,(getMissionLayerEntities "detTargets" select 0)] execVM "homing.sqf";
+// [(getPosASL mkr vectorAdd [50,500,1500]),"ammo_Missile_Cruise_01",mkr,200,true,[0,0,0.25],5,"",true,(getMissionLayerEntities "detTargets" select 0)] execVM "homing.sqf";
 
 
 /*

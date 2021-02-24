@@ -24,7 +24,7 @@ Returns:
 Examples:
     (begin example)
 
-		null = [] spawn KISKA_fnc_paratroopers;
+		[] spawn KISKA_fnc_paratroopers;
 
     (end)
 

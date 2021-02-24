@@ -74,7 +74,7 @@ uiNamespace setVariable ["KISKA_GCH_currentGroupListBox_ctrl",_currentGroupListB
 // side groups list
 private _sidesGroupListBox_ctrl = _display displayCtrl GCH_SIDE_GROUPS_LISTBOX_IDC;
 uiNamespace setVariable ["KISKA_GCH_sidesGroupListBox_ctrl",_sidesGroupListBox_ctrl];
-null = [_sidesGroupListBox_ctrl] spawn KISKA_fnc_GCHOnLoad_sideGroupsList;
+[_sidesGroupListBox_ctrl] spawn KISKA_fnc_GCHOnLoad_sideGroupsList;
 
 
 /* ----------------------------------------------------------------------------

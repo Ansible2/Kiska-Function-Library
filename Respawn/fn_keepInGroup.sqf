@@ -17,7 +17,7 @@ if (!hasInterface) exitWith {};
 				[_unit] joinSilent KISKA_playerGroup;
 				
 				if (KISKA_team != "" AND {KISKA_team != "MAIN"}) then {
-					null = [_unit] spawn {
+					[_unit] spawn {
 						(_this select 0) assignTeam KISKA_team;
 					};
 				};

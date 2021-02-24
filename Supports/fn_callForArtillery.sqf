@@ -18,7 +18,7 @@ Returns:
 Examples:
     (begin example)
 
-		null = [target_1,"Sh_155mm_AMOS"] spawn KISKA_fnc_callForArtillery;
+		[target_1,"Sh_155mm_AMOS"] spawn KISKA_fnc_callForArtillery;
 
     (end)
 
@@ -38,7 +38,7 @@ params [
 
 // flare round need to fall slower
 if (_ammoType == "Flare_82mm_AMOS_White") exitWith {
-	null = [_fireAtPosition,_ammoType,15,1,1,{},nil,250,1] spawn BIS_fnc_fireSupportVirtual;
+	[_fireAtPosition,_ammoType,15,1,1,{},nil,250,1] spawn BIS_fnc_fireSupportVirtual;
 };
 
 ["artillery",player] call KISKA_fnc_supportRadioGlobal;
@@ -50,7 +50,7 @@ private _smoke = createvehicle ["G_40mm_SmokeRed_infinite",_fireAtPosition,[],0,
 
 sleep 5;
 
-null = [_fireAtPosition,_ammoType,_radius,_numberOfRounds,_delayBetween,{},nil,1300] spawn BIS_fnc_fireSupportVirtual;
+[_fireAtPosition,_ammoType,_radius,_numberOfRounds,_delayBetween,{},nil,1300] spawn BIS_fnc_fireSupportVirtual;
 
 sleep 20;
 deleteVehicle _chemlight;

@@ -16,7 +16,7 @@ Returns:
 
 Examples:
     (begin example)
-		null = [myVehicle] spawn KISKA_fnc_AAAZone;
+		[myVehicle] spawn KISKA_fnc_AAAZone;
     (end)
 
 Author:
@@ -26,7 +26,7 @@ Author:
 scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
-	null = _this spawn KISKA_fnc_AAAZone;
+	_this spawn KISKA_fnc_AAAZone;
 	["ReExecuting in scheduled environment",true] call KISKA_fnc_log;
 };
 

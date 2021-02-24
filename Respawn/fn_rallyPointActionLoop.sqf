@@ -14,7 +14,7 @@ Returns:
 
 Examples:
     (begin example)
-		null = [] spawn KISKA_fnc_rallyPointActionLoop;
+		[] spawn KISKA_fnc_rallyPointActionLoop;
     (end)
 
 Author:
@@ -54,7 +54,7 @@ KISKA_fnc_respawn_updateRallyAction = {
 					private _caller = param [1];
 					private _groupName = missionNamespace getVariable ["KISKA_respawnGroupID",groupId (group _caller)];
 
-					null = [_caller, ([_groupName,"spawnMarker"] joinString "_"), ([_groupName,"Respawn Beacon"] joinString " ")] remoteExecCall ["KISKA_fnc_updateRespawnMarker",2]; 		
+					[_caller, ([_groupName,"spawnMarker"] joinString "_"), ([_groupName,"Respawn Beacon"] joinString " ")] remoteExecCall ["KISKA_fnc_updateRespawnMarker",2]; 		
 
 					hint "Rally Point Updated";
 				},
@@ -89,7 +89,7 @@ player addEventHandler ["Respawn", {
 	
 	player removeEventHandler ["Respawn",_thisEventHandler];
 
-	null = [] spawn KISKA_fnc_rallyPointActionLoop;
+	[] spawn KISKA_fnc_rallyPointActionLoop;
 }];
 
 while {sleep 5; alive player} do {

@@ -120,7 +120,7 @@ if (_updateCanDeleteCombo) then {
 
 
 if (_updateCanRallyCombo) then {
-	null = [_selectedGroup] spawn {
+	[_selectedGroup] spawn {
 		params ["_selectedGroup"];
 		
 		private _groupCanRally = [

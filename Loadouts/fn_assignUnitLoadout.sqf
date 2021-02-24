@@ -25,7 +25,7 @@ Examples:
 
 		unit1 = "I_E_Soldier_TL_F" createVehicle (position player);
 
-		null = ["JTFS_",unit1] spawn KISKA_fnc_assignUnitLoadout
+		["JTFS_",unit1] spawn KISKA_fnc_assignUnitLoadout
 
     (end)
 

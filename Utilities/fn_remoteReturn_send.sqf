@@ -21,7 +21,7 @@ Returns:
 
 Examples:
     (begin example)
-        null = [] spawn {
+        [] spawn {
 			// need to call for direct return but in scheduled environment
 			_clientIdFromServer = ["owner (_this select 0)",[player],2] call KISKA_fnc_remoteReturn_send;
 		};

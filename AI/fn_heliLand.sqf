@@ -47,7 +47,7 @@ if (_landingPosition isEqualType objNull) then {
 	_landingPosition = getPosATL _landingPosition;
 };
 
-null = [_unit,_landingPosition,_landMode] spawn {
+[_unit,_landingPosition,_landMode] spawn {
 	params ["_unit","_landingPosition","_landMode"];
 
 	_unit move _landingPosition;
@@ -74,6 +74,7 @@ null = [_unit,_landingPosition,_landMode] spawn {
 				// keep engine running
 				_unit engineon true;
 				_unit land _landMode;
+				//_unit flyInHeight 0;
 			};
 		};
 
@@ -82,5 +83,6 @@ null = [_unit,_landingPosition,_landMode] spawn {
 
 	_unit setVariable ["KISKA_heliLanded",true];
 };
+
 
 true

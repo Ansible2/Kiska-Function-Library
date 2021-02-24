@@ -24,7 +24,7 @@ Returns:
 Examples:
     (begin example)
 
-		null = [turret,3000,100] spawn KISKA_fnc_ciwsInit;
+		[turret,3000,100] spawn KISKA_fnc_ciwsInit;
 
     (end)
 
@@ -235,7 +235,7 @@ private _fn_whileTargetsIncoming = {
 		// check if sound alarm requested and that the alarm is not already sounding
 		if (_soundAlarm AND {!(_turret getVariable ["KISKA_CIWS_alarmSounding",false])}) then {
 			// sound alarm
-			null = [_turret] spawn KISKA_fnc_ciwsAlarm;
+			[_turret] spawn KISKA_fnc_ciwsAlarm;
 		};
 		
 		[[_turret," searching through targets"],false] call KISKA_fnc_log;
@@ -313,7 +313,7 @@ private _fn_fireAtTarget = {
 					call _fn_updateTargetPos;
 					
 					// delay explosion because bullets take time to reach their target
-					null = [_turret,_targetPos] spawn {
+					[_turret,_targetPos] spawn {
 						params ["_turret","_targetPos"];
 
 						// bullet travels about 1m every 0.0005s

@@ -13,7 +13,7 @@ Returns:
 Examples:
     (begin example)
 
-		null = [turret1] spawn KISKA_fnc_ciwsAlarm;
+		[turret1] spawn KISKA_fnc_ciwsAlarm;
 
     (end)
 
@@ -26,7 +26,7 @@ Author:
 scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
-	null = _this spawn KISKA_fnc_ciwsAlarm;
+	_this spawn KISKA_fnc_ciwsAlarm;
 	["Was not run in scheduled; running in scheduled",true] call KISKA_fnc_log;
 };
 
