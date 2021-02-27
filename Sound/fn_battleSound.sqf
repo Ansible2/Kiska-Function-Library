@@ -15,9 +15,7 @@ Returns:
 
 Examples:
     (begin example)
-
 		[player,20,10] spawn KISKA_fnc_battleSound;
-
     (end)
 
 Author(s):
@@ -25,12 +23,13 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_battleSound";
 
-if (!canSuspend) exitWith {
-	"Must be run in a scheduled environement" call BIS_fnc_error;
+if (!isServer) then {
+	["Was not run on the server, recommend execution on server in the future",false] call KISKA_fnc_log;
 };
 
-if (!isServer) then {
-	"Recommend this be run on the server" call BIS_fnc_error;
+if (!canSuspend) exitWith {
+	["Must be run in scheduled envrionment, exiting to scheduled",true] call KISKA_fnc_log;
+	_this spawn KISKA_fnc_battleSound;
 };
 
 params [
@@ -45,11 +44,11 @@ if (_source isEqualType objNull AND {isNull _source}) exitWith {
 };
 
 if (_distance isEqualType 123 AND {_distance <= 0}) exitWith {
-	"_distance is less than or equal to 0" call BIS_fnc_error;
+	[["_distance is: ",_distance,". It must be higher then 0"],true] call KISKA_fnc_log;
 };
 
 if (_distance isEqualType [] AND {!(_distance isEqualTypeParams [0,0,0])}) exitWith {
-	"_distance random array is not configured properly" call BIS_fnc_error;
+	["_distance random array is not configured properly",true] call KISKA_fnc_log;
 };
 
 #define MAX_INTENSITY 5
