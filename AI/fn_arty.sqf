@@ -46,6 +46,7 @@ if (!alive _gun OR {!alive (gunner _gun)}) exitWith {
 
 if (_rounds < 1) exitWith {
 	[SCRIPT_NAME,[_gun,"was told to fire less than 1 round, exiting..."],true,true] call KISKA_fnc_log;
+	[[_gun," was told to fire less than 1 round, exiting..."],true] call KISKA_fnc_log;
 };
 
 private _ammo = getArtilleryAmmo [_gun] select 0; 

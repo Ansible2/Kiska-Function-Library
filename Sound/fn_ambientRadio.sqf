@@ -29,6 +29,8 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_ambientRadio";
+
 if (!isServer) then {
 	["Was not run on the server, recommend execution on server in the future",false] call KISKA_fnc_log;
 };
