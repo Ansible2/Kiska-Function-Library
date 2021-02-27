@@ -14,9 +14,7 @@ Returns:
 
 Examples:
     (begin example)
-
 		[container,([otherContainer] call KISKA_fnc_copyContainerCargo)] call KISKA_fnc_pasteContainerCargo;
-
     (end)
 
 Author:
@@ -30,12 +28,12 @@ params [
 ];
 
 if (isNull _containerToLoad) exitWith {
-	"_containerToLoad isNull" call BIS_fnc_error;
+	["_containerToLoad isNull",true] call KISKA_fnc_log;
 	false	
 };
 
 if (_cargo isEqualTo []) exitWith {
-	"_cargo is empty array '[]'" call BIS_fnc_error;
+	["_cargo is empty array '[]'",true] call KISKA_fnc_log;
 	false 
 };
 
@@ -65,7 +63,7 @@ if !(_weapons isEqualTo []) then {
 
 // backpacks
 private _backpacks = _cargo select 3;
-if !(_backpacks isEqualTo [[],[]]) then {
+if (_backpacks isNotEqualTo [[],[]]) then {
 	{
 		_containerToLoad addBackpackCargoGlobal [_x,(_backpacks select 1) select _forEachIndex];
 	} forEach (_backpacks select 0);
