@@ -6,7 +6,6 @@ Description:
 	Exact ammo counts will be preserved even inside of an item such as magazines inside of a vest or backpack.
 
 Parameters:
-
 	0: _primaryContainer <OBJECT> - The container to save the cargo of
 
 Returns:
@@ -14,20 +13,22 @@ Returns:
 
 Examples:
     (begin example)
-
 		[container] call KISKA_fnc_copyContainerCargo;
-
     (end)
 
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+#define EMPTY_RETURN [[[],[]],[],[],[[],[]],[]]
+
+scriptName "KISKA_fnc_copyContainerCargo";
+
 params [
 	["_primaryContainer",objNull,[objNull]]
 ];
 
 if (isNull _primaryContainer) exitWith {
-	"_primaryContainer isNull" call BIS_fnc_error;
+	["_primaryContainer isNull",true] call KISKA_fnc_log;
 	[]	
 };
 
@@ -41,6 +42,7 @@ if !(_containers isEqualTo []) then {
 		private _containerClass = _x select 0;
 
 		private _weaponsCargo = [];
+		// gets a list of all weapons and their attachments/inserted mags
 		private _weaponsInContainer = weaponsItemsCargo _container;
 		if !(_weaponsInContainer isEqualTo []) then {
 			_weaponsInContainer apply {
@@ -74,9 +76,10 @@ private _totalCargo = [
 	_containersInfo
 ];
 
-if (_totalCargo isEqualTo [[[],[]],[],[],[]]) exitWith {
-	diag_log ("KISKA_fnc_copyContainerCargo: No cargo found in " + str _primaryContainer);
+if (_totalCargo isEqualTo EMPTY_RETURN) exitWith {
+	[["No cargo found in ",_primaryContainer],true] call KISKA_fnc_log;
 	[]
 };
+
 
 _totalCargo
