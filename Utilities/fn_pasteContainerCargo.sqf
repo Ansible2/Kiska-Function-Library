@@ -37,6 +37,7 @@ if (_cargo isEqualTo []) exitWith {
 	false 
 };
 
+
 // items
 private _items = _cargo select 0;
 if !(_items isEqualTo [[],[]]) then {
@@ -44,6 +45,7 @@ if !(_items isEqualTo [[],[]]) then {
 		_containerToLoad addItemCargoGlobal [_x,(_items select 1) select _forEachIndex];
 	} forEach (_items select 0);
 };
+
 
 // magazines
 private _magazines = _cargo select 1;
@@ -53,6 +55,7 @@ if !(_magazines isEqualTo []) then {
 	};
 };
 
+
 // weapons
 private _weapons = _cargo select 2;
 if !(_weapons isEqualTo []) then {
@@ -61,6 +64,7 @@ if !(_weapons isEqualTo []) then {
 	};
 };
 
+
 // backpacks
 private _backpacks = _cargo select 3;
 if (_backpacks isNotEqualTo [[],[]]) then {
@@ -68,6 +72,7 @@ if (_backpacks isNotEqualTo [[],[]]) then {
 		_containerToLoad addBackpackCargoGlobal [_x,(_backpacks select 1) select _forEachIndex];
 	} forEach (_backpacks select 0);
 };
+
 
 // containers within the conatainer (vests, backpacks, etc.)
 private _containers = _cargo select 4;
