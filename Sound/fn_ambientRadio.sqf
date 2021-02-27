@@ -29,12 +29,13 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-if (!canSuspend) exitWith {
-	"Must be run in scheduled envrionment" call BIS_fnc_error;
+if (!isServer) then {
+	["Was not run on the server, recommend execution on server in the future",false] call KISKA_fnc_log;
 };
 
-if (!isServer) then {
-	"Recommend execution on server" call BIS_fnc_errorMsg;
+if (!canSuspend) exitWith {
+	["Must be run in scheduled envrionment, exiting to scheduled",true] call KISKA_fnc_log;
+	_this spawn KISKA_fnc_ambientRadio;
 };
 
 params [
@@ -53,7 +54,7 @@ if (_radioChannel isEqualTo "") then {
 
 // diag if channel will be created
 if (isNil _radioChannel) then {
-	diag_log "creating new radio channel: " + _radioChannel;
+	[["Created new radio channel ", _radioChannel],false] call KISKA_fnc_log;
 };
 
 // use default sounds if none provided AND channel is undefined
@@ -107,7 +108,7 @@ _sounds apply {
 			_soundsFiltered pushBackUnique _x;
 		};	
 	} else {
-		(_x + " is undefined sound") call BIS_fnc_error;
+		[[_x, " is undefined sound!"],true] call KISKA_fnc_log;
 	};
 };
 missionNamespace setVariable [_radioChannel,_soundsFiltered,_public];
