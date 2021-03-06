@@ -14,18 +14,18 @@ Parameters:
 
 
 Returns:
-	BOOL
+	<BOOL> - True if sound found and played, false if error
 
 Examples:
     (begin example)
-
 		["BattlefieldJet1_3D",(getPosASL player) vectorAdd [50,50,100],200] call KISKA_fnc_playSound3D;
-
     (end)
 
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_playSound3D";
+
 params [
 	["_sound","",[""]],
 	["_origin",objNull,[objNull,[]]],
@@ -38,35 +38,28 @@ params [
 
 // verify params
 if (_sound isEqualTo "") exitWith {
-	"_sound is empty string" call BIS_fnc_error;
-	false
-};
-
-if (!(isClass (configFile / "CfgSounds" / _sound)) AND {!(isClass (missionConfigFile / "CfgSounds" / _sound))} AND {!(isClass (missionConfigFile / "cfgMusic" / _sound))} AND {!(isClass (configFile / "cfgMusic" / _sound))}) exitWith {
-	"_sound is undefined in config" call BIS_fnc_error;
+	["_sound is empty string",true] call KISKA_fnc_log;
 	false
 };
 
 if ((_origin isEqualType objNull) AND {isNull _origin}) exitWith {
-	"_origin object isNull" call BIS_fnc_error;
+	["_origin object isNull",true] call KISKA_fnc_log;
 	false
 };
 
 if ((_origin isEqualType []) AND {_origin isEqualTo []}) exitWith {
-	"_origin is empty array" call BIS_fnc_error;
+	["_origin is empty array",true] call KISKA_fnc_log;
 	false
 };
 
 if (_distance < 0) exitWith {
-	"_distance is negative" call BIS_fnc_error;
+	[["_distance is: ",_distance," and cannot be negative"],true] call KISKA_fnc_log;
 	false
 };
 
 
-// get actual path of file form config
+// get actual path of file from config
 _fn_getSoundPath = {
-	params ["_sound"];
-
 	if (isClass (configFile / "CfgSounds" / _sound)) exitWith {
 		(getArray (configFile >> "CfgSounds" >> _sound >> "sound")) select 0
 	};
@@ -83,8 +76,8 @@ _fn_getSoundPath = {
 
 private _soundPath = [_sound] call _fn_getSoundPath;
 
-if !(_soundPath isEqualType "") exitWith {
-	"_sound is configed incorrectly" call BIS_fnc_error;
+if (!(_soundPath isEqualType "") OR {_soundPath isEqualTo ""}) exitWith {
+	["_sound: ",_sound," is configed incorrectly",true] call KISKA_fnc_log;
 	false
 };
 
@@ -100,7 +93,7 @@ if (_firstChar in ["@","\"]) then {
 };
 
 // check if bohemia didn't add file extension
-if !(toLower (_soundPath select [(count _soundPath) - 4,4]) in [".wss",".ogg",".wav"]) then {
+if !(toLowerANSI (_soundPath select [(count _soundPath) - 4,4]) in [".wss",".ogg",".wav"]) then {
 	private _soundpath1 = _soundPath + ".wss";
 	private _soundpath2 = _soundPath + ".ogg";
 	private _soundpath3 = _soundPath + ".wav"; // one of these has to be right, right?
