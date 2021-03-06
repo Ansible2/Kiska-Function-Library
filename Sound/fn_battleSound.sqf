@@ -21,6 +21,11 @@ Examples:
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+#define MAX_INTENSITY 5
+#define MIN_INTENSITY 1
+#define EXPLOSION_WEIGHT 0.25
+#define FIREFIGHT_WEIGHT 1
+
 scriptName "KISKA_fnc_battleSound";
 
 if (!isServer) then {
@@ -40,7 +45,7 @@ params [
 ];
 
 if (_source isEqualType objNull AND {isNull _source}) exitWith {
-	"_source isNull" call BIS_fnc_error;
+	["_source isNull",true] call KISKA_fnc_log;
 };
 
 if (_distance isEqualType 123 AND {_distance <= 0}) exitWith {
@@ -50,9 +55,6 @@ if (_distance isEqualType 123 AND {_distance <= 0}) exitWith {
 if (_distance isEqualType [] AND {!(_distance isEqualTypeParams [0,0,0])}) exitWith {
 	["_distance random array is not configured properly",true] call KISKA_fnc_log;
 };
-
-#define MAX_INTENSITY 5
-#define MIN_INTENSITY 1
 
 if (_source isEqualType objNull) then {
 	_source = getPosASL _source;
@@ -75,15 +77,15 @@ private _intensityArray = switch _intensity do {
 };
 
 private _soundArr = [
-	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions1.wss",0.25,
-	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions2.wss",0.25,
-	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions3.wss",0.25,
-	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions4.wss",0.25,
-	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions5.wss",0.25,
-	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight1.wss",1,
-	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight2.wss",1,
-	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight3.wss",1,
-	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight4.wss",1
+	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions1.wss",EXPLOSION_WEIGHT,
+	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions2.wss",EXPLOSION_WEIGHT,
+	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions3.wss",EXPLOSION_WEIGHT,
+	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions4.wss",EXPLOSION_WEIGHT,
+	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions5.wss",EXPLOSION_WEIGHT,
+	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight1.wss",FIREFIGHT_WEIGHT,
+	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight2.wss",FIREFIGHT_WEIGHT,
+	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight3.wss",FIREFIGHT_WEIGHT,
+	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight4.wss",FIREFIGHT_WEIGHT
 ];
 
 private _endTime = _duration + time;
