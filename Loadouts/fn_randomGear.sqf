@@ -12,18 +12,17 @@ Parameters:
 	4: _vests : <ARRAY> - Potential vests to wear, array can be formated as random or weighted random
 
 Returns:
-	BOOL
+	<BOOL> - true if unit was given random clothes, false if error
 
 Examples:
     (begin example)
-
 		[_unit] call KISKA_fnc_randomGear;
-
     (end)
 
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_randomGear";
 
 params [
 	["_unit",objNull,[objNull]],
@@ -33,12 +32,13 @@ params [
 	["_vests",[],[[]]]
 ];
 
-if (isNull _unit) exitWith {false};
+if (isNull _unit) exitWith {
+	["Null unit was passed",true] call KISKA_fnc_log;
+	false
+};
 
-if (!local _unit) exitWith {false};
-
-if (_uniforms isEqualTo [] OR {_uniforms isEqualTo []} OR {_headgear isEqualTo []} OR {_facewear isEqualTo []} OR {_vests isEqualTo []}) exitWith {
-	"A gear array is empty" call BIS_fnc_error;
+if (!local _unit) exitWith {
+	[[_unit," is not a local unit; must be executed where unit is local!"],true] call KISKA_fnc_log;
 	false
 };
 
@@ -53,34 +53,51 @@ removeHeadgear _unit;
 removeGoggles _unit;
 
 
-private _fn_chooseGear = {
-	params ["_gearArray"];
+private _selectedGear = "";
+private _gearArray = [];
 
-	private "_selectedGear";
-
-	if (_gearArray isEqualTypeParams ["",123]) then {
-		_selectedGear = selectRandomWeighted _gearArray;
+private _fn_selectGear = {
+	if (_gearArray isNotEqualTo []) then {
+		if (_gearArray isEqualTypeParams ["",123]) then {
+			_selectedGear = selectRandomWeighted _gearArray;
+		} else {
+			_selectedGear = selectRandom _gearArray;
+		};
 	} else {
-		_selectedGear = selectRandom _gearArray;
+		_selectedGear = "";
 	};
-
-	_selectedGear
 };
 
 
 // assign stuff
 
 // uniform
-private _chosen_uniform = [_uniforms] call _fn_chooseGear;
-_unit forceAddUniform _chosen_uniform;
+_gearArray = _uniforms;
+call _fn_selectGear;
+if (_selectedGear isNotEqualTo "") then {
+	_unit forceAddUniform _selectedGear;
+};
+
 // headgear
-private _chosen_headgear = [_headgear] call _fn_chooseGear;
-_unit addHeadgear _chosen_headgear;
+_gearArray = _headgear;
+call _fn_selectGear;
+if (_selectedGear isNotEqualTo "") then {
+	_unit addHeadgear _selectedGear;
+};
+
 // facewear
-private _chosen_facewear = [_facewear] call _fn_chooseGear;
-_unit addGoggles _chosen_facewear;
+_gearArray = _facewear;
+call _fn_selectGear;
+if (_selectedGear isNotEqualTo "") then {
+	_unit addGoggles _selectedGear;
+};
+
 // vest
-private _chosen_vest = [_vests] call _fn_chooseGear;
-_unit addVest _chosen_vest;
+_gearArray = _vests;
+call _fn_selectGear;
+if (_selectedGear isNotEqualTo "") then {
+	_unit addVest _selectedGear;
+};
+
 
 true
