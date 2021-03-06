@@ -26,7 +26,6 @@ Examples:
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_getVariableTarget"
 scriptName "KISKA_fnc_getVariableTarget";
 
 if (!canSuspend) exitWith {
