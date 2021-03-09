@@ -12,13 +12,11 @@ Parameters:
 	4: _codeOnComplete : <CODE> - Code to run upon completion of disembark, passed args is the vehicle (OBJECT) and crew (ARRAY)
 
 Returns:
-	BOOL
+	<BOOL> - false if encountered error, true if success
 
 Examples:
     (begin example)
-
 		[_group1, _vehicle, myDismountPoint] call KISKA_fnc_driveTo;
-
     (end)
 
 Author:
@@ -69,30 +67,30 @@ private _vehicleCrew = crew _vehicle;
 
 } forEach _crew;
 
+
 [_driverGroup] call CBA_fnc_clearWaypoints;
-
-
 [_driverGroup,_dismountPoint,-1,"MOVE","UNCHANGED","NO CHANGE",_speed,"NO CHANGE","",[0,0,0],_completionRadius] call CBA_fnc_addWaypoint;
 
+// position loop
+[_vehicle,_crew,_codeOnComplete,_completionRadius,_dismountPoint] spawn {
+	params ["_vehicle","_crew","_codeOnComplete","_completionRadius","_dismountPoint"];
 
-[
-	1,
-	{
-		params ["_vehicle","_crew","_codeOnComplete"];
-		
-		[["_vehicle ",_vehicle," has reached its destination"]] call KISKA_fnc_log;
+	waitUntil {
+		if (_vehicle distance _dismountPoint <= _completionRadius) exitWith {true};
+		sleep 1;
+		false
+	};
 
-		_crew apply {
-			[_x,_vehicle] remoteExecCall ["leaveVehicle",_x];
-		};
+	[["_vehicle ",_vehicle," has reached its destination"]] call KISKA_fnc_log;
 
-		if !(_codeOnComplete isEqualTo {}) then {	
-			[_vehicle,_crew] call _codeOnComplete;
-		};
-	},
-	{((_this select 0) distance (_this select 4)) <= (_this select 3)},
-	[_vehicle,_crew,_codeOnComplete,_completionRadius,_dismountPoint]
-] call KISKA_fnc_waitUntil;
+	_crew apply {
+		[_x,_vehicle] remoteExecCall ["leaveVehicle",_x];
+	};
+
+	if !(_codeOnComplete isEqualTo {}) then {	
+		[_vehicle,_crew] call _codeOnComplete;
+	};
+};
 
 
 true
