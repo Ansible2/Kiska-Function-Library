@@ -18,15 +18,14 @@ Returns:
 
 Examples:
     (begin example)
-
 		[group1,attackPosition,100,"COMBAT","RED"] call KISKA_fnc_attack;
-
     (end)
 
 Author:
 	Rommel,
 	Modified by: Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+#define RETURN_NIL nil
 #define SCRIPT_NAME "KISKA_fnc_attack"
 scriptName SCRIPT_NAME;
 
@@ -44,6 +43,7 @@ _group = _group call CBA_fnc_getGroup;
 // Don't create waypoints on each machine
 if !(local _group) exitWith {
 	[["Found that ",_group," was not local, exiting..."],true] call KISKA_fnc_log;
+	RETURN_NIL
 };
 
 // Allow TaskAttack to override other set waypoints
@@ -56,3 +56,6 @@ if (_override) then {
 };
 
 [_group, _position, _radius, "SAD", _behaviour, _combatMode] call CBA_fnc_addWaypoint;
+
+
+RETURN_NIL
