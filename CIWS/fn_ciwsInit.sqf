@@ -23,9 +23,7 @@ Returns:
 
 Examples:
     (begin example)
-
 		[turret,3000,100] spawn KISKA_fnc_ciwsInit;
-
     (end)
 
 Author:
@@ -33,13 +31,13 @@ Author:
 	modified/optimized by Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 #define DEFAULT_ENGAGE_TYPES [["RocketBase",false],["MissileBase",false],["ShellBase",false],["R_230mm_HE",false]]
-
+#define RETURN_NIL nil
 #define SCRIPT_NAME "KISKA_fnc_ciwsInit"
 scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
+	["Was not run in scheduled; running in scheduled...",true] call KISKA_fnc_log;
 	_this spawn KISKA_fnc_ciwsInit;
-	["Was not run in scheduled; running in scheduled",true] call KISKA_fnc_log;
 };
 
 params [
@@ -56,9 +54,11 @@ params [
 
 if (isNull _turret) exitWith {
 	[[_turret," is a null object. Exiting..."],true] call KISKA_fnc_log;
+	RETURN_NIL
 };
 if !(_turret isKindOf "AAA_System_01_base_F") exitWith {
 	[[typeOf _turret," is not the proper type (AAA_System_01_base_F). Exiting..."],true] call KISKA_fnc_log;
+	RETURN_NIL
 };
 
 _turret setVariable ["KISKA_runCIWS",true];
@@ -391,3 +391,6 @@ if (alive _turret) then {
 	_turret enableAI "AutoTarget";
 	_turret enableAI "Target";
 };
+
+
+RETURN_NIL
