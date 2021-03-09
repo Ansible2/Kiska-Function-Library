@@ -159,7 +159,6 @@ class CfgFunctions
 			{
 				postInit = 1;
 			};
-
 		};
 		class MAC
 		{
@@ -252,17 +251,21 @@ class CfgFunctions
 			{};
 			class radioChatter
 			{};
-			class supportRadioGlobal
-			{};
 		};
 		class Supports
 		{
 			file="Kiska_functions\Supports";
-			class callForArtillery
+			class arsenalSupplyDrop
 			{};
 			class CAS
 			{};
+			class cruiseMissileStrike
+			{};
+			class helicopterGunner
+			{};
 			class paratroopers
+			{};
+			class virtualArty
 			{};
 		};
 		class Utilities
@@ -281,8 +284,6 @@ class CfgFunctions
 			class copyContainerCargo
 			{};
 			class cruiseMissile
-			{};
-			class cruiseMissileStrike
 			{};
 			class dataLinkMsg
 			{};

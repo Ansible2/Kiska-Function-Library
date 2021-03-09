@@ -15,17 +15,15 @@ Parameters:
 		(if -1, will be random direction) 
 	5: _flyInHeight : <NUMBER> - The flyInHeight of the aircraft
 	6: _side : <SIDE> - What side is the drop aircraft
-	7: _distanceFromDropZone : <NUMBER> - How far away should the aircraft spawn
-	7: _invincibleOnDrop : <BOOL> - Should the units be invincible while parachuting down
+	7: _spawnDistance : <NUMBER> - How far away should the aircraft spawn
+	8: _invincibleOnDrop : <BOOL> - Should the units be invincible while parachuting down
 
 Returns:
 	NOTHING
 
 Examples:
     (begin example)
-
 		[] spawn KISKA_fnc_paratroopers;
-
     (end)
 
 Author(s):
@@ -34,8 +32,10 @@ Author(s):
 scriptName "KISKA_fnc_paratroopers";
 
 if (!canSuspend) exitWith {
-	"Needs to be run in scheduled environment" call BIS_fnc_error;
+	["Needs to be run in scheduled; Exiting to scheduled...",true] call KISKA_fnc_log;
+	_this spawn KISKA_fnc_paratroopers;
 };
+
 params [
 	["_dropZone",objNull,[objNull,[]]],
 	["_unitsThatCanDrop",[],[[]]],
@@ -44,29 +44,29 @@ params [
 	["_flyDirection",-1,[123]],
 	["_flyInHeight",200,[123]],
 	["_side",BLUFOR,[BLUFOR]],
-	["_distanceFromDropZone",2000,[123]],
+	["_spawnDistance",2000,[123]],
 	["_invincibleOnDrop",false,[true]]
 ];
 
 // check params
 if ((_dropZone isEqualType objNull AND {isNull _dropZone}) OR {_dropzone isEqualTo []}) exitWith {
-	["%1 is invalid _dropZone",_dropZone] call BIS_fnc_error;
+	[[str _dropZone," is an invalid _dropZone"],true] call KISKA_fnc_log;
 	false
 };
 if (_dropVehicleClass isEqualTo "") exitWith {
-	"_dropVehicleClass isEqualTo ''" call BIS_fnc_error;
+	["_dropVehicleClass isEqualTo ''",true] call KISKA_fnc_log;
 	false
 };
 if (_unitsThatCanDrop isEqualTo []) exitWith {
-	"_unitsThatCanDrop isEqualTo []" call BIS_fnc_error;
+	["_unitsThatCanDrop isEqualTo []",true] call KISKA_fnc_log;
 	false
 };
 if (_numToDrop < -1 OR {_numToDrop isEqualTo 0}) exitWith {
-	["_numToDrop is improper number: %1",_numToDrop] call BIS_fnc_error;
+	[["_numToDrop is improper number: ",_numToDrop],true] call KISKA_fnc_log;
 	false
 };
-if (_distanceFromDropZone < 0) exitWith {
-	"_distanceFromDropZone can't be a negative number" call BIS_fnc_error;
+if (_spawnDistance < 0) exitWith {
+	[["_spawnDistance can't be a negative number: ",_spawnDistance],true] call KISKA_fnc_log;
 	false
 };
 
@@ -77,7 +77,7 @@ if (_numToDrop isEqualTo -1 OR {_unitCount < _numToDrop}) then {
 };
 private _vehicleCargoCapacity = ([_dropVehicleClass,true] call BIS_fnc_crewCount) - ([_dropVehicleClass,false] call BIS_fnc_crewCount);
 if (_numToDrop > _vehicleCargoCapacity) then {
-	["vehicle class %3 has %1 cargo positions, requested %2 to be dropped",_vehicleCargoCapacity,_numToDrop,_dropVehicleClass] call BIS_fnc_error;
+	[["vehicle class: ",_dropVehicleClass," has ",_vehicleCargoCapacity," cargo positions, requested",_numToDrop,"to be dropped!"],true] call KISKA_fnc_log;
 	_numToDrop = _vehicleCargoCapacity;
 };
 
@@ -92,13 +92,15 @@ if (_flyDirection < 0) then {
 // get spawn position
 private _flyFromDirection = [_flyDirection + 180] call CBA_fnc_simplifyAngle;
 _dropZone set [2,_flyInHeight];
-private _spawnPosition = _dropZone getPos [_distanceFromDropZone,_flyFromDirection];
+private _spawnPosition = _dropZone getPos [_spawnDistance,_flyFromDirection];
 _spawnPosition set [2,_flyInHeight];
 
 // create vehicle
-private _vehicleArray = [_spawnPosition,_flyDirection,_dropVehicleClass,_side] call BIS_fnc_spawnVehicle;
+private _vehicleArray = [_spawnPosition,_flyDirection,_dropVehicleClass,_side] call KISKA_fnc_spawnVehicle;
 private _aircraft = _vehicleArray select 0;
-allCurators apply {_x addCuratorEditableObjects [[_aircraft],true]};
+allCurators apply {
+	[_x,[[_aircraft],true]] remoteExecCall ["addCuratorEditableObjects",2];
+};
 _aircraft flyInHeight _flyInHeight;
 private _aircraftGroup = _vehicleArray select 2;
 _aircraftGroup setBehaviour "SAFE";

@@ -12,9 +12,7 @@ Returns:
 
 Examples:
     (begin example)
-
-		[target_1] spawn BLWK_fnc_cruiseMissileStrike;
-
+		[target_1] spawn KISKA_fnc_cruiseMissileStrike;
     (end)
 
 Authors:
@@ -24,7 +22,8 @@ Authors:
 scriptName "KISKA_fnc_cruiseMissileStrike";
 
 if (!canSuspend) exitWith {
-	"Must be run in scheduled envrionment" call BIS_fnc_error
+	["Must be run in a scheduled environment. Exiting to scheduled...",true] call KISKA_fnc_log;
+	_this spawn KISKA_fnc_cruiseMissileStrike;
 };
 
 params [
