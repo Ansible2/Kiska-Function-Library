@@ -12,22 +12,23 @@ Returns:
 
 Examples:
     (begin example)
-
 		[turret1] spawn KISKA_fnc_ciwsAlarm;
-
     (end)
 
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+#define RETURN_NIL nil
 #define WAIT_FOR_AIRRAIDSTART 6.4
 #define WAIT_TO_LOOP_SOUND 10.8
 #define SCRIPT_NAME "KISKA_fnc_ciwsAlarm"
+#define ALARM_DISTANCE 1000
+#define ALARM_VOLUME 3
 scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
-	_this spawn KISKA_fnc_ciwsAlarm;
 	["Was not run in scheduled; running in scheduled",true] call KISKA_fnc_log;
+	_this spawn KISKA_fnc_ciwsAlarm;
 };
 
 params [
@@ -36,10 +37,12 @@ params [
 
 if (isNull _turret) exitWith {
 	[[_turret," is a null object. Exiting..."],true] call KISKA_fnc_log;
+	RETURN_NIL
 };
 
 if (_turret getVariable ["KISKA_CIWS_alarmSounding",false]) exitWith {
 	[[_turret," already has its alarm sounding"],true] call KISKA_fnc_log;
+	RETURN_NIL
 };
 
 
@@ -48,7 +51,7 @@ _turret setVariable ["KISKA_CIWS_allClear",false];
 _turret setVariable ["KISKA_CIWS_alarmSounding",true];
 
 // start the alarms
-["KISKA_airRaidStart",_turret,1000,3] call KISKA_fnc_playSound3d;
+["KISKA_airRaidStart",_turret,ALARM_DISTANCE,ALARM_VOLUME] call KISKA_fnc_playSound3d;
 
 // start Sirens
 [_turret] spawn KISKA_fnc_ciwsSiren;
@@ -71,3 +74,6 @@ waitUntil {
 	sleep WAIT_TO_LOOP_SOUND;
 	false
 };
+
+
+RETURN_NIL
