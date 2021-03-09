@@ -13,9 +13,7 @@ Returns:
 
 Examples:
     (begin example)
-
 		[[arsenal1, arsenal2]] call KISKA_fnc_addArsenal;
-
     (end)
 
 Author(s):
@@ -28,7 +26,7 @@ params [
 ];
 
 if (_arsenals isEqualTo [] OR {(_arsenals isEqualType objNull) AND {isNull _arsenals}}) exitWIth {
-	["_arsenals %1 are invalid",_arsenals] call BIS_fnc_error;
+	[["_arsenals are invalid: ",str _arsenals],true] call KISKA_fnc_log;
 	false
 };
 
@@ -46,5 +44,6 @@ _arsenals apply {
 	
 	["AmmoboxInit",[_x,true]] call BIS_fnc_arsenal;
 };
+
 
 true

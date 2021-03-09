@@ -15,20 +15,19 @@ Returns:
 
 Examples:
     (begin example)
-
 		[player,20] spawn KISKA_fnc_radioChatter;
-
     (end)
 
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 if (!canSuspend) exitWith {
-	"Must be run in a scheduled environement" call BIS_fnc_error;
+	["Must be run in a scheduled environement, exiting to scheduled...",true] call KISKA_fnc_log;
+	_this spawn KISKA_fnc_radioChatter;
 };
 
 if (!isServer) then {
-	"It is recommended to run this on the server" call BIS_fnc_error;
+	["It is recommended to run this on the server"] call KISKA_fnc_log;
 };
 
 params [
@@ -38,7 +37,7 @@ params [
 ];
 
 if (isNull _source) exitWith {
-	"Sound source isNull" call BIS_fnc_error;
+	["Sound source isNull",true] call KISKA_fnc_log;
 };
 
 private _numberStr = str ([2,30] call BIS_fnc_randomInt);
@@ -50,3 +49,6 @@ private _radioSound = "KISKA_radioAmbient" + _numberStr;
 sleep ((getNumber (configFile >> "CfgMusic" >> _radioSound >> "duration")) + random [1,5,10]);
 
 [_source,_distance,_volume] spawn KISKA_fnc_radioChatter;
+
+
+nil

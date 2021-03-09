@@ -15,9 +15,7 @@ Returns:
 
 Examples:
     (begin example)
-
 		["alarm",player,20] call KISKA_fnc_playSound2D;
-
     (end)
 
 Author(s):
@@ -32,11 +30,11 @@ params [
 ];
 
 if (_center isEqualtype objNull AND {isNull _center}) exitWith {
-	"Center object isNull" call BIS_fnc_error;
+	["Center object isNull",true] call KISKA_fnc_log;
 };
 
 if (_radius < 0) exitWith {
-	"Raidus is less then 0" call BIS_fnc_error;
+	["Raidus is: ",_radius," ...less then 0",true] call KISKA_fnc_log;
 };
 
 if ((_center distance2D player) <= _radius) then {
