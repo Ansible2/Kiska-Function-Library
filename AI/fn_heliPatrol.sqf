@@ -2,12 +2,10 @@
 Function: KISKA_fnc_heliPatrol
 
 Description:
-	Has a helicopter patrol looking for enemy players.
+	Has a helicopter patrol looking for enemy men.
     If "spotted", the helicopter will land in a safe area and drop off infantry if onboard.
-    It will then move to engage the players if it has weapons or just stalk them if not.
-    The infantry will continually stalk the players until dead.
-
-    This is very simple and will likely see a new iteration that uses lineIntersects to actually simulate pilots seeing players
+    It will then move to engage the units if it has weapons or just stalk them if not.
+    The infantry will continually stalk the unit until dead.
 
 Parameters:
 	0: _helicopter <OBJECT> - The patrolling helicopter
@@ -69,84 +67,69 @@ _helicopter flyInHeight _patrolHeight;
 
 [_helicopterGroup,count _patrolPoints,_patrolPoints,_randomPatrol,"SAFE",_patrolSpeed,"WHITE"] call KISKA_fnc_patrolSpecific;
 
-[
-    4,
-    {
-        params [
-            ["_helicopter",objNull,[objNull]],
-            ["_spotDistance3D",800,[123]],
-            ["_helicopterGroup",grpNull,[grpNull]]
-        ];
-
-        private _players = call CBA_fnc_players;
-        private _index = _players findIf {(_x distance _helicopter) <= _spotDistance3D};
-        private _nearestPlayer = _players select _index;
-        private _playerPosition = getPosATL _nearestPlayer;
-    
-        private _landingZone = [_nearestPlayer,300,500,5,0,0,0,[],[_playerPosition,_playerPosition]] call BIS_fnc_findSafePos;
-        _landingZone pushBack 0;
-
-        [_helicopterGroup] call CBA_fnc_clearWaypoints;
-        [_helicopterGroup,_landingZone,0,"TR UNLOAD","AWARE","WHITE","NORMAL"] call CBA_fnc_addwaypoint;
-
-        private _groups = [];
-
-        (crew _helicopter) apply {
-            private _group = group _x;
-
-            if (!(_group in _groups) AND {!(_group isEqualTo _helicopterGroup)}) then {
-                _groups pushBack _group
-            };
-        };
 
 
-        [
-            2,
-            {
-                params [
-                    "_helicopter",
-                    "_helicopterGroup",
-                    "_nearestPlayer",
-                    "_groups"
-                ];
-                private _playerGroup = group _nearestPlayer;
+[_helicopter,_spotDistance3D,_helicopterGroup] spawn {
+    params ["_helicopter","_spotDistance3D","_helicopterGroup"];
 
-                [
-                    1,
-                    {
-                        [_this select 1,_this select 2] spawn BIS_fnc_stalk;
-                        (_this select 1) setCombatMode "RED";
-                    },
-                    // if the crew in the helicopter is the same amount as what's in the pilot's group e.g. all passengers are out
-                    {count (crew (_this select 0)) isEqualTo (count (units (_this select 1)))},
-                    [_helicopter,_helicopterGroup,_playerGroup]
-                ] call KISKA_fnc_waitUntil;
-
-                _groups apply {
-                    [_x,_playerGroup] spawn BIS_fnc_stalk;
-                    _x setCombatMode "YELLOW";
-                };
-                
-            },
-            // waitUntil helicopter is about to land
-            {(getPosATLVisual (_this select 0) select 2) < 2},
-            [_helicopter,_helicopterGroup,_nearestPlayer,_groups]
-        ] call KISKA_fnc_waitUntil;
-
-        
-    },
-    {
-        // waitUntil heli finds an enemy player within the specified distance. Civilians seem to sometimes count as enemy
-        !(
-            ((call CBA_fnc_players) findIf {
-                ([side _x,side (_this select 2)] call BIS_fnc_sideIsEnemy) AND 
-                {(_x distance (_this select 0)) <= (_this select 1)} AND 
+    // search for targets
+    private ["_targets","_foundTargetIndex"];
+    private _helicopterSide = side _helicopterGroup;
+    waitUntil {
+        _targets = _helicopter nearEntities ["MAN",_spotDistance3D];
+        _foundTargetIndex = _targets findIf {
+                ([side _x,_helicopterSide] call BIS_fnc_sideIsEnemy) AND 
+                {(_x distance _helicopter) <= _spotDistance3D} AND 
                 {side _x != Civilian}
-            }) isEqualTo -1
-        )
-    },
-    [_helicopter,_spotDistance3D,_helicopterGroup]
-] call KISKA_fnc_waitUntil;
+            };    
+        if (_foundTargetIndex isNotEqualTo -1) exitWith {true};
+        sleep 4;
+        false
+    };
+    // Move to land
+    private _foundTarget = _targets select _foundTargetIndex;
+    private _foundTargetPosition = getPosATL _foundTarget;
+
+    private _landingZone = [_foundTarget,300,500,5,0,0,0,[],[_foundTargetPosition,_foundTargetPosition]] call BIS_fnc_findSafePos;
+    _landingZone pushBack 0;
+
+    [_helicopterGroup] call CBA_fnc_clearWaypoints;
+    [_helicopterGroup,_landingZone,0,"TR UNLOAD","AWARE","WHITE","NORMAL"] call CBA_fnc_addwaypoint;
+
+
+    // waituntil the helicopter is about to land
+    waitUntil {
+        if ((getPosATLVisual _helicopter select 2) < 2) exitWith {true};
+        sleep 2;
+        false
+    };
+    // tell all groups that in the aircraft that aren't crew to stalk the target group
+    private _targetGroup = group _foundTarget;
+    private _groups = [];
+    (crew _helicopter) apply {
+        private _group = group _x;
+        if (!(_group in _groups) AND {_group isNotEqualTo _helicopterGroup}) then {
+            _groups pushBack _group
+        };
+    };
+    _groups apply {
+        [_x,_targetGroup] spawn BIS_fnc_stalk;
+        _x setCombatMode "YELLOW";
+    };
+
+
+    // Wait for all passengers to be out
+    private _helicopterGroupCount = count (units _helicopterGroup);
+    waitUntil {
+        if (count (crew _helicopter) <= _helicopterGroupCount) exitWith {};
+        sleep 1;
+        false
+    };
+
+    // tell the helicopter to engage the target
+    [_helicopterGroup,_targetGroup] spawn BIS_fnc_stalk;
+    _helicopterGroup setCombatMode "RED";
+};
 
 
 true
