@@ -31,6 +31,7 @@ Author:
 	Rommel,
 	Modified by: Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+#define RETURN_NIL nil
 #define SCRIPT_NAME "KISKA_fnc_defend"
 scriptName SCRIPT_NAME;
 
@@ -48,6 +49,7 @@ _group = _group call CBA_fnc_getGroup;
 // Don't create waypoints on each machine
 if !(local _group) exitWith {
 	[["Found that ",_group," was not local, exiting..."],true] call KISKA_fnc_log;
+	RETURN_NIL
 };
 
 _position = [_position, _group] select (_position isEqualTo []);
@@ -162,3 +164,6 @@ _units apply {
 
 // Unassigned (or combat reacted) units will patrol
 [_group, _position, _radius, 5, "sad", "safe", "red", "limited"] call CBA_fnc_taskPatrol;
+
+
+RETURN_NIL
