@@ -22,12 +22,13 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+#define RETURN_NIL nil
 #define SCRIPT_NAME "KISKA_fnc_AAAZone"
 scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
-	_this spawn KISKA_fnc_AAAZone;
 	["ReExecuting in scheduled environment",true] call KISKA_fnc_log;
+	_this spawn KISKA_fnc_AAAZone;
 };
 
 params [
@@ -38,21 +39,25 @@ params [
 
 if (isNull _vehicle) exitWith {
 	[[_vehicle," isNull"],true] call KISKA_fnc_log;
+	RETURN_NIL
 };
 
 if (!local _vehicle) exitWith {
 	[[_vehicle," is not local to machine, executing on owner"],false] call KISKA_fnc_log;
 	_this remoteExec ["KISKA_fnc_AAAZone",_vehicle];
+	RETURN_NIL
 };
 
 private _gunner = gunner _vehicle;
 if (isNull _gunner) exitWith {
 	[[_vehicle," does not have a gunner"],true] call KISKA_fnc_log;
+	RETURN_NIL
 };
 
 private _gunnerGroup = group _gunner;
 if (isNull _gunnerGroup) exitWith {
 	["_gunnerGroup is null",true] call KISKA_fnc_log;
+	RETURN_NIL
 };
 
 private _fn_controlShots = {
@@ -137,3 +142,6 @@ while {sleep _checkTime; _vehicle getVariable ["KISKA_doAAA",true]} do {
 if (alive _gunner) then {
 	[true] call _fn_controlShots
 };
+
+
+RETURN_NIL
