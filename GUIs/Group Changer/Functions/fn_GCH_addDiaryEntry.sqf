@@ -23,7 +23,7 @@ Author:
 scriptName SCRIPT_NAME;
 
 if (!hasInterface) exitWith {
-	["Was run on machine without interface, needs an interface",true] call KISKA_fnc_log;
+	["Was run on machine without interface, needs an interface"] call KISKA_fnc_log;
 };
 
 waitUntil {
