@@ -14,9 +14,7 @@ Returns:
 
 Examples:
     (begin example)
-
 		[player,[[0,0,0]]] call KISKA_fnc_lookHere;
-
     (end)
 
 Author:
