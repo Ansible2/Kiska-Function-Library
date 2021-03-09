@@ -1,3 +1,4 @@
+#include "..\ViewDistanceLimiterCommonDefines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_viewDistanceLimiter
 
@@ -9,7 +10,6 @@ Description:
 	See each param for associated global var.
 
 Parameters:
-
 	0: _targetFPS <NUMBER> - The desired FPS (lower) limit (KISKA_VDL_fps)
 	1: _checkFreq <NUMBER> - The frequency of checks for FPS (KISKA_VDL_freq)
 	2: _minObjectDistance <NUMBER> - The minimum the objectViewDistance, can be set by (KISKA_VDL_minDist)
@@ -23,22 +23,21 @@ Returns:
 
 Examples:
 	(begin example)
-
 		Every 3 seconds, check
 		[45,3,500,1700,3000,25] spawn KISKA_fnc_viewDistanceLimiter; 
-
 	(end)
 
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-if (!hasInterface OR {!canSuspend}) exitWith {
-	"Must be run in scheduled environment." call BIS_fnc_error;
+if (!hasInterface) exitWith {};
+
+if (!canSuspend) exitWith {
+	["Must be run in a scheduled environment. Exiting to scheduled...",true] call KISKA_fnc_log;
+	_this spawn KISKA_fnc_viewDistanceLimiter
 };
 
 disableSerialization;
-
-#include "..\ViewDistanceLimiterCommonDefines.hpp"
 
 params [
 	["_targetFPS",missionNamespace getVariable [VDL_GLOBAL_FPS_STR,60],[123]],

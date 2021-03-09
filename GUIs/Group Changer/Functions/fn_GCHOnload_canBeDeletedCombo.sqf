@@ -18,8 +18,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_GCHOnLoad_canBeDeletedCombo"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_GCHOnLoad_canBeDeletedCombo";
 
 params ["_control"];
 
@@ -63,3 +62,6 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 
 _control lbAdd "NO";
 _control lbAdd "YES";
+
+
+nil

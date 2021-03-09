@@ -19,12 +19,11 @@ Examples:
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+#define CONTROL(IDC) (findDisplay VIEW_DISTANCE_LIMITER_DIALOG_IDD) displayCtrl IDC
+
 if (!hasInterface) exitWith {};
 
 disableSerialization;
-
-
-#define CONTROL(IDC) (findDisplay VIEW_DISTANCE_LIMITER_DIALOG_IDD) displayCtrl IDC
 
 params [
 	["_controlIDC",controlNull,[controlNull,123]]

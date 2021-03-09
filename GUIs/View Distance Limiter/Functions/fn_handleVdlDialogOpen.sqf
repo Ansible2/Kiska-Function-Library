@@ -1,3 +1,4 @@
+#include "..\ViewDistanceLimiterCommonDefines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_handleVdlDialogOpen
 
@@ -24,8 +25,6 @@ Author(s):
 if (!hasInterface) exitWith {};
 
 disableSerialization;
-
-#include "..\ViewDistanceLimiterCommonDefines.hpp"
 
 params ["_display"];
 

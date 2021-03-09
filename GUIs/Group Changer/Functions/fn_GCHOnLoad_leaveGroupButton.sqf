@@ -29,3 +29,6 @@ _control ctrlAddEventHandler ["ButtonClick",{
 	private _newGroup = createGroup [_side, false];
 	[player] joinSilent _newGroup;
 }];
+
+
+nil

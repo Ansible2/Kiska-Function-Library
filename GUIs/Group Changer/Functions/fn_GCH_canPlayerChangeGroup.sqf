@@ -23,9 +23,7 @@ Author:
 #define TRYING_TO_JOIN_GROUP_WITHOUT_PERMS 2
 #define TRYING_TO_JOIN_GROUP_WITHOUT_PERMS 2
 
-#define SCRIPT_NAME "KISKA_fnc_canPlayerChangeGroup"
-scriptName SCRIPT_NAME;
-
+scriptName "KISKA_fnc_canPlayerChangeGroup";
 
 params [
 	["_groupToJoin","new group",[grpNull,""]]

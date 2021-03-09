@@ -37,6 +37,7 @@ if (!(_controlType isEqualTo CT_SLIDER) AND {!(_controlType isEqualTo CT_XSLIDER
 private _sliderPosition = sliderPosition _controlToRead;
 private _sliderPositionString = str _sliderPosition;
 private _controlIDC = ctrlIDC _controlToRead;
+
 if (_controlIDC isEqualTo VDL_FPS_SLIDER_IDC) exitWith {
 	VDL_GLOBAL_FPS = _sliderPosition;
 	hint (["Target FPS is now:",_sliderPositionString] joinString " ");

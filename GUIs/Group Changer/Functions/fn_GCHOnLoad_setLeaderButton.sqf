@@ -52,3 +52,6 @@ _control ctrlAddEventHandler ["ButtonClick",{
 		hint "You must be the leader or admin to set a leader";
 	};
 }];
+
+
+nil

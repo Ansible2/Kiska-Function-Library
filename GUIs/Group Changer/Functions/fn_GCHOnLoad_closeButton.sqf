@@ -18,11 +18,13 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_GCHOnLoad_closeButton"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_GCHOnLoad_closeButton";
 
 params ["_control"];
 
 _control ctrlAddEventHandler ["ButtonClick",{
 	(uiNamespace getVariable "KISKA_GCH_display") closeDisplay 2;
 }];
+
+
+nil

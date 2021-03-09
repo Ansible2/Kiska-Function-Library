@@ -22,8 +22,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_GCH_groupDeleteQuery"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_GCH_groupDeleteQuery";
 
 if (!isServer) exitWith {
 	["Must be run on server",true] call KISKA_fnc_log;

@@ -25,8 +25,7 @@ Author:
 #define COLOR_GREEN [0,1,0,0.6]
 #define COLOR_YELLOW [1,1,0,0.8]
 
-#define SCRIPT_NAME "KISKA_fnc_GCH_updateCurrentGroupSection"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_GCH_updateCurrentGroupSection";
 
 params [
 	["_updateUnitList",false,[true]],
@@ -143,7 +142,7 @@ if (_updateCanRallyCombo) then {
 };
 
 
-
+nil
 
 
 

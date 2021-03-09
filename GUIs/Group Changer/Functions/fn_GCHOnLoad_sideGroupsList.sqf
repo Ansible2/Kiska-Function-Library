@@ -18,10 +18,24 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_GCHOnLoad_sideGroupList"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_GCHOnLoad_sideGroupList";
 
 params ["_control"];
+
+// add event handler
+_control ctrlAddEventHandler ["LBSelChanged",{
+	params ["_control", "_selectedIndex"];
+
+	// get selected group
+	private _sideGroups = uiNamespace getVariable "KISKA_GCH_sideGroupsArray";
+	private _sideGroupsIndex = _control lbValue _selectedIndex;
+	private _selectedGroup = _sideGroups select _sideGroupsIndex;
+	uiNamespace setVariable ["KISKA_GCH_selectedGroup",_selectedGroup];
+
+	[true,true,true,true,true] call KISKA_fnc_GCH_updateCurrentGroupSection;
+}];
+
+
 
 private _playerSide = side player;
 private _allGroupsCached = allGroups;
@@ -35,6 +49,7 @@ private _fn_popSideGroupIds = {
 };
 
 uiNamespace setVariable ["KISKA_GCH_sideGroupsArray",_sideGroups];
+
 
 
 private _fn_updateSideGroupList = {
@@ -54,23 +69,8 @@ private _fn_updateSideGroupList = {
 	lbSort _control;
 };
 
-
-
-
-// add event handler
-_control ctrlAddEventHandler ["LBSelChanged",{
-	params ["_control", "_selectedIndex"];
-
-	// get selected group
-	private _sideGroups = uiNamespace getVariable "KISKA_GCH_sideGroupsArray";
-	private _sideGroupsIndex = _control lbValue _selectedIndex;
-	private _selectedGroup = _sideGroups select _sideGroupsIndex;
-	uiNamespace setVariable ["KISKA_GCH_selectedGroup",_selectedGroup];
-
-	[true,true,true,true,true] call KISKA_fnc_GCH_updateCurrentGroupSection;
-}];
-
 call _fn_updateSideGroupList;
+
 
 private _allGroupsCompare = [];
 // loop to update list

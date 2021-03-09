@@ -19,8 +19,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_GCH_isAllowedToEdit"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_GCH_isAllowedToEdit";
 
 params [
 	["_groupLeader",objNull,[objNull,grpNull]]
