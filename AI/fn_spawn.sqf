@@ -19,9 +19,7 @@ Returns:
 
 Examples:
     (begin example)
-
 		_spawnedUnits = [2, 2, _arrayOfTypes, [[0,0,0],spawnLogic]] call KISKA_fnc_spawn;
-
     (end)
 
 Author:
@@ -162,6 +160,7 @@ allCurators apply {
 	[_x,[_spawnedUnits,false]] remoteExecCall ["addCuratorEditableObjects",2];
 };
 
-[["Spawned",(count _spawnedUnits)]] call KISKA_fnc_log;
+[["Spawned ",(count _spawnedUnits)]] call KISKA_fnc_log;
+
 
 _spawnedUnits
