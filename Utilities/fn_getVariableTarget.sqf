@@ -10,7 +10,7 @@ Parameters:
 	0: _variableName : <STRING> - The string name of the varaible to get
 	1: _namespace : <NAMESPACE, OBJECT, STRING, GROUP, CONTROL, or LOCATION> - The namespace to get the variable from
 	2: _defaultValue : <ANY> - If the variable does not exist for the target, what should be returned instead
-	3: _target : <NUMBER, OBJECT, GROUP, or STRING> - Where the _target is local will be where the variable is taken from
+	3: _target : <NUMBER, OBJECT, or STRING> - Where the _target is local will be where the variable is taken from
 
 Returns:
 	<ANY> - Whatever the variable is, nil otherwise
@@ -37,8 +37,14 @@ params [
 	["_variableName","",[""]],
 	["_namespace",missionNamespace,[missionNamespace,objNull,grpNull,"",controlNull,locationNull]],
 	["_defaultValue",-1],
-	["_target",2,[123,objNull,grpNull,""]]
+	["_target",2,[123,objNull,""]]
 ];
+
+// keep from remoting onto multiple machines
+if (_target <= 0) exitWith {
+	[["_target: ",_target," is invalid as it will be sent to more then one machine!"],true] call KISKA_fnc_log;
+	nil
+};
 
 if (_variableName isEqualTo "") exitWith {
 	["_variableName is empty",true] call KISKA_fnc_log;

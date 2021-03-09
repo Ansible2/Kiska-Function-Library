@@ -14,7 +14,7 @@ Description:
 Parameters:
 	0: _code <STRING> - The command to execute on the target machine
 	1: _defaultValue : <ANY> - If the variable does not exist for the target, what should be returned instead
-	2: _target : <NUMBER, OBJECT, GROUP, or STRING> - The target to execute the _code on
+	2: _target : <NUMBER, OBJECT, or STRING> - The target to execute the _code on
 
 Returns:
 	<ANY> - Whatever the code returns
@@ -35,14 +35,21 @@ scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
 	["Must be run in scheduled environment",true] call KISKA_fnc_log;
+	nil
 };
 
 params [
 	["_code","",[""]],
 	["_args",[],[[]]],
-	["_target",2,[123,objNull,grpNull,""]],
+	["_target",2,[123,objNull,""]],
 	["_scheduled",false,[true]]
 ];
+
+// keep from remoting onto multiple machines
+if (_target <= 0) exitWith {
+	[["_target: ",_target," is invalid as it will be sent to more then one machine!"],true] call KISKA_fnc_log;
+	nil
+};
 
 // create a unique variable ID for network tranfer
 private _messageNumber = missionNamespace getVariable ["KISKA_remoteReturnQueue_count",0];
