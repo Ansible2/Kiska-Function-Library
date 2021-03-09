@@ -13,9 +13,7 @@ Returns:
 
 Examples:
     (begin example)
-
 		[VLS_1,target_1] call KISKA_fnc_vlsFireAt;
-
     (end)
 
 Author:
