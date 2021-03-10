@@ -1,13 +1,14 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_variableSupportMenu
+Function: KISKA_fnc_commandMenuTree
 
 Description:
-	Creates a command menu tree
+	Creates a command menu tree dynamically instead of needing to define sub menus
 
 Parameters:
 	0: _menuPath <ARRAY> - The menu global variable paths (in order)
-	1: _endExpression <STRING> - The code to be executed at the end of the path
-	2: _menuID <NUMBER> - The communication menu id so the support can be removed upon call
+	1: _endExpression <STRING or CODE> - The code to be executed at the end of the path
+	2: _exitExpression <STRING or CODE> - The code to be executed in the event that the menu is closed by the player
+	3: _args <ARRAY> - Arguements to pass to the script/expression
 
 Returns:
 	NOTHING
@@ -16,8 +17,8 @@ Examples:
     (begin example)
 		[
 			["menu1","menu2"],
-			"[KISKA_supportMenu_hash get] call myFunction;"
-		] call KISKA_fnc_variableSupportMenu
+			"hint str _this"
+		] call KISKA_fnc_commandMenuTree
     (end)
 
 Author(s):
@@ -25,7 +26,7 @@ Author(s):
 ---------------------------------------------------------------------------- */
 #define COMMAND_MENU_CLOSED commandingMenu isEqualTo ""
 
-scriptName "KISKA_fnc_variableSupportMenu";
+scriptName "KISKA_fnc_commandMenuTree";
 
 if (!hasInterface) exitWith {
 	["Can only run on machines with interface",false] call KISKA_fnc_log;
@@ -34,30 +35,29 @@ if (!hasInterface) exitWith {
 
 if (!canSuspend) exitWith {
 	["Must be run in scheduled, exiting to scheduled",true] call KISKA_fnc_log;
-	_this spawn KISKA_fnc_variableSupportMenu
+	_this spawn KISKA_fnc_commandMenuTree
 };
 
 params [
 	["_menuPath",[],[[]]],
 	["_endExpression","",["",{}]],
-	["_menuID",-1,[123]]
+	["_exitExpression","",["",{}]],
+	["_args",[],[[]]]
 ];
 
 
-
-
 // create a container for holding params from menu
-uiNamespace setVariable ["KISKA_variableSupportMenu_params",[]];
+uiNamespace setVariable ["KISKA_commMenuTree_params",[]];
 
 private _menuClosed = false;
 _menuPath apply {
 	// keeps track of whether or not to open the next menu
-	uiNamespace setVariable ["KISKA_variableSupportMenu_proceedToNextMenu",false]; 
+	uiNamespace setVariable ["KISKA_commMenuTree_proceedToNextMenu",false]; 
 	showCommandingMenu _x;
 
 	// wait for menu to allow proceed or menu is closed
 	waitUntil {
-		if (uiNamespace getVariable "KISKA_variableSupportMenu_proceedToNextMenu") exitWith {true};
+		if (uiNamespace getVariable "KISKA_commMenuTree_proceedToNextMenu") exitWith {true};
 		if (COMMAND_MENU_CLOSED) exitWith {
 			hint "menu closed";
 			_menuClosed = true;
@@ -71,10 +71,11 @@ _menuPath apply {
 
 
 if (!_menuClosed) then {
-	private _params = uiNamespace getVariable "KISKA_variableSupportMenu_params";
+	private _params = uiNamespace getVariable "KISKA_commMenuTree_params";
 	_params call (compile _endExpression);
-	[player,_menuID] call BIS_fnc_removeCommMenuItem;
+} else {
+
 };
 
-uiNamespace setVariable ["KISKA_variableSupportMenu_params",nil];
-uiNamespace setVariable ["KISKA_variableSupportMenu_proceedToNextMenu",nil];
+uiNamespace setVariable ["KISKA_commMenuTree_params",nil];
+uiNamespace setVariable ["KISKA_commMenuTree_proceedToNextMenu",nil];
