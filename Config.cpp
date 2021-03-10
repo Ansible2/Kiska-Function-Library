@@ -268,6 +268,16 @@ class CfgFunctions
 			class virtualArty
 			{};
 		};
+		class SupportFramework
+		{
+			file="Kiska_functions\Supports\Support Framework";
+			class commandMenuTree
+			{};
+			class initCommandMenu
+			{};
+			class supportRadio
+			{};
+		};
 		class Utilities
 		{
 			file="Kiska_functions\Utilities";
@@ -379,3 +389,4 @@ class CfgFunctions
 #include "GUIs\Common GUI Headers\commonBaseClasses.hpp"
 #include "GUIs\View Distance Limiter\ViewDistanceLimiterDialog.hpp"
 #include "GUIs\Group Changer\GroupChangerDialog.hpp"
+#include "Supports\Support Framework\Headers\Support Menus.hpp"

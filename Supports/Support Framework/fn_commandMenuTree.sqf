@@ -6,9 +6,11 @@ Description:
 
 Parameters:
 	0: _menuPath <ARRAY> - The menu global variable paths (in order)
-	1: _endExpression <STRING or CODE> - The code to be executed at the end of the path
-	2: _exitExpression <STRING or CODE> - The code to be executed in the event that the menu is closed by the player
-	3: _args <ARRAY> - Arguements to pass to the script/expression
+	1: _endExpression <STRING or CODE> - The code to be executed at the end of the path.
+		It receives all menu parameters in _this.
+	2: _args <ARRAY> - Arguements to be available to _endExpression & _exitExpression
+	3: _exitExpression <STRING or CODE> - The code to be executed in the event that 
+		the menu is closed by the player. It gets all added params up to that point in _this
 
 Returns:
 	NOTHING
@@ -16,7 +18,7 @@ Returns:
 Examples:
     (begin example)
 		[
-			["menu1","menu2"],
+			["#USER:myMenu_1","#USER:myMenu_2"],
 			"hint str _this"
 		] call KISKA_fnc_commandMenuTree
     (end)
@@ -35,7 +37,7 @@ if (!hasInterface) exitWith {
 
 if (!canSuspend) exitWith {
 	["Must be run in scheduled, exiting to scheduled",true] call KISKA_fnc_log;
-	_this spawn KISKA_fnc_commandMenuTree
+	_this spawn KISKA_fnc_commandMenuTree;
 };
 
 params [
@@ -59,22 +61,28 @@ _menuPath apply {
 	waitUntil {
 		if (uiNamespace getVariable "KISKA_commMenuTree_proceedToNextMenu") exitWith {true};
 		if (COMMAND_MENU_CLOSED) exitWith {
-			hint "menu closed";
 			_menuClosed = true;
 			true
 		};
-		sleep 0.5;
+		sleep 0.1;
 		false
 	};
 	if (_menuClosed) exitWith {};
 };
 
-
+private _params = uiNamespace getVariable "KISKA_commMenuTree_params";
 if (!_menuClosed) then {
-	private _params = uiNamespace getVariable "KISKA_commMenuTree_params";
-	_params call (compile _endExpression);
-} else {
+	if (_endExpression isEqualType "") then {
+		_endExpression = compile _endExpression;
+	};
 
+	_params call _endExpression;
+} else {
+	if (_exitExpression isEqualType "") then {
+		_exitExpression = compile _exitExpression;
+	};
+
+	_params call _exitExpression;
 };
 
 uiNamespace setVariable ["KISKA_commMenuTree_params",nil];
