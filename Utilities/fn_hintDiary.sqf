@@ -15,9 +15,7 @@ Returns:
 
 Examples:
     (begin example)
-
 		["this is the message", "Subject"] call KISKA_fnc_hintDiary;
-
     (end)
 
 Author:
@@ -44,3 +42,6 @@ if (_silent) then {
 if (_subject isNotEqualTo "") then {
 	[[_subject,"-"+_hintText]] call KISKA_fnc_addKiskaDiaryEntry;
 };
+
+
+nil
