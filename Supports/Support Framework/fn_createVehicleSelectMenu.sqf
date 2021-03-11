@@ -20,7 +20,7 @@ Examples:
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_createClassSelectMenu";
+scriptName "KISKA_fnc_createVehicleSelectMenu";
 
 #define PUSHBACK_AND_PROCEED(VALUE) "(uiNamespace getVariable 'KISKA_commMenuTree_params') pushBack " + (str VALUE) + "; uiNamespace setVariable ['KISKA_commMenuTree_proceedToNextMenu',true];"
 #define CMD_EXECUTE -5
