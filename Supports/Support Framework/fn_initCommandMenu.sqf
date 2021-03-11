@@ -1,4 +1,5 @@
 #include "Headers\CAS Type IDs.hpp"
+#include "Headers\Command Menus.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_initCommandMenu
 
@@ -45,7 +46,7 @@ private _menuArray = [];
 /* ----------------------------------------------------------------------------
 	Radius
 ---------------------------------------------------------------------------- */
-if (CHECK_MENU_NAME("KISKA_commandMenu_radius")) exitWith {
+if (CHECK_MENU_NAME(#RADIUS_MENU)) exitWith {
 	_menuArray = 
 	[
 		["Radius", false],
@@ -66,7 +67,7 @@ if (CHECK_MENU_NAME("KISKA_commandMenu_radius")) exitWith {
 	Bearings
 ---------------------------------------------------------------------------- */
 #define BEARING_LINE(BEARING,DIR,KEY) STD_LINE(#BEARING + DIR,KEY,PUSHBACK_AND_PROCEED(BEARING))
-if (CHECK_MENU_NAME("KISKA_commandMenu_bearing")) exitWith {
+if (CHECK_MENU_NAME(#BEARING_MENU)) exitWith {
 	_menuArray = 
 	[
 		["Approach Bearing", false],
@@ -86,7 +87,7 @@ if (CHECK_MENU_NAME("KISKA_commandMenu_bearing")) exitWith {
 /* ----------------------------------------------------------------------------
 	flyInHeight
 ---------------------------------------------------------------------------- */
-if (CHECK_MENU_NAME("KISKA_commandMenu_flyInHeight")) exitWith {
+if (CHECK_MENU_NAME(#FLYIN_MENU)) exitWith {
 	_menuArray =
 	[
 		["Fly In Height", false],
@@ -106,7 +107,7 @@ if (CHECK_MENU_NAME("KISKA_commandMenu_flyInHeight")) exitWith {
 	CAS Types
 ---------------------------------------------------------------------------- */
 // all
-if (CHECK_MENU_NAME("KISKA_commandMenu_casTypes_all")) exitWith {
+if (CHECK_MENU_NAME(#CAS_TYPES_ALL_MENU)) exitWith {
 	_menuArray = 
 	[
 		["CAS Type", false],
@@ -124,7 +125,7 @@ if (CHECK_MENU_NAME("KISKA_commandMenu_casTypes_all")) exitWith {
 };
 
 // guns and rockets
-if (CHECK_MENU_NAME("KISKA_commandMenu_casTypes_gunsrockets")) exitWith {
+if (CHECK_MENU_NAME(#CAS_TYPES_GUNSANDROCKETS_MENU)) exitWith {
 	_menuArray = 
 	[
 		["CAS Type", false],
@@ -139,7 +140,7 @@ if (CHECK_MENU_NAME("KISKA_commandMenu_casTypes_gunsrockets")) exitWith {
 };
 
 // rockets
-if (CHECK_MENU_NAME("KISKA_commandMenu_casTypes_rockets")) exitWith {
+if (CHECK_MENU_NAME(#CAS_TYPES_ROCKETS_MENU)) exitWith {
 	_menuArray = 
 	[
 		["CAS Type", false],
@@ -151,7 +152,7 @@ if (CHECK_MENU_NAME("KISKA_commandMenu_casTypes_rockets")) exitWith {
 };
 
 // Bombs
-if (CHECK_MENU_NAME("KISKA_commandMenu_casTypes_bombs")) exitWith {
+if (CHECK_MENU_NAME(#CAS_TYPES_BOMBS_MENU)) exitWith {
 	_menuArray = 
 	[
 		["CAS Type", false],
@@ -167,42 +168,42 @@ if (CHECK_MENU_NAME("KISKA_commandMenu_casTypes_bombs")) exitWith {
 	Artillery
 ---------------------------------------------------------------------------- */
 // 120
-if (CHECK_MENU_NAME("KISKA_commandMenu_artyAmmo_120")) exitWith {
+if (CHECK_MENU_NAME(#AMMO_120_MENU)) exitWith {
 	_menuArray = 
 	[
 		["120mm Ammo Type", false],
-		STD_LINE("120mm AT Mines",2,PUSHBACK_AND_PROCEED("ammo_ShipCannon_120mm_AT_mine")),
-		STD_LINE("120mm Cluster",3,PUSHBACK_AND_PROCEED("ammo_ShipCannon_120mm_HE_cluster")),
-		STD_LINE("120mm HE",4,PUSHBACK_AND_PROCEED("ammo_ShipCannon_120mm_HE")),		
-		STD_LINE("120mm Mines",5,PUSHBACK_AND_PROCEED("ammo_ShipCannon_120mm_mine")),
-		STD_LINE("120mm Smoke",6,PUSHBACK_AND_PROCEED("ammo_ShipCannon_120mm_smoke"))
+		STD_LINE("120mm AT Mines",2,PUSHBACK_AND_PROCEED(AMMO_120_ATMINES_CLASS)),
+		STD_LINE("120mm Cluster",3,PUSHBACK_AND_PROCEED(AMMO_120_CLUSTER_CLASS)),
+		STD_LINE("120mm HE",4,PUSHBACK_AND_PROCEED(AMMO_120_HE_CLASS)),		
+		STD_LINE("120mm Mines",5,PUSHBACK_AND_PROCEED(AMMO_120_MINES_CLASS)),
+		STD_LINE("120mm Smoke",6,PUSHBACK_AND_PROCEED(AMMO_120_SMOKE_CLASS))
 	];
 
 	SAVE_AND_RETURN
 };
 
 // 155
-if (CHECK_MENU_NAME("KISKA_commandMenu_artyAmmo_155")) exitWith {
+if (CHECK_MENU_NAME(#AMMO_155_MENU)) exitWith {
 	_menuArray = 
 	[
 		["155mm Ammo Type", false],
-		STD_LINE("155mm AT Mines",2,PUSHBACK_AND_PROCEED("AT_Mine_155mm_AMOS_range")),
-		STD_LINE("155mm Cluster",3,PUSHBACK_AND_PROCEED("Cluster_155mm_AMOS")),	
-		STD_LINE("155mm HE",4,PUSHBACK_AND_PROCEED("Sh_155mm_AMOS")),
-		STD_LINE("155mm Mines",5,PUSHBACK_AND_PROCEED("Mine_155mm_AMOS_range"))
+		STD_LINE("155mm AT Mines",2,PUSHBACK_AND_PROCEED(AMMO_155_ATMINES_CLASS)),
+		STD_LINE("155mm Cluster",3,PUSHBACK_AND_PROCEED(AMMO_155_CLUSTER_CLASS)),	
+		STD_LINE("155mm HE",4,PUSHBACK_AND_PROCEED(AMMO_155_HE_CLASS)),
+		STD_LINE("155mm Mines",5,PUSHBACK_AND_PROCEEDAMMO_155_ATMINES_CLASS(AMMO_155_MINES_CLASS))
 	];
 
 	SAVE_AND_RETURN
 };
 
 // 82
-if (CHECK_MENU_NAME("KISKA_commandMenu_artyAmmo_82")) exitWith {
+if (CHECK_MENU_NAME(#AMMO_82_MENU)) exitWith {
 	_menuArray = 
 	[
 		["82mm Ammo Type", false],
-		STD_LINE("82mm HE",2,PUSHBACK_AND_PROCEED("Sh_82mm_AMOS")),
-		STD_LINE("82mm Smoke (White)",3,PUSHBACK_AND_PROCEED("Smoke_82mm_AMOS_White")),	
-		STD_LINE("82mm Flare",4,PUSHBACK_AND_PROCEED("F_20mm_white"))	
+		STD_LINE("82mm HE",2,PUSHBACK_AND_PROCEED(AMMO_82_HE_CLASS)),
+		STD_LINE("82mm Smoke (White)",3,PUSHBACK_AND_PROCEED(AMMO_82_SMOKE_CLASS)),	
+		STD_LINE("82mm Flare",4,PUSHBACK_AND_PROCEED(AMMO_82_FLARE_CLASS))	
 	];
 
 	SAVE_AND_RETURN

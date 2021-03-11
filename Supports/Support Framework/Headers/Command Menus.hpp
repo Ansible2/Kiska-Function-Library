@@ -1,0 +1,14 @@
+#define WITH_USER(MENU_NAME) "#USER:" + #MENU_NAME
+
+#define RADIUS_MENU KISKA_commandMenu_radius
+#define BEARING_MENU KISKA_commandMenu_bearing
+#define FLYIN_MENU KISKA_commandMenu_flyInHeight
+
+#define CAS_TYPES_ALL_MENU KISKA_commandMenu_casTypes_all
+#define CAS_TYPES_GUNSANDROCKETS_MENU KISKA_commandMenu_casTypes_gunsrockets
+#define CAS_TYPES_ROCKETS_MENU KISKA_commandMenu_casTypes_rockets
+#define CAS_TYPES_BOMBS_MENU KISKA_commandMenu_casTypes_bombs
+
+#define AMMO_120_MENU KISKA_commandMenu_artyAmmo_120
+#define AMMO_155_MENU KISKA_commandMenu_artyAmmo_155
+#define AMMO_82_MENU KISKA_commandMenu_artyAmmo_82
