@@ -86,7 +86,6 @@ if (CHECK_MENU_NAME("KISKA_commandMenu_bearing")) exitWith {
 /* ----------------------------------------------------------------------------
 	flyInHeight
 ---------------------------------------------------------------------------- */
-#define FLYIN_LINE()
 if (CHECK_MENU_NAME("KISKA_commandMenu_flyInHeight")) exitWith {
 	_menuArray =
 	[
