@@ -273,6 +273,8 @@ class CfgFunctions
 			file="Kiska_functions\Supports\Support Framework";
 			class commandMenuTree
 			{};
+			class createVehicleSelectMenu
+			{};
 			class initCommandMenu
 			{};
 			class supportRadio
