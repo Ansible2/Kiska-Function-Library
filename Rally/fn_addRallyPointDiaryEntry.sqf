@@ -20,16 +20,17 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define KISKA_DIARY "KISKA Systems"
-#define SCRIPT_NAME "KISKA_fnc_addRallyPointDiaryEntry"
-scriptName SCRIPT_NAME;
+#define RETURN_NIL nil
+scriptName "KISKA_fnc_addRallyPointDiaryEntry";
 
 if (!hasInterface) exitWith {
 	["Was run on machine without interface, needs an interface",true] call KISKA_fnc_log;
+	RETURN_NIL
 };
 
 if (!isMultiplayer) exitWith {
 	["KISKA rally point system does not run in singlePlayer",true] call KISKA_fnc_log;
+	RETURN_NIL
 };
 
 waitUntil {
@@ -38,10 +39,13 @@ waitUntil {
     false
 };
 
-if !(player diarySubjectExists KISKA_DIARY) then {
-	player createDiarySubject [KISKA_DIARY, KISKA_DIARY];
-};
 
-player createDiaryRecord [KISKA_DIARY, ["Rally Point", 
-	"<execute expression='call KISKA_fnc_updateRespawnMarkerQuery'>Set Rally Point At Current Position</execute>"
-]];
+[
+	[
+		"Rally Point", 
+		"<execute expression='call KISKA_fnc_updateRespawnMarkerQuery'>Set Rally Point At Current Position</execute>"
+	]
+] call KISKA_fnc_addKiskaDiaryEntry;
+
+
+RETURN_NIL

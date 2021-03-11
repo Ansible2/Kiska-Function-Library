@@ -285,6 +285,8 @@ class CfgFunctions
 			file="Kiska_functions\Utilities";
 			class addArsenal
 			{};
+			class addKiskaDiaryEntry
+			{};
 			class addMagRepack
 			{};
 			class addTeleportAction

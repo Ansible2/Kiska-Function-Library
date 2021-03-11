@@ -23,8 +23,6 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define KISKA_DIARY "KISKA Systems"
-
 scriptName "KISKA_fnc_hintDiary";
 
 if !(hasInterface) exitWith {};
@@ -41,12 +39,8 @@ if (_silent) then {
 	hint _hintText;
 };
 
-if !(player diarySubjectExists KISKA_DIARY) then {
-	player createDiarySubject [KISKA_DIARY, KISKA_DIARY];
-};
+[["Chronological Hint List","-" + _hintText]] call KISKA_fnc_addKiskaDiaryEntry;
 
-player createDiaryRecord [KISKA_DIARY,["Chronological Hint List","-" + _hintText]];
-
-if !(_subject isEqualTo "") then {
-	player createDiaryRecord [KISKA_DIARY,[_subject,"-"+_hintText]];
+if (_subject isNotEqualTo "") then {
+	[[_subject,"-"+_hintText]] call KISKA_fnc_addKiskaDiaryEntry;
 };

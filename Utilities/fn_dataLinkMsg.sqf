@@ -15,40 +15,32 @@ Returns:
 
 Examples:
     (begin example)
-
 		["this is the message", 0, true] call KISKA_fnc_datalinkMsg;
-
     (end)
 
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define KISKA_DIARY "KISKA Systems"
 scriptName "KISKA_fnc_datalinkMsg";
 
 if !(hasInterface) exitWith {};
 
 params [ 
-	["_message","Message",[]], 
+	["_message","Message",[""]], 
 	["_waitTime",0,[1]],
 	["_playSound",true,[true]] 
 ];
 
 [
 	{
-		private _message = param [0];
+		
 		if (_this select 1) then {
 			playSound "KISKA_ptt";
 		};
-
-		[["DATALINK",1.1,[0.75,0,0,1]],_message,false] call CBA_fnc_notify;
 		
-		if !(player diarySubjectExists KISKA_DIARY) then {
-			player createDiarySubject [KISKA_DIARY, KISKA_DIARY];
-		};
-
-		player createDiaryRecord [KISKA_DIARY,["Datalink Messages","-"+_message]];
-
+		private _message = _this select 0;
+		[["DATALINK",1.1,[0.75,0,0,1]],_message,false] call CBA_fnc_notify;
+		[["Datalink Messages","-"+_message]] call KISKA_fnc_addKiskaDiaryEntry;
 	}, 
 	[_message,_playSound], 
 	_waitTime
