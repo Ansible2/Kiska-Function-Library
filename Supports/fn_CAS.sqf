@@ -1,3 +1,4 @@
+#include "Support Framework\Headers\CAS Type IDs.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_CAS
 
@@ -19,24 +20,13 @@ Returns:
 
 Examples:
     (begin example)
-
 		[myTarget] spawn KISKA_fnc_CAS;
-
     (end)
 
 Author(s):
 	Bohemia Interactive,
 	Modified By: Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define GUN_RUN_ID 0
-#define GUNS_AND_ROCKETS_ARMOR_PIERCING_ID 1
-#define GUNS_AND_ROCKETS_HE_ID 2
-#define ROCKETS_ARMOR_PIERCING_ID 3
-#define ROCKETS_HE_ID 4
-#define AGM_ID 5
-#define BOMB_UGB_ID 6
-#define BOMB_CLUSTER_ID 7
-
 #define CANNON_TYPE "CANNON"
 #define AGM_TYPE "AGM"
 #define ROCKETS_AP_TYPE "ROCKETS_AP"
@@ -50,8 +40,7 @@ Author(s):
 #define PLANE_SPEED 75// m/s
 #define PLANE_VELOCITY(THE_SPEED) [0,THE_SPEED,0]
 
-#define SCRIPT_NAME "KISKA_fnc_CAS"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_CAS";
 
 params [
 	["_attackPosition",objNull,[[],objNull]],
