@@ -52,19 +52,24 @@ private _menuArray = [];
 	Counts
 ---------------------------------------------------------------------------- */
 #define COUNT_LINE(NUMBER,KEY) STD_LINE(str NUMBER,KEY,PUSHBACK_AND_PROCEED(NUMBER))
-if (CHECK_MENU_NAME(COUNT_TO_EIGHT_MENU)) exitWith {
+if (COUNT_TO_BASE in (toLowerANSI _menuName)) exitWith {
+	private _stringIndexLength = (count _string) - 1;
+	// get the number at the end of the menu name to denote the count
+	private _numberOfEntries = [_string select [_stringIndexLength]] call BIS_fnc_parseNumberSafe;
+	
 	_menuArray = 
 	[
-		["Number Of Rounds",false],
-		COUNT_LINE(1,2),
-		COUNT_LINE(2,3),
-		COUNT_LINE(3,4),
-		COUNT_LINE(4,5),
-		COUNT_LINE(5,6),
-		COUNT_LINE(6,7),
-		COUNT_LINE(7,8),
-		COUNT_LINE(8,9)
+		["Number Of Rounds",false]
 	];
+
+	for "_i" from 1 to _numberOfEntries do {
+		// don't go above the number line keys (key codes 2-10)
+		if (_i <= 9) then {
+			_menuArray pushBack COUNT_LINE(_i,_i + 1);
+		} else {
+			_menuArray pushBack COUNT_LINE(_i,0);
+		};
+	};
 
 	SAVE_AND_RETURN
 };

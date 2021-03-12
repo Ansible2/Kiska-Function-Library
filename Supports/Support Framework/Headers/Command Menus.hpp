@@ -6,7 +6,14 @@
 
 #define FLYIN_MENU KISKA_commandMenu_flyInHeight
 
-#define COUNT_TO_EIGHT_MENU KISKA_commandMenu_countEight
+#define COUNT_TO_ONE_MENU KISKA_commandMenu_count_1
+#define COUNT_TO_TWO_MENU KISKA_commandMenu_count_2
+#define COUNT_TO_THREE_MENU KISKA_commandMenu_count_3
+#define COUNT_TO_FOUR_MENU KISKA_commandMenu_count_4
+#define COUNT_TO_FIVE_MENU KISKA_commandMenu_count_5
+#define COUNT_TO_SIX_MENU KISKA_commandMenu_count_6
+#define COUNT_TO_SEVEN_MENU KISKA_commandMenu_count_7
+#define COUNT_TO_EIGHT_MENU KISKA_commandMenu_count_8
 
 #define CAS_TYPES_ALL_MENU KISKA_commandMenu_casTypes_all
 #define CAS_TYPES_GUNSANDROCKETS_MENU KISKA_commandMenu_casTypes_gunsrockets
