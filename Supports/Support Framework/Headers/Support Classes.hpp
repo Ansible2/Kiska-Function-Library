@@ -1,0 +1,2 @@
+#define CLASS_155_ARTY_VARIABLE KISKA_artillery_variable_155
+#define CLASS_155_ARTY_VARIABLE_OTHER KISKA_artillery_variable_155_remove

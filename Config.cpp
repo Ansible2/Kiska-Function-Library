@@ -271,6 +271,8 @@ class CfgFunctions
 		class SupportFramework
 		{
 			file="Kiska_functions\Supports\Support Framework";
+			class callingForSupportMaster
+			{};
 			class commandMenuTree
 			{};
 			class createVehicleSelectMenu
@@ -393,4 +395,8 @@ class CfgFunctions
 #include "GUIs\Common GUI Headers\commonBaseClasses.hpp"
 #include "GUIs\View Distance Limiter\ViewDistanceLimiterDialog.hpp"
 #include "GUIs\Group Changer\GroupChangerDialog.hpp"
-#include "Supports\Support Framework\Headers\Support Menus.hpp"
+
+class CfgCommunicationMenu
+{
+	#include "Supports\Support Framework\Headers\Supports CfgCommMenu.hpp"
+};

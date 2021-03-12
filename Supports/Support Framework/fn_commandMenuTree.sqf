@@ -43,8 +43,8 @@ if (!canSuspend) exitWith {
 params [
 	["_menuPath",[],[[]]],
 	["_endExpression","",["",{}]],
-	["_exitExpression","",["",{}]],
-	["_args",[],[[]]]
+	["_args",[],[[]]],
+	["_exitExpression","",["",{}]]
 ];
 
 

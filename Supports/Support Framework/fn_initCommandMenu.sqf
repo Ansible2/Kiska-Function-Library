@@ -1,5 +1,6 @@
 #include "Headers\CAS Type IDs.hpp"
 #include "Headers\Command Menus.hpp"
+#include "Headers\Arty Ammo Classes.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_initCommandMenu
 
@@ -21,7 +22,7 @@ Examples:
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define CHECK_MENU_NAME(MENU_NAME) _menuName == MENU_NAME
+#define CHECK_MENU_NAME(MENU_NAME) _menuName == #MENU_NAME
 #define CMD_EXECUTE -5
 #define IS_ACTIVE "1"
 #define IS_VISIBLE "1"
@@ -31,7 +32,7 @@ Author(s):
 #define SAVE_AND_RETURN SAVE_MENU _menuArray
 #define STD_LINE(TITLE,KEY,CODE) [TITLE, KEY_SHORTCUT(KEY), "", CMD_EXECUTE, EXPRESSION(CODE), IS_ACTIVE, IS_VISIBLE]
 #define PUSHBACK_AND_PROCEED(VALUE) "(uiNamespace getVariable 'KISKA_commMenuTree_params') pushBack " + (str VALUE) + "; uiNamespace setVariable ['KISKA_commMenuTree_proceedToNextMenu',true];"
-#define DISTANCE_LINE(DIS,KEY) STD_LINE(#DIS + "m",KEY,PUSHBACK_AND_PROCEED(DIS))
+#define DISTANCE_LINE(DIS,KEY) STD_LINE((str DIS) + "m",KEY,PUSHBACK_AND_PROCEED(DIS))
 
 scriptName "KISKA_fnc_initCommandMenu";
 
@@ -43,10 +44,36 @@ params [
 private _menuArray = [];
 
 
+
+
+
+
+/* ----------------------------------------------------------------------------
+	Counts
+---------------------------------------------------------------------------- */
+#define COUNT_LINE(NUMBER,KEY) STD_LINE(str NUMBER,KEY,PUSHBACK_AND_PROCEED(NUMBER))
+if (CHECK_MENU_NAME(COUNT_TO_EIGHT_MENU)) exitWith {
+	_menuArray = 
+	[
+		["Number Of Rounds",false],
+		COUNT_LINE(1,2),
+		COUNT_LINE(2,3),
+		COUNT_LINE(3,4),
+		COUNT_LINE(4,5),
+		COUNT_LINE(5,6),
+		COUNT_LINE(6,7),
+		COUNT_LINE(7,8),
+		COUNT_LINE(8,9)
+	];
+
+	SAVE_AND_RETURN
+};
+
+
 /* ----------------------------------------------------------------------------
 	Radius
 ---------------------------------------------------------------------------- */
-if (CHECK_MENU_NAME(#RADIUS_MENU)) exitWith {
+if (CHECK_MENU_NAME(RADIUS_MENU)) exitWith {
 	_menuArray = 
 	[
 		["Radius", false],
@@ -57,7 +84,7 @@ if (CHECK_MENU_NAME(#RADIUS_MENU)) exitWith {
 		DISTANCE_LINE(250,6),
 		DISTANCE_LINE(350,7),
 		DISTANCE_LINE(400,8),
-		DISTANCE_LINE(500,9),
+		DISTANCE_LINE(500,9)
 	];
 
 	SAVE_AND_RETURN
@@ -66,8 +93,8 @@ if (CHECK_MENU_NAME(#RADIUS_MENU)) exitWith {
 /* ----------------------------------------------------------------------------
 	Bearings
 ---------------------------------------------------------------------------- */
-#define BEARING_LINE(BEARING,DIR,KEY) STD_LINE(#BEARING + DIR,KEY,PUSHBACK_AND_PROCEED(BEARING))
-if (CHECK_MENU_NAME(#BEARING_MENU)) exitWith {
+#define BEARING_LINE(BEARING,DIR,KEY) STD_LINE((str BEARING) + DIR,KEY,PUSHBACK_AND_PROCEED(BEARING))
+if (CHECK_MENU_NAME(BEARING_MENU)) exitWith {
 	_menuArray = 
 	[
 		["Approach Bearing", false],
@@ -87,7 +114,7 @@ if (CHECK_MENU_NAME(#BEARING_MENU)) exitWith {
 /* ----------------------------------------------------------------------------
 	flyInHeight
 ---------------------------------------------------------------------------- */
-if (CHECK_MENU_NAME(#FLYIN_MENU)) exitWith {
+if (CHECK_MENU_NAME(FLYIN_MENU)) exitWith {
 	_menuArray =
 	[
 		["Fly In Height", false],
@@ -107,7 +134,7 @@ if (CHECK_MENU_NAME(#FLYIN_MENU)) exitWith {
 	CAS Types
 ---------------------------------------------------------------------------- */
 // all
-if (CHECK_MENU_NAME(#CAS_TYPES_ALL_MENU)) exitWith {
+if (CHECK_MENU_NAME(CAS_TYPES_ALL_MENU)) exitWith {
 	_menuArray = 
 	[
 		["CAS Type", false],
@@ -125,7 +152,7 @@ if (CHECK_MENU_NAME(#CAS_TYPES_ALL_MENU)) exitWith {
 };
 
 // guns and rockets
-if (CHECK_MENU_NAME(#CAS_TYPES_GUNSANDROCKETS_MENU)) exitWith {
+if (CHECK_MENU_NAME(CAS_TYPES_GUNSANDROCKETS_MENU)) exitWith {
 	_menuArray = 
 	[
 		["CAS Type", false],
@@ -140,7 +167,7 @@ if (CHECK_MENU_NAME(#CAS_TYPES_GUNSANDROCKETS_MENU)) exitWith {
 };
 
 // rockets
-if (CHECK_MENU_NAME(#CAS_TYPES_ROCKETS_MENU)) exitWith {
+if (CHECK_MENU_NAME(CAS_TYPES_ROCKETS_MENU)) exitWith {
 	_menuArray = 
 	[
 		["CAS Type", false],
@@ -152,7 +179,7 @@ if (CHECK_MENU_NAME(#CAS_TYPES_ROCKETS_MENU)) exitWith {
 };
 
 // Bombs
-if (CHECK_MENU_NAME(#CAS_TYPES_BOMBS_MENU)) exitWith {
+if (CHECK_MENU_NAME(CAS_TYPES_BOMBS_MENU)) exitWith {
 	_menuArray = 
 	[
 		["CAS Type", false],
@@ -168,7 +195,7 @@ if (CHECK_MENU_NAME(#CAS_TYPES_BOMBS_MENU)) exitWith {
 	Artillery
 ---------------------------------------------------------------------------- */
 // 120
-if (CHECK_MENU_NAME(#AMMO_120_MENU)) exitWith {
+if (CHECK_MENU_NAME(AMMO_120_MENU)) exitWith {
 	_menuArray = 
 	[
 		["120mm Ammo Type", false],
@@ -183,21 +210,21 @@ if (CHECK_MENU_NAME(#AMMO_120_MENU)) exitWith {
 };
 
 // 155
-if (CHECK_MENU_NAME(#AMMO_155_MENU)) exitWith {
+if (CHECK_MENU_NAME(AMMO_155_MENU)) exitWith {
 	_menuArray = 
 	[
 		["155mm Ammo Type", false],
 		STD_LINE("155mm AT Mines",2,PUSHBACK_AND_PROCEED(AMMO_155_ATMINES_CLASS)),
 		STD_LINE("155mm Cluster",3,PUSHBACK_AND_PROCEED(AMMO_155_CLUSTER_CLASS)),	
 		STD_LINE("155mm HE",4,PUSHBACK_AND_PROCEED(AMMO_155_HE_CLASS)),
-		STD_LINE("155mm Mines",5,PUSHBACK_AND_PROCEEDAMMO_155_ATMINES_CLASS(AMMO_155_MINES_CLASS))
+		STD_LINE("155mm Mines",5,PUSHBACK_AND_PROCEED(AMMO_155_MINES_CLASS))
 	];
 
 	SAVE_AND_RETURN
 };
 
 // 82
-if (CHECK_MENU_NAME(#AMMO_82_MENU)) exitWith {
+if (CHECK_MENU_NAME(AMMO_82_MENU)) exitWith {
 	_menuArray = 
 	[
 		["82mm Ammo Type", false],
@@ -208,6 +235,9 @@ if (CHECK_MENU_NAME(#AMMO_82_MENU)) exitWith {
 
 	SAVE_AND_RETURN
 };
+
+
+
 
 
 [["Could not find any menu presets for: ",_menuName],true] call KISKA_fnc_log;

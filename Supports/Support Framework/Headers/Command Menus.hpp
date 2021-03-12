@@ -1,8 +1,12 @@
 #define WITH_USER(MENU_NAME) "#USER:" + #MENU_NAME
 
 #define RADIUS_MENU KISKA_commandMenu_radius
+
 #define BEARING_MENU KISKA_commandMenu_bearing
+
 #define FLYIN_MENU KISKA_commandMenu_flyInHeight
+
+#define COUNT_TO_EIGHT_MENU KISKA_commandMenu_countEight
 
 #define CAS_TYPES_ALL_MENU KISKA_commandMenu_casTypes_all
 #define CAS_TYPES_GUNSANDROCKETS_MENU KISKA_commandMenu_casTypes_gunsrockets
