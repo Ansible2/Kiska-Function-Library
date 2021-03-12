@@ -23,6 +23,9 @@ Examples:
 Authors:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+#define FLARE_ALT 200
+#define FLARE_VELOCITY -10
+
 scriptName "KISKA_fnc_virtualArty";
 
 if (!canSuspend) exitWith {
@@ -44,8 +47,8 @@ if (_ammoType == "F_20mm_white") exitWith {
 	// delay for fire
 	sleep 3;
 	
-	private _flare = "F_20mm_white" createvehicle (_fireAtPosition vectorAdd [0,0,200]);  
-	_flare setVelocity [0,0,-10];
+	private _flare = "F_20mm_white" createvehicle (_fireAtPosition vectorAdd [0,0,FLARE_ALT]);  
+	_flare setVelocity [0,0,FLARE_VELOCITY];
 	private _light = "#lightpoint" createVehicle (getPosASL _flare);
 	_light attachTo [_flare, [0, 0, 0]];
 	
