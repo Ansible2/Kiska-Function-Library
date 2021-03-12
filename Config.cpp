@@ -281,6 +281,8 @@ class CfgFunctions
 			{};
 			class supportRadio
 			{};
+			class updateFlareEffects
+			{};
 		};
 		class Utilities
 		{

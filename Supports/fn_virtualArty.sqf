@@ -31,7 +31,7 @@ if (!canSuspend) exitWith {
 };
 
 params [
-	["_fireAtPosition",objNull,[[],objNull],""],
+	["_fireAtPosition",objNull,[[],objNull]],
 	["_ammoType","Sh_155mm_AMOS",[""]],
 	["_radius",25,[123]],
 	["_numberOfRounds",3,[123]],
@@ -40,8 +40,23 @@ params [
 ];
 
 // flare round need to fall slower
-if (_ammoType == "Flare_82mm_AMOS_White") exitWith {
-	[_fireAtPosition,_ammoType,15,1,1,{},nil,250,1] spawn BIS_fnc_fireSupportVirtual;
+if (_ammoType == "F_20mm_white") exitWith {
+	// delay for fire
+	sleep 3;
+	
+	private _flare = "F_20mm_white" createvehicle (_fireAtPosition vectorAdd [0,0,200]);  
+	_flare setVelocity [0,0,-10];
+	private _light = "#lightpoint" createVehicle (getPosASL _flare);
+	_light attachTo [_flare, [0, 0, 0]];
+	
+	// light characteristic adjustments must be done locally for each player
+	[_light,_flare] remoteExecCall ["KISKA_fnc_updateFlareEffects",0,_flare];
+
+	waitUntil {
+		sleep 0.5;
+		!alive _flare;
+	};
+	deletevehicle _light;
 };
 
 if (_markPosition) then {
