@@ -1,3 +1,4 @@
+#include "Headers\Command Menu Macros.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_createVehicleSelectMenu
 
@@ -22,10 +23,6 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_createVehicleSelectMenu";
 
-#define PUSHBACK_AND_PROCEED(VALUE) "(uiNamespace getVariable 'KISKA_commMenuTree_params') pushBack " + (str VALUE) + "; uiNamespace setVariable ['KISKA_commMenuTree_proceedToNextMenu',true];"
-#define CMD_EXECUTE -5
-#define IS_ACTIVE "1"
-#define IS_VISIBLE "1"
 #define CLASS_ARRAY(DISPLAY_NAME) [DISPLAY_NAME,0,"",CMD_EXECUTE,[["expression", PUSHBACK_AND_PROCEED(DISPLAY_NAME)]], IS_ACTIVE, IS_VISIBLE]
 
 params ["_classes"];
@@ -35,7 +32,9 @@ if (_classes isEqualTo []) exitWith {
 	[]
 };
 
-private _formattedArray = [];
+private _formattedArray = [
+	["Vehicle Selection",false]
+];
 private "_displayName";
 _classes apply {
 	_displayName = [configFile >> "cfgVehicles" >> _x] call BIS_fnc_displayName;

@@ -1,7 +1,8 @@
-#include "Support Radio Defines.hpp"
+#include "Support Type IDs.hpp"
 #include "Support Icons.hpp"
 #include "Support Classes.hpp"
-
+#include "CAS Type IDs.hpp"
+#include "Arty Ammo Type IDs.hpp"
 /*
     This master function for supports is used as go between for error cases such as when 
      a player provides an invalid position (looking at the sky). It will then refund the
@@ -34,21 +35,62 @@ class KISKA_basicSupport_baseClass
     curosr = SUPPORT_CURSOR;
     enable = "1"; // Simple expression condition for enabling the item
     removeAfterExpressionCall = 1;
-};
-class KISKA_basicVariableSupport_baseClass : KISKA_basicSupport_baseClass
-{
-    removeAfterExpressionCall = 0;
-};
 
-class CLASS_155_ARTY_VARIABLE : KISKA_basicSupport_baseClass
-{
-    text = "155 no remove";
-    expression = CALL_SUPPORT_MASTER(CLASS_155_ARTY_VARIABLE);
-    icon = ARTILLERY_ICON;
+    // used for support selection menu
+    condition = "";
 };
-class CLASS_155_ARTY_VARIABLE_OTHER : KISKA_basicVariableSupport_baseClass
+class KISKA_variableArtillery_baseClass : KISKA_basicSupport_baseClass
 {
-    text = "155 do remove";
-    expression = CALL_SUPPORT_MASTER(CLASS_155_ARTY_VARIABLE_OTHER);
-    icon = ARTILLERY_ICON;
+    supportType = SUPPORT_TYPE_ARTY;
+    isVariable = 1;
+    canSelectRadius = 0;
+    canSelectRounds = 0;
+    
+    roundCount = 8; // starting round count
+
+    ammoTypes[] = {
+        AMMO_155_HE_ID,
+        AMMO_155_CLUSTER_ID,
+        AMMO_155_MINES_ID,
+        AMMO_155_ATMINES_ID,
+        AMMO_120_HE_ID,
+        AMMO_120_CLUSTER_ID,
+        AMMO_120_MINES_ID,
+        AMMO_120_ATMINES_ID,
+        AMMO_120_SMOKE_ID,
+        AMMO_82_HE_ID,
+        AMMO_82_FLARE_ID,
+        AMMO_82_SMOKE_ID
+    };
+};
+class KISKA_variableCAS_baseClass : KISKA_basicSupport_baseClass
+{
+    supportType = SUPPORT_TYPE_CAS;
+    isVariable = 1;
+    canSelectRadius = 0;
+    canSelectBearing = 0;
+    
+    attackTypes[] = {
+        GUN_RUN_ID,
+        GUNS_AND_ROCKETS_ARMOR_PIERCING_ID,
+        GUNS_AND_ROCKETS_HE_ID,
+        ROCKETS_ARMOR_PIERCING_ID,
+        ROCKETS_HE_ID,
+        AGM_ID,
+        BOMB_LGB_ID,
+        BOMB_CLUSTER_ID
+    };
+
+    aircraftTypes[] = {};
+};
+class KISKA_variableHeli_baseClass : KISKA_basicSupport_baseClass
+{
+    supportType = SUPPORT_TYPE_HELI_CAS;
+
+    isVariable = 1;
+    canSelectRadius = 0;
+    canSelectFlyinHeight = 0;
+    canSelectBearing = 0;
+
+    aircraftTypes[] = {};
 };

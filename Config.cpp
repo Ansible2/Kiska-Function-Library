@@ -271,6 +271,8 @@ class CfgFunctions
 		class SupportFramework
 		{
 			file="Kiska_functions\Supports\Support Framework";
+			class buildMenuPath
+			{};
 			class callingForSupportMaster
 			{};
 			class commandMenuTree
