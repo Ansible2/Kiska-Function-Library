@@ -89,7 +89,7 @@ private _attackMagazines = switch _attackTypeID do {
 	case AGM_ID: {
 		[[AGM_TYPE,"PylonRack_1Rnd_Missile_AGM_02_F"]]
 	};
-	case BOMB_UGB_ID: {
+	case BOMB_LGB_ID: {
 		[[BOMB_UGB_TYPE,"PylonMissile_1Rnd_Bomb_04_F"]]
 	};
 	case BOMB_CLUSTER_ID: {
@@ -240,7 +240,7 @@ KISKA_fnc_casAttack = {
 		case AGM_ID: {
 			[AGM_TYPE] call _fn_fireSimple;
 		};
-		case BOMB_UGB_ID: {
+		case BOMB_LGB_ID: {
 			[BOMB_UGB_TYPE] call _fn_fireSimple;
 		};
 		case BOMB_CLUSTER_ID: {
