@@ -21,11 +21,11 @@ Parameters:
 		2: <ANY> - The value to assign to this menu option
 
 Returns:
-	<ARRAY> - The created array
+	<ARRAY> - The created menu array
 
 Examples:
     (begin example)
-		_initializedMenu = ["KISKA_commandMenu_radius"] call KISKA_fnc_initCommandMenu
+		_createdMenu = [] call KISKA_fnc_buildMenuPath
     (end)
 
 Author(s):

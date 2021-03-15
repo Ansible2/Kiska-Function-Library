@@ -33,7 +33,7 @@ class KISKA_basicSupport_baseClass
     expression = ""; // code to compile upon call of menu item
     icon = CALL_ICON; // icon in support menu
     curosr = SUPPORT_CURSOR;
-    enable = "1"; // Simple expression condition for enabling the item
+    enable = "cursorOnGround"; // Simple expression condition for enabling the item
     removeAfterExpressionCall = 1;
 
     // used for support selection menu
@@ -41,7 +41,7 @@ class KISKA_basicSupport_baseClass
 };
 class KISKA_variableArtillery_baseClass : KISKA_basicSupport_baseClass
 {
-    supportType = SUPPORT_TYPE_ARTY;
+    supportTypeId = SUPPORT_TYPE_ARTY;
     isVariable = 1;
     canSelectRadius = 0;
     canSelectRounds = 0;
@@ -60,12 +60,14 @@ class KISKA_variableArtillery_baseClass : KISKA_basicSupport_baseClass
         AMMO_120_SMOKE_ID,
         AMMO_82_HE_ID,
         AMMO_82_FLARE_ID,
-        AMMO_82_SMOKE_ID
+        AMMO_82_SMOKE_ID,
+        AMMO_230_HE_ID,
+        AMMO_230_CLUSTER_ID
     };
 };
 class KISKA_variableCAS_baseClass : KISKA_basicSupport_baseClass
 {
-    supportType = SUPPORT_TYPE_CAS;
+    supportTypeId = SUPPORT_TYPE_CAS;
     isVariable = 1;
     canSelectRadius = 0;
     canSelectBearing = 0;
@@ -85,7 +87,7 @@ class KISKA_variableCAS_baseClass : KISKA_basicSupport_baseClass
 };
 class KISKA_variableHeli_baseClass : KISKA_basicSupport_baseClass
 {
-    supportType = SUPPORT_TYPE_HELI_CAS;
+    supportTypeId = SUPPORT_TYPE_HELI_CAS;
 
     isVariable = 1;
     canSelectRadius = 0;

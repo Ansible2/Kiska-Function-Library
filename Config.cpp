@@ -279,6 +279,8 @@ class CfgFunctions
 			{};
 			class createVehicleSelectMenu
 			{};
+			class getAmmoClassFromId
+			{};
 			class initCommandMenu
 			{};
 			class supportRadio

@@ -12,3 +12,6 @@
 #define AMMO_82_HE_ID 9
 #define AMMO_82_FLARE_ID 10
 #define AMMO_82_SMOKE_ID 11
+
+#define AMMO_230_HE_ID 12
+#define AMMO_230_CLUSTER_ID 13

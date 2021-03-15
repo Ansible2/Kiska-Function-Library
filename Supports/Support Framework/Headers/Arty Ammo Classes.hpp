@@ -12,3 +12,6 @@
 #define AMMO_82_HE_CLASS "Sh_82mm_AMOS"
 #define AMMO_82_FLARE_CLASS "F_20mm_white"
 #define AMMO_82_SMOKE_CLASS "Smoke_82mm_AMOS_White"
+
+#define AMMO_230_HE_CLASS "R_230mm_HE"
+#define AMMO_230_CLUSTER_CLASS "R_230mm_Cluster"
