@@ -281,6 +281,8 @@ class CfgFunctions
 			{};
 			class getAmmoClassFromId
 			{};
+			class getAmmoTitleFromId
+			{};
 			class initCommandMenu
 			{};
 			class supportRadio
