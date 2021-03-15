@@ -8,7 +8,7 @@
      a player provides an invalid position (looking at the sky). It will then refund the
      support back to the player.
 */
-#define CALL_SUPPORT_MASTER(CLASS) "[_this,"#CLASS"] call KISKA_fnc_callingForSupportMaster"
+#define CALL_SUPPORT_MASTER(CLASS) "["#CLASS",_this,[%1,-1] select isNil {%1}] call KISKA_fnc_callingForSupportMaster"
 
 
 /*
@@ -45,7 +45,7 @@ class KISKA_variableArtillery_baseClass : KISKA_basicSupport_baseClass
     isVariable = 1;
     canSelectRadius = 0;
     canSelectRounds = 0;
-    
+
     roundCount = 8; // starting round count
 
     ammoTypes[] = {

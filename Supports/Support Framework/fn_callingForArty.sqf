@@ -20,6 +20,7 @@ Parameters:
 	3: _is3d <BOOL> - False if in map, true if not
 	4: _commMenuId <NUMBER> The ID number of the Comm Menu added by BIS_fnc_addCommMenuItem
 	5: _supportClass <CONFIG> - The config path as defined in the CfgCommunicationMenu
+	6: _roundCount <NUMBER> - Number of rounds to allow use of, if < 0, config default amount is used
 
 Returns:
 	NOTHING
@@ -46,7 +47,8 @@ params [
 	"_target",
 	"_is3d",
 	"_commMenuId",
-	"_supportClass"
+	"_supportClass",
+	"_roundCount"
 ];
 
 
@@ -55,17 +57,19 @@ if (isNull _supportConfig) exitWith {
 	[["Could not find class: ",_supportClass," in any config!"],true] call KISKA_fnc_log;
 };
 
+
 private _menuPathArray = [];
+
 
 private _ammoMenu = [
 	["Select Ammo",false]
 ];
 private _ammoIds = [_supportConfig >> "ammoTypes"] call BIS_fnc_getCfgDataArray;
 _ammoIds apply {
-	[_x] call KISKA_fnc_getAmmoClassFromId
+	_ammoMenu pushBack STD_LINE_PUSH();
 };
 
-_menuPathArray pushBack WITH_USER("");
+_menuPathArray pushBack WITH_USER("KISKA_");
 
 
 private _canSelectRadius = [_supportConfig >> "canSelectRadius"] call BIS_fnc_getCfgDataBool;
