@@ -47,7 +47,6 @@ params [
 	["_exitExpression","",["",{}]]
 ];
 
-
 // create a container for holding params from menu
 uiNamespace setVariable ["KISKA_commMenuTree_params",[]];
 

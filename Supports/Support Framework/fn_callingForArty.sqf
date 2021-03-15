@@ -36,12 +36,14 @@ Authors:
 scriptName "KISKA_fnc_callingForArty";
 
 #define WITH_USER(GVAR) "#USER:" + GVAR
-#define ADD_SUPPORT_BACK [_args select 0,_args select 5,nil,_args select 6,""] call BIS_fnc_addCommMenuItem;
+#define ADD_SUPPORT_BACK [_args select 0,_args select 5,nil,_args select 6,""] call KISKA_fnc_addCommMenuItem;
 #define UNLOAD_GLOBALS (_args select 7) apply {missionNamespace setVariable [_x,nil]};
 #define TO_STRING(STRING) #STRING
 #define MAX_KEYS 9
 #define AMMO_TYPE_MENU_GVAR "KISKA_menu_ammoSelect"
 #define ROUND_COUNT_MENU_GVAR "KISKA_menu_roundCount"
+#define RADIUS_MENU_GVAR "KISKA_menu_radius"
+#define MIN_RADIUS 25
 
 params [
 	"_caller",
@@ -98,15 +100,33 @@ _menuPathArray pushBack WITH_USER(AMMO_TYPE_MENU_GVAR);
 /* ----------------------------------------------------------------------------
 	Radius Menu
 ---------------------------------------------------------------------------- */
-private _canSelectRadius = [_supportConfig >> "canSelectRadius"] call BIS_fnc_getCfgDataBool;
-if (_canSelectRadius) then {
-	// MAKE THIS INTO A CBA SETTING THAT PEOPLE CAN CHANGE
-	[TO_STRING(RADIUS_MENU)] call KISKA_fnc_initCommandMenu;
-
-
-	_menuVariables pushBack TO_STRING(RADIUS_MENU);
-	_menuPathArray pushBack WITH_USER(TO_STRING(RADIUS_MENU));
+private _selectableRadiuses = [_supportConfig >> "radiuses"] call BIS_fnc_getCfgDataArray;
+if (_selectableRadiuses isEqualTo []) then {
+	// get cba setting
 };
+
+private _radiusMenu = [
+	["Round Area",false]
+];
+{
+	if (_forEachIndex <= MAX_KEYS) then {
+		// key codes are offset by 2 (1 on the number bar is key code 2)
+		_keyCode = _forEachIndex + 2;
+	} else {
+		_keyCode = 0;
+	};
+
+	if (_x < MIN_RADIUS) then {
+		_radiusMenu pushBackUnique DISTANCE_LINE(MIN_RADIUS,_keyCode);
+	} else {
+		_radiusMenu pushBackUnique DISTANCE_LINE(_x,_keyCode);
+	};
+} forEach _selectableRadiuses;
+missionNamespace setVariable [RADIUS_MENU_GVAR,_radiusMenu];
+
+_menuVariables pushBack RADIUS_MENU_GVAR;
+_menuPathArray pushBack WITH_USER(RADIUS_MENU_GVAR);
+
 
 
 /* ----------------------------------------------------------------------------
@@ -121,6 +141,7 @@ if (_roundCount < 0) then {
 	_roundCount = [_supportConfig >> "roundCount"] call BIS_fnc_getCfgData;
 };
 
+private _roundsString = "";
 if (_canSelectRounds) then {
 	for "_i" from 1 to _roundCount do {
 		if (_i <= MAX_KEYS) then {
@@ -128,10 +149,12 @@ if (_canSelectRounds) then {
 		} else {
 			_keyCode = 0;
 		};
-		_roundsMenu pushBack STD_LINE_PUSH([_i,"Round(s)"] joinString " ",_keyCode,_i);
+		_roundsString = [_i,"Round(s)"] joinString " ";
+		_roundsMenu pushBack STD_LINE_PUSH(_roundsString,_keyCode,_i);
 	};
 } else {
-	_roundsMenu pushBack STD_LINE_PUSH([_roundCount,"Round(s)"] joinString " ",2,_roundCount);
+	_roundsString = [_roundCount,"Round(s)"] joinString " ";
+	_roundsMenu pushBack STD_LINE_PUSH(_roundsString,2,_roundCount);
 };
 missionNamespace setVariable [ROUND_COUNT_MENU_GVAR,_roundsMenu];
 
@@ -152,6 +175,9 @@ _params pushBack _menuVariables;
 	{
 		params ["_ammo","_radius","_numberOfRounds"];
 		
+		[str (_args select 6)] call KISKA_fnc_log;
+		[str _this] call KISKA_fnc_log;
+
 		[_args select 1,_ammo,_radius,_numberOfRounds] spawn KISKA_fnc_virtualArty;
 		
 		// if support still has rounds available, add it back with the new round count

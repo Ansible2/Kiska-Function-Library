@@ -4,7 +4,7 @@
 #include "Headers\Command Menu Macros.hpp"
 #include "Headers\Arty Ammo Classes.hpp"
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_buildMenuPath
+Function: KISKA_fnc_buildCommandMenu
 
 Description:
 	Creates a showCommandingMenu compatible menu global array to be used with
@@ -25,13 +25,13 @@ Returns:
 
 Examples:
     (begin example)
-		_createdMenu = [] call KISKA_fnc_buildMenuPath
+		_createdMenu = [] call KISKA_fnc_buildCommandMenu
     (end)
 
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_buildMenuPath";
+scriptName "KISKA_fnc_buildCommandMenu";
 
 params [
 	["_menuName","",[""]],

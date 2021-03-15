@@ -2,7 +2,7 @@
 #include "Headers\Arty Ammo Type IDs.hpp"
 #include "Headers\Command Menus.hpp"
 #include "Headers\Arty Ammo Classes.hpp"
-#include "Support Type IDs.hpp"
+#include "Headers\Support Type IDs.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_callingForSupportMaster
 
@@ -38,7 +38,7 @@ Authors:
 scriptName "KISKA_fnc_callingForSupportMaster";
 
 
-#define ADD_SUPPORT_BACK_MENU(CALLER,CLASS,ARGS) [CALLER,CLASS,nil,nil,""] call BIS_fnc_addCommMenuItem;
+#define ADD_SUPPORT_BACK_MENU(CALLER,CLASS,ARGS) [CALLER,CLASS,nil,nil,""] call KISKA_fnc_addCommMenuItem;
 
 
 params [
@@ -48,9 +48,10 @@ params [
 ];
 
 
-private _supportTypeId = [[_supportConfig >> "supportTypeId"]] call BIS_fnc_getCfgData;
+private _supportConfig = [["CfgCommunicationMenu",_supportClass]] call KISKA_fnc_findConfigAny;
+private _supportTypeId = [_supportConfig >> "supportTypeId"] call BIS_fnc_getCfgData;
 
-if (_supportTypeId isEqualTo SUPPORT_TYPE_CAS) exitWith {
+if (_supportTypeId isEqualTo SUPPORT_TYPE_ARTY) exitWith {
 	_commMenuArgs pushBack _supportClass;
 	_commMenuArgs pushBack _count;
 	_commMenuArgs call KISKA_fnc_callingForArty;
@@ -64,7 +65,7 @@ if (_supportTypeId isEqualTo SUPPORT_TYPE_HELI_CAS) exitWith {
 
 };
 
-if (_supportTypeId isEqualTo SUPPORT_TYPE_ARTY) exitWith {
+if (_supportTypeId isEqualTo SUPPORT_TYPE_CAS) exitWith {
 
 };
 
@@ -119,6 +120,7 @@ _commMenuArgs params [
 /* ----------------------------------------------------------------------------
 	Helicopter CAS
 ---------------------------------------------------------------------------- */
+/*
 #define ADD_SUPPORT_BACK [_caller,_supportClass,nil,nil,""] call BIS_fnc_addCommMenuItem;
 #define ADD_SUPPORT_BACK_MENU(CALLER,CLASS) [CALLER,CLASS,nil,nil,""] call BIS_fnc_addCommMenuItem;
 #define TO_STRING(STRING) #STRING
@@ -165,3 +167,4 @@ if (CHECK_SUPPORT_CLASS(CLASS_155_ARTY_VARIABLE_8)) exitWith {
 		}
 	] spawn KISKA_fnc_commandMenuTree;
 };
+*/

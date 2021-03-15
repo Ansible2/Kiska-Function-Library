@@ -271,9 +271,13 @@ class CfgFunctions
 		class SupportFramework
 		{
 			file="Kiska_functions\Supports\Support Framework";
-			class buildMenuPath
+			class addCommMenuItem
+			{};
+			class buildCommandMenu
 			{};
 			class callingForSupportMaster
+			{};
+			class callingForArty
 			{};
 			class commandMenuTree
 			{};
