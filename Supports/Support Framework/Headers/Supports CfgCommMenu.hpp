@@ -46,7 +46,7 @@ class KISKA_variableArtillery_baseClass : KISKA_basicSupport_baseClass
     
     radiuses[] = {25,100,250};
 
-    canSelectRounds = 0;
+    canSelectRounds = 1;
 
     roundCount = 8; // starting round count
 

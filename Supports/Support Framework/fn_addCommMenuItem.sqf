@@ -25,7 +25,7 @@ scriptName "KISKA_fnc_addCommMenuItem";
 params [
 	["_owner",objNull,[objNull]],
 	["_itemClass","",[""]],
-	"_textArguements",
+	["_textArguements",""],
 	["_expressionArguments",-1,[]],
 	["_notification","",[""]]
 ];

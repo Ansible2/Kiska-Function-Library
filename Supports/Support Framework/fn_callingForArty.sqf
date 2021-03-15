@@ -19,7 +19,7 @@ Parameters:
 	2: _target <OBJECT> - The cursorTarget object of the player
 	3: _is3d <BOOL> - False if in map, true if not
 	4: _commMenuId <NUMBER> The ID number of the Comm Menu added by BIS_fnc_addCommMenuItem
-	5: _supportClass <CONFIG> - The config path as defined in the CfgCommunicationMenu
+	5: _supportClass <STRING> - The config path as defined in the CfgCommunicationMenu
 	6: _roundCount <NUMBER> - Number of rounds to allow use of, if < 0, config default amount is used
 
 Returns:
@@ -36,7 +36,7 @@ Authors:
 scriptName "KISKA_fnc_callingForArty";
 
 #define WITH_USER(GVAR) "#USER:" + GVAR
-#define ADD_SUPPORT_BACK [_args select 0,_args select 5,nil,_args select 6,""] call KISKA_fnc_addCommMenuItem;
+#define ADD_SUPPORT_BACK(ROUNDS) [_args select 0,_args select 5,nil,ROUNDS,""] call KISKA_fnc_addCommMenuItem;
 #define UNLOAD_GLOBALS (_args select 7) apply {missionNamespace setVariable [_x,nil]};
 #define TO_STRING(STRING) #STRING
 #define MAX_KEYS 9
@@ -59,11 +59,13 @@ params [
 private _supportConfig = [["CfgCommunicationMenu",_supportClass]] call KISKA_fnc_findConfigAny;
 if (isNull _supportConfig) exitWith {
 	[["Could not find class: ",_supportClass," in any config!"],true] call KISKA_fnc_log;
+	nil
 };
 
 
 private _menuPathArray = [];
 private _menuVariables = []; // keeps track of global variable names to set to nil when done
+
 
 /* ----------------------------------------------------------------------------
 	Ammo Menu
@@ -139,6 +141,7 @@ private _canSelectRounds = [_supportConfig >> "canSelectRounds"] call BIS_fnc_ge
 // get default round count from config
 if (_roundCount < 0) then {
 	_roundCount = [_supportConfig >> "roundCount"] call BIS_fnc_getCfgData;
+	_this set [6,_roundCount]; // update round count to be passed to KISKA_fnc_commandMenuTree
 };
 
 private _roundsString = "";
@@ -174,22 +177,25 @@ _params pushBack _menuVariables;
 	_menuPathArray,
 	{
 		params ["_ammo","_radius","_numberOfRounds"];
-		
-		[str (_args select 6)] call KISKA_fnc_log;
-		[str _this] call KISKA_fnc_log;
 
-		[_args select 1,_ammo,_radius,_numberOfRounds] spawn KISKA_fnc_virtualArty;
+		private _targetPosition = _args select 1;
+		[_targetPosition,_ammo,_radius,_numberOfRounds] spawn KISKA_fnc_virtualArty;
 		
 		// if support still has rounds available, add it back with the new round count
-		if (_numberOfRounds < (_args select 6)) then {
-			ADD_SUPPORT_BACK
+		private _roundsAvailable = _args select 6;
+		if (_numberOfRounds < _roundsAvailable) then {
+			_roundsAvailable = _roundsAvailable - _numberOfRounds;
+			ADD_SUPPORT_BACK(_roundsAvailable)
 		};
 
 		UNLOAD_GLOBALS
 	},
 	_params,
 	{
-		ADD_SUPPORT_BACK
+		ADD_SUPPORT_BACK(_args select 6)
 		UNLOAD_GLOBALS
 	}
 ] spawn KISKA_fnc_commandMenuTree;
+
+
+nil
