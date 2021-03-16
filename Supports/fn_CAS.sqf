@@ -27,11 +27,13 @@ Author(s):
 	Bohemia Interactive,
 	Modified By: Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_CAS";
+
 #define CANNON_TYPE "CANNON"
 #define AGM_TYPE "AGM"
 #define ROCKETS_AP_TYPE "ROCKETS_AP"
 #define ROCKETS_HE_TYPE "ROCKETS_HE"
-#define BOMB_LGB_TYPE "BOMB UGB"
+#define BOMB_LGB_TYPE "BOMB LGB"
 #define BOMB_CLUSTER_TYPE "BOMB CLUSTER"
 
 #define DEFAULT_CANNON_CLASS "Twin_Cannon_20mm"
@@ -40,7 +42,6 @@ Author(s):
 #define PLANE_SPEED 75// m/s
 #define PLANE_VELOCITY(THE_SPEED) [0,THE_SPEED,0]
 
-scriptName "KISKA_fnc_CAS";
 
 params [
 	["_attackPosition",objNull,[[],objNull]],
@@ -406,10 +407,10 @@ _crew apply {
 };
 
 if (alive _plane) then {
-	deletevehicle _plane;
+	deleteVehicle _plane;
 };
 
 private _group = _planeArray select 2;
 if (!isNull _group) then {
-	deletegroup _group;
+	deleteGroup _group;
 };

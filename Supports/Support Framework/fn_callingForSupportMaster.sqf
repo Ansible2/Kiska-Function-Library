@@ -39,7 +39,7 @@ scriptName "KISKA_fnc_callingForSupportMaster";
 
 
 #define ADD_SUPPORT_BACK_MENU(CALLER,CLASS,ARGS) [CALLER,CLASS,nil,nil,""] call KISKA_fnc_addCommMenuItem;
-
+#define PUSHBACK_CLASS_AND_COUNT _commMenuArgs pushBack _supportClass; _commMenuArgs pushBack _count;
 
 params [
 	["_supportClass","",[""]],
@@ -52,21 +52,23 @@ private _supportConfig = [["CfgCommunicationMenu",_supportClass]] call KISKA_fnc
 private _supportTypeId = [_supportConfig >> "supportTypeId"] call BIS_fnc_getCfgData;
 
 if (_supportTypeId isEqualTo SUPPORT_TYPE_ARTY) exitWith {
-	_commMenuArgs pushBack _supportClass;
-	_commMenuArgs pushBack _count;
+	PUSHBACK_CLASS_AND_COUNT
 	_commMenuArgs call KISKA_fnc_callingForArty;
 };
 
 if (_supportTypeId isEqualTo SUPPORT_TYPE_SUPPLY_DROP) exitWith {
+	PUSHBACK_CLASS_AND_COUNT
 
 };
 
 if (_supportTypeId isEqualTo SUPPORT_TYPE_HELI_CAS) exitWith {
+	PUSHBACK_CLASS_AND_COUNT
 
 };
 
 if (_supportTypeId isEqualTo SUPPORT_TYPE_CAS) exitWith {
-
+	PUSHBACK_CLASS_AND_COUNT
+	_commMenuArgs call KISKA_fnc_callingForCAS;
 };
 
 

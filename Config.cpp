@@ -279,6 +279,8 @@ class CfgFunctions
 			{};
 			class callingForArty
 			{};
+			class callingForCAS
+			{};
 			class commandMenuTree
 			{};
 			class createVehicleSelectMenu
@@ -286,6 +288,8 @@ class CfgFunctions
 			class getAmmoClassFromId
 			{};
 			class getAmmoTitleFromId
+			{};
+			class getCasTitleFromId
 			{};
 			class initCommandMenu
 			{};

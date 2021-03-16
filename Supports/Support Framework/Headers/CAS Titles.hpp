@@ -1,0 +1,8 @@
+#define GUN_RUN_TITLE "Gun Run"
+#define GUNS_AND_ROCKETS_ARMOR_PIERCING_TITLE "Guns & Rockets (AP)"
+#define GUNS_AND_ROCKETS_HE_TITLE "Guns & Rockets (HE)"
+#define ROCKETS_ARMOR_PIERCING_TITLE "Rockets (AP)"
+#define ROCKETS_HE_TITLE "Rockets (HE)"
+#define AGM_TITLE "AGM (Missile)"
+#define BOMB_LGB_TITLE "Laserguided Bomb (500lbs)"
+#define BOMB_CLUSTER_TITLE "Cluster Bomb"

@@ -37,17 +37,13 @@ class KISKA_basicSupport_baseClass
     removeAfterExpressionCall = 1;
 
     // used for support selection menu
-    condition = "";
+    supportMenuCondition = "";
 };
-class KISKA_variableArtillery_baseClass : KISKA_basicSupport_baseClass
+class KISKA_artillery_baseClass : KISKA_basicSupport_baseClass
 {
-    supportTypeId = SUPPORT_TYPE_ARTY;
-    isVariable = 1;
-    
-    radiuses[] = {25,100,250};
-
+    supportTypeId = SUPPORT_TYPE_ARTY;   
+    radiuses[] = {};
     canSelectRounds = 1;
-
     roundCount = 8; // starting round count
 
     ammoTypes[] = {
@@ -67,12 +63,9 @@ class KISKA_variableArtillery_baseClass : KISKA_basicSupport_baseClass
         AMMO_230_CLUSTER_ID
     };
 };
-class KISKA_variableCAS_baseClass : KISKA_basicSupport_baseClass
+class KISKA_CAS_baseClass : KISKA_basicSupport_baseClass
 {
     supportTypeId = SUPPORT_TYPE_CAS;
-    isVariable = 1;
-    canSelectRadius = 0;
-    canSelectBearing = 0;
     
     attackTypes[] = {
         GUN_RUN_ID,
@@ -87,19 +80,27 @@ class KISKA_variableCAS_baseClass : KISKA_basicSupport_baseClass
 
     aircraftTypes[] = {};
 };
-class KISKA_variableHeli_baseClass : KISKA_basicSupport_baseClass
+
+class KISKA_attackHelicopterCAS_baseClass : KISKA_basicSupport_baseClass
+{
+    supportTypeId = SUPPORT_TYPE_ATTACKHELI_CAS;
+    timeOnStation = 180;
+
+    radiuses[] = {};
+    flyinHeights[] = {};
+    aircraftTypes[] = {};
+};
+class KISKA_helicopterCAS_baseClass : KISKA_basicSupport_baseClass
 {
     supportTypeId = SUPPORT_TYPE_HELI_CAS;
+    timeOnStation = 180;
 
-    isVariable = 1;
-    canSelectRadius = 0;
-    canSelectFlyinHeight = 0;
-    canSelectBearing = 0;
-
+    radiuses[] = {};
+    flyinHeights[] = {};
     aircraftTypes[] = {};
 };
 
-class KISKA_testArty : KISKA_variableArtillery_baseClass
+class KISKA_testArty : KISKA_artillery_baseClass
 {
     text = "Test Arty";
     expression = CALL_SUPPORT_MASTER(KISKA_testArty);
