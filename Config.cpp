@@ -369,6 +369,8 @@ class CfgFunctions
 			};
 			class staticLine
 			{};
+			class str
+			{};
 			class supplyDrop
 			{};
 			class triggerWait
