@@ -89,7 +89,8 @@ if (_origin isEqualType objNull) then {
 // check for bohemia weird chars on file paths
 private _firstChar = _soundPath select [0,1];
 if (_firstChar in ["@","\"]) then {
-	_soundPath = [_soundPath,_firstChar] call CBA_fnc_leftTrim;
+	_soundPath = _soundPath trim [_firstChar,1];
+	//_soundPath = [_soundPath,_firstChar] call CBA_fnc_leftTrim;
 };
 
 // check if bohemia didn't add file extension

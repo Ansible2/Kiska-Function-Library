@@ -45,6 +45,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_triggerWait";
 
 params [
 	["_activation","",["",{}]],
@@ -57,23 +58,26 @@ params [
 
 
 if (_activation isEqualTo "" OR {_condition isEqualTo ""}) exitWith {
-	["_activation of _condition is empty string"] call BIS_fnc_error;
+	["_activation of _condition is empty string",true] call KISKA_fnc_log;
 };
 
 if (_activation isEqualType {}) then {
 	private _stringActivation = str _activation;
 
-	_activation = [_stringActivation,"{}"] call CBA_fnc_trim; 
+	_activation = _stringActivation trim ["{}",0];
+	//_activation = [_stringActivation,"{}"] call CBA_fnc_trim; 
 };
 if (_condition isEqualType {}) then {
 	private _stringCondition = str _condition;
 
-	_condition = [_stringCondition,"{}"] call CBA_fnc_trim; 
+	_condition = _stringCondition trim ["{}",0];
+	//_condition = [_stringCondition,"{}"] call CBA_fnc_trim; 
 };
 if (_deactivation isEqualType {}) then {
 	private _stringDeactivation = str _deactivation;
 
-	_deactivation = [_stringDeactivation,"{}"] call CBA_fnc_trim; 
+	_deactivation = _stringDeactivation trim ["{}",0];
+	//_deactivation = [_stringDeactivation,"{}"] call CBA_fnc_trim; 
 };
 
 
