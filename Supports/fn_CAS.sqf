@@ -10,10 +10,11 @@ Parameters:
 	1: _attackTypeID : <NUMBER> - 0 - Guns, 1 - Rockets, 2 - Guns & Rockets, 3 - Bomb
 	2: _attackDirection : <NUMBER> - The direction the aircraft should approach from relative to North
 	3: _planeClass : <STRING> - The className of the aircraft
-	4: _attackHeight : <NUMBER> - At what height should the aircraft start firing
-	5: _spawnDistance : <NUMBER> - How far away to spawn the aircraft
-	6: _breakOffDistance : <NUMBER> - The distance to target at which the aircraft should definately disengage and fly away (to not crash)
-	7: _allowDamage : <BOOL> - Allow damage of both the crew and aircraft
+	4: _side : <SIDE> - The side of the plane
+	5: _attackHeight : <NUMBER> - At what height should the aircraft start firing
+	6: _spawnDistance : <NUMBER> - How far away to spawn the aircraft
+	7: _breakOffDistance : <NUMBER> - The distance to target at which the aircraft should definately disengage and fly away (to not crash)
+	8: _allowDamage : <BOOL> - Allow damage of both the crew and aircraft
 
 Returns:
 	NOTHING
@@ -42,12 +43,12 @@ scriptName "KISKA_fnc_CAS";
 #define PLANE_SPEED 75// m/s
 #define PLANE_VELOCITY(THE_SPEED) [0,THE_SPEED,0]
 
-
 params [
 	["_attackPosition",objNull,[[],objNull]],
 	["_attackTypeID",0,[123]],
 	["_attackDirection",0,[123]],
 	["_planeClass","B_Plane_CAS_01_dynamicLoadout_F",[""]],
+	["_side",BLUFOR,[sideUnknown]],
 	["_attackHeight",1300,[123]],
 	["_spawnDistance",2000,[123]],
 	["_breakOffDistance",500,[123]],
@@ -260,8 +261,8 @@ KISKA_fnc_casAttack = {
 ---------------------------------------------------------------------------- */
 private _planeSpawnPosition = _attackPosition getPos [_spawnDistance,_attackDirection + 180];
 _planeSpawnPosition set [2,_attackHeight];
-private _planeSide = (getnumber (_planeCfg >> "side")) call BIS_fnc_sideType;
-private _planeArray = [_planeSpawnPosition,_attackDirection,_planeClass,_planeSide] call BIS_fnc_spawnVehicle;
+//private _planeSide = (getnumber (_planeCfg >> "side")) call BIS_fnc_sideType;
+private _planeArray = [_planeSpawnPosition,_attackDirection,_planeClass,_side] call BIS_fnc_spawnVehicle;
 private _plane = _planeArray select 0;
 private _crew = _planeArray select 1;
 
@@ -352,7 +353,7 @@ while {!(isNull _plane) AND {!(_plane getVariable ["KISKA_completedFiring",false
 		if (!(isNull _plane) AND {!(_plane getVariable ["KISKA_startedFiring",false])}) then {
 			_plane setVariable ["KISKA_startedFiring",true];
 			// create a target to shoot at
-			private _dummyTargetClass = ["LaserTargetE","LaserTargetW"] select (_planeSide getfriend west > 0.6);
+			private _dummyTargetClass = ["LaserTargetE","LaserTargetW"] select (_side getfriend west > 0.6);
 			private _dummyTarget = createvehicle [_dummyTargetClass,[0,0,0],[],0,"NONE"];
 			_plane setVariable ["KISKA_casDummyTarget",_dummyTarget];
 			_dummyTarget setPosASL _attackPosition;	

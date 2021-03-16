@@ -25,13 +25,8 @@ Returns:
 Examples:
     (begin example)
 		[
-			myCenter,
+			player,
 			250,
-			"B_Heli_Attack_01_dynamicLoadout_F",
-			180,
-			20,
-			50,
-			0,
 			"B_Heli_Attack_01_dynamicLoadout_F"
 		] call KISKA_fnc_helicopterGunner;
     (end)
@@ -54,7 +49,6 @@ params [
 	["_supportSpeedLimit",10,[123]],
 	["_flyInHeight",30,[123]],	
 	["_approachBearing",-1,[123]],
-	["_defaultVehicleType","",[""]],
 	["_side",BLUFOR,[sideUnknown]]
 ];
 
@@ -85,15 +79,8 @@ _allVehicleTurrets apply {
 };
 // go to default aircraft type if no suitable turrets are found
 if (_turretsWithWeapons isEqualTo []) exitWith {
-	if (_aircraftType != _defaultVehicleType AND {_defaultVehicleType != ""}) then {
-		[[_aircraftType," does not meet standards for function, falling back to: ",_defaultVehicleType],false] call KISKA_fnc_log;
-		private _newParams = _this;
-		_newParams set [2,_defaultVehicleType];
-		_newParams call BLWK_fnc_passiveHelicopterGunner;
-	} else {
-		[[_aircraftType," does not meet standards for function and there is no default to fall back on"],true] call KISKA_fnc_log;
-		[]
-	};
+	[[_aircraftType," does not meet standards for function!"],true] call KISKA_fnc_log;
+	[]
 };
 
 
@@ -252,7 +239,7 @@ _params spawn {
 	/* ----------------------------------------------------------------------------
 		After support is done
 	---------------------------------------------------------------------------- */
-	[TYPE_CAS_ABORT,_vehicleCrew select 0,_side] call KISKA_fnc_supportRadio;
+	//[TYPE_CAS_ABORT,_vehicleCrew select 0,_side] call KISKA_fnc_supportRadio;
 
 	// remove speed limit
 	_vehicle limitSpeed 9999;

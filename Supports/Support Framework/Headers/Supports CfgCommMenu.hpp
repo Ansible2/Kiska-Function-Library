@@ -110,5 +110,17 @@ class KISKA_testCAS : KISKA_CAS_baseClass
 {
     text = "Test CAS";
     expression = CALL_SUPPORT_MASTER(KISKA_testCAS);
-    vehicleTypes[] = {"B_Plane_CAS_01_dynamicLoadout_F","I_Plane_Fighter_03_dynamicLoadout_F"};
+    vehicleTypes[] = {};
+};
+
+class KISKA_testHeliCAS : KISKA_attackHelicopterCAS_baseClass
+{
+    text = "Test Heli CAS";
+    expression = CALL_SUPPORT_MASTER(KISKA_testHeliCAS);
+    
+    timeOnStation = 180;
+
+    vehicleTypes[] = {"B_Heli_Attack_01_dynamicLoadout_F"};
+    radiuses[] = {250};
+    flyinHeights[] = {50};
 };

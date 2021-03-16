@@ -281,6 +281,8 @@ class CfgFunctions
 			{};
 			class callingForCAS
 			{};
+			class callingForHelicopterCAS
+			{};
 			class commandMenuTree
 			{};
 			class createVehicleSelectMenu
@@ -290,8 +292,6 @@ class CfgFunctions
 			class getAmmoTitleFromId
 			{};
 			class getCasTitleFromId
-			{};
-			class initCommandMenu
 			{};
 			class supportRadio
 			{};

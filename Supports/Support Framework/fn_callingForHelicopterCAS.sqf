@@ -1,6 +1,7 @@
 #include "Headers\Command Menu Macros.hpp"
+#include "Headers\Support Type IDs.hpp"
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_callingForCAS
+Function: KISKA_fnc_callingForHelicopterCAS
 
 Description:
 	Used as a means of expanding on the "expression" property of the CfgCommunicationMenu.
@@ -18,22 +19,24 @@ Parameters:
 		2: _target <OBJECT> - The cursorTarget object of the player
 		3: _is3d <BOOL> - False if in map, true if not
 		4: _commMenuId <NUMBER> The ID number of the Comm Menu added by BIS_fnc_addCommMenuItem
-	2: _useCount <NUMBER> - Used for keeping track of how many of a count a support has left (such as rounds)
+	2: _count <NUMBER> - Used for keeping track of how many of a count a support has left (such as rounds)
+	3: _type <NUMBER> - Determines if either Attack Helicopter CAS or Transport gunners
 
 Returns:
 	NOTHING
 
 Examples:
     (begin example)
-		[] call KISKA_fnc_callingForCAS;
+		[] call KISKA_fnc_callingForHelicopterCAS;
     (end)
 
 Authors:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_callingForCAS";
+scriptName "KISKA_fnc_callingForHelicopterCAS";
 
 #define MIN_RADIUS 200
+#define SPEED_LIMIT 10
 
 params [
 	"_supportClass",
@@ -48,53 +51,29 @@ if (isNull _supportConfig) exitWith {
 	nil
 };
 
+
+private _menuPathArray = [];
+private _menuVariables = []; // keeps track of global variable names to set to nil when done
+
 // get use count from config if -1
 if (_useCount < 0) then {
 	_useCount = getNumber(_supportConfig >> "useCount");
 	_this set [2,_useCount];
 };
 
-private _menuPathArray = [];
-private _menuVariables = []; // keeps track of global variable names to set to nil when done
-
-
 /* ----------------------------------------------------------------------------
 	Vehicle Select Menu
 ---------------------------------------------------------------------------- */
 private _vehicles = [_supportConfig >> "vehicleTypes"] call BIS_fnc_getCfgDataArray;
 if (_vehicles isEqualTo []) then {
+	private _type = _commMenuArgs select 5;
 	// get CBA settings
 	side (_commMenuArgs select 0);
+	_type;
 	hint "CBA Setting Get";
 };
 private _vehicleMenu = [_vehicles] call KISKA_fnc_createVehicleSelectMenu;
 SAVE_AND_PUSH(VEHICLE_SELECT_MENU_STR,_vehicleMenu)
-
-
-/* ----------------------------------------------------------------------------
-	Attack Type Menu
----------------------------------------------------------------------------- */
-private _attackTypeMenu = [
-	["Attack Type",false]
-];
-// get allowed ammo types from config
-private _attackTypes = [_supportConfig >> "attackTypes"] call BIS_fnc_getCfgDataArray;
-
-// create formatted array to use in menu
-private ["_casTitle","_keyCode"];
-{
-	if (_forEachIndex <= MAX_KEYS) then {
-		// key codes are offset by 2 (1 on the number bar is key code 2)
-		_keyCode = _forEachIndex + 2;
-	} else {
-		_keyCode = 0;
-	};
-	_casTitle = [_x] call KISKA_fnc_getCasTitleFromId;
-
-	_attackTypeMenu pushBack STD_LINE_PUSH(_casTitle,_keyCode,_x);
-} forEach _attackTypes;
-
-SAVE_AND_PUSH(ATTACK_TYPE_MENU_STR,_attackTypeMenu)
 
 
 /* ----------------------------------------------------------------------------
@@ -106,26 +85,83 @@ SAVE_AND_PUSH(BEARING_MENU_STR,_bearingsMenu)
 
 
 /* ----------------------------------------------------------------------------
+	Radius Menu
+---------------------------------------------------------------------------- */
+private _selectableRadiuses = [_supportConfig >> "radiuses"] call BIS_fnc_getCfgDataArray;
+if (_selectableRadiuses isEqualTo []) then {
+	// get cba setting
+	hint "Get CBA Setting";
+};
+
+private _keyCode = 0;
+private _radiusMenu = [
+	["Engagment Area",false]
+];
+{
+	if (_forEachIndex <= MAX_KEYS) then {
+		// key codes are offset by 2 (1 on the number bar is key code 2)
+		_keyCode = _forEachIndex + 2;
+	} else {
+		_keyCode = 0;
+	};
+
+	if (_x < MIN_RADIUS) then {
+		_radiusMenu pushBackUnique DISTANCE_LINE(MIN_RADIUS,_keyCode);
+	} else {
+		_radiusMenu pushBackUnique DISTANCE_LINE(_x,_keyCode);
+	};
+} forEach _selectableRadiuses;
+SAVE_AND_PUSH(RADIUS_MENU_STR,_radiusMenu)
+
+
+/* ----------------------------------------------------------------------------
+	flyInHeight Menu
+---------------------------------------------------------------------------- */
+private _flyInHeights = [_supportConfig >> "flyinHeights"] call BIS_fnc_getCfgDataArray;
+if (_flyInHeights isEqualTo []) then {
+	// get CBA settings
+	hint "Get CBA Setting";
+};
+
+private _flyInHeightMenu = [
+	["Altitude",false]
+];
+{
+	_flyInHeightMenu pushBackUnique DISTANCE_LINE(_x,0);
+} forEach _flyInHeights;
+SAVE_AND_PUSH(FLYIN_HEIGHT_MENU_STR,_flyInHeightMenu)
+
+
+
+
+/* ----------------------------------------------------------------------------
 	Create Menu Path
 ---------------------------------------------------------------------------- */
 private _args = _this; // just for readability
 _args pushBack _menuVariables;
 
+private _timeOnStation = [_supportConfig >> "timeOnStation"] call BIS_fnc_getCfgData;
+diag_log _timeOnStation;
+_args pushBack _timeOnStation;
 
 [
 	_menuPathArray,
 	{
-		params ["_vehicleClass","_attackType","_approachBearing"];
-
+		params ["_vehicleClass","_approachBearing","_attackRadius","_flyinHeight"];
+		diag_log _args;
 		private _commMenuArgs = _args select 1;
 		private _targetPosition = _commMenuArgs select 1;
+		private _timeOnStation = _args select 4;
 		[
 			_targetPosition,
-			_attackType,
-			_approachBearing,
+			_attackRadius,
 			_vehicleClass,
-			side (_commMenuArgs select 0)
-		] spawn KISKA_fnc_CAS;
+			_timeOnStation,
+			SPEED_LIMIT,
+			_flyinHeight,
+			_approachBearing,
+			side (_commMenuArgs select 0) // caller side
+		] spawn KISKA_fnc_helicopterGunner;
 		
 		// if support still has uses left
 		private _useCount = _args select 2;

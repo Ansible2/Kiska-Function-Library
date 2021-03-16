@@ -125,7 +125,7 @@ private _canSelectRounds = [_supportConfig >> "canSelectRounds"] call BIS_fnc_ge
 // get default round count from config
 if (_roundCount < 0) then {
 	_roundCount = [_supportConfig >> "roundCount"] call BIS_fnc_getCfgData;
-	_this set [6,_roundCount]; // update round count to be passed to KISKA_fnc_commandMenuTree
+	_this set [2,_roundCount]; // update round count to be passed to KISKA_fnc_commandMenuTree
 };
 
 private _roundsString = "";

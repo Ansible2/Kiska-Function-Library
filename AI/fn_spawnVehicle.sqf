@@ -33,9 +33,9 @@ Author(s):
 scriptName SCRIPT_NAME;
 
 params [
-	["_vehicleClass","",[""]],
 	["_spawnPosition",[0,0,0],[[]]],
 	["_spawnDirection",0,[123]],
+	["_vehicleClass","",[""]],
 	["_group",grpNull,[BLUFOR,grpNull]],
 	["_forcePosition",true,[true]]
 ];
