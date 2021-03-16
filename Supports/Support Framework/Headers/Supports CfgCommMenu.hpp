@@ -1,6 +1,5 @@
 #include "Support Type IDs.hpp"
 #include "Support Icons.hpp"
-#include "Support Classes.hpp"
 #include "CAS Type IDs.hpp"
 #include "Arty Ammo Type IDs.hpp"
 /*
@@ -78,7 +77,7 @@ class KISKA_CAS_baseClass : KISKA_basicSupport_baseClass
         BOMB_CLUSTER_ID
     };
 
-    aircraftTypes[] = {};
+    vehicleTypes[] = {};
 };
 
 class KISKA_attackHelicopterCAS_baseClass : KISKA_basicSupport_baseClass
@@ -88,7 +87,7 @@ class KISKA_attackHelicopterCAS_baseClass : KISKA_basicSupport_baseClass
 
     radiuses[] = {};
     flyinHeights[] = {};
-    aircraftTypes[] = {};
+    vehicleTypes[] = {};
 };
 class KISKA_helicopterCAS_baseClass : KISKA_basicSupport_baseClass
 {
@@ -97,11 +96,19 @@ class KISKA_helicopterCAS_baseClass : KISKA_basicSupport_baseClass
 
     radiuses[] = {};
     flyinHeights[] = {};
-    aircraftTypes[] = {};
+    vehicleTypes[] = {};
 };
 
 class KISKA_testArty : KISKA_artillery_baseClass
 {
     text = "Test Arty";
     expression = CALL_SUPPORT_MASTER(KISKA_testArty);
+    radiuses[] = {100};
+};
+
+class KISKA_testCAS : KISKA_CAS_baseClass
+{
+    text = "Test CAS";
+    expression = CALL_SUPPORT_MASTER(KISKA_testCAS);
+    vehicleTypes[] = {"B_Plane_CAS_01_dynamicLoadout_F","I_Plane_Fighter_03_dynamicLoadout_F"};
 };

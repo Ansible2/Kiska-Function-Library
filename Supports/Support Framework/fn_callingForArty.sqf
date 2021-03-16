@@ -11,15 +11,15 @@ Description:
 	 in the config.
 
 Parameters:
-	0: _commMenuArgs <ARRAY> - The arguements passed by comm menu
+	0: _supportClass <STRING> - The class as defined in the CfgCommunicationMenu
+	1: _commMenuArgs <ARRAY> - The arguements passed by the CfgCommunicationMenu entry
 		0: _caller <OBJECT> - The player calling for support
 		1: _targetPosition <ARRAY> - The position (AGLS) at which the call is being made 
 			(where the player is looking or if in the map, the position where their cursor is)
 		2: _target <OBJECT> - The cursorTarget object of the player
 		3: _is3d <BOOL> - False if in map, true if not
 		4: _commMenuId <NUMBER> The ID number of the Comm Menu added by BIS_fnc_addCommMenuItem
-	1: _supportClass <STRING> - The config path as defined in the CfgCommunicationMenu
-	2: _roundCount <NUMBER> - Number of rounds to allow use of, if < 0, config default amount is used
+	2: _roundCount <NUMBER> - Used for keeping track of how many of a count a support has left (such as rounds)
 
 Returns:
 	NOTHING
@@ -41,8 +41,8 @@ scriptName "KISKA_fnc_callingForArty";
 
 
 params [
-	"_commMenuArgs",
 	"_supportClass",
+	"_commMenuArgs",
 	"_roundCount"
 ];
 
@@ -91,6 +91,7 @@ SAVE_AND_PUSH(AMMO_TYPE_MENU_GVAR,_ammoMenu)
 private _selectableRadiuses = [_supportConfig >> "radiuses"] call BIS_fnc_getCfgDataArray;
 if (_selectableRadiuses isEqualTo []) then {
 	// get cba setting
+	hint "CBA Setting Get";
 };
 
 private _radiusMenu = [
@@ -149,8 +150,8 @@ SAVE_AND_PUSH(ROUND_COUNT_MENU_GVAR,_roundsMenu)
 /* ----------------------------------------------------------------------------
 	Create Menu
 ---------------------------------------------------------------------------- */
-private _params = _this; // just for readability
-_params pushBack _menuVariables;
+private _args = _this; // just for readability
+_args pushBack _menuVariables;
 
 
 [
@@ -158,7 +159,8 @@ _params pushBack _menuVariables;
 	{
 		params ["_ammo","_radius","_numberOfRounds"];
 
-		private _targetPosition = (_args select 0) select 1;
+		private _commMenuArgs = _args select 1;
+		private _targetPosition = _commMenuArgs select 1;
 		[_targetPosition,_ammo,_radius,_numberOfRounds] spawn KISKA_fnc_virtualArty;
 		
 		// if support still has rounds available, add it back with the new round count
@@ -170,7 +172,7 @@ _params pushBack _menuVariables;
 
 		UNLOAD_GLOBALS
 	},
-	_params,
+	_args,
 	{
 		ADD_SUPPORT_BACK(_args select 2)
 		UNLOAD_GLOBALS

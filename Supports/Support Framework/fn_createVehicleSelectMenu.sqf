@@ -23,7 +23,7 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_createVehicleSelectMenu";
 
-#define CLASS_ARRAY(DISPLAY_NAME) [DISPLAY_NAME,0,"",CMD_EXECUTE,[["expression", PUSHBACK_AND_PROCEED(DISPLAY_NAME)]], IS_ACTIVE, IS_VISIBLE]
+#define CLASS_ARRAY(DISPLAY_NAME,CLASS) [DISPLAY_NAME,[0],"",CMD_EXECUTE,[["expression", PUSHBACK_AND_PROCEED(CLASS)]], IS_ACTIVE, IS_VISIBLE]
 
 params ["_classes"];
 
@@ -38,7 +38,7 @@ private _formattedArray = [
 private "_displayName";
 _classes apply {
 	_displayName = [configFile >> "cfgVehicles" >> _x] call BIS_fnc_displayName;
-	_formattedArray pushBack CLASS_ARRAY(_displayName);
+	_formattedArray pushBack CLASS_ARRAY(_displayName,_x);
 };
 
 

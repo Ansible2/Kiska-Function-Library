@@ -1,4 +1,3 @@
-#include "Headers\Arty Ammo Classes.hpp"
 #include "Headers\Command Menu Macros.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_callingForCAS
@@ -11,15 +10,15 @@ Description:
 	 in the config.
 
 Parameters:
-	0: _commMenuArgs <ARRAY> - The arguements passed by comm menu
+	0: _supportClass <STRING> - The class as defined in the CfgCommunicationMenu
+	1: _commMenuArgs <ARRAY> - The arguements passed by the CfgCommunicationMenu entry
 		0: _caller <OBJECT> - The player calling for support
 		1: _targetPosition <ARRAY> - The position (AGLS) at which the call is being made 
 			(where the player is looking or if in the map, the position where their cursor is)
 		2: _target <OBJECT> - The cursorTarget object of the player
 		3: _is3d <BOOL> - False if in map, true if not
 		4: _commMenuId <NUMBER> The ID number of the Comm Menu added by BIS_fnc_addCommMenuItem
-	1: _supportClass <STRING> - The config path as defined in the CfgCommunicationMenu
-	2: _useCount <NUMBER> - Number of uses in the support left, if < 2, one use is allowed
+	2: _count <NUMBER> - Used for keeping track of how many of a count a support has left (such as rounds)
 
 Returns:
 	NOTHING
@@ -40,10 +39,9 @@ scriptName "KISKA_fnc_callingForCAS";
 #define ATTACK_TYPE_MENU "KISKA_attackType_menu"
 #define BEARING_MENU "KISKA_bearing_menu"
 
-
 params [
-	"_commMenuArgs",
 	"_supportClass",
+	"_commMenuArgs",
 	"_useCount"
 ];
 
@@ -62,10 +60,11 @@ private _menuVariables = []; // keeps track of global variable names to set to n
 /* ----------------------------------------------------------------------------
 	Vehicle Select Menu
 ---------------------------------------------------------------------------- */
-private _vehicles = [_supportConfig >> "aircraftTypes"] call BIS_fnc_getCfgDataArray;
+private _vehicles = [_supportConfig >> "vehicleTypes"] call BIS_fnc_getCfgDataArray;
 if (_vehicles isEqualTo []) then {
-	side (_commMenuArgs select 0)
 	// get CBA settings
+	side (_commMenuArgs select 0);
+	hint "CBA Setting Get";
 };
 private _vehicleMenu = [_vehicles] call KISKA_fnc_createVehicleSelectMenu;
 SAVE_AND_PUSH(VEHICLE_SELECT_MENU,_vehicleMenu)
@@ -119,8 +118,8 @@ SAVE_AND_PUSH(BEARING_MENU,_bearingsMenu)
 /* ----------------------------------------------------------------------------
 	Create Menu
 ---------------------------------------------------------------------------- */
-private _params = _this; // just for readability
-_params pushBack _menuVariables;
+private _args = _this; // just for readability
+_args pushBack _menuVariables;
 
 
 [
@@ -128,7 +127,8 @@ _params pushBack _menuVariables;
 	{
 		params ["_vehicleClass","_attackType","_approachBearing"];
 
-		private _targetPosition = (_args select 0) select 1;
+		private _commMenuArgs = _args select 1;
+		private _targetPosition = _commMenuArgs select 1;
 		[_targetPosition,_attackType,_approachBearing,_vehicleClass] spawn KISKA_fnc_CAS;
 		
 		// if support still has uses left
@@ -140,7 +140,7 @@ _params pushBack _menuVariables;
 
 		UNLOAD_GLOBALS
 	},
-	_params,
+	_args,
 	{
 		ADD_SUPPORT_BACK(_args select 2)
 		UNLOAD_GLOBALS
