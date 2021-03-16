@@ -114,3 +114,38 @@ _bearingsMenu =
 ];
 
 SAVE_AND_PUSH(BEARING_MENU,_bearingsMenu)
+
+
+/* ----------------------------------------------------------------------------
+	Create Menu
+---------------------------------------------------------------------------- */
+private _params = _this; // just for readability
+_params pushBack _menuVariables;
+
+
+[
+	_menuPathArray,
+	{
+		params ["_vehicleClass","_attackType","_approachBearing"];
+
+		private _targetPosition = (_args select 0) select 1;
+		[_targetPosition,_attackType,_approachBearing,_vehicleClass] spawn KISKA_fnc_CAS;
+		
+		// if support still has uses left
+		private _useCount = _args select 2;
+		if (_useCount > 1) then {
+			_useCount = _useCount - 1;
+			ADD_SUPPORT_BACK(_useCount)
+		};
+
+		UNLOAD_GLOBALS
+	},
+	_params,
+	{
+		ADD_SUPPORT_BACK(_args select 2)
+		UNLOAD_GLOBALS
+	}
+] spawn KISKA_fnc_commandMenuTree;
+
+
+nil
