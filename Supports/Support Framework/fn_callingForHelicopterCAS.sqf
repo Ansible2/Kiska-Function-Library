@@ -141,14 +141,13 @@ private _args = _this; // just for readability
 _args pushBack _menuVariables;
 
 private _timeOnStation = [_supportConfig >> "timeOnStation"] call BIS_fnc_getCfgData;
-diag_log _timeOnStation;
 _args pushBack _timeOnStation;
 
 [
 	_menuPathArray,
 	{
 		params ["_vehicleClass","_approachBearing","_attackRadius","_flyinHeight"];
-		diag_log _args;
+
 		private _commMenuArgs = _args select 1;
 		private _targetPosition = _commMenuArgs select 1;
 		private _timeOnStation = _args select 4;
@@ -163,6 +162,8 @@ _args pushBack _timeOnStation;
 			side (_commMenuArgs select 0) // caller side
 		] spawn KISKA_fnc_helicopterGunner;
 		
+		[SUPPORT_TYPE_HELI_CAS] call KISKA_fnc_supportNotification;
+
 		// if support still has uses left
 		private _useCount = _args select 2;
 		if (_useCount > 1) then {

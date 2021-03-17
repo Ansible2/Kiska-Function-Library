@@ -127,6 +127,8 @@ _args pushBack _menuVariables;
 			side (_commMenuArgs select 0)
 		] spawn KISKA_fnc_CAS;
 		
+		[SUPPORT_TYPE_CAS] call KISKA_fnc_supportNotification;
+
 		// if support still has uses left
 		private _useCount = _args select 2;
 		if (_useCount > 1) then {

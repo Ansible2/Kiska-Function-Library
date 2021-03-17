@@ -163,6 +163,8 @@ _args pushBack _menuVariables;
 		private _targetPosition = _commMenuArgs select 1;
 		[_targetPosition,_ammo,_radius,_numberOfRounds] spawn KISKA_fnc_virtualArty;
 		
+		[SUPPORT_TYPE_ARTY] call KISKA_fnc_supportNotification;
+
 		// if support still has rounds available, add it back with the new round count
 		private _roundsAvailable = _args select 2;
 		if (_numberOfRounds < _roundsAvailable) then {

@@ -293,6 +293,8 @@ class CfgFunctions
 			{};
 			class getCasTitleFromId
 			{};
+			class supportNotification
+			{};
 			class supportRadio
 			{};
 			class updateFlareEffects
@@ -417,4 +419,10 @@ class CfgFunctions
 class CfgCommunicationMenu
 {
 	#include "Supports\Support Framework\Headers\Supports CfgCommMenu.hpp"
+};
+
+class Extended_PreInit_EventHandlers {
+    class support_settings_preInitEvent {
+        init = "call compileScript ['KISKA_functions\Supports\Support Framework\Scripts\addSupportCbaSettings.sqf'];";
+    };
 };

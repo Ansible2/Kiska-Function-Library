@@ -26,7 +26,7 @@ scriptName "KISKA_fnc_supportRadio";
 params [
 	"_messageType",
 	["_caller",player,[objNull]],
-	["_targets",side player,[123,objNull,"",BLUFOR,grpNull,[]]]
+	["_targets",player,[123,objNull,"",BLUFOR,grpNull,[]]]
 ];
 
 private _fn_selectMessage = {
