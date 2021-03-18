@@ -30,13 +30,10 @@ scriptName "KISKA_fnc_supportNotification";
 #define TEXT_ONLY 2
 #define BOTH 3
 
-#define GET_GLOBAL(GVAR) \ 
-	private _notificationSetting = missionNamespace getVariable [GVAR,0]; \
-	if (_notificationSetting isEqualTo NONE) exitWith {};
-
 #define GET_NOTIFCAITON(GVAR,SUPPORT_ID,RADIO_ID) \
-	GET_GLOBAL(GVAR)
 	if (_supportTypeId isEqualTo SUPPORT_ID) exitWith { \
+		private _notificationSetting = missionNamespace getVariable [GVAR,0]; \
+		if (_notificationSetting isEqualTo NONE) exitWith {}; \
 		if (_notificationSetting isEqualTo RADIO_ONLY) exitWith { \
 			[RADIO_ID] call KISKA_fnc_supportRadio; \
 		}; \
@@ -45,9 +42,9 @@ scriptName "KISKA_fnc_supportNotification";
 		}; \
 		if (_notificationSetting isEqualTo BOTH) exitWith { \
 			[RADIO_ID] call KISKA_fnc_supportRadio; \
-			["Request Received",0,false] call KISKA_fnc_datalinkMsg;
+			["Request Received",0,false] call KISKA_fnc_datalinkMsg; \
 		}; \
-	}; \
+	};
 
 
 if (!hasInterface) exitWith {};
