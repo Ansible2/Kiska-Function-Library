@@ -1,8 +1,4 @@
-#include "Headers\CAS Type IDs.hpp"
-#include "Headers\Arty Ammo Type IDs.hpp"
-#include "Headers\Command Menus.hpp"
 #include "Headers\Command Menu Macros.hpp"
-#include "Headers\Arty Ammo Classes.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_buildCommandMenu
 
