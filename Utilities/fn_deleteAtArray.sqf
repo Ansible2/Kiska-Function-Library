@@ -37,6 +37,7 @@ if (_arrayVariableName isEqualTo "") exitWith {
 };
 
 private _array = _namespace getVariable [_arrayVariableName,[]];
+if (_array isEqualTo []) exitWith {false};
 
 _array deleteAt _indexToRemove;
 
