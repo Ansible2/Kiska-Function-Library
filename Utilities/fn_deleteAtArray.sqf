@@ -17,9 +17,7 @@ Returns:
 
 Examples:
     (begin example)
-
 		["myGlobalArrayVar",someInfoHere] call KISKA_fnc_deleteAtArray;
-
     (end)
 
 Author(s):
@@ -34,12 +32,13 @@ params [
 ];
 
 if (_arrayVariableName isEqualTo "") exitWith {
-	"KISKA_fnc_deleteAtArray: Array variable name is empty string" call BIS_fnc_error;
+	["Array variable name is empty string",true] call KISKA_fnc_log;
 	false
 };
 
 private _array = _namespace getVariable [_arrayVariableName,[]];
 
 _array deleteAt _indexToRemove;
+
 
 true

@@ -17,9 +17,7 @@ Returns:
 
 Examples:
     (begin example)
-
 		["myGlobalArrayVar",someInfoHere,missionNamespace] call KISKA_fnc_pushBackToArray;
-
     (end)
 
 Author(s):
@@ -34,14 +32,12 @@ params [
 ];
 
 if (isNil "_entryToAdd") exitWith {
-	"KISKA_fnc_pushBackToArray: _entryToAdd was undefined, nothing to pushback" call BIS_fnc_error;
-
+	["_entryToAdd was undefined, nothing to pushback",true] call KISKA_fnc_log;
 	false
 };
 
 if (_arrayVariableName isEqualTo "") exitWith {
-	"KISKA_fnc_pushBackToArray: Array variable name is empty string" call BIS_fnc_error;
-
+	["Array variable name is empty string",true] call KISKA_fnc_log;
 	false
 };
 
