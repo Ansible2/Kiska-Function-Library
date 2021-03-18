@@ -42,7 +42,7 @@ KISKA_fnc_supportManager_onLoad_supportPool = {
 			lbClear _poolControl;
 		};
 
-		// subtracting 1 from these to used the number of array indexes
+		// subtracting 1 from these to get indexes
 		private _countOfDisplayed = (count _supportPool_displayed) - 1;
 		private _countOfCurrent = (count POOL_GVAR) - 1;
 		
@@ -110,34 +110,107 @@ KISKA_fnc_supportManager_onLoad_supportPool = {
 
 KISKA_fnc_supportManager_onLoad_buttons = {
 	params ["_display"];
-//[["DATALINK",1.1,[0.75,0,0,1]],_message,false] call CBA_fnc_notify;
+	//[["DATALINK",1.1,[0.75,0,0,1]],_message,false] call CBA_fnc_notify;
 	(_display displayCtrl SM_TAKE_BUTTON_IDC) ctrlAddEventHandler ["ButtonClick",{
-		params ["_control"];
-		// make sure to also get the number of uses a support has (assuming it was used) and pass that param
-		// use a hash with ids
+		call KISKA_fnc_supportManager_take_buttonClickEvent;
 	}];
 
 	(_display displayCtrl SM_STORE_BUTTON_IDC) ctrlAddEventHandler ["ButtonClick",{
-		params ["_control"];
-		// need to figure out a way to get the number of uses a support has left
+		call KISKA_fnc_supportManager_store_buttonClickEvent;
 	}];
 
 	(_display displayCtrl SM_CLOSE_BUTTON_IDC) ctrlAddEventHandler ["ButtonClick",{
-		params ["_control"];
-		//hint ""; // get rid of hints
 		(uiNamespace getVariable "KISKA_sm_display") closeDisplay 2;
 	}];
 };
 
 KISKA_fnc_supportManager_take_buttonClickEvent = {
+	if (count (player getVariable ["BIS_fnc_addCommMenuItem_menu",[]]) isEqualTo 10) then {
+		[["Error",1.1,[0.75,0,0,1]],"You already have the max supports possible",false] call CBA_fnc_notify;
+	} else {
+		private _selectedIndex = lbCurSel (uiNamespace getVariable "KISKA_SM_poolListBox_ctrl");
+		if (_selectedIndex isNotEqualTo -1) then {
+			private _support = POOL_GVAR select _selectedIndex;
+			if (_support isEqualType []) then {
+				// adding number of allowed uses
+				[player,_support select 0,"",_support select 1] call KISKA_fnc_addCommMenuItem;
+			} else {
+				[player,_support] call KISKA_fnc_addCommMenuItem;
+			};
 
+			[_selectedIndex] remoteExecCall ["KISKA_fnc_supportManager_removeFromPool",(call CBA_fnc_players),true];
+		};
+	};
+};
+
+KISKA_fnc_supportManager_store_buttonClickEvent = {
+	private _selectedIndex = lbCurSel (uiNamespace getVariable "KISKA_SM_currentListBox_ctrl");
+
+	if (_selectedIndex isNotEqualTo -1) then {
+		private _menuArray = player getVariable ["BIS_fnc_addCommMenuItem_menu",[]];
+		private _supportArray = _menuArray select _selectedIndex;
+		private _menuId = _supportArray select 0;
+		private _support = KISKA_supportHash deleteAt _menuId;
+
+		// if support number of uses is default amount
+		if ((_support select 1) isEqualTo -1) then {
+			_support = _support select 0;
+		};
+		[_support] remoteExecCall ["KISKA_fnc_supportManager_addToPool",(call CBA_fnc_players),true];
+		[player,_menuId] call BIS_fnc_removeCommMenuItem;
+
+	};
 };
 
 KISKA_fnc_supportManager_updateCurrentList = {
-
+	private _listControl = uiNamespace getVariable "KISKA_SM_currentListBox_ctrl";
+	if (isNil "KISKA_supportHash") then {
+		lbClear _listControl;
+	} else {
+		private ["_config","_text","_class","_toolTip","_path"];
+		{
+			_class = _y select 0;
+			_config = [["cfgCommunicationMenu",_class]] call KISKA_fnc_findConfigAny;
+			_toolTip = getText(_config >> "tooltip"); 
+			_text = getText(_config >> "text");
+			
+			_path = _listControl lbAdd _text;
+			_listControl lbSetTooltip [_path,_toolTip];
+		} forEach KISKA_supportHash;
+	};
 };
 
+KISKA_fnc_supportManager_removeFromPool = {
+	if (!hasInterface) exitWith {};
 
+	params ["_index"];
 
+	private _array = missionNamespace getVariable [TO_STRING(POOL_GVAR),[]];
+	if (_array isNotEqualTo []) then {
+		_array deleteAt _index;
+	};
+};
 
-[[1,"Test Heli CAS","","[bis_o1,1] call bis_fnc_removeCommMenuItem;_this = [bis_o1,_pos,_target,_is3D,1];[""KISKA_testHeliCAS"",_this,-1] call KISKA_fnc_callingForSupportMaster","cursorOnGround","","\a3\Ui_f\data\GUI\Cfg\CommunicationMenu\call_ca.paa",""]]
+KISKA_fnc_supportManager_addToPool = {
+	if (!hasInterface) exitWith {};
+
+	params [
+		["_entryToAdd","",["",[]]]
+	];
+
+	if (_entryToAdd isEqualTo "" OR {_entryToAdd isEqualTo []}) exitWith {
+		["_entryToAdd is empty!",true] call KISKA_fnc_log;
+		nil
+	};
+
+	// verify class is defined
+	private _class = [_entryToAdd,_entryToAdd select 0] select (_entryToAdd isEqualType []);
+	private _config = [["CfgCommunicationMenu",_class]] call KISKA_fnc_findConfigAny;
+	if (isNull _config) exitWith {
+		[[_class," is not defined in any CfgCommunicationMenu!"],true] call KISKA_fnc_log;
+		nil
+	};
+
+	private _array = missionNamespace getVariable [TO_STRING(POOL_GVAR),[]];
+	_array pushBack _entryToAdd;
+};
