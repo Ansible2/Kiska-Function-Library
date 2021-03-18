@@ -1,7 +1,4 @@
-#include "Headers\CAS Type IDs.hpp"
-#include "Headers\Arty Ammo Type IDs.hpp"
-#include "Headers\Command Menus.hpp"
-#include "Headers\Arty Ammo Classes.hpp"
+#include "Headers\Command Menu Macros.hpp"
 #include "Headers\Support Type IDs.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_callingForSupportMaster
@@ -37,14 +34,14 @@ Authors:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_callingForSupportMaster";
 
-#define ADD_SUPPORT_BACK_MENU(CALLER,CLASS,ARGS) [CALLER,CLASS,nil,nil,""] call KISKA_fnc_addCommMenuItem;
-
 params [
 	["_supportClass","",[""]],
 	"_commMenuArgs",
 	["_count",-1]
 ];
 
+// delete from use hash
+KISKA_supportUsesHash deleteAt (_commMenuArgs select 4);
 
 private _supportConfig = [["CfgCommunicationMenu",_supportClass]] call KISKA_fnc_findConfigAny;
 private _supportTypeId = [_supportConfig >> "supportTypeId"] call BIS_fnc_getCfgData;
