@@ -19,6 +19,7 @@ Examples:
 Authors:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+disableSerialization;
 scriptName "KISKA_fnc_supportManager_take_buttonClickEvent";
 
 // support menu only supports a max of ten at a time

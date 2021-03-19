@@ -19,6 +19,7 @@ Examples:
 Authors:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+disableSerialization;
 scriptName "KISKA_fnc_supportManager_addToPool";
 
 if (!hasInterface) exitWith {};

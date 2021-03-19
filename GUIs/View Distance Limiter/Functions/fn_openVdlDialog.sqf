@@ -21,6 +21,4 @@ Author(s):
 ---------------------------------------------------------------------------- */
 if (!hasInterface) exitWith {false};
 
-disableSerialization;
-
 createDialog VIEW_DISTANCE_LIMITER_DIALOG_STR;

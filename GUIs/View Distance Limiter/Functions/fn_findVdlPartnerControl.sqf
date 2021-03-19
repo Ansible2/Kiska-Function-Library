@@ -20,10 +20,9 @@ Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 #define CONTROL(IDC) (findDisplay VIEW_DISTANCE_LIMITER_DIALOG_IDD) displayCtrl IDC
+disableSerialization;
 
 if (!hasInterface) exitWith {};
-
-disableSerialization;
 
 params [
 	["_controlIDC",controlNull,[controlNull,123]]

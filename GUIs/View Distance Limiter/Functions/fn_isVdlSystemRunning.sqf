@@ -22,8 +22,6 @@ Author(s):
 ---------------------------------------------------------------------------- */
 if (!hasInterface) exitWith {false};
 
-disableSerialization;
-
 private _isRunning = missionNamespace getVariable [VDL_GLOBAL_RUN_STR,false];
 
 _isRunning

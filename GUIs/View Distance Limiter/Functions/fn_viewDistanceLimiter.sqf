@@ -37,8 +37,6 @@ if (!canSuspend) exitWith {
 	_this spawn KISKA_fnc_viewDistanceLimiter
 };
 
-disableSerialization;
-
 params [
 	["_targetFPS",missionNamespace getVariable [VDL_GLOBAL_FPS_STR,60],[123]],
 	["_checkFreq",missionNamespace getVariable [VDL_GLOBAL_FREQ_STR,3],[123]],
