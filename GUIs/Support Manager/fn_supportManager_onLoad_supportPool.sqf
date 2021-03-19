@@ -20,6 +20,7 @@ Examples:
 Authors:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+disableSerialization;
 scriptName "KISKA_fnc_supportManager_onLoad_supportPool";
 
 if (!canSuspend) exitWith {
