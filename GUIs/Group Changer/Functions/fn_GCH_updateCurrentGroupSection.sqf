@@ -2,19 +2,22 @@
 Function: KISKA_fnc_GCH_updateCurrentGroupSection
 
 Description:
-	Updates the current group list in the GCH GUI with either showing AI in a
-	 group or not
+	Updates the individual components of the current group section of the GUI.
 
 Parameters:
-	0: _showAi <BOOL> - true to include AI in the list, false to not
+	0: _updateUnitList <BOOL> - Updates the list of units
+	1: _updateLeaderIndicator <BOOL> - Updates the text that shows the leader's name
+	2: _updateGroupId <BOOL> - Updates the group's ID name
+	3: _updateCanDeleteCombo <BOOL> - Updates the state of the can delete combo list
+	4: _updateCanRallyCombo <BOOL> - Updates the state of the can delete combo list
 
 Returns:
 	NOTHING
 
 Examples:
     (begin example)
-		// update list to not show AI
-        [false] call KISKA_fnc_GCH_updateCurrentGroupSection;
+		// update just the unit list
+        [true] call KISKA_fnc_GCH_updateCurrentGroupSection;
     (end)
 
 Author:
