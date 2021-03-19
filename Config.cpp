@@ -293,6 +293,8 @@ class CfgFunctions
 			{};
 			class getCasTitleFromId
 			{};
+			class getSupportVehicleClasses
+			{};
 			class supportNotification
 			{};
 			class supportRadio

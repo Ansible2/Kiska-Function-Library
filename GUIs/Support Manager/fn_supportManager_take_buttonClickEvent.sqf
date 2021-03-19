@@ -22,7 +22,7 @@ Authors:
 scriptName "KISKA_fnc_supportManager_take_buttonClickEvent";
 
 // support menu only supports a max of ten at a time
-private _maxAllowedSupports = missionNamespace setVariable ["KISKA_supportManager_maxSupports",10];
+private _maxAllowedSupports = missionNamespace setVariable ["KISKA_CBA_supportManager_maxSupports",10];
 if (count (player getVariable ["BIS_fnc_addCommMenuItem_menu",[]]) isEqualTo _maxAllowedSupports) then { // make setting
 	
 	[["Error",1.1,[0.75,0,0,1]],"You already have the max supports possible",false] call CBA_fnc_notify;

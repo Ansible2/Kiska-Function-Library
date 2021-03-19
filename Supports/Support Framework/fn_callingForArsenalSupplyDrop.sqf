@@ -1,7 +1,7 @@
 #include "Headers\Command Menu Macros.hpp"
 #include "Headers\Support Type IDs.hpp"
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_callingForCAS
+Function: KISKA_fnc_callingForArsenalSupplyDrop
 
 Description:
 	Used as a means of expanding on the "expression" property of the CfgCommunicationMenu.
@@ -18,24 +18,26 @@ Parameters:
 			(where the player is looking or if in the map, the position where their cursor is)
 		2: _target <OBJECT> - The cursorTarget object of the player
 		3: _is3d <BOOL> - False if in map, true if not
-		4: _commMenuId <NUMBER> The ID number of the Comm Menu added by BIS_fnc_addCommMenuItem
+		4: _commMenuId <NUMBER> - The ID number of the Comm Menu added by BIS_fnc_addCommMenuItem
 		5: _supportType <NUMBER> - The Support Type ID
-	2: _useCount <NUMBER> - Used for keeping track of how many of a count a support has left (such as rounds)
+	2: _count <NUMBER> - Used for keeping track of how many of a count a support has left (such as rounds)
+	3: _type <NUMBER> - Determines if either Attack Helicopter CAS or Transport gunners
 
 Returns:
 	NOTHING
 
 Examples:
     (begin example)
-		[] call KISKA_fnc_callingForCAS;
+		[] call KISKA_fnc_callingForArsenalSupplyDrop;
     (end)
 
 Authors:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_callingForCAS";
+scriptName "KISKA_fnc_callingForArsenalSupplyDrop";
 
-#define MIN_RADIUS 200
+#define FLYIN_RADIUS 2000
+#define ARSENAL_LIFETIME -1
 
 params [
 	"_supportClass",
@@ -50,15 +52,15 @@ if (isNull _supportConfig) exitWith {
 	nil
 };
 
+
+private _menuPathArray = [];
+private _menuVariables = []; // keeps track of global variable names to set to nil when done
+
 // get use count from config if -1
 if (_useCount < 0) then {
 	_useCount = getNumber(_supportConfig >> "useCount");
 	_this set [2,_useCount];
 };
-
-private _menuPathArray = [];
-private _menuVariables = []; // keeps track of global variable names to set to nil when done
-
 
 /* ----------------------------------------------------------------------------
 	Vehicle Select Menu
@@ -73,32 +75,6 @@ SAVE_AND_PUSH(VEHICLE_SELECT_MENU_STR,_vehicleMenu)
 
 
 /* ----------------------------------------------------------------------------
-	Attack Type Menu
----------------------------------------------------------------------------- */
-private _attackTypeMenu = [
-	["Attack Type",false]
-];
-// get allowed ammo types from config
-private _attackTypes = [_supportConfig >> "attackTypes"] call BIS_fnc_getCfgDataArray;
-
-// create formatted array to use in menu
-private ["_casTitle","_keyCode"];
-{
-	if (_forEachIndex <= MAX_KEYS) then {
-		// key codes are offset by 2 (1 on the number bar is key code 2)
-		_keyCode = _forEachIndex + 2;
-	} else {
-		_keyCode = 0;
-	};
-	_casTitle = [_x] call KISKA_fnc_getCasTitleFromId;
-
-	_attackTypeMenu pushBack STD_LINE_PUSH(_casTitle,_keyCode,_x);
-} forEach _attackTypes;
-
-SAVE_AND_PUSH(ATTACK_TYPE_MENU_STR,_attackTypeMenu)
-
-
-/* ----------------------------------------------------------------------------
 	Bearings Menu
 ---------------------------------------------------------------------------- */
 _bearingsMenu = BEARING_MENU;
@@ -107,28 +83,45 @@ SAVE_AND_PUSH(BEARING_MENU_STR,_bearingsMenu)
 
 
 /* ----------------------------------------------------------------------------
+	flyInHeight Menu
+---------------------------------------------------------------------------- */
+private _flyInHeights = [_supportConfig >> "flyinHeights"] call BIS_fnc_getCfgDataArray;
+private _flyInHeightMenu = [
+	["Altitude",false]
+];
+{
+	_flyInHeightMenu pushBackUnique DISTANCE_LINE(_x,0);
+} forEach _flyInHeights;
+SAVE_AND_PUSH(FLYIN_HEIGHT_MENU_STR,_flyInHeightMenu)
+
+
+
+
+/* ----------------------------------------------------------------------------
 	Create Menu Path
 ---------------------------------------------------------------------------- */
 private _args = _this; // just for readability
 _args pushBack _menuVariables;
 
-
 [
 	_menuPathArray,
 	{
-		params ["_vehicleClass","_attackType","_approachBearing"];
+		params ["_vehicleClass","_approachBearing","_flyinHeight"];
 
 		private _commMenuArgs = _args select 1;
-		private _targetPosition = _commMenuArgs select 1;
-		[
-			_targetPosition,
-			_attackType,
-			_approachBearing,
-			_vehicleClass,
-			side (_commMenuArgs select 0)
-		] spawn KISKA_fnc_CAS;
+		private _dropPosition = _commMenuArgs select 1;
 		
-		[SUPPORT_TYPE_CAS] call KISKA_fnc_supportNotification;
+		[
+			_dropPosition,
+			_vehicleClass,
+			_flyinHeight,
+			_approachBearing,
+			FLYIN_RADIUS,
+			ARSENAL_LIFETIME,
+			side (_commMenuArgs select 0)
+		] call KISKA_fnc_arsenalSupplyDrop;
+		
+		[SUPPORT_TYPE_ARSENAL_DROP] call KISKA_fnc_supportNotification;
 
 		// if support still has uses left
 		private _useCount = _args select 2;

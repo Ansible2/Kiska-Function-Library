@@ -18,7 +18,8 @@ Parameters:
 			(where the player is looking or if in the map, the position where their cursor is)
 		2: _target <OBJECT> - The cursorTarget object of the player
 		3: _is3d <BOOL> - False if in map, true if not
-		4: _commMenuId <NUMBER> The ID number of the Comm Menu added by BIS_fnc_addCommMenuItem
+		4: _commMenuId <NUMBER> - The ID number of the Comm Menu added by BIS_fnc_addCommMenuItem
+		5: _supportType <NUMBER> - The Support Type ID
 	2: _count <NUMBER> - Used for keeping track of how many of a count a support has left (such as rounds)
 	3: _type <NUMBER> - Determines if either Attack Helicopter CAS or Transport gunners
 
@@ -66,12 +67,9 @@ if (_useCount < 0) then {
 ---------------------------------------------------------------------------- */
 private _vehicles = [_supportConfig >> "vehicleTypes"] call BIS_fnc_getCfgDataArray;
 if (_vehicles isEqualTo []) then {
-	private _type = _commMenuArgs select 5;
-	// get CBA settings
-	side (_commMenuArgs select 0);
-	_type;
-	hint "CBA Setting Get";
+	_vehicles = [side (_commMenuArgs select 0),_commMenuArgs select 5] call KISKA_fnc_getSupportVehicleClasses;
 };
+
 private _vehicleMenu = [_vehicles] call KISKA_fnc_createVehicleSelectMenu;
 SAVE_AND_PUSH(VEHICLE_SELECT_MENU_STR,_vehicleMenu)
 

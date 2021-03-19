@@ -35,7 +35,7 @@ if (isNil TO_STRING(POOL_GVAR)) then {
 	missionNamespace setVariable [TO_STRING(POOL_GVAR),[]];
 };
 
-private _usedIconColor = missionNamespace getVariable ["KISKA_supportManager_usedIconColor",[0.75,0,0,1]];
+private _usedIconColor = missionNamespace getVariable ["KISKA_CBA_supportManager_usedIconColor",[0.75,0,0,1]];
 private _fn_updateSupportPoolList = {
 	
 	if (POOL_GVAR isEqualTo []) exitWith {

@@ -11,7 +11,7 @@ Parameters:
 */
 
 [
-    "KISKA_supportManager_usedIconColor",
+    "KISKA_CBA_supportManager_usedIconColor",
     "COLOR",
     ["Color of Used Support Icons","When a support was already used, it's icon will show this color"],
     ["KISKA Support Manager Settings","Colors"],
@@ -21,7 +21,7 @@ Parameters:
 
 
 [
-    "KISKA_supportManager_maxSupports",
+    "KISKA_CBA_supportManager_maxSupports",
     "LIST",
     ["Max Number Of Menu Items","The total number of supports that can be stored in a single player's communication support menu"],
     ["KISKA Support Manager Settings","Misc"],

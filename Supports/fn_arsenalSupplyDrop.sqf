@@ -33,7 +33,7 @@ params [
 	["_dropAlt",200,[123]],
 	["_flyDirection",-1,[123]],
 	["_flyInRadius",2000,[123]],
-	["_lifeTime",600,[123]],
+	["_lifeTime",-1,[123]],
 	["_side",BLUFOR,[sideUnknown]]
 ];
 
@@ -104,16 +104,19 @@ private _flyToPosition = _dropPosition getPos [_flyInRadius,_relativeDirection];
 	clearBackpackCargoGlobal _arsenalBox;
 	clearItemCargoGlobal _arsenalBox;
 	
-	// make sure it's on the ground before we start the countdown to deletetion
-	waitUntil {
-		if (((getPosATL _arsenalBox) select 2) < 2) exitWith {true};
-		sleep 5;
-		false
+	if (_lifeTime > 0) then {
+		// make sure it's on the ground before we start the countdown to deletetion
+		waitUntil {
+			if (((getPosATL _arsenalBox) select 2) < 2) exitWith {true};
+			sleep 5;
+			false
+		};
+	
+	
+		sleep _lifeTime;
+	
+		deleteVehicle _arsenalBox;
 	};
-	
-	sleep _lifeTime;
-	
-	deleteVehicle _arsenalBox;
 };
 
 

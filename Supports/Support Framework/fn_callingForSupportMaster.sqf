@@ -45,6 +45,7 @@ KISKA_supportHash deleteAt (_commMenuArgs select 4);
 
 private _supportConfig = [["CfgCommunicationMenu",_supportClass]] call KISKA_fnc_findConfigAny;
 private _supportTypeId = [_supportConfig >> "supportTypeId"] call BIS_fnc_getCfgData;
+_commMenuArgs pushBack _supportTypeId;
 
 if (_supportTypeId isEqualTo SUPPORT_TYPE_ARTY) exitWith {
 	_this call KISKA_fnc_callingForArty;
@@ -55,7 +56,6 @@ if (_supportTypeId isEqualTo SUPPORT_TYPE_SUPPLY_DROP) exitWith {
 };
 
 if (_supportTypeId isEqualTo SUPPORT_TYPE_HELI_CAS OR {_supportTypeId isEqualTo SUPPORT_TYPE_ATTACKHELI_CAS}) exitWith {
-	_commMenuArgs pushBack _supportTypeId;
 	_this call KISKA_fnc_callingForHelicopterCAS;
 };
 

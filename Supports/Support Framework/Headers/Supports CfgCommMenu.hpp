@@ -42,6 +42,7 @@ class KISKA_basicSupport_baseClass
 class KISKA_artillery_baseClass : KISKA_basicSupport_baseClass
 {
     supportTypeId = SUPPORT_TYPE_ARTY;   
+    icon = ARTILLERY_ICON;
     radiuses[] = {};
     canSelectRounds = 1;
     roundCount = 8; // starting round count
@@ -63,10 +64,14 @@ class KISKA_artillery_baseClass : KISKA_basicSupport_baseClass
         AMMO_230_CLUSTER_ID
     };
 };
+
+// bases
 class KISKA_CAS_baseClass : KISKA_basicSupport_baseClass
 {
     supportTypeId = SUPPORT_TYPE_CAS;
     
+    icon = CAS_ICON;
+
     attackTypes[] = {
         GUN_RUN_ID,
         GUNS_AND_ROCKETS_ARMOR_PIERCING_ID,
@@ -80,10 +85,11 @@ class KISKA_CAS_baseClass : KISKA_basicSupport_baseClass
 
     vehicleTypes[] = {};
 };
-
 class KISKA_attackHelicopterCAS_baseClass : KISKA_basicSupport_baseClass
 {
     supportTypeId = SUPPORT_TYPE_ATTACKHELI_CAS;
+
+    icon = CAS_HELI_ICON;
     timeOnStation = 180;
 
     radiuses[] = {};
@@ -93,35 +99,20 @@ class KISKA_attackHelicopterCAS_baseClass : KISKA_basicSupport_baseClass
 class KISKA_helicopterCAS_baseClass : KISKA_basicSupport_baseClass
 {
     supportTypeId = SUPPORT_TYPE_HELI_CAS;
+
+    icon = CAS_HELI_ICON;
     timeOnStation = 180;
 
     radiuses[] = {};
     flyinHeights[] = {};
     vehicleTypes[] = {};
 };
-
-class KISKA_testArty : KISKA_artillery_baseClass
+class KISKA_arsenalSupplyDrop_baseClass : KISKA_basicSupport_baseClass
 {
-    text = "Test Arty";
-    expression = CALL_SUPPORT_MASTER(KISKA_testArty);
-    radiuses[] = {100};
-};
+    supportTypeId = SUPPORT_TYPE_ARSENAL_DROP;
 
-class KISKA_testCAS : KISKA_CAS_baseClass
-{
-    text = "Test CAS";
-    expression = CALL_SUPPORT_MASTER(KISKA_testCAS);
+    icon = SUPPLY_DROP_ICON;
+
+    flyinHeights[] = {};
     vehicleTypes[] = {};
-};
-
-class KISKA_testHeliCAS : KISKA_attackHelicopterCAS_baseClass
-{
-    text = "Test Heli CAS";
-    expression = CALL_SUPPORT_MASTER(KISKA_testHeliCAS);
-    
-    timeOnStation = 180;
-
-    vehicleTypes[] = {"B_Heli_Attack_01_dynamicLoadout_F"};
-    radiuses[] = {250};
-    flyinHeights[] = {50};
 };

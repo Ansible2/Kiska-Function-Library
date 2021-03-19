@@ -46,7 +46,7 @@ Parameters:
 
 // artillery notifications
 [
-    "KISKA_suppNotif_arty",
+    "KISKA_CBA_suppNotif_arty",
     "LIST",
     ["Artillery Notifications","If calling in support, player will receive a notification for a completed request"],
     ["KISKA Support Settings","Notifications"],
@@ -59,7 +59,7 @@ Parameters:
 ] call CBA_fnc_addSetting;
 // CAS notifications
 [
-    "KISKA_suppNotif_cas",
+    "KISKA_CBA_suppNotif_cas",
     "LIST",
     ["CAS Notifications","If calling in support, player will receive a notification for a completed request"],
     ["KISKA Support Settings","Notifications"],
@@ -72,9 +72,22 @@ Parameters:
 ] call CBA_fnc_addSetting;
 // Heli CAS notifications
 [
-    "KISKA_suppNotif_heliCas",
+    "KISKA_CBA_suppNotif_heliCas",
     "LIST",
     ["Helicopter CAS Notifications","If calling in support, player will receive a notification for a completed request"],
+    ["KISKA Support Settings","Notifications"],
+    [
+        [0,1,2,3],
+        ["None","Radio Notification","Text Notification","Both"],
+        1
+    ],
+    0
+] call CBA_fnc_addSetting;
+// supply drop notifications
+[
+    "KISKA_CBA_suppNotif_supplyDrop",
+    "LIST",
+    ["Supply Drop Notifications","If calling in support, player will receive a notification for a completed request"],
     ["KISKA Support Settings","Notifications"],
     [
         [0,1,2,3],

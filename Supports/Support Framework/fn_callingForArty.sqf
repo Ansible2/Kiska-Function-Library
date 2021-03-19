@@ -20,6 +20,7 @@ Parameters:
 		2: _target <OBJECT> - The cursorTarget object of the player
 		3: _is3d <BOOL> - False if in map, true if not
 		4: _commMenuId <NUMBER> The ID number of the Comm Menu added by BIS_fnc_addCommMenuItem
+		5: _supportType <NUMBER> - The Support Type ID
 	2: _roundCount <NUMBER> - Used for keeping track of how many of a count a support has left (such as rounds)
 
 Returns:

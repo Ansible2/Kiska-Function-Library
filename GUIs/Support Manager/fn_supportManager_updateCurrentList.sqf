@@ -27,7 +27,7 @@ lbClear _listControl;
 if (!(isNil "KISKA_supportHash") AND {count KISKA_supportHash > 0}) then {
 
 	private ["_config","_text","_class","_toolTip","_path","_icon"];
-	private _usedIconColor = missionNamespace getVariable ["KISKA_supportManager_usedIconColor",[0.75,0,0,1]];
+	private _usedIconColor = missionNamespace getVariable ["KISKA_CBA_supportManager_usedIconColor",[0.75,0,0,1]];
 	{
 		_class = _y select 0;
 		_config = [["cfgCommunicationMenu",_class]] call KISKA_fnc_findConfigAny;
