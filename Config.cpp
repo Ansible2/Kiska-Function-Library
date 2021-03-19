@@ -305,6 +305,10 @@ class CfgFunctions
 		class SupportManager
 		{
 			file="Kiska_functions\GUIs\Support Manager";
+			class supportManager_addDiaryEntry
+			{
+				postInit = 1;
+			};
 			class supportManager_addToPool
 			{};
 			class supportManager_onLoad
