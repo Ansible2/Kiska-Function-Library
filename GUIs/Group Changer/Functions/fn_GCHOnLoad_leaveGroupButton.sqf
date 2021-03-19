@@ -19,8 +19,8 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_GCH_leaveGroupButton"
-scriptName SCRIPT_NAME;
+disableSerialization;
+scriptName "KISKA_fnc_GCH_leaveGroupButton";
 
 params ["_control"];
 

@@ -18,6 +18,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+disableSerialization;
 scriptName "KISKA_fnc_GCHOnLoad_sideGroupList";
 
 params ["_control"];

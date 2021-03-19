@@ -19,11 +19,8 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_GCH_dialogOnLoad";
-
-missionNamespace setVariable ["KISKA_doLog",true];
-
 disableSerialization;
+scriptName "KISKA_fnc_GCH_dialogOnLoad";
 
 params ["_display"];
 

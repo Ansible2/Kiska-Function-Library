@@ -19,6 +19,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+disableSerialization;
 scriptName "KISKA_fnc_GCH_isAllowedToEdit";
 
 params [

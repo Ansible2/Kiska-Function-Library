@@ -20,8 +20,8 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_GCH_setLeaderButton"
-scriptName SCRIPT_NAME;
+disableSerialization;
+scriptName "KISKA_fnc_GCH_setLeaderButton";
 
 params ["_control"];
 

@@ -18,8 +18,8 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_GCHOnLoad_showAiCheckbox"
-scriptName SCRIPT_NAME;
+disableSerialization;
+scriptName "KISKA_fnc_GCHOnLoad_showAiCheckbox";
 
 params ["_control"];
 
