@@ -22,6 +22,9 @@ Authors:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_supportManager_onLoad";
 
+// close map
+openMap false;
+
 params ["_display"];
 
 
@@ -47,8 +50,6 @@ uiNamespace setVariable ["KISKA_SM_currentListBox_ctrl",_display displayCtrl SM_
 (_display displayCtrl SM_CLOSE_BUTTON_IDC) ctrlAddEventHandler ["ButtonClick",{
 	(uiNamespace getVariable "KISKA_sm_display") closeDisplay 2;
 }];
-
-[_display] call KISKA_fnc_supportManager_onLoad_buttons;
 
 
 _display displayAddEventHandler ["unload",{
