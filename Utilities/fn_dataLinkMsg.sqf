@@ -32,8 +32,7 @@ params [
 ];
 
 [
-	{
-		
+	{	
 		if (_this select 1) then {
 			playSound "KISKA_ptt";
 		};
