@@ -7,7 +7,7 @@
      a player provides an invalid position (looking at the sky). It will then refund the
      support back to the player.
 */
-#define CALL_SUPPORT_MASTER(CLASS) "['#CLASS',_this,%1] call KISKA_fnc_callingForSupportMaster"
+#define CALL_SUPPORT_MASTER(CLASS) "["#CLASS",_this,%1] call KISKA_fnc_callingForSupportMaster"
 
 
 /*
@@ -36,7 +36,8 @@ class KISKA_basicSupport_baseClass
     removeAfterExpressionCall = 1;
 
     // used for support selection menu
-    supportMenuCondition = "";
+    // _this select 0 is the classname
+    managerCondition = "";
 };
 class KISKA_artillery_baseClass : KISKA_basicSupport_baseClass
 {

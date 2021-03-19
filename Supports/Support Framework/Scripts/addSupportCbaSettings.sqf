@@ -55,13 +55,9 @@ Parameters:
         ["None","Radio Notification","Text Notification","Both"],
         1
     ],
-    nil,
-    {  
-        //params ["_value"];
-        
-    }
+    0
 ] call CBA_fnc_addSetting;
-// CAS
+// CAS notifications
 [
     "KISKA_suppNotif_cas",
     "LIST",
@@ -72,13 +68,9 @@ Parameters:
         ["None","Radio Notification","Text Notification","Both"],
         1
     ],
-    nil,
-    {  
-        //params ["_value"];
-        
-    }
+    0
 ] call CBA_fnc_addSetting;
-// Heli CAS
+// Heli CAS notifications
 [
     "KISKA_suppNotif_heliCas",
     "LIST",
@@ -89,9 +81,5 @@ Parameters:
         ["None","Radio Notification","Text Notification","Both"],
         1
     ],
-    nil,
-    {  
-        //params ["_value"];
-        
-    }
+    0
 ] call CBA_fnc_addSetting;

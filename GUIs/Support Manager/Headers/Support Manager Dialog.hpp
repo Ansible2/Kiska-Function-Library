@@ -10,7 +10,6 @@
 //#define BORDER_COLOR(ALPHA) {0,0,0,ALPHA}
 #define BACKGROUND_FRAME_COLOR(ALPHA) {0,0,0,ALPHA}
 #define GREY_COLOR(PERCENT,ALPHA) {PERCENT,PERCENT,PERCENT,ALPHA}
-#define LISTBOX_TRANSPARENCY 0.35
 
 /* -------------------------------------------------------------------------
 	Dialog
@@ -67,7 +66,7 @@ class KISKA_supportManager_Dialog
 			y = 0.3125 * safezoneH + safezoneY;
 			w = 0.158203 * safezoneW;
 			h = 0.375 * safezoneH;
-			colorBackground[] = GREY_COLOR(0.24,0.75);
+			colorBackground[] = GREY_COLOR(0.25,0.25);
 			sizeEx = 0.0208333 * safezoneH;
 		};
 		class supportManager_current_listBox: KISKA_RscListbox
@@ -77,7 +76,7 @@ class KISKA_supportManager_Dialog
 			y = 0.3125 * safezoneH + safezoneY;
 			w = 0.158203 * safezoneW;
 			h = 0.375 * safezoneH;
-			colorBackground[] = GREY_COLOR(0,1);
+			colorBackground[] = GREY_COLOR(0,0.35);
 			sizeEx = 0.0208333 * safezoneH;
 		};
 		

@@ -300,6 +300,24 @@ class CfgFunctions
 			class updateFlareEffects
 			{};
 		};
+		class SupportManager
+		{
+			file="Kiska_functions\GUIs\Support Manager";
+			class supportManager_addToPool
+			{};
+			class supportManager_onLoad
+			{};
+			class supportManager_onLoad_supportPool
+			{};
+			class supportManager_removeFromPool
+			{};
+			class supportManager_store_buttonClickEvent
+			{};
+			class supportManager_take_buttonClickEvent
+			{};
+			class supportManager_updateCurrentList
+			{};
+		};
 		class Utilities
 		{
 			file="Kiska_functions\Utilities";
@@ -415,6 +433,7 @@ class CfgFunctions
 #include "GUIs\Common GUI Headers\commonBaseClasses.hpp"
 #include "GUIs\View Distance Limiter\ViewDistanceLimiterDialog.hpp"
 #include "GUIs\Group Changer\GroupChangerDialog.hpp"
+#include "GUIs\Support Manager\Headers\Support Manager Dialog.hpp"
 
 class CfgCommunicationMenu
 {
@@ -424,5 +443,8 @@ class CfgCommunicationMenu
 class Extended_PreInit_EventHandlers {
     class support_settings_preInitEvent {
         init = "call compileScript ['KISKA_functions\Supports\Support Framework\Scripts\addSupportCbaSettings.sqf'];";
+    };
+	class supportManager_settings_preInitEvent {
+        init = "call compileScript ['KISKA_functions\GUIs\Support Manager\Scripts\addSupportManagerCbaSettings.sqf'];";
     };
 };
