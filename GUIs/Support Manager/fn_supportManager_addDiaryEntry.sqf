@@ -35,7 +35,7 @@ waitUntil {
 [
 	[
 		"Support Manager GUI",
-		"<execute expression='openMap false; createDialog 'KISKA_supportManager_Dialog';'>Open Support Manager</execute>"
+		"<execute expression='openMap false; call KISKA_fnc_supportManager_openDialog;'>Open Support Manager</execute>"
 	]
 ] call KISKA_fnc_addKiskaDiaryEntry;
 
