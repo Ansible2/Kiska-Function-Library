@@ -5,9 +5,10 @@ Description:
 	Makes a helicopter land at a given position.
 
 Parameters:
-	0: _unit <OBJECT> - The person calling the respawn update action
+	0: _aircraft <OBJECT> - The helicopter
 	1: _landingPosition <ARRAY or OBJECT> - Where to land. If object, position ATL is used.
 	2: _landMode <STRING> - Options are "LAND", "GET IN", and "GET OUT"
+	3: _createHelipad <BOOL> - If true, and invisible helipad will be created. Helipads strongly encourage where a unit will land.
 
 Returns:
 	<BOOL> - True if helicopter can attempt, false if problem
@@ -21,67 +22,82 @@ Author:
 	Karel Moricky,
 	Modified By: Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_heliLand"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_heliLand";
+
+
+#define HELIPAD_BASE "Helipad_base_F"
+#define INVISIBLE_PAD "Land_HelipadEmpty_F"
+#define LAND_EVENT "KISKA_landedEvent"
+
 
 params [
-	["_unit",objNull,[objNull]],
+	["_aircraft",objNull,[objNull]],
 	["_landingPosition",[],[[],objNull]],
-	["_landMode","GET IN",[""]]
+	["_landMode","GET IN",[""]],
+	["_createHelipad",true,[true]]
 ];
 
-if (isNull _unit) exitWith {
-	["_unit is a null object",true] call KISKA_fnc_log;
+if (isNull _aircraft) exitWith {
+	["_aircraft is a null object",true] call KISKA_fnc_log;
 	false
 };
 
-// need to expand to VTOL
-if (!(_unit isKindOf "Helicopter") AND {(_unit isKindOf "VTOL_Base_F")}) then {
-	[[_unit," is not a helicopter or VTOL, exiting..."],true] call KISKA_fnc_log;
+if (!(_aircraft isKindOf "Helicopter") AND {(_aircraft isKindOf "VTOL_Base_F")}) exitWith {
+	[[_aircraft," is not a helicopter or VTOL, exiting..."],true] call KISKA_fnc_log;
 	false
 };
 
-_unit setVariable ["KISKA_heliLanded",false];
 
+// move command only supports positions, not objects
 if (_landingPosition isEqualType objNull) then {
+	// if LZ is already a pad, don't create another one
+	if (_createHelipad AND {_landingPosition isKindOf HELIPAD_BASE}) then {
+		_createHelipad = false;
+	};
 	_landingPosition = getPosATL _landingPosition;
 };
 
-[_unit,_landingPosition,_landMode] spawn {
-	params ["_unit","_landingPosition","_landMode"];
+// helipads are where AI will primarly look to land
+if (_createHelipad) then {
+	INVISIBLE_PAD createVehicle _landingPosition;
+};
 
-	_unit move _landingPosition;
+[_aircraft,_landingPosition,_landMode] spawn {
+	params ["_aircraft","_landingPosition","_landMode"];
+
+	_aircraft move _landingPosition;
 
 	private _landed = false;
 	private _wasToldToLand = false;
 	private "_unitAlt";
 	waitUntil {
 		sleep 0.25;
+		if (!alive _aircrat) exitWith {};
 		if !(_wasToldToLand) then {
 			// tell unit to land at position when ready
-			if (unitReady _unit) then {
-				_unit land _landMode;
+			if (unitReady _aircraft) then {
+				_aircraft land _landMode;
 				_wasToldToLand = true;
 			};
 		} else {
-			_unitAlt = (getPosATL _unit) select 2;
-			if (isTouchingGround _unit OR {_unitAlt < 0.1}) then {
+			_unitAlt = (getPosATL _aircraft) select 2;
+			if (isTouchingGround _aircraft OR {_unitAlt < 0.1}) then {
 				_landed = true;
 				// reinforce land
 				// sometimes, the helicopter will "land" but immediately take off again
 				// this is why the thing is told to land again
 				sleep 2;
 				// keep engine running
-				_unit engineon true;
-				_unit land _landMode;
-				//_unit flyInHeight 0;
+				_aircraft engineon true;
+				_aircraft land _landMode;
+				//_aircraft flyInHeight 0;
 			};
 		};
 
 		_landed
 	};
 
-	_unit setVariable ["KISKA_heliLanded",true];
+	[_aircraft,LAND_EVENT,[_aircraft]] call BIS_fnc_callScriptedEventHandler;
 };
 
 
