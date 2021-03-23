@@ -15,7 +15,6 @@ Examples:
     (begin example)
 		// show hint messages
 		[true] call KISKA_fnc_reassignCurator;
-
     (end)
 
 Author(s):
@@ -29,7 +28,7 @@ params [
 ];
 
 // check if player is host or admin
-if (!(call BIS_fnc_admin > 0) AND {clientOwner != 2}) exitWith {
+if !(call KISKA_fnc_isAdminOrHost) exitWith {
 	if (_isManual) then {
 		hint "Only admins can be assigned curator";
 	};
@@ -40,7 +39,8 @@ if (_curatorObject isEqualType "") then {
 };
 
 if (isNull _curatorObject) exitWith {
-	"_curatorObject isNull!" call BIS_fnc_error;
+	["_curatorObject isNull!",true] call KISKA_fnc_log;
+	ni;
 };
 
 private _unitWithCurator = getAssignedCuratorUnit _curatorObject;

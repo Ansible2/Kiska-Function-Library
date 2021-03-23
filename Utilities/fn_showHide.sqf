@@ -5,27 +5,25 @@ Description:
 	On selected objects, will disable simulation and hide the object or the reverse.
 
 Parameters:
-
 	0: _objects <ARRAY, GROUP, or OBJECT> - Units to show or hide
 	1: _show <BOOL> - True to show and simulate, false to hide and disable simulation
 	2: _enableDynamicSim <BOOL> - Should the object be dynamically simulated after shown
 
 Returns:
-	NOTHING
+	<BOOL> - True if action performed, false otherwise
 
 Examples:
     (begin example)
-
 		[group1, true, true] call KISKA_fnc_showHide;
-
     (end)
 
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_showHide";
 
 if !(isServer) exitWith {
-	"Not executed on Server" call BIS_fnc_error;
+	["Must be executed on Server",true] call KISKA_fnc_log;
 	false
 };
 
@@ -36,7 +34,8 @@ params [
 ];
 
 if (_objects isEqualTo []) exitWith {
-	"No objects to show or hide" call BIS_fnc_error;
+	["No objects to show or hide"] call KISKA_fnc_log;
+	false
 };
 
 if (_objects isEqualType objNull) then {
@@ -67,5 +66,6 @@ _objects apply {
 		};
 	};
 };
+
 
 true

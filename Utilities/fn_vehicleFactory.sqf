@@ -16,16 +16,17 @@ Returns:
 
 Examples:
 	(begin example)
-
 		[player,(getPosATL player) vectorAdd [2,2,0],"B_MRAP_01_F"] spawn KISKA_fnc_vehicleFactory;
-
 	(end)
 
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_vehicleFactory";
+
 if (!canSuspend) exitWith {
-	"Must be run in scheduled envrionment" call BIS_fnc_error;
+	["Must be run in scheduled envrionment, exiting to scheduled"] call KISKA_fnc_log;
+	_this spawn KISKA_fnc_vehicleFactory;
 };
 
 params [
@@ -37,13 +38,13 @@ params [
 ];
 
 if (isNull _controlPanel) exitWith {
-	"_controlPanel isNull" call BIS_fnc_error;
-	false
+	["_controlPanel isNull",true] call KISKA_fnc_log;
+	nil
 };
 
 if (_vehicleTypes isEqualTo [] OR {_vehicleTypes isEqualTo ""}) exitWith {
-	"_vehicleTypes is empty" call BIS_fnc_error;
-	false
+	["_vehicleTypes is empty",true] call KISKA_fnc_log;
+	nil
 };
 
 if (_vehicleTypes isEqualType "") then {
@@ -150,3 +151,6 @@ if !(_controlPanel getVariable ["KISKA_vehicleFactory",false]) then {
 
 	_controlPanel setVariable ["KISKA_vehicleFactory",true];
 };
+
+
+nil

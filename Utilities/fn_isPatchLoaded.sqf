@@ -27,7 +27,7 @@ params [
 ];
 
 if (_configName isEqualTo "") exitWith {
-    "_configName is empty string" call BIS_fnc_error;
+    ["_configName is empty string",true] call KISKA_fnc_log;
     false
 };
 

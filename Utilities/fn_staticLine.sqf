@@ -13,15 +13,11 @@ Returns:
 
 Examples:
     (begin example)
-
 		[group1] call KISKA_fnc_staticLine;
-
     (end)
 
 	(begin example)
-
 		[[group1,unit2]] call KISKA_fnc_staticLine;
-
     (end)
 
 Author:
@@ -35,11 +31,13 @@ params [
 ];
 
 if (_dropArray isEqualTo []) exitWith {
+	["_dropArray is empty",true] call KISKA_fnc_log;
 	false
 };
 
 if (_dropArray isEqualTypeAny [objNull,grpNull] AND {isNull _dropArray}) exitWith {
-	"_dropArray isNull" call BIS_fnc_error;
+	["_dropArray isNull",true] call KISKA_fnc_log;
+	false
 };
 
 if (_dropArray isEqualType grpNull) then {

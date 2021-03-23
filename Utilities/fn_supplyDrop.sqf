@@ -31,7 +31,7 @@ params [
 ];
 
 if (_classNames isEqualTo []) exitWith {
-	"No classnames passed!" call BIS_fnc_error;
+	["No classnames passed!",true] call KISKA_fnc_log;
 };
 
 private _containersArray = [];

@@ -10,18 +10,17 @@ Parameters:
 	2: _text <STRING> - The action text, can be structured text
 
 Returns:
-	NOTHING
+	<NUMBER> - action id, -1 if not added
 
 Examples:
     (begin example)
-
 		[player,[0,0,0],"go to the Zero"] call KISKA_fnc_addTeleportAction;
-
     (end)
 
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_addTeleportAction";
 
 params [
 	["_objectToAddTo",objNull,[objNull]],
@@ -30,7 +29,8 @@ params [
 ];
 
 if (isNull _objectToAddTo) exitWith {
-	["_objectToAddTo is objNull"] call BIS_fnc_error;
+	["_objectToAddTo is null"] call KISKA_fnc_log;
+	-1
 };
 
 if (_teleportPosition isEqualType objNull) then {

@@ -10,13 +10,11 @@ Parameters:
 	2: _hangTime <NUMBER> - (OPTIONAL) How long should the missile climb before diverting to target. Default 6 seconds
 
 Returns:
-	Nothing
+	NOTHING
 
 Examples:
     (begin example)
-
 		[VLS_1,target_1,6] spawn KISKA_fnc_cruiseMissile;
-
     (end)
 
 Authors:
@@ -24,7 +22,8 @@ Authors:
 	modified by - Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 if (!canSuspend) exitWith {
-	"Must be run in scheduled envrionment" call BIS_fnc_error
+	["Must be run in scheduled envrionment, exiting to scheduled",true] call KISKA_fnc_log;
+	_this spawn KISKA_fnc_cruiseMissile
 };
 
 params [
@@ -34,11 +33,13 @@ params [
 ];
 
 if (isNull _launcher) exitWith {
-	"_launcher must not be null object" call BIS_fnc_error;
+	["_launcher is a null object",true] call KISKA_fnc_log;
+	nil
 };
 
 if (_hangTime <= 0) exitWith {
-	"_hangTime cannot be zero or negative" call BIS_fnc_error;
+	["_hangTime cannot be zero or negative",true] call KISKA_fnc_log;
+	nil
 };
 
 private _launcherPosition = getPosWorld _launcher;
