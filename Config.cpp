@@ -105,12 +105,12 @@ class CfgFunctions
 			class removeUnloadAction
 			{};
 			class unloadCrates
-			{}; 
+			{};
 		};
 		class GroupChanger
 		{
 			file = "KISKA_functions\GUIs\Group Changer\Functions";
-			
+
 			class GCH_addDiaryEntry
 			{
 				postInit = 1;
@@ -234,7 +234,7 @@ class CfgFunctions
 			/*
 			class rallyPointActionLoop
 			{};
-			*/			
+			*/
 		};
 		class Sound
 		{
@@ -434,7 +434,7 @@ class CfgFunctions
 			class viewDistanceLimiter
 			{};
 		};
-			
+
 	};
 };
 
@@ -454,5 +454,11 @@ class Extended_PreInit_EventHandlers {
     };
 	class supportManager_settings_preInitEvent {
         init = "call compileScript ['KISKA_functions\GUIs\Support Manager\Scripts\addSupportManagerCbaSettings.sqf'];";
+    };
+	class groupChanger_settings_preInitEvent {
+        init = "call compileScript ['KISKA_functions\GUIs\Group Changer\Scripts\addGroupChangerCbaSettings.sqf'];";
+    };
+	class misc_settings_preInitEvent {
+        init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addMiscCbaSettings.sqf'];";
     };
 };
