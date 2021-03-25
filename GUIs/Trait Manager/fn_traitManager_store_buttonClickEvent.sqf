@@ -25,7 +25,8 @@ private _selectedIndex = lbCurSel (uiNamespace getVariable "KISKA_TM_currentList
 
 if (_selectedIndex isNotEqualTo -1) then {
     private _trait = (uiNamespace getVariable "KISKA_TM_currentListBox_ctrl") lbText _selectedIndex;
-    player setUnitTrait [_trait,false];
+    private _isCustomTrait = !(_trait in RESERVED_TRAITS);
+    player setUnitTrait [_trait,false,_isCustomTrait];
 
 	[_trait] remoteExecCall ["KISKA_fnc_traitManager_addToPool",(call CBA_fnc_players),true];
     call KISKA_fnc_traitManager_updateCurrentList;
