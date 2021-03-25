@@ -22,6 +22,8 @@ Authors:
 disableSerialization;
 scriptName "KISKA_fnc_traitManager_take_buttonClickEvent";
 
+#define RESERVED_TRAITS ["MEDIC","ENGINEER","EXPLOSIVESPECIALIST","UAVHACKER"]
+
 private _selectedIndex = lbCurSel (uiNamespace getVariable "KISKA_TM_poolListBox_ctrl");
 if (_selectedIndex isNotEqualTo -1) then {
 
