@@ -26,7 +26,7 @@ scriptName "KISKA_fnc_heliLand";
 
 
 #define HELIPAD_BASE "Helipad_base_F"
-#define INVISIBLE_PAD "Land_HelipadEmpty_F"
+#define INVISIBLE_PAD_TYPE "Land_HelipadEmpty_F"
 #define LAND_EVENT "KISKA_landedEvent"
 
 
@@ -59,7 +59,7 @@ if (_landingPosition isEqualType objNull) then {
 
 // helipads are where AI will primarly look to land
 if (_createHelipad) then {
-	INVISIBLE_PAD createVehicle _landingPosition;
+	INVISIBLE_PAD_TYPE createVehicle _landingPosition;
 };
 
 [_aircraft,_landingPosition,_landMode] spawn {
