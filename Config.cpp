@@ -479,8 +479,8 @@ class Extended_PreInit_EventHandlers {
 	class groupChanger_settings_preInitEvent {
         init = "call compileScript ['KISKA_functions\GUIs\Group Changer\Scripts\addGroupChangerCbaSettings.sqf'];";
     };
-	class misc_settings_preInitEvent {
-        init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addMiscCbaSettings.sqf'];";
+	class coef_settings_preInitEvent {
+        init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addCoefCbaSettings.sqf'];";
     };
 };
 
