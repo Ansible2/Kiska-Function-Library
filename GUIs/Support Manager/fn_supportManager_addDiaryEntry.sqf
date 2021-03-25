@@ -19,7 +19,7 @@ Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 #define RETURN_NIL nil
-scriptName "KISKA_fnc_GCH_addDiaryEntry";
+scriptName "KISKA_fnc_supportManager_addDiaryEntry";
 
 if (!hasInterface) exitWith {
 	["Was run on machine without interface, needs an interface"] call KISKA_fnc_log;
