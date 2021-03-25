@@ -14,7 +14,7 @@ Parameters:
     "KISKA_CBA_supportManager_usedIconColor",
     "COLOR",
     ["Color of Used Support Icons","When a support was already used, it's icon will show this color"],
-    ["KISKA Support Manager Settings","Colors"],
+    ["KISKA GUI Settings","Support Manager"],
     [0.75,0,0,1],
     0
 ] call CBA_fnc_addSetting;
@@ -24,7 +24,7 @@ Parameters:
     "KISKA_CBA_supportManager_maxSupports",
     "LIST",
     ["Max Number Of Menu Items","The total number of supports that can be stored in a single player's communication support menu"],
-    ["KISKA Support Manager Settings","Misc"],
+    ["KISKA GUI Settings","Support Manager"],
     [
         [1,2,3,4,5,6,7,8,9,10],
         [1,2,3,4,5,6,7,8,9,10],
