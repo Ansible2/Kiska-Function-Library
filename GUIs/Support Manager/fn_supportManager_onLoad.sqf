@@ -58,3 +58,6 @@ _display displayAddEventHandler ["unload",{
 	uiNamespace setVariable ["KISKA_SM_poolListBox_ctrl",nil];
 	uiNamespace setVariable ["KISKA_SM_currentListBox_ctrl",nil];
 }];
+
+
+nil

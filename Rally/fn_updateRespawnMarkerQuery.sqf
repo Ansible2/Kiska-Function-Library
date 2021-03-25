@@ -28,6 +28,7 @@ if !(hasInterface) exitWith {};
 private _group = group player;
 if (isNull _group) exitWith {
 	["_group was found to be null",true] call KISKA_fnc_log;
+	nil
 };
 
 private _groupLeader = leader _group;
@@ -38,3 +39,6 @@ if !(_groupLeader isEqualTo player) exitWith {
 
 private _groupName = groupId _group;
 [_groupLeader, ([_groupName,"spawnMarker"] joinString "_"), ([_groupName,"Respawn Beacon"] joinString " ")] remoteExecCall ["KISKA_fnc_updateRespawnMarker",2];
+
+
+nil

@@ -23,6 +23,8 @@ Authors:
 disableSerialization;
 scriptName "KISKA_fnc_supportManager_onLoad_supportPool";
 
+#define REFRESH_SPEED 0.5
+
 if (!canSuspend) exitWith {
 	_this spawn KISKA_fnc_supportManager_onLoad_supportPool;
 };
@@ -114,7 +116,7 @@ private _fn_updateSupportPoolList = {
 };
 
 private _supportPool_displayed = [];	
-while {sleep 0.5; !(isNull _display)} do {
+while {sleep REFRESH_SPEED; !(isNull _display)} do {
 
 	// support pool check
 	if (_supportPool_displayed isNotEqualTo POOL_GVAR) then {		
