@@ -11,33 +11,10 @@ Parameters:
 */
 
 [
-    "KISKA_CBA_supportManager_usedIconColor",
-    "COLOR",
-    ["Color of Used Support Icons","When a support was already used, it's icon will show this color"],
-    ["KISKA GUI Settings","Support Manager"],
-    [0.75,0,0,1],
-    0
-] call CBA_fnc_addSetting;
-
-
-[
-    "KISKA_CBA_supportManager_maxSupports",
-    "LIST",
-    ["Max Number Of Menu Items","The total number of supports that can be stored in a single player's communication support menu"],
-    ["KISKA GUI Settings","Support Manager"],
-    [
-        [1,2,3,4,5,6,7,8,9,10],
-        [1,2,3,4,5,6,7,8,9,10],
-        9
-    ],
-    1
-] call CBA_fnc_addSetting;
-
-[
-    "KISKA_CBA_supportManager_updateFreq",
+    "KISKA_CBA_traitManager_updateFreq",
     "SLIDER",
     ["Pool Update Frequency","When the GUI is open, how often (in seconds) should the list update"],
-    ["KISKA GUI Settings","Support Manager"],
+    ["KISKA GUI Settings","Trait Manager"],
     [0.01,1,0.5,2,false],
     0
 ] call CBA_fnc_addSetting;

@@ -21,6 +21,8 @@ Author:
 disableSerialization;
 scriptName "KISKA_fnc_GCHOnLoad_sideGroupList";
 
+#define REFRESH_SPEED (missionNamespace getVariable ["KISKA_CBA_GCH_updateFreq",1])
+
 params ["_control"];
 
 // add event handler
@@ -83,7 +85,7 @@ while {!isNull (uiNamespace getVariable "KISKA_GCH_display")} do {
 		// check to see if players side groups actually needs to be updated
 		// if no group was added to the side, no need to update
 		private _sideGroups_compare = _allGroupsCached select {(side _x) isEqualTo _playerSide};
-		
+
 		if !(_sideGroups_compare isEqualTo _sideGroups) then {
 			_sideGroups = +_sideGroups_compare;
 			uiNamespace setVariable ["KISKA_GCH_sideGroupsArray",_sideGroups];
@@ -91,5 +93,5 @@ while {!isNull (uiNamespace getVariable "KISKA_GCH_display")} do {
 		};
 	};
 
-	sleep 1;
+	sleep REFRESH_SPEED;
 };

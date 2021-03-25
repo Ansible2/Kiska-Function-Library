@@ -18,3 +18,12 @@ Parameters:
     true,
     1
 ] call CBA_fnc_addSetting;
+
+[
+    "KISKA_CBA_GCH_updateFreq",
+    "SLIDER",
+    ["Groups List Update Frequency","When the GUI is open, how often (in seconds) should the list update"],
+    ["KISKA GUI Settings","Group Changer"],
+    [0.01,2,1,2,false],
+    0
+] call CBA_fnc_addSetting;

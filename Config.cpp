@@ -476,6 +476,9 @@ class Extended_PreInit_EventHandlers {
 	class supportManager_settings_preInitEvent {
         init = "call compileScript ['KISKA_functions\GUIs\Support Manager\Scripts\addSupportManagerCbaSettings.sqf'];";
     };
+	class traitManager_settings_preInitEvent {
+        init = "call compileScript ['KISKA_functions\GUIs\Trait Manager\Scripts\addTraitManagerCbaSettings.sqf'];";
+    };
 	class groupChanger_settings_preInitEvent {
         init = "call compileScript ['KISKA_functions\GUIs\Group Changer\Scripts\addGroupChangerCbaSettings.sqf'];";
     };

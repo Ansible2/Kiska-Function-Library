@@ -23,7 +23,7 @@ Authors:
 disableSerialization;
 scriptName "KISKA_fnc_supportManager_onLoad_supportPool";
 
-#define REFRESH_SPEED 0.5
+#define REFRESH_SPEED (missionNamespace getVariable ["KISKA_CBA_supportManager_updateFreq",0.5])
 
 if (!canSuspend) exitWith {
 	_this spawn KISKA_fnc_supportManager_onLoad_supportPool;
@@ -40,7 +40,7 @@ if (isNil TO_STRING(POOL_GVAR)) then {
 
 private _usedIconColor = missionNamespace getVariable ["KISKA_CBA_supportManager_usedIconColor",[0.75,0,0,1]];
 private _fn_updateSupportPoolList = {
-	
+
 	if (POOL_GVAR isEqualTo []) exitWith {
 		lbClear _poolControl;
 	};
@@ -48,7 +48,7 @@ private _fn_updateSupportPoolList = {
 	// subtracting 1 from these to get indexes
 	private _countOfDisplayed = (count _supportPool_displayed) - 1;
 	private _countOfCurrent = (count POOL_GVAR) - 1;
-	
+
 	private _configHash = createHashMap;
 
 	private ["_displayText","_comparedIndex","_config","_comMenuClass","_path","_toolTip","_icon"];
@@ -58,11 +58,11 @@ private _fn_updateSupportPoolList = {
 		} else {
 			_config = [["CfgCommunicationMenu",_comMenuClass]] call KISKA_fnc_findConfigAny;
 			_configHash set [_comMenuClass,_config];
-		};	
+		};
 
 		_icon = getText(_config >> "icon");
 		_displayText = getText(_config >> "text");
-		_toolTip = getText(_config >> "tooltip"); 
+		_toolTip = getText(_config >> "tooltip");
 	};
 	private _fn_adjustCurrentEntry = {
 		// entries that are arrays will be ["classname",NumberOfUsesLeft]
@@ -87,10 +87,10 @@ private _fn_updateSupportPoolList = {
 		_poolControl lbSetPicture [_path,_icon];
 	};
 
-	{	
+	{
 		_comMenuClass = _x;
 		// instead of clearing the list, we will change entries up until there are more entries in the array then currently in the list
-		if (_countOfDisplayed >= _forEachIndex) then {			
+		if (_countOfDisplayed >= _forEachIndex) then {
 			// check if entry at index is different and therefore needs to be changed
 			_comparedIndex = _supportPool_displayed select _forEachIndex;
 			if (_comMenuClass isNotEqualTo _comparedIndex) then {
@@ -112,14 +112,14 @@ private _fn_updateSupportPoolList = {
 			// deleting the same index because the tree will move down with each deletetion
 			_poolControl lbDelete _indexToDelete;
 		};
-	};	
+	};
 };
 
-private _supportPool_displayed = [];	
+private _supportPool_displayed = [];
 while {sleep REFRESH_SPEED; !(isNull _display)} do {
 
 	// support pool check
-	if (_supportPool_displayed isNotEqualTo POOL_GVAR) then {		
+	if (_supportPool_displayed isNotEqualTo POOL_GVAR) then {
 		call _fn_updateSupportPoolList;
 		_supportPool_displayed = +POOL_GVAR;
 	};

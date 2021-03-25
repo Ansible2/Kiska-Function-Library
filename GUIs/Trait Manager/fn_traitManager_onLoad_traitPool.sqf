@@ -22,8 +22,8 @@ Authors:
 ---------------------------------------------------------------------------- */
 disableSerialization;
 scriptName "KISKA_fnc_traitManager_onLoad_traitPool";
-// numbered traits are not managed
-#define REFRESH_SPEED 0.5
+
+#define REFRESH_SPEED (missionNamespace getVariable ["KISKA_CBA_traitManager_updateFreq",0.5])
 
 if (!canSuspend) exitWith {
 	_this spawn KISKA_fnc_traitManager_onLoad_traitPool;
