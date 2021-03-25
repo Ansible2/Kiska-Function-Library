@@ -326,6 +326,30 @@ class CfgFunctions
 			class supportManager_updateCurrentList
 			{};
 		};
+		class TraitManager
+		{
+			file="Kiska_functions\GUIs\Trait Manager";
+			class traitManager_addDiaryEntry
+			{
+				postInit = 1;
+			};
+			class traitManager_addToPool
+			{};
+			class traitManager_onLoad
+			{};
+			class traitManager_onLoad_traitPool
+			{};
+			class traitManager_openDialog
+			{};
+			class traitManager_removeFromPool
+			{};
+			class traitManager_store_buttonClickEvent
+			{};
+			class traitManager_take_buttonClickEvent
+			{};
+			class traitManager_updateCurrentList
+			{};
+		};
 		class Utilities
 		{
 			file="Kiska_functions\Utilities";
@@ -438,15 +462,12 @@ class CfgFunctions
 	};
 };
 
-#include "GUIs\Common GUI Headers\commonBaseClasses.hpp"
-#include "GUIs\View Distance Limiter\ViewDistanceLimiterDialog.hpp"
-#include "GUIs\Group Changer\GroupChangerDialog.hpp"
-#include "GUIs\Support Manager\Headers\Support Manager Dialog.hpp"
 
 class CfgCommunicationMenu
 {
 	#include "Supports\Support Framework\Headers\Supports CfgCommMenu.hpp"
 };
+
 
 class Extended_PreInit_EventHandlers {
     class support_settings_preInitEvent {
@@ -462,3 +483,10 @@ class Extended_PreInit_EventHandlers {
         init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addMiscCbaSettings.sqf'];";
     };
 };
+
+
+#include "GUIs\Common GUI Headers\commonBaseClasses.hpp"
+#include "GUIs\View Distance Limiter\ViewDistanceLimiterDialog.hpp"
+#include "GUIs\Group Changer\GroupChangerDialog.hpp"
+#include "GUIs\Support Manager\Headers\Support Manager Dialog.hpp"
+#include "GUIs\Trait Manager\Headers\Trait Manager Dialog.hpp"
