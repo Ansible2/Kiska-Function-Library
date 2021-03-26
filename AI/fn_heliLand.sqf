@@ -72,7 +72,7 @@ if (_createHelipad) then {
 	private "_unitAlt";
 	waitUntil {
 		sleep 0.25;
-		if (!alive _aircrat) exitWith {};
+		if (!alive _aircraft) exitWith {};
 		if !(_wasToldToLand) then {
 			// tell unit to land at position when ready
 			if (unitReady _aircraft) then {
