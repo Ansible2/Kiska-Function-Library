@@ -114,6 +114,7 @@ _vehicleTypes apply {
 		] call BIS_fnc_holdActionAdd;
 	};
 
+	// hold action conditions seem to fail if added too quickly
 	sleep 0.1;
 };
 
