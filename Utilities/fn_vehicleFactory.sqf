@@ -12,7 +12,7 @@ Parameters:
 	4: _onCreateCode <CODE> - Code to run upon vehicle creation. Passed arg is the created vehicle
 
 Returns:
-	NOTHING
+	<BOOL> - false if not added, true otherwise
 
 Examples:
 	(begin example)
@@ -39,12 +39,12 @@ params [
 
 if (isNull _controlPanel) exitWith {
 	["_controlPanel isNull",true] call KISKA_fnc_log;
-	nil
+	false
 };
 
 if (_vehicleTypes isEqualTo [] OR {_vehicleTypes isEqualTo ""}) exitWith {
 	["_vehicleTypes is empty",true] call KISKA_fnc_log;
-	nil
+	false
 };
 
 if (_vehicleTypes isEqualType "") then {
@@ -152,4 +152,4 @@ if !(_controlPanel getVariable ["KISKA_vehicleFactory",false]) then {
 };
 
 
-nil
+true
