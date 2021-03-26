@@ -23,8 +23,7 @@ Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 #define RETURN_NIL nil
-#define SCRIPT_NAME "KISKA_fnc_AAAZone"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_AAAZone";
 
 if (!canSuspend) exitWith {
 	["ReExecuting in scheduled environment",true] call KISKA_fnc_log;
@@ -38,7 +37,7 @@ params [
 ];
 
 if (isNull _vehicle) exitWith {
-	[[_vehicle," isNull"],true] call KISKA_fnc_log;
+	["_vehicle is null object",true] call KISKA_fnc_log;
 	RETURN_NIL
 };
 
@@ -90,36 +89,36 @@ while {sleep _checkTime; _vehicle getVariable ["KISKA_doAAA",true]} do {
 	// if any air units are found
 	if !(_entitiesInRadius isEqualTo []) then {
 		["Found entities in radius"] call KISKA_fnc_log;
-		
+
 		private _index = _entitiesInRadius findIf {
 			//[["Side of",_x,"is",side _x,": side of AAA is",_AAASide]] call KISKA_fnc_log;
-			
+
 			[side _x,_AAAside] call BIS_fnc_sideIsEnemy;
 		};
 
 		// if an enemy aircraft is found AND _vehicle is not already engaging
 		if (_index != -1 AND {!_doFire}) then {
 			[["Found a unit to engage and not already doing so, weapon aim on for",_gunner]] call KISKA_fnc_log;
-			
+
 			_doFire = true;
 			[true] call _fn_controlShots;
 		} else {
 			// only disable if no targets are found and already engaging
 			[["Did not meet fire standards. Do fire? ",_doFire," Index? ",_index]] call KISKA_fnc_log;
-			
+
 			if (_index isEqualTo -1 AND {_doFire}) then {
 				["No enemy targets to engage anymore. Disabling weapon aim and _doFire to false"] call KISKA_fnc_log;
-				
+
 				_doFire = false;
 				[false] call _fn_controlShots;
 			};
 		};
 	} else {
 		["No entities in area found"] call KISKA_fnc_log;
-		
+
 		if (_doFire) then {
 			["Setting _doFire to false"] call KISKA_fnc_log;
-			
+
 			_doFire = false;
 		};
 	};
@@ -127,10 +126,10 @@ while {sleep _checkTime; _vehicle getVariable ["KISKA_doAAA",true]} do {
 	// if vehicle is dead or gunner is absent
 	if !(alive _gunner) exitWith {
 		[["_gunner ",_gunner," is no longer alive, exiting"]] call KISKA_fnc_log;
-		
+
 		if (alive _vehicle) then {
 			[["_vehicle ",_vehicle," is still alive, setting KISKA_doAAA to nil"]] call KISKA_fnc_log;
-			
+
 			_vehicle setVariable ["KISKA_doAAA",nil];
 		};
 	};
