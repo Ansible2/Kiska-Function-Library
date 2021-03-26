@@ -8,11 +8,11 @@ Parameters:
 	0: _controlPanel <OBJECT> - The object to add the action to
 	1: _spawnPosition <OBJECT or ARRAY> - Where to spawn the vehicle (ASL)
 	2: _vehicleTypes <ARRAY or STRING> - The class names of vehicles to create an action for (each will get its own action if in an array)
-	3: _clearRadius <NUMBER> - How far until pad is considered clear of entities 
-	4: _onCreateCode <CODE> - Code to run upon vehicle creation. Passed arg is the created vehicle 
+	3: _clearRadius <NUMBER> - How far until pad is considered clear of entities
+	4: _onCreateCode <CODE> - Code to run upon vehicle creation. Passed arg is the created vehicle
 
 Returns:
-	NOTHING 
+	NOTHING
 
 Examples:
 	(begin example)
@@ -56,34 +56,33 @@ if (_spawnPosition isEqualType objNull) then {
 };
 
 
+private ["_type","_config","_displayName"];
 _vehicleTypes apply {
 
-	private _type = _x;
-	
-	// check if class exists
-	if (isClass (configFile >> "cfgVehicles" >> _type) OR {isClass (missionConfigFile >> "cfgVehicles" >> _type)}) then {
-		
+	_type = _x;
+	_config = configFile >> "cfgVehicles" >> _type;
+
+	if (isClass _config) then {
+
 		// get displayName
-		private _displayName = getText (configFile >> "cfgVehicles" >> _type >> "displayname");
+		_displayName = getText (_config >> "displayname");
 		if (_displayName isEqualTo "") then {
-			
-			private _altText = getText (missionConfigFile >> "cfgVehicles" >> _type >> "displayname");
-			if !(_altText isEqualTo "") then {
-				_displayName = _altText;
-			} else {
+
+			_displayName = getText (missionConfigFile >> "cfgVehicles" >> _type >> "displayname");
+			if (_displayName isEqualTo "") then {
 				_displayName = "Unknown Vehicle";
-			};	
+			};
 		};
-		
+
 		[
 			_controlPanel,
 			("Spawn " + _displayName),
-			"\a3\ui_f\data\IGUI\Cfg\holdactions\holdAction_loaddevice_ca.paa", 
-			"\a3\ui_f\data\IGUI\Cfg\holdactions\holdAction_loaddevice_ca.paa", 
-			"true", 
-			"true", 
-			{}, 
-			{}, 
+			"\a3\ui_f\data\IGUI\Cfg\holdactions\holdAction_loaddevice_ca.paa",
+			"\a3\ui_f\data\IGUI\Cfg\holdactions\holdAction_loaddevice_ca.paa",
+			"true",
+			"true",
+			{},
+			{},
 			{
 				(_this select 3) params [
 					"_type",
@@ -104,13 +103,13 @@ _vehicleTypes apply {
 				};
 
 				hint "Vehicle Created";
-			}, 
-			{}, 
-			[_type,_spawnPosition,_clearRadius,_onCreateCode], 
-			0.5, 
-			10, 
-			false, 
-			false, 
+			},
+			{},
+			[_type,_spawnPosition,_clearRadius,_onCreateCode],
+			0.5,
+			10,
+			false,
+			false,
 			false
 		] call BIS_fnc_holdActionAdd;
 	};
@@ -124,12 +123,12 @@ if !(_controlPanel getVariable ["KISKA_vehicleFactory",false]) then {
 	[
 		_controlPanel,
 		"<t color='#ba1000'>Clear Spawn</t>",
-		"\a3\ui_f\data\IGUI\Cfg\holdactions\holdAction_loaddevice_ca.paa", 
-		"\a3\ui_f\data\IGUI\Cfg\holdactions\holdAction_loaddevice_ca.paa", 
-		"true", 
+		"\a3\ui_f\data\IGUI\Cfg\holdactions\holdAction_loaddevice_ca.paa",
+		"\a3\ui_f\data\IGUI\Cfg\holdactions\holdAction_loaddevice_ca.paa",
 		"true",
-		{}, 
-		{}, 
+		"true",
+		{},
+		{},
 		{
 			(_this select 3) params ["_spawnPosition","_clearRadius"];
 			private _entities = (ASLToAGL _spawnPosition) nearEntities [['landVehicle','air','ship'],_clearRadius];
@@ -139,13 +138,13 @@ if !(_controlPanel getVariable ["KISKA_vehicleFactory",false]) then {
 			};
 
 			hint "Pad Cleared";
-		}, 
-		{}, 
-		[_spawnPosition,_clearRadius], 
-		0.5, 
-		20, 
-		false, 
-		false, 
+		},
+		{},
+		[_spawnPosition,_clearRadius],
+		0.5,
+		20,
+		false,
+		false,
 		false
 	] call BIS_fnc_holdActionAdd;
 
