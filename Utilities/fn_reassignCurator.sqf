@@ -2,19 +2,19 @@
 Function: KISKA_fnc_reassignCurator
 
 Description:
-	Reassigns a curator object to a unit.
+	Reassigns a curator object to the local player.
 
 Parameters:
-	0: _isManual : <BOOL> - Was this called from the diary entry (keeps hints from showing otherwise)
-	1: _curatorObject : <OBJECT or STRING> - The curator object to reassign
+	0: _curatorObject : <OBJECT or STRING> - The curator object to reassign
+	1: _isManual : <BOOL> - Was this called from the diary entry (keeps hints from showing otherwise)
 
 Returns:
-	NOTHING
+	<BOOL> - true if added to player, false otherwise
 
 Examples:
     (begin example)
 		// show hint messages
-		[true] call KISKA_fnc_reassignCurator;
+		[myCuratorObject,true] call KISKA_fnc_reassignCurator;
     (end)
 
 Author(s):
@@ -22,9 +22,11 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_reassignCurator";
 
+if (!hasInterface) exitWith {false};
+
 params [
-	["_isManual",false,[true]],
-	["_curatorObject",objNull,[objNull,""]]
+	["_curatorObject",objNull,[objNull,""]],
+	["_isManual",false,[true]]
 ];
 
 // check if player is host or admin
@@ -32,6 +34,7 @@ if !(call KISKA_fnc_isAdminOrHost) exitWith {
 	if (_isManual) then {
 		hint "Only admins can be assigned curator";
 	};
+	false
 };
 
 if (_curatorObject isEqualType "") then {
@@ -40,7 +43,7 @@ if (_curatorObject isEqualType "") then {
 
 if (isNull _curatorObject) exitWith {
 	["_curatorObject isNull!",true] call KISKA_fnc_log;
-	ni;
+	false
 };
 
 private _unitWithCurator = getAssignedCuratorUnit _curatorObject;
@@ -54,11 +57,13 @@ if (isNull _unitWithCurator) then {
 		} else {
 			hint "You are already the curator";
 		};
+
+		false
 	} else {
 		[_unitWithCurator,_isManual,_curatorObject] spawn {
 			params ["_unitWithCurator","_isManual","_curatorObject"];
 			[_curatorObject] remoteExec ["unAssignCurator",2];
-			
+
 			// wait till curator doesn't have a unit to give it the player
 			waitUntil {
 				if !(isNull (getAssignedCuratorUnit _curatorObject)) exitWith {
@@ -68,12 +73,14 @@ if (isNull _unitWithCurator) then {
 					};
 					true
 				};
-				
+
 				[_curatorObject] remoteExec ["unAssignCurator",2];
-				
+
 				sleep 5;
 				false
 			};
 		};
+
+		true
 	};
 };
