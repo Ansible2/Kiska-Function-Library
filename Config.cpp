@@ -365,6 +365,8 @@ class CfgFunctions
 			{};
 			class balanceHeadless
 			{};
+			class classTurretsWithGuns
+			{};
 			class copyContainerCargo
 			{};
 			class cruiseMissile
@@ -396,6 +398,8 @@ class CfgFunctions
 			class log
 			{};
 			class markPositions
+			{};
+			class monitorFPS
 			{};
 			class pasteContainerCargo
 			{};
