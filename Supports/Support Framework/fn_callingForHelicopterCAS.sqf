@@ -5,7 +5,7 @@ Function: KISKA_fnc_callingForHelicopterCAS
 
 Description:
 	Used as a means of expanding on the "expression" property of the CfgCommunicationMenu.
-	
+
 	This is essentially just another level of abrstraction to be able to more easily reuse
 	 code between similar supports and make things easier to read instead of fitting it all
 	 in the config.
@@ -14,7 +14,7 @@ Parameters:
 	0: _supportClass <STRING> - The class as defined in the CfgCommunicationMenu
 	1: _commMenuArgs <ARRAY> - The arguements passed by the CfgCommunicationMenu entry
 		0: _caller <OBJECT> - The player calling for support
-		1: _targetPosition <ARRAY> - The position (AGLS) at which the call is being made 
+		1: _targetPosition <ARRAY> - The position (AGLS) at which the call is being made
 			(where the player is looking or if in the map, the position where their cursor is)
 		2: _target <OBJECT> - The cursorTarget object of the player
 		3: _is3d <BOOL> - False if in map, true if not
@@ -87,8 +87,11 @@ SAVE_AND_PUSH(BEARING_MENU_STR,_bearingsMenu)
 ---------------------------------------------------------------------------- */
 private _selectableRadiuses = [_supportConfig >> "radiuses"] call BIS_fnc_getCfgDataArray;
 if (_selectableRadiuses isEqualTo []) then {
-	// get cba setting
-	hint "Get CBA Setting";
+	_selectableRadiuses = missionNamespace getVariable ["KISKA_CBA_supp_radiuses_arr",[]];
+
+	if (_selectableRadiuses isEqualTo []) then {
+		_selectableRadiuses = [200];
+	};
 };
 
 private _keyCode = 0;
@@ -117,8 +120,11 @@ SAVE_AND_PUSH(RADIUS_MENU_STR,_radiusMenu)
 ---------------------------------------------------------------------------- */
 private _flyInHeights = [_supportConfig >> "flyinHeights"] call BIS_fnc_getCfgDataArray;
 if (_flyInHeights isEqualTo []) then {
-	// get CBA settings
-	hint "Get CBA Setting";
+	_flyInHeights = missionNamespace getVariable ["KISKA_CBA_supp_flyInHeights_arr",[]];
+
+	if (_flyInHeights isEqualTo []) then {
+		_flyInHeights = [50];
+	};
 };
 
 private _flyInHeightMenu = [
@@ -159,7 +165,7 @@ _args pushBack _timeOnStation;
 			_approachBearing,
 			side (_commMenuArgs select 0) // caller side
 		] spawn KISKA_fnc_helicopterGunner;
-		
+
 		[SUPPORT_TYPE_HELI_CAS] call KISKA_fnc_supportNotification;
 
 		// if support still has uses left

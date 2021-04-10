@@ -3,7 +3,7 @@
 #include "CAS Type IDs.hpp"
 #include "Arty Ammo Type IDs.hpp"
 /*
-    This master function for supports is used as go between for error cases such as when 
+    This master function for supports is used as go between for error cases such as when
      a player provides an invalid position (looking at the sky). It will then refund the
      support back to the player.
 */
@@ -41,7 +41,7 @@ class KISKA_basicSupport_baseClass
 };
 class KISKA_artillery_baseClass : KISKA_basicSupport_baseClass
 {
-    supportTypeId = SUPPORT_TYPE_ARTY;   
+    supportTypeId = SUPPORT_TYPE_ARTY;
     icon = ARTILLERY_ICON;
     radiuses[] = {};
     canSelectRounds = 1;
@@ -69,7 +69,7 @@ class KISKA_artillery_baseClass : KISKA_basicSupport_baseClass
 class KISKA_CAS_baseClass : KISKA_basicSupport_baseClass
 {
     supportTypeId = SUPPORT_TYPE_CAS;
-    
+
     icon = CAS_ICON;
 
     attackTypes[] = {

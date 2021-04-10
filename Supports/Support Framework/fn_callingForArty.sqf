@@ -6,7 +6,7 @@ Function: KISKA_fnc_callingForArty
 
 Description:
 	Used as a means of expanding on the "expression" property of the CfgCommunicationMenu.
-	
+
 	This is essentially just another level of abrstraction to be able to more easily reuse
 	 code between similar supports and make things easier to read instead of fitting it all
 	 in the config.
@@ -15,7 +15,7 @@ Parameters:
 	0: _supportClass <STRING> - The class as defined in the CfgCommunicationMenu
 	1: _commMenuArgs <ARRAY> - The arguements passed by the CfgCommunicationMenu entry
 		0: _caller <OBJECT> - The player calling for support
-		1: _targetPosition <ARRAY> - The position (AGLS) at which the call is being made 
+		1: _targetPosition <ARRAY> - The position (AGLS) at which the call is being made
 			(where the player is looking or if in the map, the position where their cursor is)
 		2: _target <OBJECT> - The cursorTarget object of the player
 		3: _is3d <BOOL> - False if in map, true if not
@@ -92,8 +92,11 @@ SAVE_AND_PUSH(AMMO_TYPE_MENU_GVAR,_ammoMenu)
 ---------------------------------------------------------------------------- */
 private _selectableRadiuses = [_supportConfig >> "radiuses"] call BIS_fnc_getCfgDataArray;
 if (_selectableRadiuses isEqualTo []) then {
-	// get cba setting
-	hint "CBA Setting Get";
+	_selectableRadiuses = missionNamespace getVariable ["KISKA_CBA_supp_radiuses_arr",[]];
+
+	if (_selectableRadiuses isEqualTo []) then {
+		_selectableRadiuses = [200];
+	};
 };
 
 private _radiusMenu = [
@@ -164,7 +167,7 @@ _args pushBack _menuVariables;
 		private _commMenuArgs = _args select 1;
 		private _targetPosition = _commMenuArgs select 1;
 		[_targetPosition,_ammo,_radius,_numberOfRounds] spawn KISKA_fnc_virtualArty;
-		
+
 		[SUPPORT_TYPE_ARTY] call KISKA_fnc_supportNotification;
 
 		// if support still has rounds available, add it back with the new round count

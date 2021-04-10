@@ -6,7 +6,7 @@
     "My Mission Settings", // Pretty name of the category where the setting can be found. Can be stringtable entry.
     [200, 15000, 5000, 0], // data for this setting: [min, max, default, number of shown trailing decimals]
     nil, // "_isGlobal" flag. Set this to true to always have this setting synchronized between all clients in multiplayer
-    {  
+    {
         params ["_value"];
         setViewDistance _value;
     } // function that will be executed once on mission start and every time the setting is changed.
@@ -33,9 +33,9 @@ Parameters:
     "",
     [200, 15000, 5000, 0],
     nil,
-    {  
+    {
         params ["_value"];
-        
+
     }
 ] call CBA_fnc_addSetting;
 
@@ -95,4 +95,45 @@ Parameters:
         1
     ],
     0
+] call CBA_fnc_addSetting;
+
+
+
+
+
+[
+    "KISKA_CBA_supp_radiuses",
+    "EDITBOX",
+    ["Default Artillery Radiuses","When calling for supports with an unspecified set of radiuses to choose, these will be selectable (meters)"],
+    ["KISKA Support Settings","Support Parameters"],
+    ["[10,25,50,100,250]"],
+    0,
+    {
+        params ["_value"];
+
+        if (_value isEqualTo "") exitWith {
+            missionNamespace setVariable ["KISKA_CBA_supp_radiuses","[10,25,50,100,250]"];
+        };
+
+        missionNamespace setVariable ["KISKA_CBA_supp_radiuses_arr",parseSimpleArray _value];
+    }
+] call CBA_fnc_addSetting;
+
+
+[
+    "KISKA_CBA_supp_flyInHeights",
+    "EDITBOX",
+    ["Default Fly-In-Heights","When calling for a support with an unspecified set of fly-In-Heights to choose, these will be selectable (meters)"],
+    ["KISKA Support Settings","Support Parameters"],
+    ["[25,50,100,250,500]"],
+    0,
+    {
+        params ["_value"];
+
+        if (_value isEqualTo "") exitWith {
+            missionNamespace setVariable ["KISKA_CBA_supp_flyInHeights","[25,50,100,250,500]"];
+        };
+
+        missionNamespace setVariable ["KISKA_CBA_supp_flyInHeights_arr",parseSimpleArray _value];
+    }
 ] call CBA_fnc_addSetting;
