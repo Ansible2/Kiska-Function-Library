@@ -175,7 +175,7 @@ _params spawn {
 		if ((!alive _vehicle) OR {(_vehicle distance2D _centerPosition) <= _radius}) exitWith {
 			true
 		};
-		_vehicle move _centerPosition;
+		_pilotsGroup move _centerPosition;
 		sleep 2;
 		false
 	};
@@ -223,15 +223,18 @@ _params spawn {
 	//[TYPE_CAS_ABORT,_vehicleCrew select 0,_side] call KISKA_fnc_supportRadio;
 
 	// remove speed limit
-	_vehicle limitSpeed 9999;
+	_vehicle limitSpeed 99999;
 
 	// get helicopter to disengage and rtb
 	(currentPilot _vehicle) disableAI "AUTOTARGET";
 	_pilotsGroup setCombatMode "BLUE";
-	_pilotsGroup setBehaviour "SAFE";
 
+	// not using waypoints here because they are auto-deleted for an unkown reason a few seconds after being created for the unit
 
+	// return to spawn position area
 	private _deletePosition = _centerPosition getPos [SPAWN_DISTANCE,_approachBearing + 180];
+	_vehicle doMove _deletePosition;
+
 	waitUntil {
 		if (!alive _vehicle OR {(_vehicle distance2D _deletePosition) <= 200}) exitWith {true};
 
@@ -240,8 +243,6 @@ _params spawn {
 			_vehicle setDamage 1;
 			true
 		};
-
-		_vehicle move _deletePosition;
 
 		sleep 2;
 		false
