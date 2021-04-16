@@ -6,31 +6,30 @@ Description:
 	Has support for CUP aircraft to spawn at velocity.
 
 Parameters:
-	0: _spawnPosition <ARRAY or OBJECT> - 3D array in the format of PositionATL 
+	0: _spawnPosition <ARRAY or OBJECT> - 3D array in the format of PositionATL
 		(PositionAGL if boat or amphibious)
 	1: _spawnDirection <NUMBER> - The direction the vehicle is facing when created (relative to north)
 	2: _vehicleClass <STRING> - The typeOf vehicle to spawn
-	3. _group <SIDE or GROUP> - Either the side to create a group on or an 
+	3. _group <SIDE or GROUP> - Either the side to create a group on or an
 		already existing group to add the units to
 	4. _forcePosition <BOOL> - Force vehicle to spawn at exact coordinates
 
 Returns:
-	<ARRAY> - 
+	<ARRAY> -
 		0: <OBJECT> - The created vehicle
 		1: <ARRAY> - The vehicle crew (if soldier type, it will be the same as created vehicle)
 		2: <GROUP> -  The group the crew is a part of
 
 Examples:
     (begin example)
-		
+		[player,0,"someclass"] call KISKA_fnc_spawnVehicle;
     (end)
 
 Author(s):
 	Joris-Jan van 't Land,
 	Modified by: Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_spawnVehicle"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_spawnVehicle";
 
 params [
 	["_spawnPosition",[0,0,0],[[]]],
@@ -43,10 +42,12 @@ params [
 
 if (_vehicleClass isEqualTo "") exitWith {
 	["_vehicleClass is empty string, exiting...",true] call KISKA_fnc_log;
+	[]
 };
 
 if (_group isEqualType grpNull AND {isNull _group}) exitWith {
 	[["Tried to spawn class: ",_vehicleClass," but the _group is type GROUP and the group is null, exiting..."],true] call KISKA_fnc_log;
+	[]
 };
 
 // make a group if side is provided
