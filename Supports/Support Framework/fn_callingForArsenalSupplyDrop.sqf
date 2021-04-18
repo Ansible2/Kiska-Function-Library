@@ -5,7 +5,7 @@ Function: KISKA_fnc_callingForArsenalSupplyDrop
 
 Description:
 	Used as a means of expanding on the "expression" property of the CfgCommunicationMenu.
-	
+
 	This is essentially just another level of abrstraction to be able to more easily reuse
 	 code between similar supports and make things easier to read instead of fitting it all
 	 in the config.
@@ -14,7 +14,7 @@ Parameters:
 	0: _supportClass <STRING> - The class as defined in the CfgCommunicationMenu
 	1: _commMenuArgs <ARRAY> - The arguements passed by the CfgCommunicationMenu entry
 		0: _caller <OBJECT> - The player calling for support
-		1: _targetPosition <ARRAY> - The position (AGLS) at which the call is being made 
+		1: _targetPosition <ARRAY> - The position (AGLS) at which the call is being made
 			(where the player is looking or if in the map, the position where their cursor is)
 		2: _target <OBJECT> - The cursorTarget object of the player
 		3: _is3d <BOOL> - False if in map, true if not
@@ -108,9 +108,16 @@ _args pushBack _menuVariables;
 	{
 		params ["_vehicleClass","_approachBearing","_flyinHeight"];
 
+		private _useCount = _args select 2;
+		// if a ctrl key is held and one left clicks to select the support while in the map, they can call in an infinite number of the support
+		if (visibleMap AND {missionNamespace getVariable ["KISKA_ctrlDown",false]}) exitWith {
+			hint parseText "<t color='#ff0000'>You can't call in a support while holding down a crtl key and in the map. It causes a bug with the support menu.</t>";
+			ADD_SUPPORT_BACK(_useCount)
+		};
+
 		private _commMenuArgs = _args select 1;
 		private _dropPosition = _commMenuArgs select 1;
-		
+
 		[
 			_dropPosition,
 			_vehicleClass,
@@ -120,11 +127,10 @@ _args pushBack _menuVariables;
 			ARSENAL_LIFETIME,
 			side (_commMenuArgs select 0)
 		] call KISKA_fnc_arsenalSupplyDrop;
-		
+
 		[SUPPORT_TYPE_ARSENAL_DROP] call KISKA_fnc_supportNotification;
 
 		// if support still has uses left
-		private _useCount = _args select 2;
 		if (_useCount > 1) then {
 			_useCount = _useCount - 1;
 			ADD_SUPPORT_BACK(_useCount)

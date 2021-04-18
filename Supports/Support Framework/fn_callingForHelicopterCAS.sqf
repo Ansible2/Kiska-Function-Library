@@ -152,6 +152,13 @@ _args pushBack _timeOnStation;
 	{
 		params ["_vehicleClass","_approachBearing","_attackRadius","_flyinHeight"];
 
+		private _useCount = _args select 2;
+		// if a ctrl key is held and one left clicks to select the support while in the map, they can call in an infinite number of the support
+		if (visibleMap AND {missionNamespace getVariable ["KISKA_ctrlDown",false]}) exitWith {
+			hint parseText "<t color='#ff0000'>You can't call in a support while holding down a crtl key and in the map. It causes a bug with the support menu.</t>";
+			ADD_SUPPORT_BACK(_useCount)
+		};
+
 		private _commMenuArgs = _args select 1;
 		private _targetPosition = _commMenuArgs select 1;
 		private _timeOnStation = _args select 4;
@@ -169,7 +176,6 @@ _args pushBack _timeOnStation;
 		[SUPPORT_TYPE_HELI_CAS] call KISKA_fnc_supportNotification;
 
 		// if support still has uses left
-		private _useCount = _args select 2;
 		if (_useCount > 1) then {
 			_useCount = _useCount - 1;
 			ADD_SUPPORT_BACK(_useCount)

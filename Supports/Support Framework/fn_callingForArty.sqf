@@ -164,6 +164,13 @@ _args pushBack _menuVariables;
 	{
 		params ["_ammo","_radius","_numberOfRounds"];
 
+		private _roundsAvailable = _args select 2;
+		// if a ctrl key is held and one left clicks to select the support while in the map, they can call in an infinite number of the support
+		if (visibleMap AND {missionNamespace getVariable ["KISKA_ctrlDown",false]}) exitWith {
+			hint parseText "<t color='#ff0000'>You can't call in a support while holding down a crtl key and in the map. It causes a bug with the support menu.</t>";
+			ADD_SUPPORT_BACK(_roundsAvailable)
+		};
+
 		private _commMenuArgs = _args select 1;
 		private _targetPosition = _commMenuArgs select 1;
 		[_targetPosition,_ammo,_radius,_numberOfRounds] spawn KISKA_fnc_virtualArty;
@@ -171,7 +178,6 @@ _args pushBack _menuVariables;
 		[SUPPORT_TYPE_ARTY] call KISKA_fnc_supportNotification;
 
 		// if support still has rounds available, add it back with the new round count
-		private _roundsAvailable = _args select 2;
 		if (_numberOfRounds < _roundsAvailable) then {
 			_roundsAvailable = _roundsAvailable - _numberOfRounds;
 			ADD_SUPPORT_BACK(_roundsAvailable)

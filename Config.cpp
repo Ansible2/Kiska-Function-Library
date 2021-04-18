@@ -287,6 +287,10 @@ class CfgFunctions
 			{};
 			class createVehicleSelectMenu
 			{};
+			class detectControlKeys
+			{
+				postInit = 1;
+			};
 			class getAmmoClassFromId
 			{};
 			class getAmmoTitleFromId
