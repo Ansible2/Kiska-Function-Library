@@ -332,10 +332,6 @@ private _fn_fireAtTarget = {
 					["Reached explosion, updating target pos",false] call KISKA_fnc_log;
 					call _fn_updateTargetPos;
 
-					// remove from target hash
-					[["Removed turret ",_turret," from target hash for target ",_target," with a netId of: ",_targetNetId],false] call KISKA_fnc_log;
-					KISKA_CIWS_engagedTargetsHash deleteAt _targetNetId;
-
 					// delay explosion because bullets take time to reach their target
 					if (!isNull _target) then {
 						[["Creating an explosion for target ",_target," for turret ",_turret]] call KISKA_fnc_log;
@@ -373,8 +369,16 @@ private _fn_fireAtTarget = {
 		// this is used as a sort of reset
 		_turret disableAI "WEAPONAIM";
 
-		if (!(isNull _target) AND {_firedShots}) then {
+		if (
+			!(isNull _target) AND
+			{_firedShots} AND
+			{KISKA_CIWS_engagedTargetsHash getOrDefault [_targetNetId, objNull] isEqualTo _turret}
+		) then {
 			triggerAmmo _target;
+
+			// remove from target hash
+			[["Removed turret ",_turret," from target hash for target ",_target," with a netId of: ",_targetNetId],false] call KISKA_fnc_log;
+			KISKA_CIWS_engagedTargetsHash deleteAt _targetNetId;
 
 			if (alive _target) then {
 				deleteVehicle _target;
