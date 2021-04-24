@@ -37,7 +37,7 @@ params [
 	["_side",BLUFOR,[sideUnknown]]
 ];
 
-// get directions for vehicle to fly 
+// get directions for vehicle to fly
 if (_flyDirection < 0) then {
 	_flyDirection = round (random 360);
 };
@@ -49,17 +49,19 @@ private _relativeDirection = _spawnPosition getDir _dropPosition;
 
 // spawn vehicle
 private _vehicleArray = [_spawnPosition,_relativeDirection,_vehicleClass,_side] call KISKA_fnc_spawnVehicle;
+private _aircraftGroup = _vehicleArray select 2;
+[_aircraftGroup,false] call KISKA_fnc_ACEX_setHCTransfer;
 
 private _aircraftCrew = _vehicleArray select 1;
 _aircraftCrew apply {
 	_x setCaptive true;
 };
 
-private _aircraftGroup = _vehicleArray select 2;
-_aircraft flyInHeight _dropAlt;
+
 
 private _aircraft = _vehicleArray select 0;
 _airCraft move _dropPosition;
+_aircraft flyInHeight _dropAlt;
 
 // give it a waypoint and delete it after it gets there
 private _flyToPosition = _dropPosition getPos [_flyInRadius,_relativeDirection];
@@ -95,7 +97,7 @@ private _flyToPosition = _dropPosition getPos [_flyInRadius,_relativeDirection];
 
 
 	sleep 0.1;
-	
+
 	private _aircraftAlt = (getPosATL _aircraft) select 2;
 	private _boxSpawnPosition = _aircraft getRelPos [15,180];
 	private _arsenalBox = ([["B_supplyCrate_F"],_aircraftAlt,_boxSpawnPosition] call KISKA_fnc_supplyDrop) select 0;
@@ -103,7 +105,7 @@ private _flyToPosition = _dropPosition getPos [_flyInRadius,_relativeDirection];
 	clearWeaponCargoGlobal _arsenalBox;
 	clearBackpackCargoGlobal _arsenalBox;
 	clearItemCargoGlobal _arsenalBox;
-	
+
 	if (_lifeTime > 0) then {
 		// make sure it's on the ground before we start the countdown to deletetion
 		waitUntil {
@@ -111,10 +113,10 @@ private _flyToPosition = _dropPosition getPos [_flyInRadius,_relativeDirection];
 			sleep 5;
 			false
 		};
-	
-	
+
+
 		sleep _lifeTime;
-	
+
 		deleteVehicle _arsenalBox;
 	};
 };

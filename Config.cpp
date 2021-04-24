@@ -13,6 +13,12 @@ class CfgFunctions
 {
 	class KISKA
 	{
+		class ACEX
+		{
+			file = "KISKA_functions\ACEX";
+			class ACEX_setHCTransfer
+			{};
+		};
 		class AI
 		{
 			file = "Kiska_functions\AI";

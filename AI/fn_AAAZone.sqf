@@ -59,6 +59,9 @@ if (isNull _gunnerGroup) exitWith {
 	RETURN_NIL
 };
 
+// disable HC transfer
+[_gunnerGroup,false] call KISKA_fnc_ACEX_setHCTransfer;
+
 private _fn_controlShots = {
 	params ["_doShoot"];
 
@@ -140,6 +143,8 @@ while {sleep _checkTime; _vehicle getVariable ["KISKA_doAAA",true]} do {
 
 if (alive _gunner) then {
 	[true] call _fn_controlShots
+	// allow HC transfer
+	[_gunnerGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
 };
 
 

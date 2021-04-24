@@ -75,7 +75,8 @@ private _spawnPosition = _centerPosition getPos [SPAWN_DISTANCE,_approachBearing
 _spawnPosition set [2,_flyInHeight];
 
 private _vehicleArray = [_spawnPosition,0,_aircraftType,_side] call KISKA_fnc_spawnVehicle;
-
+// disable HC transfer
+[_vehicleArray select 2,false] call KISKA_fnc_ACEX_setHCTransfer;
 
 private _vehicle = _vehicleArray select 0;
 _vehicle flyInHeight _flyInHeight;

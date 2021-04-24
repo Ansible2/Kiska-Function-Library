@@ -97,6 +97,9 @@ _spawnPosition set [2,_flyInHeight];
 
 // create vehicle
 private _vehicleArray = [_spawnPosition,_flyDirection,_dropVehicleClass,_side] call KISKA_fnc_spawnVehicle;
+// disable HC transfer
+[_vehicleArray select 2,false] call KISKA_fnc_ACEX_setHCTransfer;
+
 private _aircraft = _vehicleArray select 0;
 allCurators apply {
 	[_x,[[_aircraft],true]] remoteExecCall ["addCuratorEditableObjects",2];

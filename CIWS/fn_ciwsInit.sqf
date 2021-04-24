@@ -36,6 +36,8 @@ scriptName "KISKA_fnc_ciwsInit";
 #define RETURN_NIL nil
 #define NUMBER_OF_MAGS 3
 #define EXPLOSION_DELAY_CONST 0.0005
+#define TURRET_WEAPON "Gatling_30mm_Plane_CAS_01_F"
+#define TURRET_MAGAZINE "1000Rnd_Gatling_30mm_Plane_CAS_01_F"
 
 if (!canSuspend) exitWith {
 	["Was not run in scheduled; running in scheduled...",true] call KISKA_fnc_log;
@@ -63,13 +65,16 @@ if !(_turret isKindOf "AAA_System_01_base_F") exitWith {
 	RETURN_NIL
 };
 
+// disable HC transfer
+[group _turret,false] call KISKA_fnc_ACEX_setHCTransfer;
+
 
 // give the turret the cool red tracer gatling for more authenticity
-_turret addWeaponTurret ["Gatling_30mm_Plane_CAS_01_F", [0]];
+_turret addWeaponTurret [TURRET_WEAPON, [0]];
 for "_i" from 1 to NUMBER_OF_MAGS do {
-	_turret addMagazineTurret ["1000Rnd_Gatling_30mm_Plane_CAS_01_F",[0],1000];
+	_turret addMagazineTurret [TURRET_MAGAZINE,[0],1000];
 };
-_turret selectWeaponTurret ["Gatling_30mm_Plane_CAS_01_F",[0]];
+_turret selectWeaponTurret [TURRET_WEAPON,[0]];
 
 private _engagedTargetsHash = createHashMap;
 missionNamespace setVariable ["KISKA_CIWS_engagedTargetsHash",_engagedTargetsHash];
@@ -422,6 +427,8 @@ while {alive _turret AND {_turret getVariable ["KISKA_runCIWS",true]}} do {
 if (alive _turret) then {
 	_turret enableAI "AutoTarget";
 	_turret enableAI "Target";
+	// enable HC transfer
+	[group _turret,false] call KISKA_fnc_ACEX_setHCTransfer;
 };
 
 

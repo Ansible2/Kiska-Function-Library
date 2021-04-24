@@ -22,8 +22,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_driveTo"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_driveTo";
 
 params [
 	["_crew",[],[[],grpNull,objNull]],
@@ -66,14 +65,15 @@ private _vehicleCrew = crew _vehicle;
 	};
 
 } forEach _crew;
-
+// disable HC transfer while driving
+[_driverGroup,false] call KISKA_fnc_ACEX_setHCTransfer;
 
 [_driverGroup] call CBA_fnc_clearWaypoints;
 [_driverGroup,_dismountPoint,-1,"MOVE","UNCHANGED","NO CHANGE",_speed,"NO CHANGE","",[0,0,0],_completionRadius] call CBA_fnc_addWaypoint;
 
 // position loop
-[_vehicle,_crew,_codeOnComplete,_completionRadius,_dismountPoint] spawn {
-	params ["_vehicle","_crew","_codeOnComplete","_completionRadius","_dismountPoint"];
+[_vehicle,_crew,_codeOnComplete,_completionRadius,_dismountPoint,_driverGroup] spawn {
+	params ["_vehicle","_crew","_codeOnComplete","_completionRadius","_dismountPoint","_driverGroup"];
 
 	waitUntil {
 		if (_vehicle distance _dismountPoint <= _completionRadius) exitWith {true};
@@ -81,13 +81,16 @@ private _vehicleCrew = crew _vehicle;
 		false
 	};
 
-	[["_vehicle ",_vehicle," has reached its destination"]] call KISKA_fnc_log;
+	[["_vehicle ",_vehicle," has reached its destination"],false] call KISKA_fnc_log;
 
 	_crew apply {
 		[_x,_vehicle] remoteExecCall ["leaveVehicle",_x];
 	};
 
-	if !(_codeOnComplete isEqualTo {}) then {	
+	// enable HC transfer
+	[_driverGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
+
+	if !(_codeOnComplete isEqualTo {}) then {
 		[_vehicle,_crew] call _codeOnComplete;
 	};
 };
