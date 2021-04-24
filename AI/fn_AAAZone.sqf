@@ -142,7 +142,7 @@ while {sleep _checkTime; _vehicle getVariable ["KISKA_doAAA",true]} do {
 };
 
 if (alive _gunner) then {
-	[true] call _fn_controlShots
+	[true] call _fn_controlShots;
 	// allow HC transfer
 	[_gunnerGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
 };
