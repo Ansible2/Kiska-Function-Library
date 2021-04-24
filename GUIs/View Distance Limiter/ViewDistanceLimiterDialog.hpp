@@ -1,6 +1,6 @@
 #include "viewDistanceLimiterBases.hpp"
 
-class VIEW_DISTANCE_LIMITER_DIALOG 
+class VIEW_DISTANCE_LIMITER_DIALOG
 {
 	idd = VIEW_DISTANCE_LIMITER_DIALOG_IDD;
 	movingEnabled = true;
@@ -145,9 +145,9 @@ class VIEW_DISTANCE_LIMITER_DIALOG
 			y = 0.40625 * safezoneH + safezoneY;
 			w = 0.0996094 * safezoneW;
 			h = 0.0208333 * safezoneH;
-			sliderPosition = 3;
-            sliderRange[] = {1,10};
-            sliderStep = 1;
+			sliderPosition = 1;
+            sliderRange[] = {0.01,10};
+            sliderStep = 0.01;
 			lineSize = 1;
 			tooltip = "This is how often the view distance will be adjusted in seconds"; //--- ToDo: Localize;
 		};
