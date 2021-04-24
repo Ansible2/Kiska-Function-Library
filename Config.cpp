@@ -391,6 +391,8 @@ class CfgFunctions
 			{};
 			class findIfBool
 			{};
+			class getMissionLayerObjects
+			{};
 			class getPlayerObject
 			{};
 			class getVariableTarget
