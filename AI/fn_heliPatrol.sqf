@@ -14,7 +14,7 @@ Parameters:
     3. _patrolHeight <NUMBER> - What's the flying height of the helicopter
 	4. _patrolSpeed <STRING> - setWaypointSpeed, takes "UNCHANGED", "LIMITED", "NORMAL", and "FULL"
     5: _randomPatrol <BOOL> - Should patrol points be randomized or followed in array order
-	
+
 
 Returns:
 	<BOOL> - True if helicopter will patrol, false if problem encountered
@@ -27,8 +27,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_heliPatrol"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_heliPatrol";
 
 params [
     ["_helicopter",objNull,[objNull]],
@@ -62,7 +61,7 @@ if (isNull _pilot) exitWith {
 };
 
 private _helicopterGroup = group _pilot;
-
+[_helicopterGroup,false] call KISKA_fnc_ACEX_setHCTransfer;
 _helicopter flyInHeight _patrolHeight;
 
 [_helicopterGroup,count _patrolPoints,_patrolPoints,_randomPatrol,"SAFE",_patrolSpeed,"WHITE"] call KISKA_fnc_patrolSpecific;
@@ -78,10 +77,10 @@ _helicopter flyInHeight _patrolHeight;
     waitUntil {
         _targets = _helicopter nearEntities ["MAN",_spotDistance3D];
         _foundTargetIndex = _targets findIf {
-                ([side _x,_helicopterSide] call BIS_fnc_sideIsEnemy) AND 
-                {(_x distance _helicopter) <= _spotDistance3D} AND 
+                ([side _x,_helicopterSide] call BIS_fnc_sideIsEnemy) AND
+                {(_x distance _helicopter) <= _spotDistance3D} AND
                 {side _x != Civilian}
-            };    
+            };
         if (_foundTargetIndex isNotEqualTo -1) exitWith {true};
         sleep 4;
         false
