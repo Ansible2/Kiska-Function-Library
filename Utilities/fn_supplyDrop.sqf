@@ -32,6 +32,7 @@ params [
 
 if (_classNames isEqualTo []) exitWith {
 	["No classnames passed!",true] call KISKA_fnc_log;
+	[]
 };
 
 private _containersArray = [];
@@ -43,7 +44,7 @@ _classNames apply {
     _containersArray pushBack _container_temp;
 
     // give the conatainer a random position above DZ
-    _dropZone_temp = [_dropPosition,50] call CBA_fnc_randPos;    
+    _dropZone_temp = [_dropPosition,50] call CBA_fnc_randPos;
     // make it invincible
     _container_temp allowDamage false;
 
@@ -87,7 +88,7 @@ _classNames apply {
 
 KISKA_fnc_SD_markDropPosition = {
     params ["_firstContainer"];
-	
+
 	private _containerHeight = (getPosATL _firstContainer) select 2;
 	waitUntil {
 		if (_containerHeight < 5) exitWith {true};
@@ -103,7 +104,7 @@ KISKA_fnc_SD_markDropPosition = {
     waitUntil {
         // waitUntil a player is within 10m of the first container
         if (!(((call CBA_fnc_players) findIf {(_x distance2D _firstContainer) <= 10}) isEqualTo -1) OR {time > _deleteTime}) exitWith {true};
-        
+
         sleep 2;
         false
     };

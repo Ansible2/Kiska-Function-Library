@@ -63,6 +63,10 @@ if (_supportTypeId isEqualTo SUPPORT_TYPE_CAS) exitWith {
 	_this call KISKA_fnc_callingForCAS;
 };
 
+if (_supportTypeId isEqualTo SUPPORT_TYPE_ARSENAL_DROP) exitWith {
+	_this call KISKA_fnc_callingForArsenalSupplyDrop
+};
+
 
 _commMenuArgs params [
 	"_caller",

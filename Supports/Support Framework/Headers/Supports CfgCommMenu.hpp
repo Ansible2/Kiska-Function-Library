@@ -8,7 +8,7 @@
      support back to the player.
 */
 #define CALL_SUPPORT_MASTER(CLASS) "["#CLASS",_this,%1] call KISKA_fnc_callingForSupportMaster"
-
+#define EXPRESSION_CALL_MASTER(CLASS) CALL_SUPPORT_MASTER(CLASS);
 
 /*
 // expression arguments
@@ -115,4 +115,23 @@ class KISKA_arsenalSupplyDrop_baseClass : KISKA_basicSupport_baseClass
 
     flyinHeights[] = {};
     vehicleTypes[] = {};
+};
+
+
+// CAS Templates
+class KISKA_CAS_guns_templateClass : KISKA_CAS_baseClass
+{
+    attackTypes[] = {
+        GUN_RUN_ID
+    };
+};
+class KISKA_CAS_gunsRockets_templateClass : KISKA_CAS_baseClass
+{
+    attackTypes[] = {
+        GUN_RUN_ID,
+        GUNS_AND_ROCKETS_ARMOR_PIERCING_ID,
+        GUNS_AND_ROCKETS_HE_ID,
+        ROCKETS_ARMOR_PIERCING_ID,
+        ROCKETS_HE_ID
+    };
 };
