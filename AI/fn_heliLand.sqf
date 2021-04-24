@@ -24,11 +24,9 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_heliLand";
 
-
 #define HELIPAD_BASE "Helipad_base_F"
 #define INVISIBLE_PAD_TYPE "Land_HelipadEmpty_F"
 #define LAND_EVENT "KISKA_landedEvent"
-
 
 params [
 	["_aircraft",objNull,[objNull]],
