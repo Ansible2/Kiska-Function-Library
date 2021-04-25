@@ -20,9 +20,11 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_updateRallyPointNotification";
 
+#define HEADER_COLOR [0,0.3,0.6,1]
+
 if (!hasInterface) exitWith {};
 
-[["MESSAGE",1.1,[0.75,0,0,1]],"Rally Point Was Updated",false] call CBA_fnc_notify;
+[["MESSAGE",1.1,HEADER_COLOR],"Rally Point Was Updated",false] call CBA_fnc_notify;
 
 
 nil
