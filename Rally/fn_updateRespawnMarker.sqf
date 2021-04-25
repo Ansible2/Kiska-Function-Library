@@ -53,13 +53,14 @@ _callerGroup setVariable ["KISKA_groupRespawnMarkerID",_id];
 // check if marker is created already
 if (getMarkerType _marker isEqualTo "") then {
 	(["|",_marker,"|",_position,"|respawn_inf|ICON|[1,1]|0|Solid|","color",(side _caller),"|1|",_markerText] joinString "") call BIS_fnc_stringToMarker;
+
 	_callerGroup setVariable ["KISKA_groupRespawnMarker",_marker];
 	[["Created marker ",_marker],false] call KISKA_fnc_log;
+
 } else {
 	_marker setMarkerPos _caller;
-
 	[["Changed marker ",_marker," position"],false] call KISKA_fnc_log;
 };
 
 // send update message back to caller
-["Rally Point Updated"] remoteExecCall ["hint",_caller];
+remoteExec ["KISKA_fnc_updateRallyPointNotification",_caller];

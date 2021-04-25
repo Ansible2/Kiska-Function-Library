@@ -225,6 +225,8 @@ class CfgFunctions
 			{};
 			class isGroupRallyAllowed
 			{};
+			class updateRallyPointNotification
+			{};
 			class updateRespawnMarker
 			{};
 			class updateRespawnMarkerQuery
