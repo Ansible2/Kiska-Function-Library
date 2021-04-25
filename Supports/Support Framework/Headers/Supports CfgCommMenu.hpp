@@ -25,6 +25,10 @@
 	if a class is to be solely a base one, you need to include _baseClass (EXACTLY AS IT IS CASE SENSITIVE)
 	 somewhere in the class name so that it can be excluded from being added to the shop
 */
+
+/* ----------------------------------------------------------------------------
+	Base Classes
+---------------------------------------------------------------------------- */
 class KISKA_basicSupport_baseClass
 {
     text = "I'm a support!"; // text in support menu
@@ -41,6 +45,7 @@ class KISKA_basicSupport_baseClass
     // _this select 0 is the classname
     managerCondition = "";
 };
+
 class KISKA_artillery_baseClass : KISKA_basicSupport_baseClass
 {
     supportTypeId = SUPPORT_TYPE_ARTY;
@@ -67,7 +72,6 @@ class KISKA_artillery_baseClass : KISKA_basicSupport_baseClass
     };
 };
 
-// bases
 class KISKA_CAS_baseClass : KISKA_basicSupport_baseClass
 {
     supportTypeId = SUPPORT_TYPE_CAS;
@@ -84,9 +88,10 @@ class KISKA_CAS_baseClass : KISKA_basicSupport_baseClass
         BOMB_LGB_ID,
         BOMB_CLUSTER_ID
     };
-
+    // class names for any vehicle that the player can select from
     vehicleTypes[] = {};
 };
+
 class KISKA_attackHelicopterCAS_baseClass : KISKA_basicSupport_baseClass
 {
     supportTypeId = SUPPORT_TYPE_ATTACKHELI_CAS;
@@ -98,6 +103,7 @@ class KISKA_attackHelicopterCAS_baseClass : KISKA_basicSupport_baseClass
     flyinHeights[] = {};
     vehicleTypes[] = {};
 };
+
 class KISKA_helicopterCAS_baseClass : KISKA_basicSupport_baseClass
 {
     supportTypeId = SUPPORT_TYPE_HELI_CAS;
@@ -109,6 +115,7 @@ class KISKA_helicopterCAS_baseClass : KISKA_basicSupport_baseClass
     flyinHeights[] = {};
     vehicleTypes[] = {};
 };
+
 class KISKA_arsenalSupplyDrop_baseClass : KISKA_basicSupport_baseClass
 {
     supportTypeId = SUPPORT_TYPE_ARSENAL_DROP;
@@ -120,7 +127,9 @@ class KISKA_arsenalSupplyDrop_baseClass : KISKA_basicSupport_baseClass
 };
 
 
-// CAS Templates
+/* ----------------------------------------------------------------------------
+	(Fixed-Wing) CAS Templates
+---------------------------------------------------------------------------- */
 class KISKA_CAS_guns_templateClass : KISKA_CAS_baseClass
 {
     attackTypes[] = {
@@ -135,5 +144,25 @@ class KISKA_CAS_gunsRockets_templateClass : KISKA_CAS_baseClass
         GUNS_AND_ROCKETS_HE_ID,
         ROCKETS_ARMOR_PIERCING_ID,
         ROCKETS_HE_ID
+    };
+};
+class KISKA_CAS_rockets_templateClass : KISKA_CAS_baseClass
+{
+    attackTypes[] = {
+        ROCKETS_ARMOR_PIERCING_ID,
+        ROCKETS_HE_ID
+    };
+};
+class KISKA_CAS_bombs_templateClass : KISKA_CAS_baseClass
+{
+    attackTypes[] = {
+        BOMB_LGB_ID,
+        BOMB_CLUSTER_ID
+    };
+};
+class KISKA_CAS_AGM_templateClass : KISKA_CAS_baseClass
+{
+    attackTypes[] = {
+        AGM_ID
     };
 };
