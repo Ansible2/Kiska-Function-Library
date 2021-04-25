@@ -51,7 +51,7 @@ class KISKA_artillery_baseClass : KISKA_basicSupport_baseClass
     supportTypeId = SUPPORT_TYPE_ARTY;
     icon = ARTILLERY_ICON;
     radiuses[] = {};
-    canSelectRounds = 1;
+    canSelectRounds = 1; // can the caller select a specified number of rounds each call
     roundCount = 8; // starting round count
 
     ammoTypes[] = {
@@ -164,5 +164,45 @@ class KISKA_CAS_AGM_templateClass : KISKA_CAS_baseClass
 {
     attackTypes[] = {
         AGM_ID
+    };
+};
+
+
+/* ----------------------------------------------------------------------------
+	Atillery Templates
+---------------------------------------------------------------------------- */
+class KISKA_ARTY_155_templateClass : KISKA_artillery_baseClass
+{
+    ammoTypes[] = {
+        AMMO_155_HE_ID,
+        AMMO_155_CLUSTER_ID,
+        AMMO_155_MINES_ID,
+        AMMO_155_ATMINES_ID
+    };
+};
+class KISKA_ARTY_120_templateClass : KISKA_artillery_baseClass
+{
+    ammoTypes[] = {
+        AMMO_120_HE_ID,
+        AMMO_120_CLUSTER_ID,
+        AMMO_120_MINES_ID,
+        AMMO_120_ATMINES_ID,
+        AMMO_120_SMOKE_ID
+    };
+};
+class KISKA_ARTY_82_templateClass : KISKA_artillery_baseClass
+{
+    icon = MORTAR_ICON;
+    ammoTypes[] = {
+        AMMO_82_HE_ID,
+        AMMO_82_FLARE_ID,
+        AMMO_82_SMOKE_ID
+    };
+};
+class KISKA_ARTY_230_templateClass : KISKA_artillery_baseClass
+{
+    ammoTypes[] = {
+        AMMO_230_HE_ID,
+        AMMO_230_CLUSTER_ID
     };
 };
