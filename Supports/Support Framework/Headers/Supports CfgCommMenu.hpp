@@ -35,6 +35,8 @@ class KISKA_basicSupport_baseClass
     enable = "cursorOnGround"; // Simple expression condition for enabling the item
     removeAfterExpressionCall = 1;
 
+    supportTypeId = SUPPORT_TYPE_CUSTOM;
+
     // used for support selection menu
     // _this select 0 is the classname
     managerCondition = "";
