@@ -29,9 +29,10 @@ params [
     ["_print",false,[true]]
 ];
 
-
 private _fpsArray = [];
 private _fps = 0;
+
+sleep 2; // in case somebody is leaving a menu from execution this gives a small buffer so the the min fps is actually representative
 
 private _timeToEnd = time + _duration;
 while {time < _timeToEnd} do {

@@ -23,8 +23,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_exportBuildingTemplate"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_exportBuildingTemplate";
 
 params [
     ["_building",objNull,[objNull]],
@@ -43,7 +42,7 @@ if (_objectCaptureRadius <= 0) then {
 private _terrainObjects = nearestTerrainObjects [_building,["object"],_objectCaptureRadius];
 
 private _capturedObjects = (_building nearObjects _objectCaptureRadius) select {
-    !(_x in _terrainObjects) AND 
+    !(_x in _terrainObjects) AND
     {!(_x isEqualTo _building)} AND
     {(_x isKindOf "static") OR {_x isKindOf "staticWeapon"} OR {_x isKindOf "thing"}}
 };

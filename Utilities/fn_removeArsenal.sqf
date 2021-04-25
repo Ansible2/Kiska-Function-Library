@@ -25,7 +25,7 @@ params [
     ["_arsenals",[],[[],objNull]]
 ];
 
-if (_arsenals isEqualTo [] OR {(_arsenals isEqualType objNull) AND {isNull _arsenals}}) exitWIth {
+if (_arsenals isEqualTo [] OR {(_arsenals isEqualType objNull) AND {isNull _arsenals}}) exitWith {
 	[["_arsenals are invalid: ",str _arsenals],true] call KISKA_fnc_log;
 	false
 };

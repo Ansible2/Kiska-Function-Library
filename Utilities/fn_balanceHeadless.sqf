@@ -7,7 +7,7 @@ Description:
 
 	Excluded groups and units can be added to the array KISKA_hcExcluded.
 
-Parameters:	 
+Parameters:
 	0: _checkInterval <NUMBER> - How often to redistribute, if -1, will not loop
 
 Returns:
@@ -21,11 +21,11 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_ciwsInit"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_balanceHeadless";
 
 if (!isServer OR {!isMultiplayer}) exitWith {
 	["Needs to be run on server in multiplayer",true] call KISKA_fnc_log;
+	nil
 };
 
 if (!canSuspend) exitWith {
@@ -60,6 +60,7 @@ if !((missionNamespace getVariable ["KISKA_hcExcluded",[]]) isEqualTo []) then {
 				[[_x," is not an object or group in KISKA_hcExcluded!"],true] call KISKA_fnc_log;
 			};
 
+			// replace object excluded with their groups
 			if (_x isEqualType objNull) then {
 				_excluded set [_forEachIndex,group _x];
 			};
@@ -82,7 +83,7 @@ allGroups apply {
 	if !(_group in (missionNamespace getVariable ["KISKA_hcExcluded",[]])) then {
 		// each headless client has a count of how many local units it has
 		private _localUnitsCountArray = [];
-		// an array of each of the headless client entities 
+		// an array of each of the headless client entities
 		private _headlessArray = [];
 
 		_headlessClients apply {
@@ -98,7 +99,7 @@ allGroups apply {
 		private _bestHeadless = _headlessArray select _index;
 		// And lastly get their actual ID
 		private _bestHeadlessID = owner _bestHeadless;
-		
+
 		// verify units are migrated before proceeding
 		waitUntil {
 			if ((owner _group) isEqualTo _bestHeadlessID) exitWith {true};
@@ -111,7 +112,7 @@ allGroups apply {
 		// get the units migrated and how many
 		private _unitsInGroup = units _group;
 		private _newTotal = _leastUnits + (count _unitsInGroup);
-		
+
 		// update HC global count of its local units
 		_bestHeadless setVariable ["KISKA_hcLocalUnitsCount",_newTotal];
 
@@ -122,7 +123,7 @@ allGroups apply {
 		/*
 			// add a MP eventhandler that runs on the server for when the AI is killed so that they can be subtracted from the count and array of local units
 			_x addMPEventHandler ["MPKilled",{
-				
+
 				params ["_unit"];
 
 				if (isServer) then {
@@ -159,7 +160,7 @@ addMissionEventHandler ["EntityKilled", {
 		private _owner = owner _unit;
 		private _allHeadlessClients = entities "HeadlessClient_F";
 		private _index = _allHeadlessClients findIf {_owner isEqualTo (owner _x)};
-		
+
 		if (_index isEqualTo -1) then {
 			private _headlessClient = _allHeadlessClients select _index;
 			private _localUnitsArray = _headlessClient getVariable ["KISKA_hcLocalUnits",[]];
@@ -167,7 +168,7 @@ addMissionEventHandler ["EntityKilled", {
 			if (_unit in _localUnitsArray) then {
 				private _localUnitsCount = _headlessClient getVariable ["KISKA_hcLocalUnitsCount",1];
 				_headlessClient setVariable ["KISKA_hcLocalUnitsCount",_localUnitsCount - 1];
-				/* 
+				/*
 					For eventual smarter redistribution of totals...
 
 					// get current total local units
@@ -181,11 +182,11 @@ addMissionEventHandler ["EntityKilled", {
 				_localUnitsArray deleteAt (_localUnitsArray findIf {_x isEqualTo _unit});
 			};
 		};
-		
+
 	};
 }];
 
-["Headless ReBalance Is COMPLETE"] remoteExecCall ["hint",0];
+["Headless ReBalance Is COMPLETE"] remoteExec ["hint",0];
 
 if (_checkInterval > 0 AND {_checkInterval != -1}) then {
 	sleep _checkInterval;

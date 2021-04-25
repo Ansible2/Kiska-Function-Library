@@ -20,8 +20,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_updateRespawnMarker"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_updateRespawnMarker";
 
 if !(isMultiplayer) exitWith {};
 

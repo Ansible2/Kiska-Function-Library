@@ -23,8 +23,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_findIfBool"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_findIfBool";
 
 params [
 	["_array",[],[[]]],

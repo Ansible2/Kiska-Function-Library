@@ -19,8 +19,7 @@ Examples:
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_selectAndSpawnBuildingTemplate"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_selectAndSpawnBuildingTemplate";
 
 params [
     ["_building",objNull,[objNull]]
@@ -45,7 +44,7 @@ private _spawnedObjects = []; // this should be pushBack to the master array, on
 private "_object";
 _buildingTemplate apply {
     _object = [_x,_building] call KISKA_fnc_createAndSetObject;
-    
+
     _spawnedObjects pushBack _object;
 };
 

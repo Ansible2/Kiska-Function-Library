@@ -9,7 +9,7 @@ Parameters:
 	1: _target <OBJECT or ARRAY> - Target to hit missile with, can also be a position (AGL)
 
 Returns:
-	BOOL
+	<BOOL> - True if VLS fired, false if issue
 
 Examples:
     (begin example)
@@ -19,21 +19,23 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_vlsFireAt"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_vlsFireAt";
 
+#define VLS_WEAPON "weapon_vls_01"
+#define VLS_CLASS "B_Ship_MRLS_01_F"
 
 params [
 	["_launcher",objNull,[objNull]],
 	["_target",objNull,[objNull,[]]]
 ];
 
+
 // verify Params
 if (isNull _launcher) exitWith {
 	[["Found that _launcher ",_launcher," is a null object. Exiting..."],true] call KISKA_fnc_log;
 	false
 };
-if !((typeOf _launcher) == "B_Ship_MRLS_01_F") exitWith {
+if !((typeOf _launcher) == VLS_CLASS) exitWith {
 	[[typeOf _launcher," is not correct type of B_Ship_MRLS_01_F. Exiting..."],true] call KISKA_fnc_log;
 	false
 };
@@ -62,6 +64,6 @@ if !(vehicleReceiveRemoteTargets _launcher) then {
 };
 
 private _side = side _launcher;
-_side reportRemoteTarget [_target, 2]; 
-_target confirmSensorTarget [_side, true]; 
-_launcher fireAtTarget [_target, "weapon_vls_01"];
+_side reportRemoteTarget [_target, 2];
+_target confirmSensorTarget [_side, true];
+_launcher fireAtTarget [_target, VLS_WEAPON];

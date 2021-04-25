@@ -12,16 +12,13 @@ Returns:
 
 Examples:
     (begin example)
-
 		call KISKA_fnc_stopRandomMusicServer;
-
     (end)
 
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_stopRandomMusicServer"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_stopRandomMusicServer";
 
 if (!isServer) exitWith {
 	["Needs to only be run on server, exiting...",true] call KISKA_fnc_log;

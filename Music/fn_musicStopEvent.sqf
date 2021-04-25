@@ -21,8 +21,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_musicStopEvent"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_musicStopEvent";
 
 if (!hasInterface) exitWith {};
 

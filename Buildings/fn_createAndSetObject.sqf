@@ -20,8 +20,7 @@ Examples:
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_createAndSetObject"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_createAndSetObject";
 
 params [
     ["_createObjectInfo",[],[[]]],
@@ -60,7 +59,7 @@ if (is3DEN) then {
             if !(_isSimulated) then {
                 [_createdObject,false] remoteExecCall ["enableSimulationGlobal",2];
             };
-        }; 
+        };
     };
 };
 

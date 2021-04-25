@@ -16,16 +16,13 @@ Returns:
 
 Examples:
     (begin example)
-
 		["track", 0, true, 1, 3] spawn KISKA_fnc_playMusic;
-
     (end)
 
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_playMusic"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_playMusic";
 
 if !(hasInterface) exitWith {};
 

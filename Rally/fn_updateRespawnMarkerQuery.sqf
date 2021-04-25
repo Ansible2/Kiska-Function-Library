@@ -19,9 +19,9 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_updateRespawnMarkerQuery";
+
 #define KISKA_DIARY "KISKA Systems"
-#define SCRIPT_NAME "KISKA_fnc_updateRespawnMarkerQuery"
-scriptName SCRIPT_NAME;
 
 if !(hasInterface) exitWith {};
 

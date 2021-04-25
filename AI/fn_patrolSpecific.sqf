@@ -6,7 +6,7 @@ Description:
 
 Parameters:
 	0: _group <GROUP or OBJECT> - The group or unit to give waypoints to
-	1: _numWaypoints <NUMBER> - The number of waypoints 
+	1: _numWaypoints <NUMBER> - The number of waypoints
 	2: _postions <ARRAY> - An array of possible positions to patrol between, can be either positions or objects
 
 	(Optional)
@@ -28,8 +28,7 @@ Author:
 	Ansible2 // Cipher,
 	Spectre
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_patrolSpecific"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_patrolSpecific";
 
 params [
 	["_group",grpNull,[grpNull,objNull]],
@@ -37,9 +36,9 @@ params [
 	["_positions",[],[[]]],
 	["_random",true,[true]],
 	["_behaviour","SAFE",[""]],
-	["_speed","LIMITED",[""]],	
-	["_combatMode","RED",[""]],	
-	["_formation","STAG COLUMN",[""]]	
+	["_speed","LIMITED",[""]],
+	["_combatMode","RED",[""]],
+	["_formation","STAG COLUMN",[""]]
 ];
 
 if !(local _group) exitWith {
@@ -79,7 +78,7 @@ private "_cyclePosition";
 for "_i" from 1 to _numWaypoints do {
 	private "_selectedPosition";
 	private "_waypoint";
-	
+
 	if (_random) then {
 		_selectedPosition = selectRandom _positions;
 		_positions deleteAt (_positions find _selectedPosition);

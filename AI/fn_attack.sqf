@@ -25,14 +25,14 @@ Author:
 	Rommel,
 	Modified by: Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_attack";
+
 #define RETURN_NIL nil
-#define SCRIPT_NAME "KISKA_fnc_attack"
-scriptName SCRIPT_NAME;
 
 params [
 	["_group",grpNull,[objNull,grpNull]],
 	["_position",objNull,[[],objNull,locationNull,grpNull]],
-	["_radius",-1,[123]], 
+	["_radius",-1,[123]],
 	["_behaviour","COMBAT",[""]],
 	["_combatMode","RED",[""]],
 	["_override",false,[true]]
@@ -49,7 +49,7 @@ if !(local _group) exitWith {
 // Allow TaskAttack to override other set waypoints
 if (_override) then {
 	[_group] call CBA_fnc_clearWaypoints;
-    
+
 	(units _group) apply {
 		_x enableAI "PATH";
 	};

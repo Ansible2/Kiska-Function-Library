@@ -4,7 +4,7 @@ Function: KISKA_fnc_getObjectProperties
 Description:
     Used in KISKA_fnc_exportBuildingTemplate to get the information to save
      about each object.
-	
+
 Parameters:
 	0: _objects : <ARRAY> - The objects to check save info on
     1: _building : <OBJECT> - The building the objects are on
@@ -20,8 +20,7 @@ Examples:
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_findConfigAny"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_getObjectProperties";
 
 params [
     ["_objects",[],[[]]],
@@ -31,8 +30,8 @@ params [
 private _dumpArray = [];
 
 _objects apply {
-    
-    private _objectClassname = typeOf _x; 
+
+    private _objectClassname = typeOf _x;
     private _objectPostionRelative = _building worldToModel (getPosWorld _x);
     private _objectVectorRelative = [_x,_building] call BIS_fnc_vectorDirAndUpRelative;
 
@@ -43,10 +42,10 @@ _objects apply {
         _isSimulated = false;
         _isDynamic = false;
     } else {
-        _isDynamic = dynamicSimulationEnabled _x;	
+        _isDynamic = dynamicSimulationEnabled _x;
         _isSimulated = simulationEnabled _x;
     };
-   
+
     _dumpArray pushBack [_objectClassname,_objectPostionRelative,_objectVectorRelative,_isSimpleObject,_isSimulated,_isDynamic];
 };
 

@@ -7,10 +7,10 @@ Description:
 
 	Needs to be run in a scheduled environment as it takes time to receive
 	 the return.
-	
+
 	This should not be abused to obtain large returns over the network.
 	Be smart and use for simple types (not massive arrays).
-	
+
 Parameters:
 	0: _code <STRING> - The command to execute on the target machine
 	1: _defaultValue : <ANY> - If the variable does not exist for the target, what should be returned instead
@@ -30,8 +30,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_remoteReturn_send"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_remoteReturn_send";
 
 if (!canSuspend) exitWith {
 	["Must be run in scheduled environment",true] call KISKA_fnc_log;

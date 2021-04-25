@@ -31,9 +31,9 @@ Author:
 	Rommel,
 	Modified by: Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_defend";
+
 #define RETURN_NIL nil
-#define SCRIPT_NAME "KISKA_fnc_defend"
-scriptName SCRIPT_NAME;
 
 params [
 	["_group",grpNull,[grpNull,objNull]],
@@ -138,7 +138,7 @@ _units apply {
 								["_pos",[0,0,0],[[]]],
 								["_hold", 0, [true, 0]]
 							];
-							
+
 							if !((getPosATL _unit) isEqualTo _pos) then {
 								_unit setPosATL _pos;
 							};

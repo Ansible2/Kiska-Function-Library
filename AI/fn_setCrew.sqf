@@ -13,16 +13,13 @@ Returns:
 
 Examples:
     (begin example)
-
 		[_group1,_vehicle] call KISKA_fnc_setCrew;
-
     (end)
 
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_setCrew"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_setCrew";
 
 params [
 	["_crew",grpNull,[[],grpNull,objNull]],
@@ -41,7 +38,7 @@ if (_crew isEqualTo []) exitWith {
 
 if (isNull _vehicle OR {!(alive _vehicle)}) exitWith {
 	[["Found that ",_vehicle," is either null or dead already, exiting..."]] call KISKA_fnc_log;
-	
+
 	if (_deleteCrewIfNull) then {
 		[["Deleting crew of ",_vehicle,":",_crew]] call KISKA_fnc_log;
 		_crew apply {

@@ -22,8 +22,9 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define RETURN_NIL nil
 scriptName "KISKA_fnc_AAAZone";
+
+#define RETURN_NIL nil
 
 if (!canSuspend) exitWith {
 	["ReExecuting in scheduled environment",true] call KISKA_fnc_log;

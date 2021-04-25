@@ -12,16 +12,13 @@ Returns:
 
 Examples:
     (begin example)
-
 		call KISKA_fnc_stopMusic;
-
     (end)
 
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_stopMusic"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_stopMusic";
 
 if (!hasInterface) exitWith {};
 

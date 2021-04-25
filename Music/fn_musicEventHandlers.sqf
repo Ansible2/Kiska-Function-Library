@@ -2,7 +2,7 @@
 Function: KISKA_fnc_musicEventHandlers
 
 Description:
-	A preInit function to create the required music event handlers for 
+	A preInit function to create the required music event handlers for
 	 KISKA music functions
 
 Parameters:
@@ -13,16 +13,13 @@ Returns:
 
 Examples:
     (begin example)
-
 		PREINIT FUNCTION
-
     (end)
 
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_musicEventHandlers"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_musicEventHandlers";
 
 if (!hasInterface) exitWith {};
 
@@ -36,3 +33,6 @@ addMusicEventHandler ["MusicStart", {
 addMusicEventHandler ["MusicStop", {
 	call KISKA_fnc_musicStopEvent;
 }];
+
+
+nil

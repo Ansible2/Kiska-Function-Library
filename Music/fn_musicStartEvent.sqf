@@ -12,16 +12,13 @@ Returns:
 
 Examples:
     (begin example)
-
 		["trackThatStarted"] call KISKA_fnc_musicStartEvent;
-
     (end)
 
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_musicStartEvent"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_musicStartEvent";
 
 if (!hasInterface) exitWith {};
 

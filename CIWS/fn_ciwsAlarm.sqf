@@ -8,7 +8,7 @@ Parameters:
 	0: _turret : <OBJECT> - The CIWS turret
 
 Returns:
-	Nothing
+	NOTHING
 
 Examples:
     (begin example)
@@ -18,13 +18,13 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_ciwsAlarm";
+
 #define RETURN_NIL nil
 #define WAIT_FOR_AIRRAIDSTART 6.4
 #define WAIT_TO_LOOP_SOUND 10.8
-#define SCRIPT_NAME "KISKA_fnc_ciwsAlarm"
 #define ALARM_DISTANCE 1000
 #define ALARM_VOLUME 3
-scriptName SCRIPT_NAME;
 
 if (!canSuspend) exitWith {
 	["Was not run in scheduled; running in scheduled",true] call KISKA_fnc_log;

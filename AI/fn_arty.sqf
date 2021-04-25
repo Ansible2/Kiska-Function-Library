@@ -10,7 +10,7 @@ Parameters:
 	2: _rounds : <NUMBER> - Number of rounds to fire
 	3: _ranDis : <NUMBER> - max distance error margin (0 will be directly on target for all rounds)
 	4: _ranDir : <NUMBER> - 360 direction within rounds can land
-	5: _fireTime : <ARRAY> - Array of random time between shots for bell curve 
+	5: _fireTime : <ARRAY> - Array of random time between shots for bell curve
 
 Returns:
 	Nothing
@@ -23,8 +23,9 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define RETURN_NIL nil
 scriptName "KISKA_fnc_arty";
+
+#define RETURN_NIL nil
 
 if (!canSuspend) exitWith {
 	["ReExecuting in scheduled environment",true] call KISKA_fnc_log;
@@ -50,21 +51,21 @@ if (_rounds < 1) exitWith {
 	RETURN_NIL
 };
 
-private _ammo = getArtilleryAmmo [_gun] select 0; 
+private _ammo = getArtilleryAmmo [_gun] select 0;
 private ["_dir","_dis","_tgt"];
 
 for "_i" from 1 to _rounds do {
 	if (!alive _gun OR {!alive (gunner _gun)}) exitWith {
 		[[_gun," or its gunner are not alive, exiting..."]] call KISKA_fnc_log;
 	};
-	
-	_dir = round random _ranDir; 
+
+	_dir = round random _ranDir;
 	_dis = round random _ranDis;
-	_tgt = _target getPos [_dis, _dir]; 
-	_gun doArtilleryFire [_tgt,_ammo,1]; 
+	_tgt = _target getPos [_dis, _dir];
+	_gun doArtilleryFire [_tgt,_ammo,1];
 	_rounds = _rounds - 1;
-	
-	if (_i != _rounds) then { 
+
+	if (_i != _rounds) then {
 		sleep (round random _fireTime);
 	};
 };

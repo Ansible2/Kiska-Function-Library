@@ -20,19 +20,21 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_rallyPointActionLoop"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_rallyPointActionLoop";
 
 if (!hasInterface) exitWith {
 	["Was run on machine without interface, needs an interface",false] call KISKA_fnc_log;
+	nil
 };
 
 If (!isMultiplayer) exitWith {
 	["KISKA rally point system does not run in singlePlayer",true] call KISKA_fnc_log;
+	nil
 };
 
 if (!canSuspend) exitWith {
-	["Must run in scheduled environment",true] call KISKA_fnc_log;
+	["Must run in scheduled environment, exiting to scheduled...",true] call KISKA_fnc_log;
+	[] spawn KISKA_fnc_rallyPointActionLoop;
 };
 
 waitUntil {sleep 2; !isNull player;};
@@ -54,7 +56,7 @@ KISKA_fnc_respawn_updateRallyAction = {
 					private _caller = param [1];
 					private _groupName = missionNamespace getVariable ["KISKA_respawnGroupID",groupId (group _caller)];
 
-					[_caller, ([_groupName,"spawnMarker"] joinString "_"), ([_groupName,"Respawn Beacon"] joinString " ")] remoteExecCall ["KISKA_fnc_updateRespawnMarker",2]; 		
+					[_caller, ([_groupName,"spawnMarker"] joinString "_"), ([_groupName,"Respawn Beacon"] joinString " ")] remoteExecCall ["KISKA_fnc_updateRespawnMarker",2];
 
 					hint "Rally Point Updated";
 				},
@@ -76,7 +78,7 @@ KISKA_fnc_respawn_updateRallyAction = {
 //// dynamically.
 player addEventHandler ["KILLED", {
 	params ["_corpse"];
-	
+
 	if (!isNil "KISKA_spawnId") then {
 		_corpse removeAction KISKA_spawnId;
 		KISKA_spawnId = nil;
@@ -86,7 +88,7 @@ player addEventHandler ["KILLED", {
 }];
 player addEventHandler ["Respawn", {
 	params ["_unit"];
-	
+
 	player removeEventHandler ["Respawn",_thisEventHandler];
 
 	[] spawn KISKA_fnc_rallyPointActionLoop;

@@ -19,9 +19,9 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define EMPTY_RETURN [[[],[]],[],[],[[],[]],[]]
-
 scriptName "KISKA_fnc_copyContainerCargo";
+
+#define EMPTY_RETURN [[[],[]],[],[],[[],[]],[]]
 
 params [
 	["_primaryContainer",objNull,[objNull]]
@@ -29,7 +29,7 @@ params [
 
 if (isNull _primaryContainer) exitWith {
 	["_primaryContainer isNull",true] call KISKA_fnc_log;
-	[]	
+	[]
 };
 
 // for containers within the primary container (vests, backpacks, etc.)

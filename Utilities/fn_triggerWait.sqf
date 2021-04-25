@@ -5,7 +5,6 @@ Description:
 	Creates a trigger and sets statements. Used to have variable condition check intervals
 
 Parameters:
-
 	0: _activation <STRING or CODE> - Code to run upon trigger activation
 	1: _condition <STRING or CODE> - The condition to check
 	2: _args <ARRAY> - arguements to pass to the condition,activation and deactivation; can be obtained by '_thisArgs' in those fields
@@ -65,19 +64,19 @@ if (_activation isEqualType {}) then {
 	private _stringActivation = str _activation;
 
 	_activation = _stringActivation trim ["{}",0];
-	//_activation = [_stringActivation,"{}"] call CBA_fnc_trim; 
+	//_activation = [_stringActivation,"{}"] call CBA_fnc_trim;
 };
 if (_condition isEqualType {}) then {
 	private _stringCondition = str _condition;
 
 	_condition = _stringCondition trim ["{}",0];
-	//_condition = [_stringCondition,"{}"] call CBA_fnc_trim; 
+	//_condition = [_stringCondition,"{}"] call CBA_fnc_trim;
 };
 if (_deactivation isEqualType {}) then {
 	private _stringDeactivation = str _deactivation;
 
 	_deactivation = _stringDeactivation trim ["{}",0];
-	//_deactivation = [_stringDeactivation,"{}"] call CBA_fnc_trim; 
+	//_deactivation = [_stringDeactivation,"{}"] call CBA_fnc_trim;
 };
 
 
@@ -85,7 +84,7 @@ if (_delete) then {
 	if (_deactivation isEqualTo "") then {
 		private _length = count _activation;
 		private _lastCharacter = _activation select [_length - 1];
-		
+
 		_activation = ["private _thisArgs = (thisTrgger getVariable 'KISKA_args');", _activation,[";",""] select (_lastCharacter isEqualTo ";"),"deleteVehicle thisTrigger"] joinString " ";
 	} else {
 		private _length = count _deactivation;

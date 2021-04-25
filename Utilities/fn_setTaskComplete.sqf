@@ -6,19 +6,12 @@ Description:
 
 Parameters:
 	0: _taskID <STRING or ARRAY> - The ID to attach to the task, can also be formated as an array [task name, parent task name]
-    
     1: _description <STRING or ARRAY> - Task texts in the format ["description", "title", "marker"] or CfgTaskDescriptions class
-    
     2: _type <STRING> - Task type as defined in the CfgTaskTypes
-    
     3: _priority <NUMBER> - Task priority (when automatically selecting a new current task, higher priority is selected first)
-    
-    4: _showNotification <BOOL> - Show pop up of completion 
-    
+    4: _showNotification <BOOL> - Show pop up of completion
     5: _destination <OBJECT, ARRAY, or STRING> - Task destination (use [object,true] to always show marker on the object, even if player doesn't 'knowsAbout' it)
-    
     6: _owner <BOOL, SIDE, GROUP, OBJECT, ARRAY, or STRING> - Task owner(s)
-    
     7: _visibleIn3D <BOOL> - Task always visible in 3D
 
 Returns:
@@ -26,9 +19,7 @@ Returns:
 
 Examples:
     (begin example)
-
 		["mytaskID",["this is a task","My Task",""]] call KISKA_fnc_setTaskComplete;
-
     (end)
 
 Author(s):
@@ -55,7 +46,7 @@ if (_taskID isEqualType []) then {
 };
 
 if ([_taskID] call BIS_fnc_taskExists) then {
-    [_taskID,"SUCCEEDED",_showNotification] call BIS_fnc_taskSetState;	
+    [_taskID,"SUCCEEDED",_showNotification] call BIS_fnc_taskSetState;
 } else {
     [_owner,[[_taskID,_taskID_parent],_taskID] select (_taskID_parent isEqualTo ""), _description, _destination, "SUCCEEDED", _priority, _showNotification, _type, _visibleIn3D] call BIS_fnc_taskCreate;
 };

@@ -20,12 +20,10 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_allowGroupRally"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_allowGroupRally";
 
 if !(isServer) exitWith {
 	["Needs to be run on the server",true] call KISKA_fnc_log;
-
 	false
 };
 

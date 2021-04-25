@@ -22,8 +22,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SCRIPT_NAME "KISKA_fnc_spawnGroup"
-scriptName SCRIPT_NAME;
+scriptName "KISKA_fnc_spawnGroup";
 
 params [
 	["_numberOfUnits",1,[1]],
@@ -44,8 +43,8 @@ private _weightedArray = _unitTypes isEqualTypeParams ["",1];
 {
 	if (_x isEqualType "") then {
 		if (isClass (configFile >> "cfgVehicles" >> _x) OR {isClass (missionConfigFile >> "cfgVehicles" >> _x)}) then {
-			_unitTypesFiltered pushBack _x;			
-			
+			_unitTypesFiltered pushBack _x;
+
 			if (_weightedArray) then {
 				_unitTypesFiltered pushBack (_unitTypes select (_forEachIndex + 1));
 			};
@@ -75,7 +74,7 @@ for "_i" from 1 to _numberOfUnits do {
 	private _unit = _group createUnit [_selectedUnitType,_position,[],5,"NONE"];
 
 	[_unit] joinSilent _group;
-	
+
 	_unit triggerDynamicSimulation false;
 
 	if (_i isEqualTo 1) then {_unit setUnitRank "LIEUTENANT"};

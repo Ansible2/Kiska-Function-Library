@@ -5,10 +5,10 @@ Description:
 	Starts playing a random assortment of curated music tracks to all players on a server.
 	This is essentially a multipleyer jukebox. Should only be executed on the server.
 
-	All songs will be played in a random order and then loop back to play in another random order infinitely. 
-	
+	All songs will be played in a random order and then loop back to play in another random order infinitely.
+
 	It will not interrupt music commanded to play by other means.
-	
+
 	You can define quiet time space between tracks.
 
 Parameters:
@@ -19,36 +19,34 @@ Parameters:
 	4: _usedMusicTracks <ARRAY> - An array of already used music tracks, don't bother manually entering anyhting, this is for looping purposes
 
 Returns:
-	NOTHING 
+	NOTHING
 
 Examples:
     (begin example)
-		
 		// space tracks by 20 seconds exactly each
 		[false,"",arrayOfTracks,20] spawn KISKA_fnc_randomMusic;
-
    	(end)
 
 	(begin example)
-		
 		// space tracks by UP TO 20 seconds each
-		[false,"",arrayOfTracks,[20]] spawn KISKA_fnc_randomMusic; 
-
+		[false,"",arrayOfTracks,[20]] spawn KISKA_fnc_randomMusic;
    	(end)
 
 	Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_randomMusic";
+
 #define SLEEP_BUFFER 3
-#define SCRIPT_NAME "KISKA_fnc_randomMusic"
-scriptName SCRIPT_NAME;
 
 if !(isServer) exitWith {
 	["Was not executed on server, exiting...",true] call KISKA_fnc_log;
+	nil
 };
 
 if (!canSuspend) exitWith {
 	["Was not executed in a scheduled environment, exiting...",true] call KISKA_fnc_log;
+	nil
 };
 
 params [
@@ -61,11 +59,21 @@ params [
 
 if (_musicTracks isEqualTo [] AND {_usedMusicTracks isEqualTo []}) exitWith {
 	["No music tracks were passed! Can't start.",true] call KISKA_fnc_log;
+	nil
 };
 
 // check if _timeBetween is an array AND if it is the correct formats OR if it is just a single number
-if ((_timeBetween isEqualType []) AND {!((count _timeBetween) isEqualTo 1) AND {!((count _timeBetween) isEqualTo 3) OR !(_timeBetween isEqualTypeParams [1,2,3])}}) exitWith {
+if (
+		(_timeBetween isEqualType []) AND
+		{
+			!((count _timeBetween) isEqualTo 1) AND
+			{
+				!((count _timeBetween) isEqualTo 3) OR !(_timeBetween isEqualTypeParams [1,2,3])
+			}
+		}
+	) exitWith {
 	[[_timeBetween," is not the correct format for _timeBetween"],true] call KISKA_fnc_log;
+	nil
 };
 
 if (_musicTracks isEqualTo []) then {
@@ -77,7 +85,7 @@ private _selectedTrack = selectRandom _musicTracks;
 
 /*
 	if the window becomes unfocused, the sleeps can become out of sync.
-	this use of _doInterrupt is used to guarantee a track starts playing on time if things are 
+	this use of _doInterrupt is used to guarantee a track starts playing on time if things are
 	slightly out of sync, since it can interrupt the previous music
 */
 private _doInterrupt = !(_playedFromLoop);
@@ -112,7 +120,7 @@ if (_timeBetween isEqualType []) then {
 	if (_timeBetween isEqualTypeArray [1,2,3]) then {
 		_randomWaitTime = round (random _timeBetween);
 	} else {
-		_randomWaitTime = round (random (_timeBetween select 0));	
+		_randomWaitTime = round (random (_timeBetween select 0));
 	};
 } else {
 	_randomWaitTime = _timeBetween;
@@ -125,7 +133,7 @@ if !((missionNamespace getVariable ["KISKA_randomMusic_timeBetween",[300,420,540
 
 /*
 	track durations are not (always) exact enough, so there needs to be a bit of a buffer
-	else, if the time between tracks is something like 0 or 1, the sleep will be done, 
+	else, if the time between tracks is something like 0 or 1, the sleep will be done,
 	and music will try to play, but because it does not interrupt,
 	and the previous track will not actually be done, no music will play until the next sleep is done
 */
@@ -149,7 +157,7 @@ private _waitTime = _durationOfTrack + _randomWaitTime;
 
 // dont play this music if the system is stopped or another random music system was started
 if (missionNamespace getVariable ["KISKA_musicSystemIsRunning",true]) then {
-/*	
+/*
 	this is used with the intention of if another random music list is started (or multiple)
 	the latest one will take over this time slot forcing the others after their wait time to
 	not continue their own loops
@@ -159,13 +167,13 @@ if (missionNamespace getVariable ["KISKA_musicSystemIsRunning",true]) then {
 
 	if (!isMultiplayer OR {isMultiplayerSolo}) then {
 		sleep _waitTime;
-	} else {	
+	} else {
 		uiSleep _waitTime;
 	};
 
 	if (_startTime isEqualTo KISKA_randomMusicStartTIme) then {
 		["Sleep has finished, executing new randomMusic",false] call KISKA_fnc_log;
 		// the globals in params are not passed to allow for changes while music is playing
-		[true,_selectedTrack] spawn KISKA_fnc_randomMusic; 
+		[true,_selectedTrack] spawn KISKA_fnc_randomMusic;
 	};
 };
