@@ -8,7 +8,7 @@
      support back to the player.
 */
 #define CALL_SUPPORT_MASTER(CLASS) "["#CLASS",_this,%1] call KISKA_fnc_callingForSupportMaster"
-#define EXPRESSION_CALL_MASTER(CLASS) CALL_SUPPORT_MASTER(CLASS);
+#define EXPRESSION_CALL_MASTER(CLASS) expression = CALL_SUPPORT_MASTER(CLASS);
 
 /*
 // expression arguments
