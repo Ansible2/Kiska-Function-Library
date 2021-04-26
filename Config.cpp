@@ -283,13 +283,15 @@ class CfgFunctions
 			{};
 			class buildCommandMenu
 			{};
-			class callingForSupportMaster
+			class callingForArsenalSupplyDrop
 			{};
 			class callingForArty
 			{};
 			class callingForCAS
 			{};
 			class callingForHelicopterCAS
+			{};
+			class callingForSupportMaster
 			{};
 			class commandMenuTree
 			{};
