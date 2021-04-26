@@ -37,10 +37,18 @@ if !([_callerGroup] call KISKA_fnc_isGroupRallyAllowed) exitWith {
 };
 
 private _markerID = _callerGroup getVariable ["KISKA_groupRespawnMarkerID",[]];
-// if marker ID exitsts
+// if the group already has a rally point down, get rid of it before making a new one
 if !(_markerID isEqualTo []) then {
-	[[_varString,"was found NOT to be nil. Execing BIS_fnc_removeRespawnPosition"],false] call KISKA_fnc_log;
-	(_callerGroup getVariable "KISKA_groupRespawnMarkerID") call BIS_fnc_removeRespawnPosition;
+	[["Existing Marker ID for group: ",_callerGroup," was found. Marker ID is: ",_markerID," ... Execing BIS_fnc_removeRespawnPosition"],false] call KISKA_fnc_log;
+
+	// delete map marker
+	private _currentMarker = (_callerGroup getVariable "KISKA_groupRespawnMarker");
+	[["Deleteing current marker for ",_callerGroup," which is named: ",_currentMarker],false] call KISKA_fnc_log;
+	deleteMarker _currentMarker;
+
+	// remove respawn position
+	private _wasRemoved = (_callerGroup getVariable "KISKA_groupRespawnMarkerID") call BIS_fnc_removeRespawnPosition;
+	[["Was the old respawn position removed? ",_wasRemoved],false] call KISKA_fnc_log;
 };
 
 private _position = ASLToAGL (getPosASL _caller);
