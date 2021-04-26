@@ -104,9 +104,9 @@ Parameters:
 [
     "KISKA_CBA_supp_radiuses",
     "EDITBOX",
-    ["Default Artillery Radiuses","When calling for supports with an unspecified set of radiuses to choose, these will be selectable (meters)"],
+    ["Default Artillery Radiuses","When calling for supports with an unspecified set of radiuses to choose, these will be selectable (meters). The minimum is 25m"],
     ["KISKA Support Settings","Support Parameters"],
-    ["[10,25,50,100,250]"],
+    ["[25,50,100,250]"],
     0,
     {
         params ["_value"];
