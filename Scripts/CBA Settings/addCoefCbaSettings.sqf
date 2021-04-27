@@ -14,7 +14,7 @@ Parameters:
     "KISKA_CBA_weaponSwayCoef",
     "SLIDER",
     ["Weapon Sway","100% equals most sway possible"],
-    ["KISKA Coefficient Settings","Weapons"],
+    ["KISKA Misc Settings","Weapon Coefficients"],
     [0,1,0.15,2,true],
     0,
     {
@@ -36,7 +36,7 @@ Parameters:
     "KISKA_CBA_recoilCoef",
     "SLIDER",
     ["Recoil Strength","100% equals the most recoil"],
-    ["KISKA Coefficient Settings","Weapons"],
+    ["KISKA Misc Settings","Weapon Coefficients"],
     [0,1,0.5,2,true],
     0,
     {
@@ -58,7 +58,7 @@ Parameters:
     "KISKA_CBA_loadCoef",
     "SLIDER",
     ["Load Coefficient","How much the weight of a player's equipment affects fatigue. Higher means has more of an effect."],
-    ["KISKA Coefficient Settings","Traits"],
+    ["KISKA Misc Settings","Trait Coefficients"],
     [0.1,3,1,1,false],
     0,
     {
@@ -80,7 +80,7 @@ Parameters:
     "KISKA_CBA_audibleCoef",
     "SLIDER",
     ["Audible Coefficient","How easy an AI unit can hear players. Higher means easier."],
-    ["KISKA Coefficient Settings","Traits"],
+    ["KISKA Misc Settings","Trait Coefficients"],
     [0.1,3,1,1,false],
     0,
     {
@@ -102,7 +102,7 @@ Parameters:
     "KISKA_CBA_camouflageCoef",
     "SLIDER",
     ["Camouflage Coefficient","How easy an AI unit can spot players. Higher means easier."],
-    ["KISKA Coefficient Settings","Traits"],
+    ["KISKA Misc Settings","Trait Coefficients"],
     [0.1,3,1,1,false],
     0,
     {

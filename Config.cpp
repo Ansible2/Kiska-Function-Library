@@ -505,6 +505,9 @@ class Extended_PreInit_EventHandlers {
 	class coef_settings_preInitEvent {
         init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addCoefCbaSettings.sqf'];";
     };
+	class loadout_settings_preInitEvent {
+        init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addLoadoutCbaSettings.sqf'];";
+    };
 };
 
 
