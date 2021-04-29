@@ -56,7 +56,7 @@ if (_updateUnitList) then {
 
 	if !(count _groupUnits > 0) exitWith {};
 
-	
+
 	private ["_index","_team"];
 	private _fn_setTeamColor = {
 		// don't change white team
@@ -76,19 +76,23 @@ if (_updateUnitList) then {
 		};
 	};
 
+	private "_name";
 	{
-		_index = _currentGroupListBox_ctrl lbAdd (name _x);
-		// store index value in array before we sort alphabetically
-		_currentGroupListBox_ctrl lbSetValue [_index,_forEachIndex];
-		
-		// color AI Green
-		if !(isPlayer _x) then {
-			_currentGroupListBox_ctrl lbSetTooltip [_index,"AI"];
+		_name = name _x; // if a logic is in a group, it does not have a name
+		if (_name isNotEqualTo "") then {
+			_index = _currentGroupListBox_ctrl lbAdd _name;
+			// store index value in array before we sort alphabetically
+			_currentGroupListBox_ctrl lbSetValue [_index,_forEachIndex];
+
+			// color AI Green
+			if !(isPlayer _x) then {
+				_currentGroupListBox_ctrl lbSetTooltip [_index,"AI"];
+			};
+
+			_team = assignedTeam _x;
+			call _fn_setTeamColor;
 		};
 
-		_team = assignedTeam _x;
-		call _fn_setTeamColor;
-		
 	} forEach _groupUnits;
 
 	lbSort _currentGroupListBox_ctrl;
@@ -125,14 +129,14 @@ if (_updateCanDeleteCombo) then {
 if (_updateCanRallyCombo) then {
 	[_selectedGroup] spawn {
 		params ["_selectedGroup"];
-		
+
 		private _groupCanRally = [
 			"KISKA_canRally",
 			_selectedGroup,
 			false,
 			2
-		] call KISKA_fnc_getVariableTarget; 
-		
+		] call KISKA_fnc_getVariableTarget;
+
 		// make sure the menu is still open as it takes time to get a message from the server
 		// also make sure the same group is selected in the list
 		if (
@@ -166,4 +170,4 @@ nil
 			_currentGroupListBox_ctrl lbSetColor [_index,[0,0.31,0.65,1]];
 		};
 	};
-*/	
+*/
