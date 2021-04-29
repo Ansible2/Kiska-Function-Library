@@ -22,6 +22,9 @@ Authors:
 disableSerialization;
 scriptName "KISKA_fnc_supportManager_take_buttonClickEvent";
 
+#define DEFAULT_CANT_TAKE_MESSAGE "You do not have permission for this support"
+#define MESSAGE_COLOR [0.75,0,0,1] // red
+
 // support menu only supports a max of ten at a time
 private _maxAllowedSupports = missionNamespace getVariable ["KISKA_CBA_supportManager_maxSupports",10];
 if (count (player getVariable ["BIS_fnc_addCommMenuItem_menu",[]]) isEqualTo _maxAllowedSupports) then { // make setting
@@ -55,8 +58,12 @@ if (count (player getVariable ["BIS_fnc_addCommMenuItem_menu",[]]) isEqualTo _ma
 			call KISKA_fnc_supportManager_updateCurrentList;
 
 		} else {
+			private _conditionMessage = getText(_config >> "conditionMessage");
+			if (_conditionMessage isEqualTo "") then {
+				_conditionMessage = DEFAULT_CANT_TAKE_MESSAGE;
+			};
 
-			[["Error",1.1,[0.75,0,0,1]],"You do not have permission for this support",false] call CBA_fnc_notify;
+			[["Error",1.1,MESSAGE_COLOR],_conditionMessage,false] call CBA_fnc_notify;
 		};
 	};
 };

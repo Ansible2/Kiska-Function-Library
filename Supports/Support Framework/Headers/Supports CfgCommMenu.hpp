@@ -44,6 +44,7 @@ class KISKA_basicSupport_baseClass
     // used for support selection menu
     // _this select 0 is the classname
     managerCondition = "";
+    conditionMessage = ""; // this message will appear if a player fails the managerCondition check. if empty, a generic message is used
 };
 
 class KISKA_artillery_baseClass : KISKA_basicSupport_baseClass
@@ -51,7 +52,7 @@ class KISKA_artillery_baseClass : KISKA_basicSupport_baseClass
     supportTypeId = SUPPORT_TYPE_ARTY;
     icon = ARTILLERY_ICON;
     radiuses[] = {};
-    canSelectRounds = 1; // can the caller select a specified number of rounds each call
+    canSelectRounds = 1; // can the caller select a specified number of rounds each call 0 false 1 true
     roundCount = 8; // starting round count
 
     ammoTypes[] = {
