@@ -33,7 +33,7 @@ player addEventHandler ["KILLED", {
 
 	private _loadout = getUnitLoadout _unit;
 	missionNamespace setVariable ["KISKA_loadout",_loadout];
-	missionNamespace setVariable ["KISKA_playersBody",_unt];
+	missionNamespace setVariable ["KISKA_playersBody",_uint];
 }];
 
 player addEventHandler ["RESPAWN", {
