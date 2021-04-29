@@ -1,4 +1,3 @@
-//#include "Headers\Support Radio Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_helicopterGunner
 
