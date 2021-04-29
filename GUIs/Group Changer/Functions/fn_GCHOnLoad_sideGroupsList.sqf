@@ -22,6 +22,8 @@ disableSerialization;
 scriptName "KISKA_fnc_GCHOnLoad_sideGroupList";
 
 #define REFRESH_SPEED (missionNamespace getVariable ["KISKA_CBA_GCH_updateFreq",1])
+#define PLAYER_GROUP_COLOR [0,1,0,0.6] // Green
+#define GET_CACHED_GROUPS _allGroupsCached select {(side _x) isEqualTo _playerSide AND {!(_x getVariable ["KISKA_GCH_exclude",false])}}
 
 params ["_control"];
 
@@ -39,34 +41,30 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 }];
 
 
-
 private _playerSide = side player;
 private _allGroupsCached = allGroups;
-private _sideGroups = _allGroupsCached select {(side _x) isEqualTo _playerSide};
-private _sideGroupIds = [];
-private _fn_popSideGroupIds = {
-	_sideGroupIds = [];
-	_sideGroups apply {
-		_sideGroupIds pushBack (groupId _x);
-	};
-};
+private _sideGroups = GET_CACHED_GROUPS;
+
 
 uiNamespace setVariable ["KISKA_GCH_sideGroupsArray",_sideGroups];
 
 
-
 private _fn_updateSideGroupList = {
 	lbClear _control;
-	// update id list
-	call _fn_popSideGroupIds;
 
 	// add to listbox
 	private "_index";
+	private _playerGroup = group player;
 	{
-		_index = _control lbAdd _x;
+		_index = _control lbAdd (groupId _x);
 		// saving the index as a value so that it can be referenced against the _sideGroups array
 		_control lbSetValue [_index,_forEachIndex];
-	} forEach _sideGroupIds;
+
+		// highlight the player group
+		if (_x isEqualTo _playerGroup) then {
+			_control lbSetColor [_index, PLAYER_GROUP_COLOR];
+		};
+	} forEach _sideGroups;
 
 	// sort list alphabetically
 	lbSort _control;
@@ -78,15 +76,15 @@ call _fn_updateSideGroupList;
 private _allGroupsCompare = [];
 // loop to update list
 while {!isNull (uiNamespace getVariable "KISKA_GCH_display")} do {
-	// if a group list changed, then update
-	if !(allGroups isEqualTo _allGroupsCached) then {
+	// if the group list changed, then update
+	if (allGroups isNotEqualTo _allGroupsCached) then {
 		_allGroupsCached = allGroups;
 
 		// check to see if players side groups actually needs to be updated
 		// if no group was added to the side, no need to update
-		private _sideGroups_compare = _allGroupsCached select {(side _x) isEqualTo _playerSide};
+		private _sideGroups_compare = GET_CACHED_GROUPS;
 
-		if !(_sideGroups_compare isEqualTo _sideGroups) then {
+		if (_sideGroups_compare isNotEqualTo _sideGroups) then {
 			_sideGroups = +_sideGroups_compare;
 			uiNamespace setVariable ["KISKA_GCH_sideGroupsArray",_sideGroups];
 			call _fn_updateSideGroupList;
@@ -95,3 +93,6 @@ while {!isNull (uiNamespace getVariable "KISKA_GCH_display")} do {
 
 	sleep REFRESH_SPEED;
 };
+
+
+nil
