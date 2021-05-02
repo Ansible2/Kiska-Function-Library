@@ -23,8 +23,9 @@ scriptName "KISKA_fnc_keepInGroup";
 if (!hasInterface) exitWith {};
 
 waitUntil {
+	if !(isNull player) exitWith {true};
 	sleep 0.1;
-	!isNull player
+	false
 };
 
 missionNamespace setVariable ["KISKA_playerGroup",grpNull];

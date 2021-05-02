@@ -24,8 +24,9 @@ scriptName "KISKA_fnc_savePlayerLoadout";
 if (!hasInterface) exitWith {};
 
 waitUntil {
+	if !(isNull player) exitWith {true};
 	sleep 0.1;
-	!isNull player
+	false
 };
 
 player addEventHandler ["KILLED", {

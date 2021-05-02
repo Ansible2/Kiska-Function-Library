@@ -15,7 +15,7 @@ Returns:
 
 Examples:
     (begin example)
-		call KISKA_fnc_musicStopEvent;
+		[] call KISKA_fnc_musicStopEvent;
     (end)
 
 Author:
@@ -26,7 +26,7 @@ scriptName "KISKA_fnc_musicStopEvent";
 if (!hasInterface) exitWith {};
 
 params [
-	["_stopAudio",false]
+	["_stopAudio",false,[true]]
 ];
 
 if (_stopAudio) then {

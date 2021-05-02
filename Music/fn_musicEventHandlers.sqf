@@ -31,7 +31,7 @@ addMusicEventHandler ["MusicStart", {
 
 
 addMusicEventHandler ["MusicStop", {
-	call KISKA_fnc_musicStopEvent;
+	[false] call KISKA_fnc_musicStopEvent;
 }];
 
 

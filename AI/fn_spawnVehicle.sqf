@@ -35,7 +35,7 @@ params [
 	["_spawnPosition",[0,0,0],[[]]],
 	["_spawnDirection",0,[123]],
 	["_vehicleClass","",[""]],
-	["_group",grpNull,[BLUFOR,grpNull]],
+	["_group",BLUFOR,[sideUnknown,grpNull]],
 	["_forcePosition",true,[true]]
 ];
 

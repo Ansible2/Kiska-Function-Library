@@ -37,7 +37,11 @@ if (!canSuspend) exitWith {
 	[] spawn KISKA_fnc_rallyPointActionLoop;
 };
 
-waitUntil {sleep 2; !isNull player;};
+waitUntil {
+	if !(isNull player) exitWith {true};
+	sleep 2;
+	false
+};
 
 
 KISKA_fnc_respawn_updateRallyAction = {

@@ -25,12 +25,19 @@ scriptName "KISKA_fnc_detectControlKeys";
 #define LEFT_CTRL_CODE 29
 #define RIGHT_CTRL_CODE 157
 
+if (!hasInterface) exitWith {};
+
 if (!canSuspend) exitWith {
     ["Needs to be run in scheduled, exiting to scheduled...",true] call KISKA_fnc_log;
     [] spawn KISKA_fnc_detectControlKeys;
 };
 
-waitUntil {!isNull (findDisplay 46)};
+waitUntil {
+    if !(isNull (findDisplay 46)) exitWith {true};
+    ["Looping for Display"] call KISKA_fnc_log;
+    sleep 0.1;
+    false
+};
 
 (findDisplay 46) displayAddEventHandler ["KeyDown",{
     params ["_displayorcontrol", "_key", "_shift", "_ctrl", "_alt"];
@@ -55,6 +62,3 @@ waitUntil {!isNull (findDisplay 46)};
         missionNamespace setVariable ["KISKA_ctrlDown",false];
     };
 }];
-
-
-nil

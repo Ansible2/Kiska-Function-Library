@@ -72,7 +72,7 @@ class CfgFunctions
 			file = "Kiska_functions\Cargo Drop";
 			class addCargoEvents
 			{
-				postInit = 1;
+				//postInit = 1;
 			};
 			class addCargoActions
 			{};
@@ -299,7 +299,7 @@ class CfgFunctions
 			{};
 			class detectControlKeys
 			{
-				postInit = 1;
+				preInit = 1;
 			};
 			class getAmmoClassFromId
 			{};

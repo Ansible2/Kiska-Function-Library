@@ -86,6 +86,14 @@ SAVE_AND_PUSH(BEARING_MENU_STR,_bearingsMenu)
 	flyInHeight Menu
 ---------------------------------------------------------------------------- */
 private _flyInHeights = [_supportConfig >> "flyinHeights"] call BIS_fnc_getCfgDataArray;
+if (_flyInHeights isEqualTo []) then {
+	_flyInHeights = missionNamespace getVariable ["KISKA_CBA_supp_flyInHeights_arr",[]];
+
+	if (_flyInHeights isEqualTo []) then {
+		_flyInHeights = [50];
+	};
+};
+
 private _flyInHeightMenu = [
 	["Altitude",false]
 ];
