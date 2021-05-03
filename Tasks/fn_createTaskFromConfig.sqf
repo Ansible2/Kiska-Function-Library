@@ -136,7 +136,11 @@ private _taskCreated = [
 
 if (_taskCreated) then {
     private _onCreateCode = GET_CFG_TEXT("onCreate");
+
     if (_onCreateCode isNotEqualTo "") then {
         [_taskId,_config] call (compile _onCreateCode);
     };
 };
+
+
+_taskCreated
