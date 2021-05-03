@@ -364,6 +364,16 @@ class CfgFunctions
 			class traitManager_updateCurrentList
 			{};
 		};
+		class Tasks
+		{
+			file="Kiska_functions\Tasks";
+			class createTaskFromConfig
+			{};
+			class endTask
+			{};
+			class setTaskComplete
+			{};
+		};
 		class Utilities
 		{
 			file="Kiska_functions\Utilities";
@@ -430,8 +440,6 @@ class CfgFunctions
 			class remoteReturn_send
 			{};
 			class removeArsenal
-			{};
-			class setTaskComplete
 			{};
 			class showHide
 			{};
