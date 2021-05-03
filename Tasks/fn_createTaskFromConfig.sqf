@@ -121,7 +121,7 @@ private _taskId = configName _config;
 /* ----------------------------------------------------------------------------
     Create Task
 ---------------------------------------------------------------------------- */
-[
+private _taskCreated = [
     _owner,
     _taskId,
     [_taskDescription,_taskTitle],
@@ -132,3 +132,11 @@ private _taskId = configName _config;
     _type,
     _visibleIn3D
 ] call BIS_fnc_taskCreate;
+
+
+if (_taskCreated) then {
+    private _onCreateCode = GET_CFG_TEXT("onCreate");
+    if (_onCreateCode isNotEqualTo "") then {
+        [_taskId,_config] call (compile _onCreateCode);
+    };
+};
