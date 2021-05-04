@@ -118,6 +118,7 @@ private _parentTaskId = GET_CFG_TEXT("parentTask");
 private _priority = GET_CFG_NUMBER("Priority");
 private _taskId = configName _config;
 
+
 /* ----------------------------------------------------------------------------
     Create Task
 ---------------------------------------------------------------------------- */
@@ -138,7 +139,7 @@ if (_taskCreated) then {
     private _onCreateCode = GET_CFG_TEXT("onCreate");
 
     if (_onCreateCode isNotEqualTo "") then {
-        [_taskId,_config] call (compile _onCreateCode);
+        [_taskId,_config,_taskState] call (compile _onCreateCode);
     };
 };
 
