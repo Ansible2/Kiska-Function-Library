@@ -13,7 +13,7 @@ Parameters:
     2: _notify <BOOL> - Should a nortification be shown
 
 Returns:
-	NOTHING
+	<STRING> - Task id
 
 Examples:
     (begin example)
@@ -32,24 +32,34 @@ scriptName "KISKA_fnc_endTask";
 params [
     ["_taskId","",[""]],
     ["_state",0,[123]],
-    ["_notify",true,[true]]
+    ["_notify",configNull]
 ];
 
 
 if (isMultiplayer AND {!isServer}) exitWith {
     ["Not Server, remotexecuting on server..."] call KISKA_fnc_log;
     _this remoteExecCall ["KISKA_fnc_endTask",2];
-    nil
+    ""
 };
 
 
 private _config = missionConfigFile >> "KISKA_cfgTasks" >> _taskId;
 private _taskHasClass = isClass _config;
-if (_taskHasClass) then {
-    if !(isNull (_config >> "notifyOnComplete")) then {
-        _notify = true;
+// if you want config default value
+if (_notify isEqualTo configNull) then {
+    if (_taskHasClass) then {
+        // if config entry for notifyOnComplete is present 
+        if !(isNull (_config >> "notifyOnComplete")) then {
+            _notify = true;
+
+        } else {
+            _notify = [_config >> "notifyOnComplete"] call BIS_fnc_getCfgDataBool;
+
+        };
+
     } else {
-        _notify = [_config >> "notifyOnComplete"] call BIS_fnc_getCfgDataBool;
+        _notify = true;
+
     };
 };
 
@@ -57,22 +67,20 @@ if (_taskHasClass) then {
 switch _state do {
     case STATE_SUCCEEDED:{
         _state = "SUCCEEDED";
-        break;
     };
 
     case STATE_FAILED:{
         _state = "FAILED";
-        break;
     };
 
     case STATE_CANCELED:{
         _state = "CANCELED";
-        break;
     };
+    default {};
 };
 
 
-[_taskId,_state,_notify] call BIS_fnc_taskSetState;
+private _taskSet = [_taskId,_state,_notify] call BIS_fnc_taskSetState;
 
 
 if (_taskHasClass) then {
@@ -84,4 +92,4 @@ if (_taskHasClass) then {
 };
 
 
-nil
+_taskSet

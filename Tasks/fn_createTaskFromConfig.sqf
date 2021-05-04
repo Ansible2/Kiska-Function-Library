@@ -22,7 +22,7 @@ Parameters:
     6: _visibleIn3D <BOOL or configNull> - Show a 3D task icon
 
 Returns:
-	<BOOL> - True if created, false if error
+	<STRING> - Created Task Id
 
 Examples:
     (begin example)
@@ -71,7 +71,7 @@ if (_config isEqualType "") then {
 
 if (_config isEqualTo configNull) exitWith {
     ["_config is null!",true] call KISKA_fnc_log;
-    false
+    ""
 };
 
 
@@ -114,15 +114,19 @@ if (_visibleIn3D isEqualTo configNull) then {
 
 private _taskTitle = GET_CFG_TEXT("title");
 private _taskDescription = GET_CFG_TEXT("description");
+private _priority = GET_CFG_NUMBER("priority");
+
 private _parentTaskId = GET_CFG_TEXT("parentTask");
-private _priority = GET_CFG_NUMBER("Priority");
 private _taskId = configName _config;
+if (_parentTaskId isNotEqualTo "") then {
+    _taskId = [_taskId,_parentTaskId];
+};
 
 
 /* ----------------------------------------------------------------------------
     Create Task
 ---------------------------------------------------------------------------- */
-private _taskCreated = [
+private _createdTask = [
     _owner,
     _taskId,
     [_taskDescription,_taskTitle],
@@ -135,7 +139,7 @@ private _taskCreated = [
 ] call BIS_fnc_taskCreate;
 
 
-if (_taskCreated) then {
+if (_createdTask isNotEqualTo "") then {
     private _onCreateCode = GET_CFG_TEXT("onCreate");
 
     if (_onCreateCode isNotEqualTo "") then {
@@ -144,4 +148,4 @@ if (_taskCreated) then {
 };
 
 
-_taskCreated
+_createdTask
