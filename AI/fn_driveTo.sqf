@@ -9,7 +9,7 @@ Parameters:
 	1: _vehicle : <OBJECT> - The vehicle to put units into
 	2: _dismountPoint : <OBJECT or ARRAY> - The position to move to, can be object or position array
 	3: _completionRadius : <NUMBER> - The radius at which the waypoint is complete and the units can disembark from the _dismountPoint, -1 for exact placement
-	4: _codeOnComplete : <CODE> - Code to run upon completion of disembark, passed args is the vehicle (OBJECT) and crew (ARRAY)
+	4: _codeOnComplete : <CODE> - Code to run upon completion of disembark, passed args is the vehicle (OBJECT), crew (ARRAY), and crew groups (ARRAY)
 
 Returns:
 	<BOOL> - false if encountered error, true if success
@@ -54,16 +54,21 @@ if (_crew isEqualType objNull) then {
 
 private "_driverGroup";
 private _vehicleCrew = crew _vehicle;
+private _crewGroups = [];
 {
 	if !(_x in _vehicleCrew) then {
+		// take the first man and put him in the driver seat
 		if (_forEachIndex isEqualTo 0) then {
 			_driverGroup = group _x;
 			[_x,_vehicle] remoteExecCall ["moveInDriver",_x];
+
 		} else {
 			_x moveInAny _vehicle;
-		};
-	};
+			_crewGroups pushBackUnique (group _x);
 
+		};
+
+	};
 } forEach _crew;
 // disable HC transfer while driving
 [_driverGroup,false] call KISKA_fnc_ACEX_setHCTransfer;
@@ -72,8 +77,16 @@ private _vehicleCrew = crew _vehicle;
 [_driverGroup,_dismountPoint,-1,"MOVE","UNCHANGED","NO CHANGE",_speed,"NO CHANGE","",[0,0,0],_completionRadius] call CBA_fnc_addWaypoint;
 
 // position loop
-[_vehicle,_crew,_codeOnComplete,_completionRadius,_dismountPoint,_driverGroup] spawn {
-	params ["_vehicle","_crew","_codeOnComplete","_completionRadius","_dismountPoint","_driverGroup"];
+[_vehicle,_crew,_codeOnComplete,_completionRadius,_dismountPoint,_driverGroup,_crewGroups] spawn {
+	params [
+		"_vehicle",
+		"_crew",
+		"_codeOnComplete",
+		"_completionRadius",
+		"_dismountPoint",
+		"_driverGroup",
+		"_crewGroups"
+	];
 
 	waitUntil {
 		if (_vehicle distance _dismountPoint <= _completionRadius) exitWith {true};
@@ -90,8 +103,8 @@ private _vehicleCrew = crew _vehicle;
 	// enable HC transfer
 	[_driverGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
 
-	if !(_codeOnComplete isEqualTo {}) then {
-		[_vehicle,_crew] call _codeOnComplete;
+	if (_codeOnComplete isNotEqualTo {}) then {
+		[_vehicle,_crew,_crewGroups] call _codeOnComplete;
 	};
 };
 
