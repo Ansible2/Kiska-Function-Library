@@ -35,6 +35,7 @@ params [
 // Verify params
 if (_numberOfUnits < 1) exitWith {
 	[["_numberOfUnits is ",_numberOfUnits," needs to be atleast 1. Exiting..."],true] call KISKA_fnc_log;
+	grpNull
 };
 
 // filter out bad unit types
@@ -56,6 +57,7 @@ private _weightedArray = _unitTypes isEqualTypeParams ["",1];
 
 if (_unitTypesFiltered isEqualTo []) exitWith {
 	[["Did not find any valid unit types in ",_unitTypes],true] call KISKA_fnc_log;
+	grpNull
 };
 
 
@@ -92,5 +94,6 @@ allCurators apply {
 if (_enableDynamicSimulation) then {
 	_group enableDynamicSimulation true;
 };
+
 
 _group
