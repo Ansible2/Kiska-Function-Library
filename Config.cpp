@@ -377,6 +377,10 @@ class CfgFunctions
 		class Utilities
 		{
 			file="Kiska_functions\Utilities";
+			class addACESupportMenuAction
+			{
+				postInit = 1;
+			};
 			class addArsenal
 			{};
 			class addKiskaDiaryEntry
