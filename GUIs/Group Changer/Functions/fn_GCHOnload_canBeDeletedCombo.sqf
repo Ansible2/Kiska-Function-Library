@@ -29,9 +29,9 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 	if (call KISKA_fnc_isAdminOrHost) then {
 
 		private _selectedgroup = uiNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
-		
+
 		if !(isNull _selectedgroup) then {
-			
+
 			private _canDelete = isGroupDeletedWhenEmpty _selectedgroup;
 			private _fn_setGroupAutoDelete = {
 				params ["_allowDelete"];
@@ -42,7 +42,7 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 					[_selectedgroup, _allowDelete] remoteExecCall ["KISKA_fnc_GCH_groupDeleteQuery",2];
 				};
 			};
-			
+
 
 			if (_selectedIndex isEqualTo 0) then {
 				// if you can delete the group, set to false
@@ -57,7 +57,7 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 			};
 		};
 	} else {
-		hint "You must be the admin or host to change this setting";
+		[["Error",1.1,[0.75,0,0,1]],"You must be the admin or host to change this setting",false] call CBA_fnc_notify;
 	};
 }];
 

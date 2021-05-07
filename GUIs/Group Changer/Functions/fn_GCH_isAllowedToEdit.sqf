@@ -22,15 +22,14 @@ Author:
 disableSerialization;
 scriptName "KISKA_fnc_GCH_isAllowedToEdit";
 
-params [
-	["_groupLeader",objNull,[objNull,grpNull]]
-];
-
 // hosts and admins can always edit
-if (call KISKA_fnc_isHostOrAdmin) exitWith {
+if (call KISKA_fnc_isAdminOrHost) exitWith {
 	true
 };
 
+params [
+	["_groupLeader",objNull,[objNull,grpNull]]
+];
 
 if (_groupLeader isEqualType grpNull) then {
 	_groupLeader = leader _groupLeader;

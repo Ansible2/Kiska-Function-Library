@@ -28,8 +28,8 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 
 	private _selectedgroup = uiNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
 	if !(isNull _selectedgroup) then {
-		
-		if ([_selectedgroup] call KISKA_fnc_GCH_isAllowedToEdit) then {	
+
+		if ([_selectedgroup] call KISKA_fnc_GCH_isAllowedToEdit) then {
 			// NO
 			if (_selectedIndex isEqualTo 0) then {
 				[_selectedgroup,true] remoteExecCall ["KISKA_fnc_disallowGroupRally"];
@@ -38,7 +38,7 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 				[_selectedgroup] remoteExecCall ["KISKA_fnc_allowGroupRally"];
 			};
 		} else {
-			hint "You do not have persmission to change this setting";
+			[["Error",1.1,[0.75,0,0,1]],"You do not have permission to change this setting",false] call CBA_fnc_notify;
 		};
 	};
 }];

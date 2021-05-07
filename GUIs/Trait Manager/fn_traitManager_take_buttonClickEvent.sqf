@@ -23,6 +23,7 @@ disableSerialization;
 scriptName "KISKA_fnc_traitManager_take_buttonClickEvent";
 
 #define RESERVED_TRAITS ["MEDIC","ENGINEER","EXPLOSIVESPECIALIST","UAVHACKER"]
+#define DEFAULT_ERROR_MESSAGE "You do not have permission for this trait"
 
 private _selectedIndex = lbCurSel (uiNamespace getVariable "KISKA_TM_poolListBox_ctrl");
 if (_selectedIndex isNotEqualTo -1) then {
@@ -43,8 +44,15 @@ if (_selectedIndex isNotEqualTo -1) then {
 
 			[_selectedIndex] remoteExecCall ["KISKA_fnc_traitManager_removeFromPool",(call CBA_fnc_players),true];
 			call KISKA_fnc_traitManager_updateCurrentList;
+			
 		} else {
-			[["Error",1.1,[0.75,0,0,1]],"You do not have permission for this trait",false] call CBA_fnc_notify;
+			private _message = getText(_config >> "errorMessage");
+			if (_message isEqualTo "") then {
+				_message = DEFAULT_ERROR_MESSAGE;
+			};
+
+			[["Error",1.1,[0.75,0,0,1]],_message,false] call CBA_fnc_notify;
+
 		};
 	} else {
 		[["Error",1.1,[0.75,0,0,1]],"You already have this trait",false] call CBA_fnc_notify;
