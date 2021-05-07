@@ -7,7 +7,7 @@ Description:
 
 Parameters:
 	0: _unit <GROUP or OBJECT> - The unit to blacklist
-    1: _setting <BOOL> - The blacklist value to set
+    1: _setting <BOOL> - The blacklist value to set (true to blacklist, false to allow transfer)
 
 Returns:
 	NOTHING
@@ -30,6 +30,11 @@ if !(["acex_headless"] call KISKA_fnc_isPatchLoaded) exitWith {
 };
 */
 
+if (!isMultiplayer) exitWith {
+	["No need to run in singleplayer..."] call KISKA_fnc_log;
+	nil
+};
+
 params [
 	["_unit",objNull,[grpNull,objNull]],
     ["_setting",false,[true]]
@@ -40,7 +45,7 @@ if (isNull _unit) exitWith {
     nil
 };
 
-_unit setVariable ["ace_headless_blacklist",_setting,[0,2] select isMultiplayer];
+_unit setVariable ["acex_headless_blacklist",_setting,2];
 
 
 nil
