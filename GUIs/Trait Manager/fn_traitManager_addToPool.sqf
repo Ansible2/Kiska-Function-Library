@@ -24,8 +24,6 @@ scriptName "KISKA_fnc_traitManager_addToPool";
 
 #define NUMBER_TRAITS ["LOADCOEF","AUDIBLECOEF","CAMOUFLAGECOEF"]
 
-if (!hasInterface) exitWith {};
-
 params [
 	["_entryToAdd","",[""]]
 ];
