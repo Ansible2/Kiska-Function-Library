@@ -33,7 +33,8 @@ if (_selectedIndex isNotEqualTo -1) then {
 	if ((_support select 1) isEqualTo -1) then {
 		_support = _support select 0;
 	};
-	[_support] remoteExecCall ["KISKA_fnc_supportManager_addToPool",(call CBA_fnc_players),true];
+	
+	[_support] call KISKA_fnc_supportManager_addToPool;
 	[player,_menuId] call BIS_fnc_removeCommMenuItem;
 
 	call KISKA_fnc_supportManager_updateCurrentList;

@@ -13,14 +13,13 @@ Returns:
 
 Examples:
     (begin example)
-
 		[vehicle1] call KISKA_fnc_addUnloadCratesAction;
-
     (end)
 
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+if (!hasInterface) exitWith {};
 
 params [
 	["_vehicle",objNull,[objNull]]

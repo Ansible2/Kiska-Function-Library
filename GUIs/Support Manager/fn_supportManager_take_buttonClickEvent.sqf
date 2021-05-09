@@ -54,7 +54,7 @@ if (count (player getVariable ["BIS_fnc_addCommMenuItem_menu",[]]) isEqualTo _ma
 		// add to player and update list
 		if (_condition isEqualTo "" OR {[_supportClass] call (compile _condition)}) then {
 			[player,_supportClass,"",_useCount] call KISKA_fnc_addCommMenuItem;
-			[_selectedIndex] remoteExecCall ["KISKA_fnc_supportManager_removeFromPool",(call CBA_fnc_players),true];
+			[_selectedIndex] remoteExecCall ["KISKA_fnc_supportManager_removeFromPool",0,true];
 			call KISKA_fnc_supportManager_updateCurrentList;
 
 		} else {

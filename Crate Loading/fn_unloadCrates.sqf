@@ -54,6 +54,6 @@ _vehicle removeAction (_vehicle getVariable "DSO_unloadActionID");
 
 _vehicle setVariable ["DSO_loadedCrates",[],true];
 
-[_vehicle] remoteExecCall ["KISKA_fnc_removeUnloadAction",call CBA_fnc_players,true];
+[_vehicle] remoteExecCall ["KISKA_fnc_removeUnloadAction",0,true];
 
 true

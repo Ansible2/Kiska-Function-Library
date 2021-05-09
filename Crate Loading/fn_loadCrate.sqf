@@ -100,11 +100,11 @@ _vehicle setVariable ["DSO_loadedCrates",_cratesLoaded,true];
 
 // add unload action and event handler if first crate
 if (_numCratesLoaded < 1) then {
-	[_vehicle] remoteExecCall ["KISKA_fnc_addUnloadCratesAction",call CBA_fnc_players,true];
+	[_vehicle] remoteExecCall ["KISKA_fnc_addUnloadCratesAction",0,true];
 
 	// add eventHandler
 	private _handleID = _vehicle addMPEventHandler ["MPKilled",{
-				
+
 		params ["_vehicle"];
 
 		if (isServer) then {

@@ -42,9 +42,9 @@ if (_selectedIndex isNotEqualTo -1) then {
 			private _isCustomTrait = !(_trait in RESERVED_TRAITS);
 	        player setUnitTrait [_trait,true,_isCustomTrait];
 
-			[_selectedIndex] remoteExecCall ["KISKA_fnc_traitManager_removeFromPool",(call CBA_fnc_players),true];
+			[_selectedIndex] remoteExecCall ["KISKA_fnc_traitManager_removeFromPool",0,true];
 			call KISKA_fnc_traitManager_updateCurrentList;
-			
+
 		} else {
 			private _message = getText(_config >> "errorMessage");
 			if (_message isEqualTo "") then {

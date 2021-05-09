@@ -30,6 +30,6 @@ if (_selectedIndex isNotEqualTo -1) then {
     private _isCustomTrait = !(_trait in RESERVED_TRAITS);
     player setUnitTrait [_trait,false,_isCustomTrait];
 
-	[_trait] remoteExecCall ["KISKA_fnc_traitManager_addToPool",(call CBA_fnc_players),true];
+    [_trait] call KISKA_fnc_traitManager_addToPool;
     call KISKA_fnc_traitManager_updateCurrentList;
 };
