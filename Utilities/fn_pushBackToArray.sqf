@@ -41,8 +41,9 @@ if (_arrayVariableName isEqualTo "") exitWith {
 	false
 };
 
-private _array = _namespace getVariable [_arrayVariableName,[]];
+//[["Called to add ",_entryToAdd," to array var name: ", _arrayVariableName],false] call KISKA_fnc_log;
 
+private _array = _namespace getVariable [_arrayVariableName,[]];
 _array pushBack _entryToAdd;
 
 if (isNil {_namespace getVariable _arrayVariableName}) then {

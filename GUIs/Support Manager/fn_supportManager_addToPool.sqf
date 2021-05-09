@@ -46,7 +46,7 @@ if (isNull _config) exitWith {
 };
 
 
-[TO_STRING(POOL_GVAR),_entryToAdd] remoteExecCall ["KISKA_fnc_pushBackToArray",(call CBA_fnc_players),true];
+[TO_STRING(POOL_GVAR),_entryToAdd] remoteExecCall ["KISKA_fnc_pushBackToArray",0,true];
 
 
 nil
