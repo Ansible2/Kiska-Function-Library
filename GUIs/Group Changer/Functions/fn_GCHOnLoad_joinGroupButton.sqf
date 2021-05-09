@@ -31,9 +31,10 @@ _control ctrlAddEventHandler ["ButtonClick",{
 		if !((group player) isEqualTo _selectedGroup) then {
 			[player] joinSilent _selectedGroup;
 			[true,true] call KISKA_fnc_GCH_updateCurrentGroupSection;
+			[] call KISKA_fnc_GCH_updateSideGroupsList;
 		};
 	} else {
-		hint "The group you are trying to join does not exist";
+		[["Error",1.1,[0.75,0,0,1]],"The group you are trying to join does not exist",false] call CBA_fnc_notify;
 	};
 
 }];

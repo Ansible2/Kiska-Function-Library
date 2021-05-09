@@ -22,7 +22,6 @@ disableSerialization;
 scriptName "KISKA_fnc_GCHOnLoad_sideGroupList";
 
 #define REFRESH_SPEED (missionNamespace getVariable ["KISKA_CBA_GCH_updateFreq",1])
-#define PLAYER_GROUP_COLOR [0,1,0,0.6] // Green
 #define GET_CACHED_GROUPS _allGroupsCached select {(side _x) isEqualTo _playerSide AND {!(_x getVariable ["KISKA_GCH_exclude",false])}}
 
 params ["_control"];
@@ -47,30 +46,7 @@ private _sideGroups = GET_CACHED_GROUPS;
 
 
 uiNamespace setVariable ["KISKA_GCH_sideGroupsArray",_sideGroups];
-
-
-private _fn_updateSideGroupList = {
-	lbClear _control;
-
-	// add to listbox
-	private "_index";
-	private _playerGroup = group player;
-	{
-		_index = _control lbAdd (groupId _x);
-		// saving the index as a value so that it can be referenced against the _sideGroups array
-		_control lbSetValue [_index,_forEachIndex];
-
-		// highlight the player group
-		if (_x isEqualTo _playerGroup) then {
-			_control lbSetColor [_index, PLAYER_GROUP_COLOR];
-		};
-	} forEach _sideGroups;
-
-	// sort list alphabetically
-	lbSort _control;
-};
-
-call _fn_updateSideGroupList;
+[_control] call KISKA_fnc_GCH_updateSideGroupsList;
 
 
 private _allGroupsCompare = [];
@@ -87,7 +63,7 @@ while {!isNull (uiNamespace getVariable "KISKA_GCH_display")} do {
 		if (_sideGroups_compare isNotEqualTo _sideGroups) then {
 			_sideGroups = +_sideGroups_compare;
 			uiNamespace setVariable ["KISKA_GCH_sideGroupsArray",_sideGroups];
-			call _fn_updateSideGroupList;
+			[_control] call KISKA_fnc_GCH_updateSideGroupsList;
 		};
 	};
 

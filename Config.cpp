@@ -129,6 +129,8 @@ class CfgFunctions
 			{};
 			class GCH_updateCurrentGroupSection
 			{};
+			class GCH_updateSideGroupsList
+			{};
 			class GCHOnLoad
 			{};
 			class GCHOnLoad_canBeDeletedCombo
