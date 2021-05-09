@@ -439,6 +439,8 @@ class CfgFunctions
 			{};
 			class pushBackToArray
 			{};
+			class pushBackToArray_interface
+			{};
 			class reassignCurator
 			{};
 			class remoteReturn_receive
