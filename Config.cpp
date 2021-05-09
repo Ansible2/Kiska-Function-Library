@@ -405,6 +405,8 @@ class CfgFunctions
 			{};
 			class deleteAtArray
 			{};
+			class deleteAtArray_interface
+			{};
 			class doMagRepack
 			{};
 			class findConfigAny
