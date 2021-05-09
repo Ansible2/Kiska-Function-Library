@@ -12,15 +12,20 @@ Returns:
 
 Examples:
     (begin example)
-
-		Postinit function
-
+		PRE-INIT function
     (end)
 
 Author(s):
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_addOpenVdlGuiDiary";
+
 if (!hasInterface) exitWith {};
+
+if (!canSuspend) exitWith {
+	["Must be run in scheduled",false] call KISKA_fnc_log;
+	[] spawn KISKA_fnc_addOpenVdlGuiDiary;
+};
 
 waitUntil {
     if !(isNull player) exitWith {true};
@@ -30,7 +35,7 @@ waitUntil {
 
 [
 	[
-		"View Distance Limiter", 
+		"View Distance Limiter",
 		"<execute expression='openMap false; call KISKA_fnc_openVdlDialog;'>OPEN VDL DIALOG</execute>"
 	]
 ] call KISKA_fnc_addKiskaDiaryEntry;

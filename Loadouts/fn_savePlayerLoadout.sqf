@@ -13,7 +13,7 @@ Returns:
 
 Examples:
     (begin example)
-		POST-INIT function
+		PRE-INIT function
     (end)
 
 Author:
@@ -22,6 +22,11 @@ Author:
 scriptName "KISKA_fnc_savePlayerLoadout";
 
 if (!hasInterface) exitWith {};
+
+if (!canSuspend) exitWith {
+	["Must be run in scheduled",false] call KISKA_fnc_log;
+	[] spawn KISKA_fnc_savePlayerLoadout;
+};
 
 waitUntil {
 	if !(isNull player) exitWith {true};

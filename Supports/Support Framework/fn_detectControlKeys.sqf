@@ -14,7 +14,7 @@ Returns:
 
 Examples:
     (begin example)
-		POST-INIT Function
+		PRE-INIT Function
     (end)
 
 Author(s):
@@ -28,19 +28,21 @@ scriptName "KISKA_fnc_detectControlKeys";
 if (!hasInterface) exitWith {};
 
 if (!canSuspend) exitWith {
-    ["Needs to be run in scheduled, exiting to scheduled...",true] call KISKA_fnc_log;
+    ["Needs to be run in scheduled, exiting to scheduled...",false] call KISKA_fnc_log;
     [] spawn KISKA_fnc_detectControlKeys;
 };
 
 waitUntil {
     if !(isNull (findDisplay 46)) exitWith {true};
-    ["Looping for Display"] call KISKA_fnc_log;
+    ["Looping for Display",false] call KISKA_fnc_log;
     sleep 0.1;
     false
 };
 
+["Found display, loop ended",false] call KISKA_fnc_log;
+
 (findDisplay 46) displayAddEventHandler ["KeyDown",{
-    params ["_displayorcontrol", "_key", "_shift", "_ctrl", "_alt"];
+    params ["", "_key", "", "", ""];
 
     if (
         (_key isEqualTo LEFT_CTRL_CODE OR {_key isEqualTo RIGHT_CTRL_CODE})
@@ -52,7 +54,7 @@ waitUntil {
 }];
 
 (findDisplay 46) displayAddEventHandler ["KeyUp",{
-    params ["_displayorcontrol", "_key", "_shift", "_ctrl", "_alt"];
+    params ["", "_key", "", "", ""];
 
     if (
         (_key isEqualTo LEFT_CTRL_CODE OR {_key isEqualTo RIGHT_CTRL_CODE})

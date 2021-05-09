@@ -14,14 +14,15 @@ Returns:
 
 Examples:
     (begin example)
-		Post Init Function
+		PRE-INIT Function
     (end)
 
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define RETURN_NIL nil
 scriptName "KISKA_fnc_addRallyPointDiaryEntry";
+
+#define RETURN_NIL nil
 
 if (!hasInterface) exitWith {
 	["Was run on machine without interface, needs an interface",true] call KISKA_fnc_log;
@@ -33,6 +34,11 @@ if (!isMultiplayer) exitWith {
 	RETURN_NIL
 };
 
+if (!canSuspend) exitWith {
+	["Must be run in scheduled",false] call KISKA_fnc_log;
+	[] spawn KISKA_fnc_addRallyPointDiaryEntry;
+};
+
 waitUntil {
     if !(isNull player) exitWith {true};
     sleep 0.1;
@@ -42,7 +48,7 @@ waitUntil {
 
 [
 	[
-		"Rally Point", 
+		"Rally Point",
 		"<execute expression='call KISKA_fnc_updateRespawnMarkerQuery'>Set Rally Point At Current Position</execute>"
 	]
 ] call KISKA_fnc_addKiskaDiaryEntry;

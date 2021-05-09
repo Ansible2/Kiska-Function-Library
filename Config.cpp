@@ -119,7 +119,7 @@ class CfgFunctions
 
 			class GCH_addDiaryEntry
 			{
-				postInit = 1;
+				preInit = 1;
 			};
 			class GCH_groupDeleteQuery
 			{};
@@ -163,7 +163,7 @@ class CfgFunctions
 			{};
 			class savePlayerLoadout
 			{
-				postInit = 1;
+				preInit = 1;
 			};
 		};
 		class MAC
@@ -217,7 +217,7 @@ class CfgFunctions
 			file = "Kiska_functions\Rally";
 			class addRallyPointDiaryEntry
 			{
-				postInit = 1;
+				preInit = 1;
 			};
 			class allowGroupRally
 			{};
@@ -237,7 +237,7 @@ class CfgFunctions
 			file = "Kiska_functions\Respawn";
 			class keepInGroup
 			{
-				postInit = 1;
+				preInit = 1;
 			};
 			/*
 			class rallyPointActionLoop
@@ -345,7 +345,7 @@ class CfgFunctions
 			file="Kiska_functions\GUIs\Trait Manager";
 			class traitManager_addDiaryEntry
 			{
-				postInit = 1;
+				preInit = 1;
 			};
 			class traitManager_addToPool
 			{};
@@ -379,7 +379,7 @@ class CfgFunctions
 			file="Kiska_functions\Utilities";
 			class addACESupportMenuAction
 			{
-				postInit = 1;
+				preInit = 1;
 			};
 			class addArsenal
 			{};

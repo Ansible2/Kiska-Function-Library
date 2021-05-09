@@ -12,7 +12,7 @@ Returns:
 
 Examples:
     (begin example)
-        POST-INIT function
+        PRE-INIT function
     (end)
 
 Author:
@@ -25,6 +25,11 @@ scriptName "KISKA_fnc_GCH_addDiaryEntry";
 if (!hasInterface) exitWith {
 	["Was run on machine without interface, needs an interface"] call KISKA_fnc_log;
 	RETURN_NIL
+};
+
+if (!canSuspend) exitWith {
+	["Must be run in scheduled",false] call KISKA_fnc_log;
+	[] spawn KISKA_fnc_GCH_addDiaryEntry;
 };
 
 waitUntil {

@@ -13,7 +13,7 @@ Returns:
 
 Examples:
     (begin example)
-		POST-INIT Function
+		PRE-INIT Function
     (end)
 
 Author:
@@ -26,6 +26,11 @@ if (!hasInterface) exitWith {};
 if !(["ace_main"] call KISKA_fnc_isPatchLoaded) exitWith {
 	["ACE is not loaded, action will not be added",false] call KISKA_fnc_log;
 	nil
+};
+
+if (!canSuspend) exitWith {
+	["Must be run in scheduled",false] call KISKA_fnc_log;
+	[] spawn KISKA_fnc_addACESupportMenuAction;
 };
 
 waitUntil {
