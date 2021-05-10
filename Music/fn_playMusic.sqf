@@ -42,6 +42,7 @@ params [
 private _trackConfig = [["cfgMusic",_track]] call KISKA_fnc_findConfigAny;
 if (isNull _trackConfig) exitWith {
 	[[_track," is not a defined track in any CfgMusic"],true] call KISKA_fnc_log;
+	nil
 };
 
 private _musicPlaying = call KISKA_fnc_isMusicPlaying;
@@ -65,3 +66,21 @@ playMusic [_track,_startTime];
 
 0 fadeMusic 0;
 _fadeTime fadeMusic _volume;
+
+
+if (missionNamespace getVariable ["KISKA_CBA_showSongNames",false]) then {
+	private _trackName = getText(_trackConfig >> "name");
+	if (_trackName isNotEqualTo "") then {
+		[
+			parseText ("<t font='PuristaBold' size='1.6'>" + _trackName + "</t>"),
+			true,
+			nil,
+			7,
+			0.7,
+			0
+		] spawn BIS_fnc_textTiles;
+	};
+};
+
+
+nil
