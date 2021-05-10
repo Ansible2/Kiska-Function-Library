@@ -13,6 +13,17 @@ class CfgFunctions
 {
 	class KISKA
 	{
+		class ACE
+		{
+			class ACE_addSupportMenuAction
+			{
+				preInit = 1;
+			};
+			class ACE_unconsciousIsCaptive
+			{
+				postInit = 1;
+			};
+		};
 		class ACEX
 		{
 			file = "KISKA_functions\ACEX";
@@ -379,10 +390,6 @@ class CfgFunctions
 		class Utilities
 		{
 			file="Kiska_functions\Utilities";
-			class addACESupportMenuAction
-			{
-				preInit = 1;
-			};
 			class addArsenal
 			{};
 			class addKiskaDiaryEntry
@@ -531,6 +538,9 @@ class Extended_PreInit_EventHandlers {
     };
 	class logging_settings_preInitEvent {
         init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addLoggingCbaSettings.sqf'];";
+    };
+	class ACE_settings_preInitEvent {
+        init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addAceCbaSettings.sqf'];";
     };
 };
 

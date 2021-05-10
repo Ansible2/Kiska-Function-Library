@@ -22,7 +22,7 @@ Parameters:
 [
     "KISKA_CBA_logWithError",
     "CHECKBOX",
-    ["Log With Error Message","Prints Kiska logs on screen with BIS_fnc_error (when the function setting is set to default param)"],
+    ["Log With Error Message","Prints KISKA's logs on screen with BIS_fnc_error (when the function setting is set to default param)"],
     ["KISKA Misc Settings","Logging"],
     false,
     0
@@ -31,7 +31,7 @@ Parameters:
 [
     "KISKA_CBA_logScripts_str",
     "EDITBOX",
-    ["Loggable Scripts","If a script's name is not within the array, it will be ignored by KISKA_fnc_log. 'all' in the array will print everything. Names MUST be lowercase AND enclosed with ''"],
+    ["Loggable Scripts","If a script's name is not within the array, it will be ignored by KISKA_fnc_log. 'all' in the array will print everything. Names MUST be lowercase AND enclosed with single quotes ' '"],
     ["KISKA Misc Settings","Logging"],
     ["['all']"],
     0,

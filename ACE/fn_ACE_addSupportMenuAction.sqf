@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_addACESupportMenuAction
+Function: KISKA_fnc_ACE_addSupportMenuAction
 
 Description:
 	Adds the ACE action to a player object that allows them to self interact
@@ -19,7 +19,7 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_addACESupportMenuAction";
+scriptName "KISKA_fnc_ACE_addSupportMenuAction";
 
 if (!hasInterface) exitWith {};
 
@@ -30,7 +30,7 @@ if !(["ace_main"] call KISKA_fnc_isPatchLoaded) exitWith {
 
 if (!canSuspend) exitWith {
 	["Must be run in scheduled",false] call KISKA_fnc_log;
-	[] spawn KISKA_fnc_addACESupportMenuAction;
+	[] spawn KISKA_fnc_ACE_addSupportMenuAction;
 };
 
 waitUntil {

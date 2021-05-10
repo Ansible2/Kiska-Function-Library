@@ -25,12 +25,12 @@ scriptName "KISKA_fnc_addRallyPointDiaryEntry";
 #define RETURN_NIL nil
 
 if (!hasInterface) exitWith {
-	["Was run on machine without interface, needs an interface",true] call KISKA_fnc_log;
+	["Was run on machine without interface, needs an interface",false] call KISKA_fnc_log;
 	RETURN_NIL
 };
 
 if (!isMultiplayer) exitWith {
-	["KISKA rally point system does not run in singlePlayer",true] call KISKA_fnc_log;
+	["KISKA rally point system does not run in singlePlayer",false] call KISKA_fnc_log;
 	RETURN_NIL
 };
 
