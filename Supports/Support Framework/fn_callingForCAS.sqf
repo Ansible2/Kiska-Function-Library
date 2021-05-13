@@ -90,9 +90,20 @@ private ["_casTitle","_keyCode"];
 	} else {
 		_keyCode = 0;
 	};
-	_casTitle = [_x] call KISKA_fnc_getCasTitleFromId;
+
+	if (_x isEqualType []) then { // custom magazine pylons will be arrays
+		// if a custom name was given in the config array for the custom ammo
+		if ((count _x) > 2) then {
+			_casTitle = _x select 2;
+		} else {
+			_casTitle = [configFile >> "CfgMagazines" >> (_x select 1)] call BIS_fnc_displayName;
+		};
+	} else {
+		_casTitle = [_x] call KISKA_fnc_getCasTitleFromId;
+	};
 
 	_attackTypeMenu pushBack STD_LINE_PUSH(_casTitle,_keyCode,_x);
+
 } forEach _attackTypes;
 
 SAVE_AND_PUSH(ATTACK_TYPE_MENU_STR,_attackTypeMenu)

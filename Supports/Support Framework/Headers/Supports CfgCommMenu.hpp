@@ -131,6 +131,15 @@ class KISKA_arsenalSupplyDrop_baseClass : KISKA_basicSupport_baseClass
 /* ----------------------------------------------------------------------------
 	(Fixed-Wing) CAS Templates
 ---------------------------------------------------------------------------- */
+/*
+// adding custom ammos for attack:
+class KISKA_CAS_customBomb : KISKA_CAS_bombs_templateClass
+{
+    attackTypes[] = {
+        {{BOMB_CLUSTER_ID,"somePylonCompatibleMagazine","name in selection menu"}} // this means double array in config and will be translated to [[]]
+    };
+};
+*/
 class KISKA_CAS_guns_templateClass : KISKA_CAS_baseClass
 {
     attackTypes[] = {

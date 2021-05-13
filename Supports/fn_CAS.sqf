@@ -7,7 +7,16 @@ Description:
 
 Parameters:
 	0: _attackPosition : <OBJECT or ARRAY> - ASL position or object to attack
-	1: _attackTypeID : <NUMBER> - 0 - Guns, 1 - Rockets, 2 - Guns & Rockets, 3 - Bomb
+	1: _attackTypeID : <NUMBER or ARRAY> - See CAS Type IDs.hpp .
+		If an array, format needs to be [[attackTypeId,pylonMagazineClass]].
+
+		The attackTypeId is used for determining what kind of attack characteristics
+		 the plane should take.
+
+		e.g. a custom bomb drop should have an ID of either 6 or 7, for rockets, 1 or 2
+
+		Also, if you want guns & rockets, make sure to formate the array as [0,[attackTypeId,rocketPylonMagazineClass]]
+
 	2: _attackDirection : <NUMBER> - The direction the aircraft should approach from relative to North
 	3: _planeClass : <STRING> - The className of the aircraft
 	4: _side : <SIDE> - The side of the plane
@@ -45,7 +54,7 @@ scriptName "KISKA_fnc_CAS";
 
 params [
 	["_attackPosition",objNull,[[],objNull]],
-	["_attackTypeID",0,[123]],
+	["_attackTypeID",0,[123,[]]],
 	["_attackDirection",0,[123]],
 	["_planeClass","B_Plane_CAS_01_dynamicLoadout_F",[""]],
 	["_side",BLUFOR,[sideUnknown]],
@@ -72,31 +81,39 @@ if !(isclass _planeCfg) exitwith {
 	select weapons to use
 
 ---------------------------------------------------------------------------- */
-private _attackMagazines = switch _attackTypeID do {
-	case GUN_RUN_ID: {
-		[CANNON_TYPE]
+private "_attackMagazines"
+
+if (_attackTypeID isEqualType 123) then {
+	switch _attackTypeID do {
+		case GUN_RUN_ID: {
+			[CANNON_TYPE]
+		};
+		case GUNS_AND_ROCKETS_ARMOR_PIERCING_ID: {
+			[CANNON_TYPE,[ROCKETS_AP_TYPE,"PylonRack_7Rnd_Rocket_04_AP_F"]]
+		};
+		case GUNS_AND_ROCKETS_HE_ID: {
+			[CANNON_TYPE,[ROCKETS_HE_TYPE,"PylonRack_7Rnd_Rocket_04_HE_F"]]
+		};
+		case ROCKETS_ARMOR_PIERCING_ID: {
+			[[ROCKETS_AP_TYPE,"PylonRack_7Rnd_Rocket_04_AP_F"]]
+		};
+		case ROCKETS_HE_ID: {
+			[[ROCKETS_HE_TYPE,"PylonRack_7Rnd_Rocket_04_HE_F"]]
+		};
+		case AGM_ID: {
+			[[AGM_TYPE,"PylonRack_1Rnd_Missile_AGM_02_F"]]
+		};
+		case BOMB_LGB_ID: {
+			[[BOMB_LGB_TYPE,"PylonMissile_1Rnd_Bomb_04_F"]]
+		};
+		case BOMB_CLUSTER_ID: {
+			[[BOMB_CLUSTER_TYPE,"PylonMissile_1Rnd_BombCluster_01_F"]]
+		};
 	};
-	case GUNS_AND_ROCKETS_ARMOR_PIERCING_ID: {
-		[CANNON_TYPE,[ROCKETS_AP_TYPE,"PylonRack_7Rnd_Rocket_04_AP_F"]]
-	};
-	case GUNS_AND_ROCKETS_HE_ID: {
-		[CANNON_TYPE,[ROCKETS_HE_TYPE,"PylonRack_7Rnd_Rocket_04_HE_F"]]
-	};
-	case ROCKETS_ARMOR_PIERCING_ID: {
-		[[ROCKETS_AP_TYPE,"PylonRack_7Rnd_Rocket_04_AP_F"]]
-	};
-	case ROCKETS_HE_ID: {
-		[[ROCKETS_HE_TYPE,"PylonRack_7Rnd_Rocket_04_HE_F"]]
-	};
-	case AGM_ID: {
-		[[AGM_TYPE,"PylonRack_1Rnd_Missile_AGM_02_F"]]
-	};
-	case BOMB_LGB_ID: {
-		[[BOMB_LGB_TYPE,"PylonMissile_1Rnd_Bomb_04_F"]]
-	};
-	case BOMB_CLUSTER_ID: {
-		[[BOMB_CLUSTER_TYPE,"PylonMissile_1Rnd_BombCluster_01_F"]]
-	};
+
+} else {
+	_attackMagazines = _attackTypeID;
+	
 };
 
 
@@ -179,9 +196,7 @@ if (_exitToDefault) exitwith {
 
 
 /* ----------------------------------------------------------------------------
-
 	Define attack function
-
 ---------------------------------------------------------------------------- */
 KISKA_fnc_casAttack = {
 	params ["_plane","_dummyTarget","_weaponsToUse","_attackTypeID","_attackPosition","_breakOffDistance"];
@@ -255,9 +270,7 @@ KISKA_fnc_casAttack = {
 
 
 /* ----------------------------------------------------------------------------
-
 	Position plane towards target
-
 ---------------------------------------------------------------------------- */
 private _planeSpawnPosition = _attackPosition getPos [_spawnDistance,_attackDirection + 180];
 _planeSpawnPosition set [2,_attackHeight];
@@ -318,9 +331,7 @@ _plane setVelocityModelSpace PLANE_VELOCITY(PLANE_SPEED);
 
 
 /* ----------------------------------------------------------------------------
-
 	Fix planes velocity towards the target
-
 ---------------------------------------------------------------------------- */
 // get flight characteristics to steer the plane onto target
 private _distanceToTarget = _attackPosition vectorDistance _planePositionASL;
@@ -382,9 +393,7 @@ while {!(isNull _plane) AND {!(_plane getVariable ["KISKA_completedFiring",false
 
 
 /* ----------------------------------------------------------------------------
-
 	Handle After CAS complete
-
 ---------------------------------------------------------------------------- */
 // forces plane to keep flying in the general direction they currently are
 // if not, once the setVelocityTransformation loop is done, it can rapidly change course
