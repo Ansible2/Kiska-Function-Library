@@ -8,15 +8,7 @@ Description:
 Parameters:
 	0: _attackPosition : <OBJECT or ARRAY> - ASL position or object to attack
 	1: _attackTypeID : <NUMBER or ARRAY> - See CAS Type IDs.hpp .
-		If an array, format needs to be [[attackTypeId,pylonMagazineClass]].
-
-		The attackTypeId is used for determining what kind of attack characteristics
-		 the plane should take.
-
-		e.g. a custom bomb drop should have an ID of either 6 or 7, for rockets, 1 or 2
-
-		Also, if you want guns & rockets, make sure to formate the array as [0,[attackTypeId,rocketPylonMagazineClass]]
-
+		If an array, format needs to be [attackTypeId,pylonMagazineClass].
 	2: _attackDirection : <NUMBER> - The direction the aircraft should approach from relative to North
 	3: _planeClass : <STRING> - The className of the aircraft
 	4: _side : <SIDE> - The side of the plane
@@ -39,24 +31,21 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_CAS";
 
-#define CANNON_TYPE "CANNON"
-#define AGM_TYPE "AGM"
-#define ROCKETS_AP_TYPE "ROCKETS_AP"
-#define ROCKETS_HE_TYPE "ROCKETS_HE"
-#define BOMB_LGB_TYPE "BOMB LGB"
-#define BOMB_CLUSTER_TYPE "BOMB CLUSTER"
-
 #define DEFAULT_CANNON_CLASS "Twin_Cannon_20mm"
 #define DEFAULT_CANNON_MAG_CLASS "PylonWeapon_300Rnd_20mm_shells"
 
+#define DEFAULT_AIRCRAFT "B_Plane_CAS_01_dynamicLoadout_F"
+
 #define PLANE_SPEED 75// m/s
 #define PLANE_VELOCITY(THE_SPEED) [0,THE_SPEED,0]
+
+#define CUSTOM_OR_DEFAULT_MAG(defaultClass) [_customMagClass,defaultClass] select (_customMagClass isEqualTo "")
 
 params [
 	["_attackPosition",objNull,[[],objNull]],
 	["_attackTypeID",0,[123,[]]],
 	["_attackDirection",0,[123]],
-	["_planeClass","B_Plane_CAS_01_dynamicLoadout_F",[""]],
+	["_planeClass",DEFAULT_AIRCRAFT,[""]],
 	["_side",BLUFOR,[sideUnknown]],
 	["_attackHeight",1300,[123]],
 	["_spawnDistance",2000,[123]],
@@ -71,49 +60,47 @@ if (_attackPosition isEqualType objNull AND {isNull _attackPosition} OR {_attack
 private _planeCfg = configfile >> "cfgvehicles" >> _planeClass;
 if !(isclass _planeCfg) exitwith {
 	[[_planeClass," Vehicle class not found, moving to default aircraft..."],true] call KISKA_fnc_log;
-	_this set [3,"B_Plane_CAS_01_dynamicLoadout_F"];
+	_this set [3,DEFAULT_AIRCRAFT];
 	_this spawn KISKA_fnc_CAS;
 };
 
 
 /* ----------------------------------------------------------------------------
-
 	select weapons to use
-
 ---------------------------------------------------------------------------- */
-private "_attackMagazines"
+private _attackMagazines = [];
+private _customMagClass = "";
 
-if (_attackTypeID isEqualType 123) then {
-	switch _attackTypeID do {
-		case GUN_RUN_ID: {
-			[CANNON_TYPE]
-		};
-		case GUNS_AND_ROCKETS_ARMOR_PIERCING_ID: {
-			[CANNON_TYPE,[ROCKETS_AP_TYPE,"PylonRack_7Rnd_Rocket_04_AP_F"]]
-		};
-		case GUNS_AND_ROCKETS_HE_ID: {
-			[CANNON_TYPE,[ROCKETS_HE_TYPE,"PylonRack_7Rnd_Rocket_04_HE_F"]]
-		};
-		case ROCKETS_ARMOR_PIERCING_ID: {
-			[[ROCKETS_AP_TYPE,"PylonRack_7Rnd_Rocket_04_AP_F"]]
-		};
-		case ROCKETS_HE_ID: {
-			[[ROCKETS_HE_TYPE,"PylonRack_7Rnd_Rocket_04_HE_F"]]
-		};
-		case AGM_ID: {
-			[[AGM_TYPE,"PylonRack_1Rnd_Missile_AGM_02_F"]]
-		};
-		case BOMB_LGB_ID: {
-			[[BOMB_LGB_TYPE,"PylonMissile_1Rnd_Bomb_04_F"]]
-		};
-		case BOMB_CLUSTER_ID: {
-			[[BOMB_CLUSTER_TYPE,"PylonMissile_1Rnd_BombCluster_01_F"]]
-		};
+if (_attackTypeID isEqualType []) then {
+	_customMagClass = _attackTypeID select 1;
+	_attackTypeID = _attackTypeID select 0;
+};
+
+_attackMagazines = switch _attackTypeID do {
+	case GUN_RUN_ID: {
+		[CANNON_TYPE]
 	};
-
-} else {
-	_attackMagazines = _attackTypeID;
-	
+	case GUNS_AND_ROCKETS_ARMOR_PIERCING_ID: {
+		[CANNON_TYPE,[ROCKETS_AP_TYPE,CUSTOM_OR_DEFAULT_MAG("PylonRack_7Rnd_Rocket_04_AP_F")]]
+	};
+	case GUNS_AND_ROCKETS_HE_ID: {
+		[CANNON_TYPE,[ROCKETS_HE_TYPE,CUSTOM_OR_DEFAULT_MAG("PylonRack_7Rnd_Rocket_04_HE_F")]]
+	};
+	case ROCKETS_ARMOR_PIERCING_ID: {
+		[[ROCKETS_AP_TYPE,CUSTOM_OR_DEFAULT_MAG("PylonRack_7Rnd_Rocket_04_AP_F")]]
+	};
+	case ROCKETS_HE_ID: {
+		[[ROCKETS_HE_TYPE,CUSTOM_OR_DEFAULT_MAG("PylonRack_7Rnd_Rocket_04_HE_F")]]
+	};
+	case AGM_ID: {
+		[[AGM_TYPE,CUSTOM_OR_DEFAULT_MAG("PylonRack_1Rnd_Missile_AGM_02_F")]]
+	};
+	case BOMB_LGB_ID: {
+		[[BOMB_LGB_TYPE,CUSTOM_OR_DEFAULT_MAG("PylonMissile_1Rnd_Bomb_04_F")]]
+	};
+	case BOMB_CLUSTER_ID: {
+		[[BOMB_UGB_TYPE,CUSTOM_OR_DEFAULT_MAG("PylonMissile_1Rnd_BombCluster_01_F")]]
+	};
 };
 
 
@@ -128,7 +115,7 @@ private _pylonConfig = _planeCfg >> "Components" >> "TransportPylonsComponent" >
 // if the plane has pylons
 if (isClass _pylonConfig) then {
 
-	private _allVehiclePylons =  ("true" configClasses _pylonConfig) apply {configName _x};
+	private _allVehiclePylons = ("true" configClasses _pylonConfig) apply {configName _x};
 
 	// some planes (Buzzard) have their cannon as a pylon, don't want to replace it if needed
 	if (CANNON_TYPE in _attackMagazines) then {
@@ -145,23 +132,22 @@ if (isClass _pylonConfig) then {
 		// if a cannon is found, use it, else add one
 		private _canonPylonData = [];
 		if (_cannonIndex != -1) then {
-
 			_cannonClass = _planeClassWeapons select _cannonIndex;
 
 			// if the cannon is on a pylon delete the pylon from the list so it's not changed
 			private _cannonPylonIndex = _allVehiclePylons findIf {
 				getText(_pylonConfig >> _x >> "attachment") == _cannonClass;
 			};
-			if (_cannonPylonIndex != -1) then {
+			if (_cannonPylonIndex isNotEqualTo -1) then {
 				_allVehiclePylons deleteAt _cannonPylonIndex;
 			};
 
 		} else {
-
 			_cannonClass = DEFAULT_CANNON_CLASS;
 			_canonPylonData pushBack DEFAULT_CANNON_MAG_CLASS;
 			private _pylonToUse = _allVehiclePylons deleteAt 0; // set the first pylon as the cannon
 			_canonPylonData pushBack _pylonToUse;
+
 		};
 
 		_weaponsToUse pushBack [CANNON_TYPE,_cannonClass,_canonPylonData];
@@ -170,6 +156,7 @@ if (isClass _pylonConfig) then {
 
 	};
 
+	// if there was more then just the cannon in the _attackMagazines array
 	if !(_attackMagazines isEqualTo []) then {
 		private ["_attackTypeString","_attackMagazineClass","_attackWeaponClass"];
 		{
@@ -182,15 +169,17 @@ if (isClass _pylonConfig) then {
 			_weaponsToUse pushBack [_attackTypeString,_attackWeaponClass,[_attackMagazineClass,_allVehiclePylons deleteAt 0]];
 		} forEach _attackMagazines;
 	};
+
 } else {
 	_exitToDefault = true;
+
 };
 
 
 if (_exitToDefault) exitwith {
 	[["Weapon types of ",_attackMagazines," for plane class: ",_planeClass," not entirely found, moving to default Aircraft..."],true] call KISKA_fnc_log;
 	// exit to default aircraft type
-	_this set [3,"B_Plane_CAS_01_dynamicLoadout_F"];
+	_this set [3,DEFAULT_AIRCRAFT];
 	_this spawn KISKA_fnc_CAS;
 };
 
@@ -201,38 +190,59 @@ if (_exitToDefault) exitwith {
 KISKA_fnc_casAttack = {
 	params ["_plane","_dummyTarget","_weaponsToUse","_attackTypeID","_attackPosition","_breakOffDistance"];
 
-	private ["_weapon_temp","_weaponArray_temp"];
+	private ["_weaponClass_temp","_weaponArray_temp"];
 	private _pilot = currentPilot _plane;
 
 	private _fn_setWeaponTemp = {
 		params ["_type"];
 		_weaponArray_temp = _weaponsToUse select (_weaponsToUse findIf {(_x select 0) == _type});
-		_weapon_temp = _weaponArray_temp select 1;
+		_weaponClass_temp = _weaponArray_temp select 1;
+		[["Setting weapon class temp to: ", _weaponClass_temp]] call KISKA_fnc_log;
 	};
+
 	private _fn_fireGun = {
 		params ["_numRounds"];
-		// set _weapon_temp to gun
+		// set _weaponClass_temp to gun
 		[CANNON_TYPE] call _fn_setWeaponTemp;
+
+		private _didFireAtTarget = false;
+		private _toldToForce = false;
+		private _weaponMode = "";
+
 		for "_i" from 1 to _numRounds do {
 			if ((_plane distance _attackPosition) < _breakOffDistance) exitWith {};
-			_pilot fireAtTarget [_dummyTarget,_weapon_temp];
+
+			if !(_toldToForce) then {
+				_didFireAtTarget = _pilot fireAtTarget [_dummyTarget,_weaponClass_temp];
+				if !(_didFireAtTarget) then {
+					_toldToForce = true;
+					_weaponMode = (getArray(configFile >> "CfgWeapons" >> _weaponClass_temp >> "modes")) select 0;
+				};
+
+			} else {
+				_pilot forceWeaponFire [_weaponClass_temp,_weaponMode];
+
+			};
+
 			sleep 0.03;
 		};
 	};
+
 	private _fn_fireRockets = {
 		params ["_numRounds","_type"];
 		// find rocket launcher
 		[_type] call _fn_setWeaponTemp;
 		for "_i" from 1 to _numRounds do {
 			if ((_plane distance _attackPosition) < _breakOffDistance) exitWith {};
-			_pilot fireAtTarget [_dummyTarget,_weapon_temp];
+			_pilot fireAtTarget [_dummyTarget,_weaponClass_temp];
 			sleep 0.5;
 		};
 	};
+
 	private _fn_fireSimple = {
 		params ["_type"];
 		[_type] call _fn_setWeaponTemp;
-		_pilot fireAtTarget [_dummyTarget,_weapon_temp];
+		_pilot fireAtTarget [_dummyTarget,_weaponClass_temp];
 	};
 
 	// decide how to fire
@@ -261,7 +271,7 @@ KISKA_fnc_casAttack = {
 			[BOMB_LGB_TYPE] call _fn_fireSimple;
 		};
 		case BOMB_CLUSTER_ID: {
-			[BOMB_CLUSTER_TYPE] call _fn_fireSimple;
+			[BOMB_UGB_TYPE] call _fn_fireSimple;
 		};
 	};
 
