@@ -6,6 +6,7 @@
 #define AGM_ID 5
 #define BOMB_LGB_ID 6
 #define BOMB_CLUSTER_ID 7
+#define BOMB_NAPALM_ID 8
 
 #define CANNON_TYPE "CANNON"
 #define AGM_TYPE "AGM"

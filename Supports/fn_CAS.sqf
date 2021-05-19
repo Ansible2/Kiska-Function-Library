@@ -9,13 +9,20 @@ Parameters:
 	0: _attackPosition : <OBJECT or ARRAY> - ASL position or object to attack
 	1: _attackTypeID : <NUMBER or ARRAY> - See CAS Type IDs.hpp .
 		If an array, format needs to be [attackTypeId,pylonMagazineClass].
+		Custom mag classes, when used for napalm or UGB ids, will drop the ENTIRE payload
+		 of that mag. e.g. mag class "vn_bomb_f4_out_500_blu1b_fb_mag_x1" is 1 bomb dropped,
+		 "vn_bomb_f4_out_500_blu1b_fb_mag_x4" will be 4 dropped
 	2: _attackDirection : <NUMBER> - The direction the aircraft should approach from relative to North
 	3: _planeClass : <STRING> - The className of the aircraft
 	4: _side : <SIDE> - The side of the plane
-	5: _attackHeight : <NUMBER> - At what height should the aircraft start firing
+	5: _spawnHeight : <NUMBER> - At what height should the aircraft start firing
 	6: _spawnDistance : <NUMBER> - How far away to spawn the aircraft
 	7: _breakOffDistance : <NUMBER> - The distance to target at which the aircraft should definately disengage and fly away (to not crash)
-	8: _allowDamage : <BOOL> - Allow damage of both the crew and aircraft
+    8: _attackPositionOffset : <NUMBER> - This will offset the _attackPosition in meters and in the direction of the attack.
+        So for instance, if I wanted a gun run to be aimed 20m further in the _attackDirection from the _attackPosition, I'd
+         set this to 20
+    9: _attackDistance : <NUMBER> - The distance to target at which the aircraft can start completeing its attack
+	10: _allowDamage : <BOOL> - Allow damage of both the crew and aircraft
 
 Returns:
 	NOTHING
@@ -30,6 +37,12 @@ Author(s):
 	Modified By: Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_CAS";
+
+if !(canSuspend) exitWith {
+	["Needs to be run in scheduled, exiting to scheduled...",true] call KISKA_fnc_log;
+	_this spawn KISKA_fnc_CAS;
+
+};
 
 #define DEFAULT_CANNON_CLASS "Twin_Cannon_20mm"
 #define DEFAULT_CANNON_MAG_CLASS "PylonWeapon_300Rnd_20mm_shells"
@@ -47,14 +60,17 @@ params [
 	["_attackDirection",0,[123]],
 	["_planeClass",DEFAULT_AIRCRAFT,[""]],
 	["_side",BLUFOR,[sideUnknown]],
-	["_attackHeight",1300,[123]],
+	["_spawnHeight",1300,[123]],
 	["_spawnDistance",2000,[123]],
 	["_breakOffDistance",500,[123]],
+    ["_attackPositionOffset",0,[123]],
+    ["_attackDistance",1200,[123]],
 	["_allowDamage",false,[true]]
 ];
 
 if (_attackPosition isEqualType objNull AND {isNull _attackPosition} OR {_attackPosition isEqualTo []}) exitWith {
 	[[_attackPosition," is an invalid target"],true] call KISKA_fnc_log;
+    nil
 };
 
 private _planeCfg = configfile >> "cfgvehicles" >> _planeClass;
@@ -100,6 +116,18 @@ _attackMagazines = switch _attackTypeID do {
 	};
 	case BOMB_CLUSTER_ID: {
 		[[BOMB_UGB_TYPE,CUSTOM_OR_DEFAULT_MAG("PylonMissile_1Rnd_BombCluster_01_F")]]
+	};
+	case BOMB_NAPALM_ID: {
+		// until an algorithm is written to give a flight path for the unique drop characteristics of
+		// SOGPF's Napalm, these values generally work for Napalm
+		_spawnHeight = 1300;
+		_spawnDistance = 2000;
+		_breakOffDistance = 100;
+		_attackPositionOffset = 200;
+		_attackDistance = 600;
+
+		_attackTypeID = BOMB_CLUSTER_ID;
+		[[BOMB_UGB_TYPE,CUSTOM_OR_DEFAULT_MAG("vn_bomb_f4_out_500_blu1b_fb_mag_x1")]]
 	};
 };
 
@@ -190,13 +218,14 @@ if (_exitToDefault) exitwith {
 KISKA_fnc_casAttack = {
 	params ["_plane","_dummyTarget","_weaponsToUse","_attackTypeID","_attackPosition","_breakOffDistance"];
 
-	private ["_weaponClass_temp","_weaponArray_temp"];
+	private ["_weaponClass_temp","_weaponArray_temp","_magClass_temp"];
 	private _pilot = currentPilot _plane;
 
 	private _fn_setWeaponTemp = {
 		params ["_type"];
 		_weaponArray_temp = _weaponsToUse select (_weaponsToUse findIf {(_x select 0) == _type});
 		_weaponClass_temp = _weaponArray_temp select 1;
+        _magClass_temp = (_weaponArray_temp select 2) select 0;
 		[["Setting weapon class temp to: ", _weaponClass_temp]] call KISKA_fnc_log;
 	};
 
@@ -220,6 +249,7 @@ KISKA_fnc_casAttack = {
 				};
 
 			} else {
+                // certain vehicles seem to not work with fireAtTarget on the cannon ("vn_b_air_f4c_cas" from CDLC SOGPF)
 				_pilot forceWeaponFire [_weaponClass_temp,_weaponMode];
 
 			};
@@ -240,9 +270,21 @@ KISKA_fnc_casAttack = {
 	};
 
 	private _fn_fireSimple = {
-		params ["_type"];
-		[_type] call _fn_setWeaponTemp;
-		_pilot fireAtTarget [_dummyTarget,_weaponClass_temp];
+		params ["_numRounds","_type"];
+
+        [_type] call _fn_setWeaponTemp;
+
+        if (_numRounds isEqualTo -1) then {
+            _numRounds = getNumber(configFile >> "CfgMagazines" >> _magClass_temp >> "count");
+            if (_numRounds isEqualTo 0) then {
+                _numRounds = 1;
+            };
+        };
+
+        for "_i" from 1 to _numRounds do {
+            _pilot fireAtTarget [_dummyTarget,_weaponClass_temp];
+            sleep 0.5;
+        };
 	};
 
 	// decide how to fire
@@ -265,13 +307,13 @@ KISKA_fnc_casAttack = {
 			[8,ROCKETS_HE_TYPE] call _fn_fireRockets;
 		};
 		case AGM_ID: {
-			[AGM_TYPE] call _fn_fireSimple;
+			[1,AGM_TYPE] call _fn_fireSimple;
 		};
 		case BOMB_LGB_ID: {
-			[BOMB_LGB_TYPE] call _fn_fireSimple;
+			[1,BOMB_LGB_TYPE] call _fn_fireSimple;
 		};
 		case BOMB_CLUSTER_ID: {
-			[BOMB_UGB_TYPE] call _fn_fireSimple;
+			[-1,BOMB_UGB_TYPE] call _fn_fireSimple;
 		};
 	};
 
@@ -283,7 +325,7 @@ KISKA_fnc_casAttack = {
 	Position plane towards target
 ---------------------------------------------------------------------------- */
 private _planeSpawnPosition = _attackPosition getPos [_spawnDistance,_attackDirection + 180];
-_planeSpawnPosition set [2,_attackHeight];
+_planeSpawnPosition set [2,_spawnHeight];
 //private _planeSide = (getnumber (_planeCfg >> "side")) call BIS_fnc_sideType;
 private _planeArray = [_planeSpawnPosition,_attackDirection,_planeClass,_side] call KISKA_fnc_spawnVehicle;
 private _plane = _planeArray select 0;
@@ -322,7 +364,9 @@ _plane disableAi "target";
 _plane disableAi "autotarget";
 _plane setCombatMode "blue";
 
-
+if (_attackPositionOffset isNotEqualTo 0) then {
+    _attackPosition = AGLToASL(_attackPosition getPos [_attackPositionOffset,_attackDirection]);
+};
 // angling the plane towards the target
 if (_attackPosition isEqualType objNull) then {
 	_attackPosition = getPosASLVisual _attackPosition;
@@ -333,7 +377,7 @@ private _planePositionASL = getPosASLVisual _plane;
 private _planeVectorDir = _planePositionASL vectorFromTo _attackPosition;
 _plane setVectorDir _planeVectorDir;
 // pitch
-private _planePitch = atan (_spawnDistance / _attackHeight);
+private _planePitch = atan (_spawnDistance / _spawnHeight);
 [_plane,-90 + _planePitch,0] call BIS_fnc_setPitchBank;
 
 // set plane's speed to 200 km/h
@@ -369,8 +413,8 @@ while {!(isNull _plane) AND {!(_plane getVariable ["KISKA_completedFiring",false
 
 
 	// start firing
-	// check if plane is 1200m from target and hasn't already started shooting
-	if ((_planePositionASL vectorDistance _attackPosition) <= 1200) then {
+	// check if plane is from target and hasn't already started shooting
+	if ((_planePositionASL vectorDistance _attackPosition) <= _attackDistance) then {
 
 
 		//private "_dummyTarget";
@@ -410,7 +454,7 @@ while {!(isNull _plane) AND {!(_plane getVariable ["KISKA_completedFiring",false
 _plane setVelocityModelSpace PLANE_VELOCITY(PLANE_SPEED);
 
 // after fire is complete
-_plane flyInHeight (_attackHeight * 2);
+_plane flyInHeight (_spawnHeight * 2);
 
 
 // pop flares
