@@ -29,18 +29,18 @@ params [
 
 if (isNull _containerToLoad) exitWith {
 	["_containerToLoad isNull",true] call KISKA_fnc_log;
-	false	
+	false
 };
 
 if (_cargo isEqualTo []) exitWith {
 	["_cargo is empty array '[]'",true] call KISKA_fnc_log;
-	false 
+	false
 };
 
 
 // items
 private _items = _cargo select 0;
-if !(_items isEqualTo [[],[]]) then {
+if (_items isNotEqualTo [[],[]]) then {
 	{
 		_containerToLoad addItemCargoGlobal [_x,(_items select 1) select _forEachIndex];
 	} forEach (_items select 0);
@@ -58,7 +58,7 @@ if !(_magazines isEqualTo []) then {
 
 // weapons
 private _weapons = _cargo select 2;
-if !(_weapons isEqualTo []) then {
+if (_weapons isNotEqualTo []) then {
 	_weapons apply {
 		_containerToLoad addWeaponWithAttachmentsCargoGlobal _x;
 	};
@@ -76,7 +76,7 @@ if (_backpacks isNotEqualTo [[],[]]) then {
 
 // containers within the conatainer (vests, backpacks, etc.)
 private _containers = _cargo select 4;
-if !(_containers isEqualTo []) then {
+if (_containers isNotEqualTo []) then {
 
 	private _containersIn_containerToLoad = everyContainer _containerToLoad;
 	_containers apply {
@@ -95,7 +95,7 @@ if !(_containers isEqualTo []) then {
 
 		// items
 		private _items = _containerInfo select 1;
-		if !(_items isEqualTo [[],[]]) then {
+		if (_items isNotEqualTo [[],[]]) then {
 			{
 				_containerWithinContainer addItemCargoGlobal [_x,(_items select 1) select _forEachIndex];
 			} forEach (_items select 0);
@@ -103,7 +103,7 @@ if !(_containers isEqualTo []) then {
 
 		// magazines
 		private _magazines = _containerInfo select 2;
-		if !(_magazines isEqualTo []) then {
+		if (_magazines isNotEqualTo []) then {
 			_magazines apply {
 				_containerWithinContainer addMagazineAmmoCargo [_x select 0,1,_x select 1];
 			};
@@ -111,7 +111,7 @@ if !(_containers isEqualTo []) then {
 
 		// weapons
 		private _weapons = _containerInfo select 3;
-		if !(_weapons isEqualTo []) then {
+		if (_weapons isNotEqualTo []) then {
 			_weapons apply {
 				_containerWithinContainer addWeaponWithAttachmentsCargoGlobal _x;
 			};
@@ -119,7 +119,7 @@ if !(_containers isEqualTo []) then {
 
 		// backpacks
 		private _backpacks = _containerInfo select 4;
-		if !(_backpacks isEqualTo [[],[]]) then {
+		if (_backpacks isNotEqualTo [[],[]]) then {
 			{
 				_containerWithinContainer addBackpackCargoGlobal [_x,(_backpacks select 1) select _forEachIndex];
 			} forEach (_backpacks select 0);
