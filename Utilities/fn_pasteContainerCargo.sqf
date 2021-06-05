@@ -7,10 +7,10 @@ Description:
 
 Parameters:
 	0: _containerToLoad <OBJECT> - The container to add the cargo to.
-	1: _cargo <ARRAY> - An array of various items, magazines, and weapons formatted from KISKA_fnc_copyContainerCargo
+	1: _cargo <ARRAY or OBJECT> - An array of various items, magazines, and weapons formatted from KISKA_fnc_copyContainerCargo or the object to copy from
 
 Returns:
-	BOOL
+	<BOOL> - True if cargo was coppied
 
 Examples:
     (begin example)
@@ -24,7 +24,7 @@ scriptName "KISKA_fnc_pasteContainerCargo";
 
 params [
 	["_containerToLoad",objNull,[objNull]],
-	["_cargo",[],[[]]]
+	["_cargo",[],[[],objNull]]
 ];
 
 if (isNull _containerToLoad) exitWith {
@@ -32,10 +32,15 @@ if (isNull _containerToLoad) exitWith {
 	false
 };
 
+if (_cargo isEqualType objNull) then {
+	_cargo = [_cargo] call KISKA_fnc_copyContainerCargo;
+};
+
 if (_cargo isEqualTo []) exitWith {
 	["_cargo is empty array '[]'",true] call KISKA_fnc_log;
 	false
 };
+
 
 
 // items
@@ -126,5 +131,6 @@ if (_containers isNotEqualTo []) then {
 		};
 	};
 };
+
 
 true
