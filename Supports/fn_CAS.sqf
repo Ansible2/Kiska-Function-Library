@@ -377,8 +377,12 @@ private _planePositionASL = getPosASLVisual _plane;
 private _planeVectorDir = _planePositionASL vectorFromTo _attackPosition;
 _plane setVectorDir _planeVectorDir;
 // pitch
-private _planePitch = atan (_spawnDistance / _spawnHeight);
-[_plane,-90 + _planePitch,0] call BIS_fnc_setPitchBank;
+//private _planePitch = atan (_spawnDistance / _spawnHeight);
+//[_plane,-90 + _planePitch,0] call BIS_fnc_setPitchBank;
+private _planePositionATL = ASLToATL _planePositionASL;
+private _attackAngle = (_planePositionATL vectorDistance (ASLToATL _attackPosition)) / (_planePositionATL select 2);
+private _planeDir = getDir _plane;
+private _planeVectorUp = [-cos (_planeDir + 90), sin (_planeDir + 90),1 / tan _attackAngle];
 
 // set plane's speed to 200 km/h
 _plane setVelocityModelSpace PLANE_VELOCITY(PLANE_SPEED);
@@ -392,10 +396,18 @@ private _distanceToTarget = _attackPosition vectorDistance _planePositionASL;
 private _flightTime = (_distanceToTarget - _breakOffDistance) / PLANE_SPEED;
 private _startTime = time;
 private _timeAfterFlight = time + _flightTime;
-private _planeVectorUp = vectorUpVisual _plane;
+//private _planeVectorUp = vectorUpVisual _plane;
 
 private ["_interval","_planeVectorDirTo","_planeVectorDirFrom"];
-while {!(isNull _plane) AND {!(_plane getVariable ["KISKA_completedFiring",false])} AND {(_plane distance _attackPosition) > _breakOffDistance}} do {
+
+waitUntil {
+	if (
+		isNull _plane OR
+		{_plane getVariable ["KISKA_completedFiring",false]} OR
+		{(_plane distance _attackPosition) <= _breakOffDistance}
+	)
+	exitWith {true};
+
 	//--- Set the plane approach vector
 	_interval = linearConversion [_startTime,_timeAfterFlight,time,0,1];
 	_planeVectorDirTo = _planePositionASL vectorFromTo _attackPosition;
@@ -404,7 +416,7 @@ while {!(isNull _plane) AND {!(_plane getVariable ["KISKA_completedFiring",false
 	_plane setVelocityTransformation [
 		_planeSpawnPosition, _attackPosition,
 		PLANE_VELOCITY(PLANE_SPEED), PLANE_VELOCITY(PLANE_SPEED),
-		_planeVectorDirFrom,_planeVectorDirTo,
+		_planeVectorDirTo,_planeVectorDirTo,
 		_planeVectorUp, _planeVectorUp,
 		_interval
 	];
@@ -415,7 +427,6 @@ while {!(isNull _plane) AND {!(_plane getVariable ["KISKA_completedFiring",false
 	// start firing
 	// check if plane is from target and hasn't already started shooting
 	if ((_planePositionASL vectorDistance _attackPosition) <= _attackDistance) then {
-
 
 		//private "_dummyTarget";
 		if (!(isNull _plane) AND {!(_plane getVariable ["KISKA_startedFiring",false])}) then {
@@ -430,6 +441,7 @@ while {!(isNull _plane) AND {!(_plane getVariable ["KISKA_completedFiring",false
 			_plane dotarget laserTarget _dummyTarget;
 
 			[_plane,_dummyTarget,_weaponsToUse,_attackTypeID,_attackPosition,_breakOffDistance] spawn KISKA_fnc_casAttack;
+
 		} else {
 			// ensures strafing effect with the above setVelocityTransformation
 			/// for some reason, private variables outside the main if here do not work
@@ -439,12 +451,14 @@ while {!(isNull _plane) AND {!(_plane getVariable ["KISKA_completedFiring",false
 				_attackPosition = AGLToASL(_dummyTarget getPos [0.1,(getDirVisual _plane)]);
 				_dummyTarget setPosASL _attackPosition;
 			};
+
 		};
 	};
 
 	sleep 0.01;
-};
 
+	false
+};
 
 /* ----------------------------------------------------------------------------
 	Handle After CAS complete
