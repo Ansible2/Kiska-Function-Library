@@ -82,7 +82,6 @@ private _fn_controlShots = {
 
 
 private _AAAside = side _vehicle;
-[["_AAAside is ",_AAASide]] call KISKA_fnc_log;
 private _doFire = false;
 private "_entitiesInRadius";
 
@@ -91,37 +90,37 @@ while {sleep _checkTime; _vehicle getVariable ["KISKA_doAAA",true]} do {
 	_entitiesInRadius = _vehicle nearEntities ["air",_radius];
 
 	// if any air units are found
-	if !(_entitiesInRadius isEqualTo []) then {
-		["Found entities in radius"] call KISKA_fnc_log;
+	if (_entitiesInRadius isNotEqualTo []) then {
+		["Found entities in radius",false] call KISKA_fnc_log;
 
+		// find an enemy unit to fire at
 		private _index = _entitiesInRadius findIf {
 			//[["Side of",_x,"is",side _x,": side of AAA is",_AAASide]] call KISKA_fnc_log;
-
 			[side _x,_AAAside] call BIS_fnc_sideIsEnemy;
 		};
 
 		// if an enemy aircraft is found AND _vehicle is not already engaging
-		if (_index != -1 AND {!_doFire}) then {
-			[["Found a unit to engage and not already doing so, weapon aim on for",_gunner]] call KISKA_fnc_log;
+		if (_index isNotEqualTo -1 AND {!_doFire}) then {
+			[["Found a unit to engage and not already doing so, weapon aim on for",_gunner],false] call KISKA_fnc_log;
 
 			_doFire = true;
 			[true] call _fn_controlShots;
 		} else {
 			// only disable if no targets are found and already engaging
-			[["Did not meet fire standards. Do fire? ",_doFire," Index? ",_index]] call KISKA_fnc_log;
+			[["Did not meet fire standards. Do fire? ",_doFire," Index? ",_index],false] call KISKA_fnc_log;
 
 			if (_index isEqualTo -1 AND {_doFire}) then {
-				["No enemy targets to engage anymore. Disabling weapon aim and _doFire to false"] call KISKA_fnc_log;
+				["No enemy targets to engage anymore. Disabling weapon aim and _doFire to false",false] call KISKA_fnc_log;
 
 				_doFire = false;
 				[false] call _fn_controlShots;
 			};
 		};
 	} else {
-		["No entities in area found"] call KISKA_fnc_log;
+		["No entities in area found",false] call KISKA_fnc_log;
 
 		if (_doFire) then {
-			["Setting _doFire to false"] call KISKA_fnc_log;
+			["Setting _doFire to false",false] call KISKA_fnc_log;
 
 			_doFire = false;
 		};
