@@ -31,7 +31,7 @@ _incriment = abs _incriment;
 private _result = (abs _numberToCheck + (_incriment / 2));
 _result = _result - (_result mod _incriment);
 
-if (_numberToCheck < 0) then {
+if (_numberToCheck < 0 AND {_result isNotEqualTo 0}) then {
     _result * -1
 
 } else {
