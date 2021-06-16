@@ -423,6 +423,8 @@ class CfgFunctions
 			{};
 			class getMissionLayerObjects
 			{};
+			class getNearestIncriment
+			{};
 			class getPlayerObject
 			{};
 			class getVariableTarget
