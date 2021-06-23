@@ -17,11 +17,12 @@
 class KISKA_supportManager_Dialog
 {
 	idd = SM_IDD;
-	enableSimulation = true;
+	enableSimulation = 1;
+	movingEnabled = 1;
 	onLoad = "[_this select 0] call KISKA_fnc_supportManager_onLoad";
 
 	class controlsBackground
-	{	
+	{
 	/*
 		class supportManager_background_seperator_1: KISKA_RscText
 		{
@@ -32,7 +33,7 @@ class KISKA_supportManager_Dialog
 			h = 0.395833 * safezoneH;
 			colorBackground[] = {-1,-1,-1,1};
 		};
-	*/	
+	*/
 		class supportManager_background_frame: KISKA_RscText
 		{
 			idc = -1;
@@ -45,6 +46,7 @@ class KISKA_supportManager_Dialog
 		class supportManager_headerText: KISKA_RscText
 		{
 			idc = -1;
+			moving = 1;
 			text = "Support Manager"; //--- ToDo: Localize;
 			x = 0.330077 * safezoneW + safezoneX;
 			y = 0.25 * safezoneH + safezoneY;
@@ -79,7 +81,7 @@ class KISKA_supportManager_Dialog
 			colorBackground[] = GREY_COLOR(0,0.35);
 			sizeEx = 0.0208333 * safezoneH;
 		};
-		
+
 		/* -------------------------------------------------------------------------
 			Text Controls
 		------------------------------------------------------------------------- */
@@ -93,7 +95,7 @@ class KISKA_supportManager_Dialog
 			h = 0.0208333 * safezoneH;
 			colorBackground[] = {-1,-1,-1,1};
 		};
-	/*	
+	/*
 		class supportManager_pool_count_headerText: KISKA_RscText
 		{
 			idc = -1;
@@ -119,7 +121,7 @@ class KISKA_supportManager_Dialog
 		/* -------------------------------------------------------------------------
 			Button Controls
 		------------------------------------------------------------------------- */
-		class supportManager_take_button: KISKA_RscButton
+		class supportManager_take_button: KISKA_ctrlButton
 		{
 			idc = SM_TAKE_BUTTON_IDC;
 			text = "Take"; //--- ToDo: Localize;
@@ -128,7 +130,7 @@ class KISKA_supportManager_Dialog
 			w = 0.0585937 * safezoneW;
 			h = 0.0208333 * safezoneH;
 		};
-		class supportManager_store_button: KISKA_RscButton
+		class supportManager_store_button: KISKA_ctrlButton
 		{
 			idc = SM_STORE_BUTTON_IDC;
 			text = "Store"; //--- ToDo: Localize;

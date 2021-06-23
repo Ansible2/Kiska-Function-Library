@@ -15,7 +15,8 @@
 class KISKA_traitManager_Dialog
 {
 	idd = TM_IDD;
-	enableSimulation = true;
+	enableSimulation = 1;
+	movingEnabled = 1;
 	onLoad = "[_this select 0] call KISKA_fnc_traitManager_onLoad";
 
 	class controlsBackground
@@ -33,6 +34,7 @@ class KISKA_traitManager_Dialog
 		{
 			idc = -1;
 			text = "Trait Manager"; //--- ToDo: Localize;
+			moving = 1;
 			x = 0.330077 * safezoneW + safezoneX;
 			y = 0.25 * safezoneH + safezoneY;
 			w = 0.328125 * safezoneW;
@@ -95,7 +97,7 @@ class KISKA_traitManager_Dialog
 		/* -------------------------------------------------------------------------
 			Button Controls
 		------------------------------------------------------------------------- */
-		class traitManager_take_button: KISKA_RscButton
+		class traitManager_take_button: KISKA_ctrlButton
 		{
 			idc = TM_TAKE_BUTTON_IDC;
 			text = "Take"; //--- ToDo: Localize;
@@ -104,7 +106,7 @@ class KISKA_traitManager_Dialog
 			w = 0.0585937 * safezoneW;
 			h = 0.0208333 * safezoneH;
 		};
-		class traitManager_store_button: KISKA_RscButton
+		class traitManager_store_button: KISKA_ctrlButton
 		{
 			idc = TM_STORE_BUTTON_IDC;
 			text = "Store"; //--- ToDo: Localize;

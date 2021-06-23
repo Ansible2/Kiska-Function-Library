@@ -4,19 +4,19 @@
 #define LISTBOX_TRANSPARENCY 0.35
 #define GREY_COLOR(PERCENT,ALPHA) {PERCENT,PERCENT,PERCENT,ALPHA}
 
-class KISKA_GCH_button : KISKA_RscButton
+class KISKA_GCH_button : KISKA_ctrlButton
 {
-	colorBackground[] = {-1,-1,-1,1};
-	colorBackgroundActive[] = PROFILE_BACKGROUND_COLOR(0.5);
-	colorFocused[] = {-1,-1,-1,1};
-	font = "RobotoCondensedLight";
+	//colorBackground[] = {-1,-1,-1,1};
+	//colorBackgroundActive[] = PROFILE_BACKGROUND_COLOR(0.5);
+	//colorFocused[] = {-1,-1,-1,1};
+	//font = "RobotoCondensedLight";
 };
 
 class KISKA_GCH_dialog
 {
 	idd = GCH_DIALOG_IDD;
-	movingEnabled = true;
-	enableSimulation = true;
+	movingEnabled = 1;
+	enableSimulation = 1;
 	onLoad = "[_this select 0] call KISKA_fnc_GCHOnload";
 
 	class controlsBackground
@@ -34,6 +34,7 @@ class KISKA_GCH_dialog
 		{
 			idc = -1;
 			text = "Group Changer"; //--- ToDo: Localize;
+			moving = 1;
 			x = 0.347657 * safezoneW + safezoneX;
 			y = 0.229167 * safezoneH + safezoneY;
 			w = 0.292969 * safezoneW;
@@ -64,7 +65,7 @@ class KISKA_GCH_dialog
 		{
 			idc = -1;
 			text = "Group Can Rally:"; //--- ToDo: Localize;
-			
+
 			x = 0.5 * safezoneW + safezoneX;
 			y = 0.708333 * safezoneH + safezoneY;
 			w = 0.0878906 * safezoneW;

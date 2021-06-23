@@ -23,14 +23,14 @@ scriptName "KISKA_fnc_GCH_addMissionEvents";
 
 addMissionEventHandler ["GroupCreated", {
     if !(isNull (uiNamespace getVariable ["KISKA_GCH_display",displayNull])) then {
-        [] call KISKA_fnc_GCH_updateSideGroupsList;
+        [] spawn KISKA_fnc_GCH_updateSideGroupsList;
     };
 }];
 
 
 addMissionEventHandler ["GroupDeleted", {
     if !(isNull (uiNamespace getVariable ["KISKA_GCH_display",displayNull])) then {
-        [] call KISKA_fnc_GCH_updateSideGroupsList;
+        [] spawn KISKA_fnc_GCH_updateSideGroupsList;
     };
 }];
 
