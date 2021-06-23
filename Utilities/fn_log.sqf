@@ -59,14 +59,14 @@ if !(_forceLog) exitWith {};
 private _currentLoggedScript = missionNamespace getVariable ["KISKA_currentLoggedScript",""];
 if (_currentLoggedScript != _scriptName) then {
 	missionNamespace setVariable ["KISKA_currentLoggedScript",_scriptName];
-	diag_log ("--------- KISKA Log " + _scriptName + " ---------");
+	diag_log text("--------- KISKA Log " + _scriptName + " ---------");
 };
 
 if (_message isEqualType [] AND {_joinString}) then {
 	_message = _message joinString "";
 };
 
-diag_log ("[" + _scriptName + "] " + _message);
+diag_log text("[" + _scriptName + "] " + _message);
 
 if (_logWithError) then {
 	(_scriptName + " : " + _message) call BIS_fnc_error;

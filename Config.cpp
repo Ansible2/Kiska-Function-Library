@@ -133,6 +133,12 @@ class CfgFunctions
 			{
 				preInit = 1;
 			};
+			class GCH_addMissionEvents
+			{
+				preInit = 1;
+			};
+			class GCH_getSideGroups
+			{};
 			class GCH_groupDeleteQuery
 			{};
 			class GCH_isAllowedToEdit

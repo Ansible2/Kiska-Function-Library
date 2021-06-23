@@ -6,7 +6,6 @@ Description:
 
 Parameters:
 	0: _listControl <CONTROL> - The control of the list
-	1: _updateLeaderIndicator <BOOL> - Updates the text that shows the leader's name
 
 Returns:
 	NOTHING
@@ -25,12 +24,14 @@ scriptName "KISKA_fnc_GCH_updateSideGroupsList";
 #define PLAYER_GROUP_COLOR [0,1,0,0.6] // Green
 
 params [
-    ["_listControl",uiNamespace getVariable "KISKA_GCH_sidesGroupListBox_ctrl"]
+    ["_listControl",uiNamespace getVariable ["KISKA_GCH_sidesGroupListBox_ctrl",controlNull]]
 ];
 
 lbClear _listControl;
 
-private _sideGroups = uiNamespace getVariable "KISKA_GCH_sideGroupsArray";
+private _sideGroups = [side player] call KISKA_fnc_GCH_getSideGroups;
+uiNamespace setVariable ["KISKA_GCH_sideGroupsArray",_sideGroups];
+
 // add to listbox
 private "_index";
 private _playerGroup = group player;

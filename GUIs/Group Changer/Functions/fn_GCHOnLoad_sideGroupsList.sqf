@@ -21,9 +21,6 @@ Author:
 disableSerialization;
 scriptName "KISKA_fnc_GCHOnLoad_sideGroupList";
 
-#define REFRESH_SPEED (missionNamespace getVariable ["KISKA_CBA_GCH_updateFreq",1])
-#define GET_CACHED_GROUPS _allGroupsCached select {(side _x) isEqualTo _playerSide AND {!(_x getVariable ["KISKA_GCH_exclude",false])}}
-
 params ["_control"];
 
 // add event handler
@@ -40,35 +37,7 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 }];
 
 
-private _playerSide = side player;
-private _allGroupsCached = allGroups;
-private _sideGroups = GET_CACHED_GROUPS;
-
-
-uiNamespace setVariable ["KISKA_GCH_sideGroupsArray",_sideGroups];
 [_control] call KISKA_fnc_GCH_updateSideGroupsList;
-
-
-private _allGroupsCompare = [];
-// loop to update list
-while {!isNull (uiNamespace getVariable "KISKA_GCH_display")} do {
-	// if the group list changed, then update
-	if (allGroups isNotEqualTo _allGroupsCached) then {
-		_allGroupsCached = allGroups;
-
-		// check to see if players side groups actually needs to be updated
-		// if no group was added to the side, no need to update
-		private _sideGroups_compare = GET_CACHED_GROUPS;
-
-		if (_sideGroups_compare isNotEqualTo _sideGroups) then {
-			_sideGroups = +_sideGroups_compare;
-			uiNamespace setVariable ["KISKA_GCH_sideGroupsArray",_sideGroups];
-			[_control] call KISKA_fnc_GCH_updateSideGroupsList;
-		};
-	};
-
-	sleep REFRESH_SPEED;
-};
 
 
 nil
