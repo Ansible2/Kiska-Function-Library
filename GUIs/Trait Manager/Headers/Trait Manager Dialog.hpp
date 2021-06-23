@@ -1,4 +1,5 @@
 #include "Trait Manager Common Defines.hpp"
+#include "..\..\Common GUI Headers\GUI Styles.hpp"
 
 #define PROFILE_BACKGROUND_COLOR(ALPHA)\
 {\
@@ -100,6 +101,7 @@ class KISKA_traitManager_Dialog
 		class traitManager_take_button: KISKA_ctrlButton
 		{
 			idc = TM_TAKE_BUTTON_IDC;
+			style = ST_CENTER;
 			text = "Take"; //--- ToDo: Localize;
 			x = 0.382812 * safezoneW + safezoneX;
 			y = 0.697917 * safezoneH + safezoneY;
@@ -109,6 +111,7 @@ class KISKA_traitManager_Dialog
 		class traitManager_store_button: KISKA_ctrlButton
 		{
 			idc = TM_STORE_BUTTON_IDC;
+			style = ST_CENTER;
 			text = "Store"; //--- ToDo: Localize;
 			x = 0.558594 * safezoneW + safezoneX;
 			y = 0.697917 * safezoneH + safezoneY;

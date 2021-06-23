@@ -1,4 +1,5 @@
 #include "GroupChangerCommonDefines.hpp"
+#include "..\Common GUI Headers\GUI Styles.hpp"
 
 #define CHANGER_TRANSPARENCY 0.25
 #define LISTBOX_TRANSPARENCY 0.35
@@ -6,6 +7,7 @@
 
 class KISKA_GCH_button : KISKA_ctrlButton
 {
+	style = ST_CENTER;
 	//colorBackground[] = {-1,-1,-1,1};
 	//colorBackgroundActive[] = PROFILE_BACKGROUND_COLOR(0.5);
 	//colorFocused[] = {-1,-1,-1,1};
