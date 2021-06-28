@@ -20,6 +20,12 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_GCH_addMissionEvents";
 
+if !(hasInterface) exitWith {};
+
+if (call KISKA_fnc_isMainMenu) exitWith {
+	["Main menu detected, will not init",false] call KISKA_fnc_log;
+	nil
+};
 
 addMissionEventHandler ["GroupCreated", {
     if !(isNull (uiNamespace getVariable ["KISKA_GCH_display",displayNull])) then {

@@ -18,12 +18,16 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define RETURN_NIL nil
 scriptName "KISKA_fnc_supportManager_addDiaryEntry";
 
 if (!hasInterface) exitWith {
 	["Was run on machine without interface, needs an interface"] call KISKA_fnc_log;
-	RETURN_NIL
+	nil
+};
+
+if (call KISKA_fnc_isMainMenu) exitWith {
+    ["Main menu detected, will not init",false] call KISKA_fnc_log;
+    nil
 };
 
 waitUntil {
@@ -40,4 +44,4 @@ waitUntil {
 ] call KISKA_fnc_addKiskaDiaryEntry;
 
 
-RETURN_NIL
+nil

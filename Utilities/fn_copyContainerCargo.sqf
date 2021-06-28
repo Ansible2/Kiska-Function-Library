@@ -2,14 +2,17 @@
 Function: KISKA_fnc_copyContainerCargo
 
 Description:
-	Saves the cargo of a container in a formatterd array to be used with KISKA_fnc_pasteContainerCargo for copying cargos of containers.
-	Exact ammo counts will be preserved even inside of an item such as magazines inside of a vest or backpack.
+	Saves the cargo of a container in a formatterd array to be used with
+	 KISKA_fnc_pasteContainerCargo for copying cargos of containers.
+
+	Exact ammo counts will be preserved even inside of an item such as magazines
+	 inside of a vest or backpack.
 
 Parameters:
 	0: _primaryContainer <OBJECT> - The container to save the cargo of
 
 Returns:
-	_totalCargo <ARRAY> - Formatted array of all items in cargo space of a container. Used with KISKA_fnc_pasteContainerCargo. Will return [] if no cargo is present
+	<ARRAY> - Formatted array of all items in cargo space of a container. Used with KISKA_fnc_pasteContainerCargo. Will return [] if no cargo is present
 
 Examples:
     (begin example)
@@ -36,7 +39,7 @@ if (isNull _primaryContainer) exitWith {
 private _containers = everyContainer _primaryContainer;
 
 private _containersInfo = [];
-if !(_containers isEqualTo []) then {
+if (_containers isNotEqualTo []) then {
 	_containers apply {
 		private _container = _x select 1;
 		private _containerClass = _x select 0;
@@ -57,7 +60,7 @@ if !(_containers isEqualTo []) then {
 // sort through weapons
 private _weaponsCargo = [];
 private _weaponsInContainer = weaponsItemsCargo _primaryContainer;
-if !(_weaponsInContainer isEqualTo []) then {
+if (_weaponsInContainer isNotEqualTo []) then {
 	_weaponsInContainer apply {
 		_weaponsCargo pushBack [_x,1];
 	};

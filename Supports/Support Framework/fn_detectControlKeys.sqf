@@ -27,6 +27,11 @@ scriptName "KISKA_fnc_detectControlKeys";
 
 if (!hasInterface) exitWith {};
 
+if (call KISKA_fnc_isMainMenu) exitWith {
+    ["Main menu detected, will not init",false] call KISKA_fnc_log;
+    nil
+};
+
 if (!canSuspend) exitWith {
     ["Needs to be run in scheduled, exiting to scheduled...",false] call KISKA_fnc_log;
     [] spawn KISKA_fnc_detectControlKeys;

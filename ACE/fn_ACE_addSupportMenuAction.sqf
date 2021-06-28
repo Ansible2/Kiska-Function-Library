@@ -21,7 +21,13 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ACE_addSupportMenuAction";
 
+
 if (!hasInterface) exitWith {};
+
+if (call KISKA_fnc_isMainMenu) exitWith {
+	["Main menu detected, will not init",false] call KISKA_fnc_log;
+	nil
+};
 
 if !(["ace_main"] call KISKA_fnc_isPatchLoaded) exitWith {
 	["ACE is not loaded, action will not be added",false] call KISKA_fnc_log;

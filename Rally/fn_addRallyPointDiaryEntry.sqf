@@ -29,6 +29,11 @@ if (!hasInterface) exitWith {
 	RETURN_NIL
 };
 
+if (call KISKA_fnc_isMainMenu) exitWith {
+	["Main menu detected, will not init",false] call KISKA_fnc_log;
+	nil
+};
+
 if (!isMultiplayer) exitWith {
 	["KISKA rally point system does not run in singlePlayer",false] call KISKA_fnc_log;
 	RETURN_NIL

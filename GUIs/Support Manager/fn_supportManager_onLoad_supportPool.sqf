@@ -29,6 +29,7 @@ if (!canSuspend) exitWith {
 	_this spawn KISKA_fnc_supportManager_onLoad_supportPool;
 };
 
+
 params ["_display"];
 
 private _poolControl = uiNamespace getVariable "KISKA_SM_poolListBox_ctrl";
@@ -64,6 +65,7 @@ private _fn_updateSupportPoolList = {
 		_displayText = getText(_config >> "text");
 		_toolTip = getText(_config >> "tooltip");
 	};
+
 	private _fn_adjustCurrentEntry = {
 		// entries that are arrays will be ["classname",NumberOfUsesLeft]
 		// some supports have multiple uses in them, this keeps track of that if someone stores a
@@ -114,6 +116,8 @@ private _fn_updateSupportPoolList = {
 		};
 	};
 };
+
+
 
 private _supportPool_displayed = [];
 while {sleep REFRESH_SPEED; !(isNull _display)} do {

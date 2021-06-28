@@ -19,6 +19,7 @@ Parameters:
     1
 ] call CBA_fnc_addSetting;
 
+/*
 [
     "KISKA_CBA_GCH_updateFreq",
     "SLIDER",
@@ -27,3 +28,4 @@ Parameters:
     [0.01,2,1,2,false],
     0
 ] call CBA_fnc_addSetting;
+*/

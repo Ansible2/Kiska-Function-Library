@@ -47,15 +47,15 @@ _allVehicleTurrets apply {
 	_turretPath_temp = _x;
 	_turretWeapons_temp = getArray([_classToCheck,_turretPath_temp] call BIS_fnc_turretConfig >> "weapons");
 	// if turrets are found
-	if !(_turretWeapons_temp isEqualTo []) then {
+	if (_turretWeapons_temp isNotEqualTo []) then {
 		// some turrets are just optics, need to see they actually have ammo to shoot
 		_return_temp = _turretWeapons_temp findIf {
 			private _mags = [_x] call BIS_fnc_compatibleMagazines;
             // some turrets are just laser designators, hence checking that there are no laserbatteries
-			!(_mags isEqualTo []) AND {!((_mags select 0) == "laserbatteries")}
+			(_mags isNotEqualTo []) AND {!((_mags select 0) == "laserbatteries")}
 		};
 
-		if !(_return_temp isEqualTo -1) then {
+		if (_return_temp isNotEqualTo -1) then {
 			_turretsWithWeapons pushBack _turretPath_temp;
 		};
 	};

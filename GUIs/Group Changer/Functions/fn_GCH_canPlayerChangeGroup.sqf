@@ -19,7 +19,6 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-disableSerialization;
 scriptName "KISKA_fnc_canPlayerChangeGroup";
 
 #define TRYING_TO_CREATE_NEW_GROUP 1
@@ -40,18 +39,17 @@ if !(_allowedGroups isEqualTo []) then {
 		_allowedGroups,
 		{(group player) isEqualTo _x}
 	] call KISKA_fnc_findIfBool;
-	
+
 	if (_isInAllowedGroup AND {_groupToJoin isEqualTo "new group"}) exitWith {
 		_doExit = TRYING_TO_CREATE_NEW_GROUP;
 	};
 
-	if 
 };
 
 if (_doExit != -1) exitWith {
 
 	switch (_doExit) do {
-		
+
 		case TRYING_TO_CREATE_NEW_GROUP: {
 			hint "You cannot create a new group, you must join only your allowed groups";;
 		};

@@ -22,6 +22,11 @@ scriptName "KISKA_fnc_ACE_unconsciousIsCaptive";
 
 if (!hasInterface) exitWith {};
 
+if (call KISKA_fnc_isMainMenu) exitWith {
+    ["Main menu detected, will not init",false] call KISKA_fnc_log;
+    nil
+};
+
 if !(["ace_medical"] call KISKA_fnc_isPatchLoaded) exitWith {
 	["ACE medical is not loaded, will not add event...",false] call KISKA_fnc_log;
 	nil

@@ -48,6 +48,8 @@ class CfgFunctions
 			{};
 			class driveTo
 			{};
+			class engageHeliTurretsLoop
+			{};
 			class heliLand
 			{};
 			class heliPatrol
@@ -440,6 +442,8 @@ class CfgFunctions
 			class hintDiary
 			{};
 			class isAdminOrHost
+			{};
+			class isMainMenu
 			{};
 			class intel
 			{};

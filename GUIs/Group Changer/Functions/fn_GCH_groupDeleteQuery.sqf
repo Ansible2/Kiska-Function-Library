@@ -3,7 +3,7 @@ Function: KISKA_fnc_GCH_groupDeleteQuery
 
 Description:
 	Acts as a liason from a client to add a group to auto delete if necessary.
-	
+
 	Only works where the group is local and need to use groupOwner to get that
 	 which only works on the server.
 
@@ -22,13 +22,17 @@ Examples:
 Author:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-disableSerialization;
 scriptName "KISKA_fnc_GCH_groupDeleteQuery";
 
 if (!isServer) exitWith {
 	["Must be run on server",true] call KISKA_fnc_log;
+	nil
 };
+
 
 params ["_group","_canDelete"];
 
 _this remoteExecCall ["deleteGroupWhenEmpty",groupOwner _group];
+
+
+nil

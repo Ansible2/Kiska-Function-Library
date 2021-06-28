@@ -22,6 +22,11 @@ scriptName "KISKA_fnc_addOpenVdlGuiDiary";
 
 if (!hasInterface) exitWith {};
 
+if (call KISKA_fnc_isMainMenu) exitWith {
+    ["Main menu detected, will not init",false] call KISKA_fnc_log;
+    nil
+};
+
 if (!canSuspend) exitWith {
 	["Must be run in scheduled",false] call KISKA_fnc_log;
 	[] spawn KISKA_fnc_addOpenVdlGuiDiary;

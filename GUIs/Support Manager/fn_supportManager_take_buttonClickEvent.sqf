@@ -19,7 +19,6 @@ Examples:
 Authors:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-disableSerialization;
 scriptName "KISKA_fnc_supportManager_take_buttonClickEvent";
 
 #define DEFAULT_CANT_TAKE_MESSAGE "You do not have permission for this support"

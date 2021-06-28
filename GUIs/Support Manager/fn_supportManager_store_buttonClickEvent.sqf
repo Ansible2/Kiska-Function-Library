@@ -18,7 +18,6 @@ Examples:
 Authors:
 	Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-disableSerialization;
 scriptName "KISKA_fnc_supportManager_store_buttonClickEvent";
 
 private _selectedIndex = lbCurSel (uiNamespace getVariable "KISKA_SM_currentListBox_ctrl");
@@ -33,7 +32,7 @@ if (_selectedIndex isNotEqualTo -1) then {
 	if ((_support select 1) isEqualTo -1) then {
 		_support = _support select 0;
 	};
-	
+
 	[_support] call KISKA_fnc_supportManager_addToPool;
 	[player,_menuId] call BIS_fnc_removeCommMenuItem;
 

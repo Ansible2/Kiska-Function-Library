@@ -37,7 +37,7 @@ params [
 
 
 if (isMultiplayer AND {!isServer}) exitWith {
-    ["Not Server, remotexecuting on server..."] call KISKA_fnc_log;
+    ["Not Server, remoteExecuting on server..."] call KISKA_fnc_log;
     _this remoteExecCall ["KISKA_fnc_endTask",2];
     ""
 };
@@ -48,7 +48,7 @@ private _taskHasClass = isClass _config;
 // if you want config default value
 if (_notify isEqualTo configNull) then {
     if (_taskHasClass) then {
-        // if config entry for notifyOnComplete is present 
+        // if config entry for notifyOnComplete is present
         if !(isNull (_config >> "notifyOnComplete")) then {
             _notify = true;
 
