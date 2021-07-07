@@ -27,7 +27,7 @@ Examples:
 
 Author(s):
 	Joris-Jan van 't Land,
-	Modified by: Ansible2 // Cipher
+	Modified by: Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_spawnVehicle";
 

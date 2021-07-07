@@ -28,7 +28,7 @@ Examples:
 
 Author:
 	DayZMedic,
-	modified/optimized by Ansible2 // Cipher
+	modified/optimized by Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ciwsInit";
 

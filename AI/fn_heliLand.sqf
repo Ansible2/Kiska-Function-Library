@@ -20,7 +20,7 @@ Examples:
 
 Author:
 	Karel Moricky,
-	Modified By: Ansible2 // Cipher
+	Modified By: Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_heliLand";
 

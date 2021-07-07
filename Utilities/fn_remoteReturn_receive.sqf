@@ -22,7 +22,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2 // Cipher
+	Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_remoteReturn_receive";
 

@@ -20,7 +20,7 @@ Examples:
 
 Author(s):
 	Quicksilver,
-	Modified by: Ansible2 // Cipher
+	Modified by: Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_doMagRepack";
 

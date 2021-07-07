@@ -17,7 +17,7 @@ Examples:
 
 Authors:
 	Arma 3 Discord,
-	Modified by: Ansible2 // Cipher
+	Modified by: Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_cruiseMissileStrike";
 

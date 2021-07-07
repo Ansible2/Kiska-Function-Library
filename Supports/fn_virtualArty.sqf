@@ -21,7 +21,7 @@ Examples:
     (end)
 
 Authors:
-	Ansible2 // Cipher
+	Ansible2
 ---------------------------------------------------------------------------- */
 #define FLARE_ALT 200
 #define FLARE_VELOCITY -10

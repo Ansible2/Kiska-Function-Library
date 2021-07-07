@@ -33,7 +33,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2 // Cipher
+	Ansible2
 ---------------------------------------------------------------------------- */
 params [
 	["_interval",0.5,[0]],

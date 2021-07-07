@@ -18,7 +18,7 @@ Examples:
     (end)
 
 Authors:
-	Ansible2 // Cipher
+	Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_getSupportVehicleClasses";
 

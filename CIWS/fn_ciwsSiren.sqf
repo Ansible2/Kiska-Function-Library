@@ -16,7 +16,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2 // Cipher
+	Ansible2
 ---------------------------------------------------------------------------- */
 #define SIREN_DISTANCE 1000
 #define SIREN_VOLUME 2

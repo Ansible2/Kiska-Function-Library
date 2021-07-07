@@ -17,7 +17,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2 // Cipher
+	Ansible2
 ---------------------------------------------------------------------------- */
 disableSerialization;
 scriptName "KISKA_fnc_GCH_joinGroupButton";

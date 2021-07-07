@@ -20,7 +20,7 @@ Examples:
     (end)
 
 Author(s):
-	Ansible2 // Cipher
+	Ansible2
 ---------------------------------------------------------------------------- */
 #define KISKA_DIARY "KISKA Systems"
 scriptName "KISKA_fnc_addKiskaDiaryEntry";

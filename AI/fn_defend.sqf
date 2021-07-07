@@ -29,7 +29,7 @@ Examples:
 
 Author:
 	Rommel,
-	Modified by: Ansible2 // Cipher
+	Modified by: Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_defend";
 

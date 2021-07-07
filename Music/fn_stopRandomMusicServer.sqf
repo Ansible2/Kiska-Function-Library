@@ -16,7 +16,7 @@ Examples:
     (end)
 
 Author(s):
-	Ansible2 // Cipher
+	Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_stopRandomMusicServer";
 

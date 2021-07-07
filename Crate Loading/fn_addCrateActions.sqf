@@ -23,7 +23,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2 // Cipher
+	Ansible2
 ---------------------------------------------------------------------------- */
 // prepare globals if necessary
 if (isNil "DSO_vehicleTypes") then {

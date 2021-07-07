@@ -19,7 +19,7 @@ Examples:
     (end)
 
 Author(s):
-	Ansible2 // Cipher
+	Ansible2
 ---------------------------------------------------------------------------- */
 if !(hasInterface) exitWith {};
 

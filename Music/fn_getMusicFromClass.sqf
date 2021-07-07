@@ -16,7 +16,7 @@ Examples:
     (end)
 
 Author(s):
-	Ansible2 // Cipher (modified by)
+	Ansible2 (modified by)
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_getMusicFromClass";
 

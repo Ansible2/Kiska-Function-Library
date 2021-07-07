@@ -17,7 +17,7 @@ Examples:
 	(end)
 
 Author(s):
-	Ansible2 // Cipher
+	Ansible2
 ---------------------------------------------------------------------------- */
 disableSerialization;
 if (!hasInterface) exitWith {};

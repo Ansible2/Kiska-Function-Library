@@ -19,7 +19,7 @@ Examples:
     (end)
 
 Author(s):
-	Ansible2 // Cipher
+	Ansible2
 ---------------------------------------------------------------------------- */
 #define MAX_INTENSITY 5
 #define MIN_INTENSITY 1

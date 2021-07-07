@@ -34,7 +34,7 @@ Examples:
 
 Author(s):
 	Bohemia Interactive,
-	Modified By: Ansible2 // Cipher
+	Modified By: Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_CAS";
 

@@ -24,7 +24,7 @@ Examples:
     (end)
 
 Author(s):
-	Ansible2 // Cipher
+	Ansible2
 ---------------------------------------------------------------------------- */
 #define COMMAND_MENU_CLOSED commandingMenu isEqualTo ""
 

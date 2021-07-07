@@ -19,7 +19,7 @@ Examples:
 
 Authors:
 	Arma 3 Discord,
-	modified by - Ansible2 // Cipher
+	modified by - Ansible2
 ---------------------------------------------------------------------------- */
 if (!canSuspend) exitWith {
 	["Must be run in scheduled envrionment, exiting to scheduled",true] call KISKA_fnc_log;
