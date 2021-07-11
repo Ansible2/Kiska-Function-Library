@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_copyContainerCargo
+Function: KISKA_fnc_getContainerCargo
 
 Description:
 	Saves the cargo of a container in a formatterd array to be used with
@@ -12,17 +12,17 @@ Parameters:
 	0: _primaryContainer <OBJECT> - The container to save the cargo of
 
 Returns:
-	<ARRAY> - Formatted array of all items in cargo space of a container. Used with KISKA_fnc_pasteContainerCargo. Will return [] if no cargo is present
+	<ARRAY> - Formatted array of all items in cargo space of a container. Used with KISKA_fnc_setContainerCargo. Will return [] if no cargo is present
 
 Examples:
     (begin example)
-		[container] call KISKA_fnc_copyContainerCargo;
+		[container] call KISKA_fnc_getContainerCargo;
     (end)
 
 Author:
 	Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_copyContainerCargo";
+scriptName "KISKA_fnc_getContainerCargo";
 
 #define EMPTY_RETURN [[[],[]],[],[],[[],[]],[]]
 
@@ -40,27 +40,22 @@ private _containers = everyContainer _primaryContainer;
 
 private _containersInfo = [];
 if (_containers isNotEqualTo []) then {
-	_containers apply {
-		private _container = _x select 1;
-		private _containerClass = _x select 0;
 
-		private _weaponsCargo = [];
-		// gets a list of all weapons and their attachments/inserted mags
-		private _weaponsInContainer = weaponsItemsCargo _container;
-		if (_weaponsInContainer isNotEqualTo []) then {
-			_weaponsInContainer apply {
-				_weaponsCargo pushBack [_x,1];
-			};
+	_containers apply {
+
+		private _container = _x select 1;
+		private _cargoInContainer = [_container] call KISKA_fnc_getContainerCargo;
+
+		if (_cargoInContainer isNotEqualTo []) then {
+			private _containerClass = _x select 0;
+			_containersInfo pushBack [
+				_containerClass,
+				_cargoInContainer
+			];
 		};
 
-		_containersInfo pushBack [
-			_containerClass,
-			getItemCargo _container,
-			magazinesAmmoCargo _container,
-			_weaponsCargo,
-			getBackpackCargo _container
-		];
 	};
+
 };
 
 // sort through weapons

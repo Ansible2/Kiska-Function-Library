@@ -1,20 +1,20 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_pasteContainerCargo
+Function: KISKA_fnc_setContainerCargo
 
 Description:
-	Takes a cargo array formatted from KISKA_fnc_copyContainerCargo and adds it to another container.
+	Takes a cargo array formatted from KISKA_fnc_getContainerCargo and adds it to another container.
 	Exact ammo counts will be preserved even inside of an item, such as magazines inside of a vest or backpack.
 
 Parameters:
 	0: _containerToLoad <OBJECT> - The container to add the cargo to.
-	1: _cargo <ARRAY or OBJECT> - An array of various items, magazines, and weapons formatted from KISKA_fnc_copyContainerCargo or the object to copy from
+	1: _cargo <ARRAY or OBJECT> - An array of various items, magazines, and weapons formatted from KISKA_fnc_getContainerCargo or the object to copy from
 
 Returns:
 	<BOOL> - True if cargo was coppied
 
 Examples:
     (begin example)
-		[container,([otherContainer] call KISKA_fnc_copyContainerCargo)] call KISKA_fnc_pasteContainerCargo;
+		[container,otherContainer] call KISKA_fnc_setContainerCargo;
     (end)
 
 Author:
@@ -33,7 +33,7 @@ if (isNull _containerToLoad) exitWith {
 };
 
 if (_cargo isEqualType objNull) then {
-	_cargo = [_cargo] call KISKA_fnc_copyContainerCargo;
+	_cargo = [_cargo] call KISKA_fnc_getContainerCargo;
 };
 
 if (_cargo isEqualTo []) exitWith {
@@ -41,6 +41,12 @@ if (_cargo isEqualTo []) exitWith {
 	false
 };
 
+
+// make sure container is empty
+clearWeaponCargoGlobal _containerToLoad;
+clearMagazineCargoGlobal _containerToLoad;
+clearItemCargoGlobal _containerToLoad;
+clearBackpackCargoGlobal _containerToLoad;
 
 
 // items
@@ -96,47 +102,7 @@ if (_containers isNotEqualTo []) then {
 		private _index = _containersIn_containerToLoad findIf {(_x select 0) == _containerClass};
 		private _containerWithinContainer = (_containersIn_containerToLoad deleteAt _index) select 1;
 
-		// make sure container is empty
-		clearWeaponCargoGlobal _containerWithinContainer;
-		clearMagazineCargoGlobal _containerWithinContainer;
-		clearItemCargoGlobal _containerWithinContainer;
-		clearBackpackCargoGlobal _containerWithinContainer;
-
-		// items
-		private _items = _containerInfo select 1;
-		private _itemTypes = _items select 0;
-		private _itemTypeCounts = _items select 1;
-		if (_items isNotEqualTo [[],[]]) then {
-			{
-				_containerWithinContainer addItemCargoGlobal [_x,_itemTypeCounts select _forEachIndex];
-			} forEach _itemTypes;
-		};
-
-		// magazines
-		private _magazines = _containerInfo select 2;
-		if (_magazines isNotEqualTo []) then {
-			_magazines apply {
-				_containerWithinContainer addMagazineAmmoCargo [_x select 0,1,_x select 1];
-			};
-		};
-
-		// weapons
-		private _weapons = _containerInfo select 3;
-		if (_weapons isNotEqualTo []) then {
-			_weapons apply {
-				_containerWithinContainer addWeaponWithAttachmentsCargoGlobal _x;
-			};
-		};
-
-		// backpacks
-		private _backpacks = _containerInfo select 4;
-		private _backpackTypes = _backpacks select 0;
-		private _backpackTypeCounts = _backpacks select 1;
-		if (_backpacks isNotEqualTo [[],[]]) then {
-			{
-				_containerWithinContainer addBackpackCargoGlobal [_x,_backpackTypeCounts select _forEachIndex];
-			} forEach _backpackTypes;
-		};
+		[_containerWithinContainer,_containerInfo select 1] call KISKA_fnc_setContainerCargo;
 	};
 };
 

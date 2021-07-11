@@ -413,8 +413,8 @@ class CfgFunctions
 			{};
 			class classTurretsWithGuns
 			{};
-			class copyContainerCargo
-			{};
+			//class copyContainerCargo
+			//{};
 			class cruiseMissile
 			{};
 			class dataLinkMsg
@@ -428,6 +428,8 @@ class CfgFunctions
 			class findConfigAny
 			{};
 			class findIfBool
+			{};
+			class getContainerCargo
 			{};
 			class getMissionLayerObjects
 			{};
@@ -470,6 +472,8 @@ class CfgFunctions
 			class remoteReturn_send
 			{};
 			class removeArsenal
+			{};
+			class setContainerCargo
 			{};
 			class showHide
 			{};
