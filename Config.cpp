@@ -457,8 +457,8 @@ class CfgFunctions
 			{};
 			class monitorFPS
 			{};
-			class pasteContainerCargo
-			{};
+			//class pasteContainerCargo
+			//{};
 			class podDrop
 			{};
 			class pushBackToArray
