@@ -289,6 +289,8 @@ class CfgFunctions
 			{};
 			class CAS
 			{};
+			class CASAttack
+			{};
 			class cruiseMissileStrike
 			{};
 			class helicopterGunner

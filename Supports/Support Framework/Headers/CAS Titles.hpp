@@ -6,3 +6,4 @@
 #define AGM_TITLE "AGM (Missile)"
 #define BOMB_LGB_TITLE "Laserguided Bomb (500lbs)"
 #define BOMB_CLUSTER_TITLE "Cluster Bomb"
+#define BOMB_NAPALM_TITLE "Napalm Bomb"
