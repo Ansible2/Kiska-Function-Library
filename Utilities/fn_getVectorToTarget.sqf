@@ -42,10 +42,9 @@ if (_target isEqualType objNull) then {
     _targetPosition = getPosASLVisual _target;
 };
 
-
-private _dirVector = _objectPosition vectorFromTo _targetPosition; //(_forwardVector vectorCrossProduct [0,0,1]) vectorMultiply -1;
-private _forwardVector = vectorNormalized (_objectPosition vectorDiff _targetPosition);
-private _upVector = _forwardVector vectorCrossProduct _dirVector;
+private _dirVector = vectorNormalized (_targetPosition vectorDiff _objectPosition);
+private _rightVector = (_dirVector vectorCrossProduct [0,0,1]) vectorMultiply -1;
+private _upVector = _dirVector vectorCrossProduct _rightVector;
 
 
 [_dirVector,_upVector]
