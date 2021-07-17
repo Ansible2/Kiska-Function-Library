@@ -441,6 +441,8 @@ class CfgFunctions
 			{};
 			class getVariableTarget_sendBack
 			{};
+			class getVectorToTarget
+			{};
 			class hintDiary
 			{};
 			class isAdminOrHost
