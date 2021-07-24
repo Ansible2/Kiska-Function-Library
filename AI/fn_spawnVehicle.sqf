@@ -13,6 +13,9 @@ Parameters:
 	3. _group <SIDE or GROUP> - Either the side to create a group on or an
 		already existing group to add the units to
 	4. _forcePosition <BOOL> - Force vehicle to spawn at exact coordinates
+	5. _crewInstructions <ARRAY> - A formatted array of classnames of unit types to create, soldier object,
+		or one of the two in an array with a string for movein command type
+	6. _deleteOverflow <BOOL> - Delete any units from _crewInstructions that prexisted if they don't fit in the vehicle
 
 Returns:
 	<ARRAY> -
@@ -36,7 +39,9 @@ params [
 	["_spawnDirection",0,[123]],
 	["_vehicleClass","",[""]],
 	["_group",BLUFOR,[sideUnknown,grpNull]],
-	["_forcePosition",true,[true]]
+	["_forcePosition",true,[true]],
+	["_crewInstructions",[], [[]] ],
+	["_deleteOverflow",true,[true]]
 ];
 
 
@@ -92,7 +97,8 @@ if (_forcePosition) then {
 };
 
 
-private _crew = [_createdVehicle];
+
+private _crew = [];
 // soldiers do not need anymore handling
 if (_simulationType != "soldier") then {
 	// Set plane velocity straight ahead so they don't crash
@@ -102,8 +108,35 @@ if (_simulationType != "soldier") then {
 	};
 
 	// Spawn the crew and add the vehicle to the group
-	createvehiclecrew _createdVehicle;
-	_crew = crew _createdVehicle;
+	if (_crewInstructions isEqualTo []) then {
+		createvehiclecrew _createdVehicle;
+		_crew = crew _createdVehicle;
+
+	} else {
+
+		private _movedIn = false;
+		private "_unit";
+		_crewInstructions apply {
+			if (_x isEqualType objNull) then {
+				_unit = _x;
+			} else {
+				_unit = _group createunit [_x,[0,0,0],[],0,"NONE"];
+			};
+
+			_movedIn = _unit moveInAny _createdVehicle;
+			if (!_movedIn) then {
+				[["Unit ",_unit," could not be moved into the vehicle ",_createdVehicle," as there was no room in the vehicle"],true] call KISKA_fnc_log;
+				if (_deleteOverflow) then {
+					deleteVehicle _unit;
+				};
+
+			} else {
+				_crew pushBack _unit;
+			};
+		};
+
+	};
+
 	_crew joinsilent _group;
 	_group addVehicle _createdVehicle;
 
@@ -112,6 +145,10 @@ if (_simulationType != "soldier") then {
 	{
 		_group selectLeader (commander _createdVehicle);
 	};
+
+} else {
+	_crew pushBack _createdVehicle;
+
 };
 
 
