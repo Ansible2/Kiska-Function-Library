@@ -390,3 +390,6 @@ private _group = _planeArray select 2;
 if (!isNull _group) then {
 	deleteGroup _group;
 };
+
+
+nil
