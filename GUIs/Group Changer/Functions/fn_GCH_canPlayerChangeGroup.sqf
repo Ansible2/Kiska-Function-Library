@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_GCH_leaveGroupButton
+Function: KISKA_fnc_GCH_canPlayerChangeGroup
 
 Description:
 	The function that fires on the leave group button click event.
@@ -13,13 +13,13 @@ Returns:
 
 Examples:
     (begin example)
-        [someGroup] call KISKA_fnc_GCH_leaveGroupButton;
+        [someGroup] call KISKA_fnc_GCH_canPlayerChangeGroup;
     (end)
 
 Author:
 	Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_canPlayerChangeGroup";
+scriptName "KISKA_fnc_GCH_canPlayerChangeGroup";
 
 #define TRYING_TO_CREATE_NEW_GROUP 1
 #define TRYING_TO_JOIN_GROUP_WITHOUT_PERMS 2

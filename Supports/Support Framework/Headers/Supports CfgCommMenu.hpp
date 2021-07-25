@@ -136,7 +136,7 @@ class KISKA_arsenalSupplyDrop_baseClass : KISKA_basicSupport_baseClass
 class KISKA_CAS_customBomb : KISKA_CAS_bombs_templateClass
 {
     attackTypes[] = {
-        {BOMB_CLUSTER_ID,"somePylonCompatibleMagazineBomb","name in selection menu"}, // this means array in config and will be translated to []
+        {BOMB_CLUSTER_ID,"somePylonCompatibleMagazineBomb","name in selection menu"}, // this means array in config and will be translated to [BOMB_CLUSTER_ID,"somePylonCompatibleMagazineBomb","name in selection menu"]
         CUSTOM_AMMO_TYPE_W_NAME(BOMB_CLUSTER_ID,"somePylonCompatibleMagazineBomb","name in selection menu"),
         CUSTOM_AMMO_TYPE(ROCKETS_HE_ID,"someRocketPylonMagClass"),
     };
