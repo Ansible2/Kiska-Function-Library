@@ -14,7 +14,7 @@
 
 
 #define STD_LINE(TITLE,KEY,CODE) [TITLE, KEY_SHORTCUT(KEY), "", CMD_EXECUTE, EXPRESSION(CODE), IS_ACTIVE, IS_VISIBLE]
-#define PUSHBACK_AND_PROCEED(VALUE) "(uiNamespace getVariable 'KISKA_commMenuTree_params') pushBack " + ([VALUE] call KISKA_fnc_str) + "; uiNamespace setVariable ['KISKA_commMenuTree_proceedToNextMenu',true];"
+#define PUSHBACK_AND_PROCEED(VALUE) "(localNamespace getVariable 'KISKA_commMenuTree_params') pushBack " + ([VALUE] call KISKA_fnc_str) + "; localNamespace setVariable ['KISKA_commMenuTree_proceedToNextMenu',true];"
 #define STD_LINE_PUSH(TITLE,KEY,VALUE) [TITLE, KEY_SHORTCUT(KEY), "", CMD_EXECUTE, EXPRESSION(PUSHBACK_AND_PROCEED(VALUE)), IS_ACTIVE, IS_VISIBLE]
 #define DISTANCE_LINE(DIS,KEY) STD_LINE((str DIS) + "m",KEY,PUSHBACK_AND_PROCEED(DIS))
 #define BEARING_LINE(BEARING,DIR,KEY) STD_LINE((str BEARING) + DIR,KEY,PUSHBACK_AND_PROCEED(BEARING))

@@ -9,7 +9,7 @@ Parameters:
 	1: _endExpression <STRING or CODE> - The code to be executed at the end of the path.
 		It receives all menu parameters in _this.
 	2: _args <ARRAY> - Arguements to be available to _endExpression & _exitExpression
-	3: _exitExpression <STRING or CODE> - The code to be executed in the event that 
+	3: _exitExpression <STRING or CODE> - The code to be executed in the event that
 		the menu is closed by the player. It gets all added params up to that point in _this
 
 Returns:
@@ -48,17 +48,17 @@ params [
 ];
 
 // create a container for holding params from menu
-uiNamespace setVariable ["KISKA_commMenuTree_params",[]];
+localNamespace setVariable ["KISKA_commMenuTree_params",[]];
 
 private _menuClosed = false;
 _menuPath apply {
 	// keeps track of whether or not to open the next menu
-	uiNamespace setVariable ["KISKA_commMenuTree_proceedToNextMenu",false]; 
+	localNamespace setVariable ["KISKA_commMenuTree_proceedToNextMenu",false];
 	showCommandingMenu _x;
 
 	// wait for menu to allow proceed or menu is closed
 	waitUntil {
-		if (uiNamespace getVariable "KISKA_commMenuTree_proceedToNextMenu") exitWith {true};
+		if (localNamespace getVariable "KISKA_commMenuTree_proceedToNextMenu") exitWith {true};
 		if (COMMAND_MENU_CLOSED) exitWith {
 			_menuClosed = true;
 			true
@@ -69,7 +69,7 @@ _menuPath apply {
 	if (_menuClosed) exitWith {};
 };
 
-private _params = uiNamespace getVariable "KISKA_commMenuTree_params";
+private _params = localNamespace getVariable "KISKA_commMenuTree_params";
 if (!_menuClosed) then {
 	if (_endExpression isEqualType "") then {
 		_endExpression = compile _endExpression;
@@ -84,5 +84,5 @@ if (!_menuClosed) then {
 	_params call _exitExpression;
 };
 
-uiNamespace setVariable ["KISKA_commMenuTree_params",nil];
-uiNamespace setVariable ["KISKA_commMenuTree_proceedToNextMenu",nil];
+localNamespace setVariable ["KISKA_commMenuTree_params",nil];
+localNamespace setVariable ["KISKA_commMenuTree_proceedToNextMenu",nil];
