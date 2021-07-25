@@ -48,7 +48,16 @@ _spawnPosition set [2,_dropAlt];
 private _relativeDirection = _spawnPosition getDir _dropPosition;
 
 // spawn vehicle
-private _vehicleArray = [_spawnPosition,_relativeDirection,_vehicleClass,_side] call KISKA_fnc_spawnVehicle;
+private _pilotClass = getText(configFile >> "CfgVehicles" >> "Crew");
+private _vehicleArray = [
+	_spawnPosition,
+	_relativeDirection,
+	_vehicleClass,
+	_side,
+	true,
+	[_pilotClass] // spawn just a pilot
+] call KISKA_fnc_spawnVehicle;
+
 private _aircraftGroup = _vehicleArray select 2;
 [_aircraftGroup,false] call KISKA_fnc_ACEX_setHCTransfer;
 

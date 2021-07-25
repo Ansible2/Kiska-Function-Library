@@ -96,13 +96,21 @@ private _spawnPosition = _dropZone getPos [_spawnDistance,_flyFromDirection];
 _spawnPosition set [2,_flyInHeight];
 
 // create vehicle
-private _vehicleArray = [_spawnPosition,_flyDirection,_dropVehicleClass,_side] call KISKA_fnc_spawnVehicle;
+private _pilotClass = getText(configFile >> "CfgVehicles" >> "Crew");
+private _vehicleArray = [
+	_spawnPosition,
+	_relativeDirection,
+	_vehicleClass,
+	_side,
+	true,
+	[_pilotClass] // spawn just a pilot
+] call KISKA_fnc_spawnVehicle;
 // disable HC transfer
 [_vehicleArray select 2,false] call KISKA_fnc_ACEX_setHCTransfer;
 
 private _aircraft = _vehicleArray select 0;
 allCurators apply {
-	[_x,[[_aircraft],true]] remoteExecCall ["addCuratorEditableObjects",2];
+	[_x,[[_aircraft],true]] remoteExec ["addCuratorEditableObjects",2];
 };
 _aircraft flyInHeight _flyInHeight;
 private _aircraftGroup = _vehicleArray select 2;
