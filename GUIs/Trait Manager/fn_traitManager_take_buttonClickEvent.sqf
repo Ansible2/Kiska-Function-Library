@@ -51,11 +51,11 @@ if (_selectedIndex isNotEqualTo -1) then {
 				_message = DEFAULT_ERROR_MESSAGE;
 			};
 
-			[["Error",1.1,[0.75,0,0,1]],_message,false] call CBA_fnc_notify;
+			[_message] call KISKA_fnc_errorNotification;
 
 		};
 	} else {
-		[["Error",1.1,[0.75,0,0,1]],"You already have this trait",false] call CBA_fnc_notify;
+		["You already have this trait"] call KISKA_fnc_errorNotification;
 	};
 };
 

@@ -34,7 +34,7 @@ _control ctrlAddEventHandler ["ButtonClick",{
 			[] call KISKA_fnc_GCH_updateSideGroupsList;
 		};
 	} else {
-		[["Error",1.1,[0.75,0,0,1]],"The group you are trying to join does not exist",false] call CBA_fnc_notify;
+		["The group you are trying to join does not exist"] call KISKA_fnc_errorNotification;
 	};
 
 }];

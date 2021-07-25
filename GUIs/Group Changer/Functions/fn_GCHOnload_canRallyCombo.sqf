@@ -38,7 +38,7 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 				[_selectedgroup] remoteExecCall ["KISKA_fnc_allowGroupRally"];
 			};
 		} else {
-			[["Error",1.1,[0.75,0,0,1]],"You do not have permission to change this setting",false] call CBA_fnc_notify;
+			["You do not have permission to change this setting"] call KISKA_fnc_errorNotification;
 		};
 	};
 }];

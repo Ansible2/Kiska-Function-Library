@@ -427,6 +427,8 @@ class CfgFunctions
 			{};
 			class doMagRepack
 			{};
+			class errorNotification
+			{};
 			class findConfigAny
 			{};
 			class findIfBool
