@@ -3,7 +3,7 @@ Function: KISKA_fnc_GCH_setGroupIdButton
 
 Description:
 	The function that fires on the set group id button click event.
-	
+
 	This is called from KISKA_fnc_GCHOnLoad
 
 Parameters:
@@ -30,11 +30,11 @@ _control ctrlAddEventHandler ["ButtonClick",{
 	private _newId = ctrlText _editBox_ctrl;
 
 	private _selectedGroup = uiNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
-	
+
 	if !(isNull _selectedGroup) then {
 		// case sensetive check to see if there is a change in the name
 		if !(_newId isEqualTo (groupId _selectedGroup)) then {
-			
+
 			private _sideGroups = uiNamespace getVariable "KISKA_GCH_sideGroupsArray";
 			// check if another group already has the id
 			private _alreadyHasName = [
@@ -53,10 +53,9 @@ _control ctrlAddEventHandler ["ButtonClick",{
 
 				private _sideGroupsList_ctrl = uiNamespace getVariable "KISKA_GCH_sidesGroupListBox_ctrl";
 				_sideGroupsList_ctrl lbSetText [_index,_newId];
-				
-				hint "Group Id Updated";
+				["Group Id Updated"] call KISKA_fnc_errorNotification;
 			} else {
-				hint "Another group on your side already has this ID";
+				["Another group on your side already has this ID"] call KISKA_fnc_errorNotification;
 			};
 		};
 	};

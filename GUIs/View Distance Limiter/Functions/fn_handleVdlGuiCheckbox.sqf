@@ -8,10 +8,10 @@ Description:
 
 Parameters:
 	0: _control <CONTROL> - The conrol of the box
-	1: _checked <BOOL> - Is the box checked? 
+	1: _checked <BOOL> - Is the box checked?
 
 Returns:
-	BOOL 
+	BOOL
 
 Examples:
 	(begin example)
@@ -33,12 +33,16 @@ _checked = [false,true] select _checked;
 if (_checked) then {
 	if !(call KISKA_fnc_isVDLSystemRunning) then {
 		[] spawn KISKA_fnc_viewDistanceLimiter;
-		hint "VDL system starting...";
+		["VDL system starting..."] call KISKA_fnc_notification;
+
 	} else {
 		VDL_GLOBAL_RUN = true;
-		hint "VDL system resuming...";
+		["VDL system resuming..."] call KISKA_fnc_notification;
+
 	};
+
 } else {
 	VDL_GLOBAL_RUN = false;
-	hint "VDL system turning off...";
+	["VDL system turning off..."] call KISKA_fnc_notification;
+
 };

@@ -463,6 +463,8 @@ class CfgFunctions
 			{};
 			class monitorFPS
 			{};
+			class notification
+			{};
 			//class pasteContainerCargo
 			//{};
 			class podDrop

@@ -6,9 +6,9 @@ Description:
 
 Parameters:
 	0: _control <CONTROL> - The control of the set all button
-	
+
 Returns:
-	NOTHING 
+	NOTHING
 
 Examples:
 	(begin example)
@@ -29,4 +29,4 @@ _partnerControls apply {
 	[_x] call KISKA_fnc_setVDLValue;
 };
 
-hint "All changes applied";
+["All changes applied"] call KISKA_fnc_notification;

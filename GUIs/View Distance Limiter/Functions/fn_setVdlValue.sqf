@@ -9,9 +9,9 @@ Description:
 
 Parameters:
 	0: _controlToRead <CONTROL> - The control to get the value to save from
-	
+
 Returns:
-	NOTHING 
+	NOTHING
 
 Examples:
 	(begin example)
@@ -39,25 +39,36 @@ private _controlIDC = ctrlIDC _controlToRead;
 
 if (_controlIDC isEqualTo VDL_FPS_SLIDER_IDC) exitWith {
 	VDL_GLOBAL_FPS = _sliderPosition;
-	hint (["Target FPS is now:",_sliderPositionString] joinString " ");
+	[["Target FPS is now:",_sliderPositionString] joinString " "] call KISKA_fnc_notification;
+
 };
+
 if (_controlIDC isEqualTo VDL_FREQ_SLIDER_IDC) exitWith {
 	VDL_GLOBAL_FREQ = _sliderPosition;
-	hint (["Frequency of checks is now:",_sliderPositionString] joinString " ");
+	[["Frequency of checks is now:",_sliderPositionString] joinString " "] call KISKA_fnc_notification;
+
 };
+
 if (_controlIDC isEqualTo VDL_MIN_OBJ_DIST_SLIDER_IDC) exitWith {
 	VDL_GLOBAL_MIN_DIST = _sliderPosition;
-	hint (["Minimum object view distance is now:",_sliderPositionString] joinString " ");
+	[["Minimum object view distance is now:",_sliderPositionString] joinString " "] call KISKA_fnc_notification;
+
 };
+
 if (_controlIDC isEqualTo VDL_MAX_OBJ_DIST_SLIDER_IDC) exitWith {
 	VDL_GLOBAL_MAX_DIST = _sliderPosition;
-	hint (["Maximum object view distance is now:",_sliderPositionString] joinString " ");
+	[["Maximum object view distance is now:",_sliderPositionString] joinString " "] call KISKA_fnc_notification;
+
 };
+
 if (_controlIDC isEqualTo VDL_INCREMENT_SLIDER_IDC) exitWith {
 	VDL_GLOBAL_INC = _sliderPosition;
-	hint (["The increment of view distance is now:",_sliderPositionString] joinString " ");
+	[["The increment of view distance is now:",_sliderPositionString] joinString " "] call KISKA_fnc_notification;
+
 };
+
 if (_controlIDC isEqualTo VDL_TERRAIN_SLIDER_IDC) exitWith {
 	VDL_GLOBAL_VIEW_DIST = _sliderPosition;
-	hint (["Your overall view distance is now:",_sliderPositionString] joinString " ");
+	[["Your overall view distance is now:",_sliderPositionString] joinString " "] call KISKA_fnc_notification;
+
 };

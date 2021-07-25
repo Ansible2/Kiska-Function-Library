@@ -3,7 +3,7 @@ Function: KISKA_fnc_GCH_setLeaderButton
 
 Description:
 	The function that fires on the set leader button click event.
-	
+
 	The function is called in KISKA_fnc_GCHOnLoad.
 
 Parameters:
@@ -33,7 +33,7 @@ _control ctrlAddEventHandler ["ButtonClick",{
 		private _currentGroupListBox_ctrl = uiNamespace getVariable "KISKA_GCH_currentGroupListBox_ctrl";
 		private _selectedindex = lbCurSel _currentGroupListBox_ctrl;
 		private _unitArrayIndex = _currentGroupListBox_ctrl lbValue _selectedindex;
-		
+
 		private _unitArray = uiNamespace getVariable "KISKA_GCH_groupUnitList";
 		private _unitToSet = _unitArray select _unitArrayIndex;
 
@@ -44,12 +44,12 @@ _control ctrlAddEventHandler ["ButtonClick",{
 				[_group,_unitToSet] remoteExecCall ["KISKA_fnc_GCH_setLeaderRemote",2];
 			};
 		};
-		
+
 
 		// update leader name indicator
 		[false,true] call KISKA_fnc_GCH_updateCurrentGroupSection;
 	} else {
-		hint "You must be the leader or admin to set a leader";
+		["You must be the leader or admin to set a leader"] call KISKA_fnc_errorNotification;
 	};
 }];
 
