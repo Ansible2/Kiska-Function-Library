@@ -45,7 +45,7 @@ if (count (player getVariable ["BIS_fnc_addCommMenuItem_menu",[]]) isEqualTo _ma
 			_supportClass = _support;
 		};
 
-		// check condition to take
+		// searching any config as some might want to add supports in an addon vs missionConfigFile
 		private _config = [["CfgCommunicationMenu",_supportClass]] call KISKA_fnc_findConfigAny;
 		private _condition = getText(_config >> "managerCondition");
 
