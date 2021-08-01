@@ -2,10 +2,9 @@
 Function: KISKA_fnc_alivePlayers
 
 Description:
-	FInds all
+	FInds all alive players with or without headless clients
 
 Parameters:
-
 	0: _noHeadless <BOOL> - Seperate Headless Clients
 
 Returns:
@@ -13,14 +12,14 @@ Returns:
 
 Examples:
     (begin example)
-
 		[true] call KISKA_fnc_alivePlayers;
-
     (end)
 
 Author:
 	Ansible2
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_alivePlayers";
+
 params [
 	["_seperateHeadless",true,[true]]
 ];
