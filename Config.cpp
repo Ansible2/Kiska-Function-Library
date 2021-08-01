@@ -349,6 +349,8 @@ class CfgFunctions
 			};
 			class supportManager_addToPool
 			{};
+			class supportManager_addToPool_global
+			{};
 			class supportManager_onLoad
 			{};
 			class supportManager_onLoad_supportPool
@@ -357,11 +359,15 @@ class CfgFunctions
 			{};
 			class supportManager_removeFromPool
 			{};
+			class supportManager_removeFromPool_global
+			{};
 			class supportManager_store_buttonClickEvent
 			{};
 			class supportManager_take_buttonClickEvent
 			{};
 			class supportManager_updateCurrentList
+			{};
+			class supportManager_updatePoolList
 			{};
 		};
 		class TraitManager

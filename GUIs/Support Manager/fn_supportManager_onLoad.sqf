@@ -20,8 +20,8 @@ Examples:
 Authors:
 	Ansible2
 ---------------------------------------------------------------------------- */
-disableSerialization;
 scriptName "KISKA_fnc_supportManager_onLoad";
+disableSerialization;
 
 // close map
 openMap false;
@@ -29,16 +29,16 @@ openMap false;
 params ["_display"];
 
 
-uiNamespace setVariable ["KISKA_sm_display",_display];
+localNamespace setVariable [SM_DISPLAY_VAR_STR,_display];
 
 // pool list loop
-uiNamespace setVariable ["KISKA_SM_poolListBox_ctrl",_display displayCtrl SM_POOL_LISTBOX_IDC];
-[_display] spawn KISKA_fnc_supportManager_onLoad_supportPool;
+_display setVariable [SM_POOL_LIST_CTRL_VAR_STR,_display displayCtrl SM_POOL_LISTBOX_IDC];
+call KISKA_fnc_supportManager_updatePoolList;
 
 
 // current supports
-uiNamespace setVariable ["KISKA_SM_currentListBox_ctrl",_display displayCtrl SM_CURRENT_LISTBOX_IDC];
-[_display] call KISKA_fnc_supportManager_updateCurrentList;
+_display setVariable [SM_CURRENT_LIST_CTRL_VAR_STR,_display displayCtrl SM_CURRENT_LISTBOX_IDC];
+call KISKA_fnc_supportManager_updateCurrentList;
 
 
 // give buttons click events
@@ -49,15 +49,15 @@ uiNamespace setVariable ["KISKA_SM_currentListBox_ctrl",_display displayCtrl SM_
 	call KISKA_fnc_supportManager_store_buttonClickEvent;
 }];
 (_display displayCtrl SM_CLOSE_BUTTON_IDC) ctrlAddEventHandler ["ButtonClick",{
-	(uiNamespace getVariable "KISKA_sm_display") closeDisplay 2;
+	GET_SM_DISPLAY closeDisplay 2;
 }];
 
-
+/*
 _display displayAddEventHandler ["unload",{
 	uiNamespace setVariable ["KISKA_sm_display",nil];
 	uiNamespace setVariable ["KISKA_SM_poolListBox_ctrl",nil];
 	uiNamespace setVariable ["KISKA_SM_currentListBox_ctrl",nil];
 }];
-
+*/
 
 nil

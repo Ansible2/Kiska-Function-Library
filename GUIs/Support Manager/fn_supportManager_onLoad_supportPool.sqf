@@ -35,20 +35,20 @@ params ["_display"];
 private _poolControl = uiNamespace getVariable "KISKA_SM_poolListBox_ctrl";
 
 // init to empty array if undefined to allow comparisons
-if (isNil TO_STRING(POOL_GVAR)) then {
-	missionNamespace setVariable [TO_STRING(POOL_GVAR),[]];
+if (isNil TO_STRING(SM_POOL_GVAR)) then {
+	missionNamespace setVariable [TO_STRING(SM_POOL_GVAR),[]];
 };
 
 private _usedIconColor = missionNamespace getVariable ["KISKA_CBA_supportManager_usedIconColor",[0.75,0,0,1]];
 private _fn_updateSupportPoolList = {
 
-	if (POOL_GVAR isEqualTo []) exitWith {
+	if (SM_POOL_GVAR isEqualTo []) exitWith {
 		lbClear _poolControl;
 	};
 
 	// subtracting 1 from these to get indexes
 	private _countOfDisplayed = (count _supportPool_displayed) - 1;
-	private _countOfCurrent = (count POOL_GVAR) - 1;
+	private _countOfCurrent = (count SM_POOL_GVAR) - 1;
 
 	private _configHash = createHashMap;
 
@@ -103,11 +103,11 @@ private _fn_updateSupportPoolList = {
 			_path = _poolControl lbAdd "";
 			call _fn_adjustCurrentEntry;
 		};
-	} forEach POOL_GVAR;
+	} forEach SM_POOL_GVAR;
 
 
 	// delete overflow indexes that are no longer accurate
-	private _countOfCurrent = (count POOL_GVAR) - 1;
+	private _countOfCurrent = (count SM_POOL_GVAR) - 1;
 	if (_countOfDisplayed > _countOfCurrent) then {
 		private _indexToDelete = _countOfCurrent + 1;
 		for "_i" from _countOfCurrent to _countOfDisplayed do {
@@ -123,8 +123,8 @@ private _supportPool_displayed = [];
 while {sleep REFRESH_SPEED; !(isNull _display)} do {
 
 	// support pool check
-	if (_supportPool_displayed isNotEqualTo POOL_GVAR) then {
+	if (_supportPool_displayed isNotEqualTo SM_POOL_GVAR) then {
 		call _fn_updateSupportPoolList;
-		_supportPool_displayed = +POOL_GVAR;
+		_supportPool_displayed = +SM_POOL_GVAR;
 	};
 };

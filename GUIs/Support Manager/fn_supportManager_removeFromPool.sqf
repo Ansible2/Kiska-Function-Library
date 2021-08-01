@@ -25,10 +25,12 @@ if (!hasInterface) exitWith {};
 
 params ["_index"];
 
-private _array = missionNamespace getVariable [TO_STRING(POOL_GVAR),[]];
+private _array = GET_SM_POOL;
 if (_array isNotEqualTo []) then {
 	_array deleteAt _index;
 };
 
+call KISKA_fnc_supportManager_updateCurrentList;
+call KISKA_fnc_supportManager_updatePoolList;
 
 nil
