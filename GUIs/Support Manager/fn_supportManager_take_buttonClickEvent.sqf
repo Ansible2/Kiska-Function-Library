@@ -61,7 +61,7 @@ if (count (player getVariable ["BIS_fnc_addCommMenuItem_menu",[]]) isEqualTo _ma
 				_conditionMessage = DEFAULT_CANT_TAKE_MESSAGE;
 			};
 
-			[["Error",1.1,MESSAGE_COLOR],_conditionMessage,false] call CBA_fnc_notify;
+			[_conditionMessage] call KISKA_fnc_errorNotification;
 		};
 	};
 };
