@@ -41,7 +41,7 @@ params [
 ];
 
 // delete comm menu id from use hash
-KISKA_supportHash deleteAt (_commMenuArgs select 4);
+KISKA_supportMap deleteAt (_commMenuArgs select 4);
 
 private _supportConfig = [["CfgCommunicationMenu",_supportClass]] call KISKA_fnc_findConfigAny;
 private _supportTypeId = [_supportConfig >> "supportTypeId"] call BIS_fnc_getCfgData;

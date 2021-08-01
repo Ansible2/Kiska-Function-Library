@@ -26,7 +26,7 @@ if (_selectedIndex isNotEqualTo -1) then {
 	private _menuArray = player getVariable ["BIS_fnc_addCommMenuItem_menu",[]];
 	private _supportArray = _menuArray select _selectedIndex;
 	private _menuId = _supportArray select 0;
-	private _support = KISKA_supportHash deleteAt _menuId;
+	private _support = KISKA_supportMap deleteAt _menuId;
 
 	// if support number of uses is default amount
 	if ((_support select 1) isEqualTo -1) then {

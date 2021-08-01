@@ -6,7 +6,7 @@ Description:
 	It is mostly made with the purpose of using default values and specifically
 	 passing a -1 by default to _expressionArguments.
 
-	Also initializes/adds entries to the KISKA_supportHash which is used for 
+	Also initializes/adds entries to the KISKA_supportMap which is used for 
 	 keeping track of the number of uses left on a support if they are passed between
 	 the Support Manager.
 Parameters:
@@ -15,7 +15,7 @@ Parameters:
 	2: _textArguements <ANY> - Any arguements to pass to the text displayed in the menu
 	3: _expressionArguments <ANY> - Any arguements to pass to the expression
 	4: _notification <STRING> - The class of notification to display when added
-	5: _addToHash <BOOL> - Add to KISKA_supportHash
+	5: _addToHash <BOOL> - Add to KISKA_supportMap
 
 Returns:
 	<NUMBER> - The comm menu ID
@@ -49,10 +49,10 @@ private _id = [
 
 if (!isNil {_id}) then {
 	if (_addToHash) then {
-		if (isNil "KISKA_supportHash") then {
-			KISKA_supportHash = createHashMap;	
+		if (isNil "KISKA_supportMap") then {
+			KISKA_supportMap = createHashMap;	
 		};
-		KISKA_supportHash set [_id,[_itemClass,_expressionArguments]];
+		KISKA_supportMap set [_id,[_itemClass,_expressionArguments]];
 	};
 };
 
