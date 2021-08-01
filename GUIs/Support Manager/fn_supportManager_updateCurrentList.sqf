@@ -19,17 +19,23 @@ Examples:
 Authors:
 	Ansible2
 ---------------------------------------------------------------------------- */
-disableSerialization;
 scriptName "KISKA_fnc_supportManager_updateCurrentList";
 
-private _listControl = uiNamespace getVariable "KISKA_SM_currentListBox_ctrl";
+if !(hasInterface) exitWith {};
+
+disableSerialization;
+
+private _listControl = uiNamespace getVariable ["KISKA_SM_currentListBox_ctrl",controlNull];
+if (isNull _listControl) exitWith {};
+
 
 lbClear _listControl;
 if (!(isNil "KISKA_supportMap") AND {count KISKA_supportMap > 0}) then {
 
 	private ["_config","_text","_class","_toolTip","_path","_icon"];
 	private _usedIconColor = missionNamespace getVariable ["KISKA_CBA_supportManager_usedIconColor",[0.75,0,0,1]];
-	{
+	KISKA_supportMap apply {
+
 		_class = _y select 0;
 		_config = [["cfgCommunicationMenu",_class]] call KISKA_fnc_findConfigAny;
 		_toolTip = getText(_config >> "tooltip");
@@ -44,7 +50,8 @@ if (!(isNil "KISKA_supportMap") AND {count KISKA_supportMap > 0}) then {
 			_listControl lbSetPictureColor [_path,_usedIconColor];
 			_listControl lbSetPictureColorSelected [_path,_usedIconColor];
 		};
-	} forEach KISKA_supportMap;
+
+	};
 
 };
 
