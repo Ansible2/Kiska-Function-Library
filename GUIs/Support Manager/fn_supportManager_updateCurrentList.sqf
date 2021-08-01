@@ -1,3 +1,4 @@
+#include "Headers\Support Manager Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_supportManager_updateCurrentList
 
@@ -25,16 +26,16 @@ if !(hasInterface) exitWith {};
 
 disableSerialization;
 
-private _listControl = uiNamespace getVariable ["KISKA_SM_currentListBox_ctrl",controlNull];
+private _listControl = GET_SM_CURRENT_LIST_CTRL;
 if (isNull _listControl) exitWith {};
 
 
 lbClear _listControl;
-if (!(isNil "KISKA_supportMap") AND {count KISKA_supportMap > 0}) then {
+if (!(isNil "KISKA_playersSupportMap") AND {count KISKA_playersSupportMap > 0}) then {
 
 	private ["_config","_text","_class","_toolTip","_path","_icon"];
 	private _usedIconColor = missionNamespace getVariable ["KISKA_CBA_supportManager_usedIconColor",[0.75,0,0,1]];
-	KISKA_supportMap apply {
+	KISKA_playersSupportMap apply {
 
 		_class = _y select 0;
 		_config = [["cfgCommunicationMenu",_class]] call KISKA_fnc_findConfigAny;

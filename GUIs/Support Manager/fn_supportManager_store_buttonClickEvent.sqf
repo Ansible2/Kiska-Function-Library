@@ -1,3 +1,4 @@
+#include "Headers\Support Manager Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_supportManager_store_buttonClickEvent
 
@@ -20,21 +21,19 @@ Authors:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_supportManager_store_buttonClickEvent";
 
-private _selectedIndex = lbCurSel (uiNamespace getVariable "KISKA_SM_currentListBox_ctrl");
+private _selectedIndex = lbCurSel (GET_SM_CURRENT_LIST_CTRL);
 
 if (_selectedIndex isNotEqualTo -1) then {
 	private _menuArray = player getVariable ["BIS_fnc_addCommMenuItem_menu",[]];
 	private _supportArray = _menuArray select _selectedIndex;
 	private _menuId = _supportArray select 0;
-	private _support = KISKA_supportMap deleteAt _menuId;
+	private _support = KISKA_playersSupportMap deleteAt _menuId;
 
 	// if support number of uses is default amount
 	if ((_support select 1) isEqualTo -1) then {
 		_support = _support select 0;
 	};
 
-	[_support] call KISKA_fnc_supportManager_addToPool;
+	[_support] call KISKA_fnc_supportManager_addToPool_global;
 	[player,_menuId] call BIS_fnc_removeCommMenuItem;
-
-	call KISKA_fnc_supportManager_updateCurrentList;
 };

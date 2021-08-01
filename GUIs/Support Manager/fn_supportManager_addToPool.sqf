@@ -3,7 +3,7 @@
 Function: KISKA_fnc_supportManager_addToPool
 
 Description:
-	Adds an entry into the global support manager pool.
+	Adds an entry into the local support manager pool.
 
 Parameters:
 	0: _entryToAdd <STRING or ARRAY> - The support class or [support class,uses left]
@@ -21,31 +21,46 @@ Authors:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_supportManager_addToPool";
 
+if !(hasInterface) exitWith {};
+
 params [
-	["_entryToAdd","",["",[]]]
+	"_entryToAdd",
+	["_bypassChecks",false]
 ];
 
-if (_entryToAdd isEqualTo "" OR {_entryToAdd isEqualTo []}) exitWith {
-	["_entryToAdd is empty!",true] call KISKA_fnc_log;
-	nil
+private _exit = false;
+if !(_bypassChecks) then {
+	if (_entryToAdd isEqualTo "" OR {_entryToAdd isEqualTo []}) exitWith {
+		["_entryToAdd is empty!",true] call KISKA_fnc_log;
+		_exit = true;
+	};
+
+	// verify class is defined
+	private "_class";
+	if (_entryToAdd isEqualType []) then {
+		_class = _entryToAdd select 0;
+	} else {
+		_class = _entryToAdd;
+	};
+
+	private _config = [["CfgCommunicationMenu",_class]] call KISKA_fnc_findConfigAny;
+	if (isNull _config) exitWith {
+		[[_class," is not defined in any CfgCommunicationMenu!"],true] call KISKA_fnc_log;
+		_exit = true;
+	};
 };
 
-// verify class is defined
-private "_class";
-if (_entryToAdd isEqualType []) then {
-	_class = _entryToAdd select 0;
-} else {
-	_class = _entryToAdd;
+if (_exit) exitWith {};
+
+
+private _supportArray = GET_SM_POOL;
+_supportArray pushBack _entryToAdd;
+if (isNil SM_POOL_VAR_STR) then {
+	missionNamespace setVariable [SM_POOL_VAR_STR,_supportArray];
 };
 
-private _config = [["CfgCommunicationMenu",_class]] call KISKA_fnc_findConfigAny;
-if (isNull _config) exitWith {
-	[[_class," is not defined in any CfgCommunicationMenu!"],true] call KISKA_fnc_log;
-	nil
-};
-
-
-[TO_STRING(POOL_GVAR),_entryToAdd] remoteExecCall ["KISKA_fnc_pushBackToArray_interface",0,true];
+call KISKA_fnc_supportManager_updateCurrentList;
+call KISKA_fnc_supportManager_updatePoolList;
 
 
 nil
