@@ -35,6 +35,7 @@ if !(call KISKA_fnc_isMusicPlaying) exitWith {};
 
 if (_fadeTime > 0) then {
 	_fadeTime fadeMusic 0;
+	uiSleep _fadeTime;
 };
 
 // reset event handler values as playMusic "" does not activate music events
