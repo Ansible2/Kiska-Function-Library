@@ -22,6 +22,4 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_isMusicPlaying";
 
-private _musicPlaying = missionNameSpace getVariable ["KISKA_musicPlaying",false];
-
-_musicPlaying
+missionNameSpace getVariable ["KISKA_musicPlaying",false];

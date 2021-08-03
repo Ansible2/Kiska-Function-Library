@@ -25,6 +25,4 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_getCurrentRandomMusicTrack";
 
-private _return = missionNamespace getVariable ["KISKA_currentRandomTrack",""];
-
-_return
+missionNamespace getVariable ["KISKA_currentRandomTrack",""];
