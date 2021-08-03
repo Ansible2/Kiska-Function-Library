@@ -209,7 +209,7 @@ class CfgFunctions
 			{};
 			class getMusicFromClass
 			{};
-			class getMusicPlaying
+			class getPlayingMusic
 			{};
 			class isMusicPlaying
 			{};

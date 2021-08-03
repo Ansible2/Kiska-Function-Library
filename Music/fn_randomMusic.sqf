@@ -90,7 +90,7 @@ private _selectedTrack = selectRandom _musicTracks;
 */
 private _doInterrupt = !(_playedFromLoop);
 if !(isDedicated) then {
-	if (!_doInterrupt AND {_lastPlayedTrack == (call KISKA_fnc_getMusicPlaying)}) then {
+	if (!_doInterrupt AND {_lastPlayedTrack == (call KISKA_fnc_getPlayingMusic)}) then {
 		_doInterrupt = true;
 	};
 };

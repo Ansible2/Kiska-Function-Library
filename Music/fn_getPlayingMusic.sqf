@@ -1,8 +1,8 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_getMusicPlaying
+Function: KISKA_fnc_getPlayingMusic
 
 Description:
-	Returns the current playing tracks class name. 
+	Returns the current playing tracks class name.
 
 Parameters:
 	NONE
@@ -13,15 +13,13 @@ Returns:
 Examples:
     (begin example)
 
-		call KISKA_fnc_getMusicPlaying;
+		call KISKA_fnc_getPlayingMusic;
 
     (end)
 
 Author(s):
 	Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_getMusicPlaying";
+scriptName "KISKA_fnc_getPlayingMusic";
 
-private _track = missionNamespace getVariable ["KISKA_currentTrack",""];
-
-_track
+missionNamespace getVariable ["KISKA_currentTrack",""];
