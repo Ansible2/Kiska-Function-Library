@@ -26,7 +26,7 @@ params [
 	["_trackClassname","",[""]]
 ];
 
-["Music Started",false] call KISKA_fnc_log;
+[["Started playing track: ", _trackClassname],false] call KISKA_fnc_log;
 
 missionNamespace setVariable ["KISKA_musicPlaying",true];
 missionNamespace setVariable ["KISKA_currentTrack",_trackClassName];
