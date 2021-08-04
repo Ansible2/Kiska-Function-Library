@@ -50,24 +50,43 @@ if (isNull _trackConfig) exitWith {
 private _musicPlaying = call KISKA_fnc_isMusicPlaying;
 //if (_musicPlaying AND {!_canInterrupt}) exitWith {};
 private _exit = false;
+private _fadeDown = false;
 if (_isRandomTrack) then {
-	if
+
+	if (_musicPlaying) then {
+		// if the current playing track is also random
+		if ((GET_MUSIC_CURRENT_RANDOM_TRACK) isNotEqualTo "") then {
+			SET_MUSIC_VAR(MUSIC_CURRENT_RANDOM_TRACK_VAR_STR,_track);
+			_fadeDown = true;
+
+		} else {
+			// don't step on designer defined music
+			_exit = true;
+
+		};
+
+
+	} else {
+
+
+	};
+
 
 } else {
+	if (_musicPlaying) then {
+		if (_canInterrupt) then {
+			_fadeDown = true;
 
+		} else {
+			_exit = true;
+
+		};
+
+	};
 
 };
 
 if (_exit) exitWith {};
-
-
-if (_musicPlaying) then {0
-	_fadeTime fadeMusic 0;
-
-} else {
-	_fadeTime = 0;
-
-};
 
 
 // random start time
@@ -78,15 +97,20 @@ if (_startTime < 0) then {
 };
 
 
-// give the previous track time to fade out if required
-sleep (_fadeTime + 0.1);
-playMusic [_track,_startTime];
+if (_fadeDown) then {
+	// give the previous track time to fade out if required
+	_fadeTime fadeMusic 0;
+	sleep (_fadeTime + 0.1);
 
+} else {
+	// only need this setting of volume to 0 if there was no fade above that already set it to 0
+	if !(_musicPlaying) then {
+		0 fadeMusic 0;
+	};
 
-// only need this setting of volume to 0 if there was no fade above
-if !(_musicPlaying) then {
-	0 fadeMusic 0;
 };
+
+playMusic [_track,_startTime];
 _fadeTime fadeMusic _volume;
 
 
