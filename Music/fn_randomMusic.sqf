@@ -1,3 +1,4 @@
+#include "Headers\Music Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_randomMusic
 
@@ -24,12 +25,12 @@ Returns:
 Examples:
     (begin example)
 		// space tracks by 20 seconds exactly each
-		[false,"",arrayOfTracks,20] spawn KISKA_fnc_randomMusic;
+		[-1,"",arrayOfTracks,20] spawn KISKA_fnc_randomMusic;
    	(end)
 
 	(begin example)
 		// space tracks by UP TO 20 seconds each
-		[false,"",arrayOfTracks,[20]] spawn KISKA_fnc_randomMusic;
+		[-1,"",arrayOfTracks,[20]] spawn KISKA_fnc_randomMusic;
    	(end)
 
 	Author:
@@ -38,6 +39,7 @@ Examples:
 scriptName "KISKA_fnc_randomMusic";
 
 #define SLEEP_BUFFER 3
+#define DEFAULT_TIME_BETWEEN [120,180,240]
 
 if !(isServer) exitWith {
 	["Was not executed on server, exiting...",true] call KISKA_fnc_log;
@@ -49,11 +51,12 @@ if (!canSuspend) exitWith {
 	nil
 };
 
+
 params [
-	["_playedFromLoop",false,[true]],
+	["_tickId",-1,[123]],
 	["_lastPlayedTrack","",[""]],
 	["_musicTracks",missionNamespace getVariable ["KISKA_randomMusic_tracks",[]],[[]]],
-	["_timeBetween",missionNamespace getVariable ["KISKA_randomMusic_timeBetween",[300,420,540]],[[],123]],
+	["_timeBetween",missionNamespace getVariable ["KISKA_randomMusic_timeBetween",DEFAULT_TIME_BETWEEN],[[],123]],
 	["_usedMusicTracks",missionNamespace getVariable ["KISKA_randomMusic_usedTracks",[]],[[]]]
 ];
 
@@ -76,12 +79,13 @@ if (
 	nil
 };
 
+
 if (_musicTracks isEqualTo []) then {
-	_musicTracks = _usedMusicTracks;
+	_musicTracks = +_usedMusicTracks;
 	_usedMusicTracks = [];
 };
-
 private _selectedTrack = selectRandom _musicTracks;
+
 
 /*
 	if the window becomes unfocused, the sleeps can become out of sync.
@@ -127,7 +131,7 @@ if (_timeBetween isEqualType []) then {
 };
 
 // update timebetween if needed
-if !((missionNamespace getVariable ["KISKA_randomMusic_timeBetween",[300,420,540]]) isEqualTo _timeBetween) then {
+if !((missionNamespace getVariable ["KISKA_randomMusic_timeBetween",DEFAULT_TIME_BETWEEN]) isEqualTo _timeBetween) then {
 	KISKA_randomMusic_timeBetween = _timeBetween;
 };
 
@@ -142,7 +146,7 @@ if (_randomWaitTime < SLEEP_BUFFER) then {
 };
 
 private _waitTime = _durationOfTrack + _randomWaitTime;
-
+/*
 [
 	[
 		"Random wait time is:",
@@ -154,24 +158,21 @@ private _waitTime = _durationOfTrack + _randomWaitTime;
 	],
 	false
 ] call KISKA_fnc_log;
+*/
 
-// dont play this music if the system is stopped or another random music system was started
+
+
 if (missionNamespace getVariable ["KISKA_musicSystemIsRunning",true]) then {
 /*
 	this is used with the intention of if another random music list is started (or multiple)
 	the latest one will take over this time slot forcing the others after their wait time to
 	not continue their own loops
 */
-	KISKA_randomMusicStartTIme = time;
-	private _startTime = KISKA_randomMusicStartTIme;
+	localNamespace setVariable [MUSIC_RANDOM_START_TIME_VAR_STR,diag_tickTime];
+	private _startTime = localNamespace getVariable MUSIC_RANDOM_START_TIME_VAR_STR;
+	sleep _waitTime;
 
-	if (!isMultiplayer OR {isMultiplayerSolo}) then {
-		sleep _waitTime;
-	} else {
-		uiSleep _waitTime;
-	};
-
-	if (_startTime isEqualTo KISKA_randomMusicStartTIme) then {
+	if (_startTime isEqualTo (localNamespace getVariable [MUSIC_RANDOM_START_TIME_VAR_STR,diag_tickTime])) then {
 		["Sleep has finished, executing new randomMusic",false] call KISKA_fnc_log;
 		// the globals in params are not passed to allow for changes while music is playing
 		[true,_selectedTrack] spawn KISKA_fnc_randomMusic;

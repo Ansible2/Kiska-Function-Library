@@ -1,3 +1,4 @@
+#include "Headers\Music Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_getPlayingMusic
 
@@ -20,4 +21,4 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_getPlayingMusic";
 
-missionNamespace getVariable ["KISKA_currentTrack",""];
+GET_MUSIC_CURRENT_TRACK;

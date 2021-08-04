@@ -1,3 +1,4 @@
+#include "Headers\Music Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_musicStopEvent
 
@@ -35,5 +36,6 @@ if (_stopAudio) then {
 
 ["Music stopped",false] call KISKA_fnc_log;
 
-missionNamespace setVariable ["KISKA_musicPlaying",false];
-missionNamespace setVariable ["KISKA_currentTrack",""];
+SET_MUSIC_VAR(MUSIC_IS_PLAYING_VAR_STR,false);
+SET_MUSIC_VAR(MUSIC_CURRENT_TRACK_VAR_STR,"");
+SET_MUSIC_VAR(MUSIC_CURRENT_RANDOM_TRACK_VAR_STR,"");

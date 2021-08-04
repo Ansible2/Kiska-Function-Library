@@ -1,3 +1,4 @@
+#include "Headers\Music Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_playMusic
 
@@ -36,7 +37,8 @@ params [
 	["_startTime",0,[123]],
 	["_canInterrupt",true,[true]],
 	["_volume",1,[1]],
-	["_fadeTime",3,[1]]
+	["_fadeTime",3,[1]],
+	["_isRandomTrack",false,[true]]
 ];
 
 private _trackConfig = [["cfgMusic",_track]] call KISKA_fnc_findConfigAny;
@@ -46,25 +48,45 @@ if (isNull _trackConfig) exitWith {
 };
 
 private _musicPlaying = call KISKA_fnc_isMusicPlaying;
-if (_musicPlaying AND {!_canInterrupt}) exitWith {};
+//if (_musicPlaying AND {!_canInterrupt}) exitWith {};
+private _exit = false;
+if (_isRandomTrack) then {
+	if
 
-if (_musicPlaying) then {
+} else {
+
+
+};
+
+if (_exit) exitWith {};
+
+
+if (_musicPlaying) then {0
 	_fadeTime fadeMusic 0;
+
 } else {
 	_fadeTime = 0;
+
 };
 
+
+// random start time
 if (_startTime < 0) then {
 	private _duration = [_track] call KISKA_fnc_getMusicDuration;
-
 	_startTIme = round (random [0, _duration / 2, _duration]);
+
 };
 
-uiSleep (_fadeTime + 0.1);
 
+// give the previous track time to fade out if required
+sleep (_fadeTime + 0.1);
 playMusic [_track,_startTime];
 
-0 fadeMusic 0;
+
+// only need this setting of volume to 0 if there was no fade above
+if !(_musicPlaying) then {
+	0 fadeMusic 0;
+};
 _fadeTime fadeMusic _volume;
 
 

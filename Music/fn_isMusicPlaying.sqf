@@ -1,3 +1,4 @@
+#include "Headers\Music Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_isMusicPlaying
 
@@ -12,9 +13,7 @@ Returns:
 
 Examples:
     (begin example)
-
 		_isSomethingPlaying = call KISKA_fnc_isMusicPlaying;
-
     (end)
 
 Author:
@@ -22,4 +21,4 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_isMusicPlaying";
 
-missionNameSpace getVariable ["KISKA_musicPlaying",false];
+GET_MUSIC_IS_PLAYING;

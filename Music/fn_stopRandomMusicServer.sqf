@@ -1,3 +1,4 @@
+#include "Headers\Music Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_stopRandomMusicServer
 
@@ -29,7 +30,7 @@ params [
 	["_playLastSong",false,[true]]
 ];
 
-missionNamespace setVariable ["KISKA_musicSystemIsRunning",false];
+missionNamespace setVariable [MUSIC_RANDOM_MUSIC_SYS_RUNNING_VAR_STR,false];
 if (!_playLastSong) then {
 	remoteExecCall ["KISKA_fnc_stopRandomMusicClient",[0,-2] select isDedicated];
 };

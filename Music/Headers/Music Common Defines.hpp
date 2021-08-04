@@ -1,0 +1,43 @@
+//#include "Headers\Music Common Defines.hpp"
+
+#define MUSIC_VAR_SPACE localNamespace
+
+#define SET_MUSIC_VAR(value, default_value) MUSIC_VAR_SPACE setVariable [value, default_value]
+
+#define MUSIC_SHOW_SONG_NAMES_VAR_STR "KISKA_CBA_showSongNames"
+#define GET_MUSIC_SHOW_SONG_NAMES missionNamespace getVariable [MUSIC_SHOW_SONG_NAMES_VAR_STR,false]
+
+
+#define MUSIC_CURRENT_TRACK_VAR_STR "KISKA_currentTrack"
+#define GET_MUSIC_CURRENT_TRACK MUSIC_VAR_SPACE getVariable [MUSIC_CURRENT_TRACK_VAR_STR,""]
+
+
+#define MUSIC_CURRENT_RANDOM_TRACK_VAR_STR "KISKA_currentRandomTrack"
+#define GET_MUSIC_CURRENT_RANDOM_TRACK MUSIC_VAR_SPACE getVariable [MUSIC_CURRENT_RANDOM_TRACK_VAR_STR,""]
+
+
+#define MUSIC_IS_PLAYING_VAR_STR "KISKA_isMusicPlaying"
+#define GET_MUSIC_IS_PLAYING MUSIC_VAR_SPACE getVariable [MUSIC_IS_PLAYING_VAR_STR,false]
+
+
+/* ----------------------------------------------------------------------------
+    Random Music
+---------------------------------------------------------------------------- */
+#define MUSIC_RANDOM_START_TIME_VAR_STR "KISKA_randomMusicStartTime"
+#define GET_MUSIC_RANDOM_START_TIME MUSIC_VAR_SPACE getVariable [MUSIC_RANDOM_START_TIME_VAR_STR,diag_tickTime]
+
+
+#define MUSIC_RANDOM_UNUSED_TRACKS_VAR_STR "KISKA_randomMusic_tracks"
+#define GET_MUSIC_RANDOM_UNUSED_TRACKS MUSIC_VAR_SPACE getVariable [MUSIC_RANDOM_UNUSED_TRACKS_VAR_STR,[]]
+
+
+#define MUSIC_RANDOM_USED_TIME_BETWEEN_VAR_STR "KISKA_randomMusic_timeBetween"
+#define GET_MUSIC_RANDOM_USED_TIME_BETWEEN MUSIC_VAR_SPACE getVariable [MUSIC_RANDOM_USED_TIME_BETWEEN_VAR_STR,[120,180,240]]
+
+
+#define MUSIC_RANDOM_USED_TRACKS_VAR_STR "KISKA_randomMusic_usedTracks"
+#define GET_MUSIC_RANDOM_USED_TRACKS MUSIC_VAR_SPACE getVariable [MUSIC_RANDOM_USED_TRACKS_VAR_STR,[]]
+
+
+#define MUSIC_RANDOM_MUSIC_SYS_RUNNING_VAR_STR "KISKA_musicSystemIsRunning"
+#define GET_MUSIC_RANDOM_MUSIC_SYS_RUNNING MUSIC_VAR_SPACE getVariable [MUSIC_RANDOM_MUSIC_SYS_RUNNING_VAR_STR,false]

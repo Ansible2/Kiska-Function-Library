@@ -1,3 +1,4 @@
+#include "Headers\Music Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_getCurrentRandomMusicTrack
 
@@ -15,9 +16,7 @@ Returns:
 
 Examples:
     (begin example)
-
 		_mostRecentRandomTrack = call KISKA_fnc_getCurrentRandomMusicTrack;
-
     (end)
 
 Author(s):
@@ -25,4 +24,4 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_getCurrentRandomMusicTrack";
 
-missionNamespace getVariable ["KISKA_currentRandomTrack",""];
+GET_MUSIC_CURRENT_RANDOM_TRACK;
