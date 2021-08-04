@@ -30,7 +30,8 @@ params [
 	["_playLastSong",false,[true]]
 ];
 
-missionNamespace setVariable [MUSIC_RANDOM_MUSIC_SYS_RUNNING_VAR_STR,false];
+SET_MUSIC_VAR(MUSIC_RANDOM_SYS_RUNNING_VAR_STR,false);
+SET_MUSIC_VAR(GET_MUSIC_RANDOM_START_TIME,nil);
 if (!_playLastSong) then {
 	remoteExecCall ["KISKA_fnc_stopRandomMusicClient",[0,-2] select isDedicated];
 };

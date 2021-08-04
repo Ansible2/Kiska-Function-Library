@@ -32,6 +32,7 @@ if !(canSuspend) exitWith {
 	_this spawn KISKA_fnc_playMusic;
 };
 
+
 params [
 	["_track","",[""]],
 	["_startTime",0,[123]],
@@ -41,39 +42,29 @@ params [
 	["_isRandomTrack",false,[true]]
 ];
 
+
 private _trackConfig = [["cfgMusic",_track]] call KISKA_fnc_findConfigAny;
 if (isNull _trackConfig) exitWith {
 	[[_track," is not a defined track in any CfgMusic"],true] call KISKA_fnc_log;
 	nil
 };
 
+
 private _musicPlaying = call KISKA_fnc_isMusicPlaying;
-//if (_musicPlaying AND {!_canInterrupt}) exitWith {};
 private _exit = false;
 private _fadeDown = false;
-if (_isRandomTrack) then {
-
-	if (_musicPlaying) then {
+if (_musicPlaying) then {
+	if (_isRandomTrack) then {
 		// if the current playing track is also random
-		if ((GET_MUSIC_CURRENT_RANDOM_TRACK) isNotEqualTo "") then {
-			SET_MUSIC_VAR(MUSIC_CURRENT_RANDOM_TRACK_VAR_STR,_track);
+		if ((call KISKA_fnc_getCurrentRandomMusicTrack) isNotEqualTo "") then {
 			_fadeDown = true;
 
 		} else {
-			// don't step on designer defined music
 			_exit = true;
 
 		};
 
-
 	} else {
-
-
-	};
-
-
-} else {
-	if (_musicPlaying) then {
 		if (_canInterrupt) then {
 			_fadeDown = true;
 
@@ -85,6 +76,7 @@ if (_isRandomTrack) then {
 	};
 
 };
+
 
 if (_exit) exitWith {};
 
@@ -104,17 +96,23 @@ if (_fadeDown) then {
 
 } else {
 	// only need this setting of volume to 0 if there was no fade above that already set it to 0
-	if !(_musicPlaying) then {
-		0 fadeMusic 0;
-	};
+	0 fadeMusic 0;
 
 };
 
+// clear out any track. Any new MUSIC_CURRENT_RANDOM_TRACK_VAR_STR will be set to the new track in KISKA_fnc_playMusic after this event has fired
+// this is to avoid a track random music track not being cleared
+[] call KISKA_fnc_musicStopEvent;
 playMusic [_track,_startTime];
 _fadeTime fadeMusic _volume;
 
+if (_isRandomTrack) then {
+	[_track] call KISKA_fnc_setCurrentRandomMusicTrack;
 
-if (missionNamespace getVariable ["KISKA_CBA_showSongNames",false]) then {
+};
+
+
+if (GET_MUSIC_SHOW_SONG_NAMES) then {
 	private _trackName = getText(_trackConfig >> "name");
 	if (_trackName isNotEqualTo "") then {
 		[
