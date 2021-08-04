@@ -40,7 +40,7 @@ if (isNull _aircraft) exitWith {
 	false
 };
 
-if (!(_aircraft isKindOf "Helicopter") AND {(_aircraft isKindOf "VTOL_Base_F")}) exitWith {
+if (!(_aircraft isKindOf "Helicopter") AND {!(_aircraft isKindOf "VTOL_Base_F")}) exitWith {
 	[[_aircraft," is not a helicopter or VTOL, exiting..."],true] call KISKA_fnc_log;
 	false
 };
