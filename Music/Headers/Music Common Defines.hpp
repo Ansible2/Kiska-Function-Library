@@ -2,7 +2,7 @@
 
 #define MUSIC_VAR_SPACE localNamespace
 
-#define SET_MUSIC_VAR(value, default_value) MUSIC_VAR_SPACE setVariable [value, default_value]
+#define SET_MUSIC_VAR(var_name, default_value) MUSIC_VAR_SPACE setVariable [var_name, default_value]
 
 #define MUSIC_SHOW_SONG_NAMES_VAR_STR "KISKA_CBA_showSongNames"
 #define GET_MUSIC_SHOW_SONG_NAMES missionNamespace getVariable [MUSIC_SHOW_SONG_NAMES_VAR_STR,false]
