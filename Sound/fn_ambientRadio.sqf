@@ -125,7 +125,7 @@ waitUntil {
 	// loop back if needed on used sounds
 	if ((missionNamespace getVariable _radioChannel) isEqualTo []) then {
 		// take all the used sounds and add them to the channel again
-		missionNamespace setVariable [_radioChannel,(missionNamespace getVariable _usedNamespace),_public];
+		missionNamespace setVariable [_radioChannel,+(missionNamespace getVariable _usedNamespace),_public];
 		// set used global back to empty array
 		missionNamespace setVariable [_usedNamespace,[],_public];
 	};
