@@ -28,7 +28,7 @@
 
 #define BEARING_MENU \
 	[ \
-		["Approach Bearing", false], \
+		["Move To Bearing", false], \
 		BEARING_LINE(0," - N",2), \
 		BEARING_LINE(45," - NE",3), \
 		BEARING_LINE(90," - E",4), \
