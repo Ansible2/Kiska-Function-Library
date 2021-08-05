@@ -54,11 +54,11 @@ scriptName "KISKA_fnc_createTaskFromConfig";
 params [
     ["_config","",[configNull,""]],
     ["_owner",true,[true,objNull,grpNull,sideUnknown,[]]],
-    ["_taskState",configNull],
-    ["_destination",configNull],
-    ["_type",configNull],
-    ["_notifyOnCreate",configNull],
-    ["_visibleIn3D",configNull]
+    ["_taskState",configNull,["",true,configNull]],
+    ["_destination",configNull,[objNull,[],configNull]],
+    ["_type",configNull,["",configNull]],
+    ["_notifyOnCreate",configNull,[configNull,true]],
+    ["_visibleIn3D",configNull,[configNull,true]]
 ];
 
 
@@ -144,6 +144,16 @@ if (_createdTask isNotEqualTo "") then {
 
     if (_onCreateCode isNotEqualTo "") then {
         [_taskId,_config,_taskState] call (compile _onCreateCode);
+    };
+
+    // do onComplete code if already ended
+    if (
+        _taskState == "SUCCEEDED" OR
+        (_taskState == "FAILED") OR
+        (_taskState == "CANCELED")
+    ) then {
+        private _onCompleteCode = GET_CFG_TEXT("onComplete");
+        [_taskId,_config,_taskState] call (compile _onCompleteCode);
     };
 };
 

@@ -11,6 +11,8 @@ Parameters:
 	0: _taskId <STRING> - The task id/KISKA_cfgTasks class name
     1: _state <NUMBER> - 0 for SUCCEEDED, 1 for FAILED, 2 for CANCELED
     2: _notify <BOOL> - Should a nortification be shown
+    4: _owner <BOOL, OBJECT, GROUP, SIDE, or ARRAY> - Whom the task is assigned to
+        (this is only needed in the event that the task is ended without it having been created)
 
 Returns:
 	<STRING> - Task id
@@ -32,7 +34,8 @@ scriptName "KISKA_fnc_endTask";
 params [
     ["_taskId","",[""]],
     ["_state",0,[123]],
-    ["_notify",configNull]
+    ["_notify",configNull],
+    ["_owner",true,[true,objNull,grpNull,sideUnknown,[]]]
 ];
 
 
@@ -63,7 +66,6 @@ if (_notify isEqualTo configNull) then {
     };
 };
 
-
 switch _state do {
     case STATE_SUCCEEDED:{
         _state = "SUCCEEDED";
@@ -80,15 +82,29 @@ switch _state do {
 };
 
 
-private _taskSet = [_taskId,_state,_notify] call BIS_fnc_taskSetState;
+private _taskSet = false;
+if ([_taskId] call BIS_fnc_taskExists) then {
+    _taskSet = [_taskId,_state,_notify] call BIS_fnc_taskSetState;
 
+    if (_taskHasClass) then {
+        private _completeEvent = getText(_config >> "onComplete");
 
-if (_taskHasClass) then {
-    private _completeEvent = getText(_config >> "onComplete");
-
-    if (_completeEvent isNotEqualTo "") then {
-        [_taskId,_config,_state] call (compile _completeEvent);
+        if (_completeEvent isNotEqualTo "") then {
+            [_taskId,_config,_state] call (compile _completeEvent);
+        };
     };
+
+} else {
+    [
+        _config,
+        _owner,
+        _state,
+        configNull,
+        configNull,
+        _notify
+    ] call KISKA_fnc_createTaskFromConfig;
+
+    _taskSet = true;
 };
 
 
