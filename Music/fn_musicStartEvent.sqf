@@ -1,3 +1,4 @@
+#include "Headers\Music Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_musicStartEvent
 
@@ -26,7 +27,15 @@ params [
 	["_trackClassname","",[""]]
 ];
 
-["Music Started",false] call KISKA_fnc_log;
 
-missionNamespace setVariable ["KISKA_musicPlaying",true];
-missionNamespace setVariable ["KISKA_currentTrack",_trackClassName];
+SET_MUSIC_VAR(MUSIC_IS_PLAYING_VAR_STR,true);
+SET_MUSIC_VAR(MUSIC_CURRENT_TRACK_VAR_STR,_trackClassName);
+// clear out any track. Any new MUSIC_CURRENT_RANDOM_TRACK_VAR_STR will be set to the new track in KISKA_fnc_playMusic after this event has fired
+// this is to avoid a track random music track not being cleared
+//[""] call KISKA_fnc_setCurrentRandomMusicTrack;
+
+
+[["Started playing track: ", _trackClassname],false] call KISKA_fnc_log;
+
+
+nil

@@ -1,3 +1,4 @@
+#include "..\Headers\Music Common Defines.hpp"
 /*
 Parameters:
     _setting     - Unique setting name. Matches resulting variable name <STRING>
