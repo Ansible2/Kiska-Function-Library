@@ -75,7 +75,8 @@ _spawnPosition set [2,_flyInHeight];
 
 private _vehicleArray = [_spawnPosition,0,_aircraftType,_side] call KISKA_fnc_spawnVehicle;
 // disable HC transfer
-[_vehicleArray select 2,false] call KISKA_fnc_ACEX_setHCTransfer;
+private _pilotsGroup = _vehicleArray select 2;
+[_pilotsGroup,false] call KISKA_fnc_ACEX_setHCTransfer;
 
 private _vehicle = _vehicleArray select 0;
 _vehicle flyInHeight _flyInHeight;
@@ -91,53 +92,19 @@ _vehicle addEventHandler ["KILLED",{
 	};
 }];
 
-// make crew somewhat more effective by changing their behaviour
-private _turretUnits = [];
+
+
 private _vehicleCrew = _vehicleArray select 1;
-private _turretSeperated = false;
-_vehicleCrew apply {
-	_x allowDamage false;
-	_x disableAI "SUPPRESSION";
-	_x disableAI "RADIOPROTOCOL";
-	_x setSkill 1;
-
-	// give turrets their own groups so that they can engage targets at will
-	if ((_vehicle unitTurret _x) in _turretsWithWeapons) then {
-	/*
-		About seperating one turret...
-		My testing has revealed that in order to have both turrets on a helicopter (if it has two)
-		 engaging targets simultaneously, one needs to be in a seperate group from the pilot, and one
-		 needs to be grouped with the pilot.
-	*/
-		if !(_turretSeperated) then {
-			_turretSeperated = true;
-			private _group = createGroup _side;
-			[_x] joinSilent _group;
-			_group setBehaviour "COMBAT";
-			_group setCombatMode "RED";
-		};
-		_turretUnits pushBack _x;
-	} else { // disable targeting for the other crew
-		_x disableAI "AUTOCOMBAT";
-		_x disableAI "TARGET";
-		//_x disableAI "AUTOTARGET";
-		_x disableAI "FSM";
-	};
-};
-
-
-// keep the pilots from freaking out under fire
-private _pilotsGroup = _vehicleArray select 2;
-_pilotsGroup setBehaviour "CARELESS"; // Only careless group will follow speed limit
-// the pilot group's combat mode MUST be a fire-at-will version as it adjusts it for the entire vehicle
-_pilotsGroup setCombatMode "RED";
-
-
 
 
 /* ----------------------------------------------------------------------------
 	Move to support zone
 ---------------------------------------------------------------------------- */
+// move command only supports position arrays
+if (_centerPosition isEqualType objNull) then {
+	_centerPosition = getPosATL _centerPosition;
+};
+
 private _params = [
 	_centerPosition,
 	_radius,
@@ -147,8 +114,7 @@ private _params = [
 	_side,
 	_vehicle,
 	_pilotsGroup,
-	_vehicleCrew,
-	_turretUnits
+	_vehicleCrew
 ];
 
 _params spawn {
@@ -161,8 +127,7 @@ _params spawn {
 		"_side",
 		"_vehicle",
 		"_pilotsGroup",
-		"_vehicleCrew",
-		"_turretUnits"
+		"_vehicleCrew"
 	];
 
 	// once you go below a certain radius, it becomes rather unnecessary
@@ -184,38 +149,31 @@ _params spawn {
 	/* ----------------------------------------------------------------------------
 		Do support
 	---------------------------------------------------------------------------- */
+
+	[
+		_vehicle,
+		5,
+		4,
+		_radius * 2,
+		1,
+		true
+	] spawn KISKA_fnc_engageHeliTurretsLoop;
+
 	// to keep helicopters from just wildly flying around
 	_vehicle limitSpeed _supportSpeedLimit;
 
-	private _fn_getTargets = {
-		(_vehicle nearEntities [["MAN","CAR","TANK"],DETECT_ENEMY_RADIUS]) select {
-			!(isAgent teamMember _x) AND
-			{[side _x, _side] call BIS_fnc_sideIsEnemy}
-		};
-	};
-	private _targetsInArea = [];
-
 	private _sleepTime = _timeOnStation / 5;
-	private "_currentTarget";
 	for "_i" from 0 to 4 do {
 
-		if (!alive _vehicle) exitWith {};
-
-		_targetsInArea = call _fn_getTargets;
-		if !(_targetsInArea isEqualTo []) then {
-			_targetsInArea apply {
-				_currentTarget = _x;
-				_turretUnits apply {
-					_x reveal [_currentTarget,4];
-				};
-			};
+		if (!alive _vehicle) then {
+			break;
 		};
-
 		_vehicle doMove (_centerPosition getPos [_radius,STAR_BEARINGS select _i]);
-
 		sleep _sleepTime;
+
 	};
 
+	_vehicle setVariable ["KISKA_heliTurrets_endLoop",true];
 
 	/* ----------------------------------------------------------------------------
 		After support is done
