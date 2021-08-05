@@ -24,6 +24,8 @@ Examples:
 Author:
 	Ansible2
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_assignUnitLoadout";
+
 params [
 	["_configPath",configNull,[configNull]],
 	["_units",[],[[],objNull,grpNull]]
