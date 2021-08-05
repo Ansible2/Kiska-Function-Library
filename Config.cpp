@@ -293,6 +293,8 @@ class CfgFunctions
 			{};
 			class paratroopers
 			{};
+			class supplyDrop
+			{};
 			class virtualArty
 			{};
 		};
@@ -494,8 +496,6 @@ class CfgFunctions
 			class staticLine
 			{};
 			class str
-			{};
-			class supplyDrop
 			{};
 			class triggerWait
 			{};
