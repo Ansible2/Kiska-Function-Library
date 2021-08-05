@@ -2,7 +2,7 @@
 Function: KISKA_fnc_playSound2D
 
 Description:
-	Plays a 2D sound if a player is within a given area. 
+	Plays a 2D sound if a player is within a given area.
 	Used due to say2D's broken "maxTitlesDistance".
 
 Parameters:
@@ -11,7 +11,7 @@ Parameters:
 	2: _radius <NUMBER> - How far can the player be from the _center and still "hear" the sound
 
 Returns:
-	NOTHING
+	<BOOL> - True if played, false if did not
 
 Examples:
     (begin example)
@@ -31,12 +31,19 @@ params [
 
 if (_center isEqualtype objNull AND {isNull _center}) exitWith {
 	["Center object isNull",true] call KISKA_fnc_log;
+	false
 };
 
 if (_radius < 0) exitWith {
 	["Raidus is: ",_radius," ...less then 0",true] call KISKA_fnc_log;
+	false
 };
 
 if ((_center distance2D player) <= _radius) then {
 	playsound _sound;
+	true
+
+} else {
+	false
+
 };
