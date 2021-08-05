@@ -14,7 +14,7 @@ Parameters:
 	4: _radioChannel <STRING> - What channel to use. This is to have a synced channel across multiple radios; they won't play the same thing twice
 	5: _public <BOOL, NUMBER, or ARRAY> - Does the radioChannel info need to be network synced (publicVariable)
 	6: _sounds <ARRAY> - What sounds do you want to play? This will default to a slection below of sounds. Sounds need to be defined in cfgSounds.
-	
+
 
 Returns:
 	NOTHING
@@ -33,6 +33,7 @@ scriptName "KISKA_fnc_ambientRadio";
 
 if (!isServer) then {
 	["Was not run on the server, recommend execution on server in the future",false] call KISKA_fnc_log;
+	nil
 };
 
 if (!canSuspend) exitWith {
@@ -108,12 +109,13 @@ _sounds apply {
 		// check if sound has been used in namepace
 		if !(_x in _usedSounds) then {
 			_soundsFiltered pushBackUnique _x;
-		};	
+		};
 	} else {
 		[[_x, " is undefined sound!"],true] call KISKA_fnc_log;
 	};
 };
 missionNamespace setVariable [_radioChannel,_soundsFiltered,_public];
+
 
 private _endTime = _duration + time;
 waitUntil {
@@ -135,7 +137,7 @@ waitUntil {
 	// sync to global
 	missionNamespace setVariable [_radioChannel,_soundsToChoose,_public];
 
-	
+
 	// add sound to used list
 	_usedSounds = missionNamespace getVariable [_usedNamespace,[]];
 	_usedSounds pushBack _randomNews;
@@ -144,8 +146,11 @@ waitUntil {
 
 	// play sound
 	[_randomNews,_radio,30,_volume,true] spawn KISKA_fnc_playSound3d;
-	
+
 	sleep (random [30,35,40]);
 
 	false
 };
+
+
+nil

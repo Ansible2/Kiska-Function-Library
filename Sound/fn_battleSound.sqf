@@ -21,17 +21,17 @@ Examples:
 Author(s):
 	Ansible2
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_battleSound";
+
 #define MAX_INTENSITY 5
 #define MIN_INTENSITY 1
 #define EXPLOSION_WEIGHT 0.25
 #define FIREFIGHT_WEIGHT 1
 
-scriptName "KISKA_fnc_battleSound";
-
 if (!isServer) then {
 	["Was not run on the server, recommend execution on server in the future",false] call KISKA_fnc_log;
+	nil
 };
-
 if (!canSuspend) exitWith {
 	["Must be run in scheduled envrionment, exiting to scheduled",true] call KISKA_fnc_log;
 	_this spawn KISKA_fnc_battleSound;
@@ -46,15 +46,17 @@ params [
 
 if (_source isEqualType objNull AND {isNull _source}) exitWith {
 	["_source isNull",true] call KISKA_fnc_log;
+	nil
 };
-
 if (_distance isEqualType 123 AND {_distance <= 0}) exitWith {
 	[["_distance is: ",_distance,". It must be higher then 0"],true] call KISKA_fnc_log;
+	nil
 };
-
 if (_distance isEqualType [] AND {!(_distance isEqualTypeParams [0,0,0])}) exitWith {
 	["_distance random array is not configured properly",true] call KISKA_fnc_log;
+	nil
 };
+
 
 if (_source isEqualType objNull) then {
 	_source = getPosASL _source;
@@ -87,23 +89,23 @@ private _soundArr = [
 	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight3.wss",FIREFIGHT_WEIGHT,
 	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight4.wss",FIREFIGHT_WEIGHT
 ];
-
 private _endTime = _duration + time;
-
 private _timeBetweenSounds = _intensityArray vectorMultiply 4;
+
 
 waitUntil {
 	if (_endTime <= time) exitWith {true};
 
 	private _volume = floor (random [3,4,5]);
-		
-	playSound3D [selectRandomWeighted _soundArr, objNull, false, _source, _volume, random [-2,-1,0],[_distance,random _distance] select (_distance isEqualType [])];
 
+	playSound3D [selectRandomWeighted _soundArr, objNull, false, _source, _volume, random [-2,-1,0],[_distance,random _distance] select (_distance isEqualType [])];
 	sleep (random _intensityArray);
 
 	playSound3D [selectRandomWeighted _soundArr, objNull, false, _source, _volume, random [-2,-1,0],[_distance,random _distance] select (_distance isEqualType [])];
-
 	sleep (random _timeBetweenSounds);
 
 	false
 };
+
+
+nil
