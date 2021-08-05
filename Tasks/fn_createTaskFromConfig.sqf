@@ -84,10 +84,18 @@ if (_taskState isEqualTo configNull) then {
 };
 
 if (_destination isEqualTo configNull) then {
-    _destination = GET_CFG_ARRAY("destination");
 
-    if (_destination isEqualTo []) then {
-        _destination = objNull;
+    private _compiledDestination = GET_CFG_TEXT("compiledDestination");
+    if (_compiledDestination isNotEqualTo "") then {
+        _destination = call _compiledDestination;
+    };
+
+    if (isNull _destination) then {
+        _destination = GET_CFG_ARRAY("destination");
+
+        if (_destination isEqualTo []) then {
+            _destination = objNull;
+        };
     };
 };
 
