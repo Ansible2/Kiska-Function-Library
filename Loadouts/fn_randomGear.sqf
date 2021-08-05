@@ -60,12 +60,17 @@ private _fn_selectGear = {
 	if (_gearArray isNotEqualTo []) then {
 		if (_gearArray isEqualTypeParams ["",123]) then {
 			_selectedGear = selectRandomWeighted _gearArray;
+
 		} else {
 			_selectedGear = selectRandom _gearArray;
+
 		};
+
 	} else {
 		_selectedGear = "";
+
 	};
+	
 };
 
 
