@@ -41,11 +41,9 @@ if (isNull _source) exitWith {
 };
 
 private _numberStr = str ([2,30] call BIS_fnc_randomInt);
-
 private _radioSound = "KISKA_radioAmbient" + _numberStr;
 
 [_radioSound,getPosASL _source,_distance,_volume] call KISKA_fnc_playSound3D;
-
 sleep ((getNumber (configFile >> "CfgMusic" >> _radioSound >> "duration")) + random [1,5,10]);
 
 [_source,_distance,_volume] spawn KISKA_fnc_radioChatter;
