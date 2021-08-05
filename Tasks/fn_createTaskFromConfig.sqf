@@ -74,6 +74,11 @@ if (_config isEqualTo configNull) exitWith {
     ""
 };
 
+private _taskId = configName _config;
+if ([_taskId] call BIS_fnc_taskExists) exitWith {
+    [["The task with ID: ",_taskId," already exists"],false] call KISKA_fnc_log;
+    ""
+};
 
 if (_taskState isEqualTo configNull) then {
     _taskState = GET_CFG_TEXT("defaultState");
@@ -125,7 +130,6 @@ private _taskDescription = GET_CFG_TEXT("description");
 private _priority = GET_CFG_NUMBER("priority");
 
 private _parentTaskId = GET_CFG_TEXT("parentTask");
-private _taskId = configName _config;
 if (_parentTaskId isNotEqualTo "") then {
     _taskId = [_taskId,_parentTaskId];
 };
