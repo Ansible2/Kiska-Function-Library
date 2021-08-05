@@ -18,13 +18,15 @@ Returns:
 
 Examples:
     (begin example)
-		["BattlefieldJet1_3D",(getPosASL player) vectorAdd [50,50,100],200] call KISKA_fnc_playSound3D;
+		["BattlefieldJet1_3D",(getPosASL player) vectorAdd [50,50,100],2000] call KISKA_fnc_playSound3D;
     (end)
 
 Author(s):
 	Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_playSound3D";
+
+#define FILE_EXTENSIONS [".wss",".ogg",".wav"]
 
 params [
 	["_sound","",[""]],
@@ -59,22 +61,17 @@ if (_distance < 0) exitWith {
 
 
 // get actual path of file from config
-_fn_getSoundPath = {
-	if (isClass (configFile / "CfgSounds" / _sound)) exitWith {
-		(getArray (configFile >> "CfgSounds" >> _sound >> "sound")) select 0
-	};
-	if (isClass (missionConfigFile / "CfgSounds" / _sound)) exitWith {
-		getMissionPath ((getArray (missionConfigFile >> "CfgSounds" >> _sound >> "sound")) select 0)
-	};
-	if (isClass (configFile / "cfgMusic" / _sound)) exitWith {
-		(getArray (configFile >> "cfgMusic" >> _sound >> "sound")) select 0
-	};
-	if (isClass (missionConfigFile / "cfgMusic" / _sound)) exitWith {
-		getMissionPath ((getArray (missionConfigFile >> "cfgMusic" >> _sound >> "sound")) select 0)
-	};
+private _soundConfig = [["CfgSounds",_sound]] call KISKA_fnc_findConfigAny;
+if (isNull _soundConfig) exitWith {
+	[["Could not find a config for the sound: ",_sound],true] call KISKA_fnc_log;
+	false
 };
 
-private _soundPath = [_sound] call _fn_getSoundPath;
+private _soundPath = (getArray(_soundConfig >> "sound")) select 0;
+if ([_soundConfig, missionConfigFile] call CBA_fnc_inheritsFrom) then {
+	_soundPath = getMissionPath + _soundPath;
+};
+
 
 if (!(_soundPath isEqualType "") OR {_soundPath isEqualTo ""}) exitWith {
 	["_sound: ",_sound," is configed incorrectly",true] call KISKA_fnc_log;
@@ -86,26 +83,44 @@ if (_origin isEqualType objNull) then {
 	_origin = getPosASL _origin;
 };
 
-// check for bohemia weird chars on file paths
+// Some Bohmemia sound paths had a "@" or "\" at the front
+// playSound3D will not find the file if this is the case
 private _firstChar = _soundPath select [0,1];
 if (_firstChar in ["@","\"]) then {
 	_soundPath = _soundPath trim [_firstChar,1];
-	//_soundPath = [_soundPath,_firstChar] call CBA_fnc_leftTrim;
 };
 
-// check if bohemia didn't add file extension
-if !(toLowerANSI (_soundPath select [(count _soundPath) - 4,4]) in [".wss",".ogg",".wav"]) then {
-	private _soundpath1 = _soundPath + ".wss";
-	private _soundpath2 = _soundPath + ".ogg";
-	private _soundpath3 = _soundPath + ".wav"; // one of these has to be right, right?
 
-	// playsound
-	[_soundPath1,_soundPath2,_soundPath3] apply {
-		playSound3D [_x,objNull,_isInside,_origin,_volume,_pitch,_distance];
+private _fileNotFound = false;
+private _tempPath = "";
+if !(fileExists _soundPath) then {
+	private _hasFileExtension = (toLowerANSI (_soundPath select [(count _soundPath) - 4,4])) in FILE_EXTENSIONS;
+	if !(_hasFileExtension) then {
+		_fileNotFound = true;
+
+		FILE_EXTENSIONS apply {
+			_tempPath = _soundPath + _x;
+			if (fileExists _tempPath) then {
+				_fileNotFound = false;
+				_soundPath = _tempPath;
+				break;
+			};
+
+		};
+
+	} else {
+		_fileNotFound = true;
+
 	};
-} else {
-	// playsound
-	playSound3D [_soundPath,objNull,_isInside,_origin,_volume,_pitch,_distance];
+
 };
+
+if (_fileNotFound) exitWith {
+	[["Could not find file at path: ", _soundPath],true] call KISKA_fnc_log;
+	false
+};
+
+playSound3D [_soundPath,objNull,_isInside,_origin,_volume,_pitch,_distance];
+
 
 true
