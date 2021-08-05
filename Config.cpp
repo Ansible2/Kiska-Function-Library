@@ -261,10 +261,6 @@ class CfgFunctions
 			{
 				preInit = 1;
 			};
-			/*
-			class rallyPointActionLoop
-			{};
-			*/
 		};
 		class Sound
 		{
