@@ -64,7 +64,7 @@ params [
 
 private _latestTickID = GET_MUSIC_RANDOM_START_TIME;
 private _isNewLoop = _tickId isEqualTo -1;
-if ((!_isNewLoop) AND (_tickId < _latestTickID) exitWith {
+if ((!_isNewLoop) AND (_tickId < _latestTickID)) exitWith {
 	[["Tick ID: ",_tickId," was thrown out in favor of ID: ",_latestTickID],false] call KISKA_fnc_log;
 	nil
 };
@@ -102,7 +102,7 @@ private _selectedTrack = selectRandom _musicTracks;
 
 private _targetId = [0,-2] select isDedicated;
 // volume is at 0.5 because ambient tracks should be a bit less pronounced
-[_selectedTrack,0,false,0.5,1,3,true] remoteExec ["KISKA_fnc_playMusic",_targetId];
+[_selectedTrack,0,false,0.5,3,true] remoteExec ["KISKA_fnc_playMusic",_targetId];
 //[_selectedTrack] remoteExecCall ["KISKA_fnc_setCurrentRandomMusicTrack",_targetId];
 
 if !(GET_MUSIC_RANDOM_MUSIC_SYS_RUNNING) then {
@@ -163,7 +163,7 @@ private _waitTime = _durationOfTrack + _randomWaitTime;
 */
 
 if (_isNewLoop) then {
-	_tickId = diag_tickTime toFixed MUSIC_TICK_ACCURACY;
+	_tickId = diag_tickTime;
 	SET_MUSIC_VAR(MUSIC_RANDOM_START_TIME_VAR_STR,_tickId);
 };
 sleep _waitTime;
