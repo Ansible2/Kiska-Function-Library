@@ -8,7 +8,8 @@ Parameters:
 	0: _numberOfUnits <NUMBER> - Number of units to spawn
 	1: _numberOfUnitsPerGroup <NUMBER> - Number of units per group
 	2: _unitTypes <ARRAY> - Unit types to select randomly from (can be weighted or unweighted array)
-	3. _spawnPositions <ARRAY> - List of positions at which units will randomly spawn, the array can be positions and/or objects
+	3. _spawnPositions <ARRAY> - List of positions at which units will randomly spawn, the array can be positions and/or objects.
+		If given an empty array, all units will spawn at [0,0,0]
 
 	4. _canUnitsMove <BOOL> - Can units walk (optional)
 	5. _enableDynamic <BOOL> - Should the units be dynamically simmed (Optional)
@@ -43,11 +44,14 @@ params [
 // Check atleast one unit to spawn
 if (_numberOfUnits < 1) exitWith {
 	[["_numberOfUnits is ",_numberOfUnits," needs to be atleast 1. Exiting..."],true] call KISKA_fnc_log;
+	[]
 };
 
 // Is there at least on position to spawn on
-if (count _spawnPositions < 1) exitwith {
-	["_spawnPositions does not have enough positions",true] call KISKA_fnc_log;
+if (count _spawnPositions < 1) then {
+	for "_i" from 1 to _numberOfUnits do {
+		_spawnPositions pushBack [0,0,0];
+	};
 };
 
 // Re adjust number of units if there are not enough spawn points
@@ -156,10 +160,10 @@ for "_i1" from 1 to _numberOfGroups do {
 
 // add to zeus
 allCurators apply {
-	[_x,[_spawnedUnits,false]] remoteExecCall ["addCuratorEditableObjects",2];
+	[_x,[_spawnedUnits,false]] remoteExec ["addCuratorEditableObjects",2];
 };
 
-[["Spawned ",(count _spawnedUnits)]] call KISKA_fnc_log;
+[["Spawned ",(count _spawnedUnits)],false] call KISKA_fnc_log;
 
 
 _spawnedUnits
