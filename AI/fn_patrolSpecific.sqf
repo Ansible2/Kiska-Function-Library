@@ -21,7 +21,7 @@ Returns:
 
 Examples:
     (begin example)
-		[_group,5,_positionsArray] call KISKA_fnc_patrolSpecific;
+		[_group,_positionsArray,5] call KISKA_fnc_patrolSpecific;
     (end)
 
 Author:

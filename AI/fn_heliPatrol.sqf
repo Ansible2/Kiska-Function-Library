@@ -64,7 +64,7 @@ private _helicopterGroup = group _pilot;
 [_helicopterGroup,false] call KISKA_fnc_ACEX_setHCTransfer;
 _helicopter flyInHeight _patrolHeight;
 
-[_helicopterGroup,count _patrolPoints,_patrolPoints,_randomPatrol,"SAFE",_patrolSpeed,"WHITE"] call KISKA_fnc_patrolSpecific;
+[_helicopterGroup,_patrolPoints,count _patrolPoints,_randomPatrol,"SAFE",_patrolSpeed,"WHITE"] call KISKA_fnc_patrolSpecific;
 
 
 
