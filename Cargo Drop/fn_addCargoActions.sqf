@@ -3,7 +3,7 @@ Function: KISKA_fnc_addCargoActions
 
 Description:
 	Adds the cargo drop actions to a vehicle to enable loading, unloading, and releasing for drop
-	
+
 	The action IDs are assigned per vehicle. ex. _vehicle getVariable "KISKA_cargoActions" would be an array formated as:
 	[Strap Action ID, Unstrap Action ID, Release Action ID]
 
@@ -16,14 +16,14 @@ Returns:
 
 Examples:
     (begin example)
-
 		[['USAF_C17',15], _vehicle] call KISKA_fnc_addCargoActions;
-
     (end)
 
 Author(s):
 	Ansible2
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_addCargoActions";
+
 if (!hasInterface) exitWith {false};
 
 params [
@@ -33,17 +33,17 @@ params [
 
 // verify params
 if !(_aircraftInfo isEqualTypeParams ["",123]) exitWith {
-	"_aircraftInfo array is not proprer types" call BIS_fnc_error;
+	["_aircraftInfo array is not proprer types",true] call KISKA_fnc_log;
 	false
 };
 
 if (_vehicles isEqualType [] AND {!(_vehicles isEqualTypeAll objNull)}) exitWith {
-	"_vehicles array includes non-objects" call BIS_fnc_error;
+	["_vehicles array includes non-objects",true] call KISKA_fnc_log;
 	false
 };
 
 if (_vehicles isEqualType objNull AND {isNull _vehicles}) exitWith {
-	"_vehicles isNull" call BIS_fnc_error;
+	["_vehicle is null",true] call KISKA_fnc_log;
 	false
 };
 
@@ -64,60 +64,60 @@ if (_vehicles isEqualType objNull) then {
 
 		if (alive _x) then {
 
-			private _id1 = _x addAction [ 
-				"--Strap Vehicle",  
+			private _id1 = _x addAction [
+				"--Strap Vehicle",
 				{
 					private _vehicleToLoad = param [0,objNull,[objNull]];
 					private _aircraftClass = param [3];
 
 					["KISKA_cargoStrapped_Event",[_vehicleToLoad,_aircraftClass]] call CBA_fnc_serverEvent;
-				}, 
-				_aircraftInfo select 0, 
-				1.5,  
-				false,  
-				false,  
-				"", 
-				"(count (_target nearEntities " + _aircraftInfoString + ") > 0) AND {!(_target getVariable ['KISKA_CargoStrapped',false])}", 
-				5, 
-				false 
+				},
+				_aircraftInfo select 0,
+				1.5,
+				false,
+				false,
+				"",
+				"(count (_target nearEntities " + _aircraftInfoString + ") > 0) AND {!(_target getVariable ['KISKA_CargoStrapped',false])}",
+				5,
+				false
 			];
 
 			uiSleep 0.5;
 
-			private _id2 = _x addAction [    
-				"--Unstrap Vehicle",  
-				{ 
-					params ["_vehicleToUnLoad"]; 
-					
+			private _id2 = _x addAction [
+				"--Unstrap Vehicle",
+				{
+					params ["_vehicleToUnLoad"];
+
 					["KISKA_cargoUnstrapped_Event",[_vehicleToUnLoad]] call CBA_fnc_serverEvent;
-				}, 
-				nil, 
-				1.5,  
-				false,  
-				false,  
-				"", 
-				"_target getVariable ['KISKA_CargoStrapped',false] AND {!((getPosATL _target select 2) > 20)}", 
-				5, 
-				false 
+				},
+				nil,
+				1.5,
+				false,
+				false,
+				"",
+				"_target getVariable ['KISKA_CargoStrapped',false] AND {!((getPosATL _target select 2) > 20)}",
+				5,
+				false
 			];
 
 			uiSleep 0.5;
 
-			private _id3 = _x addAction [ 
-				"--Release Vehicle",  
-				{ 
-					params ["_vehicleToUnLoad"]; 
-						
+			private _id3 = _x addAction [
+				"--Release Vehicle",
+				{
+					params ["_vehicleToUnLoad"];
+
 					["KISKA_cargoDrop_Event",[_vehicleToUnLoad]] call CBA_fnc_serverEvent;
-				}, 
-				nil, 
-				2,  
-				false,  
-				false,  
-				"", 
-				"_target getVariable ['KISKA_CargoStrapped',false] AND {(getPosATL _target select 2) > 10}", 
-				7, 
-				false 
+				},
+				nil,
+				2,
+				false,
+				false,
+				"",
+				"_target getVariable ['KISKA_CargoStrapped',false] AND {(getPosATL _target select 2) > 10}",
+				7,
+				false
 			];
 
 			_x setVariable ["KISKA_cargoActions",[_id1,_id2,_id3]];
