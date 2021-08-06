@@ -92,7 +92,7 @@ if (_destination isEqualTo configNull) then {
 
     private _compiledDestination = GET_CFG_TEXT("compiledDestination");
     if (_compiledDestination isNotEqualTo "") then {
-        _destination = call _compiledDestination;
+        _destination = call (compileFinal _compiledDestination);
     };
 
     if (isNull _destination) then {
