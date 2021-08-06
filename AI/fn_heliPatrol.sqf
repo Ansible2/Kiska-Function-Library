@@ -98,9 +98,8 @@ _helicopter flyInHeight _patrolHeight;
 
     // waituntil the helicopter is about to land
     waitUntil {
-        if ((getPosATLVisual _helicopter select 2) < 2) exitWith {true};
         sleep 2;
-        false
+        ((getPosATLVisual _helicopter select 2) < 2)
     };
     // tell all groups that in the aircraft that aren't crew to stalk the target group
     private _targetGroup = group _foundTarget;
@@ -120,7 +119,7 @@ _helicopter flyInHeight _patrolHeight;
     // Wait for all passengers to be out
     private _helicopterGroupCount = count (units _helicopterGroup);
     waitUntil {
-        if (count (crew _helicopter) <= _helicopterGroupCount) exitWith {};
+        if (count (crew _helicopter) <= _helicopterGroupCount) exitWith {true};
         sleep 1;
         false
     };
