@@ -227,6 +227,8 @@ class CfgFunctions
 			{};
 			class setCurrentRandomMusicTrack
 			{};
+			class setRandomMusicTime
+			{};
 			class stopRandomMusicServer
 			{};
 			class stopRandomMusicClient
