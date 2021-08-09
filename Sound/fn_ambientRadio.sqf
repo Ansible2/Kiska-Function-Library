@@ -2,7 +2,7 @@
 Function: KISKA_fnc_ambientRadio
 
 Description:
-	Play news on an object, ot your own assortment of sounds.
+	Play news on an object, or your own assortment of sounds.
 	Function is global and should run on one machine.
 	Once players move out of a range, the broadcasts will stop and will not come back
 
@@ -15,15 +15,12 @@ Parameters:
 	5: _public <BOOL, NUMBER, or ARRAY> - Does the radioChannel info need to be network synced (publicVariable)
 	6: _sounds <ARRAY> - What sounds do you want to play? This will default to a slection below of sounds. Sounds need to be defined in cfgSounds.
 
-
 Returns:
 	NOTHING
 
 Examples:
     (begin example)
-
 		[myRadio] spawn KISKA_fnc_ambientRadio;
-
     (end)
 
 Author:
@@ -110,8 +107,10 @@ _sounds apply {
 		if !(_x in _usedSounds) then {
 			_soundsFiltered pushBackUnique _x;
 		};
+
 	} else {
 		[[_x, " is undefined sound!"],true] call KISKA_fnc_log;
+
 	};
 };
 missionNamespace setVariable [_radioChannel,_soundsFiltered,_public];
@@ -124,10 +123,9 @@ waitUntil {
 
 	// loop back if needed on used sounds
 	if ((missionNamespace getVariable _radioChannel) isEqualTo []) then {
-		// take all the used sounds and add them to the channel again
 		missionNamespace setVariable [_radioChannel,+(missionNamespace getVariable _usedNamespace),_public];
-		// set used global back to empty array
 		missionNamespace setVariable [_usedNamespace,[],_public];
+
 	};
 
 	// pick sound
@@ -146,7 +144,6 @@ waitUntil {
 
 	// play sound
 	[_randomNews,_radio,30,_volume,true] spawn KISKA_fnc_playSound3d;
-
 	sleep (random [30,35,40]);
 
 	false
