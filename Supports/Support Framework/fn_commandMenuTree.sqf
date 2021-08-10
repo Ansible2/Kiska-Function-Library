@@ -20,7 +20,7 @@ Examples:
 		[
 			["#USER:myMenu_1","#USER:myMenu_2"],
 			"hint str _this"
-		] call KISKA_fnc_commandMenuTree
+		] spawn KISKA_fnc_commandMenuTree
     (end)
 
 Author(s):
@@ -66,7 +66,9 @@ _menuPath apply {
 		sleep 0.1;
 		false
 	};
-	if (_menuClosed) exitWith {};
+	if (_menuClosed) then {
+		break;
+	};
 };
 
 private _params = localNamespace getVariable "KISKA_commMenuTree_params";
@@ -76,12 +78,14 @@ if (!_menuClosed) then {
 	};
 
 	_params call _endExpression;
+	
 } else {
 	if (_exitExpression isEqualType "") then {
 		_exitExpression = compile _exitExpression;
 	};
 
 	_params call _exitExpression;
+
 };
 
 localNamespace setVariable ["KISKA_commMenuTree_params",nil];

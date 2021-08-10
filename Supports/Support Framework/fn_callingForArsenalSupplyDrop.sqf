@@ -21,7 +21,6 @@ Parameters:
 		4: _commMenuId <NUMBER> - The ID number of the Comm Menu added by BIS_fnc_addCommMenuItem
 		5: _supportType <NUMBER> - The Support Type ID
 	2: _count <NUMBER> - Used for keeping track of how many of a count a support has left (such as rounds)
-	3: _type <NUMBER> - Determines if either Attack Helicopter CAS or Transport gunners
 
 Returns:
 	NOTHING
@@ -119,7 +118,7 @@ _args pushBack _menuVariables;
 		private _useCount = _args select 2;
 		// if a ctrl key is held and one left clicks to select the support while in the map, they can call in an infinite number of the support
 		if (visibleMap AND {missionNamespace getVariable ["KISKA_ctrlDown",false]}) exitWith {
-			hint parseText "<t color='#ff0000'>You can't call in a support while holding down a crtl key and in the map. It causes a bug with the support menu.</t>";
+			["You can't call in a support while holding down a crtl key and in the map. It causes a bug with the support menu."] call KISKA_fnc_errorNotification;
 			ADD_SUPPORT_BACK(_useCount)
 		};
 

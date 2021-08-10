@@ -21,7 +21,7 @@ Returns:
 
 Examples:
     (begin example)
-		[["className1","className2"]], 500, player] call KISKA_fnc_supplyDrop;
+		[["className1","className2"], 500, player] call KISKA_fnc_supplyDrop;
     (end)
 
 Author(s):
@@ -53,6 +53,7 @@ _classNames apply {
     _containersArray pushBack _container_temp;
 
     _dropZone_temp = [_dropPosition,50] call CBA_fnc_randPos;
+	_dropZone_temp set [2,0];
     _container_temp allowDamage false;
 
     // create it's parachutes
@@ -94,7 +95,7 @@ _classNames apply {
 
 		waitUntil {
 			_chuteHeight = (getPosATL _chute) select 2;
-			if (_chuteHeight < 10) exitWith {
+			if (_chuteHeight < 15) exitWith {
 				detach _container;
 				true
 			};
@@ -125,7 +126,7 @@ _classNames apply {
 	private _deleteTime = time + 60;
     waitUntil {
         // waitUntil a player is within 10m of the first container
-        if (!(((call CBA_fnc_players) findIf {(_x distance2D _firstContainer) <= 10}) isEqualTo -1) OR {time > _deleteTime}) exitWith {true};
+        if ((((call CBA_fnc_players) findIf {(_x distance2D _firstContainer) <= 10}) isNotEqualTo -1) OR {time > _deleteTime}) exitWith {true};
 
         sleep 2;
         false

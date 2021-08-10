@@ -64,10 +64,14 @@ if (_supportTypeId isEqualTo SUPPORT_TYPE_CAS) exitWith {
 };
 
 if (_supportTypeId isEqualTo SUPPORT_TYPE_ARSENAL_DROP) exitWith {
-	_this call KISKA_fnc_callingForArsenalSupplyDrop
+	_this call KISKA_fnc_callingForArsenalSupplyDrop;
 };
 
+if (_supportTypeId isEqualTo SUPPORT_TYPE_SUPPLY_DROP_AIRCRAFT) exitWith {
+	_this call KISKA_fnc_callingForSupplyDrop_aircraft;
+};
 
+/*
 _commMenuArgs params [
 	"_caller",
 	"_targetPosition",
@@ -75,6 +79,6 @@ _commMenuArgs params [
 	"_is3d",
 	"_commMenuId"
 ];
-
+*/
 
 nil

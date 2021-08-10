@@ -297,6 +297,8 @@ class CfgFunctions
 			{};
 			class supplyDrop
 			{};
+			class supplyDrop_aircraft
+			{};
 			class virtualArty
 			{};
 		};
@@ -308,6 +310,8 @@ class CfgFunctions
 			class buildCommandMenu
 			{};
 			class callingForArsenalSupplyDrop
+			{};
+			class callingForSupplyDrop_aircraft
 			{};
 			class callingForArty
 			{};
