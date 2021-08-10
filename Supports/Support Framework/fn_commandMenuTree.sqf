@@ -20,7 +20,7 @@ Examples:
 		[
 			["#USER:myMenu_1","#USER:myMenu_2"],
 			"hint str _this"
-		] call KISKA_fnc_commandMenuTree
+		] spawn KISKA_fnc_commandMenuTree
     (end)
 
 Author(s):
