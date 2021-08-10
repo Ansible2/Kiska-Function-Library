@@ -311,6 +311,8 @@ class CfgFunctions
 			{};
 			class callingForArsenalSupplyDrop
 			{};
+			class callingForSupplyDrop_aircraft
+			{};
 			class callingForArty
 			{};
 			class callingForCAS

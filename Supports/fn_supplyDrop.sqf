@@ -95,7 +95,7 @@ _classNames apply {
 
 		waitUntil {
 			_chuteHeight = (getPosATL _chute) select 2;
-			if (_chuteHeight < 10) exitWith {
+			if (_chuteHeight < 15) exitWith {
 				detach _container;
 				true
 			};

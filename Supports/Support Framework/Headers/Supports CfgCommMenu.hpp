@@ -134,6 +134,8 @@ class KISKA_supplyDrop_aircraft_baseClass : KISKA_basicSupport_baseClass
     icon = SUPPLY_DROP_ICON;
 
     addArsenals = 1;
+    deleteCargo = 1;
+    crateList[] = {}; // class names of each crate to be dropped
 
     flyinHeights[] = {};
     vehicleTypes[] = {};

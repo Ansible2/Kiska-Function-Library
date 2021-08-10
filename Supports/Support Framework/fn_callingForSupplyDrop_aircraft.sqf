@@ -100,13 +100,8 @@ private _flyInHeightMenu = [
 _flyInHeights apply {
 	_flyInHeightMenu pushBackUnique DISTANCE_LINE(_x,0);
 };
-/*
-{
-	_flyInHeightMenu pushBackUnique DISTANCE_LINE(_x,0);
-} forEach _flyInHeights;
-*/
-SAVE_AND_PUSH(FLYIN_HEIGHT_MENU_STR,_flyInHeightMenu)
 
+SAVE_AND_PUSH(FLYIN_HEIGHT_MENU_STR,_flyInHeightMenu)
 
 
 
@@ -115,6 +110,11 @@ SAVE_AND_PUSH(FLYIN_HEIGHT_MENU_STR,_flyInHeightMenu)
 ---------------------------------------------------------------------------- */
 private _args = _this; // just for readability
 _args pushBack _menuVariables;
+
+_args pushBack ([_supportConfig >> "crateList"] call BIS_fnc_getCfgDataArray);
+_args pushBack ([_supportConfig >> "deleteCargo"] call BIS_fnc_getCfgDataBool);
+_args pushBack ([_supportConfig >> "addArsenals"] call BIS_fnc_getCfgDataBool);
+
 
 [
 	_menuPathArray,
@@ -134,6 +134,9 @@ _args pushBack _menuVariables;
 		[
 			_dropPosition,
 			_vehicleClass,
+			_args select 4, // crate list
+			_args select 5, // delete cargo of crates
+			_args select 6, // add arensals to crates
 			_flyinHeight,
 			_approachBearing,
 			FLYIN_RADIUS,

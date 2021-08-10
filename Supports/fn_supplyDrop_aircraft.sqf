@@ -11,11 +11,11 @@ Parameters:
     3: _deleteCargo : <BOOL> - Delete all the default cargo inside the crates
     4: _addArsenal : <BOOL> - add an arsenal to all the crates
 
-    : _dropAlt : <NUMBER> - The flyInHeight of the drop vehicle
-	: _flyDirection : <NUMBER> - The compass bearing for the aircraft to apporach from (if < 0, it's random)
-	: _flyInRadius : <NUMBER> - How far out the drop vehicle will spawn and then fly in
-	: _lifeTime : <NUMBER> - How long until the arsenal is deleted
-	: _side : <SIDE> - The side of the drop vehicle
+    5: _flyinHeight : <NUMBER> - The flyInHeight of the drop vehicle
+	6: _flyDirection : <NUMBER> - The compass bearing for the aircraft to apporach from (if < 0, it's random)
+	7: _flyInRadius : <NUMBER> - How far out the drop vehicle will spawn and then fly in
+	8: _lifeTime : <NUMBER> - How long until the arsenal is deleted
+	9: _side : <SIDE> - The side of the drop vehicle
 
 Returns:
 	NOTHING
@@ -38,7 +38,7 @@ params [
     ["_deleteCargo",true,[true]],
     ["_addArsenal",true,[true]],
 
-	["_dropAlt",500,[123]],
+	["_flyinHeight",500,[123]],
 	["_flyDirection",-1,[123]],
 	["_flyInRadius",2000,[123]],
 	["_lifeTime",-1,[123]],
@@ -51,7 +51,7 @@ if (_flyDirection < 0) then {
 };
 private _flyFromDirection = [_flyDirection + 180] call CBA_fnc_simplifyAngle;
 private _spawnPosition = _dropPosition getPos [_flyInRadius,_flyFromDirection];
-_spawnPosition set [2,_dropAlt];
+_spawnPosition set [2,_flyinHeight];
 
 private _relativeDirection = _spawnPosition getDir _dropPosition;
 
@@ -81,7 +81,7 @@ if !(_dropPosition isEqualType []) then {
 	_dropPosition = getPosWorld _dropPosition;
 };
 _airCraft move _dropPosition;
-_aircraft flyInHeight _dropAlt;
+_aircraft flyInHeight _flyinHeight;
 
 // give it a waypoint and delete it after it gets there
 private _flyToPosition = _dropPosition getPos [_flyInRadius,_relativeDirection];
