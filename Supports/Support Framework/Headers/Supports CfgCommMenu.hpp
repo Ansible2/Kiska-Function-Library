@@ -127,6 +127,18 @@ class KISKA_arsenalSupplyDrop_baseClass : KISKA_basicSupport_baseClass
     vehicleTypes[] = {};
 };
 
+class KISKA_supplyDrop_aircraft_baseClass : KISKA_basicSupport_baseClass
+{
+    supportTypeId = SUPPORT_TYPE_SUPPLY_DROP_AIRCRAFT;
+
+    icon = SUPPLY_DROP_ICON;
+
+    addArsenals = 1;
+
+    flyinHeights[] = {};
+    vehicleTypes[] = {};
+};
+
 
 /* ----------------------------------------------------------------------------
 	(Fixed-Wing) CAS Templates

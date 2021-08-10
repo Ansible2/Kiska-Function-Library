@@ -297,6 +297,8 @@ class CfgFunctions
 			{};
 			class supplyDrop
 			{};
+			class supplyDrop_aircraft
+			{};
 			class virtualArty
 			{};
 		};

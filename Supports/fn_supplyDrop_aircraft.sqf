@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_arsenalSupplyDrop
+Function: KISKA_fnc_supplyDrop_aircraft
 
 Description:
 	Spawns in an aircraft that flies over a DZ to drop off an arsenal.
@@ -7,30 +7,38 @@ Description:
 Parameters:
 	0: _dropPosition : <ARRAY> - The position (area) to drop the arsenal
   	1: _vehicleClass : <STRING> - The class of the vehicle to drop the arsenal
-	2: _dropAlt : <NUMBER> - The flyInHeight of the drop vehicle
-	3: _flyDirection : <NUMBER> - The compass bearing for the aircraft to apporach from (if < 0, it's random)
-	4: _flyInRadius : <NUMBER> - How far out the drop vehicle will spawn and then fly in
-	5: _lifeTime : <NUMBER> - How long until the arsenal is deleted
-	6: _side : <SIDE> - The side of the drop vehicle
+    2: _crates : <ARRAY> - An array of strings that are the classnames of the crates to drop
+    3: _deleteCargo : <BOOL> - Delete all the default cargo inside the crates
+    4: _addArsenal : <BOOL> - add an arsenal to all the crates
+
+    : _dropAlt : <NUMBER> - The flyInHeight of the drop vehicle
+	: _flyDirection : <NUMBER> - The compass bearing for the aircraft to apporach from (if < 0, it's random)
+	: _flyInRadius : <NUMBER> - How far out the drop vehicle will spawn and then fly in
+	: _lifeTime : <NUMBER> - How long until the arsenal is deleted
+	: _side : <SIDE> - The side of the drop vehicle
 
 Returns:
 	NOTHING
 
 Examples:
     (begin example)
-		[position player] call KISKA_fnc_arsenalSupplyDrop;
+		[position player] call KISKA_fnc_supplyDrop_aircraft;
     (end)
 
 Author(s):
 	Hilltop(Willtop) & omNomios,
 	Modified by: Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_arsenalSupplyDrop";
+scriptName "KISKA_fnc_supplyDrop_aircraft";
 
 params [
 	"_dropPosition",
 	["_vehicleClass","B_T_VTOL_01_vehicle_F",[""]],
-	["_dropAlt",200,[123]],
+    ["_crates",["B_supplyCrate_F"],[[]]],
+    ["_deleteCargo",true,[true]],
+    ["_addArsenal",true,[true]],
+
+	["_dropAlt",500,[123]],
 	["_flyDirection",-1,[123]],
 	["_flyInRadius",2000,[123]],
 	["_lifeTime",-1,[123]],
@@ -75,10 +83,10 @@ _aircraft flyInHeight _dropAlt;
 // give it a waypoint and delete it after it gets there
 private _flyToPosition = _dropPosition getPos [_flyInRadius,_relativeDirection];
 
-[_aircraft,_dropPosition,_aircraftGroup,_flyToPosition,_lifeTime] spawn {
-	params ["_aircraft","_dropPosition","_aircraftGroup","_flyToPosition","_lifeTime"];
+[_aircraft,_dropPosition,_aircraftGroup,_flyToPosition,_lifeTime,_crates,_deleteCargo,_addArsenal] spawn {
+	params ["_aircraft","_dropPosition","_aircraftGroup","_flyToPosition","_lifeTime","_crates","_deleteCargo","_addArsenal"];
 	waitUntil {
-		if (_aircraft distance2D _dropPosition < 40) exitWith {true};
+		if (_aircraft distance2D _dropPosition <= 40) exitWith {true};
 		sleep 0.25;
 		false
 	};
@@ -108,7 +116,27 @@ private _flyToPosition = _dropPosition getPos [_flyInRadius,_relativeDirection];
 	sleep 0.1;
 
 	private _aircraftAlt = (getPosATL _aircraft) select 2;
-	private _boxSpawnPosition = _aircraft getRelPos [15,180];
+	private _boxSpawnPosition = _aircraft getRelPos [10 * (count _crates),180];
+    private _containers = [
+        _crates,
+        _aircraftAlt,
+        _boxSpawnPosition
+    ] call KISKA_fnc_supplyDrop;
+
+
+    if (_deleteCargo) then {
+        _containers apply {
+            clearMagazineCargoGlobal _x;
+        	clearWeaponCargoGlobal _x;
+        	clearBackpackCargoGlobal _x;
+        	clearItemCargoGlobal _x;
+        };
+    };
+
+    if (_addArsenal) then {
+        [_containers] call KISKA_fnc_addArsenal;
+    };
+/*
 	private _arsenalBox = ([["B_supplyCrate_F"],_aircraftAlt,_boxSpawnPosition] call KISKA_fnc_supplyDrop) select 0;
 	clearMagazineCargoGlobal _arsenalBox;
 	clearWeaponCargoGlobal _arsenalBox;
@@ -128,6 +156,7 @@ private _flyToPosition = _dropPosition getPos [_flyInRadius,_relativeDirection];
 
 		deleteVehicle _arsenalBox;
 	};
+*/
 };
 
 
