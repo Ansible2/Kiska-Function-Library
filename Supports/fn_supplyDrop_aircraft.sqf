@@ -5,7 +5,7 @@ Description:
 	Spawns in an aircraft that flies over a DZ to drop off an arsenal.
 
 Parameters:
-	0: _dropPosition : <ARRAY> - The position (area) to drop the arsenal
+	0: _dropPosition : <ARRAY or OBJECT> - The position (area) to drop the arsenal
   	1: _vehicleClass : <STRING> - The class of the vehicle to drop the arsenal
     2: _crates : <ARRAY> - An array of strings that are the classnames of the crates to drop
     3: _deleteCargo : <BOOL> - Delete all the default cargo inside the crates
@@ -32,7 +32,7 @@ Author(s):
 scriptName "KISKA_fnc_supplyDrop_aircraft";
 
 params [
-	"_dropPosition",
+	["_dropPosition",[],[[],objNull]],
 	["_vehicleClass","B_T_VTOL_01_vehicle_F",[""]],
     ["_crates",["B_supplyCrate_F"],[[]]],
     ["_deleteCargo",true,[true]],
@@ -77,6 +77,9 @@ _aircraftCrew apply {
 
 
 private _aircraft = _vehicleArray select 0;
+if !(_dropPosition isEqualType []) then {
+	_dropPosition = getPosWorld _dropPosition;
+};
 _airCraft move _dropPosition;
 _aircraft flyInHeight _dropAlt;
 
