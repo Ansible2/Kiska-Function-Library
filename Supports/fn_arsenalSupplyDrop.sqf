@@ -59,6 +59,8 @@ private _vehicleArray = [
 ] call KISKA_fnc_spawnVehicle;
 
 private _aircraftGroup = _vehicleArray select 2;
+_aircraftGroup setBehaviour "SAFE";
+_aircraftGroup setCombatMode "BLUE";
 [_aircraftGroup,false] call KISKA_fnc_ACEX_setHCTransfer;
 
 private _aircraftCrew = _vehicleArray select 1;
