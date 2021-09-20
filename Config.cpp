@@ -473,7 +473,7 @@ class CfgFunctions
 			{};
 			class markPositions
 			{};
-			class markBorders
+			class markBorder
 			{};
 			class monitorFPS
 			{};
