@@ -5,7 +5,9 @@ class CfgPatches
 		units[]={};
 		weapons[]={};
 		requiredVersion=0.1;
-		requiredAddons[]={};
+		requiredAddons[]={
+			"cba_main"
+		};
 	};
 };
 
@@ -470,6 +472,8 @@ class CfgFunctions
 			class log
 			{};
 			class markPositions
+			{};
+			class markBorders
 			{};
 			class monitorFPS
 			{};
