@@ -4,6 +4,14 @@ Function: KISKA_fnc_spawn
 Description:
 	Randomly spawns units on an array of positions.
 
+	PositionATL is expected and arrays can have 4 indexes with a direction for the
+	 unit to face being the 4th. If no direction is specified, a random one is chosen.
+	 Using an object instead of a position will result in the unit facing the same way
+	 that the object is.
+
+	This is destructive on the _spawnPositions array so be sure to copy (+_spawnPositions)
+	 if you need to reuse the array.
+
 Parameters:
 	0: _numberOfUnits <NUMBER> - Number of units to spawn
 	1: _numberOfUnitsPerGroup <NUMBER> - Number of units per group
@@ -95,7 +103,9 @@ private [
 	"_group",
 	"_unit",
 	"_selectedSpawnPosition",
-	"_selectedUnitType"
+	"_selectedUnitType",
+	"_faceDirection",
+	"_watchPosition"
 ];
 
 for "_i1" from 1 to _numberOfGroups do {
@@ -113,13 +123,31 @@ for "_i1" from 1 to _numberOfGroups do {
 
 		// get spawn position
 		_selectedSpawnPosition = selectRandom _spawnPositions;
-		_spawnPositions deleteAt (_spawnPositions findIf {_x isEqualTo _selectedSpawnPosition});
+		_spawnPositions deleteAt (_spawnPositions find _selectedSpawnPosition);
 
 		// get unit type
 		if (_weightedArray) then {
 			_selectedUnitType = selectRandomWeighted _unitTypesFiltered;
 		} else {
 			_selectedUnitType = selectRandom _unitTypesFiltered;
+		};
+
+		// if spawn position is object, set the rotation of the unit to that of the object else random
+		if (_selectedSpawnPosition isEqualType objNull) then {
+			_faceDirection = getDir _selectedSpawnPosition;
+			_watchPosition = _selectedSpawnPosition getRelPos [50,0];
+
+		} else {
+			if (count _selectedSpawnPosition isEqualTo 4) then {
+				_faceDirection = _selectedSpawnPosition deleteAt 4;
+				_watchPosition = getRelPos [50,_faceDirection];
+
+			} else {
+				_faceDirection = floor (random 360);
+				_watchPosition = getRelPos [50,_randomDir];
+
+			};
+
 		};
 
 		// create unit and make sure it was made
@@ -130,15 +158,8 @@ for "_i1" from 1 to _numberOfGroups do {
 
 		doStop _unit;
 
-		// if spawn position is object, set the rotation of the unit to that of the object else random
-		if (_selectedSpawnPosition isEqualType objNull) then {
-			_unit setDir (getDir _selectedSpawnPosition);
-			_unit doWatch (_selectedSpawnPosition getRelPos [50,0]);
-		} else {
-			private _randomDir = floor (random 360);
-			_unit setDir _randomDir;
-			_unit doWatch (_unit getRelPos [50,_randomDir]);
-		};
+		_unit setDir _faceDirection;
+		_unit doWatch _watchPosition;
 
 		// set a random stance and stop unit in place
 		_unit setUnitPos (selectRandomWeighted ["up",0.7,"middle",0.3]);
