@@ -51,6 +51,9 @@ if (isNull _group) exitwith {
 	false
 };
 
+if (_numWaypoints < 0) then {
+	_numWaypoints = count _positions;
+};
 if (_numWaypoints < 2) exitwith {
 	[[_numWaypoints," is not above 2, needs to be atleast 2, exiting..."],true] call KISKA_fnc_log;
 	false
