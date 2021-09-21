@@ -441,6 +441,8 @@ class CfgFunctions
 			{};
 			class errorNotification
 			{};
+			class exportSpawnPositions
+			{};
 			class findConfigAny
 			{};
 			class findIfBool
