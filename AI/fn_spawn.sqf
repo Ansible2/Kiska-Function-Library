@@ -144,7 +144,7 @@ for "_i1" from 1 to _numberOfGroups do {
 
 			} else {
 				_faceDirection = floor (random 360);
-				_watchPosition = getRelPos [50,_randomDir];
+				_watchPosition = _selectedSpawnPosition getRelPos [50,_randomDir];
 
 			};
 
