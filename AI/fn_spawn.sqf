@@ -48,6 +48,17 @@ params [
 ];
 
 // Verify Params
+// Is there at least on position to spawn on
+if (count _spawnPositions < 1) then {
+	for "_i" from 1 to _numberOfUnits do {
+		_spawnPositions pushBack [0,0,0];
+	};
+};
+
+
+if (_numberOfUnits isEqualTo -1) then {
+	_numberOfUnits = count _spawnPositions;
+};
 
 // Check atleast one unit to spawn
 if (_numberOfUnits < 1) exitWith {
@@ -55,12 +66,6 @@ if (_numberOfUnits < 1) exitWith {
 	[]
 };
 
-// Is there at least on position to spawn on
-if (count _spawnPositions < 1) then {
-	for "_i" from 1 to _numberOfUnits do {
-		_spawnPositions pushBack [0,0,0];
-	};
-};
 
 // Re adjust number of units if there are not enough spawn points
 if (count _spawnPositions < _numberOfUnits) then {
