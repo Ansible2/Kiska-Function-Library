@@ -9,6 +9,7 @@ Parameters:
 	1: _landingPosition <ARRAY or OBJECT> - Where to land. If object, position ATL is used.
 	2: _landMode <STRING> - Options are "LAND", "GET IN", and "GET OUT"
 	3: _createHelipad <BOOL> - If true, and invisible helipad will be created. Helipads strongly encourage where a unit will land.
+	4: _afterLandCode <CODE> - Code to spawn after the helicopter has landed param passed is the aircraft in _this select 0
 
 Returns:
 	<BOOL> - True if helicopter can attempt, false if problem
@@ -31,8 +32,9 @@ scriptName "KISKA_fnc_heliLand";
 params [
 	["_aircraft",objNull,[objNull]],
 	["_landingPosition",[],[[],objNull]],
-	["_landMode","GET IN",[""]],
-	["_createHelipad",true,[true]]
+	["_landMode","LAND",[""]],
+	["_createHelipad",true,[true]],
+	["_afterLandCode",{},[{}]]
 ];
 
 if (isNull _aircraft) exitWith {
@@ -62,23 +64,28 @@ if (_createHelipad) then {
 	INVISIBLE_PAD_TYPE createVehicle _landingPosition;
 };
 
-[_aircraft,_landingPosition,_landMode] spawn {
-	params ["_aircraft","_landingPosition","_landMode"];
+[_aircraft,_landingPosition,_landMode,_afterLandCode] spawn {
+	params ["_aircraft","_landingPosition","_landMode","_afterLandCode"];
 
 	_aircraft move _landingPosition;
 
+	_aircraft setVariable ["KISKA_isLanding",true];
 	private _landed = false;
 	private _wasToldToLand = false;
 	private "_unitAlt";
 	waitUntil {
-		sleep 0.25;
-		if (!alive _aircraft) exitWith {};
+		sleep 1;
+		if (!alive _aircraft) exitWith {true};
+		// to interrupt a landing aircraft
+		if (_aircraft getVariable ["KISKA_cancelLanding",false]) exitWith {true};
+
 		if !(_wasToldToLand) then {
 			// tell unit to land at position when ready
 			if (unitReady _aircraft) then {
 				_aircraft land _landMode;
 				_wasToldToLand = true;
 			};
+
 		} else {
 			_unitAlt = (getPosATL _aircraft) select 2;
 			if (isTouchingGround _aircraft OR {_unitAlt < 0.1}) then {
@@ -92,9 +99,18 @@ if (_createHelipad) then {
 				_aircraft land _landMode;
 				//_aircraft flyInHeight 0;
 			};
+
 		};
 
 		_landed
+	};
+
+	// variable to track if other code can run
+	_aircraft setVariable ["KISKA_cancelLanding",false];
+	_aircraft setVariable ["KISKA_isLanding",false];
+
+	if (_afterLandCode isNotEqualTo {}) then {
+		[_aircraft] spawn _afterLandCode;
 	};
 
 	[_aircraft,LAND_EVENT,[_aircraft]] call BIS_fnc_callScriptedEventHandler;
