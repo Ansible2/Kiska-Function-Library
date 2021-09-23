@@ -71,6 +71,12 @@ class CfgFunctions
 			class vlsFireAt
 			{};
 		};
+		class Bases
+		{
+			file = "Kiska_functions\Bases";
+			class createBaseFromConfig
+			{};
+		};
 		class Buildings
 		{
 			file = "Kiska_functions\Buildings";
