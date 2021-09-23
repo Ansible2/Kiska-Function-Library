@@ -2,7 +2,9 @@
 Function: KISKA_fnc_ciwsInit
 
 Description:
-	Fires a number of rounds from AAA piece at target with random disperstion values
+	Fires a number of rounds from AAA piece at target with random disperstion values.
+
+	To stop, set the variable "KISKA_runCIWS" to false.
 
 Parameters:
 	0: _turret : <OBJECT> - The CIWS turret
@@ -32,12 +34,19 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ciwsInit";
 
+
 #define DEFAULT_ENGAGE_TYPES [["RocketBase",false],["MissileBase",false],["ShellBase",false],["R_230mm_HE",false]]
 #define RETURN_NIL nil
 #define NUMBER_OF_MAGS 3
 #define EXPLOSION_DELAY_CONST 0.0005
 #define TURRET_WEAPON "Gatling_30mm_Plane_CAS_01_F"
 #define TURRET_MAGAZINE "1000Rnd_Gatling_30mm_Plane_CAS_01_F"
+
+
+if !(local (_this select 0)) exitWith {
+	["Must be run where the unit is local, remoting to local",true] call KISKA_fnc_log;
+	_this remoteExec ["KISKA_fnc_ciwsInit",(_this select 0)];
+};
 
 if (!canSuspend) exitWith {
 	["Was not run in scheduled; running in scheduled...",true] call KISKA_fnc_log;
@@ -169,7 +178,7 @@ private _fn_checkIfStopAlarm = {
 
 // turrets don't like to watch objects consistently, so we'll use their position instead for doWatch
 private _fn_updateTargetPos = {
-	_targetPos = getPosVisual _target;
+	_targetPos = getPosASLVisual _target;
 };
 
 private _fn_waitToFireOnTarget = {
@@ -215,7 +224,7 @@ private _fn_waitToFireOnTarget = {
 
 		// get target alt
 		call _fn_updateTargetPos;
-		_targetAlt = _targetPos select 2;
+		_targetAlt = (ASLToAGL _targetPos) select 2;
 
 		if (call _fn_isNullTarget) exitWith {
 			[[_turret," stopped waiting on null target #2"],false] call KISKA_fnc_log;
@@ -347,7 +356,7 @@ private _fn_fireAtTarget = {
 							// bullet travels about 1m every 0.0005s
 							private _sleep = (EXPLOSION_DELAY_CONST * (_turret distance _targetPos));
 							sleep _sleep;
-							createVehicle ["HelicopterExploBig",_targetPos,[],0,"FLY"];
+							createVehicle ["HelicopterExploBig",ASLToAGL _targetPos,[],0,"FLY"];
 						};
 
 						// stop target so it doesn't hit something
