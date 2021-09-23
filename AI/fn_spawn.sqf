@@ -144,7 +144,7 @@ for "_i1" from 1 to _numberOfGroups do {
 
 		} else {
 			if (count _selectedSpawnPosition isEqualTo 4) then {
-				_faceDirection = _selectedSpawnPosition deleteAt 4;
+				_faceDirection = _selectedSpawnPosition deleteAt 3;
 				_watchPosition = _selectedSpawnPosition getRelPos [50,_faceDirection];
 
 			} else {
