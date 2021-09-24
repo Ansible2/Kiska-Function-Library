@@ -60,6 +60,10 @@ if (_numberOfUnits isEqualTo -1) then {
 	_numberOfUnits = count _spawnPositions;
 };
 
+if (_numberOfUnitsPerGroup isEqualTo -1) then {
+	_numberOfUnitsPerGroup = _numberOfUnits;
+};
+
 // Check atleast one unit to spawn
 if (_numberOfUnits < 1) exitWith {
 	[["_numberOfUnits is ",_numberOfUnits," needs to be atleast 1. Exiting..."],true] call KISKA_fnc_log;
@@ -137,19 +141,20 @@ for "_i1" from 1 to _numberOfGroups do {
 			_selectedUnitType = selectRandom _unitTypesFiltered;
 		};
 
-		// if spawn position is object, set the rotation of the unit to that of the object else random
+
+		// if spawn position includes a rotation param, set it
 		if (_selectedSpawnPosition isEqualType objNull) then {
 			_faceDirection = getDir _selectedSpawnPosition;
-			_watchPosition = _selectedSpawnPosition getRelPos [50,0];
+			_watchPosition = _selectedSpawnPosition getPos [50,_faceDirection];
 
 		} else {
 			if (count _selectedSpawnPosition isEqualTo 4) then {
 				_faceDirection = _selectedSpawnPosition deleteAt 3;
-				_watchPosition = _selectedSpawnPosition getRelPos [50,_faceDirection];
+				_watchPosition = _selectedSpawnPosition getPos [50,_faceDirection];
 
 			} else {
 				_faceDirection = floor (random 360);
-				_watchPosition = _selectedSpawnPosition getRelPos [50,_randomDir];
+				_watchPosition = _selectedSpawnPosition getPos [50,_randomDir];
 
 			};
 
@@ -157,7 +162,6 @@ for "_i1" from 1 to _numberOfGroups do {
 
 		// create unit and make sure it was made
 		_unit = _group createUnit [_selectedUnitType,_selectedSpawnPosition,[],0,"Can_Collide"];
-
 		// units with different default sides then what was selected will not be set to the selected side without this command
 		[_unit] joinSilent _group;
 
