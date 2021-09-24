@@ -88,7 +88,7 @@ _group setCombatMode "RED";
 
 private _spawnedUnits = units _group;
 allCurators apply {
-	[_x,[_spawnedUnits,false]] remoteExecCall ["addCuratorEditableObjects",2];
+	[_x,[_spawnedUnits,false]] remoteExec ["addCuratorEditableObjects",2];
 };
 
 if (_enableDynamicSimulation) then {
