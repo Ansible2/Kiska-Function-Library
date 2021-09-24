@@ -106,9 +106,6 @@ _classNames apply {
 };
 
 
-// give the containers arsenals
-[_containersArray] call KISKA_fnc_addArsenal;
-
 [_containersArray select 0] spawn {
     params ["_firstContainer"];
 
