@@ -12,6 +12,7 @@ Description:
         "KISKA_heliTurrets_sleepTime" - adjusts the _sleepTime param
         "KISKA_heliTurrets_revealAccuracy" - adjusts the _revealAccuracy param
         "KISKA_heliTurrets_detectionRadius" - adjusts the _detectionRadius param
+        "KISKA_heliTurrets_running" - checks if the system is running
 
 Parameters:
 	0: _heli : <OBJECT> - The helicopter to set up
@@ -47,6 +48,7 @@ scriptName "KISKA_fnc_engageHeliTurretsLoop";
 #define EXIT_VAR_STR "KISKA_heliTurrets_endLoop"
 #define SLEEP_TIME_VAR_STR "KISKA_heliTurrets_sleepTime"
 #define REVEAL_ACC_VAR_STR "KISKA_heliTurrets_revealAccuracy"
+#define IS_RUNNING_VAR_STR "KISKA_heliTurrets_running"
 #define DETECT_RADIUS_VAR_STR "KISKA_heliTurrets_detectionRadius"
 
 if (!canSuspend) exitWith {
@@ -152,6 +154,7 @@ if (_sleepTime < MIN_SLEEP_TIME) then {
 
 
 _heli setVariable [EXIT_VAR_STR,false];
+_heli setVariable [IS_RUNNING_VAR_STR,true];
 _heli setVariable [DETECT_RADIUS_VAR_STR, _detectionRadius];
 _heli setVariable [SLEEP_TIME_VAR_STR, _sleepTime];
 _heli setVariable [REVEAL_ACC_VAR_STR, _revealAccuracy];
@@ -183,5 +186,5 @@ waitUntil {
     false
 };
 
-
-nil
+_heli setVariable [IS_RUNNING_VAR_STR,false];
+_heli setVariable [EXIT_VAR_STR,false];
