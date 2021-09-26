@@ -42,15 +42,17 @@ private _configReturn = configNull;
 	_config_temp = _x;
 	_pathArray apply {
 		// stop going down the list if config does not exist
-		if !(isClass(_config_temp >> _x)) exitWith {
+		if !(isClass(_config_temp >> _x)) then {
 			_configFound = false;
+			break;
 		};
 		_config_temp = _config_temp >> _x;
 		_configFound = true;
 	};
 
-	if (_configFound) exitWith {
+	if (_configFound) then {
 		_configReturn = _config_temp;
+		break;
 	};
 };
 
