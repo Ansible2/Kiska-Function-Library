@@ -49,9 +49,9 @@ if (_rounds < 1) exitWith {
 	nil
 };
 
-private _ammo = getArtilleryAmmo [_gun] select 0;
-private ["_fireDirection","_fireDistance","_targetToAimAt"];
 
+private _ammo = (getArtilleryAmmo [_gun]) select 0;
+private ["_fireDirection","_fireDistance","_targetToAimAt"];
 for "_i" from 1 to _rounds do {
 	if (!(alive _gun) OR !(alive (gunner _gun))) then {
 		[[_gun," or its gunner are not alive, exiting..."]] call KISKA_fnc_log;
@@ -61,7 +61,9 @@ for "_i" from 1 to _rounds do {
 	_fireDirection = round random _randomDirection;
 	_fireDistance = round random _randomDistance;
 	_targetToAimAt = _target getPos [_fireDistance, _fireDirection];
+
 	_gun doArtilleryFire [_targetToAimAt,_ammo,1];
+
 	_rounds = _rounds - 1;
 
 	if (_i isNotEqualTo _rounds) then {
