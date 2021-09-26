@@ -13,8 +13,8 @@ Parameters:
 	3. _group <SIDE or GROUP> - Either the side to create a group on or an
 		already existing group to add the units to
 	4. _forcePosition <BOOL> - Force vehicle to spawn at exact coordinates
-	5. _crewInstructions <ARRAY> - A formatted array of classnames of unit types to create, soldier object,
-		or one of the two in an array with a string for movein command type
+	5. _crewInstructions <ARRAY> - An array of classnames of unit types and/or man objects
+		for the crew. Units are moved into the vehicle using moveInAny in the order provided
 	6. _deleteOverflow <BOOL> - Delete any units from _crewInstructions that prexisted if they don't fit in the vehicle
 
 Returns:
