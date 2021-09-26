@@ -7,7 +7,7 @@ Description:
 Parameters:
 	0: _group <GROUP or OBJECT> - The group or unit to give waypoints to
 	1: _postions <ARRAY> - An array of possible positions to patrol between, can be either positions or objects
-	2: _numWaypoints <NUMBER> - The number of waypoints
+	2: _numWaypoints <NUMBER> - The number of waypoints, use -1 to patrol all given positions
 
 	(Optional)
 	3: _random <BOOL> - Should waypoints be randomized from _positions array
@@ -33,7 +33,7 @@ scriptName "KISKA_fnc_patrolSpecific";
 params [
 	["_group",grpNull,[grpNull,objNull]],
 	["_positions",[],[[]]],
-	["_numWaypoints",5,[1]],
+	["_numWaypoints",-1,[1]],
 	["_random",true,[true]],
 	["_behaviour","SAFE",[""]],
 	["_speed","LIMITED",[""]],
