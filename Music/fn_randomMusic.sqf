@@ -13,11 +13,10 @@ Description:
 	You can define quiet time space between tracks.
 
 Parameters:
-	0: _playedFromLoop <BOOL> - Used to check if this was just called from the random music loop (won't interrupt the current iteration if so)
-	//1: _lastPlayedTrack <STRING> - The track that was last being played. Used to be able to interrupt a song if the random music is out of sync
-	2: _musicTracks <ARRAY> - An array of strings (music tracks) to use
-	3: _timeBetween <ARRAY or NUMBER> - A random or set time between tracks. Formats are [min,mid,max] & [max] for random numbers and just a single number for a set time between (see example)
-	4: _usedMusicTracks <ARRAY> - An array of already used music tracks, don't bother manually entering anyhting, this is for looping purposes
+	0: _tickId <NUMBER> - Used to superceed another random music loop, passs -1 to start a new one
+	1: _musicTracks <ARRAY> - An array of strings (music tracks) to use
+	2: _timeBetween <ARRAY or NUMBER> - A random or set time between tracks. Formats are [min,mid,max] & [max] for random numbers and just a single number for a set time between (see example)
+	3: _usedMusicTracks <ARRAY> - An array of already used music tracks, don't bother manually entering anyhting, this is for looping purposes
 
 Returns:
 	NOTHING
@@ -56,7 +55,6 @@ if (!canSuspend) exitWith {
 ---------------------------------------------------------------------------- */
 params [
 	["_tickId",-1,[123]],
-	//["_lastPlayedTrack","",[""]],
 	["_musicTracks",GET_MUSIC_RANDOM_UNUSED_TRACKS,[[]]],
 	["_timeBetween",GET_MUSIC_RANDOM_TIME_BETWEEN,[[],123]],
 	["_usedMusicTracks",GET_MUSIC_RANDOM_USED_TRACKS,[[]]]
@@ -97,15 +95,15 @@ if (_musicTracks isEqualTo []) then {
 	_musicTracks = +_usedMusicTracks;
 	_usedMusicTracks = [];
 };
+
+
 private _selectedTrack = selectRandom _musicTracks;
+// get defined volume for random music system
+private _volume = GET_MUSIC_RANDOM_VOLUME;
+[_selectedTrack,0,false,_volume,3,true] remoteExec ["KISKA_fnc_playMusic",[0,-2] select isDedicated];
 
 
-private _targetId = [0,-2] select isDedicated;
-// volume is at 0.5 because ambient tracks should be a bit less pronounced
-[_selectedTrack,0,false,0.5,3,true] remoteExec ["KISKA_fnc_playMusic",_targetId];
-//[_selectedTrack] remoteExecCall ["KISKA_fnc_setCurrentRandomMusicTrack",_targetId];
-
-if !(GET_MUSIC_RANDOM_MUSIC_SYS_RUNNING) then {
+if !(GET_MUSIC_RANDOM_SYS_RUNNING) then {
 	SET_MUSIC_VAR(MUSIC_RANDOM_SYS_RUNNING_VAR_STR,true);
 };
 
