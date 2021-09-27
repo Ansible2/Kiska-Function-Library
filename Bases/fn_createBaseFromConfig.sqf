@@ -42,13 +42,6 @@ scriptName "KISKA_fnc_createBaseFromConfig";
         _side = (getNumber(_sideProperty)) call BIS_fnc_sideType; \
     };
 
-#define DEFINE_PATROL_POINTS(class) \
-    private _patrolPoints = [class >> "PatrolPoints"] call BIS_fnc_getCfgData; \
-    hint str (class >> "PatrolPoints"); \
-    if (_patrolPoints isEqualType "") then { \
-        _patrolPoints = GET_MISSION_LAYER_OBJECTS(_patrolPoints); \
-    };
-
 #define DEFAULT_PATROL_BEHAVIOUR "SAFE"
 #define DEFAULT_PATROL_SPEED "LIMITED"
 #define DEFAULT_PATROL_COMBATMODE "RED"
@@ -206,7 +199,10 @@ _patrolClasses apply {
 
     private _specificPatrolClass = _x >> "SpecificPatrol";
     if (isClass _specificPatrolClass) then {
-        DEFINE_PATROL_POINTS(_specificPatrolClass)
+        private _patrolPoints = [_specificPatrolClass >> "patrolPoints"] call BIS_fnc_getCfgData;
+        if (_patrolPoints isEqualType "") then {
+            _patrolPoints = GET_MISSION_LAYER_OBJECTS(_patrolPoints);
+        };
 
         [
             _group,
