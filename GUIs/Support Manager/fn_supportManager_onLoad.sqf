@@ -53,12 +53,6 @@ call KISKA_fnc_supportManager_updateCurrentList;
 	GET_SM_DISPLAY closeDisplay 2;
 }];
 
-/*
-_display displayAddEventHandler ["unload",{
-	uiNamespace setVariable ["KISKA_sm_display",nil];
-	uiNamespace setVariable ["KISKA_SM_poolListBox_ctrl",nil];
-	uiNamespace setVariable ["KISKA_SM_currentListBox_ctrl",nil];
-}];
-*/
+
 
 nil

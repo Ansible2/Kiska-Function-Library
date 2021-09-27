@@ -367,8 +367,6 @@ class CfgFunctions
 			{};
 			class supportManager_onLoad
 			{};
-			class supportManager_onLoad_supportPool
-			{};
 			class supportManager_openDialog
 			{};
 			class supportManager_removeFromPool
