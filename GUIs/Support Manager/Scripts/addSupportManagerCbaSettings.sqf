@@ -11,6 +11,16 @@ Parameters:
 */
 
 [
+    "KISKA_CBA_supportManager_closeMap",
+    "CHECKBOX",
+    ["Support Manager Closes Map","When openning the Support Manager dialog from the map, should it close the map?"],
+    ["KISKA GUI Settings","Support Manager"],
+    true,
+    1
+] call CBA_fnc_addSetting;
+
+
+[
     "KISKA_CBA_supportManager_usedIconColor",
     "COLOR",
     ["Color of Used Support Icons","When a support was already used, it's icon will show this color"],

@@ -23,8 +23,9 @@ Authors:
 scriptName "KISKA_fnc_supportManager_onLoad";
 disableSerialization;
 
-// close map
-openMap false;
+if (KISKA_CBA_supportManager_closeMap) then {
+	openMap false;
+};
 
 params ["_display"];
 
