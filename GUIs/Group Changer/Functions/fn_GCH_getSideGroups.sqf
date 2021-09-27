@@ -18,7 +18,7 @@ Examples:
 Author:
 	Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_GCHOnLoad_sideGroupList";
+scriptName "KISKA_fnc_GCH_getSideGroups";
 
 params [
     ["_side",BLUFOR,[sideUnknown]]
