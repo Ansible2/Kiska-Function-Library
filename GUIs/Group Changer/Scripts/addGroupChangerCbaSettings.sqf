@@ -18,14 +18,11 @@ Parameters:
     true,
     1
 ] call CBA_fnc_addSetting;
-
-/*
 [
-    "KISKA_CBA_GCH_updateFreq",
-    "SLIDER",
-    ["Groups List Update Frequency","When the GUI is open, how often (in seconds) should the list update"],
+    "KISKA_CBA_GCH_closeMap",
+    "CHECKBOX",
+    ["Group Changer Closes Map","When openning the GCH dialog from the map, should it close the map?"],
     ["KISKA GUI Settings","Group Changer"],
-    [0.01,2,1,2,false],
-    0
+    true,
+    1
 ] call CBA_fnc_addSetting;
-*/

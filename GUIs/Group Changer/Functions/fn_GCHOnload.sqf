@@ -24,8 +24,9 @@ scriptName "KISKA_fnc_GCH_dialogOnLoad";
 
 params ["_display"];
 
-// close map
-openMap false;
+if (KISKA_CBA_GCH_closeMap) then {
+	openMap false;
+};
 
 // prepare globals for controls
 uiNamespace setVariable ["KISKA_GCH_display",_display];
@@ -37,8 +38,7 @@ uiNamespace setVariable ["KISKA_GCH_display",_display];
 // leader name indicator
 private _leaderNameIndicator_ctrl = _display displayCtrl GCH_LEADER_NAME_INDICATOR_IDC;
 uiNamespace setVariable ["KISKA_GCH_leaderNameIndicator_ctrl",_leaderNameIndicator_ctrl];
-//[_leaderNameIndicator_ctrl] call KISKA_fnc_GCHOnLoad_leaderNameIndicator;
-// this can probably be updated with the side list control event
+
 
 // Show AI Check Box
 private _showAiCheckBox_ctrl = _display displayCtrl GCH_SHOW_AI_CHECKBOX_IDC;
