@@ -13,7 +13,7 @@ Parameters:
 [
     "KISKA_CBA_traitManager_closeMap",
     "CHECKBOX",
-    ["Trait Manager Closes Map","When openning the Trait Manager dialog from the map, should it close the map?"],
+    ["Trait Manager Closes Map","When opening the Trait Manager dialog from the map, should it close the map?"],
     ["KISKA GUI Settings","Trait Manager"],
     true,
     1

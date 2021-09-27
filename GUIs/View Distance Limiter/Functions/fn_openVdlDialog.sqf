@@ -7,9 +7,9 @@ Description:
 
 Parameters:
 	NONE
-	
+
 Returns:
-	BOOL 
+	BOOL
 
 Examples:
 	(begin example)
@@ -20,5 +20,7 @@ Author(s):
 	Ansible2
 ---------------------------------------------------------------------------- */
 if (!hasInterface) exitWith {false};
+
+openMap false;
 
 createDialog VIEW_DISTANCE_LIMITER_DIALOG_STR;

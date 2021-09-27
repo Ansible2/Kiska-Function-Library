@@ -41,7 +41,7 @@ waitUntil {
 [
 	[
 		"View Distance Limiter",
-		"<execute expression='openMap false; call KISKA_fnc_openVdlDialog;'>OPEN VDL DIALOG</execute>"
+		"<execute expression='call KISKA_fnc_openVdlDialog;'>OPEN VDL DIALOG</execute>"
 	]
 ] call KISKA_fnc_addKiskaDiaryEntry;
 

@@ -46,7 +46,7 @@ waitUntil {
 [
 	[
 		"Trait Manager GUI",
-		"<execute expression='openMap false; call KISKA_fnc_traitManager_openDialog;'>Open Trait Manager GUI</execute>"
+		"<execute expression='call KISKA_fnc_traitManager_openDialog;'>Open Trait Manager GUI</execute>"
 	]
 ] call KISKA_fnc_addKiskaDiaryEntry;
 

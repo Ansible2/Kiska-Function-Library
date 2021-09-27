@@ -21,7 +21,7 @@ Parameters:
 [
     "KISKA_CBA_GCH_closeMap",
     "CHECKBOX",
-    ["Group Changer Closes Map","When openning the GCH dialog from the map, should it close the map?"],
+    ["Group Changer Closes Map","When opening the GCH dialog from the map, should it close the map?"],
     ["KISKA GUI Settings","Group Changer"],
     true,
     1

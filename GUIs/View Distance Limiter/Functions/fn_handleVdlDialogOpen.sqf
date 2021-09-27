@@ -3,16 +3,16 @@
 Function: KISKA_fnc_handleVdlDialogOpen
 
 Description:
-	Handles the openning of the View Distance Limiter dialog to maker sure that
+	Handles the opening of the View Distance Limiter dialog to maker sure that
 	 all the values shown are up to date with the globals.
 
 	It is executed from the dialog's onLoad eventhandler in config.
-	
+
 Parameters:
 	0: _display <NUMBER> - The display to the GUI
-	
+
 Returns:
-	NOTHING 
+	NOTHING
 
 Examples:
 	(begin example)
@@ -27,7 +27,7 @@ if (!hasInterface) exitWith {};
 
 params ["_display"];
 
-private _controls = allControls _display; 
+private _controls = allControls _display;
 private _fn_checkControl = {
 	private _controlIDCTemp = ctrlIDC _controlTemp;
 

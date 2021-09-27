@@ -46,7 +46,7 @@ waitUntil {
 [
 	[
 		"Group Manager GUI",
-		"<execute expression='openMap false; call KISKA_fnc_openGCHDialog;'>Open Group Changer Dialog</execute>"
+		"<execute expression='call KISKA_fnc_openGCHDialog;'>Open Group Changer Dialog</execute>"
 	]
 ] call KISKA_fnc_addKiskaDiaryEntry;
 

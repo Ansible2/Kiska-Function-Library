@@ -13,7 +13,7 @@ Parameters:
 [
     "KISKA_CBA_supportManager_closeMap",
     "CHECKBOX",
-    ["Support Manager Closes Map","When openning the Support Manager dialog from the map, should it close the map?"],
+    ["Support Manager Closes Map","When opening the Support Manager dialog from the map, should it close the map?"],
     ["KISKA GUI Settings","Support Manager"],
     true,
     1
