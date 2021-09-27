@@ -314,16 +314,18 @@ private _fn_fireAtTarget = {
 
 		for "_i" from 1 to _numberOfShots do {
 
-			if (isNull _target) exitWith {
+			if (isNull _target) then {
 				[[_turret," target became null"],false] call KISKA_fnc_log;
+				break;
 			};
 
 			_engagedBy = KISKA_CIWS_engagedTargetsHash getOrDefault [_targetNetId, objNull];
 			[[_target," is currently engaged by ",_engagedBy,". NetId is: ",_targetNetId],false] call KISKA_fnc_log;
 
 			// check if target was engaged by another turret
-			if (!(isNull _engagedBy) AND {_engagedBy isNotEqualTo _turret}) exitWith {
+			if (!(isNull _engagedBy) AND {_engagedBy isNotEqualTo _turret}) then {
 				[[_turret," will not engage ",_target,"; It's already being engaged by ",_engagedBy],false] call KISKA_fnc_log;
+				break;
 			};
 
 			// keep watching target
