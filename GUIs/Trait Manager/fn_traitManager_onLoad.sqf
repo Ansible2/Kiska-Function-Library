@@ -23,8 +23,9 @@ Authors:
 disableSerialization;
 scriptName "KISKA_fnc_traitManager_onLoad";
 
-// close map
-openMap false;
+if (missionNamespace getVariable ["KISKA_CBA_traitManager_closeMap",true]) then {
+	openMap false;
+};
 
 params ["_display"];
 

@@ -23,7 +23,7 @@ Authors:
 scriptName "KISKA_fnc_supportManager_onLoad";
 disableSerialization;
 
-if (KISKA_CBA_supportManager_closeMap) then {
+if (missionNamespace getVariable ["KISKA_CBA_supportManager_closeMap",true]) then {
 	openMap false;
 };
 

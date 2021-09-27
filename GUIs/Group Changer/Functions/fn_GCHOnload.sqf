@@ -24,7 +24,7 @@ scriptName "KISKA_fnc_GCH_dialogOnLoad";
 
 params ["_display"];
 
-if (KISKA_CBA_GCH_closeMap) then {
+if (missionNamespace getVariable ["KISKA_CBA_GCH_closeMap",true]) then {
 	openMap false;
 };
 
