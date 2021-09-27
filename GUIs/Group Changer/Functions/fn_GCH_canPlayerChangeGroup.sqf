@@ -51,16 +51,16 @@ if (_doExit != -1) exitWith {
 	switch (_doExit) do {
 
 		case TRYING_TO_CREATE_NEW_GROUP: {
-			hint "You cannot create a new group, you must join only your allowed groups";;
+			["You cannot create a new group, you must join only your allowed groups"] call KISKA_fnc_errorNotification;
 		};
 
 		case TRYING_TO_JOIN_GROUP_WITHOUT_PERMS: {
 			private _text = parseText "You are limited in the groups you can join, consult the Side Groups list. <t color='#00b530'>Green</t> are joinable.";
-			hint _text;
+			[_text] call KISKA_fnc_errorNotification;
 		};
 	};
 };
 
 if (isNull _groupToJoin) exitWith {
-	hint "The group you are attempting to join no longer exists";
+	["The group you are attempting to join no longer exists"] call KISKA_fnc_errorNotification;
 };

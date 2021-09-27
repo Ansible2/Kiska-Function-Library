@@ -111,9 +111,6 @@ uiNamespace setVariable ["KISKA_GCH_groupIdEdit_ctrl",_groupIdEdit_ctrl];
 
 
 _display displayAddEventHandler ["unload",{
-	// get rid of any hints
-	hintSilent "";
-
 	// clear uiNamespace variables
 	[
 		"KISKA_GCH_display",
@@ -129,7 +126,7 @@ _display displayAddEventHandler ["unload",{
 	] apply {
 		uiNamespace setVariable [_x,nil];
 	};
-	
+
 }];
 
 
