@@ -72,7 +72,7 @@ private _crewGroups = [];
 	};
 } forEach _crew;
 // disable HC transfer while driving
-[_driverGroup,false] call KISKA_fnc_ACEX_setHCTransfer;
+[_driverGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
 
 [_driverGroup] call CBA_fnc_clearWaypoints;
 [_driverGroup,_dismountPoint,-1,"MOVE","UNCHANGED","NO CHANGE",_speed,"NO CHANGE","",[0,0,0],_completionRadius] call CBA_fnc_addWaypoint;
@@ -102,7 +102,7 @@ private _crewGroups = [];
 	};
 
 	// enable HC transfer
-	[_driverGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
+	[_driverGroup,false] call KISKA_fnc_ACEX_setHCTransfer;
 
 	if (_codeOnComplete isNotEqualTo {}) then {
 		[_vehicle,_crew,_crewGroups] call _codeOnComplete;

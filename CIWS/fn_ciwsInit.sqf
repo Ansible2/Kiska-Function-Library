@@ -75,7 +75,7 @@ if !(_turret isKindOf "AAA_System_01_base_F") exitWith {
 };
 
 // disable HC transfer
-[group _turret,false] call KISKA_fnc_ACEX_setHCTransfer;
+[group _turret,true] call KISKA_fnc_ACEX_setHCTransfer;
 
 
 // give the turret the cool red tracer gatling for more authenticity
@@ -85,8 +85,11 @@ for "_i" from 1 to NUMBER_OF_MAGS do {
 };
 _turret selectWeaponTurret [TURRET_WEAPON,[0]];
 
-private _engagedTargetsHash = createHashMap;
-missionNamespace setVariable ["KISKA_CIWS_engagedTargetsHash",_engagedTargetsHash];
+private _engagedTargetsHash = missionNamespace getVariable ["KISKA_CIWS_engagedTargetsHash",createHashMap];
+if (isNil "KISKA_CIWS_engagedTargetsHash") then {
+	missionNamespace setVariable ["KISKA_CIWS_engagedTargetsHash",_engagedTargetsHash];
+};
+
 
 _turret setVariable ["KISKA_runCIWS",true];
 

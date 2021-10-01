@@ -15,7 +15,7 @@ Returns:
 Examples:
     (begin example)
         // disable transfer
-		[someGroup,false] call KISKA_fnc_ACEX_setHCTransfer;
+		[someGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
     (end)
 
 Author(s):

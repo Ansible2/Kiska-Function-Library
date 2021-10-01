@@ -35,7 +35,7 @@ private _missileLaunchPosition = [_target,1000] call CBA_fnc_randPos;
 _missileLaunchPosition = _missileLaunchPosition vectorAdd [0,0,1000];
 private _launcher = createVehicle ["B_Ship_MRLS_01_F",_missileLaunchPosition vectorDiff [0,0,7],[],0,"FLY"];
 private _group = createVehicleCrew _launcher;
-[_group,false] call KISKA_fnc_ACEX_setHCTransfer;
+[_group,true] call KISKA_fnc_ACEX_setHCTransfer;
 
 _launcher allowDamage false;
 _launcher enableSimulationGlobal false;

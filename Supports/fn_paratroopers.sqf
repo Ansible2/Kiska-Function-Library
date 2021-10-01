@@ -106,7 +106,7 @@ private _vehicleArray = [
 	[_pilotClass] // spawn just a pilot
 ] call KISKA_fnc_spawnVehicle;
 // disable HC transfer
-[_vehicleArray select 2,false] call KISKA_fnc_ACEX_setHCTransfer;
+[_vehicleArray select 2,true] call KISKA_fnc_ACEX_setHCTransfer;
 
 private _aircraft = _vehicleArray select 0;
 allCurators apply {

@@ -61,7 +61,7 @@ if (isNull _gunnerGroup) exitWith {
 };
 
 // disable HC transfer
-[_gunnerGroup,false] call KISKA_fnc_ACEX_setHCTransfer;
+[_gunnerGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
 
 private _fn_controlShots = {
 	params ["_doShoot"];
@@ -69,11 +69,11 @@ private _fn_controlShots = {
 	if (_doShoot) then {
 		[_gunner,"WEAPONAIM"] remoteExecCall ["enableAI",_gunner];
 		[_gunnerGroup,"RED"] remoteExecCall ["setCombatMode",_gunnerGroup];
+
 	} else {
 		[_gunner,"WEAPONAIM"] remoteExecCall ["disableAI",_gunner];
 		[_gunnerGroup,"BLUE"] remoteExecCall ["setCombatMode",_gunnerGroup];
-		//[_gunner,"AUTOTARGET"] remoteExecCall ["disableAI"_gunner];
-		//[_gunner,"TARGET"] remoteExecCall ["disableAI"_gunner];
+
 	};
 };
 
@@ -127,7 +127,7 @@ while {sleep _checkTime; _vehicle getVariable ["KISKA_doAAA",true]} do {
 	};
 
 	// if vehicle is dead or gunner is absent
-	if !(alive _gunner) exitWith {
+	if !(alive _gunner) then {
 		//[["_gunner ",_gunner," is no longer alive, exiting"]] call KISKA_fnc_log;
 
 		if (alive _vehicle) then {
@@ -135,16 +135,20 @@ while {sleep _checkTime; _vehicle getVariable ["KISKA_doAAA",true]} do {
 
 			_vehicle setVariable ["KISKA_doAAA",nil];
 		};
+
+		break;
 	};
-	if !(alive _vehicle) exitWith {
+
+	if !(alive _vehicle) then {
 		//[["_vehicle ",_vehicle," is no longer alive, exiting"]] call KISKA_fnc_log;
+		break;
 	};
 };
 
 if (alive _gunner) then {
 	[true] call _fn_controlShots;
 	// allow HC transfer
-	[_gunnerGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
+	[_gunnerGroup,false] call KISKA_fnc_ACEX_setHCTransfer;
 };
 
 
