@@ -16,7 +16,7 @@ Parameters:
     ["Trait Manager Closes Map","When opening the Trait Manager dialog from the map, should it close the map?"],
     ["KISKA GUI Settings","Trait Manager"],
     true,
-    1
+    0
 ] call CBA_fnc_addSetting;
 
 [

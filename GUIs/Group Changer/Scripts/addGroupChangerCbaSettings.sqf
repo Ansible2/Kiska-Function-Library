@@ -24,5 +24,5 @@ Parameters:
     ["Group Changer Closes Map","When opening the GCH dialog from the map, should it close the map?"],
     ["KISKA GUI Settings","Group Changer"],
     true,
-    1
+    0
 ] call CBA_fnc_addSetting;
