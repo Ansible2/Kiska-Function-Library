@@ -64,12 +64,31 @@ if (_createHelipad) then {
 	INVISIBLE_PAD_TYPE createVehicle _landingPosition;
 };
 
-[_aircraft,_landingPosition,_landMode,_afterLandCode] spawn {
-	params ["_aircraft","_landingPosition","_landMode","_afterLandCode"];
+private _keepEngineOn = false;
+private _landedHeight = 0.1;
+_landMode = toUpperANSI _landMode;
+if (_landMode isNotEqualTo "LAND") then {
+	switch (_landMode) do {
+		case "GET IN";
+		case "GET OUT": {
+			_keepEngineOn = true;
+			_landedHeight = 2;
+		};
+
+		default {
+			[["Unknown land type: ", _landMode," used for aircraft: ",_aircraft," . Changing to mode 'LAND'"],true] call KISKA_fnc_log;
+			_landMode = "LAND";
+		};
+	};
+};
+
+
+[_aircraft,_landingPosition,_landMode,_afterLandCode,_keepEngineOn,_landedHeight] spawn {
+	params ["_aircraft","_landingPosition","_landMode","_afterLandCode"."_keepEngineOn","_landedHeight"];
 
 	_aircraft move _landingPosition;
-
 	_aircraft setVariable ["KISKA_isLanding",true];
+
 	private _landed = false;
 	private _wasToldToLand = false;
 	private "_unitAlt";
@@ -88,15 +107,17 @@ if (_createHelipad) then {
 
 		} else {
 			_unitAlt = (getPosATL _aircraft) select 2;
-			if (isTouchingGround _aircraft OR {_unitAlt < 0.1}) then {
+			if (isTouchingGround _aircraft OR (_unitAlt <= _landedHeight)) then {
 				_landed = true;
 				// reinforce land
 				// sometimes, the helicopter will "land" but immediately take off again
 				// this is why the thing is told to land again
 				sleep 2;
-				// keep engine running
-				_aircraft engineon true;
 				_aircraft land _landMode;
+
+				if (_keepEngineOn) then {
+					_aircraft engineon true;
+				};
 				//_aircraft flyInHeight 0;
 			};
 
