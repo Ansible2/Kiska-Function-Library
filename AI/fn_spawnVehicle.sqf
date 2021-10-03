@@ -67,7 +67,7 @@ if (_group isEqualType sideEnemy) then {
 // e.g. spawn some vehicles in the air
 private _simulationType = getText(configFile >> "CfgVehicles" >> _vehicleClass >> "simulation");
 private "_createdVehicle";
-switch (tolower _simulationType) do {
+switch (toLowerANSI _simulationType) do {
 	case "soldier": {
 		_createdVehicle = _group createunit [_vehicleClass,_spawnPosition,[],0,"NONE"];
 		// units have a tendency to still not be a part of an existing group with createUnit
