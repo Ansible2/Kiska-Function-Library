@@ -95,6 +95,8 @@ class KISKA_CAS_baseClass : KISKA_basicSupport_baseClass
 
 class KISKA_attackHelicopterCAS_baseClass : KISKA_basicSupport_baseClass
 {
+    text = "Helicopter Gunship";
+
     supportTypeId = SUPPORT_TYPE_ATTACKHELI_CAS;
 
     icon = CAS_HELI_ICON;
@@ -107,6 +109,8 @@ class KISKA_attackHelicopterCAS_baseClass : KISKA_basicSupport_baseClass
 
 class KISKA_helicopterCAS_baseClass : KISKA_basicSupport_baseClass
 {
+    text = "Door Gunner Support";
+
     supportTypeId = SUPPORT_TYPE_HELI_CAS;
 
     icon = CAS_HELI_ICON;
