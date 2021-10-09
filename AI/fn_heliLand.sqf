@@ -28,6 +28,7 @@ scriptName "KISKA_fnc_heliLand";
 #define HELIPAD_BASE "Helipad_base_F"
 #define INVISIBLE_PAD_TYPE "Land_HelipadEmpty_F"
 #define LAND_EVENT "KISKA_landedEvent"
+#define HIGH_LANDED_THRESHOLD 3
 
 params [
 	["_aircraft",objNull,[objNull]],
@@ -72,7 +73,7 @@ if (_landMode isNotEqualTo "LAND") then {
 		case "GET IN";
 		case "GET OUT": {
 			_keepEngineOn = true;
-			_landedHeight = 2;
+			_landedHeight = HIGH_LANDED_THRESHOLD;
 		};
 
 		default {
@@ -84,7 +85,7 @@ if (_landMode isNotEqualTo "LAND") then {
 
 
 [_aircraft,_landingPosition,_landMode,_afterLandCode,_keepEngineOn,_landedHeight] spawn {
-	params ["_aircraft","_landingPosition","_landMode","_afterLandCode"."_keepEngineOn","_landedHeight"];
+	params ["_aircraft","_landingPosition","_landMode","_afterLandCode","_keepEngineOn","_landedHeight"];
 
 	_aircraft move _landingPosition;
 	_aircraft setVariable ["KISKA_isLanding",true];
