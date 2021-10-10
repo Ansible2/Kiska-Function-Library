@@ -421,33 +421,6 @@ class CfgFunctions
 			class waitUntil
 			{};
 		};
-		class ViewDistanceLimiter
-		{
-			file = "KISKA_functions\GUIs\View Distance Limiter\Functions";
-			class addOpenVdlGuiDiary
-			{
-				postInit = 1;
-			};
-			class adjustVdlControls
-			{};
-			class findVdlPartnerControl
-			{};
-			class handleVdlDialogOpen
-			{};
-			class handleVdlGuiCheckbox
-			{};
-			class isVdlSystemRunning
-			{};
-			class openVdlDialog
-			{};
-			class setAllVdlButton
-			{};
-			class setVdlValue
-			{};
-			class viewDistanceLimiter
-			{};
-		};
-
 	};
 };
 
