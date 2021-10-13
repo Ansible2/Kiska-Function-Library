@@ -55,7 +55,7 @@ class KISKA_traitManager_Dialog
 			w = POS_W(13.5);
 			h = POS_H(18);
 			colorBackground[] = GREY_COLOR(0,0.25);
-			sizeEx = 0.0208333 * safezoneH;
+			sizeEx = GUI_TEXT_SIZE(1);
 		};
 		class traitManager_current_listBox: traitManager_pool_listBox
 		{
