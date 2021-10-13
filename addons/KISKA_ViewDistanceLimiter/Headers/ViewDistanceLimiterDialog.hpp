@@ -24,8 +24,8 @@ class KISKA_VDL_setting_ctrlGrp: RscControlsGroupNoScrollbars
 {
 	idc = -1;
 
-	x = POS_Y(-7);
-	y = POS_X(0);
+	x = POS_X(-7);
+	y = POS_Y(0);
 	w = POS_W(15);
 	h = POS_H(2.5);
 
@@ -74,8 +74,8 @@ class KISKA_viewDistanceLimiter_Dialog
 		{
 			idc = VDL_FRAME_IDC;
 
-            x = POS_Y(-7.5);
-        	y = POS_X(-8);
+            x = POS_X(-7.5);
+        	y = POS_Y(-8);
         	w = POS_W(16);
         	h = POS_H(18.5);
 		};
@@ -84,8 +84,8 @@ class KISKA_viewDistanceLimiter_Dialog
 			idc = VDL_HEADER_TEXT_IDC;
 			moving = 1;
 			text = "View Distance Limiter";
-            x = POS_Y(-7.5);
-        	y = POS_X(-10);
+            x = POS_X(-7.5);
+        	y = POS_Y(-10);
         	w = POS_W(15);
         	h = POS_H(1);
 			colorBackground[] = PROFILE_BACKGROUND_COLOR(0.65);
@@ -97,8 +97,8 @@ class KISKA_viewDistanceLimiter_Dialog
 			idc = VDL_SYSTEM_ON_TEXT_IDC;
 
 			text = "System On:";
-            x = POS_Y(-7.5);
-        	y = POS_X(-9);
+            x = POS_X(-7.5);
+        	y = POS_Y(-9);
         	w = POS_W(3);
         	h = POS_H(1);
 			colorBackground[] = GREY_COLOR(0,1);
@@ -114,8 +114,8 @@ class KISKA_viewDistanceLimiter_Dialog
 		{
 			idc = VDL_SYSTEM_ON_CHECKBOX_IDC;
 			text = "";
-            x = POS_Y(7.5);
-        	y = POS_X(-10);
+            x = POS_X(7.5);
+        	y = POS_Y(-10);
         	w = POS_W(1);
         	h = POS_H(1);
 			colorText[] = GREY_COLOR(0,1);
@@ -140,8 +140,8 @@ class KISKA_viewDistanceLimiter_Dialog
 			idc = VDL_SET_ALL_BUTTON_IDC;
 
 			text = "Set All Changes";
-            x = POS_Y(-3.5);
-        	y = POS_X(-9);
+            x = POS_X(-3.5);
+        	y = POS_Y(-9);
         	w = POS_W(12);
         	h = POS_H(1);
 			//onButtonClick = "_this call KISKA_fnc_setAllVDLButton";
@@ -151,8 +151,8 @@ class KISKA_viewDistanceLimiter_Dialog
 		{
 			idc = VDL_SYSTEM_ON_CHECKBOX_IDC;
 
-            x = POS_Y(-4.5);
-        	y = POS_X(-9);
+            x = POS_X(-4.5);
+        	y = POS_Y(-9);
         	w = POS_W(1);
         	h = POS_H(1);
 			colorText[] = GREY_COLOR(0,1);
