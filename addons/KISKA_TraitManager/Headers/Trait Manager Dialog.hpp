@@ -6,7 +6,7 @@
 class RscText;
 class RscListbox;
 class ctrlButton;
-class RscButtonMenu;
+class KISKA_RscCloseButton;
 
 /* -------------------------------------------------------------------------
 	Dialog
@@ -103,29 +103,13 @@ class KISKA_traitManager_Dialog
 			text = "Store";
             x = POS_X(5);
 		};
-		class traitManager_close_button: RscButtonMenu
+		class traitManager_close_button: KISKA_RscCloseButton
 		{
 			idc = TM_CLOSE_BUTTON_IDC;
-			text = "";
             x = POS_X(13.5);
 			y = POS_Y(-12);
 			w = POS_W(1);
 			h = POS_H(1);
-
-			textureNoShortcut = "\A3\3den\Data\Displays\Display3DEN\search_END_ca.paa";
-			class ShortcutPos
-			{
-				left = 0;
-				top = 0;
-                w = POS_W(1);
-    			h = POS_H(1);
-			};
-			animTextureNormal = "#(argb,8,8,3)color(1,0,0,0.57)";
-			animTextureDisabled = "";
-			animTextureOver = "#(argb,8,8,3)color(1,0,0,0.57)";
-			animTextureFocused = "";
-			animTexturePressed = "#(argb,8,8,3)color(1,0,0,0.57)";
-			animTextureDefault = "";
 		};
 	};
 };

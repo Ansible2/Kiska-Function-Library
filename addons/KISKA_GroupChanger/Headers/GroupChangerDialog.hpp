@@ -9,7 +9,7 @@
 
 class ctrlButton;
 class RscText;
-class RscButtonMenu;
+class KISKA_RscCloseButton;
 class RscListbox;
 class RscEdit;
 class RscCombo;
@@ -146,28 +146,13 @@ class KISKA_GCH_dialog
 			h = POS_H(1);
 			tooltip = "Will leave your current group and create a new one.";
 		};
-		class KISKA_GCH_close_button: RscButtonMenu
+		class KISKA_GCH_close_button: KISKA_RscCloseButton
 		{
 			idc = GCH_CLOSE_BUTTON_IDC;
-			text = "";
             x = POS_X(15);
 			y = POS_Y(-13);
 			w = POS_W(1);
 			h = POS_H(1);
-			textureNoShortcut = "\A3\3den\Data\Displays\Display3DEN\search_END_ca.paa";
-			class ShortcutPos
-			{
-				left = 0;
-				top = 0;
-                w = POS_W(1);
-    			h = POS_H(1);
-			};
-			animTextureNormal = "#(argb,8,8,3)color(1,0,0,0.57)";
-			animTextureDisabled = "";
-			animTextureOver = "#(argb,8,8,3)color(1,0,0,0.57)";
-			animTextureFocused = "";
-			animTexturePressed = "#(argb,8,8,3)color(1,0,0,0.57)";
-			animTextureDefault = "";
 		};
 		class KISKA_GCH_setLeader_button: KISKA_GCH_button
 		{

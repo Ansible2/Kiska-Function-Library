@@ -14,7 +14,7 @@
 class ctrlButton;
 class RscXSliderH;
 class RscText;
-class RscButtonMenu;
+class KISKA_RscCloseButton;
 class RscCheckBox;
 class RscControlsGroupNoScrollbars;
 class RscEdit;
@@ -112,30 +112,13 @@ class KISKA_viewDistanceLimiter_Dialog
 		/* -------------------------------------------------------------------------
 			General Controls
 		------------------------------------------------------------------------- */
-		class KISKA_VDL_close_button: RscButtonMenu
+		class KISKA_VDL_close_button: KISKA_RscCloseButton
 		{
 			idc = VDL_SYSTEM_ON_CHECKBOX_IDC;
-			text = "";
             x = POS_X(7.5);
         	y = POS_Y(-10);
         	w = POS_W(1);
         	h = POS_H(1);
-			colorText[] = GREY_COLOR(0,1);
-			colorActive[] = GREY_COLOR(0,1);
-			textureNoShortcut = "\A3\3den\Data\Displays\Display3DEN\search_END_ca.paa";
-			class ShortcutPos
-			{
-				left = 0;
-				top = 0;
-                w = POS_W(1);
-    			h = POS_H(1);
-			};
-			animTextureNormal = "#(argb,8,8,3)color(1,0,0,0.57)";
-			animTextureDisabled = "";
-			animTextureOver = "#(argb,8,8,3)color(1,0,0,0.57)";
-			animTextureFocused = "";
-			animTexturePressed = "#(argb,8,8,3)color(1,0,0,0.57)";
-			animTextureDefault = "";
 		};
 		class KISKA_VDL_setAll_button: ctrlButton
 		{
