@@ -76,12 +76,12 @@ private _fn_moveDown = {
 missionNamespace setVariable [VDL_GLOBAL_IS_RUNNING_STR,true];
 while {sleep (GET_VDL_FREQUENCY_VAR); GET_VDL_GLOBAL_IS_RUNNING} do {
 	_objectViewDistance = getObjectViewDistance select 0;
-	if (!(GET_VDL_GLOBAL_TIED_VIEW_DIST_VAR) AND (VDL_GLOBAL_VIEW_DIST isNotEqualTo viewDistance)) then {
+	if (!(GET_VDL_GLOBAL_TIED_VIEW_DIST_VAR) AND ((GET_VDL_VIEW_DIST_VAR) isNotEqualTo viewDistance)) then {
 		setViewDistance (GET_VDL_VIEW_DIST_VAR);
 	};
 
 	// is fps at target?
-	if (diag_fps < VDL_GLOBAL_FPS) then {
+	if (diag_fps < (GET_VDL_FPS_VAR)) then {
 		// not at target fps
 		call _fn_moveDown;
 	} else {
