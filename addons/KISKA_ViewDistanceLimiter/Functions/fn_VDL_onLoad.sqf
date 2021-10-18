@@ -40,7 +40,11 @@ _display displayAddEventHandler ["Unload", {
 /* ----------------------------------------------------------------------------
     System On Check box
 ---------------------------------------------------------------------------- */
-(_display displayCtrl VDL_SYSTEM_ON_CHECKBOX_IDC) ctrlAddEventHandler ["CheckedChanged",{
+private _systemOnCheckox = _display displayCtrl VDL_SYSTEM_ON_CHECKBOX_IDC;
+if (GET_VDL_GLOBAL_IS_RUNNING) then {
+    _systemOnCheckox ctrlSetChecked true;
+};
+_systemOnCheckox ctrlAddEventHandler ["CheckedChanged",{
     params ["_control", "_checked"];
     _checked = [false,true] select _checked;
 
@@ -55,10 +59,14 @@ _display displayAddEventHandler ["Unload", {
 /* ----------------------------------------------------------------------------
     Tie View Distance Check box
 ---------------------------------------------------------------------------- */
-(_display displayCtrl VDL_TIED_DISTANCE_CHECKBOX_IDC) ctrlAddEventHandler ["CheckedChanged",{
+private _tieViewDist_checkBox = _display displayCtrl VDL_TIED_DISTANCE_CHECKBOX_IDC;
+if (GET_VDL_GLOBAL_TIED_VIEW_DIST_VAR) then {
+    _tieViewDist_checkBox ctrlSetChecked true;
+};
+_tieViewDist_checkBox ctrlAddEventHandler ["CheckedChanged",{
     params ["", "_checked"];
     _checked = [false,true] select _checked;
-    missionNamespace setVariable [VDL_GLOBAL_RUN_STR,_checked];
+    missionNamespace setVariable [VDL_GLOBAL_TIED_VIEW_DIST_VAR_STR,_checked];
 }];
 
 

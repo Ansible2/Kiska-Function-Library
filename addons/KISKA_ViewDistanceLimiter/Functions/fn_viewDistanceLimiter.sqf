@@ -57,19 +57,19 @@ missionNamespace setVariable [VDL_INCREMENT_VAR_STR,_increment];
 
 private "_objectViewDistance";
 private _fn_moveUp = {
-	if (_objectViewDistance < VDL_GLOBAL_MAX_DIST) exitWith {
-		setObjectViewDistance (_objectViewDistance + VDL_GLOBAL_INC);
+	if (_objectViewDistance < (GET_VDL_MAX_DIST_VAR)) exitWith {
+		setObjectViewDistance (_objectViewDistance + (GET_VDL_INCREMENT_VAR));
 	};
-	if (_objectViewDistance > VDL_GLOBAL_MAX_DIST) exitWith {
-		setObjectViewDistance VDL_GLOBAL_MAX_DIST;
+	if (_objectViewDistance > (GET_VDL_MAX_DIST_VAR)) exitWith {
+		setObjectViewDistance (GET_VDL_MAX_DIST_VAR);
 	};
 };
 private _fn_moveDown = {
-	if (_objectViewDistance > VDL_GLOBAL_MIN_DIST) exitWith {
-		setObjectViewDistance (_objectViewDistance - VDL_GLOBAL_INC);
+	if (_objectViewDistance > (GET_VDL_MIN_DIST_VAR)) exitWith {
+		setObjectViewDistance (_objectViewDistance - (GET_VDL_INCREMENT_VAR));
 	};
-	if (_objectViewDistance < VDL_GLOBAL_MIN_DIST) exitWith {
-		setObjectViewDistance VDL_GLOBAL_MIN_DIST;
+	if (_objectViewDistance < (GET_VDL_MIN_DIST_VAR)) exitWith {
+		setObjectViewDistance (GET_VDL_MIN_DIST_VAR);
 	};
 };
 
