@@ -30,7 +30,7 @@ disableSerialization;
 params ["_controlsGroup","_varName"];
 
 
-_controlsGroup setVariable [CTRL_GRP_PROFILE_VAR_STR,_varName];
+_controlsGroup setVariable [CTRL_GRP_VAR_STR,_varName];
 
 /* ----------------------------------------------------------------------------
     Slider
@@ -40,9 +40,12 @@ _controlsGroup setVariable [CTRL_GRP_SLIDER_CTRL_VAR_STR,_slider_ctrl];
 _slider_ctrl ctrlAddEventHandler ["SliderPosChanged",{
     params ["_slider_ctrl", "_newValue"];
 
-    private _paramControlGroup = ctrlParentControlsGroup _slider_ctrl;
-    private _editBox_ctrl = _paramControlGroup getVariable CTRL_GRP_EDIT_CTRL_VAR_STR;
-    _editBox_ctrl ctrlSetText (str _newValue);
+    private _settingControlGroup = ctrlParentControlsGroup _slider_ctrl;
+    private _editBox_ctrl = _settingControlGroup getVariable CTRL_GRP_EDIT_CTRL_VAR_STR;
+
+    private _strValue = str _newValue;
+    _editBox_ctrl ctrlSetText _strValue;
+    _slider_ctrl ctrlSetTooltip _strValue;
 }];
 
 
@@ -54,10 +57,10 @@ private _setButton_ctrl = _controlsGroup controlsGroupCtrl BUTTON_IDC;
 _setButton_ctrl ctrlAddEventHandler ["ButtonClick",{
     params ["_setButton_ctrl"];
 
-    private _paramControlGroup = ctrlParentControlsGroup _setButton_ctrl;
-    private _slider_ctrl = _paramControlGroup getVariable [CTRL_GRP_SLIDER_CTRL_VAR_STR,controlNull];
+    private _settingControlGroup = ctrlParentControlsGroup _setButton_ctrl;
+    private _slider_ctrl = _settingControlGroup getVariable [CTRL_GRP_SLIDER_CTRL_VAR_STR,controlNull];
 
-    private _varName = _paramControlGroup getVariable CTRL_GRP_PROFILE_VAR_STR;
+    private _varName = _settingControlGroup getVariable CTRL_GRP_VAR_STR;
     private _value = sliderPosition _slider_ctrl;
 
     profileNamespace setVariable [_varName,_value];
@@ -80,8 +83,8 @@ _editBox_ctrl ctrlAddEventHandler ["KeyUp",{
     private _number = _text call BIS_fnc_parseNumberSafe;
     // if we don't check that an actual number is present, we can't start with a blank edit box if say doing negative numbers
     if (str _number == _text) then {
-        private _paramControlGroup = ctrlParentControlsGroup _editBox_ctrl;
-        private _slider_ctrl = _paramControlGroup getVariable CTRL_GRP_SLIDER_CTRL_VAR_STR;
+        private _settingControlGroup = ctrlParentControlsGroup _editBox_ctrl;
+        private _slider_ctrl = _settingControlGroup getVariable CTRL_GRP_SLIDER_CTRL_VAR_STR;
 
         private _sliderRange = sliderRange _slider_ctrl;
         private _sliderMin = _sliderRange select 0;

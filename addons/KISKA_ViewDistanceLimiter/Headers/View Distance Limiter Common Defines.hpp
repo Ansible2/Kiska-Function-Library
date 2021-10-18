@@ -49,7 +49,7 @@
 #define BUTTON_IDC 562700
 #define CTRL_GRP_BUTTON_CTRL_VAR_STR "KISKA_VDL_ctrlGrp_setButton"
 
-#define CTRL_GRP_PROFILE_VAR_STR "KISKA_VDL_profileVarName"
+#define CTRL_GRP_VAR_STR "KISKA_VDL_varName"
 
 
 

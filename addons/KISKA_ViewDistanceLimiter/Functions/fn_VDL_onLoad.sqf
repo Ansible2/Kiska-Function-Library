@@ -42,7 +42,7 @@ _display displayAddEventHandler ["Unload", {
 ---------------------------------------------------------------------------- */
 (_display displayCtrl VDL_SYSTEM_ON_CHECKBOX_IDC) ctrlAddEventHandler ["CheckedChanged",{
     params ["_control", "_checked"];
-    _checked = _checked select [false,true];
+    _checked = [false,true] select _checked;
 
     missionNamespace setVariable [VDL_GLOBAL_RUN_STR,_checked];
     if (_checked AND !(GET_VDL_GLOBAL_IS_RUNNING)) then {
@@ -57,7 +57,7 @@ _display displayAddEventHandler ["Unload", {
 ---------------------------------------------------------------------------- */
 (_display displayCtrl VDL_TIED_DISTANCE_CHECKBOX_IDC) ctrlAddEventHandler ["CheckedChanged",{
     params ["", "_checked"];
-    _checked = _checked select [false,true];
+    _checked = [false,true] select _checked;
     missionNamespace setVariable [VDL_GLOBAL_RUN_STR,_checked];
 }];
 
@@ -78,17 +78,16 @@ _display displayAddEventHandler ["Unload", {
 
     private _display = localNamespace getVariable [VDL_DISPLAY_VAR_STR,displayNull];
     (_display getVariable VDL_CONTROL_GRPS_VAR_STR) apply {
-        private _paramControlGroup = ctrlParentControlsGroup _x;
-        private _slider_ctrl = _paramControlGroup getVariable [CTRL_GRP_SLIDER_CTRL_VAR_STR,controlNull];
+        private _slider_ctrl = _x getVariable [CTRL_GRP_SLIDER_CTRL_VAR_STR,controlNull];
 
-        private _varName = _paramControlGroup getVariable CTRL_GRP_PROFILE_VAR_STR;
+        private _varName = _x getVariable [CTRL_GRP_VAR_STR,""];
         private _value = sliderPosition _slider_ctrl;
         profileNamespace setVariable [_varName,_value];
         missionNamespace setVariable [_varName,_value];
     };
 
     saveProfileNamespace;
-    ["Saved changes"] call KISKA_fnc_notification;
+    ["Saved All changes"] call KISKA_fnc_notification;
 }];
 
 
