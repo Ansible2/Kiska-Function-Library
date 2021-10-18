@@ -1,4 +1,3 @@
-//#include "..\View DistanceLimiter Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_openVdlDialog
 
@@ -23,8 +22,8 @@ scriptName "KISKA_fnc_openVdlDialog";
 
 if (!hasInterface) exitWith {false};
 
-if (missionNamespace getVariable ["KISKA_CBA_VDL_available",true]) exitWith {
-    ["The View Distance Limiter Dialog is not available"]
+if !(missionNamespace getVariable ["KISKA_CBA_VDL_available",true]) exitWith {
+    ["The View Distance Limiter Dialog is not available"] call KISKA_fnc_notification;
     false
 };
 

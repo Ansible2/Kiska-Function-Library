@@ -1,4 +1,4 @@
-#include "..\View Distance Limiter Common Defines.hpp"
+#include "..\Headers\View Distance Limiter Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_viewDistanceLimiter
 
@@ -76,7 +76,6 @@ private _fn_moveDown = {
 missionNamespace setVariable [VDL_GLOBAL_IS_RUNNING_STR,true];
 while {sleep (GET_VDL_FREQUENCY_VAR); GET_VDL_GLOBAL_IS_RUNNING} do {
 	_objectViewDistance = getObjectViewDistance select 0;
-	GET_VDL_GLOBAL_TIED_VIEW_DIST_VAR
 	if (!(GET_VDL_GLOBAL_TIED_VIEW_DIST_VAR) AND (VDL_GLOBAL_VIEW_DIST isNotEqualTo viewDistance)) then {
 		setViewDistance (GET_VDL_VIEW_DIST_VAR);
 	};

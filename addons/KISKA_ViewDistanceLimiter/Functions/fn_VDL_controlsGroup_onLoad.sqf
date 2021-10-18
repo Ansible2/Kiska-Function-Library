@@ -37,12 +37,12 @@ _controlsGroup setVariable [CTRL_GRP_PROFILE_VAR_STR,_varName];
 ---------------------------------------------------------------------------- */
 private _slider_ctrl = _controlsGroup controlsGroupCtrl SLIDER_IDC;
 _controlsGroup setVariable [CTRL_GRP_SLIDER_CTRL_VAR_STR,_slider_ctrl];
-_sliderControl ctrlAddEventHandler ["SliderPosChanged",{
+_slider_ctrl ctrlAddEventHandler ["SliderPosChanged",{
     params ["_slider_ctrl", "_newValue"];
 
-    private _paramControlGroup = ctrlParentControlsGroup _editBox_ctrl;
+    private _paramControlGroup = ctrlParentControlsGroup _slider_ctrl;
     private _editBox_ctrl = _paramControlGroup getVariable CTRL_GRP_EDIT_CTRL_VAR_STR;
-    _editBox_ctrl ctrlSetText _newValue;
+    _editBox_ctrl ctrlSetText (str _newValue);
 }];
 
 
@@ -96,9 +96,11 @@ _editBox_ctrl ctrlAddEventHandler ["KeyUp",{
 
 
 
-private _defaultValue = getNumber(configFile >> "KISKA_viewDistanceLimiter_dialog" >> ctrlClassName _controlsGroup >> "settingSlider" >> "sliderPosition");
+private _defaultValue = getNumber(configFile >> "KISKA_viewDistanceLimiter_dialog" >> "controls" >> ctrlClassName _controlsGroup >> "controls" >> "settingSlider" >> "sliderPosition");
 private _profileValue = profileNamespace getVariable [_varName,_defaultValue];
 private _currentValue = missionNamespace getVariable [_varName,_profileValue];
+
+_editBox_ctrl ctrlSetText (str _currentValue);
 _slider_ctrl sliderSetPosition _currentValue;
 
 

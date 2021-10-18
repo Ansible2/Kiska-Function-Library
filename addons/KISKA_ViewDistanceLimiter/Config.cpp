@@ -19,16 +19,23 @@ class CfgFunctions
 		class ViewDistanceLimiter
 		{
 			file="Kiska_ViewDistanceLimiter\Functions";
-			class addOpenVdlGuiDiary
+			class VDL_addOpenGuiDiaryEntry
 			{
 				preinit = 1;
 			};
+			class VDL_controlsGroup_onLoad
+			{};
+			class VDL_onLoad
+			{};
+			class VDL_openDialog
+			{};
 			class viewDistanceLimiter
 			{};
 		};
 	};
 };
 
+#include "Headers\View Distance Limiter Dialog.hpp"
 
 class Extended_PreInit_EventHandlers {
 	class viewDistanceLimiter_settings_preInitEvent {
