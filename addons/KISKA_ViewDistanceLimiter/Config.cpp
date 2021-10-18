@@ -21,34 +21,17 @@ class CfgFunctions
 			file="Kiska_ViewDistanceLimiter\Functions";
 			class addOpenVdlGuiDiary
 			{
-				postInit = 1;
+				preinit = 1;
 			};
-			class adjustVdlControls
-			{};
-			class findVdlPartnerControl
-			{};
-			class handleVdlDialogOpen
-			{};
-			class handleVdlGuiCheckbox
-			{};
-			class isVdlSystemRunning
-			{};
-			class openVdlDialog
-			{};
-			class setAllVdlButton
-			{};
-			class setVdlValue
-			{};
 			class viewDistanceLimiter
 			{};
 		};
 	};
 };
 
-/*
+
 class Extended_PreInit_EventHandlers {
-	class traitManager_settings_preInitEvent {
-        init = "call compileScript ['KISKA_TraitManager\Scripts\addTraitManagerCbaSettings.sqf'];";
+	class viewDistanceLimiter_settings_preInitEvent {
+        init = "call compileScript ['KISKA_ViewDistanceLimiter\Scripts\addViewDistanceLimiterCbaSettings.sqf'];";
     };
 };
-*/

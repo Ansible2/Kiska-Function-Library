@@ -1,15 +1,7 @@
 #include "View Distance Limiter Common Defines.hpp"
-//#include "\KISKA_Functions\guis\view distance limiter\viewdistancelimitercommondefines.hpp"
 #include "\KISKA_Functions\GUIs\Common GUI Headers\KISKA GUI Grid.hpp"
 #include "\KISKA_Functions\GUIs\Common GUI Headers\KISKA GUI Colors.hpp"
 #include "\KISKA_Functions\GUIs\Common GUI Headers\GUI Styles.hpp"
-
-#define GUI_TEXT_SIZE(MULTIPLIER) 0.0208333 * safezoneH * MULTIPLIER
-
-#define BUTTON_IDC 562700
-#define SLIDER_IDC 562701
-#define EDIT_IDC 562702
-
 
 class ctrlButton;
 class RscXSliderH;
@@ -61,19 +53,18 @@ class KISKA_VDL_setting_ctrlGrp: RscControlsGroupNoScrollbars
 };
 
 
-class KISKA_viewDistanceLimiter_Dialog
+class KISKA_viewDistanceLimiter_dialog
 {
-	idd = VIEW_DISTANCE_LIMITER_DIALOG_IDD;
+	idd = VDL_IDD;
 	movingEnabled = 1;
 	enableSimulation = 1;
-	//onLoad = "[_this select 0] call KISKA_fnc_VDL_dialogOnLoad";
-	onLoad = "[_this select 0] call OpenVDL";
+	onLoad = "[_this select 0] call KISKA_fnc_VDL_onLoad";
 
 	class controlsBackground
 	{
 		class KISKA_VDL_mainFrame: Rsctext
 		{
-			idc = VDL_FRAME_IDC;
+			idc = -1;
 
             x = POS_X(-7.5);
         	y = POS_Y(-8);
@@ -83,7 +74,8 @@ class KISKA_viewDistanceLimiter_Dialog
 		};
 		class KISKA_VDL_mainHeaderText: Rsctext
 		{
-			idc = VDL_HEADER_TEXT_IDC;
+			idc = -1;
+
 			moving = 1;
 			text = "View Distance Limiter";
             x = POS_X(-7.5);
@@ -92,16 +84,26 @@ class KISKA_viewDistanceLimiter_Dialog
         	h = POS_H(1);
 			colorBackground[] = PROFILE_BACKGROUND_COLOR(0.65);
 			style = ST_CENTER;
-			//sizeEx = GUI_TEXT_SIZE(1);
 		};
 		class KISKA_VDL_systemOn_headerText: RscText
 		{
-			idc = VDL_SYSTEM_ON_TEXT_IDC;
+			idc = -1;
 
 			text = "System On:";
             x = POS_X(-7.5);
         	y = POS_Y(-9);
         	w = POS_W(3);
+        	h = POS_H(1);
+			colorBackground[] = GREY_COLOR(0,1);
+		};
+		class KISKA_VDL_tiedViewDistance_headerText: RscText
+		{
+			idc = -1;
+
+			text = "Tied View Distance:";
+            x = POS_X(2.5);
+        	y = POS_Y(-9);
+        	w = POS_W(5);
         	h = POS_H(1);
 			colorBackground[] = GREY_COLOR(0,1);
 		};
@@ -114,7 +116,7 @@ class KISKA_viewDistanceLimiter_Dialog
 		------------------------------------------------------------------------- */
 		class KISKA_VDL_close_button: KISKA_RscCloseButton
 		{
-			idc = VDL_SYSTEM_ON_CHECKBOX_IDC;
+			idc = VDL_CLOSE_BUTTON_IDC;
             x = POS_X(7.5);
         	y = POS_Y(-10);
         	w = POS_W(1);
@@ -127,10 +129,9 @@ class KISKA_viewDistanceLimiter_Dialog
 			text = "Set All Changes";
             x = POS_X(-3.5);
         	y = POS_Y(-9);
-        	w = POS_W(12);
+        	w = POS_W(6);
         	h = POS_H(1);
-			//onButtonClick = "_this call KISKA_fnc_setAllVDLButton";
-			//sizeEx = 0.03125 * safezoneH;
+			sizeEx = GUI_TEXT_SIZE(1);
 		};
 		class KISKA_VDL_systemOn_checkBox: RscCheckBox
 		{
@@ -142,8 +143,17 @@ class KISKA_viewDistanceLimiter_Dialog
         	h = POS_H(1);
 			colorText[] = GREY_COLOR(0,1);
 			colorActive[] = GREY_COLOR(0,1);
-			//onCheckedChanged = "_this call KISKA_fnc_handleVdlGUICheckBox";
-			//onload = "(_this select 0) cbSetChecked (call KISKA_fnc_isVDLSystemRunning)";
+		};
+		class KISKA_VDL_tiedViewDistance_checkBox: RscCheckBox
+		{
+			idc = VDL_TIED_DISTANCE_CHECKBOX_IDC;
+
+            x = POS_X(7.5);
+        	y = POS_Y(-9);
+        	w = POS_W(1);
+        	h = POS_H(1);
+			colorText[] = GREY_COLOR(0,1);
+			colorActive[] = GREY_COLOR(0,1);
 		};
 
 		/* -------------------------------------------------------------------------
@@ -151,7 +161,7 @@ class KISKA_viewDistanceLimiter_Dialog
 		------------------------------------------------------------------------- */
 		class KISKA_VDL_targetFPS_ctrlGrp: KISKA_VDL_setting_ctrlGrp
 		{
-			idc = 520007;
+			idc = VDL_TARGET_FPS_CTRL_GRP_IDC;
 			y = POS_Y(-7.5);
 
 			class controls : controls
@@ -159,10 +169,10 @@ class KISKA_viewDistanceLimiter_Dialog
 				class setButton: setButton
 				{
 					text = "Set Target FPS";
+					tooltip = "The FPS that you want to achieve to have while the system is running";
 				};
 				class settingSlider: settingSlider
 				{
-					tooltip = "The FPS that you want to achieve to have while the system is running";
 					sliderPosition = 60;
 		            sliderRange[] = {15,144};
 		            sliderStep = 1;
@@ -172,7 +182,6 @@ class KISKA_viewDistanceLimiter_Dialog
 				{
 				};
 			};
-
 		};
 
 		/* -------------------------------------------------------------------------
@@ -180,7 +189,7 @@ class KISKA_viewDistanceLimiter_Dialog
 		------------------------------------------------------------------------- */
 		class KISKA_VDL_minObjectDist_ctrlGrp: KISKA_VDL_setting_ctrlGrp
 		{
-			idc = 520009;
+			idc = VDL_MIN_OBJECT_DIST_CTRL_GRP_IDC;
 
 			y = POS_Y(-4.5);
 
@@ -189,10 +198,10 @@ class KISKA_viewDistanceLimiter_Dialog
 				class setButton: setButton
 				{
 					text = "Set Min Object Distance";
+					tooltip = "The minimum distance your Object View Distance can be set to";
 				};
 				class settingSlider: settingSlider
 				{
-					tooltip = "The minimum distance your Object View Distance can be set to";
 					sliderPosition = 500;
 					sliderRange[] = {100,3000};
 					sliderStep = 1;
@@ -209,7 +218,7 @@ class KISKA_viewDistanceLimiter_Dialog
 		------------------------------------------------------------------------- */
 		class KISKA_VDL_maxObjectDist_ctrlGrp: KISKA_VDL_minObjectDist_ctrlGrp
 		{
-			idc = 520010;
+			idc = VDL_MAX_OBJECT_DIST_CTRL_GRP_IDC;
 			y = POS_Y(-1.5);
 
 			class controls : controls
@@ -217,10 +226,10 @@ class KISKA_viewDistanceLimiter_Dialog
 				class setButton: setButton
 				{
 					text = "Set Max Object Distance";
+					tooltip = "The maximum distance your Object View Distance can be set to";
 				};
 				class settingSlider: settingSlider
 				{
-					tooltip = "The maximum distance your Object View Distance can be set to";
 				};
 				class settingEditBox: settingEditBox
 				{
@@ -233,7 +242,7 @@ class KISKA_viewDistanceLimiter_Dialog
 		------------------------------------------------------------------------- */
 		class KISKA_VDL_terrainDist_ctrlGrp: KISKA_VDL_minObjectDist_ctrlGrp
 		{
-			idc = 520010;
+			idc = VDL_TERRAIN_DIST_CTRL_GRP_IDC;
 
 			y = POS_Y(1.5);
 			class controls : controls
@@ -241,10 +250,10 @@ class KISKA_viewDistanceLimiter_Dialog
 				class setButton: setButton
 				{
 					text = "Set Terrain View Distance";
+					tooltip = "The overall (static) view distance; this can be rather high without an issue.";
 				};
 				class settingSlider: settingSlider
 				{
-					tooltip = "The overall (static) view distance; this can be rather high without an issue.";
 				};
 				class settingEditBox: settingEditBox
 				{
@@ -257,17 +266,17 @@ class KISKA_viewDistanceLimiter_Dialog
 		------------------------------------------------------------------------- */
 		class KISKA_VDL_checkFreq_ctrlGrp: KISKA_VDL_setting_ctrlGrp
 		{
-			idc = 520008;
+			idc = VDL_CHECK_FREQ_CTRL_GRP_IDC;
 			y = POS_Y(4.5);
 			class controls : controls
 			{
 				class setButton: setButton
 				{
 					text = "Set Check Frequency";
+					tooltip = "This is how often the view distance will be adjusted in seconds";
 				};
 				class settingSlider: settingSlider
 				{
-					tooltip = "This is how often the view distance will be adjusted in seconds";
 					sliderPosition = 1;
 		            sliderRange[] = {0.01,10};
 		            sliderStep = 0.01;
@@ -284,7 +293,7 @@ class KISKA_viewDistanceLimiter_Dialog
 		------------------------------------------------------------------------- */
 		class KISKA_VDL_incriment_ctrlGrp: KISKA_VDL_setting_ctrlGrp
 		{
-			idc = 520011;
+			idc = VDL_INCRIMENT_CTRL_GRP_IDC;
 			y = POS_Y(7.5);
 
 			class controls : controls
@@ -292,10 +301,10 @@ class KISKA_viewDistanceLimiter_Dialog
 				class setButton: setButton
 				{
 					text = "Set Increment Size";
+					tooltip = "By how much will the view distance be adjusted in meters to achieve the target FPS each check frequency?"
 				};
 				class settingSlider: settingSlider
 				{
-					tooltip = "By how much will the view distance be adjusted in meters to achieve the target FPS each check frequency?"
 					sliderPosition = 25;
 		            sliderRange[] = {1,500};
 		            sliderStep = 5;

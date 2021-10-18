@@ -1,4 +1,4 @@
-#include "..\ViewDistanceLimiterCommonDefines.hpp"
+//#include "..\View DistanceLimiter Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_openVdlDialog
 
@@ -19,8 +19,18 @@ Examples:
 Author(s):
 	Ansible2
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_openVdlDialog";
+
 if (!hasInterface) exitWith {false};
 
-openMap false;
+if (missionNamespace getVariable ["KISKA_CBA_VDL_available",true]) exitWith {
+    ["The View Distance Limiter Dialog is not available"]
+    false
+};
 
-createDialog VIEW_DISTANCE_LIMITER_DIALOG_STR;
+if (missionNamespace getVariable ["KISKA_CBA_VDL_closeMap",true]) then {
+    openMap false;
+};
+
+
+createDialog "KISKA_viewDistanceLimiter_dialog";

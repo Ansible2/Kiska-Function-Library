@@ -1,4 +1,4 @@
-#include "..\ViewDistanceLimiterCommonDefines.hpp"
+#include "..\View Distance Limiter Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_viewDistanceLimiter
 
@@ -6,7 +6,7 @@ Description:
 	Starts a looping function for limiting a player's viewDistance.
 	Loop can be stopped by setting mission variable "KISKA_VDL_run" to false.
 	All other values have global vars that can be edited while it is in use.
-	
+
 	See each param for associated global var.
 
 Parameters:
@@ -19,12 +19,12 @@ Parameters:
 								 This is static because it doesn't affect FPS too much.
 
 Returns:
-	NOTHING 
+	NOTHING
 
 Examples:
 	(begin example)
 		Every 3 seconds, check
-		[45,3,500,1700,3000,25] spawn KISKA_fnc_viewDistanceLimiter; 
+		[45,3,500,1700,3000,25] spawn KISKA_fnc_viewDistanceLimiter;
 	(end)
 
 Author(s):
@@ -38,21 +38,22 @@ if (!canSuspend) exitWith {
 };
 
 params [
-	["_targetFPS",missionNamespace getVariable [VDL_GLOBAL_FPS_STR,60],[123]],
-	["_checkFreq",missionNamespace getVariable [VDL_GLOBAL_FREQ_STR,3],[123]],
-	["_minObjectDistance",missionNamespace getVariable [VDL_GLOBAL_MIN_DIST_STR,500],[123]],
-	["_maxObjectDistance",missionNamespace getVariable [VDL_GLOBAL_MAX_DIST_STR,1700],[123]],
-	["_increment",missionNamespace getVariable [VDL_GLOBAL_INC_STR,25],[123]],
-	["_viewDistance",missionNamespace getVariable [VDL_GLOBAL_VIEW_DIST_STR,3000],[123]]
+	["_targetFPS",60,[123]],
+	["_checkFreq",1,[123]],
+	["_minObjectDistance",500,[123]],
+	["_maxObjectDistance",1700,[123]],
+	["_increment",25,[123]],
+	["_viewDistance",3000,[123]]
 ];
 
-VDL_GLOBAL_RUN = true;
-VDL_GLOBAL_FPS = _targetFPS;
-VDL_GLOBAL_FREQ = _checkFreq;
-VDL_GLOBAL_MIN_DIST = _minObjectDistance;
-VDL_GLOBAL_MAX_DIST = _maxObjectDistance;
-VDL_GLOBAL_VIEW_DIST = _viewDistance;
-VDL_GLOBAL_INC = _increment;
+missionNamespace setVariable [VDL_GLOBAL_RUN_STR,true];
+missionNamespace setVariable [VDL_FPS_VAR_STR,_targetFPS];
+missionNamespace setVariable [VDL_FREQUENCY_VAR_STR,_checkFreq];
+missionNamespace setVariable [VDL_MIN_DIST_VAR_STR,_minObjectDistance];
+missionNamespace setVariable [VDL_MAX_DIST_VAR_STR,_maxObjectDistance];
+missionNamespace setVariable [VDL_VIEW_DIST_VAR_STR,_viewDistance];
+missionNamespace setVariable [VDL_INCREMENT_VAR_STR,_increment];
+
 
 private "_objectViewDistance";
 private _fn_moveUp = {
@@ -71,11 +72,13 @@ private _fn_moveDown = {
 		setObjectViewDistance VDL_GLOBAL_MIN_DIST;
 	};
 };
-while {sleep VDL_GLOBAL_FREQ; VDL_GLOBAL_RUN} do {
-	_objectViewDistance = getObjectViewDistance select 0;
 
-	if (VDL_GLOBAL_VIEW_DIST != viewDistance) then {
-		setViewDistance VDL_GLOBAL_VIEW_DIST;
+missionNamespace setVariable [VDL_GLOBAL_IS_RUNNING_STR,true];
+while {sleep (GET_VDL_FREQUENCY_VAR); GET_VDL_GLOBAL_IS_RUNNING} do {
+	_objectViewDistance = getObjectViewDistance select 0;
+	GET_VDL_GLOBAL_TIED_VIEW_DIST_VAR
+	if (!(GET_VDL_GLOBAL_TIED_VIEW_DIST_VAR) AND (VDL_GLOBAL_VIEW_DIST isNotEqualTo viewDistance)) then {
+		setViewDistance (GET_VDL_VIEW_DIST_VAR);
 	};
 
 	// is fps at target?
@@ -86,4 +89,10 @@ while {sleep VDL_GLOBAL_FREQ; VDL_GLOBAL_RUN} do {
 		// at target fps
 		call _fn_moveUp;
 	};
+
+	if (GET_VDL_GLOBAL_TIED_VIEW_DIST_VAR) then {
+		setViewDistance (getObjectViewDistance select 0);
+	};
 };
+
+missionNamespace setVariable [VDL_GLOBAL_IS_RUNNING_STR,false];
