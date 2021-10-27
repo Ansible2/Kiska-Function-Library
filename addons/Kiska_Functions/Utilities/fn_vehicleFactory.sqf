@@ -92,7 +92,7 @@ _vehicleTypes apply {
 				];
 
 				if !(((ASLToAGL _spawnPosition) nearEntities [['landVehicle','air','ship'],_clearRadius]) isEqualTo []) exitWith {
-					hint 'Pad Must Be Clear Of Vehicles';
+					["Pad Must Be Clear Of Vehicles"] call KISKA_fnc_notification;
 					false
 				};
 
@@ -102,7 +102,7 @@ _vehicleTypes apply {
 					[_vehicle] call _onCreateCode;
 				};
 
-				hint "Vehicle Created";
+				["Vehicle Created"] call KISKA_fnc_notification;
 			},
 			{},
 			[_type,_spawnPosition,_clearRadius,_onCreateCode],
@@ -138,7 +138,7 @@ if !(_controlPanel getVariable ["KISKA_vehicleFactory",false]) then {
 				[_x] remoteExecCall ["deleteVehicle",2];
 			};
 
-			hint "Pad Cleared";
+			["Pad Cleared"] call KISKA_fnc_notification;
 		},
 		{},
 		[_spawnPosition,_clearRadius],

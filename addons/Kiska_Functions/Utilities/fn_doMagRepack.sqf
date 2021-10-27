@@ -33,8 +33,9 @@ params [
 private _unitMags = (magazinesAmmoFull _unit) select {(_x select 1) != 0};
 if (_unitMags isEqualTo []) exitWith {
 	if (_doHint) then {
-		hint "You have no mags to repack";
+	 [	"You have no mags to repack"] call KISKA_fnc_notification;
 	};
+
 	false
 };
 
@@ -59,7 +60,7 @@ _unitMags apply {
 			// check to make sure there are multiple mags of this type in the units inventory
 			_allMagsOfClass_temp = _unitMags select {(_x select 0) == _currentMagazineClass_temp};
 			if ((count _allMagsOfClass_temp) > 1) then {
-				
+
 				// get the total number of bullets for this mag className
 				_totalBulletsForClass_temp = 0;
 				_allMagsOfClass_temp apply {
@@ -84,7 +85,7 @@ if !(_unitMagsSorted isEqualTo []) then {
 	if !(_primaryMag isEqualTo []) then { // if there is a primary magazine
 		_primaryWeaponMagClass = _primaryMag select 0;
 	};
-	
+
 	private _handgunMag = handgunMagazine _unit;
 	private _handgunWeaponMagClass = "";
 	if !(_handgunMag isEqualTo []) then { // if there is a handgun magazine
@@ -96,7 +97,7 @@ if !(_unitMagsSorted isEqualTo []) then {
 	if !(_secondaryMag isEqualTo []) then { // if there is a secondary magazine
 		_secondaryWeaponMagClass = _secondaryMag select 0;
 	};
-	
+
 
 	private _fn_magTypeInWeapon = {
 		params [
@@ -137,7 +138,7 @@ if !(_unitMagsSorted isEqualTo []) then {
 
 		// remove every mag (that's not in the gun) including empty ones
 		_unit removeMagazines _magClassnameTemp;
-		
+
 		// if the total bullets for the mag are not going to equal more than one mag
 		if (_totalBulletCountForClass <= _magCapacity) then {
 			if ([false] call _fn_magTypeInWeapon) then {
@@ -152,12 +153,12 @@ if !(_unitMagsSorted isEqualTo []) then {
 			};
 		} else {
 			_numberOfFullMagsToAdd = floor (_totalBulletCountForClass / _magCapacity);
-			
+
 			// if the mag type is currently inserted into a weapon
 			if ([true] call _fn_magTypeInWeapon) then {
 				_numberOfFullMagsToAdd = _numberOfFullMagsToAdd - 1;
 			};
-			
+
 			_unit addMagazines [_magClassnameTemp,_numberOfFullMagsToAdd];
 
 			// check for if we need that one not full mag to hold the excess ammo

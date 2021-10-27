@@ -32,7 +32,7 @@ params [
 // check if player is host or admin
 if !(call KISKA_fnc_isAdminOrHost) exitWith {
 	if (_isManual) then {
-		hint "Only admins can be assigned curator";
+		["Only admins can be assigned curator"] call KISKA_fnc_notification;
 	};
 	false
 };
@@ -53,9 +53,9 @@ if (isNull _unitWithCurator) then {
 	if (alive _unitWithCurator) then {
 		// no sense in alerting player if they are the curator still
 		if (!(_unitWithCurator isEqualTo player)) then {
-			hint "Another currently alive admin has the curator assigned to them already";
+			["Another currently alive admin has the curator assigned to them already"] call KISKA_fnc_notification;
 		} else {
-			hint "You are already the curator";
+			["You are already the curator"] call KISKA_fnc_notification;
 		};
 
 		false

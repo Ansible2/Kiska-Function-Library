@@ -34,7 +34,7 @@ if (isNull _group) exitWith {
 private _groupLeader = leader _group;
 if !(_groupLeader isEqualTo player) exitWith {
 	private _string = ["You are not the leader of the group. ",name _groupLeader," is your group leader."] joinString "";
-	hint _string;
+	[_string] call KISKA_fnc_notification;
 };
 
 private _groupName = groupId _group;

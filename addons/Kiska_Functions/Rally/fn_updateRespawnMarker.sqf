@@ -33,7 +33,7 @@ params [
 private _callerGroup = group _caller;
 if !([_callerGroup] call KISKA_fnc_isGroupRallyAllowed) exitWith {
 	[["Got marker request for ",_callerGroup," --- Did not create marker"],true] call KISKA_fnc_log;
-	["Your group is not registered to allow for rally points"] remoteExecCall ["hint",_caller];
+	["Your group is not registered to allow for rally points"] remoteExecCall ["KISKA_fnc_notification",_caller];
 };
 
 private _markerID = _callerGroup getVariable ["KISKA_groupRespawnMarkerID",[]];
