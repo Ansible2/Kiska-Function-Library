@@ -1,0 +1,7 @@
+
+#define COMPASS_IDD			    54920
+
+#define COMPASS_GRP_IDC		    54921
+#define COMPASS_IMG_IDC			54922
+#define COMPASS_BACK_IDC		54923
+#define COMPASS_CENTER_IDC		54924
