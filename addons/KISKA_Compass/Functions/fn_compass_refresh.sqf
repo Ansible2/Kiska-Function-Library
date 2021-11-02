@@ -24,7 +24,7 @@ scriptName "KISKA_fnc_compass_refresh";
 
 private _display = GET_COMPASS_DISPLAY;
 if (isNull _display) exitWith {
-    ["The display is null",true] call KISKA_fnc_log;
+    ["The display is null",false] call KISKA_fnc_log;
     false;
 };
 
