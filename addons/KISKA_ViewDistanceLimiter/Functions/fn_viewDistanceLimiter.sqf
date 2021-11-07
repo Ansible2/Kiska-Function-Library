@@ -38,21 +38,24 @@ if (!canSuspend) exitWith {
 };
 
 params [
-	["_targetFPS",60,[123]],
-	["_checkFreq",1,[123]],
-	["_minObjectDistance",500,[123]],
-	["_maxObjectDistance",1700,[123]],
-	["_increment",25,[123]],
-	["_viewDistance",3000,[123]]
+	["_targetFPS",missionNamespace getVariable [VDL_FPS_VAR_STR,60],[123]],
+	["_checkFreq",missionNamespace getVariable [VDL_FREQUENCY_VAR_STR,0.5],[123]],
+	["_minObjectDistance",missionNamespace getVariable [VDL_MIN_DIST_VAR_STR,500],[123]],
+	["_maxObjectDistance",missionNamespace getVariable [VDL_MAX_DIST_VAR_STR,1200],[123]],
+	["_increment",missionNamespace getVariable [VDL_INCREMENT_VAR_STR,25],[123]],
+	["_viewDistance",missionNamespace getVariable [VDL_VIEW_DIST_VAR_STR,3000],[123]]
 ];
 
 missionNamespace setVariable [VDL_GLOBAL_RUN_STR,true];
 missionNamespace setVariable [VDL_FPS_VAR_STR,_targetFPS];
 missionNamespace setVariable [VDL_FREQUENCY_VAR_STR,_checkFreq];
+if (_minObjectDistance > _maxObjectDistance) then {
+	_minObjectDistance = _maxObjectDistance;
+};
 missionNamespace setVariable [VDL_MIN_DIST_VAR_STR,_minObjectDistance];
 missionNamespace setVariable [VDL_MAX_DIST_VAR_STR,_maxObjectDistance];
-missionNamespace setVariable [VDL_VIEW_DIST_VAR_STR,_viewDistance];
 missionNamespace setVariable [VDL_INCREMENT_VAR_STR,_increment];
+missionNamespace setVariable [VDL_VIEW_DIST_VAR_STR,_viewDistance];
 
 
 private "_objectViewDistance";
