@@ -49,13 +49,23 @@ if (isNull _vehicle OR {!(alive _vehicle)}) exitWith {
 	false
 };
 
-_crew apply {
-	private _movedIn = _x moveInAny _vehicle;
 
-	if !(_movedIn) then {
-		[["Deleted excess unit: ",_x]] call KISKA_fnc_log;
-		deleteVehicle _x
+[_crew,_vehicle] spawn {
+	params ["_crew","_vehicle"];
+
+	_crew apply {
+		// crew moved in too fast after init seems to be unreliable
+		// they may not end up in the vehicle
+		sleep 0.25;
+		private _movedIn = _x moveInAny _vehicle;
+
+		if !(_movedIn) then {
+			[["Deleted excess unit: ",_x]] call KISKA_fnc_log;
+			deleteVehicle _x
+		};
 	};
 };
+
+
 
 true
