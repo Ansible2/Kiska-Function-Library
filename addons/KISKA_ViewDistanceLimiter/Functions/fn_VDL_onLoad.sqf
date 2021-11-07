@@ -27,6 +27,7 @@ disableSerialization;
 
 params ["_display"];
 
+
 /* ----------------------------------------------------------------------------
     unload event
 ---------------------------------------------------------------------------- */
@@ -46,12 +47,20 @@ if (GET_VDL_GLOBAL_IS_RUNNING) then {
 };
 
 _systemOnCheckox ctrlAddEventHandler ["CheckedChanged",{
-    params ["", "_checked"];
+    params ["_control", "_checked"];
     _checked = [false,true] select _checked;
 
     missionNamespace setVariable [VDL_GLOBAL_RUN_STR,_checked];
     if (_checked AND !(GET_VDL_GLOBAL_IS_RUNNING)) then {
-        [] spawn KISKA_fnc_viewDistanceLimiter;
+        #define GET_SLIDER_POS_FOR_CTRLGRP(idc) sliderPosition (((ctrlParent _control) displayCtrl idc) controlsGroupCtrl SLIDER_IDC)
+        [
+            GET_SLIDER_POS_FOR_CTRLGRP( VDL_TARGET_FPS_CTRL_GRP_IDC ),
+            GET_SLIDER_POS_FOR_CTRLGRP( VDL_CHECK_FREQ_CTRL_GRP_IDC ),
+            GET_SLIDER_POS_FOR_CTRLGRP( VDL_MIN_OBJECT_DIST_CTRL_GRP_IDC ),
+            GET_SLIDER_POS_FOR_CTRLGRP( VDL_MAX_OBJECT_DIST_CTRL_GRP_IDC ),
+            GET_SLIDER_POS_FOR_CTRLGRP( VDL_INCRIMENT_CTRL_GRP_IDC ),
+            GET_SLIDER_POS_FOR_CTRLGRP( VDL_TERRAIN_DIST_CTRL_GRP_IDC )
+        ] spawn KISKA_fnc_viewDistanceLimiter;
     };
 
 }];

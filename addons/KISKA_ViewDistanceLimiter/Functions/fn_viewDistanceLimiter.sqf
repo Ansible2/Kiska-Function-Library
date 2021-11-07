@@ -46,6 +46,7 @@ params [
 	["_viewDistance",missionNamespace getVariable [VDL_VIEW_DIST_VAR_STR,3000],[123]]
 ];
 
+
 missionNamespace setVariable [VDL_GLOBAL_RUN_STR,true];
 missionNamespace setVariable [VDL_FPS_VAR_STR,_targetFPS];
 missionNamespace setVariable [VDL_FREQUENCY_VAR_STR,_checkFreq];
@@ -55,6 +56,9 @@ if (_minObjectDistance > _maxObjectDistance) then {
 missionNamespace setVariable [VDL_MIN_DIST_VAR_STR,_minObjectDistance];
 missionNamespace setVariable [VDL_MAX_DIST_VAR_STR,_maxObjectDistance];
 missionNamespace setVariable [VDL_INCREMENT_VAR_STR,_increment];
+if (_viewDistance < _maxObjectDistance) then {
+	_viewDistance = _maxObjectDistance;
+};
 missionNamespace setVariable [VDL_VIEW_DIST_VAR_STR,_viewDistance];
 
 
