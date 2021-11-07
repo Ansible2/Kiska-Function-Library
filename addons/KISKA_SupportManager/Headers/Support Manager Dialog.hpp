@@ -73,7 +73,7 @@ class KISKA_supportManager_Dialog
 			w = POS_W(13.5);
 			h = POS_H(18);
 			colorBackground[] = GREY_COLOR(0.25,0.35);
-			sizeEx = GUI_TEXT_SIZE(1);
+			sizeEx = GUI_TEXT_SIZE(2.5);
 		};
 		class supportManager_current_listBox: supportManager_pool_listBox
 		{
