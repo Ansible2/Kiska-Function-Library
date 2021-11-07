@@ -32,7 +32,7 @@ scriptName "KISKA_fnc_endTask";
 #define STATE_CANCELED 2
 
 params [
-    ["_taskId","",[""]],
+    ["_taskId","",["",configNull]],
     ["_state",0,[123]],
     ["_notify",configNull],
     ["_owner",true,[true,objNull,grpNull,sideUnknown,[]]]
@@ -46,7 +46,11 @@ if (isMultiplayer AND {!isServer}) exitWith {
 };
 
 
-private _config = missionConfigFile >> "KISKA_cfgTasks" >> _taskId;
+private _config = _taskId;
+if (_taskId isEqualType "") then {
+    _config = missionConfigFile >> "KISKA_cfgTasks" >> _taskId;
+};
+
 private _taskHasClass = isClass _config;
 // if you want config default value
 if (_notify isEqualTo configNull) then {
