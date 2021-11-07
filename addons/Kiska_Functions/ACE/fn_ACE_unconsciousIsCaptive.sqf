@@ -22,17 +22,21 @@ scriptName "KISKA_fnc_ACE_unconsciousIsCaptive";
 
 if (!hasInterface) exitWith {};
 
+
 if (call KISKA_fnc_isMainMenu) exitWith {
     ["Main menu detected, will not init",false] call KISKA_fnc_log;
     nil
 };
+
 
 if !(["ace_medical"] call KISKA_fnc_isPatchLoaded) exitWith {
 	["ACE medical is not loaded, will not add event...",false] call KISKA_fnc_log;
 	nil
 };
 
-if (missionNamespace getVariable ["KISKA_ACE_addedUnconsciousPlayerEvent",false]) exitWith {};
+
+if (localNamespace getVariable ["KISKA_ACE_addedUnconsciousPlayerEvent",false]) exitWith {};
+
 
 [
     "ace_unconscious",
@@ -42,7 +46,7 @@ if (missionNamespace getVariable ["KISKA_ACE_addedUnconsciousPlayerEvent",false]
 
             if (_unconscious) then {
                 ["Player ace_unconscious event fired."] call KISKA_fnc_log;
-                private _makeCaptive = missionNamespace getVariable ["KISKA_CBA_ACE_unconciousPlayerIsCaptive",true];
+                private _makeCaptive = localNamespace getVariable ["KISKA_CBA_ACE_unconciousPlayerIsCaptive",true];
                 private _wasCaptiveBefore = captive _unit;
                 private _wasMadeCaptive =  false;
 
@@ -52,21 +56,22 @@ if (missionNamespace getVariable ["KISKA_ACE_addedUnconsciousPlayerEvent",false]
                     _unit setCaptive true;
                 };
 
-                missionNamespace setVariable ["KISKA_ACE_wasMadeCaptive",_wasMadeCaptive];
-                //missionNamespace setVariable ["KISKA_ACE_wasCaptiveBefore",_wasCaptiveBefore];
+                localNamespace setVariable ["KISKA_ACE_wasMadeCaptive",_wasMadeCaptive];
 
             } else { // if waking up
                 ["Player is waking from unconscious state"] call KISKA_fnc_log;
-                private _wasMadeCaptive = missionNamespace getVariable ["KISKA_ACE_wasMadeCaptive",false];
+
                 if (captive _unit) then {
                     ["Player is a captive"] call KISKA_fnc_log;
-                    if (_wasMadeCaptive) then {
+
+                    if (localNamespace getVariable ["KISKA_ACE_wasMadeCaptive",false]) then {
                         ["Player was previosuly made captive, captive will be turned off..."] call KISKA_fnc_log;
                         _unit setCaptive false;
                     };
+
                 };
 
-                missionNamespace setVariable ["KISKA_ACE_wasMadeCaptive",false];
+                localNamespace setVariable ["KISKA_ACE_wasMadeCaptive",false];
 
             };
 
@@ -74,7 +79,43 @@ if (missionNamespace getVariable ["KISKA_ACE_addedUnconsciousPlayerEvent",false]
     }
 ] call CBA_fnc_addEventhandler;
 
-missionNamespace setVariable ["KISKA_ACE_addedUnconsciousPlayerEvent",true];
+
+waitUntil {
+    sleep 1;
+    !isNull player;
+};
+
+
+player addEventHandler ["Respawn",{
+
+    if (captive _unit) then {
+        [
+            "Player is a captive",
+            localNamespace getVariable ["KISKA_CBA_logWithError",false],
+            true,
+            false,
+            "KISKA_unconsciousACEEvent_respawnHandler"
+        ] call KISKA_fnc_log;
+
+        if (localNamespace getVariable ["KISKA_ACE_wasMadeCaptive",false]) then {
+            [
+                "Player was previosuly made captive, captive will be turned off...",
+                localNamespace getVariable ["KISKA_CBA_logWithError",false],
+                true,
+                false,
+                "KISKA_unconsciousACEEvent_respawnHandler"
+            ] call KISKA_fnc_log;
+
+            _unit setCaptive false;
+        };
+
+    };
+
+    localNamespace setVariable ["KISKA_ACE_wasMadeCaptive",false];
+}];
+
+
+localNamespace setVariable ["KISKA_ACE_addedUnconsciousPlayerEvent",true];
 
 
 nil
