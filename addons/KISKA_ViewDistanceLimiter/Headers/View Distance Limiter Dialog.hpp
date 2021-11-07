@@ -156,6 +156,8 @@ class KISKA_viewDistanceLimiter_dialog
         	h = POS_H(1);
 			colorText[] = GREY_COLOR(0,1);
 			colorActive[] = GREY_COLOR(0,1);
+
+			tooltip = "A tied view distance will make the terrain view distance be the same as and follow the dynamic adjustments of the object view distance";
 		};
 
 		/* -------------------------------------------------------------------------
