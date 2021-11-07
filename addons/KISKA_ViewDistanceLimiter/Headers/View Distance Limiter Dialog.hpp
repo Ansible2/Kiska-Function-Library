@@ -95,6 +95,7 @@ class KISKA_viewDistanceLimiter_dialog
         	w = POS_W(3);
         	h = POS_H(1);
 			colorBackground[] = GREY_COLOR(0,1);
+			sizeEx = GUI_TEXT_SIZE(2);
 		};
 		class KISKA_VDL_tiedViewDistance_headerText: RscText
 		{
@@ -106,6 +107,7 @@ class KISKA_viewDistanceLimiter_dialog
         	w = POS_W(5);
         	h = POS_H(1);
 			colorBackground[] = GREY_COLOR(0,1);
+			sizeEx = GUI_TEXT_SIZE(2);
 		};
 	};
 
@@ -131,7 +133,7 @@ class KISKA_viewDistanceLimiter_dialog
         	y = POS_Y(-9);
         	w = POS_W(6);
         	h = POS_H(1);
-			sizeEx = GUI_TEXT_SIZE(1);
+			sizeEx = GUI_TEXT_SIZE(2);
 		};
 		class KISKA_VDL_systemOn_checkBox: RscCheckBox
 		{
