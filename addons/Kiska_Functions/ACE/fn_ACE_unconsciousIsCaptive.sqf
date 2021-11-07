@@ -91,7 +91,7 @@ player addEventHandler ["Respawn",{
     if (captive _unit) then {
         [
             "Player is a captive",
-            localNamespace getVariable ["KISKA_CBA_logWithError",false],
+            missionNamespace getVariable ["KISKA_CBA_logWithError",false],
             true,
             false,
             "KISKA_unconsciousACEEvent_respawnHandler"
@@ -100,7 +100,7 @@ player addEventHandler ["Respawn",{
         if (localNamespace getVariable ["KISKA_ACE_wasMadeCaptive",false]) then {
             [
                 "Player was previosuly made captive, captive will be turned off...",
-                localNamespace getVariable ["KISKA_CBA_logWithError",false],
+                missionNamespace getVariable ["KISKA_CBA_logWithError",false],
                 true,
                 false,
                 "KISKA_unconsciousACEEvent_respawnHandler"
