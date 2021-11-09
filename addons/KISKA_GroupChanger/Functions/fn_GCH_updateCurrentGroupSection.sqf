@@ -60,15 +60,19 @@ if (_updateUnitList) then {
 
 		if (_team == "BLUE") exitWith {
 			_currentGroupListBox_ctrl lbSetColor [_index,COLOR_BLUE];
+			_currentGroupListBox_ctrl lbSetSelectColor [_index,COLOR_BLUE];
 		};
 		if (_team == "GREEN") exitWith {
 			_currentGroupListBox_ctrl lbSetColor [_index,COLOR_GREEN];
+			_currentGroupListBox_ctrl lbSetSelectColor [_index,COLOR_GREEN];
 		};
 		if (_team == "RED") exitWith {
 			_currentGroupListBox_ctrl lbSetColor [_index,COLOR_RED];
+			_currentGroupListBox_ctrl lbSetSelectColor [_index,COLOR_RED];
 		};
 		if (_team == "YELLOW") exitWith {
 			_currentGroupListBox_ctrl lbSetColor [_index,COLOR_YELLOW];
+			_currentGroupListBox_ctrl lbSetSelectColor [_index,COLOR_YELLOW];
 		};
 
 	};
