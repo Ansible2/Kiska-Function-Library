@@ -41,7 +41,7 @@ class KISKA_GCH_dialog
 		class KISKA_GCH_headerText: RscText
 		{
 			idc = -1;
-			text = "Group Changer";
+			text = "Group Manager";
 			moving = 1;
             x = POS_X(-16);
 			y = POS_Y(-13);
