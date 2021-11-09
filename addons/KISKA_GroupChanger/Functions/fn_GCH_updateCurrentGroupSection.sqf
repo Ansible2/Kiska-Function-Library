@@ -152,23 +152,3 @@ if (_updateCanRallyCombo) then {
 
 
 nil
-
-
-
-
-
-/*
-	// units list
-	private _groupUnits = units _selectedGroup;
-	if !(uiNamespace getVariable "KISKA_GCH_showAI") then {
-		_groupUnits = _groupUnits select (isPlayer _x);
-	};
-	private _currentGroupListBox_ctrl = uiNamespace getVariable "KISKA_GCH_currentGroupListBox_ctrl";
-	private "_index";
-	_groupUnits apply {
-		_index = _currentGroupListBox_ctrl lbAdd (name _x);
-		if !(isPlayer _x) then {
-			_currentGroupListBox_ctrl lbSetColor [_index,[0,0.31,0.65,1]];
-		};
-	};
-*/

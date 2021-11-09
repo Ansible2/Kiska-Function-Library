@@ -80,6 +80,7 @@ private _fn_moveDown = {
 	};
 };
 
+
 missionNamespace setVariable [VDL_GLOBAL_IS_RUNNING_STR,true];
 while {sleep (GET_VDL_FREQUENCY_VAR); GET_VDL_GLOBAL_IS_RUNNING} do {
 	_objectViewDistance = getObjectViewDistance select 0;
@@ -100,5 +101,6 @@ while {sleep (GET_VDL_FREQUENCY_VAR); GET_VDL_GLOBAL_IS_RUNNING} do {
 		setViewDistance (getObjectViewDistance select 0);
 	};
 };
+
 
 missionNamespace setVariable [VDL_GLOBAL_IS_RUNNING_STR,false];

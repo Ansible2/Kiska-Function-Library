@@ -61,12 +61,16 @@ _control lbAdd "MAIN";
 
 private _index = _control lbAdd "BLUE";
 _control lbSetColor [_index, COLOR_BLUE];
+
 _index = _control lbAdd "GREEN";
 _control lbSetColor [_index, COLOR_GREEN];
+
 _index = _control lbAdd "RED";
 _control lbSetColor [_index, COLOR_RED];
+
 _index = _control lbAdd "YELLOW";
 _control lbSetColor [_index, COLOR_YELLOW];
+
 
 _control lbSetCurSel 0;
 
