@@ -29,12 +29,25 @@ _control ctrlAddEventHandler ["ButtonClick",{
 
 	if !(isNull _selectedGroup) then {
 		if !((group player) isEqualTo _selectedGroup) then {
+			private _groupIsLocal = local _selectedGroup;
 			[player] joinSilent _selectedGroup;
-			[true,true] call KISKA_fnc_GCH_updateCurrentGroupSection;
-			[] call KISKA_fnc_GCH_updateSideGroupsList;
+			
+			[] spawn {
+				params ["_groupIsLocal"];
+				// give the group change some time to travel over the network
+				if (!_groupIsLocal) then {
+					sleep 1;
+				};
+
+				[true,true] call KISKA_fnc_GCH_updateCurrentGroupSection;
+				[] call KISKA_fnc_GCH_updateSideGroupsList;
+			};
+
 		};
+
 	} else {
 		["The group you are trying to join does not exist"] call KISKA_fnc_errorNotification;
+
 	};
 
 }];
