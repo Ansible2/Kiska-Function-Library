@@ -62,17 +62,17 @@ private _saveVariable = ["KISKA_GVT",clientOwner,"_",_messageNumber] joinString 
 [_namespace,_variableName,_saveVariable,_defaultValue,clientOwner] remoteExecCall ["KISKA_fnc_getVariableTarget_sendBack",_target];
 
 waitUntil {
-	if (!isNil {missionNamespace getVariable _saveVariable}) exitWith {
+	if (!isNil _saveVariable) exitWith {
 		[["Got variable ",_saveVariable," from target ",_target],false] call KISKA_fnc_log;
 		true
 	};
-	sleep 0.25;
+	sleep 0.05;
 	[["Waiting for variable from target: ",_target],false] call KISKA_fnc_log;
 	false
 };
 
 private _return = missionNamespace getVariable _saveVariable;
-missionNamespace setVariable [_saveVariable,nil]; 
+missionNamespace setVariable [_saveVariable,nil];
 
 
 _return
