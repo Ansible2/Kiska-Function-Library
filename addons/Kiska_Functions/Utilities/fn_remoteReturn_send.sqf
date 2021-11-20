@@ -59,11 +59,11 @@ private _uniqueId = ["KISKA_RR",clientOwner,"_",_messageNumber] joinString "";
 [_code,_args,_scheduled,_uniqueId] remoteExecCall ["KISKA_fnc_remoteReturn_receive",_target];
 
 waitUntil {
-	if (!isNil {missionNamespace getVariable _uniqueId}) exitWith {
+	if (!isNil _uniqueId) exitWith {
 		[["Got variable ",_uniqueId," from target ",_target],false] call KISKA_fnc_log;
 		true
 	};
-	sleep 0.25;
+	sleep 0.05;
 	[["Waiting for ",_uniqueId," from target: ",_target],false] call KISKA_fnc_log;
 	false
 };
