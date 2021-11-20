@@ -336,6 +336,8 @@ class CfgFunctions
 			{};
 			class classTurretsWithGuns
 			{};
+			class countdown
+			{};
 			class cruiseMissile
 			{};
 			class dataLinkMsg
