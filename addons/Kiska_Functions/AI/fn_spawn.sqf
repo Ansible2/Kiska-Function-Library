@@ -145,20 +145,18 @@ for "_i1" from 1 to _numberOfGroups do {
 		// if spawn position includes a rotation param, set it
 		if (_selectedSpawnPosition isEqualType objNull) then {
 			_faceDirection = getDir _selectedSpawnPosition;
-			_watchPosition = _selectedSpawnPosition getPos [50,_faceDirection];
 
 		} else {
 			if (count _selectedSpawnPosition isEqualTo 4) then {
 				_faceDirection = _selectedSpawnPosition deleteAt 3;
-				_watchPosition = _selectedSpawnPosition getPos [50,_faceDirection];
 
 			} else {
 				_faceDirection = floor (random 360);
-				_watchPosition = _selectedSpawnPosition getPos [50,_randomDir];
 
 			};
 
 		};
+		_watchPosition = _selectedSpawnPosition getPos [50,_faceDirection];
 
 		// create unit and make sure it was made
 		_unit = _group createUnit [_selectedUnitType,_selectedSpawnPosition,[],0,"Can_Collide"];
