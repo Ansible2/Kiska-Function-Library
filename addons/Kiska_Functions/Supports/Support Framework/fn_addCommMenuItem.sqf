@@ -6,7 +6,7 @@ Description:
 	It is mostly made with the purpose of using default values and specifically
 	 passing a -1 by default to _expressionArguments.
 
-	Also initializes/adds entries to the KISKA_playersSupportMap which is used for 
+	Also initializes/adds entries to the KISKA_playersSupportMap which is used for
 	 keeping track of the number of uses left on a support if they are passed between
 	 the Support Manager.
 Parameters:
@@ -47,13 +47,17 @@ private _id = [
 	_notification
 ] call BIS_fnc_addCommMenuItem;
 
-if (!isNil {_id}) then {
+if (!isNil "_id") then {
 	if (_addToHash) then {
 		if (isNil "KISKA_playersSupportMap") then {
-			KISKA_playersSupportMap = createHashMap;	
+			KISKA_playersSupportMap = createHashMap;
+
 		};
+
 		KISKA_playersSupportMap set [_id,[_itemClass,_expressionArguments]];
+
 	};
+
 };
 
 

@@ -21,19 +21,33 @@ Authors:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_supportManager_store_buttonClickEvent";
 
-private _selectedIndex = lbCurSel (GET_SM_CURRENT_LIST_CTRL);
+disableSerialization;
+
+private _listControl = GET_SM_CURRENT_LIST_CTRL;
+private _selectedIndex = lbCurSel _listControl;
 
 if (_selectedIndex isNotEqualTo -1) then {
-	private _menuArray = player getVariable ["BIS_fnc_addCommMenuItem_menu",[]];
-	private _supportArray = _menuArray select _selectedIndex;
-	private _menuId = _supportArray select 0;
-	private _support = KISKA_playersSupportMap deleteAt _menuId;
-
-	// if support number of uses is default amount
-	if ((_support select 1) isEqualTo -1) then {
-		_support = _support select 0;
+	private _commMenuItems = player getVariable ["BIS_fnc_addCommMenuItem_menu",[]];
+	private _selectedItemSupportId = _listControl lbValue _selectedIndex;
+	private _indexToRemove = _commMenuItems findIf {
+		(_x select 0) isEqualTo _selectedItemSupportId
 	};
 
-	[_support] call KISKA_fnc_supportManager_addToPool_global;
-	[player,_menuId] call BIS_fnc_removeCommMenuItem;
+	if (_indexToRemove isNotEqualTo -1) then {
+		private _kiskaSupportInfo = KISKA_playersSupportMap deleteAt _selectedItemSupportId;
+
+		// if support number of uses is default amount
+		if ((_kiskaSupportInfo select 1) isEqualTo -1) then {
+			// then change to the shorthand syntax for use with KISKA_fnc_supportManager_addToPool_global
+			// so that it has the default amount of uses
+			_kiskaSupportInfo = _kiskaSupportInfo select 0;
+		};
+
+		[_kiskaSupportInfo] call KISKA_fnc_supportManager_addToPool_global;
+		[player,_indexToRemove] call BIS_fnc_removeCommMenuItem;
+	};
+
 };
+
+
+nil

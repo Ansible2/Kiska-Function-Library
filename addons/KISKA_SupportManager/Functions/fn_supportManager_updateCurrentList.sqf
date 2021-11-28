@@ -33,7 +33,7 @@ if (isNull _listControl) exitWith {};
 lbClear _listControl;
 if (!(isNil "KISKA_playersSupportMap") AND {count KISKA_playersSupportMap > 0}) then {
 
-	private ["_config","_text","_class","_toolTip","_path","_icon"];
+	private ["_config","_text","_class","_toolTip","_path","_icon","_usesLeft"];
 	private _usedIconColor = missionNamespace getVariable ["KISKA_CBA_supportManager_usedIconColor",[0.75,0,0,1]];
 	KISKA_playersSupportMap apply {
 
@@ -44,16 +44,21 @@ if (!(isNil "KISKA_playersSupportMap") AND {count KISKA_playersSupportMap > 0}) 
 		_icon = getText(_config >> "icon");
 
 		_path = _listControl lbAdd _text;
+		// save comm menu id as value
+		_listControl lbSetValue [_path, _x];
 		_listControl lbSetTooltip [_path,_toolTip];
 		_listControl lbSetPicture [_path,_icon];
-		// if support was used
-		if ((_y select 1) isNotEqualTo -1) then {
+
+		// if support number of uses is default amount
+		_usesLeft = _y select 1;
+		if (_usesLeft isNotEqualTo -1) then {
 			_listControl lbSetPictureColor [_path,_usedIconColor];
 			_listControl lbSetPictureColorSelected [_path,_usedIconColor];
 		};
 
 	};
 
+	lbSortByValue _listControl;
 };
 
 
