@@ -9,6 +9,7 @@ Parameters:
 	1: _shownCountDown : <NUMBER> - The number at which a print out of the
         current countdown will show on screen.
 	2: _soundedCountDown : <NUMBER> - The number at which a beep should play for each second
+	3: _soundName : <STRING> - The cfgSournds entry to play for the sound portion of the countdown
 
 Returns:
 	NOTHING
@@ -27,7 +28,7 @@ Author(s):
 	Hilltop(Willtop) & omNomios,
 	Modified by: Ansible2 // Cipher
 ---------------------------------------------------------------------------- */
-#define SOUND "beep_target"
+scriptName "KISKA_fnc_countdown";
 
 if (!canSuspend) exitWith {
     ["Needs to be called from a scheduled environment!",true] call KISKA_fnc_log;
@@ -37,7 +38,8 @@ if (!canSuspend) exitWith {
 params [
 	["_countDownTotal",15,[123]],
 	["_shownCountDown",15,[123]],
-	["_soundedCountDown",10,[123]]
+	["_soundedCountDown",10,[123]],
+    ["_soundName","beep_target",[""]]
 ];
 
 if (_countDownTotal < _shownCountDown) then {
@@ -62,7 +64,7 @@ if (hasInterface) then {
 
     while {_shownCountDown >= 0} do {
     	if (_shownCountDown <= _soundedCountDown) then {
-    		playSound SOUND;
+    		playSound _soundName;
     	};
 
     	[str _shownCountDown, 0, 0, 1, 0] spawn BIS_fnc_dynamicText;
