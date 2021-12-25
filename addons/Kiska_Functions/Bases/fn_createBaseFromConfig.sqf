@@ -101,16 +101,31 @@ _turretClasses apply {
 
     private _enableDynamicSim = [_x >> "dynamicSim"] call BIS_fnc_getCfgDataBool;
     private _excludeFromHeadlessTransfer = [_x >> "excludeHCTransfer"] call BIS_fnc_getCfgDataBool;
+
+    private _onUnitCreated = compile getText(_x >> "onUnitCreated");
+    private _onUnitMovedInGunner = compile getText(_x >> "onUnitMovedInGunner");
+
     private ["_group","_unit"];
     _turrets apply {
         _group = createGroup _side;
         _unit = _group createUnit [selectRandom _unitClasses,[0,0,0],[],0,"NONE"];
         [_group,_excludeFromHeadlessTransfer] call KISKA_fnc_ACEX_setHCTransfer;
 
+
+        if (_onUnitCreated isNotEqualto {}) then {
+            [_unit] call _onUnitCreated;
+        };
+
+
         if (_enableDynamicSim) then {
             _group enableDynamicSimulation true;
         };
         _unit moveInGunner _x;
+
+
+        if (_onUnitMovedInGunner isNotEqualto {}) then {
+            [_unit,_x] call _onUnitMovedInGunner;
+        };
     };
 
 };
@@ -139,7 +154,7 @@ _infantryClasses apply {
     DEFINE_SIDE
 
 
-    [
+    private _units = [
         getNumber(_x >> "numberOfUnits"),
         getNumber(_x >> "unitsPerGroup"),
         _unitClasses,
@@ -149,6 +164,14 @@ _infantryClasses apply {
         _side
     ] call KISKA_fnc_spawn;
 
+
+    private _onUnitCreated = getText(_x >> "onUnitCreated");
+    if (_onUnitCreated isNotEqualTo "") then {
+        _onUnitCreated = compile _onUnitCreated;
+        _units apply {
+            [_x] call _onUnitCreated;
+        };
+    };
 };
 
 
@@ -244,6 +267,11 @@ _patrolClasses apply {
             _speed,
             _formation
         ] call CBA_fnc_taskPatrol;
+    };
+
+    private _onGroupCreated = getText(_x >> "onGroupCreated");
+    if (_onGroupCreated isNotEqualTo "") then {
+        [_group] call (compile _onGroupCreated);
     };
 };
 
