@@ -282,22 +282,39 @@ _patrolClasses apply {
 ---------------------------------------------------------------------------- */
 private _simplesConfig = _baseConfig >> "Simples";
 private _simplesConfigClasses = "true" configClasses (_simplesConfig);
+
+private _defaultSuperSimple = [_simplesConfig >> "superSimple"] call BIS_fnc_getCfgDataBool;
+private _defaultFollowTerrain = [_simplesConfig >> "followTerrain"] call BIS_fnc_getCfgDataBool;
+private ["_useSuperSimple","_followTerrain"];
+
 _simplesConfigClasses apply {
-    private _useSuperSimple = [_x >> "superSimple"] call BIS_fnc_getCfgDataBool;
-    private _followTerrain = [_x >> "followTerrain"] call BIS_fnc_getCfgDataBool;
+    if (isNumber (_x >> "superSimple")) then {
+        _useSuperSimple = [_x >> "superSimple"] call BIS_fnc_getCfgDataBool;
+
+    } else {
+        _useSuperSimple = _defaultSuperSimple;
+
+    };
+
+    if (isNumber (_x >> "followTerrain")) then {
+        _followTerrain = [_x >> "followTerrain"] call BIS_fnc_getCfgDataBool;
+
+    } else {
+        _followTerrain = _defaultFollowTerrain;
+
+    };
+
 
     private _objectClasses = getArray(_x >> "objectClasses");
     private _positions = [_x >> "positions"] call BIS_fnc_getCfgData;
-    private "_direction";
 
     if (_positions isEqualType "") then {
         GET_MISSION_LAYER_OBJECTS(_positions) apply {
-            _direction = getDir _x;
 
             [
                 selectRandom _objectClasses,
-                getPosASL _x,
-                _direction,
+                getPosWorld _x,
+                getDir _x,
                 _followTerrain,
                 _useSuperSimple
             ] call BIS_fnc_createSimpleObject;
@@ -305,12 +322,11 @@ _simplesConfigClasses apply {
 
     } else {
         _positions apply {
-            _direction = _x deleteAt 3;
 
             [
                 selectRandom _objectClasses,
-                ATLtoASL _x,
-                _direction,
+                _x,
+                _x deleteAt 3, // direction
                 _followTerrain,
                 _useSuperSimple
             ] call BIS_fnc_createSimpleObject;
