@@ -46,6 +46,7 @@ scriptName "KISKA_fnc_createBaseFromConfig";
 #define DEFAULT_PATROL_SPEED "LIMITED"
 #define DEFAULT_PATROL_COMBATMODE "RED"
 #define DEFAULT_PATROL_FORMATION "STAG COLUMN"
+#define DEFAULT_SIMPLE_OFFSET [0,0,0.1]
 
 
 params [
@@ -307,6 +308,15 @@ _simplesConfigClasses apply {
     private _objectClasses = getArray(_x >> "objectClasses");
     private _positions = [_x >> "positions"] call BIS_fnc_getCfgData;
 
+    private _offset = getArray(_x >> "offset");
+    if (_offset isEqualTo []) then {
+        _offset = DEFAULT_SIMPLE_OFFSET;
+    };
+    private _vectorUp = getArray(_x >> "vectorUp");
+    private _vectorDir = getArray(_x >> "vectorDir");
+    private _hasVectorUp = _vectorUp isNotEqualTo [];
+    private _hasVectorDir = _vectorDir isNotEqualTo [];
+
     if (_positions isEqualType "") then {
         GET_MISSION_LAYER_OBJECTS(_positions) apply {
             private _position = getPosASL _x;
@@ -319,7 +329,14 @@ _simplesConfigClasses apply {
                 _useSuperSimple
             ] call BIS_fnc_createSimpleObject;
 
-            _object setPosASL (_position vectorAdd [0,0,0.1]);
+            _object setPosASL (_position vectorAdd _offset);
+
+            if (_hasVectorDir) then {
+                _object setVectorDir _vectorDir;
+            };
+            if (_hasVectorUp) then {
+                _object setVectorUp _vectorUp;
+            };
         };
 
     } else {
@@ -331,6 +348,13 @@ _simplesConfigClasses apply {
                 _followTerrain,
                 _useSuperSimple
             ] call BIS_fnc_createSimpleObject;
+
+            if (_hasVectorDir) then {
+                _object setVectorDir _vectorDir;
+            };
+            if (_hasVectorUp) then {
+                _object setVectorUp _vectorUp;
+            };
         };
 
     };
