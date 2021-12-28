@@ -301,7 +301,6 @@ _simplesConfigClasses apply {
 
     } else {
         _followTerrain = _defaultFollowTerrain;
-
     };
 
 
@@ -310,19 +309,21 @@ _simplesConfigClasses apply {
 
     if (_positions isEqualType "") then {
         GET_MISSION_LAYER_OBJECTS(_positions) apply {
+            private _position = getPosASL _x;
 
-            [
+            private _object = [
                 selectRandom _objectClasses,
-                getPosWorld _x,
+                _position,
                 getDir _x,
                 _followTerrain,
                 _useSuperSimple
             ] call BIS_fnc_createSimpleObject;
+
+            _object setPosASL (_position vectorAdd [0,0,0.1]);
         };
 
     } else {
         _positions apply {
-
             [
                 selectRandom _objectClasses,
                 _x,
