@@ -301,7 +301,7 @@ private _fn_getSimpleClassData = {
 
     private "_dataArray";
     if (_config in _configDataHashMap) then {
-        _dataArray = _configDataHashMap get _dataArray;
+        _dataArray = _configDataHashMap get _config;
 
     } else {
         _dataArray = [];
@@ -352,7 +352,7 @@ _simplesConfigClasses apply {
     _topConfig = _x;
     _typeConfigs = "true" configClasses _topConfig;
 
-    private _positions = [_x >> "positions"] call BIS_fnc_getCfgData;
+    private _positions = [_topConfig >> "positions"] call BIS_fnc_getCfgData;
     if (_positions isEqualType "") then {
         private "_position";
         _positions = (GET_MISSION_LAYER_OBJECTS(_positions)) apply {
