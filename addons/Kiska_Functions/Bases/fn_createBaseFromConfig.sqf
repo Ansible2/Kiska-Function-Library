@@ -48,6 +48,17 @@ scriptName "KISKA_fnc_createBaseFromConfig";
 #define DEFAULT_PATROL_FORMATION "STAG COLUMN"
 #define DEFAULT_SIMPLE_OFFSET [0,0,0.1]
 
+#define SIMPLE_DATA_INDEX_TYPE 0
+#define SIMPLE_DATA_INDEX_OFFSET 1
+#define SIMPLE_DATA_INDEX_VECTORUP 2
+#define SIMPLE_DATA_INDEX_VECTORDIR 3
+#define SIMPLE_DATA_INDEX_ANIMATIONS 4
+#define SIMPLE_DATA_INDEX_SELECTIONS 5
+#define SIMPLE_DATA_INDEX_CREATED_EVENT 6
+#define SIMPLE_DATA_INDEX_FOLLOW_TERRAIN 7
+#define SIMPLE_DATA_INDEX_SUPERSIMPLE 8
+
+
 
 params [
     ["_baseConfig",configNull,["",configNull]]
@@ -282,81 +293,121 @@ _patrolClasses apply {
     Simple Objects
 ---------------------------------------------------------------------------- */
 private _simplesConfig = _baseConfig >> "Simples";
-private _simplesConfigClasses = "true" configClasses (_simplesConfig);
+private _simplesConfigClasses = "true" configClasses _simplesConfig;
 
-private _defaultSuperSimple = [_simplesConfig >> "superSimple"] call BIS_fnc_getCfgDataBool;
-private _defaultFollowTerrain = [_simplesConfig >> "followTerrain"] call BIS_fnc_getCfgDataBool;
-private ["_useSuperSimple","_followTerrain"];
+private _configDataHashMap = createHashMap;
+private _fn_getSimpleClassData = {
+    params ["_config"];
 
+    private "_dataArray";
+    if (_config in _configDataHashMap) then {
+        _dataArray = _configDataHashMap get _dataArray;
+
+    } else {
+        _dataArray = [];
+
+        _dataArray pushBack (getText(_config >> "type"));
+
+        private _offsetConfig = _config >> "offset";
+        if (isArray _offsetConfig) then {
+            _dataArray pushBack (getArray _offsetConfig);
+        } else {
+            _dataArray pushBack [0,0,0.1];
+        };
+
+        _dataArray pushBack (getArray(_config >> "vectorUp"));
+        _dataArray pushBack (getArray(_config >> "vectorDir"));
+        _dataArray pushBack (getArray(_config >> "animations"));
+        _dataArray pushBack (getArray(_config >> "selections"));
+        _dataArray pushBack (compile (getText(_config >> "onObjectCreated")));
+
+        private _followTerrainConfig = _config >> "followTerrain";
+        if (isNumber _followTerrainConfig) then {
+            _dataArray pushBack ([_followTerrainConfig] call BIS_fnc_getCfgDataBool);
+
+        } else {
+            _dataArray pushBack true;
+
+        };
+
+        private _superSimpleConfig = _config >> "superSimple";
+        if (isNumber _superSimpleConfig) then {
+            _dataArray pushBack ([_superSimpleConfig] call BIS_fnc_getCfgDataBool);
+
+        } else {
+            _dataArray pushBack true;
+
+        };
+
+        _configDataHashMap set [_config,_dataArray];
+    };
+
+
+    _dataArray
+};
+
+
+private ["_topConfig","_typeConfigs","_objectDirection","_offset","_vectorUp","_vectorDir","_animations","_selections","_onObjectCreated"];
 _simplesConfigClasses apply {
-    if (isNumber (_x >> "superSimple")) then {
-        _useSuperSimple = [_x >> "superSimple"] call BIS_fnc_getCfgDataBool;
+    _topConfig = _x;
+    _typeConfigs = "true" configClasses _topConfig;
 
-    } else {
-        _useSuperSimple = _defaultSuperSimple;
-
-    };
-
-    if (isNumber (_x >> "followTerrain")) then {
-        _followTerrain = [_x >> "followTerrain"] call BIS_fnc_getCfgDataBool;
-
-    } else {
-        _followTerrain = _defaultFollowTerrain;
-    };
-
-
-    private _objectClasses = getArray(_x >> "objectClasses");
     private _positions = [_x >> "positions"] call BIS_fnc_getCfgData;
-
-    private _offset = getArray(_x >> "offset");
-    if (_offset isEqualTo []) then {
-        _offset = DEFAULT_SIMPLE_OFFSET;
-    };
-    private _vectorUp = getArray(_x >> "vectorUp");
-    private _vectorDir = getArray(_x >> "vectorDir");
-    private _hasVectorUp = _vectorUp isNotEqualTo [];
-    private _hasVectorDir = _vectorDir isNotEqualTo [];
-
     if (_positions isEqualType "") then {
-        GET_MISSION_LAYER_OBJECTS(_positions) apply {
-            private _position = getPosASL _x;
+        private "_position";
+        _positions = (GET_MISSION_LAYER_OBJECTS(_positions)) apply {
+            _position = getPosASL _x;
+            _position pushBack (getDir _x);
 
-            private _object = [
-                selectRandom _objectClasses,
-                _position,
-                getDir _x,
-                _followTerrain,
-                _useSuperSimple
-            ] call BIS_fnc_createSimpleObject;
+            _position
+        };
+    };
 
-            _object setPosASL (_position vectorAdd _offset);
 
-            if (_hasVectorDir) then {
-                _object setVectorDir _vectorDir;
-            };
-            if (_hasVectorUp) then {
-                _object setVectorUp _vectorUp;
-            };
+    _positions apply {
+        if (count _x > 3) then {
+            _objectDirection = _x deleteAt 3;
+        } else {
+            _objectDirection = 0;
         };
 
-    } else {
-        _positions apply {
-            [
-                selectRandom _objectClasses,
-                _x,
-                _x deleteAt 3, // direction
-                _followTerrain,
-                _useSuperSimple
-            ] call BIS_fnc_createSimpleObject;
+        private _objectClass = selectRandom _typeConfigs;
+        private _objectData = [_objectClass] call _fn_getSimpleClassData;
+        private _object = [
+            _objectData select SIMPLE_DATA_INDEX_TYPE,
+            _x,
+            _objectDirection,
+            _objectData select SIMPLE_DATA_INDEX_FOLLOW_TERRAIN,
+            _objectData select SIMPLE_DATA_INDEX_SUPERSIMPLE
+        ] call BIS_fnc_createSimpleObject;
 
-            if (_hasVectorDir) then {
-                _object setVectorDir _vectorDir;
-            };
-            if (_hasVectorUp) then {
-                _object setVectorUp _vectorUp;
-            };
+
+        _offset = _objectData select SIMPLE_DATA_INDEX_OFFSET;
+        if (_offset isNotEqualTo []) then {
+            _object setPosASL (_x vectorAdd _offset);
         };
 
+        _vectorDir = _objectData select SIMPLE_DATA_INDEX_VECTORDIR;
+        if (_vectorDir isNotEqualTo []) then {
+            _object setVectorDir _vectorDir;
+        };
+
+        _vectorUp = _objectData select SIMPLE_DATA_INDEX_VECTORUP;
+        if (_vectorUp isNotEqualTo []) then {
+            _object setVectorUp _vectorUp;
+        };
+
+        (_objectData select SIMPLE_DATA_INDEX_ANIMATIONS) apply {
+            _object animateSource [_x select 0, _x select 1, 0];
+        };
+        (_objectData select SIMPLE_DATA_INDEX_SELECTIONS) apply {
+            _object hideSelection [_x select 0, (_x select 1) > 0];
+        };
+
+        _onObjectCreated = _objectData select SIMPLE_DATA_INDEX_CREATED_EVENT;
+        if (_onObjectCreated isNotEqualTo {}) then {
+            [_object] call _onObjectCreated;
+        };
     };
 
 };
