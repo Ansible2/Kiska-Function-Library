@@ -398,7 +398,7 @@ _simplesConfigClasses apply {
         };
 
         (_objectData select SIMPLE_DATA_INDEX_ANIMATIONS) apply {
-            _object animateSource [_x select 0, _x select 1, 0];
+            _object animate [_x select 0, _x select 1, true];
         };
         (_objectData select SIMPLE_DATA_INDEX_SELECTIONS) apply {
             _object hideSelection [_x select 0, (_x select 1) > 0];
