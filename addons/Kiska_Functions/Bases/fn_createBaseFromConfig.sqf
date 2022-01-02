@@ -81,7 +81,7 @@ private _baseSide = (getNumber(_baseConfig >> "side")) call BIS_fnc_sideType;
     Turrets
 ---------------------------------------------------------------------------- */
 private _turretConfig = _baseConfig >> "turrets";
-private _turretClasses = "true" configClasses (_turretConfig);
+private _turretClasses = configProperties [_turretConfig,"isClass _x"];
 private _turretClassUnitClasses = getArray(_turretConfig >> INFANTRY_CLASSES_PROPERTY);
 _turretClasses apply {
     private _turrets = [_x >> "turrets"] call BIS_fnc_getCfgData;
@@ -148,7 +148,7 @@ _turretClasses apply {
     Infantry
 ---------------------------------------------------------------------------- */
 private _infantryConfig = _baseConfig >> "infantry";
-private _infantryClasses = "true" configClasses (_infantryConfig);
+private _infantryClasses = configProperties [_infantryConfig,"isClass _x"];
 private _infantryClassUnitClasses = getArray(_infantryConfig >> INFANTRY_CLASSES_PROPERTY);
 _infantryClasses apply {
     private _spawnPositions = [_x >> "positions"] call BIS_fnc_getCfgData;
@@ -191,7 +191,7 @@ _infantryClasses apply {
     Patrols
 ---------------------------------------------------------------------------- */
 private _patrolsConfig = _baseConfig >> "patrols";
-private _patrolClasses = "true" configClasses (_patrolsConfig);
+private _patrolClasses = configProperties [_patrolsConfig,"isClass _x"];
 private _patrolClassUnitClasses = getArray(_patrolsConfig >> INFANTRY_CLASSES_PROPERTY);
 _patrolClasses apply {
     private _spawnPosition = [_x >> "spawnPosition"] call BIS_fnc_getCfgData;
@@ -293,7 +293,7 @@ _patrolClasses apply {
     Simple Objects
 ---------------------------------------------------------------------------- */
 private _simplesConfig = _baseConfig >> "Simples";
-private _simplesConfigClasses = "true" configClasses _simplesConfig;
+private _simplesConfigClasses = configProperties [_simplesConfig,"isClass _x"];
 
 private _configDataHashMap = createHashMap;
 private _fn_getSimpleClassData = {
@@ -350,7 +350,7 @@ private _fn_getSimpleClassData = {
 private ["_topConfig","_typeConfigs","_objectDirection","_offset","_vectorUp","_vectorDir","_animations","_selections","_onObjectCreated"];
 _simplesConfigClasses apply {
     _topConfig = _x;
-    _typeConfigs = "true" configClasses _topConfig;
+    _typeConfigs = configProperties [_topConfig,"isClass _x"];
 
     private _positions = [_topConfig >> "positions"] call BIS_fnc_getCfgData;
     if (_positions isEqualType "") then {
