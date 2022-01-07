@@ -21,6 +21,7 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_compass_refresh";
 
+if (!hasInterface) exitWith {};
 
 private _display = GET_COMPASS_DISPLAY;
 if (isNull _display) exitWith {

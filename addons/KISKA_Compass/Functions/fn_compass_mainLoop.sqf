@@ -27,8 +27,10 @@ scriptName "KISKA_fnc_compass_mainLoop";
 #define INACTIVE_IDC -1
 #define SIMPLIFY_ANGLE(angle) (((angle) % 360) + 360) % 360;
 
+if (!hasInterface) exitWith {};
+
 // check if main menu
-if (allDisplays isEqualTo [findDisplay 0]) exitWith {};
+if (call KISKA_fnc_isMainMenu) exitWith {};
 
 disableSerialization;
 

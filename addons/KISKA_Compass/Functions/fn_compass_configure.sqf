@@ -23,11 +23,14 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_compass_configure";
 
+if (!hasInterface) exitWith {};
+
 disableSerialization;
 
 params [
 	["_display",displayNull]
 ];
+
 if (isNull _display) exitWith {};
 
 

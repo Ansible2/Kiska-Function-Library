@@ -43,7 +43,7 @@ private _imagePathArray = [];
     private _title = getText(_x >> "title");
     private _imagePath = getText(_x >> "image");
 
-    if (_title isNotEqualTo "" AND _imagePath isNotEqualTo "") then {
+    if ((_title isNotEqualTo "") AND (_imagePath isNotEqualTo "")) then {
         _nameArray pushBack _title;
         _imagePathArray pushBack _imagePath;
     };
