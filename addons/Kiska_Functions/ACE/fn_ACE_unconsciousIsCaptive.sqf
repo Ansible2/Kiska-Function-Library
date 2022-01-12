@@ -22,6 +22,10 @@ scriptName "KISKA_fnc_ACE_unconsciousIsCaptive";
 
 if (!hasInterface) exitWith {};
 
+if (!canSuspend) exitWith {
+    [] spawn KISKA_fnc_ACE_unconsciousIsCaptive;
+    nil
+};
 
 if (call KISKA_fnc_isMainMenu) exitWith {
     ["Main menu detected, will not init",false] call KISKA_fnc_log;

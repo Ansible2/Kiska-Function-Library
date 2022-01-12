@@ -24,7 +24,7 @@ class CfgFunctions
 			};
 			class ACE_unconsciousIsCaptive
 			{
-				postInit = 1;
+				preInit = 1;
 			};
 		};
 		class ACEX
