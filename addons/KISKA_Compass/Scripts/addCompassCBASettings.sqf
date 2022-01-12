@@ -12,6 +12,8 @@
     true,
     nil,
     {
+        if (!hasInterface) exitWith {};
+            
         params ["_show"];
 
         private _display = GET_COMPASS_DISPLAY;
@@ -37,6 +39,8 @@
     true,
     nil,
     {
+        if (!hasInterface) exitWith {};
+
         params ["_show"];
 
         if !(_show) then {

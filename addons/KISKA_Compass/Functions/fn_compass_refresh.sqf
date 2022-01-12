@@ -1,6 +1,6 @@
 #include "..\Headers\Compass Globals.hpp"
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_compass_mainLoop
+Function: KISKA_fnc_compass_refresh
 
 Description:
 	Resets the config global of the compass and then restarts the cutRSC for it.
@@ -13,7 +13,7 @@ Returns:
 
 Examples:
     (begin example)
-		call KISKA_fnc_compass_mainLoop;
+		call KISKA_fnc_compass_refresh;
     (end)
 
 Author:
@@ -21,7 +21,10 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_compass_refresh";
 
-if (!hasInterface) exitWith {};
+if (!hasInterface) exitWith {
+    ["Run on a machine without an interface, exiting...",false] call KISKA_fnc_log;
+    false
+};
 
 private _display = GET_COMPASS_DISPLAY;
 if (isNull _display) exitWith {

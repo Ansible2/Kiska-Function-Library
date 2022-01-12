@@ -29,14 +29,14 @@ if (call KISKA_fnc_isMainMenu) exitWith {
 
 addMissionEventHandler ["GroupCreated", {
     if !(isNull (uiNamespace getVariable ["KISKA_GCH_display",displayNull])) then {
-        [] spawn KISKA_fnc_GCH_updateSideGroupsList;
+        [] call KISKA_fnc_GCH_updateSideGroupsList;
     };
 }];
 
 
 addMissionEventHandler ["GroupDeleted", {
     if !(isNull (uiNamespace getVariable ["KISKA_GCH_display",displayNull])) then {
-        [] spawn KISKA_fnc_GCH_updateSideGroupsList;
+        [] call KISKA_fnc_GCH_updateSideGroupsList;
     };
 }];
 
