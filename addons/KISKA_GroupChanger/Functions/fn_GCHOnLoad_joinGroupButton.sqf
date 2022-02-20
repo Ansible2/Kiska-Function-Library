@@ -31,8 +31,8 @@ _control ctrlAddEventHandler ["ButtonClick",{
 		if !((group player) isEqualTo _selectedGroup) then {
 			private _groupIsLocal = local _selectedGroup;
 			[player] joinSilent _selectedGroup;
-			
-			[] spawn {
+
+			[_groupIsLocal] spawn {
 				params ["_groupIsLocal"];
 				// give the group change some time to travel over the network
 				if (!_groupIsLocal) then {
