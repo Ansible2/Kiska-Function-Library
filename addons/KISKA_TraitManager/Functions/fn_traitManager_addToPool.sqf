@@ -37,7 +37,7 @@ if !(_bypassChecks) then {
 	};
 
 	// verify class is defined
-	private _config = [["KISKA_cfgTraits",_class]] call KISKA_fnc_findConfigAny;
+	private _config = [["KISKA_cfgTraits",_entryToAdd]] call KISKA_fnc_findConfigAny;
 	if (isNull _config) exitWith {
 		[[_entryToAdd," is not defined in any KISKA_cfgTraits!"],true] call KISKA_fnc_log;
 		_exit = true;

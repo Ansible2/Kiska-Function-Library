@@ -1,4 +1,4 @@
-#include "..\Headers\Support Manager Common Defines.hpp"
+#include "..\Headers\Trait Manager Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_traittManager_updatePoolList
 
@@ -20,7 +20,7 @@ Examples:
 Authors:
 	Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_supportManager_updatePoolList";
+scriptName "KISKA_fnc_traitManager_updatePoolList";
 
 if !(hasInterface) exitWith {};
 
@@ -28,7 +28,10 @@ disableSerialization;
 
 // check if menu is open
 private _poolControl = GET_TM_POOL_LIST_CTRL;
-if (isNull _poolControl) exitWith {};
+if (isNull _poolControl) exitWith {
+	["_poolControl is null!"] call KISKA_fnc_log;
+	nil
+};
 
 // init to empty array if undefined to allow comparisons
 if (isNil TM_POOL_VAR_STR) then {
@@ -43,6 +46,10 @@ if (TM_POOL_GVAR isEqualTo []) exitWith {
     Change Entries
 ---------------------------------------------------------------------------- */
 private _traitPool_displayed = GET_TM_DISPLAYED_POOL;
+[[GET_TM_DISPLAY],false] call KISKA_fnc_log;
+[[GET_TM_POOL_LIST_CTRL],false] call KISKA_fnc_log;
+[[GET_TM_CURRENT_LIST_CTRL],false] call KISKA_fnc_log;
+[[GET_TM_DISPLAYED_POOL],false] call KISKA_fnc_log;
 // subtracting 1 from this to get indexes
 private _countOfDisplayed = (count _traitPool_displayed) - 1;
 private ["_trait","_comparedIndex"];
@@ -60,9 +67,11 @@ private ["_trait","_comparedIndex"];
 		_poolControl lbAdd _trait;
 
 	};
+
 } forEach TM_POOL_GVAR;
 
-
+[str _traitPool_displayed,false,true,false] call KISKA_fnc_log;
+[str (TM_POOL_GVAR),false,true,false] call KISKA_fnc_log;
 // delete overflow indexes that are no longer accurate
 private _countOfCurrent = (count TM_POOL_GVAR) - 1;
 if (_countOfDisplayed > _countOfCurrent) then {
@@ -72,6 +81,7 @@ if (_countOfDisplayed > _countOfCurrent) then {
 		_poolControl lbDelete _indexToDelete;
 	};
 };
-
+[str _traitPool_displayed,false,true,false] call KISKA_fnc_log;
+[str (TM_POOL_GVAR),false,true,false] call KISKA_fnc_log;
 // creating a copy of TM_POOL_GVAR so that when changes are made to it, the displayed array will not have those changes and therefore we can compare
 _poolControl setVariable [TM_DISPLAYED_POOL_VAR_STR,+TM_POOL_GVAR];

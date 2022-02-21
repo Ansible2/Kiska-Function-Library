@@ -1,3 +1,4 @@
+#include "..\Headers\Trait Manager Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_traitManager_updateCurrentList
 

@@ -38,7 +38,7 @@ _display setVariable [TM_POOL_LIST_CTRL_VAR_STR,_display displayCtrl TM_POOL_LIS
 call KISKA_fnc_traitManager_updatePoolList;
 
 
-// intialize current supports list
+// intialize current traits list
 _display setVariable [TM_CURRENT_LIST_CTRL_VAR_STR,_display displayCtrl TM_CURRENT_LISTBOX_IDC];
 call KISKA_fnc_traitManager_updateCurrentList;
 

@@ -34,14 +34,14 @@ if (_entryToAdd isEqualTo "" OR {_entryToAdd in NUMBER_TRAITS}) exitWith {
 };
 
 // verify class is defined
-private _config = [["KISKA_cfgTraits",_class]] call KISKA_fnc_findConfigAny;
+private _config = [["KISKA_cfgTraits",_entryToAdd]] call KISKA_fnc_findConfigAny;
 if (isNull _config) exitWith {
     [[_entryToAdd," is not defined in any KISKA_cfgTraits!"],true] call KISKA_fnc_log;
     nil
 };
 
 
-[_entryToAdd] remoteExec ["KISKA_fnc_traitManager_addToPool",0,true];
+[_entryToAdd,true] remoteExec ["KISKA_fnc_traitManager_addToPool",0,true];
 
 
 nil
