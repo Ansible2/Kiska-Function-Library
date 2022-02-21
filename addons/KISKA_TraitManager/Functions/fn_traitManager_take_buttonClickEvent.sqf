@@ -22,13 +22,12 @@ Authors:
 disableSerialization;
 scriptName "KISKA_fnc_traitManager_take_buttonClickEvent";
 
-#define RESERVED_TRAITS ["MEDIC","ENGINEER","EXPLOSIVESPECIALIST","UAVHACKER"]
 #define DEFAULT_ERROR_MESSAGE "You do not have permission for this trait"
 
-private _selectedIndex = lbCurSel (uiNamespace getVariable "KISKA_TM_poolListBox_ctrl");
+private _selectedIndex = lbCurSel (GET_TM_POOL_LIST_CTRL);
 if (_selectedIndex isNotEqualTo -1) then {
 
-	private _trait = toUpperANSI (POOL_GVAR select _selectedIndex);
+	private _trait = toUpperANSI (TM_POOL_GVAR select _selectedIndex);
 	if !(player getUnitTrait _trait) then {
 		// check condition to take
 		private _config = [["KISKA_cfgTraits",_trait]] call KISKA_fnc_findConfigAny;
@@ -42,8 +41,7 @@ if (_selectedIndex isNotEqualTo -1) then {
 			private _isCustomTrait = !(_trait in RESERVED_TRAITS);
 	        player setUnitTrait [_trait,true,_isCustomTrait];
 
-			[_selectedIndex] remoteExecCall ["KISKA_fnc_traitManager_removeFromPool",0,true];
-			call KISKA_fnc_traitManager_updateCurrentList;
+			[_selectedIndex] call KISKA_fnc_traitManager_removeFromPool_global;
 
 		} else {
 			private _message = getText(_config >> "errorMessage");
@@ -54,8 +52,10 @@ if (_selectedIndex isNotEqualTo -1) then {
 			[_message] call KISKA_fnc_errorNotification;
 
 		};
+		
 	} else {
 		["You already have this trait"] call KISKA_fnc_errorNotification;
+
 	};
 };
 
