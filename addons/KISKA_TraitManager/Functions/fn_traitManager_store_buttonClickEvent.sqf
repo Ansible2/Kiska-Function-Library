@@ -1,3 +1,4 @@
+#include "..\Headers\Trait Manager Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_traitManager_store_buttonClickEvent
 
@@ -21,15 +22,13 @@ Authors:
 disableSerialization;
 scriptName "KISKA_fnc_traitManager_store_buttonClickEvent";
 
-#define RESERVED_TRAITS ["MEDIC","ENGINEER","EXPLOSIVESPECIALIST","UAVHACKER"]
-
-private _selectedIndex = lbCurSel (uiNamespace getVariable "KISKA_TM_currentListBox_ctrl");
+private _currentListbox_ctrl = GET_TM_CURRENT_LIST_CTRL;
+private _selectedIndex = lbCurSel _currentListbox_ctrl;
 
 if (_selectedIndex isNotEqualTo -1) then {
-    private _trait = (uiNamespace getVariable "KISKA_TM_currentListBox_ctrl") lbText _selectedIndex;
+    private _trait = _currentListbox_ctrl lbText _selectedIndex;
     private _isCustomTrait = !(_trait in RESERVED_TRAITS);
     player setUnitTrait [_trait,false,_isCustomTrait];
 
-    [_trait] call KISKA_fnc_traitManager_addToPool;
-    call KISKA_fnc_traitManager_updateCurrentList;
+    [_trait] call KISKA_fnc_traitManager_addToPool_global;
 };

@@ -25,19 +25,23 @@ class CfgFunctions
 			};
 			class traitManager_addToPool
 			{};
-			class traitManager_onLoad
+			class traitManager_addToPool_global
 			{};
-			class traitManager_onLoad_traitPool
+			class traitManager_onLoad
 			{};
 			class traitManager_openDialog
 			{};
 			class traitManager_removeFromPool
+			{};
+			class traitManager_removeFromPool_global
 			{};
 			class traitManager_store_buttonClickEvent
 			{};
 			class traitManager_take_buttonClickEvent
 			{};
 			class traitManager_updateCurrentList
+			{};
+			class traitManager_updatePoolList
 			{};
 		};
 	};

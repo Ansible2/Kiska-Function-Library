@@ -20,9 +20,10 @@ Examples:
 Authors:
 	Ansible2
 ---------------------------------------------------------------------------- */
-disableSerialization;
 scriptName "KISKA_fnc_traitManager_onLoad";
+disableSerialization;
 
+// check if player wants map to close when openning the manager
 if (missionNamespace getVariable ["KISKA_CBA_traitManager_closeMap",true]) then {
 	openMap false;
 };
@@ -30,15 +31,15 @@ if (missionNamespace getVariable ["KISKA_CBA_traitManager_closeMap",true]) then 
 params ["_display"];
 
 
-uiNamespace setVariable ["KISKA_tm_display",_display];
+localNamespace setVariable [TM_DISPLAY_VAR_STR,_display];
 
-// pool list loop
-uiNamespace setVariable ["KISKA_TM_poolListBox_ctrl",_display displayCtrl TM_POOL_LISTBOX_IDC];
-[_display] spawn KISKA_fnc_traitManager_onLoad_traitPool;
+// initialize pool list entries
+_display setVariable [TM_POOL_LIST_CTRL_VAR_STR,_display displayCtrl TM_POOL_LISTBOX_IDC];
+call KISKA_fnc_traitManager_updatePoolList;
 
 
-// current supports
-uiNamespace setVariable ["KISKA_TM_currentListBox_ctrl",_display displayCtrl TM_CURRENT_LISTBOX_IDC];
+// intialize current traits list
+_display setVariable [TM_CURRENT_LIST_CTRL_VAR_STR,_display displayCtrl TM_CURRENT_LISTBOX_IDC];
 call KISKA_fnc_traitManager_updateCurrentList;
 
 
@@ -50,14 +51,7 @@ call KISKA_fnc_traitManager_updateCurrentList;
 	call KISKA_fnc_traitManager_store_buttonClickEvent;
 }];
 (_display displayCtrl TM_CLOSE_BUTTON_IDC) ctrlAddEventHandler ["ButtonClick",{
-	(uiNamespace getVariable "KISKA_tm_display") closeDisplay 2;
-}];
-
-
-_display displayAddEventHandler ["unload",{
-	uiNamespace setVariable ["KISKA_tm_display",nil];
-	uiNamespace setVariable ["KISKA_TM_poolListBox_ctrl",nil];
-	uiNamespace setVariable ["KISKA_TM_currentListBox_ctrl",nil];
+	GET_TM_DISPLAY closeDisplay 2;
 }];
 
 

@@ -1,3 +1,4 @@
+#include "..\Headers\Trait Manager Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_traitManager_updateCurrentList
 
@@ -22,7 +23,10 @@ Authors:
 disableSerialization;
 scriptName "KISKA_fnc_traitManager_updateCurrentList";
 
-private _listControl = uiNamespace getVariable "KISKA_TM_currentListBox_ctrl";
+// check if menu is open
+private _listControl = GET_TM_CURRENT_LIST_CTRL;
+if (isNull _listControl) exitWith {};
+
 lbClear _listControl;
 
 private ["_trait","_traitValue"];

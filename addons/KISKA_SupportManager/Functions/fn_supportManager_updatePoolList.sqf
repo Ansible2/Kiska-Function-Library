@@ -34,6 +34,7 @@ if (isNil SM_POOL_VAR_STR) then {
 };
 if (SM_POOL_GVAR isEqualTo []) exitWith {
 	lbClear _poolControl;
+	_poolControl setVariable [SM_DISPLAYED_POOL_VAR_STR,[]];
 };
 
 

@@ -34,8 +34,8 @@ params ["_display"];
 private _poolControl = uiNamespace getVariable "KISKA_TM_poolListBox_ctrl";
 
 // init to empty array if undefined to allow comparisons
-if (isNil TO_STRING(POOL_GVAR)) then {
-	missionNamespace setVariable [TO_STRING(POOL_GVAR),[]];
+if (isNil TM_POOL_VAR_STR) then {
+	missionNamespace setVariable [TM_POOL_VAR_STR,[]];
 };
 
 private _fn_updateTraitPoolList = {
@@ -46,7 +46,7 @@ private _fn_updateTraitPoolList = {
 
 	// subtracting 1 from these to get indexes
 	private _countOfDisplayed = (count _traitPool_displayed) - 1;
-	private _countOfCurrent = (count POOL_GVAR) - 1;
+	private _countOfCurrent = (count TM_POOL_GVAR) - 1;
 
 	private "_trait";
 	{
@@ -61,10 +61,10 @@ private _fn_updateTraitPoolList = {
 		} else {
 			_poolControl lbAdd _trait;
 		};
-	} forEach POOL_GVAR;
+	} forEach TM_POOL_GVAR;
 
 	// delete overflow indexes that are no longer accurate
-	private _countOfCurrent = (count POOL_GVAR) - 1;
+	private _countOfCurrent = (count TM_POOL_GVAR) - 1;
 	if (_countOfDisplayed > _countOfCurrent) then {
 		private _indexToDelete = _countOfCurrent + 1;
 		for "_i" from _countOfCurrent to _countOfDisplayed do {
@@ -78,9 +78,9 @@ private _traitPool_displayed = [];
 while {sleep REFRESH_SPEED; !(isNull _display)} do {
 
 	// support pool check
-	if (_traitPool_displayed isNotEqualTo POOL_GVAR) then {
+	if (_traitPool_displayed isNotEqualTo TM_POOL_GVAR) then {
 		call _fn_updateTraitPoolList;
-		_traitPool_displayed = +POOL_GVAR;
+		_traitPool_displayed = +TM_POOL_GVAR;
 	};
 };
 

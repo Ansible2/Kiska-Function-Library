@@ -23,6 +23,7 @@ Authors:
 scriptName "KISKA_fnc_supportManager_onLoad";
 disableSerialization;
 
+// check if player wants map to close when openning the manager
 if (missionNamespace getVariable ["KISKA_CBA_supportManager_closeMap",true]) then {
 	openMap false;
 };
@@ -32,12 +33,12 @@ params ["_display"];
 
 localNamespace setVariable [SM_DISPLAY_VAR_STR,_display];
 
-// pool list loop
+// initialize pool list entries
 _display setVariable [SM_POOL_LIST_CTRL_VAR_STR,_display displayCtrl SM_POOL_LISTBOX_IDC];
 call KISKA_fnc_supportManager_updatePoolList;
 
 
-// current supports
+// intialize current supports list
 _display setVariable [SM_CURRENT_LIST_CTRL_VAR_STR,_display displayCtrl SM_CURRENT_LISTBOX_IDC];
 call KISKA_fnc_supportManager_updateCurrentList;
 
@@ -52,7 +53,6 @@ call KISKA_fnc_supportManager_updateCurrentList;
 (_display displayCtrl SM_CLOSE_BUTTON_IDC) ctrlAddEventHandler ["ButtonClick",{
 	GET_SM_DISPLAY closeDisplay 2;
 }];
-
 
 
 nil
