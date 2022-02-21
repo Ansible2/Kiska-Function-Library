@@ -23,7 +23,9 @@ scriptName "KISKA_fnc_traitManager_removeFromPool";
 
 if (!hasInterface) exitWith {};
 
-params ["_index"];
+params [
+	["_index",-1,[123]]
+];
 
 private _array = GET_TM_POOL;
 if (_array isNotEqualTo []) then {
