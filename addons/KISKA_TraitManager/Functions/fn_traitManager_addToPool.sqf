@@ -3,13 +3,14 @@
 Function: KISKA_fnc_traitManager_addToPool
 
 Description:
-	Adds an entry into the global trait manager pool.
+	Adds an entry into the local trait manager pool.
 
 Parameters:
-	0: _entryToAdd <STRING or ARRAY> - The trait to add
+	0: _entryToAdd <STRING> - The trait to add
+	1: _bypassChecks <BOOL> - Decides whether or not to perform checks on _entryToAdd for errors
 
 Returns:
-	<BOOL> - True if added, false if not
+	NOTHING
 
 Examples:
     (begin example)
@@ -19,24 +20,41 @@ Examples:
 Authors:
 	Ansible2
 ---------------------------------------------------------------------------- */
-disableSerialization;
 scriptName "KISKA_fnc_traitManager_addToPool";
 
-#define NUMBER_TRAITS ["LOADCOEF","AUDIBLECOEF","CAMOUFLAGECOEF"]
+if !(hasInterface) exitWith {};
 
 params [
-	["_entryToAdd","",[""]]
+	["_entryToAdd","",[""]],
+	["_bypassChecks",false]
 ];
 
-_entryToAdd = toUpperANSI _entryToAdd;
+private _exit = false;
+if !(_bypassChecks) then {
+	if (_entryToAdd isEqualTo "") exitWith {
+		["_entryToAdd is empty string!",true] call KISKA_fnc_log;
+		_exit = true;
+	};
 
-if (_entryToAdd isEqualTo "" OR {_entryToAdd in NUMBER_TRAITS}) exitWith {
-	[[_entryToAdd," can't be added"],true] call KISKA_fnc_log;
-	false
+	// verify class is defined
+	private _config = [["KISKA_cfgTraits",_class]] call KISKA_fnc_findConfigAny;
+	if (isNull _config) exitWith {
+		[[_entryToAdd," is not defined in any KISKA_cfgTraits!"],true] call KISKA_fnc_log;
+		_exit = true;
+	};
 };
 
+if (_exit) exitWith {};
 
-[TO_STRING(POOL_GVAR),_entryToAdd] remoteExecCall ["KISKA_fnc_pushBackToArray_interface",0,true];
+
+private _traitPoolArray = GET_TM_POOL;
+_traitPoolArray pushBack _entryToAdd;
+if (isNil TM_POOL_VAR_STR) then {
+	missionNamespace setVariable [TM_POOL_VAR_STR,_traitPoolArray];
+};
+
+call KISKA_fnc_traitManager_updateCurrentList;
+call KISKA_fnc_traitManager_updatePoolList;
 
 
-true
+nil

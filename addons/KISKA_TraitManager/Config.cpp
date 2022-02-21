@@ -27,8 +27,6 @@ class CfgFunctions
 			{};
 			class traitManager_onLoad
 			{};
-			class traitManager_onLoad_traitPool
-			{};
 			class traitManager_openDialog
 			{};
 			class traitManager_removeFromPool
@@ -38,6 +36,8 @@ class CfgFunctions
 			class traitManager_take_buttonClickEvent
 			{};
 			class traitManager_updateCurrentList
+			{};
+			class traitManager_updatePoolList
 			{};
 		};
 	};
