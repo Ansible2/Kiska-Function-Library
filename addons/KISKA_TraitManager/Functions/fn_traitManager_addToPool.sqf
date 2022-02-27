@@ -7,7 +7,6 @@ Description:
 
 Parameters:
 	0: _entryToAdd <STRING> - The trait to add
-	1: _bypassChecks <BOOL> - Decides whether or not to perform checks on _entryToAdd for errors
 
 Returns:
 	NOTHING
@@ -25,26 +24,13 @@ scriptName "KISKA_fnc_traitManager_addToPool";
 if !(hasInterface) exitWith {};
 
 params [
-	["_entryToAdd","",[""]],
-	["_bypassChecks",false]
+	["_entryToAdd","",[""]]
 ];
 
-private _exit = false;
-if !(_bypassChecks) then {
-	if (_entryToAdd isEqualTo "") exitWith {
-		["_entryToAdd is empty string!",true] call KISKA_fnc_log;
-		_exit = true;
-	};
-
-	// verify class is defined
-	private _config = [["KISKA_cfgTraits",_entryToAdd]] call KISKA_fnc_findConfigAny;
-	if (isNull _config) exitWith {
-		[[_entryToAdd," is not defined in any KISKA_cfgTraits!"],true] call KISKA_fnc_log;
-		_exit = true;
-	};
+if (_entryToAdd isEqualTo "") exitWith {
+	["_entryToAdd is empty string!",true] call KISKA_fnc_log;
+	nil
 };
-
-if (_exit) exitWith {};
 
 
 private _traitPoolArray = GET_TM_POOL;
