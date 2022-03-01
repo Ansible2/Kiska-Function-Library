@@ -18,12 +18,3 @@ Parameters:
     true,
     0
 ] call CBA_fnc_addSetting;
-
-[
-    "KISKA_CBA_traitManager_updateFreq",
-    "SLIDER",
-    ["Pool Update Frequency","When the GUI is open, how often (in seconds) should the list update"],
-    ["KISKA GUI Settings","Trait Manager"],
-    [0.01,1,0.5,2,false],
-    0
-] call CBA_fnc_addSetting;

@@ -118,7 +118,7 @@ allCurators apply {
 };
 _aircraft flyInHeight _flyInHeight;
 private _aircraftGroup = _vehicleArray select 2;
-_aircraftGroup setBehaviour "SAFE";
+_aircraftGroup setCombatBehaviour "CARELESS";
 
 // move units into vehicle cargo
 private _unitsToDrop = [];
