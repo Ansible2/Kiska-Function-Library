@@ -83,7 +83,7 @@ for "_i" from 1 to _numberOfUnits do {
 	if (_i isEqualTo 2) then {_unit setUnitRank "SERGEANT"};
 };
 
-_group setBehaviour "AWARE";
+_group setCombatBehaviour "AWARE";
 _group setCombatMode "RED";
 
 private _spawnedUnits = units _group;

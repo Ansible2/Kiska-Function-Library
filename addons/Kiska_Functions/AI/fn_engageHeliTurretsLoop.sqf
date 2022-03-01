@@ -117,7 +117,7 @@ _vehicleCrew apply {
 			_turretSeperated = true;
 			private _group = createGroup _side;
 			[_x] joinSilent _group;
-			_group setBehaviour "COMBAT";
+			_group setCombatBehaviour "COMBAT";
 			_group setCombatMode "RED";
 		};
 		_turretUnits pushBack _x;
