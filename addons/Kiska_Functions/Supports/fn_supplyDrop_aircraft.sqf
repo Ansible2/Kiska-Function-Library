@@ -66,15 +66,16 @@ private _vehicleArray = [
 	[_pilotClass] // spawn just a pilot
 ] call KISKA_fnc_spawnVehicle;
 
-private _aircraftGroup = _vehicleArray select 2;
-_aircraftGroup setCombatBehaviour "CARELESS";
-_aircraftGroup setCombatMode "BLUE";
-[_aircraftGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
-
 private _aircraftCrew = _vehicleArray select 1;
 _aircraftCrew apply {
 	_x setCaptive true;
 };
+
+private _aircraftGroup = _vehicleArray select 2;
+_aircraftGroup setCombatBehaviour "CARELESS";
+_aircraftGroup setCombatMode "BLUE";
+
+[_aircraftGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
 
 
 
@@ -82,7 +83,8 @@ private _aircraft = _vehicleArray select 0;
 if !(_dropPosition isEqualType []) then {
 	_dropPosition = getPosWorld _dropPosition;
 };
-_airCraft move _dropPosition;
+
+_aircraft move _dropPosition;
 _aircraft flyInHeight _flyinHeight;
 
 // give it a waypoint and delete it after it gets there
@@ -95,28 +97,6 @@ private _flyToPosition = _dropPosition getPos [_flyInRadius,_relativeDirection];
 		sleep 0.25;
 		false
 	};
-
-	// go to deletion point
-	[
-		_aircraftGroup,
-		_flyToPosition,
-		-1,
-		"MOVE",
-		"SAFE",
-		"BLUE",
-		"NORMAL",
-		"NO CHANGE",
-		"
-			private _aircraft = objectParent this;
-			thisList apply {
-				_aircraft deleteVehicleCrew _x;
-			};
-			deleteVehicle _aircraft;
-		",
-		[0,0,0],
-		50
-	] call CBA_fnc_addWaypoint;
-
 
 	sleep 0.1;
 
@@ -141,27 +121,20 @@ private _flyToPosition = _dropPosition getPos [_flyInRadius,_relativeDirection];
     if (_addArsenal) then {
         [_containers] call KISKA_fnc_addArsenal;
     };
-/*
-	private _arsenalBox = ([["B_supplyCrate_F"],_aircraftAlt,_boxSpawnPosition] call KISKA_fnc_supplyDrop) select 0;
-	clearMagazineCargoGlobal _arsenalBox;
-	clearWeaponCargoGlobal _arsenalBox;
-	clearBackpackCargoGlobal _arsenalBox;
-	clearItemCargoGlobal _arsenalBox;
-
-	if (_lifeTime > 0) then {
-		// make sure it's on the ground before we start the countdown to deletetion
-		waitUntil {
-			if (((getPosATL _arsenalBox) select 2) < 2) exitWith {true};
-			sleep 5;
-			false
-		};
 
 
-		sleep _lifeTime;
-
-		deleteVehicle _arsenalBox;
+	// go to deletion point
+	_aircraft move _flyToPosition;
+	waitUntil {
+		if (_aircraft distance2D _flyToPosition <= 100) exitWith {true};
+		sleep 0.25;
+		false
 	};
-*/
+
+	(units _aircraftGroup) apply {
+		_aircraft deleteVehicleCrew _x;
+	};
+	deleteVehicle _aircraft;
 };
 
 
