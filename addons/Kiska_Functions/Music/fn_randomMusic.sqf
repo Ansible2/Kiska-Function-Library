@@ -74,16 +74,7 @@ if (_musicTracks isEqualTo [] AND {_usedMusicTracks isEqualTo []}) exitWith {
 };
 
 // check if _timeBetween is an array AND if it is the correct formats OR if it is just a single number
-if (
-		(_timeBetween isEqualType []) AND
-		{
-			!((count _timeBetween) isEqualTo 1) AND
-			{
-				!((count _timeBetween) isEqualTo 3) OR !(_timeBetween isEqualTypeParams [1,2,3])
-			}
-		}
-	) exitWith {
-	[[_timeBetween," is not the correct format for _timeBetween"],true] call KISKA_fnc_log;
+if !([_timeBetween] call KISKA_fnc_setRandomMusicTime) exitWith {
 	nil
 };
 
@@ -128,16 +119,15 @@ private "_randomWaitTime";
 if (_timeBetween isEqualType []) then {
 	if (_timeBetween isEqualTypeArray [1,2,3]) then {
 		_randomWaitTime = round (random _timeBetween);
+
 	} else {
 		_randomWaitTime = round (random (_timeBetween select 0));
+
 	};
+
 } else {
 	_randomWaitTime = _timeBetween;
-};
 
-// update to new timebetween if needed
-if ((GET_MUSIC_RANDOM_TIME_BETWEEN) isNotEqualTo _timeBetween) then {
-	SET_MUSIC_VAR(MUSIC_RANDOM_TIME_BETWEEN_VAR_STR,_timeBetween);
 };
 
 
