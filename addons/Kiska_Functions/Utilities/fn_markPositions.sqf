@@ -24,7 +24,9 @@ params [
 	["_positions",[],[[]]]
 ];
 
-if (_positions isEqualTo []) exitWith {};
+if (_positions isEqualTo []) exitWith {
+	[]
+};
 
 private _entities = [];
 
@@ -33,11 +35,13 @@ if (is3DEN) then {
 		private _entity = create3DENEntity ["OBJECT","Sign_Arrow_Large_F",_x];
 		_entities pushBack _entity;
 	};
+
 } else {
 	_positions apply {
 		private _entity = "Sign_Arrow_Large_F" createVehicle _x;
 		_entities pushBack _entity;
 	};
+
 };
 
 _entities
