@@ -78,8 +78,18 @@ private ["_ammoClass","_ammoTitle","_keyCode"];
 	} else {
 		_keyCode = 0;
 	};
-	_ammoClass = [_x] call KISKA_fnc_getAmmoClassFromId;
-	_ammoTitle = [_x] call KISKA_fnc_getAmmoTitleFromId;
+
+	// handling custom ammo types
+	if (_x isEqualType []) then {
+		_ammoClass = _x select 0;
+		_ammoTitle = _x select 1;
+
+	} else {
+		_ammoClass = [_x] call KISKA_fnc_getAmmoClassFromId;
+		_ammoTitle = [_x] call KISKA_fnc_getAmmoTitleFromId;
+
+	};
+
 
 	_ammoMenu pushBack STD_LINE_PUSH(_ammoTitle,_keyCode,_ammoClass);
 } forEach _ammoIds;
