@@ -2,16 +2,16 @@
 Function: KISKA_fnc_hintDiary
 
 Description:
-	Displays a hint to the player and (always) creates a chronological 
+	Displays a hint to the player and (always) creates a chronological
 	 diary entry and an entry in the defined subject if desired.
 
 Parameters:
 	0: _hintText <STRING> - The actual text shown in the hint
-	1: _subject <STRING> - The subject line in the journal for the hint (OPTIONAL) 
+	1: _subject <STRING> - The subject line in the journal for the hint (OPTIONAL)
 	2: _silent <BOOL> - true for silent hint
-	
+
 Returns:
-	NOTHING 
+	NOTHING
 
 Examples:
     (begin example)
@@ -25,6 +25,15 @@ scriptName "KISKA_fnc_hintDiary";
 
 if !(hasInterface) exitWith {};
 
+// if function is not run in the same environment, causes an issue where ther will be two
+/// at least "Chronological Hint List" sub-subjects
+if (canSuspend) exitWith {
+	[
+		{_this call KISKA_fnc_hintDiary},
+		_this
+	] call CBA_fnc_directCall;
+};
+
 params [
 	["_hintText","This is shown",[""]],
 	["_subject","",[""]],
@@ -37,10 +46,10 @@ if (_silent) then {
 	hint _hintText;
 };
 
-[["Chronological Hint List","-" + _hintText]] call KISKA_fnc_addKiskaDiaryEntry;
+[["Chronological Hint List","- " + _hintText]] call KISKA_fnc_addKiskaDiaryEntry;
 
 if (_subject isNotEqualTo "") then {
-	[[_subject,"-"+_hintText]] call KISKA_fnc_addKiskaDiaryEntry;
+	[[_subject,"- " + _hintText]] call KISKA_fnc_addKiskaDiaryEntry;
 };
 
 
