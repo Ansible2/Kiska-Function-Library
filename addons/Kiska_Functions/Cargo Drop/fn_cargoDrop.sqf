@@ -2,7 +2,7 @@
 Function: KISKA_fnc_cargoDrop
 
 Description:
-	Ejects a vehicle from a cargo plane. Should ideally be used in conjunction with KISKA_fnc_strapCargo 
+	Ejects a vehicle from a cargo plane. Should ideally be used in conjunction with KISKA_fnc_strapCargo
 
 Parameters:
 
@@ -86,7 +86,7 @@ KISKA_fnc_CD_markDropPosition = {
 			[
 				{
 					params ["_vehicleToDrop"];
-					
+
 					[_vehicleToDrop,true] remoteExec ["allowDamage",_vehicleToDrop];
 					[_vehicleToDrop,false] remoteExec ["enableDynamicSimulation",2];
 				},
@@ -101,7 +101,7 @@ KISKA_fnc_CD_markDropPosition = {
 					deleteVehicle _x;
 				};
 			};
-			
+
 			// compensate for vehicles in the ground
 			private _vehiclePosition = getPosATL _vehicleToDrop;
 			if ((_vehiclePosition select 2) < 0) then {
@@ -124,7 +124,7 @@ KISKA_fnc_CD_deployChutes = {
 		["_vehicleToDrop",objNull,[objNull]],
 		["_isBackedIn",false,[true]]
 	];
-	
+
 	// create actual main chute to float the vehicle down
 	private _mainChute = createVehicle ["b_parachute_02_F",[0,0,0]];
 	_mainChute setPos (getPos _vehicleToDrop);
@@ -135,16 +135,21 @@ KISKA_fnc_CD_deployChutes = {
 	[_mainChute] spawn {
 		params ["_mainChute"];
 
-		private "_chuteVelocity";
+		private _chuteVelocity = [0,0,0];
 		private _chuteHeight = (getPosATLVisual _mainChute) select 2;
+		_mainChute setVelocity [0,0,0];
 		while {_chuteHeight > 50} do {
-			_chuteVelocity = velocityModelSpace _mainChute;
 			if (_chuteHeight > 500) then {
 				_mainChute setVelocityModelSpace (_chuteVelocity vectorDiff [0,0,90]);
+
 			} else {
 				_mainChute setVelocityModelSpace (_chuteVelocity vectorDiff [0,0,35]);
+
 			};
+
 			_chuteHeight = (getPosATLVisual _mainChute) select 2;
+			_chuteVelocity = velocityModelSpace _mainChute;
+
 			sleep 0.25;
 		};
 	};
@@ -159,11 +164,11 @@ KISKA_fnc_CD_deployChutes = {
 			[[0.5,0.4,1],[-0.5,0.4,1],[0,-0.6,0.8]]
 		};
 	private "_chute_temp";
-	_chutePositionArray apply { 
-		_chute_temp = createVehicle ["b_parachute_02_F",[0,0,0]]; 
-		_chute_temp attachTo [_vehicleToDrop, (getCenterOfMass _vehicleToDrop) vectorAdd [0,0,1]]; 
+	_chutePositionArray apply {
+		_chute_temp = createVehicle ["b_parachute_02_F",[0,0,0]];
+		_chute_temp attachTo [_vehicleToDrop, (getCenterOfMass _vehicleToDrop) vectorAdd [0,0,1]];
 		_chute_temp setVectorUp _x;
-		_chutesArray pushBack _chute_temp; 
+		_chutesArray pushBack _chute_temp;
 	};
 
 	// wait to delete chutes and detach vehicle
@@ -178,7 +183,7 @@ KISKA_fnc_CD_deployChutes = {
 			// delete and detach fake chutes
 			_chutesArray apply {
 				detach _x;
-				
+
 				[
 					{
 						params ["_chute"];
