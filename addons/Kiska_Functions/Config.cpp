@@ -136,6 +136,19 @@ class CfgFunctions
 			{};
 		};
 
+		class Hashmap
+		{
+			file = "Kiska_functions\Hashmap";
+			class hashmap_deleteAt
+			{};
+			class hashmap_get
+			{};
+			class hashmap_in
+			{};
+			class hashmap_set
+			{};
+		};
+
 		class Loadouts
 		{
 			file = "Kiska_functions\Loadouts";
