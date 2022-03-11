@@ -38,11 +38,15 @@ private _hash = hashValue _key;
 private _valueArray = _map getOrDefault [_hash,[],true];
 
 private "_rawKey";
+private _in = false;
 _valueArray apply {
     _rawKey = _x select 0;
     if (!isNull _rawKey AND (_rawKey isEqualTo _key)) then {
-        _value = _x select 1;
+        _in = true;
         break;
     };
 
 };
+
+
+_in
