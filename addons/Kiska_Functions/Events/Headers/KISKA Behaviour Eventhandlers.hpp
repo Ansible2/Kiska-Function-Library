@@ -1,22 +1,29 @@
 #define TRANSITION_CLASS(NAME) \
-    class trasnition_to_##NAME \
+    class transition_to_##NAME \
     { \
-        targetState = "KISKA_behaviourState_"#NAME; \
-        condition = "behaviour _this == '"#NAME"'"; \
+        targetState = "KISKA_behaviourState_"#NAME""; \
+        condition = "hint str _this; behaviour _this == "#NAME""; \
     };
 
+#define BEHAVIOUR_STATE(NAME) KISKA_behaviourState_##NAME
+#define BEHAVIOUR_EVENT KISKA_behaviourChangedEvent
+
 #define INHERITED_STATE(NAME,FROM) \
-    class KISKA_behaviourState_##NAME : KISKA_behaviourState_##FROM
+    class BEHAVIOUR_STATE(NAME) : BEHAVIOUR_STATE(FROM) \
     { \
-        ON_STATE_ENTERED(NAME) \
+        ON_STATE_ENTERED(NAME,BEHAVIOUR_EVENT) \
         class transition_to_##FROM : transition_to_##FROM {}; \
         class transition_to_##NAME {}; \
     };
 
-#define ON_STATE_ENTERED(NAME) onStateEntered = "[_this,'KISKA_behaviourChangedEvent',[_this,'"#NAME"'],false] call BIS_fnc_callScriptedEventHandler";
+
+#define ON_STATE_ENTERED(NAME,EVENT) onStateEntered = "[_this,"#EVENT",[_this,"#NAME"],false] call BIS_fnc_callScriptedEventHandler";
 
 class Behaviour
 {
+    eventName = BEHAVIOUR_EVENT;
+    entityCondition = "(_this select 0) isEqualTypeAny [objNull, grpNull]";
+
     TRANSITION_CLASS(safe)
     TRANSITION_CLASS(careless)
     TRANSITION_CLASS(combat)
@@ -25,11 +32,13 @@ class Behaviour
 
     class stateMachine
     {
+        name = "KISKA_stateMachine_behaviour";
         skipNull = 1;
+        list = "[]";
 
-        class KISKA_behaviourState_careless
+        class BEHAVIOUR_STATE(careless)
         {
-            ON_STATE_ENTERED(careless)
+            ON_STATE_ENTERED(careless,KISKA_behaviourChangedEvent)
 
             class transition_to_careless {}; // no transition back to the current state
             class transition_to_safe : transition_to_safe {};
