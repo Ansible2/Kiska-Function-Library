@@ -42,6 +42,7 @@ _arsenals apply {
 	};
 
 	["AmmoboxExit",_x] call BIS_fnc_arsenal;
+    [_x] remoteExecCall ["KISKA_fnc_removeBISArsenalAction", 0, true];
 };
 
 

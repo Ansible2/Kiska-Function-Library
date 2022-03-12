@@ -432,6 +432,8 @@ class CfgFunctions
 			{};
 			class removeArsenal
 			{};
+			class removeBISArsenalAction
+			{};
 			class setContainerCargo
 			{};
 			class showHide
