@@ -33,7 +33,6 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_defend";
 
-#define RETURN_NIL nil
 
 params [
 	["_group",grpNull,[grpNull,objNull]],
@@ -49,7 +48,7 @@ _group = _group call CBA_fnc_getGroup;
 // Don't create waypoints on each machine
 if !(local _group) exitWith {
 	[["Found that ",_group," was not local, exiting..."],true] call KISKA_fnc_log;
-	RETURN_NIL
+	nil
 };
 
 _position = [_position, _group] select (_position isEqualTo []);
@@ -166,4 +165,4 @@ _units apply {
 [_group, _position, _radius, 5, "sad", "safe", "red", "limited"] call CBA_fnc_taskPatrol;
 
 
-RETURN_NIL
+nil

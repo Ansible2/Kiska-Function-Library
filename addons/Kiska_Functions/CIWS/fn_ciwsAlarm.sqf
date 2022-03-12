@@ -20,7 +20,6 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ciwsAlarm";
 
-#define RETURN_NIL nil
 #define WAIT_FOR_AIRRAIDSTART 6.4
 #define WAIT_TO_LOOP_SOUND 10.8
 #define ALARM_DISTANCE 1000
@@ -37,12 +36,12 @@ params [
 
 if (isNull _turret) exitWith {
 	[[_turret," is a null object. Exiting..."],true] call KISKA_fnc_log;
-	RETURN_NIL
+	nil
 };
 
 if (_turret getVariable ["KISKA_CIWS_alarmSounding",false]) exitWith {
 	[[_turret," already has its alarm sounding"],true] call KISKA_fnc_log;
-	RETURN_NIL
+	nil
 };
 
 
@@ -76,4 +75,4 @@ waitUntil {
 };
 
 
-RETURN_NIL
+nil

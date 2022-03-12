@@ -22,11 +22,10 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_addRallyPointDiaryEntry";
 
-#define RETURN_NIL nil
 
 if (!hasInterface) exitWith {
 	["Was run on machine without interface, needs an interface",false] call KISKA_fnc_log;
-	RETURN_NIL
+	nil
 };
 
 if (call KISKA_fnc_isMainMenu) exitWith {
@@ -36,7 +35,7 @@ if (call KISKA_fnc_isMainMenu) exitWith {
 
 if (!isMultiplayer) exitWith {
 	["KISKA rally point system does not run in singlePlayer",false] call KISKA_fnc_log;
-	RETURN_NIL
+	nil
 };
 
 if (!canSuspend) exitWith {
@@ -59,4 +58,4 @@ waitUntil {
 ] call KISKA_fnc_addKiskaDiaryEntry;
 
 
-RETURN_NIL
+nil

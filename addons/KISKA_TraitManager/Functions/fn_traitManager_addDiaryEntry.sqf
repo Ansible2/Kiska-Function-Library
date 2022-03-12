@@ -20,11 +20,10 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_traitManager_addDiaryEntry";
 
-#define RETURN_NIL nil
 
 if (!hasInterface) exitWith {
 	["Was run on machine without interface, needs an interface"] call KISKA_fnc_log;
-	RETURN_NIL
+	nil
 };
 
 if (call KISKA_fnc_isMainMenu) exitWith {
@@ -51,4 +50,4 @@ waitUntil {
 ] call KISKA_fnc_addKiskaDiaryEntry;
 
 
-RETURN_NIL
+nil

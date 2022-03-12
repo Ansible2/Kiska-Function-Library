@@ -36,7 +36,6 @@ scriptName "KISKA_fnc_ciwsInit";
 
 
 #define DEFAULT_ENGAGE_TYPES [["RocketBase",false],["MissileBase",false],["ShellBase",false],["R_230mm_HE",false]]
-#define RETURN_NIL nil
 #define NUMBER_OF_MAGS 3
 #define EXPLOSION_DELAY_CONST 0.0005
 #define TURRET_WEAPON "Gatling_30mm_Plane_CAS_01_F"
@@ -67,11 +66,11 @@ params [
 
 if (isNull _turret) exitWith {
 	[[_turret," is a null object. Exiting..."],true] call KISKA_fnc_log;
-	RETURN_NIL
+	nil
 };
 if !(_turret isKindOf "AAA_System_01_base_F") exitWith {
 	[[typeOf _turret," is not the proper type (AAA_System_01_base_F). Exiting..."],true] call KISKA_fnc_log;
-	RETURN_NIL
+	nil
 };
 
 // disable HC transfer
@@ -446,4 +445,4 @@ if (alive _turret) then {
 };
 
 
-RETURN_NIL
+nil

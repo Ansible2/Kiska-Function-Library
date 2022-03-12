@@ -27,8 +27,6 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_attack";
 
-#define RETURN_NIL nil
-
 params [
 	["_group",grpNull,[objNull,grpNull]],
 	["_position",objNull,[[],objNull,locationNull,grpNull]],
@@ -43,7 +41,7 @@ _group = _group call CBA_fnc_getGroup;
 // Don't create waypoints on each machine
 if !(local _group) exitWith {
 	[["Found that ",_group," was not local, exiting..."],true] call KISKA_fnc_log;
-	RETURN_NIL
+	nil
 };
 
 // Allow TaskAttack to override other set waypoints
@@ -58,4 +56,4 @@ if (_override) then {
 [_group, _position, _radius, "SAD", _behaviour, _combatMode] call CBA_fnc_addWaypoint;
 
 
-RETURN_NIL
+nil

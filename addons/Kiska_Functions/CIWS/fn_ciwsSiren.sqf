@@ -20,14 +20,14 @@ Author:
 ---------------------------------------------------------------------------- */
 #define SIREN_DISTANCE 1000
 #define SIREN_VOLUME 2
-#define RETURN_NIL nil
+
 scriptName "KISKA_fnc_ciwsSiren";
 
 params ["_turret"];
 
 if (_turret getVariable ["KISKA_CIWS_sirenSounding",false]) exitWith {
 	[[_turret," already has its siren sounding"],true] call KISKA_fnc_log;
-	RETURN_NIL
+	nil
 };
 
 _turret setVariable ["KISKA_CIWS_sirenSounding",true];

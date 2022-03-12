@@ -24,7 +24,6 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_AAAZone";
 
-#define RETURN_NIL nil
 
 if (!canSuspend) exitWith {
 	["ReExecuting in scheduled environment",true] call KISKA_fnc_log;
@@ -39,25 +38,25 @@ params [
 
 if (isNull _vehicle) exitWith {
 	["_vehicle is null object",true] call KISKA_fnc_log;
-	RETURN_NIL
+	nil
 };
 
 if (!local _vehicle) exitWith {
 	[[_vehicle," is not local to machine, executing on owner"],false] call KISKA_fnc_log;
 	_this remoteExec ["KISKA_fnc_AAAZone",_vehicle];
-	RETURN_NIL
+	nil
 };
 
 private _gunner = gunner _vehicle;
 if (isNull _gunner) exitWith {
 	[[_vehicle," does not have a gunner"],true] call KISKA_fnc_log;
-	RETURN_NIL
+	nil
 };
 
 private _gunnerGroup = group _gunner;
 if (isNull _gunnerGroup) exitWith {
 	["_gunnerGroup is null",true] call KISKA_fnc_log;
-	RETURN_NIL
+	nil
 };
 
 // disable HC transfer
@@ -152,4 +151,4 @@ if (alive _gunner) then {
 };
 
 
-RETURN_NIL
+nil
