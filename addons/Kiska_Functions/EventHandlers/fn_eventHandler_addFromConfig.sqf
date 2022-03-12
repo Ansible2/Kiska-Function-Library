@@ -2,7 +2,7 @@
 Function: KISKA_fnc_eventHandler_addFromConfig
 
 Description:
-
+    Adds a configed custom eventhandler.
 
 Parameters:
 	0: _config <CONFIG> - The config of the eventhandler
@@ -15,6 +15,7 @@ Returns:
 Examples:
     (begin example)
 		private _eventID = [
+            player,
 
         ] call KISKA_fnc_eventHandler_addFromConfig
     (end)

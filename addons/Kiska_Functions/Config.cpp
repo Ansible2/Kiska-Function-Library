@@ -136,6 +136,15 @@ class CfgFunctions
 			{};
 		};
 
+		class EventHandlers
+		{
+			file = "Kiska_functions\EventHandlers";
+			class eventHandler_addFromConfig
+			{};
+			class eventHandler_createCBAStateMachine
+			{};
+		};
+
 		class Hashmap
 		{
 			file = "Kiska_functions\Hashmap";
@@ -447,6 +456,14 @@ class CfgFunctions
 class CfgCommunicationMenu
 {
 	#include "Supports\Support Framework\Headers\Supports CfgCommMenu.hpp"
+};
+
+
+class KISKA_eventHandlers
+{
+	#include "EventHandlers\Headers\KISKA Behaviour EventHandlers"
+	#include "EventHandlers\Headers\KISKA Combat Behaviour EventHandlers"
+	#include "EventHandlers\Headers\KISKA Combat Mode EventHandlers"
 };
 
 
