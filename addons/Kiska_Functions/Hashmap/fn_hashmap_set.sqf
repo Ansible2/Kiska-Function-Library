@@ -26,7 +26,6 @@ Examples:
     (end)
 
 Author:
-    Leopard20,
 	Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_hashmap_set";
@@ -38,26 +37,9 @@ params [
     ["_insertOnly",false,[true]]
 ];
 
-if !(_key isEqualType grpNull OR (_key isEqualType objNull)) exitWith {
-    _map set [_key,_value,_insertOnly]
+if (_key isEqualType grpNull OR (_key isEqualType objNull)) then {
+    _key = (hashValue _key) + ([_key] call KISKA_fnc_netId);
 };
 
 
-private _set = true;
-private _keyValuePair = [_map,_key,nil,true] call KISKA_fnc_hashmap_get;
-// if key is not already in the map
-if (isNil "_keyValuePair") then {
-    private _collisionArray = [];
-    _map set [hashValue _key,_collisionArray];
-    _collisionArray pushBack [_key,_value];
-
-} else {
-    _set = false;
-    if (!_insertOnly) then {
-        _keyValuePair set [1,_value];
-    };
-
-};
-
-
-_set
+_map set [_key,_value,_insertOnly];

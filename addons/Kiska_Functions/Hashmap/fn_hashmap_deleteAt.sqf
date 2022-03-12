@@ -20,7 +20,6 @@ Examples:
     (end)
 
 Author:
-    Leopard20,
 	Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_hashmap_deleteAt";
@@ -30,33 +29,9 @@ params [
     "_key"
 ];
 
-if !(_key isEqualType grpNull OR (_key isEqualType objNull)) exitWith {
-    _map deleteAt _key
-
-};
-
-private "_value";
-private _hash = hashValue _key;
-private _collisionArray = _map getOrDefault [_hash, []];
-
-if (_collisionArray isNotEqualTo [] AND _collisionArray isEqualType []) then {
-    private "_rawKey";
-    private _deleteIndex = -1;
-    {
-        _rawKey = _x select 0;
-        if (!isNull _rawKey AND (_rawKey isEqualTo _key)) then {
-            _value = _x select 1;
-            _deleteIndex = _forEachIndex;
-            break;
-        };
-
-    } forEach _collisionArray;
-
-    if (_deleteIndex isNotEqualTo -1) then {
-        _collisionArray deleteAt _deleteIndex
-    };
-
+if (_key isEqualType grpNull OR (_key isEqualType objNull)) then {
+    _key = (hashValue _key) + ([_key] call KISKA_fnc_netId);
 };
 
 
-_value
+_map deleteAt _key;

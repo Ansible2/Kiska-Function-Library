@@ -20,7 +20,6 @@ Examples:
     (end)
 
 Author:
-    Leopard20,
 	Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_hashmap_in";
@@ -30,23 +29,9 @@ params [
     "_key"
 ];
 
-if !(_key isEqualType grpNull OR (_key isEqualType objNull)) exitWith {
-    _key in _map
-};
-
-private _hash = hashValue _key;
-private _valueArray = _map getOrDefault [_hash,[],true];
-
-private "_rawKey";
-private _in = false;
-_valueArray apply {
-    _rawKey = _x select 0;
-    if (!isNull _rawKey AND (_rawKey isEqualTo _key)) then {
-        _in = true;
-        break;
-    };
-
+if (_key isEqualType grpNull OR (_key isEqualType objNull)) then {
+    _key = (hashValue _key) + ([_key] call KISKA_fnc_netId);
 };
 
 
-_in
+_key in _map;
