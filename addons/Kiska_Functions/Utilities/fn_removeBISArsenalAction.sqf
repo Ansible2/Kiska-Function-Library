@@ -31,6 +31,7 @@ if (isNull _object) exitWith {
 
 private _actionId = _object getVariable ["bis_fnc_arsenal_action",-1];
 if (_actionId isNotEqualTo -1) exitWith {
+    _object setVariable ["bis_fnc_arsenal_action",nil];
     _object removeAction _actionId;
     true
 };
