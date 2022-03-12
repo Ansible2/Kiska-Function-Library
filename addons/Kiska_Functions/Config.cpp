@@ -465,9 +465,9 @@ class CfgCommunicationMenu
 
 class KISKA_eventHandlers
 {
-	#include "EventHandlers\Headers\KISKA Behaviour EventHandlers"
-	#include "EventHandlers\Headers\KISKA Combat Behaviour EventHandlers"
-	#include "EventHandlers\Headers\KISKA Combat Mode EventHandlers"
+	#include "EventHandlers\Headers\KISKA Behaviour EventHandlers.hpp"
+	#include "EventHandlers\Headers\KISKA Combat Behaviour EventHandlers.hpp"
+	#include "EventHandlers\Headers\KISKA Combat Mode EventHandlers.hpp"
 };
 
 
