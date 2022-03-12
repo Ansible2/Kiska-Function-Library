@@ -143,6 +143,8 @@ class CfgFunctions
 			{};
 			class eventHandler_createCBAStateMachine
 			{};
+			class eventHandler_remove
+			{};
 		};
 
 		class Hashmap

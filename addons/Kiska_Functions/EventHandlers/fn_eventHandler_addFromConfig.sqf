@@ -16,7 +16,7 @@ Examples:
     (begin example)
 		private _eventID = [
             player,
-
+            myConfig
         ] call KISKA_fnc_eventHandler_addFromConfig
     (end)
 
@@ -56,8 +56,8 @@ if !(_addTo in _entityList) then {
 };
 
 // tracking number of events for use when removing events
-/* private _eventHandlerCount_map = _stateMachine getVariable "KISKA_entity_eventhandlerCount_map"; */
-/* private _currentNumberOfEvents = [_eventHandlerCount_map,_addTo,0] call KISKA_fnc_hashmap_get; */
+private _eventHandlerCount_map = _stateMachine getVariable "KISKA_entity_eventhandlerCount_map";
+private _currentNumberOfEvents = [_eventHandlerCount_map,_addTo,0] call KISKA_fnc_hashmap_get;
 
 private _eventId = [
     _addTo,
@@ -65,8 +65,8 @@ private _eventId = [
     _code
 ] call BIS_fnc_addScriptedEventhandler;
 
-/* _currentNumberOfEvents = _currentNumberOfEvents + 1; */
-/* [_eventHandlerCount_map,_addTo,_currentNumberOfEvents] call KISKA_fnc_hashmap_set; */
+_currentNumberOfEvents = _currentNumberOfEvents + 1;
+[_eventHandlerCount_map,_addTo,_currentNumberOfEvents] call KISKA_fnc_hashmap_set;
 
 
 _eventId
