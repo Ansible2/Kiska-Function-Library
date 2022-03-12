@@ -98,7 +98,9 @@ while {sleep (GET_VDL_FREQUENCY_VAR); GET_VDL_GLOBAL_IS_RUNNING} do {
 	};
 
 	if (GET_VDL_GLOBAL_TIED_VIEW_DIST_VAR) then {
-		setViewDistance (getObjectViewDistance select 0);
+		[{
+			setViewDistance (getObjectViewDistance select 0);
+		}] call CBA_fnc_execNextFrame;
 	};
 };
 
