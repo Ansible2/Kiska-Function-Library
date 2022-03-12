@@ -371,6 +371,8 @@ class CfgFunctions
 			{};
 			class getContainerCargo
 			{};
+			class getFromNetId
+			{};
 			class getMissionLayerObjects
 			{};
 			class getNearestIncriment
@@ -400,6 +402,8 @@ class CfgFunctions
 			class markBorder
 			{};
 			class monitorFPS
+			{};
+			class netId
 			{};
 			class notification
 			{};
