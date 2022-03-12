@@ -8,7 +8,7 @@ Parameters:
 	0: _arsenal <OBJECT> - The arsenal to remove from
 
 Returns:
-	<BOOL> - true if arsenal was removed, false if never existed or does not currently exist
+	<BOOL> - true if arsenal was removed, false if action does not currently exist
 
 Examples:
     (begin example)
