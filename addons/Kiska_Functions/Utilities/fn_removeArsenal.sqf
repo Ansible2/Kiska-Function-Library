@@ -41,7 +41,7 @@ _arsenals apply {
 		[_x, true] call ace_arsenal_fnc_removeBox
 	};
 
-	["AmmoboxExit",_x] call BIS_fnc_arsenal;
+	/* ["AmmoboxExit",_x] call BIS_fnc_arsenal; */
     [_x] remoteExecCall ["KISKA_fnc_removeBISArsenalAction", 0, true];
 };
 
