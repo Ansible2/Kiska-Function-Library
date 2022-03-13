@@ -1,5 +1,5 @@
-#include "Headers\Command Menu Macros.hpp"
-#include "Headers\Support Type IDs.hpp"
+#include "..\Headers\Command Menu Macros.hpp"
+#include "..\Headers\Support Type IDs.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_callingForSupportMaster
 

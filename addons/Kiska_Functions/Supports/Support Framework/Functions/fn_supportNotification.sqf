@@ -1,5 +1,5 @@
-#include "Headers\Support Type IDs.hpp"
-#include "Headers\Support Radio Defines.hpp"
+#include "..\Headers\Support Type IDs.hpp"
+#include "..\Headers\Support Radio Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_supportNotification
 

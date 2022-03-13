@@ -1,5 +1,5 @@
-#include "Headers\CAS Titles.hpp"
-#include "Headers\CAS Type IDs.hpp"
+#include "..\Headers\CAS Titles.hpp"
+#include "..\Headers\CAS Type IDs.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_getCasTitleFromId
 

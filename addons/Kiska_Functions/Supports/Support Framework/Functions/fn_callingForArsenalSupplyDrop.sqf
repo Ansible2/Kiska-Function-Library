@@ -1,7 +1,7 @@
-#include "Headers\Command Menu Macros.hpp"
-#include "Headers\Support Type IDs.hpp"
+#include "..\Headers\Command Menu Macros.hpp"
+#include "..\Headers\Support Type IDs.hpp"
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_callingForHelicopterCAS
+Function: KISKA_fnc_callingForArsenalSupplyDrop
 
 Description:
 	Used as a means of expanding on the "expression" property of the CfgCommunicationMenu.
@@ -27,16 +27,16 @@ Returns:
 
 Examples:
     (begin example)
-		[] call KISKA_fnc_callingForHelicopterCAS;
+		[] call KISKA_fnc_callingForArsenalSupplyDrop;
     (end)
 
 Authors:
 	Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_callingForHelicopterCAS";
+scriptName "KISKA_fnc_callingForArsenalSupplyDrop";
 
-#define MIN_RADIUS 200
-#define SPEED_LIMIT 10
+#define FLYIN_RADIUS 2000
+#define ARSENAL_LIFETIME -1
 
 params [
 	"_supportClass",
@@ -82,39 +82,6 @@ SAVE_AND_PUSH(BEARING_MENU_STR,_bearingsMenu)
 
 
 /* ----------------------------------------------------------------------------
-	Radius Menu
----------------------------------------------------------------------------- */
-private _selectableRadiuses = [_supportConfig >> "radiuses"] call BIS_fnc_getCfgDataArray;
-if (_selectableRadiuses isEqualTo []) then {
-	_selectableRadiuses = missionNamespace getVariable ["KISKA_CBA_supp_radiuses_arr",[]];
-
-	if (_selectableRadiuses isEqualTo []) then {
-		_selectableRadiuses = [200];
-	};
-};
-
-private _keyCode = 0;
-private _radiusMenu = [
-	["Engagment Area",false]
-];
-{
-	if (_forEachIndex <= MAX_KEYS) then {
-		// key codes are offset by 2 (1 on the number bar is key code 2)
-		_keyCode = _forEachIndex + 2;
-	} else {
-		_keyCode = 0;
-	};
-
-	if (_x < MIN_RADIUS) then {
-		_radiusMenu pushBackUnique DISTANCE_LINE(MIN_RADIUS,_keyCode);
-	} else {
-		_radiusMenu pushBackUnique DISTANCE_LINE(_x,_keyCode);
-	};
-} forEach _selectableRadiuses;
-SAVE_AND_PUSH(RADIUS_MENU_STR,_radiusMenu)
-
-
-/* ----------------------------------------------------------------------------
 	flyInHeight Menu
 ---------------------------------------------------------------------------- */
 private _flyInHeights = [_supportConfig >> "flyinHeights"] call BIS_fnc_getCfgDataArray;
@@ -143,13 +110,10 @@ SAVE_AND_PUSH(FLYIN_HEIGHT_MENU_STR,_flyInHeightMenu)
 private _args = _this; // just for readability
 _args pushBack _menuVariables;
 
-private _timeOnStation = [_supportConfig >> "timeOnStation"] call BIS_fnc_getCfgData;
-_args pushBack _timeOnStation;
-
 [
 	_menuPathArray,
 	{
-		params ["_vehicleClass","_approachBearing","_attackRadius","_flyinHeight"];
+		params ["_vehicleClass","_approachBearing","_flyinHeight"];
 
 		private _useCount = _args select 2;
 		// if a ctrl key is held and one left clicks to select the support while in the map, they can call in an infinite number of the support
@@ -159,20 +123,19 @@ _args pushBack _timeOnStation;
 		};
 
 		private _commMenuArgs = _args select 1;
-		private _targetPosition = _commMenuArgs select 1;
-		private _timeOnStation = _args select 4;
+		private _dropPosition = _commMenuArgs select 1;
+
 		[
-			_targetPosition,
-			_attackRadius,
+			_dropPosition,
 			_vehicleClass,
-			_timeOnStation,
-			SPEED_LIMIT,
 			_flyinHeight,
 			_approachBearing,
-			side (_commMenuArgs select 0) // caller side
-		] spawn KISKA_fnc_helicopterGunner;
+			FLYIN_RADIUS,
+			ARSENAL_LIFETIME,
+			side (_commMenuArgs select 0)
+		] call KISKA_fnc_arsenalSupplyDrop;
 
-		[SUPPORT_TYPE_HELI_CAS] call KISKA_fnc_supportNotification;
+		[SUPPORT_TYPE_ARSENAL_DROP] call KISKA_fnc_supportNotification;
 
 		// if support still has uses left
 		if (_useCount > 1) then {

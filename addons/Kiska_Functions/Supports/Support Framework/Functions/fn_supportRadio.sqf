@@ -1,4 +1,4 @@
-#include "Headers\Support Radio Defines.hpp"
+#include "..\Headers\Support Radio Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_supportRadio
 
@@ -9,7 +9,7 @@ Parameters:
 	0: _messageType <STRING> - The type of radio message to send
 	1: _caller <OBJECT> - The person sending the call (default is local player)
 	2: _targets <NUMBER, OBJECT, STRING, GROUP, SIDE, ARRAY> - The remoteExec targets for the radio call
-	
+
 Returns:
 	NOTHING
 
@@ -138,7 +138,7 @@ private _fn_selectMessage = {
 			"mp_groundsupport_01_transportrequested_IHQ_2"
 		];
 	};
-	
+
 	"mp_groundsupport_70_tacticalstrikeinbound_BHQ_0"
 };
 

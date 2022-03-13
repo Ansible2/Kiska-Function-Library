@@ -292,7 +292,7 @@ class CfgFunctions
 		};
 		class SupportFramework
 		{
-			file="Kiska_functions\Supports\Support Framework";
+			file="Kiska_functions\Supports\Support Framework\Functions";
 			class addCommMenuItem
 			{};
 			class buildCommandMenu

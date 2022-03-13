@@ -1,5 +1,5 @@
-#include "Headers\Arty Ammo Titles.hpp"
-#include "Headers\Arty Ammo Type IDs.hpp"
+#include "..\Headers\Arty Ammo Titles.hpp"
+#include "..\Headers\Arty Ammo Type IDs.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_getAmmoClassFromId
 

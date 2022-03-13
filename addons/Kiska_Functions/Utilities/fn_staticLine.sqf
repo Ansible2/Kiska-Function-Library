@@ -70,7 +70,7 @@ localNamespace setVariable ["KISKA_fnc_staticline_doEject",{
 	sleep (_index / 5); // delay for getting a spread of units
 
 	private _loadout = getUnitLoadout _unit;
-	
+
 	if !(isNull (unitbackpack _unit)) then {
 		removeBackpackGlobal _unit;
 	};
@@ -83,17 +83,17 @@ localNamespace setVariable ["KISKA_fnc_staticline_doEject",{
 	};
 
 	private _aircraft = objectParent _unit;
-	
+
 	if !(isNull _aircraft) then {
-		[_unit] remoteExecCall ["unassignVehicle",_unit];
-		//[_unit,_aircraft] remoteExecCall ["leaveVehicle",_unit];
-		[_unit,["GetOut", _unit]] remoteExecCall ["action",_unit];
+		/* [_unit] remoteExecCall ["unassignVehicle",_unit]; */
+		[group _unit,_aircraft] remoteExecCall ["leaveVehicle",_unit];
+		/* [_unit,["GetOut", _unit]] remoteExecCall ["action",_unit]; */
 		[_unit] remoteExecCall ["moveOut",_unit];
-		
+
 		// determine the side of the aircraft to eject the person on
 		private _sideOfAircraft = [10,-10] select ((_index mod 2) isEqualTo 0);
-		
-		
+
+
 		// might need to waitUntil backpackContainer is not Null to be sure
 		// delay chute open to create some distance with plane
 		[_unit,_aircraft,_sideOfAircraft] spawn {
@@ -105,14 +105,14 @@ localNamespace setVariable ["KISKA_fnc_staticline_doEject",{
 			sleep 1;
 			[_unit,["OpenParachute", _unit]] remoteExecCall ["action",_unit];
 		};
-		
+
 		sleep 3;
 
 		if (_invincibleOnDrop) then {
 			[_unit,false] remoteExecCall ["allowDamage",_unit];
 		};
 
-		waitUntil { 
+		waitUntil {
 			if (((getPosATL _unit) select 2) < 0.1 OR {isTouchingGround _unit}) exitWith {true};
 			sleep 2;
 			false;
