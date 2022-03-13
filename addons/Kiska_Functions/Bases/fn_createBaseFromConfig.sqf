@@ -9,7 +9,7 @@ Parameters:
         in missionConfigFile >> "KISKA_bases" config, its class
 
 Returns:
-	<> -
+	NOTHING
 
 Examples:
     (begin example)
@@ -125,7 +125,10 @@ _turretClasses apply {
 
 
         if (_onUnitCreated isNotEqualto {}) then {
-            [_unit] call _onUnitCreated;
+            [
+                _onUnitCreated,
+                [_unit]
+            ] call CBA_fnc_directCall;
         };
 
 
@@ -136,7 +139,10 @@ _turretClasses apply {
 
 
         if (_onUnitMovedInGunner isNotEqualto {}) then {
-            [_unit,_x] call _onUnitMovedInGunner;
+            [
+                _onUnitMovedInGunner,
+                [_unit,_x]
+            ] call CBA_fnc_directCall;
         };
     };
 
@@ -181,7 +187,10 @@ _infantryClasses apply {
     if (_onUnitCreated isNotEqualTo "") then {
         _onUnitCreated = compile _onUnitCreated;
         _units apply {
-            [_x] call _onUnitCreated;
+            [
+                _onUnitCreated,
+                [_x]
+            ] call CBA_fnc_directCall;
         };
     };
 };
@@ -283,7 +292,10 @@ _patrolClasses apply {
 
     private _onGroupCreated = getText(_x >> "onGroupCreated");
     if (_onGroupCreated isNotEqualTo "") then {
-        [_group] call (compile _onGroupCreated);
+        [
+            compile _onGroupCreated,
+            [_group]
+        ] call CBA_fnc_directCall;
     };
 };
 
@@ -406,7 +418,10 @@ _simplesConfigClasses apply {
 
         _onObjectCreated = _objectData select SIMPLE_DATA_INDEX_CREATED_EVENT;
         if (_onObjectCreated isNotEqualTo {}) then {
-            [_object] call _onObjectCreated;
+            [
+                _onObjectCreated,
+                [_object]
+            ] call CBA_fnc_directCall;
         };
     };
 
