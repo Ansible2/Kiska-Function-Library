@@ -123,7 +123,12 @@ _classNames apply {
 	private _deleteTime = time + 60;
     waitUntil {
         // waitUntil a player is within 10m of the first container
-        if ((((call CBA_fnc_players) findIf {(_x distance2D _firstContainer) <= 10}) isNotEqualTo -1) OR {time > _deleteTime}) exitWith {true};
+        if (
+			(((call CBA_fnc_players) findIf {
+				(_x distance2D _firstContainer) <= 10
+			}) isNotEqualTo -1) OR
+			{time > _deleteTime}
+		) exitWith {true};
 
         sleep 2;
         false
