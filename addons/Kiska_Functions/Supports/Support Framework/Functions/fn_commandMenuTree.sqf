@@ -52,9 +52,26 @@ localNamespace setVariable ["KISKA_commMenuTree_params",[]];
 
 private _menuClosed = false;
 _menuPath apply {
+	// proceed immediatetly if only one option is in custom menu
+	private _menuName = toLower _x;
+	_menuName = _menuName trim ["#user:",1];
+	if (_menuName != _x) then {
+		private _menuOptions = missionNamespace getVariable [_menuName,[]];
+		// _menuOptions will include the title at the start of the array, therefore, multiple actual options means at least 3 entries
+		if (count _menuOptions < 3) then {
+			// format of an option
+			// ["Submenu", [3], "#USER:MY_SUBMENU_inCommunication", -5, [["expression", "player sidechat ""Submenu"" "]], "1", "1"]
+			private _singleMenuOption = _menuOptions select 1;
+			private _expression = ((_singleMenuOption select 4) select 0) select 1;
+			[] call (compile _expression);
+		};
+
+		continue;
+	};
+
 	// keeps track of whether or not to open the next menu
 	localNamespace setVariable ["KISKA_commMenuTree_proceedToNextMenu",false];
-	showCommandingMenu _x;
+	showCommandingMenu _menuName;
 
 	// wait for menu to allow proceed or menu is closed
 	waitUntil {
@@ -63,7 +80,6 @@ _menuPath apply {
 			_menuClosed = true;
 			true
 		};
-		sleep 0.1;
 		false
 	};
 	if (_menuClosed) then {
@@ -78,7 +94,7 @@ if (!_menuClosed) then {
 	};
 
 	_params call _endExpression;
-	
+
 } else {
 	if (_exitExpression isEqualType "") then {
 		_exitExpression = compile _exitExpression;
