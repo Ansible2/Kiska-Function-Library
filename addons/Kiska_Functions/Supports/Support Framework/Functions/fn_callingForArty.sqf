@@ -64,7 +64,7 @@ private _menuVariables = []; // keeps track of global variable names to set to n
 	Ammo Menu
 ---------------------------------------------------------------------------- */
 private _ammoMenu = [
-	["Select Ammo",false]
+	["Select Ammo",false] // menu title
 ];
 // get allowed ammo types from config
 private _ammoIds = [_supportConfig >> "ammoTypes"] call BIS_fnc_getCfgDataArray;
@@ -110,7 +110,7 @@ if (_selectableRadiuses isEqualTo []) then {
 };
 
 private _radiusMenu = [
-	["Area Spread",false]
+	["Area Spread",false] // title
 ];
 {
 	if (_forEachIndex <= MAX_KEYS) then {
@@ -154,9 +154,11 @@ if (_canSelectRounds) then {
 		_roundsString = [_i,"Round(s)"] joinString " ";
 		_roundsMenu pushBack STD_LINE_PUSH(_roundsString,_keyCode,_i);
 	};
+
 } else {
 	_roundsString = [_roundCount,"Round(s)"] joinString " ";
 	_roundsMenu pushBack STD_LINE_PUSH(_roundsString,2,_roundCount);
+
 };
 
 SAVE_AND_PUSH(ROUND_COUNT_MENU_GVAR,_roundsMenu)
