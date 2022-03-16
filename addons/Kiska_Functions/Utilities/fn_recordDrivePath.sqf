@@ -7,6 +7,7 @@ Description:
 Parameters:
 	0: _unit <OBJECT> - The unit to record
     1: _frequency <NUMBER> - How often to record, 0 for every frame
+    2: _recordSpeed <BOOL> - Should the speed of the _unit be recorded to
 
 Returns:
 	NOTHING
@@ -26,7 +27,8 @@ scriptName "KISKA_fnc_recordDrivePath";
 
 params [
     ["_unit",objNull,[objNull]],
-    ["_frequency",1,[123]]
+    ["_frequency",1,[123]],
+    ["_recordSpeed",true,[false]]
 ];
 
 if (isNull _unit) exitWith {
@@ -44,7 +46,8 @@ private _id = [
 
         _args params [
             "_unit",
-            "_path"
+            "_path",
+            "_recordSpeed"
         ];
         if (isNull _unit) then {
             ["Recording failed, _unit is null"] call KISKA_fnc_errorNotification;
@@ -58,7 +61,11 @@ private _id = [
         } else {
             if (_unit getVariable ["KISKA_fnc_recordDrivePath_" + str _id, true]) then {
                 private _array = ASLToAGL (getPosASL _unit);
-                _array pushBack ((speed _unit) / 3.6);
+
+                if (_recordSpeed) then {
+                    _array pushBack ((speed _unit) / 3.6);
+                };
+
                 _path pushBack _array;
 
             } else {
@@ -71,7 +78,7 @@ private _id = [
 
     },
     _frequency,
-    [_unit,_path]
+    [_unit,_path,_recordSpeed]
 ] call CBA_fnc_addPerFrameHandler;
 ["Started unit recording, press escape key to stop"] call KISKA_fnc_notification;
 
