@@ -14,7 +14,8 @@ Returns:
 Examples:
     (begin example)
 		[
-
+            objectParent player,
+            0.25
 		] call KISKA_fnc_recordDrivePath
     (end)
 
@@ -28,6 +29,11 @@ params [
     ["_frequency",1,[123]]
 ];
 
+if (isNull _unit) exitWith {
+    ["_unit is null!",true] call KISKA_fnc_log;
+    nil
+};
+
 private _path = [];
 private _id = [
     {
@@ -40,20 +46,29 @@ private _id = [
             "_unit",
             "_path"
         ];
-
-        if (
-            !(isNull _unit) AND
-            {_unit getVariable ["KISKA_fnc_recordDrivePath_" + str _id, true]}
-        ) then {
-            private _array = ASLToAGL (getPosASL _unit);
-            _array pushBack ((speed _unit) / 3.6);
-            _path pushBack _array;
-
-        } else {
-            copyToClipboard (str _path);
+        if (isNull _unit) then {
+            ["Recording failed, _unit is null"] call KISKA_fnc_errorNotification;
             [_id] call CBA_fnc_removePerFrameHandler;
 
+            // remove display event
+            private _keyDownEventId = localNamespace getVariable ["KISKA_drivePathRecordingDisplayEvent_id", -1];
+            localNamespace setVariable ["KISKA_drivePathRecordingDisplayEvent_id", nil];
+            (findDisplay 46) displayRemoveEventHandler ["KeyDown", _keyDownEventId];
+
+        } else {
+            if (_unit getVariable ["KISKA_fnc_recordDrivePath_" + str _id, true]) then {
+                private _array = ASLToAGL (getPosASL _unit);
+                _array pushBack ((speed _unit) / 3.6);
+                _path pushBack _array;
+
+            } else {
+                copyToClipboard (str _path);
+                [_id] call CBA_fnc_removePerFrameHandler;
+
+            };
         };
+
+
     },
     _frequency,
     [_unit,_path]
@@ -63,7 +78,7 @@ private _id = [
 disableSerialization;
 private _display = findDisplay 46;
 // Stops Capture after pressing the ESC key
-[
+private _displayId = [
     _display,
     "KeyDown",
     {
@@ -81,6 +96,6 @@ private _display = findDisplay 46;
     },
     [_id,_unit]
 ] call CBA_fnc_addBISEventHandler;
-
+localNamespace setVariable ["KISKA_drivePathRecordingDisplayEvent_id", _displayId];
 
 nil
