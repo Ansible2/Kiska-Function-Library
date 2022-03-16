@@ -22,7 +22,7 @@ Examples:
 Author(s):
 	Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_commandMenuTree";
+scriptName "KISKA_fnc_recordDrivePath";
 
 params [
     ["_unit",objNull,[objNull]],
@@ -97,5 +97,6 @@ private _displayId = [
     [_id,_unit]
 ] call CBA_fnc_addBISEventHandler;
 localNamespace setVariable ["KISKA_drivePathRecordingDisplayEvent_id", _displayId];
+
 
 nil
