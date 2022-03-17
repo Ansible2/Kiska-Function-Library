@@ -418,11 +418,15 @@ class CfgFunctions
 			{};
 			class notification
 			{};
+			class playDrivePath
+			{};
 			class podDrop
 			{};
 			class pushBackToArray
 			{};
 			class pushBackToArray_interface
+			{};
+			class recordDrivePath
 			{};
 			class reassignCurator
 			{};
