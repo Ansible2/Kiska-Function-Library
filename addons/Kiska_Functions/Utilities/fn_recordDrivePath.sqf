@@ -27,7 +27,7 @@ scriptName "KISKA_fnc_recordDrivePath";
 
 params [
     ["_unit",objNull,[objNull]],
-    ["_frequency",1,[123]],
+    ["_frequency",0.5,[123]],
     ["_recordSpeed",true,[false]]
 ];
 
