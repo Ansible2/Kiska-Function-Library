@@ -110,7 +110,7 @@ _vehicleGroup allowFleeing 0;
 private _pilot = driver _vehicle;
 _pilot setSkill 1;
 _pilot move (ASLToATL _hoverPosition);
-_vehicle flyInHeight 20;
+/* _vehicle flyInHeight 20; */
 
 [
     {
@@ -126,26 +126,32 @@ _vehicle flyInHeight 20;
             alive _pilot AND
             !isNil {_vehicle getVariable "ACE_Rappelling"}
         ) then {
-            private _velocityMagatude = 5;
             private _currentVehiclePosition_AGL = ASLToAGL (getPosASL _vehicle);
     		private _distanceToHoverPosition = _currentVehiclePosition_AGL distance _hoverPosition_AGL;
 
-            if( _distanceToHoverPosition <= 15 ) then {
-    			_velocityMagatude = (_distanceToHoverPosition / 10) * _velocityMagatude;
+            hint str _distanceToHoverPosition;
+            if ( _distanceToHoverPosition <= 400 ) then {
+                /* private _velocityMagnitude = (_distanceToHoverPosition / 10) max 20; */
+                private _velocityMagnitude = 15;
+                if ( _distanceToHoverPosition <= 15 ) then {
+        			_velocityMagnitude = (_distanceToHoverPosition / 10) * _velocityMagnitude;
 
-    		};
+        		};
 
-    		private _currentVelocity = velocity _vehicle;
-    		_currentVelocity = _currentVelocity vectorAdd (( _currentVehiclePosition_AGL vectorFromTo _hoverPosition_AGL ) vectorMultiply _velocityMagatude);
-    		_currentVelocity = (vectorNormalized _currentVelocity) vectorMultiply ( (vectorMagnitude _currentVelocity) min _velocityMagatude );
-    		_vehicle setVelocity _currentVelocity;
+        		private _currentVelocity = velocity _vehicle;
+        		_currentVelocity = _currentVelocity vectorAdd (( _currentVehiclePosition_AGL vectorFromTo _hoverPosition_AGL ) vectorMultiply _velocityMagnitude);
+        		_currentVelocity = (vectorNormalized _currentVelocity) vectorMultiply ( (vectorMagnitude _currentVelocity) min _velocityMagnitude );
+        		_vehicle setVelocity _currentVelocity;
+                hintSilent str _currentVelocity;
+            };
 
         } else {
+            hint "step 1";
             [_id] call CBA_fnc_removePerFrameHandler;
 
         };
     },
-    0.1,
+    0.05,
     [_vehicle, _hoverPosition_AGL, _pilot]
 ] call CBA_fnc_addPerFrameHandler;
 
@@ -155,13 +161,21 @@ _vehicle flyInHeight 20;
         params ["_vehicle","_hoverPosition_AGL","_pilot"];
         if (!alive _vehicle) exitWith {true};
         if (!alive _pilot) exitWith {true};
+        private _currentVehiclePosition_AGL = ASLToAGL (getPosASL _vehicle);
 
-        (speed _vehicle < 0.05) AND
+        (speed _vehicle < 0.05)
+        AND
         {
-            (_hoverPosition_AGL vectorDiff (ASLToAGL (getPosASL _vehicle))) select 2 < 25
+            (_hoverPosition_AGL distance2d _currentVehiclePosition_AGL) < 100
+        }
+        AND
+        {
+            (_hoverPosition_AGL vectorDiff _currentVehiclePosition_AGL) select 2 < 25
         }
     },
     {
+        hint "step 2";
+
         params ["_vehicle","","_pilot"];
         if (alive _vehicle AND alive _pilot) then {
             [_vehicle] call ace_fastroping_fnc_deployAI;
@@ -181,6 +195,8 @@ _vehicle flyInHeight 20;
             };
 
             _vehicle setVariable ["ACE_Rappelling",nil];
+
+            hint "step 3";
         };
     },
     [_vehicle,_hoverPosition_AGL,_pilot]
