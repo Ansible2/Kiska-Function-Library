@@ -25,11 +25,6 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ACE_fastRope";
 
-if (!canSuspend) exitWith {
-    ["Must be run in a scheduled environment! Exiting to scheduled..."] call KISKA_fnc_log;
-    _this spawn KISKA_fnc_ACE_fastRope;
-};
-
 params [
     ["_vehicle",objNull,[objNull]],
     ["_dropPosition",[],[[],objNull]],
@@ -110,7 +105,7 @@ _vehicleGroup allowFleeing 0;
 private _pilot = driver _vehicle;
 _pilot setSkill 1;
 _pilot move (ASLToATL _hoverPosition);
-/* _vehicle flyInHeight 20; */
+/* _vehicle flyInHeight (_hoverPosition_AGL select 2); */
 
 [
     {
@@ -118,7 +113,8 @@ _pilot move (ASLToATL _hoverPosition);
         _args params [
             "_vehicle",
             "_hoverPosition_AGL",
-            "_pilot"
+            "_pilot",
+            "_hoverPosition"
         ];
 
         if (
@@ -131,10 +127,40 @@ _pilot move (ASLToATL _hoverPosition);
 
             hint str _distanceToHoverPosition;
             if ( _distanceToHoverPosition <= 400 ) then {
-                /* private _velocityMagnitude = (_distanceToHoverPosition / 10) max 20; */
-                private _velocityMagnitude = 15;
+                if (isNil {_vehicle getVariable "KISKA_fastRopeTransformStart_speed"}) then {
+                    _vehicle setVariable ["KISKA_fastRopeTransformStart_speed",(speed _vehicle) / 3.6];
+                };
+
+                private _speed = _vehicle getVariable "KISKA_fastRopeTransformStart_speed";
+                private _velocityMagnitude = 50;
+                if (_speed < _velocityMagnitude AND (_distanceToHoverPosition > 100)) then {
+                    _speed = _speed + 0.25;
+                    _vehicle setVariable ["KISKA_fastRopeTransformStart_speed",_speed];
+
+                } else {
+                    if (_distanceToHoverPosition <= 100) then {
+                        _speed = (_speed - 1) max 10;
+                        _vehicle setVariable ["KISKA_fastRopeTransformStart_speed",_speed];
+                    };
+                };
+
+                _velocityMagnitude = _speed;
+
+
+
+                //if (_distanceToHoverPosition >= 50) then {
+                //    _velocityMagnitude = 25;
+                //};
+                //if (_distanceToHoverPosition >= 100) then {
+                //    _velocityMagnitude = 50;
+                //};
+                //if (_distanceToHoverPosition >= 300) then {
+                //    _velocityMagnitude = 75;
+                //};
+
+
                 if ( _distanceToHoverPosition <= 15 ) then {
-        			_velocityMagnitude = (_distanceToHoverPosition / 10) * _velocityMagnitude;
+        			_velocityMagnitude = (_distanceToHoverPosition / 10) * 5;
 
         		};
 
@@ -145,6 +171,67 @@ _pilot move (ASLToATL _hoverPosition);
                 hintSilent str _currentVelocity;
             };
 
+
+            /* if (_distanceToHoverPosition <= 500) then {
+                if (_vehicle getVariable ["KISKA_fastRopeTransformStart_pos",[]] isEqualTo []) then {
+                    _vehicle setVariable ["KISKA_fastRopeTransformStart_pos",getPosASLVisual _vehicle];
+                    _vehicle setVariable ["KISKA_fastRopeTransformStart_velocity",velocity _vehicle];
+                    _vehicle setVariable ["KISKA_fastRopeTransformStart_time",time];
+                    _vehicle setVariable ["KISKA_fastRopeTransformStart_timeEnd",time + 30];
+                    _vehicle setVariable ["KISKA_fastRopeTransformStart_vectorDir",vectorDirVisual _vehicle];
+                    _vehicle setVariable ["KISKA_fastRopeTransformStart_vectorUp",vectorUpVisual _vehicle];
+
+                    _vehicle setVelocityTransformation [
+                        _vehicle getVariable "KISKA_fastRopeTransformStart_pos",
+                        _hoverPosition,
+                        _vehicle getVariable "KISKA_fastRopeTransformStart_velocity",
+                        [0,0,0],
+                        _vehicle getVariable "KISKA_fastRopeTransformStart_vectorDir",
+                        (_vehicle getVariable "KISKA_fastRopeTransformStart_pos") vectorFromTo _hoverPosition,
+                        _vehicle getVariable "KISKA_fastRopeTransformStart_vectorUp",
+                        [0,0,1],
+                        linearConversion [
+                            _vehicle getVariable "KISKA_fastRopeTransformStart_time",
+                            _vehicle getVariable "KISKA_fastRopeTransformStart_timeEnd",
+                            time,
+                            0,
+                            1
+                        ]
+                    ];
+
+                } else {
+                    if ( _distanceToHoverPosition <= 15 ) then {
+            			_velocityMagnitude = (_distanceToHoverPosition / 10) * 5;
+
+                        private _currentVelocity = velocity _vehicle;
+                		_currentVelocity = _currentVelocity vectorAdd (( _currentVehiclePosition_AGL vectorFromTo _hoverPosition_AGL ) vectorMultiply _velocityMagnitude);
+                		_currentVelocity = (vectorNormalized _currentVelocity) vectorMultiply ( (vectorMagnitude _currentVelocity) min _velocityMagnitude );
+                		_vehicle setVelocity _currentVelocity;
+            		} else {
+                        _vehicle setVelocityTransformation [
+                            _vehicle getVariable "KISKA_fastRopeTransformStart_pos",
+                            _hoverPosition,
+                            _vehicle getVariable "KISKA_fastRopeTransformStart_velocity",
+                            [0,0,0],
+                            _vehicle getVariable "KISKA_fastRopeTransformStart_vectorDir",
+                            [0,1,0],
+                            _vehicle getVariable "KISKA_fastRopeTransformStart_vectorUp",
+                            [0,0,1],
+                            linearConversion [
+                                _vehicle getVariable "KISKA_fastRopeTransformStart_time",
+                                _vehicle getVariable "KISKA_fastRopeTransformStart_timeEnd",
+                                time,
+                                0,
+                                1
+                            ]
+                        ];
+                    };
+
+                };
+
+            }; */
+
+
         } else {
             hint "step 1";
             [_id] call CBA_fnc_removePerFrameHandler;
@@ -152,7 +239,7 @@ _pilot move (ASLToATL _hoverPosition);
         };
     },
     0.05,
-    [_vehicle, _hoverPosition_AGL, _pilot]
+    [_vehicle, _hoverPosition_AGL, _pilot, _hoverPosition]
 ] call CBA_fnc_addPerFrameHandler;
 
 
@@ -163,7 +250,7 @@ _pilot move (ASLToATL _hoverPosition);
         if (!alive _pilot) exitWith {true};
         private _currentVehiclePosition_AGL = ASLToAGL (getPosASL _vehicle);
 
-        (speed _vehicle < 0.05)
+        (speed _vehicle < (2.5 * 3.6))
         AND
         {
             (_hoverPosition_AGL distance2d _currentVehiclePosition_AGL) < 100
@@ -174,7 +261,7 @@ _pilot move (ASLToATL _hoverPosition);
         }
     },
     {
-        hint "step 2";
+        systemChat "step 2";
 
         params ["_vehicle","","_pilot"];
         if (alive _vehicle AND alive _pilot) then {
@@ -196,7 +283,7 @@ _pilot move (ASLToATL _hoverPosition);
 
             _vehicle setVariable ["ACE_Rappelling",nil];
 
-            hint "step 3";
+            systemChat "step 3";
         };
     },
     [_vehicle,_hoverPosition_AGL,_pilot]
