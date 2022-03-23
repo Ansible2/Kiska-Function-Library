@@ -2,12 +2,17 @@
 Function: KISKA_fnc_ACE_fastRope
 
 Description:
-
+    Sends a vehicle to a given point and fastropes the given units from the helicopter.
 
 Parameters:
 	0: _vehicle <OBJECT> - The vehicle to fastrope from
-    1: _dropPosition <ARRAY> - The position to drop the units off at; Z coordinate
+    1: _dropPosition <ARRAY> - The positionASL to drop the units off at; Z coordinate
         matters
+    2: _unitsToDeploy <ARRAY> - An array of units to drop from the _vehicle.
+    3: _afterDropCode <CODE or STRING> - Code to execute after the drop is complete
+            (code is run in unscheduled)
+            Parameters:
+                0: _vehicle - The drop vehicle
 
 Returns:
 	NOTHING
@@ -16,7 +21,10 @@ Examples:
     (begin example)
 		[
             _vehicle,
-            [0,0,0]
+            [0,0,0],
+            (fullCrew [_vehicle,"cargo"]) apply {
+                _x select 0
+            }
 		] call KISKA_fnc_ACE_fastRope;
     (end)
 
@@ -28,11 +36,17 @@ scriptName "KISKA_fnc_ACE_fastRope";
 params [
     ["_vehicle",objNull,[objNull]],
     ["_dropPosition",[],[[],objNull]],
-    ["_dropArray",[],[[],grpNull,objNull]]
+    ["_unitsToDeploy",[],[[],grpNull,objNull]],
+    ["_afterDropCode",{},["",{}]],
+    ["_hoverHeight",20,[123]]
 ];
 
-if !(["ace_main"] call KISKA_fnc_isPatchLoaded) exitWith {
-    ["ace_main is required for this function",true] call KISKA_fnc_log;
+
+/* ----------------------------------------------------------------------------
+    Verify Params
+---------------------------------------------------------------------------- */
+if !(["ace_fastroping"] call KISKA_fnc_isPatchLoaded) exitWith {
+    ["ace_fastroping is required for this function",true] call KISKA_fnc_log;
 
 };
 
@@ -47,55 +61,62 @@ if !([_vehicle] call ace_fastroping_fnc_canPrepareFRIES) exitWith {
 
 };
 
-
 if (_dropPosition isEqualType objNull) then {
     _dropPosition = getPosASL _dropPosition;
 };
 
+_hoverHeight = _hoverHeight max 5;
+_hoverHeight = _hoverHeight min 25;
+
+if (_afterDropCode isEqualType "") then {
+    _afterDropCode = compile _afterDropCode;
+};
+
+
 /* ----------------------------------------------------------------------------
-    Verify _dropArray
+    Verify _unitsToDeploy
 ---------------------------------------------------------------------------- */
-if (_dropArray isEqualTo []) exitWith {
-	["_dropArray is empty",true] call KISKA_fnc_log;
+if (_unitsToDeploy isEqualTo []) exitWith {
+	["_unitsToDeploy is empty",true] call KISKA_fnc_log;
 	false
 };
 
-if (_dropArray isEqualTypeAny [objNull,grpNull] AND {isNull _dropArray}) exitWith {
-	["_dropArray isNull",true] call KISKA_fnc_log;
+if (_unitsToDeploy isEqualTypeAny [objNull,grpNull] AND {isNull _unitsToDeploy}) exitWith {
+	["_unitsToDeploy isNull",true] call KISKA_fnc_log;
 	false
 };
 
-if (_dropArray isEqualType grpNull) then {
-	_dropArray = units _dropArray;
+if (_unitsToDeploy isEqualType grpNull) then {
+	_unitsToDeploy = units _unitsToDeploy;
 };
 
-if (_dropArray isEqualType objNull) then {
-	_dropArray = [_dropArray];
+if (_unitsToDeploy isEqualType objNull) then {
+	_unitsToDeploy = [_unitsToDeploy];
 };
 
-private _dropArrayFiltered = [];
-if (_dropArray isEqualType []) then {
-	_dropArray apply {
+private _unitsToDeployFiltered = [];
+if (_unitsToDeploy isEqualType []) then {
+	_unitsToDeploy apply {
 		if (_x isEqualType grpNull) then {
-			_dropArrayFiltered append (units _x);
+			_unitsToDeployFiltered append (units _x);
 		};
 
 		if (_x isEqualType objNull) then {
-			_dropArrayFiltered pushBack _x;
+			_unitsToDeployFiltered pushBack _x;
 		};
 	};
 };
 
-if (_dropArrayFiltered isEqualTo []) then {
-    _dropArrayFiltered = _dropArray;
+if (_unitsToDeployFiltered isEqualTo []) then {
+    _unitsToDeployFiltered = _unitsToDeploy;
 };
 
 
 /* ----------------------------------------------------------------------------
-
+    Prepare FRIES
 ---------------------------------------------------------------------------- */
 _vehicle setVariable ["ACE_Rappelling",true];
-private _hoverPosition = _dropPosition vectorAdd [0,0,20];
+private _hoverPosition = _dropPosition vectorAdd [0,0,_hoverHeight];
 private _hoverPosition_AGL = ASLToAGL _hoverPosition;
 private _pilot = driver _vehicle;
 
@@ -105,8 +126,8 @@ _vehicleGroup allowFleeing 0;
 private _pilot = driver _vehicle;
 _pilot setSkill 1;
 _pilot move (ASLToATL _hoverPosition);
-/* _vehicle flyInHeight (_hoverPosition_AGL select 2); */
 
+// guides helicopter to drop position
 [
     {
         params ["_args", "_id"];
@@ -125,7 +146,6 @@ _pilot move (ASLToATL _hoverPosition);
             private _currentVehiclePosition_AGL = ASLToAGL (getPosASL _vehicle);
     		private _distanceToHoverPosition = _currentVehiclePosition_AGL distance _hoverPosition_AGL;
 
-            hint str _distanceToHoverPosition;
             if ( _distanceToHoverPosition <= 400 ) then {
                 if (isNil {_vehicle getVariable "KISKA_fastRopeTransformStart_speed"}) then {
                     _vehicle setVariable ["KISKA_fastRopeTransformStart_speed",(speed _vehicle) / 3.6];
@@ -147,18 +167,6 @@ _pilot move (ASLToATL _hoverPosition);
                 _velocityMagnitude = _speed;
 
 
-
-                //if (_distanceToHoverPosition >= 50) then {
-                //    _velocityMagnitude = 25;
-                //};
-                //if (_distanceToHoverPosition >= 100) then {
-                //    _velocityMagnitude = 50;
-                //};
-                //if (_distanceToHoverPosition >= 300) then {
-                //    _velocityMagnitude = 75;
-                //};
-
-
                 if ( _distanceToHoverPosition <= 15 ) then {
         			_velocityMagnitude = (_distanceToHoverPosition / 10) * 5;
 
@@ -168,72 +176,9 @@ _pilot move (ASLToATL _hoverPosition);
         		_currentVelocity = _currentVelocity vectorAdd (( _currentVehiclePosition_AGL vectorFromTo _hoverPosition_AGL ) vectorMultiply _velocityMagnitude);
         		_currentVelocity = (vectorNormalized _currentVelocity) vectorMultiply ( (vectorMagnitude _currentVelocity) min _velocityMagnitude );
         		_vehicle setVelocity _currentVelocity;
-                hintSilent str _currentVelocity;
             };
 
-
-            /* if (_distanceToHoverPosition <= 500) then {
-                if (_vehicle getVariable ["KISKA_fastRopeTransformStart_pos",[]] isEqualTo []) then {
-                    _vehicle setVariable ["KISKA_fastRopeTransformStart_pos",getPosASLVisual _vehicle];
-                    _vehicle setVariable ["KISKA_fastRopeTransformStart_velocity",velocity _vehicle];
-                    _vehicle setVariable ["KISKA_fastRopeTransformStart_time",time];
-                    _vehicle setVariable ["KISKA_fastRopeTransformStart_timeEnd",time + 30];
-                    _vehicle setVariable ["KISKA_fastRopeTransformStart_vectorDir",vectorDirVisual _vehicle];
-                    _vehicle setVariable ["KISKA_fastRopeTransformStart_vectorUp",vectorUpVisual _vehicle];
-
-                    _vehicle setVelocityTransformation [
-                        _vehicle getVariable "KISKA_fastRopeTransformStart_pos",
-                        _hoverPosition,
-                        _vehicle getVariable "KISKA_fastRopeTransformStart_velocity",
-                        [0,0,0],
-                        _vehicle getVariable "KISKA_fastRopeTransformStart_vectorDir",
-                        (_vehicle getVariable "KISKA_fastRopeTransformStart_pos") vectorFromTo _hoverPosition,
-                        _vehicle getVariable "KISKA_fastRopeTransformStart_vectorUp",
-                        [0,0,1],
-                        linearConversion [
-                            _vehicle getVariable "KISKA_fastRopeTransformStart_time",
-                            _vehicle getVariable "KISKA_fastRopeTransformStart_timeEnd",
-                            time,
-                            0,
-                            1
-                        ]
-                    ];
-
-                } else {
-                    if ( _distanceToHoverPosition <= 15 ) then {
-            			_velocityMagnitude = (_distanceToHoverPosition / 10) * 5;
-
-                        private _currentVelocity = velocity _vehicle;
-                		_currentVelocity = _currentVelocity vectorAdd (( _currentVehiclePosition_AGL vectorFromTo _hoverPosition_AGL ) vectorMultiply _velocityMagnitude);
-                		_currentVelocity = (vectorNormalized _currentVelocity) vectorMultiply ( (vectorMagnitude _currentVelocity) min _velocityMagnitude );
-                		_vehicle setVelocity _currentVelocity;
-            		} else {
-                        _vehicle setVelocityTransformation [
-                            _vehicle getVariable "KISKA_fastRopeTransformStart_pos",
-                            _hoverPosition,
-                            _vehicle getVariable "KISKA_fastRopeTransformStart_velocity",
-                            [0,0,0],
-                            _vehicle getVariable "KISKA_fastRopeTransformStart_vectorDir",
-                            [0,1,0],
-                            _vehicle getVariable "KISKA_fastRopeTransformStart_vectorUp",
-                            [0,0,1],
-                            linearConversion [
-                                _vehicle getVariable "KISKA_fastRopeTransformStart_time",
-                                _vehicle getVariable "KISKA_fastRopeTransformStart_timeEnd",
-                                time,
-                                0,
-                                1
-                            ]
-                        ];
-                    };
-
-                };
-
-            }; */
-
-
         } else {
-            hint "step 1";
             [_id] call CBA_fnc_removePerFrameHandler;
 
         };
@@ -243,9 +188,12 @@ _pilot move (ASLToATL _hoverPosition);
 ] call CBA_fnc_addPerFrameHandler;
 
 
+/* ----------------------------------------------------------------------------
+    Monitor drop for completion
+---------------------------------------------------------------------------- */
 [
     {
-        params ["_vehicle","_hoverPosition_AGL","_pilot"];
+        params ["_vehicle","_hoverPosition_AGL","_pilot",""];
         if (!alive _vehicle) exitWith {true};
         if (!alive _pilot) exitWith {true};
         private _currentVehiclePosition_AGL = ASLToAGL (getPosASL _vehicle);
@@ -253,7 +201,7 @@ _pilot move (ASLToATL _hoverPosition);
         (speed _vehicle < (2.5 * 3.6))
         AND
         {
-            (_hoverPosition_AGL distance2d _currentVehiclePosition_AGL) < 100
+            (_hoverPosition_AGL distance2d _currentVehiclePosition_AGL) < 10
         }
         AND
         {
@@ -261,30 +209,29 @@ _pilot move (ASLToATL _hoverPosition);
         }
     },
     {
-        systemChat "step 2";
+        params ["_vehicle","","_pilot","_unitsToDeploy"];
 
-        params ["_vehicle","","_pilot"];
-        if (alive _vehicle AND alive _pilot) then {
-            [_vehicle] call ace_fastroping_fnc_deployAI;
+        if (alive _vehicle AND (alive _pilot)) then {
+            [_vehicle, _unitsToDeploy] call KISKA_fnc_ACE_deployFastRope;
         };
 
-        [_vehicle] spawn {
-            params ["_vehicle"];
 
-            waitUntil {
-                sleep 1;
-                ((_vehicle getVariable ["ace_fastroping_deployedRopes", []]) isNotEqualTo [])
-            };
+        private _id = [
+            _vehicle,
+            "KISKA_ACE_fastRopeFinished",
+            {
+                params ["_vehicle"];
+                [_vehicle,"KISKA_ACE_fastRopeFinished",_thisScriptedEventHandler] call BIS_fnc_removeScriptedEventHandler;
+                private _afterDropCode = _vehicle getVariable ["KISKA_ACE_fastRopeFinished_afterDropCode_" + (str _thisScriptedEventHandler),{}];
+                if (_afterDropCode isNotEqualTo {}) then {
+                    _this call _afterDropCode;
+                };
+            }
+        ] call BIS_fnc_addScriptedEventHandler;
 
-            waitUntil {
-                sleep 1;
-                ((_vehicle getVariable ["ace_fastroping_deployedRopes", []]) isEqualTo [])
-            };
-
-            _vehicle setVariable ["ACE_Rappelling",nil];
-
-            systemChat "step 3";
+        if (_afterDropCode isNotEqualTo {}) then {
+            _vehicle setVariable ["KISKA_ACE_fastRopeFinished_afterDropCode_" + (str _id),_afterDropCode];
         };
     },
-    [_vehicle,_hoverPosition_AGL,_pilot]
+    [_vehicle,_hoverPosition_AGL,_pilot,_unitsToDeploy]
 ] call CBA_fnc_waitUntilAndExecute;
