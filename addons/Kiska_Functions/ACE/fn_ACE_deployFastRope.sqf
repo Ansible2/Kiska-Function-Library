@@ -1,6 +1,5 @@
-#define KISKA_SCRIPT_COMPONENT "\z\ace\addons\fastroping\functions\script_component.hpp"
-#if __has_include(KISKA_SCRIPT_COMPONENT)
-    #include KISKA_SCRIPT_COMPONENT
+#if __has_include("\z\ace\addons\fastroping\functions\script_component.hpp")
+    #include "\z\ace\addons\fastroping\functions\script_component.hpp"
 #endif
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_ACE_deployFastRope
@@ -83,9 +82,14 @@ DFUNC(deployAIRecursive) = {
     params ["_vehicle", "_unitsToDeploy"];
 
     private _unit = _unitsToDeploy deleteAt 0;
-    if (_unit)
-    unassignVehicle _unit;
-    [_unit, _vehicle] call FUNC(fastRope);
+    if (alive _unit AND (_unit in _vehicle)) then {
+        _unit leaveVehicle _vehicle;
+        [_unit, _vehicle] call FUNC(fastRope);
+
+    } else {
+        [["Found unit that was either not alive or not in vehicle: ", _vehicle],false] call KISKA_fnc_log;
+
+    };
 
     if (_unitsToDeploy isNotEqualTo []) then {
         [

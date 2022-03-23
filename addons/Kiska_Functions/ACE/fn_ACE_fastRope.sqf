@@ -193,7 +193,7 @@ _pilot move (ASLToATL _hoverPosition);
 ---------------------------------------------------------------------------- */
 [
     {
-        params ["_vehicle","_hoverPosition_AGL","_pilot",""];
+        params ["_vehicle","_hoverPosition_AGL","_pilot","",""];
         if (!alive _vehicle) exitWith {true};
         if (!alive _pilot) exitWith {true};
         private _currentVehiclePosition_AGL = ASLToAGL (getPosASL _vehicle);
@@ -201,7 +201,7 @@ _pilot move (ASLToATL _hoverPosition);
         (speed _vehicle < (2.5 * 3.6))
         AND
         {
-            (_hoverPosition_AGL distance2d _currentVehiclePosition_AGL) < 10
+            (_hoverPosition_AGL distance2d _currentVehiclePosition_AGL) < 100
         }
         AND
         {
@@ -209,7 +209,7 @@ _pilot move (ASLToATL _hoverPosition);
         }
     },
     {
-        params ["_vehicle","","_pilot","_unitsToDeploy"];
+        params ["_vehicle","","_pilot","_unitsToDeploy","_afterDropCode"];
 
         if (alive _vehicle AND (alive _pilot)) then {
             [_vehicle, _unitsToDeploy] call KISKA_fnc_ACE_deployFastRope;
@@ -222,9 +222,15 @@ _pilot move (ASLToATL _hoverPosition);
             {
                 params ["_vehicle"];
                 [_vehicle,"KISKA_ACE_fastRopeFinished",_thisScriptedEventHandler] call BIS_fnc_removeScriptedEventHandler;
-                private _afterDropCode = _vehicle getVariable ["KISKA_ACE_fastRopeFinished_afterDropCode_" + (str _thisScriptedEventHandler),{}];
+
+                _vehicle setVariable ["ACE_Rappelling",nil];
+
+                private _codeVar = "KISKA_ACE_fastRopeFinished_afterDropCode_" + (str _thisScriptedEventHandler);
+                private _afterDropCode = _vehicle getVariable [_codeVar,{}];
+
                 if (_afterDropCode isNotEqualTo {}) then {
                     _this call _afterDropCode;
+                    _vehicle setVariable [_codeVar,nil];
                 };
             }
         ] call BIS_fnc_addScriptedEventHandler;
@@ -233,5 +239,5 @@ _pilot move (ASLToATL _hoverPosition);
             _vehicle setVariable ["KISKA_ACE_fastRopeFinished_afterDropCode_" + (str _id),_afterDropCode];
         };
     },
-    [_vehicle,_hoverPosition_AGL,_pilot,_unitsToDeploy]
+    [_vehicle,_hoverPosition_AGL,_pilot,_unitsToDeploy,_afterDropCode]
 ] call CBA_fnc_waitUntilAndExecute;
