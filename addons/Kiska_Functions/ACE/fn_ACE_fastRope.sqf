@@ -102,7 +102,7 @@ if (_unitsToDeploy isEqualType []) then {
         };
 
         if (_x isEqualType objNull) then {
-            _unitsToDeployFiltered pushBack _x;
+            _unitsToDeployFiltered pushBackUnique _x;
         };
     };
 };
@@ -236,5 +236,5 @@ _pilot move (ASLToATL _hoverPosition);
         };
 
     },
-    [_vehicle,_hoverPosition_AGL,_pilot,_unitsToDeploy,_afterDropCode]
+    [_vehicle,_hoverPosition_AGL,_pilot,_unitsToDeployFiltered,_afterDropCode]
 ] call CBA_fnc_waitUntilAndExecute;
