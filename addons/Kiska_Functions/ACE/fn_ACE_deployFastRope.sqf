@@ -61,7 +61,6 @@ if (_configEnabled isEqualTo 2 AND (isNull (_vehicle getVariable [QGVAR(FRIES), 
     nil
 };
 
-
 /* ----------------------------------------------------------------------------
     Deploy Ropes
 ---------------------------------------------------------------------------- */
@@ -83,7 +82,8 @@ DFUNC(deployAIRecursive) = {
 
     private _unit = _unitsToDeploy deleteAt 0;
     if (alive _unit AND (_unit in _vehicle)) then {
-        _unit leaveVehicle _vehicle;
+        unassignVehicle _unit;
+        [_unit] allowGetIn false;
         [_unit, _vehicle] call FUNC(fastRope);
 
     } else {
@@ -116,7 +116,6 @@ DFUNC(deployAIRecursive) = {
             },
             {
                 [_this] call FUNC(cutRopes);
-                [_this, "KISKA_ACE_fastRopeFinished", [_this], false] call BIS_fnc_callScriptedEventHandler;
                 (driver _this) enableAI "MOVE";
             },
             _vehicle
