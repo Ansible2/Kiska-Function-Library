@@ -57,7 +57,16 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 			};
 		};
 	} else {
-		["You must be the admin or host to change this setting"] call KISKA_fnc_errorNotification;
+		// when selecting a group, and this control is created/updated in the right pane, this error may show for certain users
+		// despite not having changed the setting, therefore, this boolean is used to see if this control was just created and this
+		// is the second time or more the control is adjusted
+		if !(_control getVariable ["KISKA_firstTimeComboChanged",false]) then {
+			["You must be the admin or host to change this setting"] call KISKA_fnc_errorNotification;
+
+		} else {
+			_control setVariable ["KISKA_firstTimeComboChanged",false];
+
+		};
 	};
 }];
 

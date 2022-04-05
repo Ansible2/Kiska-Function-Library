@@ -123,6 +123,7 @@ if (_updateGroupId) then {
 if (_updateCanDeleteCombo) then {
 	private _canBeDeletedCombo_ctrl = uiNamespace getVariable "KISKA_GCH_canBeDeletedCombo_ctrl";
 	private _canDeleteWhenEmpty = isGroupDeletedWhenEmpty _selectedGroup;
+	_canBeDeletedCombo_ctrl setVariable ["KISKA_firstTimeComboChanged",true];
 	_canBeDeletedCombo_ctrl lbSetCurSel ([0,1] select _canDeleteWhenEmpty);
 };
 
@@ -145,6 +146,7 @@ if (_updateCanRallyCombo) then {
 			{_selectedGroup isEqualTo (uiNamespace getVariable "KISKA_GCH_selectedGroup")}
 		) then {
 			private _canRallyCombo_ctrl = uiNamespace getVariable "KISKA_GCH_canRallyCombo_ctrl";
+			_canRallyCombo_ctrl setVariable ["KISKA_firstTimeComboChanged",true];
 			_canRallyCombo_ctrl lbSetCurSel ([0,1] select _groupCanRally);
 		};
 	};
