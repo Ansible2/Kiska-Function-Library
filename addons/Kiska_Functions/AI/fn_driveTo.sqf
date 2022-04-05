@@ -75,7 +75,8 @@ private _crewGroups = [];
 [_driverGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
 
 [_driverGroup] call CBA_fnc_clearWaypoints;
-[_driverGroup,_dismountPoint,-1,"MOVE","UNCHANGED","NO CHANGE",_speed,"NO CHANGE","",[0,0,0],_completionRadius] call CBA_fnc_addWaypoint;
+/* [_driverGroup,_dismountPoint,-1,"MOVE","UNCHANGED","NO CHANGE",_speed,"NO CHANGE","",[0,0,0],_completionRadius] call CBA_fnc_addWaypoint; */
+_driverGroup move _dismountPoint;
 
 // position loop
 [_vehicle,_crew,_codeOnComplete,_completionRadius,_dismountPoint,_driverGroup,_crewGroups] spawn {
@@ -90,15 +91,17 @@ private _crewGroups = [];
 	];
 
 	waitUntil {
-		if (_vehicle distance _dismountPoint <= _completionRadius) exitWith {true};
+		if (_vehicle distance _dismountPoint <= _completionRadius OR !(alive _vehicle)) exitWith {true};
 		sleep 1;
 		false
 	};
 
-	[["_vehicle ",_vehicle," has reached its destination"],false] call KISKA_fnc_log;
+	if (alive _vehicle) then {
+		[["_vehicle ",_vehicle," has reached its destination"],false] call KISKA_fnc_log;
 
-	_crew apply {
-		[_x,_vehicle] remoteExecCall ["leaveVehicle",_x];
+		_crew apply {
+			[_x,_vehicle] remoteExecCall ["leaveVehicle",_x];
+		};
 	};
 
 	// enable HC transfer
