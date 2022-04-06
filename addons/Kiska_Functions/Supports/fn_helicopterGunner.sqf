@@ -136,8 +136,9 @@ _params spawn {
 	};
 
 	// move to support zone
+	// checking driver instead of cache to see if they got out of the vehicle
 	waitUntil {
-		if ((!alive _vehicle) OR {(_vehicle distance2D _centerPosition) <= _radius}) exitWith {
+		if ((!alive _vehicle) OR (isNull (driver _vehicle)) {(_vehicle distance2D _centerPosition) <= _radius}) exitWith {
 			true
 		};
 		_pilotsGroup move _centerPosition;
@@ -164,7 +165,7 @@ _params spawn {
 	private _sleepTime = _timeOnStation / 5;
 	for "_i" from 0 to 4 do {
 
-		if (!alive _vehicle) then {
+		if (!alive _vehicle OR (isNull (driver _vehicle))) then {
 			break;
 		};
 		_vehicle doMove (_centerPosition getPos [_radius,STAR_BEARINGS select _i]);
@@ -196,7 +197,7 @@ _params spawn {
 		if (!alive _vehicle OR {(_vehicle distance2D _deletePosition) <= 200}) exitWith {true};
 
 		// if vehicle is disabled and makes a landing, just blow it up
-		if ((getPosATL _vehicle select 2) < 2) exitWith {
+		if (((getPosATL _vehicle) select 2) < 2 OR (isNull (driver _vehicle))) exitWith {
 			_vehicle setDamage 1;
 			true
 		};
