@@ -53,30 +53,24 @@ if (_crew isEqualType objNull) then {
 };
 
 
-private "_driverGroup";
 private _vehicleCrew = crew _vehicle;
 private _crewGroups = [];
 {
 	if !(_x in _vehicleCrew) then {
-		// take the first man and put him in the driver seat
-		if (_forEachIndex isEqualTo 0) then {
-			_driverGroup = group _x;
-			[_x,_vehicle] remoteExecCall ["moveInDriver",_x];
-
-		} else {
-			_x moveInAny _vehicle;
-			_crewGroups pushBackUnique (group _x);
-
-		};
-
+		_x moveInAny _vehicle;
+		_crewGroups pushBackUnique (group _x);
 	};
 } forEach _crew;
+
+private _driverGroup = group (driver _vehicle);
+
+
 // disable HC transfer while driving
 [_driverGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
 
 [_driverGroup] call CBA_fnc_clearWaypoints;
 /* [_driverGroup,_dismountPoint,-1,"MOVE","UNCHANGED","NO CHANGE",_speed,"NO CHANGE","",[0,0,0],_completionRadius] call CBA_fnc_addWaypoint; */
-_driverGroup move _dismountPoint;
+(driver _vehicle) move _dismountPoint;
 
 // position loop
 [_vehicle,_crew,_codeOnComplete,_completionRadius,_dismountPoint,_driverGroup,_crewGroups] spawn {
@@ -90,8 +84,19 @@ _driverGroup move _dismountPoint;
 		"_crewGroups"
 	];
 
+
+	// Need to wait for driver to be ready to move
+    private _driver = driver _vehicle;
+    waitUntil {
+        if (!alive _driver OR {!(_driver in _vehicle)}) exitWith {true};
+        sleep 0.1;
+        unitReady _driver;
+    };
+
+    _driverGroup move _dismountPoint;
+
 	waitUntil {
-		if (_vehicle distance _dismountPoint <= _completionRadius OR !(alive _vehicle)) exitWith {true};
+		if (_vehicle distance _dismountPoint <= _completionRadius OR !(alive _vehicle) OR (isNull (driver _vehicle) OR {!(_driver in _vehicle)})) exitWith {true};
 		sleep 1;
 		false
 	};
