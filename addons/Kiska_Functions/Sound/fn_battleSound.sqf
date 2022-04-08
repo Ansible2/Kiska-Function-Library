@@ -98,16 +98,34 @@ private _soundArr = [
 private _endTime = _duration + time;
 private _timeBetweenSounds = _intensityArray vectorMultiply 4;
 
-
+private _distanceIsArray = _distance isEqualType [];
 waitUntil {
 	if (_endTime <= time) exitWith {true};
 
 	private _volume = floor (random [3,4,5]);
 
-	playSound3D [selectRandomWeighted _soundArr, objNull, false, _source, _volume, random [-2,-1,0],[_distance,random _distance] select (_distance isEqualType [])];
+	playSound3D [
+		selectRandomWeighted _soundArr,
+		objNull,
+		false,
+		_source,
+		_volume,
+		random [-2,-1,0],
+		[_distance,random _distance] select _distanceIsArray
+	];
+	
 	sleep (random _intensityArray);
 
-	playSound3D [selectRandomWeighted _soundArr, objNull, false, _source, _volume, random [-2,-1,0],[_distance,random _distance] select (_distance isEqualType [])];
+	playSound3D [
+		selectRandomWeighted _soundArr,
+		objNull,
+		false,
+		_source,
+		_volume,
+		random [-2,-1,0],
+		[_distance,random _distance] select _distanceIsArray
+	];
+
 	sleep (random _timeBetweenSounds);
 
 	false
