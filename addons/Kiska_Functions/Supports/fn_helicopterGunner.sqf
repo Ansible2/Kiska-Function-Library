@@ -138,7 +138,7 @@ _params spawn {
 	// move to support zone
 	// checking driver instead of cache to see if they got out of the vehicle
 	waitUntil {
-		if ((!alive _vehicle) OR (isNull (driver _vehicle)) {(_vehicle distance2D _centerPosition) <= _radius}) exitWith {
+		if ((!alive _vehicle) OR (isNull (driver _vehicle)) OR {(_vehicle distance2D _centerPosition) <= _radius}) exitWith {
 			true
 		};
 		_pilotsGroup move _centerPosition;
