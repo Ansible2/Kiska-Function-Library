@@ -15,6 +15,16 @@ class CfgFunctions
 {
 	class KISKA
 	{
+		class ACE_FastRope
+		{
+			file = "KISKA_functions\ACE\Fast Rope";
+			class ACE_deployFastRope
+			{};
+			class ACE_deployRopes
+			{};
+			class ACE_fastRope
+			{};
+		};
 		class ACE
 		{
 			file = "KISKA_functions\ACE"

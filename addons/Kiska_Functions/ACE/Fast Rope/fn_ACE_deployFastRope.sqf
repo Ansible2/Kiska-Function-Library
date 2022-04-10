@@ -5,7 +5,7 @@
 Function: KISKA_fnc_ACE_deployFastRope
 
 Description:
-    An edit of ace_fastroping_fnc_deployAI to allow for custom drop of units.
+    An edit of KISKA_fnc_ACE_deployFastRope to allow for custom drop of units.
 
 Parameters:
     0: _vehicle <OBJECT> - The vehicle to fastrope from
@@ -30,6 +30,11 @@ Author(s):
 	Modified By: Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ACE_deployFastRope";
+
+if !(["ace_fastroping"] call KISKA_fnc_isPatchLoaded) exitWith {
+    ["ace_fastroping is required for this function",true] call KISKA_fnc_log;
+    nil
+};
 
 params [
     ["_vehicle", objNull, [objNull]],
@@ -64,12 +69,14 @@ if (_configEnabled isEqualTo 2 AND (isNull (_vehicle getVariable [QGVAR(FRIES), 
 /* ----------------------------------------------------------------------------
     Deploy Ropes
 ---------------------------------------------------------------------------- */
-private  _deployTime = 0;
+private  _deployTime = 4;
 if (getText (_config >> QGVAR(onPrepare)) isNotEqualTo "") then {
     _deployTime = [_vehicle] call (missionNamespace getVariable (getText (_config >> QGVAR(onPrepare))));
 };
 
-[FUNC(deployRopes), _vehicle, _deployTime] call CBA_fnc_waitAndExecute;
+_vehicle call KISKA_fnc_ACE_deployRopes;
+/* _vehicle call FUNC(deployRopes); */
+/* [FUNC(deployRopes), _vehicle, _deployTime] call CBA_fnc_waitAndExecute; */
 
 (driver _vehicle) disableAI "MOVE";
 
@@ -98,7 +105,7 @@ DFUNC(deployAIRecursive) = {
                     {
                         params ["_vehicle"];
                         private _deployedRopes = _vehicle getVariable [QGVAR(deployedRopes), []];
-                        ({!(_x select 5)} count (_deployedRopes)) > 0
+                        ({!(_x select 5)} count _deployedRopes) > 0
                     },
                     FUNC(deployAIRecursive),
                     _this
@@ -124,4 +131,4 @@ DFUNC(deployAIRecursive) = {
     };
 };
 
-[FUNC(deployAIRecursive), [_vehicle, _unitsToDeploy], _deployTime + 4] call CBA_fnc_waitAndExecute;
+[FUNC(deployAIRecursive), [_vehicle, _unitsToDeploy], _deployTime] call CBA_fnc_waitAndExecute;

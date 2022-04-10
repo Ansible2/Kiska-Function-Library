@@ -33,6 +33,11 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ACE_fastRope";
 
+if !(["ace_fastroping"] call KISKA_fnc_isPatchLoaded) exitWith {
+    ["ace_fastroping is required for this function",true] call KISKA_fnc_log;
+    nil
+};
+
 params [
     ["_vehicle",objNull,[objNull]],
     ["_dropPosition",[],[[],objNull]],
@@ -45,19 +50,14 @@ params [
 /* ----------------------------------------------------------------------------
     Verify Params
 ---------------------------------------------------------------------------- */
-if !(["ace_fastroping"] call KISKA_fnc_isPatchLoaded) exitWith {
-    ["ace_fastroping is required for this function",true] call KISKA_fnc_log;
-
-};
-
 if (isNull _vehicle) exitWith {
     ["_vehicle is null!",true] call KISKA_fnc_log;
-
+    nil
 };
 
 [_vehicle] call ace_fastroping_fnc_equipFRIES;
 if !([_vehicle] call ace_fastroping_fnc_canPrepareFRIES) exitWith {
-    [[typeOf _vehicle," is not configured for ACE FRIES system!"],true] call KISKA_fnc_log;
+    [[typeOf _vehicle," is not configured for ACE FRIES system! or this vehicle can't fastrope"],true] call KISKA_fnc_log;
 
 };
 
@@ -66,7 +66,7 @@ if (_dropPosition isEqualType objNull) then {
 };
 
 _hoverHeight = _hoverHeight max 5;
-_hoverHeight = _hoverHeight min 25;
+_hoverHeight = _hoverHeight min 28;
 
 if (_afterDropCode isEqualType "") then {
     _afterDropCode = compile _afterDropCode;
@@ -166,8 +166,23 @@ _pilot move (ASLToATL _hoverPosition);
 
                 _velocityMagnitude = _speed;
 
+                if ((_currentVehiclePosition_AGL distance2d _hoverPosition_AGL) < 2.5) then {
+                    _vehicle setVelocityModelSpace [0,0,0];
 
-                if ( _distanceToHoverPosition <= 15 ) then {
+                } else {
+                    if ( _distanceToHoverPosition <= 15 ) then {
+                        _velocityMagnitude = (_distanceToHoverPosition / 10) * 5;
+
+                    };
+
+                    private _currentVelocity = velocity _vehicle;
+                    _currentVelocity = _currentVelocity vectorAdd (( _currentVehiclePosition_AGL vectorFromTo _hoverPosition_AGL ) vectorMultiply _velocityMagnitude);
+                    _currentVelocity = (vectorNormalized _currentVelocity) vectorMultiply ( (vectorMagnitude _currentVelocity) min _velocityMagnitude );
+                    _vehicle setVelocity _currentVelocity;
+
+                };
+
+                /* if ( _distanceToHoverPosition <= 15 ) then {
                     _velocityMagnitude = (_distanceToHoverPosition / 10) * 5;
 
                 };
@@ -175,7 +190,7 @@ _pilot move (ASLToATL _hoverPosition);
                 private _currentVelocity = velocity _vehicle;
                 _currentVelocity = _currentVelocity vectorAdd (( _currentVehiclePosition_AGL vectorFromTo _hoverPosition_AGL ) vectorMultiply _velocityMagnitude);
                 _currentVelocity = (vectorNormalized _currentVelocity) vectorMultiply ( (vectorMagnitude _currentVelocity) min _velocityMagnitude );
-                _vehicle setVelocity _currentVelocity;
+                _vehicle setVelocity _currentVelocity; */
             };
 
         } else {
@@ -201,7 +216,7 @@ _pilot move (ASLToATL _hoverPosition);
         (speed _vehicle < (2.5 * 3.6))
         AND
         {
-            (_hoverPosition_AGL distance2d _currentVehiclePosition_AGL) < 100
+            (_hoverPosition_AGL distance2d _currentVehiclePosition_AGL) < 25
         }
         AND
         {
