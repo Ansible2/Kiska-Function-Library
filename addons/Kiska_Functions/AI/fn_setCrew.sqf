@@ -22,21 +22,19 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_setCrew";
 
-if (!canSuspend) exitWith {
-	_this spawn KISKA_fnc_setCrew;
-};
-
-
 params [
 	["_crew",grpNull,[[],grpNull,objNull]],
 	["_vehicle",objNull,[objNull]],
 	["_deleteCrewIfNull",true,[true]]
 ];
 
+if (_crew isEqualType grpNull) then {
+	_crew = units _crew
+};
 
-if (_crew isEqualType grpNull) then {_crew = units _crew};
-
-if (_crew isEqualType objNull) then {_crew = [_crew]};
+if (_crew isEqualType objNull) then {
+	_crew = [_crew]
+};
 
 if (_crew isEqualTo []) exitWith {
 	[["Found that ",_crew," is not defined, exiting..."],true] call KISKA_fnc_log;
@@ -59,13 +57,15 @@ if (isNull _vehicle OR {!(alive _vehicle)}) exitWith {
 
 // crew moved in too fast after init seems to be unreliable
 // they may not end up in the vehicle
-sleep 0.5;
+// if this happens, delay the calling of this function slightly
 _crew apply {
-	private _movedIn = _x moveInAny _vehicle;
+	if (alive _x) then {
+		private _movedIn = _x moveInAny _vehicle;
 
-	if !(_movedIn) then {
-		[["Deleted excess unit: ",_x]] call KISKA_fnc_log;
-		deleteVehicle _x
+		if !(_movedIn) then {
+			[["Deleted excess unit: ",_x]] call KISKA_fnc_log;
+			deleteVehicle _x
+		};
 	};
 };
 
