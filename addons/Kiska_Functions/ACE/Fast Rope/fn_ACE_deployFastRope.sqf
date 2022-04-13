@@ -1,6 +1,3 @@
-#if __has_include("\z\ace\addons\fastroping\functions\script_component.hpp")
-    #include "\z\ace\addons\fastroping\functions\script_component.hpp"
-#endif
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_ACE_deployFastRope
 
@@ -30,6 +27,9 @@ Author(s):
 	Modified By: Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ACE_deployFastRope";
+
+#if __has_include("\z\ace\addons\fastroping\functions\script_component.hpp")
+    #include "\z\ace\addons\fastroping\functions\script_component.hpp"
 
 if !(["ace_fastroping"] call KISKA_fnc_isPatchLoaded) exitWith {
     ["ace_fastroping is required for this function",true] call KISKA_fnc_log;
@@ -74,8 +74,8 @@ if (getText (_config >> QGVAR(onPrepare)) isNotEqualTo "") then {
     _deployTime = [_vehicle] call (missionNamespace getVariable (getText (_config >> QGVAR(onPrepare))));
 };
 
-_vehicle call KISKA_fnc_ACE_deployRopes;
-/* _vehicle call FUNC(deployRopes); */
+/* _vehicle call KISKA_fnc_ACE_deployRopes; */
+_vehicle call FUNC(deployRopes);
 /* [FUNC(deployRopes), _vehicle, _deployTime] call CBA_fnc_waitAndExecute; */
 
 (driver _vehicle) disableAI "MOVE";
@@ -132,3 +132,10 @@ DFUNC(deployAIRecursive) = {
 };
 
 [FUNC(deployAIRecursive), [_vehicle, _unitsToDeploy], _deployTime] call CBA_fnc_waitAndExecute;
+
+
+#else
+["ACE #include for \z\ace\addons\fastroping\functions\script_component.hpp not found!",true] call KISKA_fnc_log;
+nil
+
+#endif

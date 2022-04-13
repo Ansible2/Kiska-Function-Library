@@ -1,6 +1,3 @@
-#if __has_include("\z\ace\addons\fastroping\functions\script_component.hpp")
-    #include "\z\ace\addons\fastroping\functions\script_component.hpp"
-#endif
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_ACE_deployRopes
 
@@ -9,8 +6,6 @@ Description:
 
 Parameters:
     0: _vehicle <OBJECT> - The vehicle to fastrope from
-    1: _unitsToDeploy <ARRAY> - An array of units to drop from the _vehicle.
-        This function has a destructive effect on this array (deletes entries)
 
 Returns:
 	NOTHING
@@ -18,20 +13,22 @@ Returns:
 Examples:
     (begin example)
 		[
-            _vehicle,
-            (fullCrew [_vehicle,"cargo"]) apply {
-                _x select 0
-            }
-		] call KISKA_fnc_ACE_deployFastRope;
+
+		] call KISKA_fnc_ACE_deployRopes;
     (end)
 
 Author(s):
     BaerMitUmlaut,
 	Modified By: Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_ACE_deployRopes"
+scriptName "KISKA_fnc_ACE_deployRopes";
+
+
+#if __has_include("\z\ace\addons\fastroping\functions\script_component.hpp")
+    #include "\z\ace\addons\fastroping\functions\script_component.hpp"
 
 params ["_vehicle", ["_player", objNull], ["_ropeClass", ""]];
+
 TRACE_3("deployRopes",_vehicle,_player,_ropeClass);
 
 private _config = configOf _vehicle;
@@ -69,8 +66,9 @@ _ropeOrigins apply {
 
     private _origin = getPosATL _hook;
 
+
     /*
-        NOTE:
+        NOTICE:
         Strange thing, when the helicopter is completely filled, and
         a player is in the vehicle and NOT all units are part of the same group.
 
@@ -84,6 +82,8 @@ _ropeOrigins apply {
         No idea what this means though...
     */
     private _dummy = createVehicle [QGVAR(helper), _origin vectorAdd [0, 0, -1], [], 0, "CAN_COLLIDE"];
+
+
 
     _dummy allowDamage false;
     _dummy disableCollisionWith _vehicle;
@@ -104,3 +104,9 @@ _ropeOrigins apply {
 _vehicle setVariable [QGVAR(deployedRopes), _deployedRopes, true];
 _vehicle setVariable [QGVAR(deploymentStage), 3, true];
 _vehicle setVariable [QGVAR(ropeLength), _ropeLength, true];
+
+#else
+["ACE #include for \z\ace\addons\fastroping\functions\script_component.hpp not found!",true] call KISKA_fnc_log;
+false
+
+#endif
