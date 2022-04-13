@@ -21,6 +21,8 @@ Examples:
 Author(s):
 	Ansible2
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_radioChatter";
+
 if (!canSuspend) exitWith {
 	["Must be run in a scheduled environement, exiting to scheduled...",true] call KISKA_fnc_log;
 	_this spawn KISKA_fnc_radioChatter;
@@ -28,16 +30,18 @@ if (!canSuspend) exitWith {
 
 if (!isServer) then {
 	["It is recommended to run this on the server"] call KISKA_fnc_log;
+	nil
 };
 
 params [
-	["_source",objNull,[objNull,[]]],
+	["_source",objNull,[objNull]],
 	["_distance",20,[1]],
 	["_volume",1,[1]]
 ];
 
 if (isNull _source) exitWith {
 	["Sound source isNull",true] call KISKA_fnc_log;
+	nil
 };
 
 private _numberStr = str ([2,30] call BIS_fnc_randomInt);
