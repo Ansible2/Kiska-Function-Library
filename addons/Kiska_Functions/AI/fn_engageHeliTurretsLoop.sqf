@@ -163,7 +163,7 @@ _heli setVariable [REVEAL_ACC_VAR_STR, _revealAccuracy];
 private _targetsInArea = [];
 // using waituntil to avoid running more then once a frame
 waitUntil {
-    if (isNull _heli OR (_heli getVariable [EXIT_VAR_STR,false])) exitWith {true};
+    if (!(alive _heli) OR (_heli getVariable [EXIT_VAR_STR,false])) exitWith {true};
 
     _targetsInArea = call _fn_getTargets;
     if (_targetsInArea isNotEqualTo []) then {
