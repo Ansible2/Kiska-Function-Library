@@ -15,7 +15,9 @@ Description:
 Parameters:
 	0: _tickId <NUMBER> - Used to superceed another random music loop, passs -1 to start a new one
 	1: _musicTracks <ARRAY> - An array of strings (music tracks) to use
-	2: _timeBetween <ARRAY or NUMBER> - A random or set time between tracks. Formats are [min,mid,max] & [max] for random numbers and just a single number for a set time between (see example)
+	2: _timeBetween <ARRAY or NUMBER> - A random or set time between tracks.
+		Formats are [min,mid,max] & [max] for random numbers and
+		just a single number for a set time between (see example)
 	3: _usedMusicTracks <ARRAY> - An array of already used music tracks, don't bother manually entering anyhting, this is for looping purposes
 
 Returns:
