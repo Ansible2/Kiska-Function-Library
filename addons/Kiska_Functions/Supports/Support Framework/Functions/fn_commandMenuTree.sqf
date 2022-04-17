@@ -12,6 +12,14 @@ Parameters:
 	3: _exitExpression <STRING or CODE> - The code to be executed in the event that
 		the menu is closed by the player. It gets all added params up to that point in _this
 
+
+		16:41:55 Error in expression <commMenuArgs select 1;
+		[_targetPosition,_ammo,_radius,_numberOfRounds] spawn KIS>
+		16:41:55   Error position: <_ammo,_radius,_numberOfRounds] spawn KIS>
+		16:41:55   Error Undefined variable in expression: _ammo
+		16:41:55 File Kiska_functions\Supports\Support Framework\Functions\fn_callingForArty.sqf..., line 188
+
+
 Returns:
 	NOTHING
 
@@ -54,6 +62,12 @@ private _menuClosed = false;
 _menuPath apply {
 	// proceed immediatetly if only one option is in custom menu
 	private _menuName = toLower _x;
+
+	// #user: prepended on the meny name denotes a custom menu
+	// The menu options are saved to a global variable in the missionNamespace
+	/// that is the menu's name, minus the ""#user:"
+	/// e.g. a menu with the name "#USER:MY_SUBMENU_inCommunication" would be
+	/// saved to a global variable MY_SUBMENU_inCommunication
 	_menuName = _menuName trim ["#user:",1];
 	if (_menuName != _x) then {
 		private _menuOptions = missionNamespace getVariable [_menuName,[]];
@@ -64,14 +78,14 @@ _menuPath apply {
 			private _singleMenuOption = _menuOptions select 1;
 			private _expression = ((_singleMenuOption select 4) select 0) select 1;
 			[] call (compile _expression);
-		};
 
-		continue;
+			continue;
+		};
 	};
 
 	// keeps track of whether or not to open the next menu
 	localNamespace setVariable ["KISKA_commMenuTree_proceedToNextMenu",false];
-	showCommandingMenu _menuName;
+	showCommandingMenu _x;
 
 	// wait for menu to allow proceed or menu is closed
 	waitUntil {
