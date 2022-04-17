@@ -32,10 +32,10 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 		if ([_selectedgroup] call KISKA_fnc_GCH_isAllowedToEdit) then {
 			// NO
 			if (_selectedIndex isEqualTo 0) then {
-				[_selectedgroup,true] remoteExecCall ["KISKA_fnc_disallowGroupRally"];
+				[_selectedgroup,true] remoteExecCall ["KISKA_fnc_disallowGroupRally",2];
 			} else {
 			// YES
-				[_selectedgroup] remoteExecCall ["KISKA_fnc_allowGroupRally"];
+				[_selectedgroup] remoteExecCall ["KISKA_fnc_allowGroupRally",2];
 			};
 		} else {
 			// when selecting a group, and this control is created/updated in the right pane, this error may show for certain users
@@ -46,7 +46,7 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 
 			} else {
 				_control setVariable ["KISKA_firstTimeComboChanged",false];
-				
+
 			};
 		};
 	};
