@@ -28,7 +28,7 @@ _control ctrlAddEventHandler ["ButtonClick",{
 	private _selectedGroup = uiNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
 
 	if !(isNull _selectedGroup) then {
-		if !((group player) isEqualTo _selectedGroup) then {
+		if ((group player) isNotEqualTo _selectedGroup) then {
 			private _groupIsLocal = local _selectedGroup;
 			[player] joinSilent _selectedGroup;
 
