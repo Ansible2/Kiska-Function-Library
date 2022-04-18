@@ -13,7 +13,8 @@ Description:
 	 if you need to reuse the array.
 
 Parameters:
-	0: _numberOfUnits <NUMBER> - Number of units to spawn
+	0: _numberOfUnits <NUMBER> - Number of units to spawn, if -1, all provided positions
+		will be filled
 	1: _numberOfUnitsPerGroup <NUMBER> - Number of units per group
 	2: _unitTypes <ARRAY> - Unit types to select randomly from (can be weighted or unweighted array)
 	3. _spawnPositions <ARRAY> - List of positions at which units will randomly spawn, the array can be positions and/or objects.
