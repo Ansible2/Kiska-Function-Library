@@ -2,7 +2,7 @@
 Function: KISKA_fnc_supplyDrop_aircraft
 
 Description:
-	Spawns in an aircraft that flies over a DZ to drop off an arsenal.
+	Spawns in an aircraft that flies over a DZ to drop off supplies.
 
 Parameters:
 	0: _dropPosition : <ARRAY or OBJECT> - The position (area) to drop the arsenal

@@ -1,6 +1,15 @@
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_arsenalSupplyDrop
 
+
+
+	********
+	DEPRECIATED
+	USE KISKA_fnc_supplyDrop_aircraft
+	********
+
+
+
 Description:
 	Spawns in an aircraft that flies over a DZ to drop off an arsenal.
 
@@ -116,6 +125,7 @@ private _flyToPosition = _dropPosition getPos [_flyInRadius,_relativeDirection];
 	clearWeaponCargoGlobal _arsenalBox;
 	clearBackpackCargoGlobal _arsenalBox;
 	clearItemCargoGlobal _arsenalBox;
+	[_arsenalBox] call KISKA_fnc_addArsenal;
 
 	if (_lifeTime > 0) then {
 		// make sure it's on the ground before we start the countdown to deletetion

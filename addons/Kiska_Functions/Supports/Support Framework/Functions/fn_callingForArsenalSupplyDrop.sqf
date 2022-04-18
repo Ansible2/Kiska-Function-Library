@@ -128,12 +128,15 @@ _args pushBack _menuVariables;
 		[
 			_dropPosition,
 			_vehicleClass,
+			["B_supplyCrate_F"],
+			true,
+			true,
 			_flyinHeight,
 			_approachBearing,
 			FLYIN_RADIUS,
 			ARSENAL_LIFETIME,
 			side (_commMenuArgs select 0)
-		] call KISKA_fnc_arsenalSupplyDrop;
+		] call KISKA_fnc_supplyDrop_aircraft;
 
 		[SUPPORT_TYPE_ARSENAL_DROP] call KISKA_fnc_supportNotification;
 
