@@ -5,8 +5,8 @@ Description:
     Adds a configed custom eventhandler.
 
 Parameters:
-	0: _config <CONFIG> - The config of the eventhandler
-	1: _addTo <ANY> - The entity to add the eventhandler to
+    0: _addTo <ANY> - The entity to add the eventhandler to
+	1: _config <CONFIG> - The config of the eventhandler
 	2: _code <CODE or STRING> - What to execute when the eventhandler is called
 
 Returns:
@@ -45,7 +45,7 @@ private _stateMachine_config = _config >> "stateMachine";
 private _stateMachine_name = getText(_stateMachine_config >> "name");
 private _stateMachine = localNamespace getVariable [_stateMachine_name,locationNull];
 if (isNull _stateMachine) then {
-    _stateMachine = [_stateMachine_config] call CBA_stateMachine_fnc_createFromConfig;
+    _stateMachine = [_stateMachine_config] call KISKA_fnc_eventhandler_createCBAStateMachine;
     localNamespace setVariable [_stateMachine_name,_stateMachine];
     _stateMachine setVariable ["KISKA_entity_eventhandlerCount_map",createHashMap];
 };

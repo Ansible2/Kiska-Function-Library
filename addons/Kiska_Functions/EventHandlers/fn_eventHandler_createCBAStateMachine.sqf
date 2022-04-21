@@ -12,13 +12,13 @@ Returns:
 
 Examples:
     (begin example)
-		_statemachine = [myConfig] call KISKA_fnc_createCBAStateMachineFromConfig
+		_statemachine = [myConfig] call KISKA_fnc_eventHandler_createCBAStateMachine
     (end)
 
 Author:
 	Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_createCBAStateMachineFromConfig";
+scriptName "KISKA_fnc_eventHandler_createCBAStateMachine";
 
 params [
     ["_config", configNull, [configNull]]
