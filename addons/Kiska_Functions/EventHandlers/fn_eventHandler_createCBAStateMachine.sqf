@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_createCBAStateMachineFromConfig
+Function: KISKA_fnc_eventHandler_createCBAStateMachine
 
 Description:
     Adds a configed custom eventhandler
