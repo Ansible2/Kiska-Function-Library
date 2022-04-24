@@ -9,7 +9,7 @@ Parameters:
 	NONE
 
 Returns:
-	<STRING> - The class name of music. Will be "" if nonthing is playing.
+	<STRING> - The class name of music. Will be "" if nothing is playing.
 
 Examples:
     (begin example)

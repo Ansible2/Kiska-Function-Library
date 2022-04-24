@@ -7,7 +7,9 @@ Description:
 
 Parameters:
 	0: _track <STRING> - Music to play
-	1: _startTime <NUMBER> - Starting time of music. -1 for random start time
+	1: _startTime <NUMBER OR ARRAY> - Starting time of music. -1 for random start time.
+		If array, duration of track can also be specified (SEE EXAMPLE 2).
+		THIS INCLUDES FADE TIME
 	2: _canInterrupt <BOOL> - Interrupt playing music
 	3: _volume <NUMBER> - Volume to play at
 	4: _fadeTime <NUMBER> - Time to fade tracks down & up
@@ -18,6 +20,13 @@ Returns:
 Examples:
     (begin example)
 		["track", 0, true, 1, 3] spawn KISKA_fnc_playMusic;
+    (end)
+
+    (begin example)
+		[
+			"track",
+			[10,60]	// start ten seconds into the song, and play for 60 seconds
+		] spawn KISKA_fnc_playMusic;
     (end)
 
 Author:
@@ -35,10 +44,10 @@ if !(canSuspend) exitWith {
 
 params [
 	["_track","",[""]],
-	["_startTime",0,[123]],
+	["_startTime",0,[123,[]]],
 	["_canInterrupt",true,[true]],
-	["_volume",1,[1]],
-	["_fadeTime",3,[1]],
+	["_volume",1,[123]],
+	["_fadeTime",3,[123]],
 	["_isRandomTrack",false,[true]]
 ];
 
@@ -80,11 +89,17 @@ if (_musicPlaying) then {
 
 if (_exit) exitWith {};
 
+// handle end specified track duration
+private _durationToPlayTrack = -1;
+if (_startTIme isEqualType []) then {
+	_durationToPlayTrack = (_startTIme select 1) - (_fadeTime * 2);
+	_startTIme = _startTIme select 0;
+};
 
 // random start time
 if (_startTime < 0) then {
-	private _duration = [_track] call KISKA_fnc_getMusicDuration;
-	_startTIme = round (random [0, _duration / 2, _duration]);
+	private _totalTrackDuration = [_track] call KISKA_fnc_getMusicDuration;
+	_startTIme = round (random [0, _totalTrackDuration / 2, _totalTrackDuration]);
 
 };
 
@@ -105,6 +120,57 @@ if (_fadeDown) then {
 [] call KISKA_fnc_musicStopEvent;
 playMusic [_track,_startTime];
 _fadeTime fadeMusic _volume;
+
+if (_durationToPlayTrack > 0) then {
+	private _currentTrackID = GET_MUSIC_CURRENT_TRACK_ID;
+	[
+		{
+			params [
+				"_durationToPlayTrack",
+				"_track",
+				"_trackID",
+				"_fadeTime"
+			];
+
+			private _currentTrackID = call KISKA_fnc_getLatestPlayedMusicID;
+			private _currentTrackName = call KISKA_fnc_getPlayingMusic;
+			if (_trackID isEqualTo _currentTrackID AND (_currentTrackName == _track)) then {
+				[
+					{
+						params [
+							"_track",
+							"_trackID",
+							"_fadeTime"
+						];
+
+						private _currentTrackID = call KISKA_fnc_getLatestPlayedMusicID;
+						private _currentTrackName = call KISKA_fnc_getPlayingMusic;
+						if (_trackID isEqualTo _currentTrackID AND (_currentTrackName == _track)) then {
+							[_fadeTime] spawn {
+								_this call KISKA_fnc_stopMusic;
+							};
+						};
+					},
+					[
+						_track,
+						_currentTrackID,
+						_fadeTime
+					],
+					_durationToPlayTrack
+				] call CBA_fnc_waitAndExecute;
+			};
+		},
+		[
+			_durationToPlayTrack,
+			_track,
+			_currentTrackID,
+			_fadeTime
+		],
+		_fadeTime
+	] call CBA_fnc_waitAndExecute;
+};
+
+
 
 if (_isRandomTrack) then {
 	[_track] call KISKA_fnc_setCurrentRandomMusicTrack;

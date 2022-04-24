@@ -6,7 +6,7 @@
 
 #define BEHAVIOUR_STATE(NAME) KISKA_behaviourState_##NAME
 #define BEHAVIOUR_EVENT KISKA_behaviourChangedEvent
-#define ON_STATE_ENTERED(NAME,EVENT) onStateEntered = "[_this,"#EVENT",[_this,"#NAME"],false] call BIS_fnc_callScriptedEventHandler";
+#define ON_STATE_ENTERED(NAME,EVENT) onStateEntered = "[_this,"#EVENT",[_this,"#NAME",configFile >> 'KISKA_eventHandlers' >> 'Behaviour'],false] call BIS_fnc_callScriptedEventHandler";
 
 class Behaviour
 {

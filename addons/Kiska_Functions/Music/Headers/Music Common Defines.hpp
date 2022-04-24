@@ -18,6 +18,10 @@
 #define GET_MUSIC_IS_PLAYING MUSIC_VAR_SPACE getVariable [MUSIC_IS_PLAYING_VAR_STR,false]
 
 
+#define MUSIC_CURRENT_TRACK_ID_VAR_STR "KISKA_currentTrackID"
+#define GET_MUSIC_CURRENT_TRACK_ID MUSIC_VAR_SPACE getVariable [MUSIC_CURRENT_TRACK_ID_VAR_STR,-1]
+
+
 /* ----------------------------------------------------------------------------
     Random Music
 ---------------------------------------------------------------------------- */
