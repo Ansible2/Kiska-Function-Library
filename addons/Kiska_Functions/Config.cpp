@@ -201,6 +201,8 @@ class CfgFunctions
 			file = "Kiska_functions\Music";
 			class getCurrentRandomMusicTrack
 			{};
+			class getLatestPlayedMusicID
+			{};
 			class getMusicDuration
 			{};
 			class getMusicFromClass
