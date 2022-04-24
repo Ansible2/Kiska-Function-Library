@@ -122,6 +122,8 @@ private _previousTrackID = call KISKA_fnc_getLatestPlayedMusicID;
 playMusic [_track,_startTime];
 _fadeTime fadeMusic _volume;
 
+
+
 if (_durationToPlayTrack > 0) then {
 	// it takes more then one frame after playing music for the eventhandler to be called/complete
 	// e.g. the music id will not be updated to the latest
