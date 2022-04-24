@@ -115,6 +115,7 @@ if (_fadeDown) then {
 
 };
 
+private _previousTrackID = call KISKA_fnc_getLatestPlayedMusicID;
 // clear out any track. Any new MUSIC_CURRENT_RANDOM_TRACK_VAR_STR will be set to the new track in KISKA_fnc_playMusic after this event has fired
 // this is to avoid a track random music track not being cleared
 [] call KISKA_fnc_musicStopEvent;
@@ -122,52 +123,66 @@ playMusic [_track,_startTime];
 _fadeTime fadeMusic _volume;
 
 if (_durationToPlayTrack > 0) then {
-	private _currentTrackID = GET_MUSIC_CURRENT_TRACK_ID;
+	// it takes more then one frame after playing music for the eventhandler to be called/complete
+	// e.g. the music id will not be updated to the latest
 	[
 		{
-			params [
-				"_durationToPlayTrack",
-				"_track",
-				"_trackID",
-				"_fadeTime"
-			];
-
+			call KISKA_fnc_getLatestPlayedMusicID > (_this select 3)
+		},
+		{
 			private _currentTrackID = call KISKA_fnc_getLatestPlayedMusicID;
-			private _currentTrackName = call KISKA_fnc_getPlayingMusic;
-			if (_trackID isEqualTo _currentTrackID AND (_currentTrackName == _track)) then {
-				[
-					{
-						params [
-							"_track",
-							"_trackID",
-							"_fadeTime"
-						];
+			_this set [3,_currentTrackID];
+			
+			private _fadeTime = _this select 2;
+			[
+				{
+					params [
+						"_durationToPlayTrack",
+						"_track",
+						"_fadeTime",
+						"_trackID"
+					];
 
-						private _currentTrackID = call KISKA_fnc_getLatestPlayedMusicID;
-						private _currentTrackName = call KISKA_fnc_getPlayingMusic;
-						if (_trackID isEqualTo _currentTrackID AND (_currentTrackName == _track)) then {
-							[_fadeTime] spawn {
-								_this call KISKA_fnc_stopMusic;
-							};
-						};
-					},
-					[
-						_track,
-						_currentTrackID,
-						_fadeTime
-					],
-					_durationToPlayTrack
-				] call CBA_fnc_waitAndExecute;
-			};
+					private _currentTrackID = call KISKA_fnc_getLatestPlayedMusicID;
+					private _currentTrackName = call KISKA_fnc_getPlayingMusic;
+					if (_trackID isEqualTo _currentTrackID AND (_currentTrackName == _track)) then {
+						[
+							{
+								params [
+									"_track",
+									"_fadeTime",
+									"_trackID"
+								];
+
+								private _currentTrackID = call KISKA_fnc_getLatestPlayedMusicID;
+								private _currentTrackName = call KISKA_fnc_getPlayingMusic;
+								if (_trackID isEqualTo _currentTrackID AND (_currentTrackName == _track)) then {
+									[_fadeTime] spawn {
+										_this spawn KISKA_fnc_stopMusic;
+									};
+								};
+							},
+							[
+								_track,
+								_fadeTime,
+								_currentTrackID
+							],
+							_durationToPlayTrack
+						] call CBA_fnc_waitAndExecute;
+					};
+				},
+				_this,
+				_fadeTime
+			] call CBA_fnc_waitAndExecute;
+
 		},
 		[
 			_durationToPlayTrack,
 			_track,
-			_currentTrackID,
-			_fadeTime
-		],
-		_fadeTime
-	] call CBA_fnc_waitAndExecute;
+			_fadeTime,
+			_previousTrackID
+		]
+	] call CBA_fnc_waitUntilAndExecute;
 };
 
 
