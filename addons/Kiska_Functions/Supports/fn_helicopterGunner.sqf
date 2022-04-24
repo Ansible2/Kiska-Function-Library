@@ -2,18 +2,28 @@
 Function: KISKA_fnc_helicopterGunner
 
 Description:
-	Spawns a helicopter that will partol a given area for a period of time and
+	Spawns a helicopter (or uses an existing one) to partol a given area for a period of time and
 	 engage enemy targets in a given area.
 
 Parameters:
 	0: _centerPosition : <ARRAY(AGL), OBJECT> - The position around which the helicopter will patrol
 	1: _radius : <NUMBER> - The size of the radius to patrol around
-	2: _aircraftType : <STRING> - The class of the helicopter to spawn
+	2: _aircraftType : <STRING or OBJECT> - The class of the helicopter to spawn
+		If object, it is expected that this is a helicopter with crew
 	3: _timeOnStation : <NUMBER> - How long will the aircraft be supporting
 	4: _supportSpeedLimit : <NUMBER> - The max speed the aircraft can fly while in the support radius
 	5: _flyinHeight : <NUMBER> - The altittude the aircraft flys at
 	6: _approachBearing : <NUMBER> - The bearing from which the aircraft will approach from (if below 0, it will be random)
+		This has no effect if an object is used for _aircraftType
 	7: _side : <SIDE> - The side of the created helicopter
+	8: _postSupportCode : <CODE or STRING> - Scheduled Code to execute after the support completes
+			The default behaviour is for the aircraft to move 2000 meters away and for
+			its complete crew and self to be deleted.
+		Params:
+			0: <OBJECT> - The helicopter confucting support
+			1: <GROUP> - The group the pilot belongs to
+			2: <ARRAY> - The full vehicle crew
+			3: <ARRAY> - The position the helicopter was supporting
 
 Returns:
 	ARRAY - The vehicle info
@@ -43,18 +53,28 @@ scriptName "KISKA_fnc_helicopterGunner";
 params [
 	"_centerPosition",
 	["_radius",200,[123]],
-	["_aircraftType","",[""]],
+	["_aircraftType","",["",objNull]],
 	["_timeOnStation",180,[123]],
 	["_supportSpeedLimit",10,[123]],
 	["_flyInHeight",30,[123]],
 	["_approachBearing",-1,[123]],
-	["_side",BLUFOR,[sideUnknown]]
+	["_side",BLUFOR,[sideUnknown]],
+	["_postSupportCode",{},["",{}]]
 ];
 
 
 /* ----------------------------------------------------------------------------
 	verify vehicle has turrets that are not fire from vehicle and not copilot positions
 ---------------------------------------------------------------------------- */
+private _vehicleArray = [];
+if (_aircraftType isEqualType objNull) then {
+	private _aircraft = _aircraftType;
+	_aircraftType = typeOf _aircraft;
+
+	_vehicleArray pushBack _aircraft;
+	_vehicleArray pushBack (crew _aircraft);
+	_vehicleArray pushBack (group (currentPilot _aircraft));
+};
 private _turretsWithWeapons = [_aircraftType] call KISKA_fnc_classTurretsWithGuns;
 
 // go to default aircraft type if no suitable turrets are found
@@ -73,12 +93,19 @@ if (_approachBearing < 0) then {
 private _spawnPosition = _centerPosition getPos [SPAWN_DISTANCE,_approachBearing + 180];
 _spawnPosition set [2,_flyInHeight];
 
-private _vehicleArray = [_spawnPosition,0,_aircraftType,_side] call KISKA_fnc_spawnVehicle;
+if (_vehicleArray isEqualTo []) then {
+	_vehicleArray = [_spawnPosition,0,_aircraftType,_side] call KISKA_fnc_spawnVehicle;
+};
+
 // disable HC transfer
 private _pilotsGroup = _vehicleArray select 2;
 [_pilotsGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
 
 private _vehicle = _vehicleArray select 0;
+// if using an already exisiting aircraft, the enigne must be on prior to getting a "move" command
+if !(isEngineOn _vehicle) then {
+	_vehicle engineOn true;
+};
 _vehicle flyInHeight _flyInHeight;
 // notify side if destroyed
 _vehicle addEventHandler ["KILLED",{
@@ -105,6 +132,10 @@ if (_centerPosition isEqualType objNull) then {
 	_centerPosition = getPosATL _centerPosition;
 };
 
+if (_postSupportCode isEqualType "") then {
+	_postSupportCode = compile _postSupportCode;
+};
+
 private _params = [
 	_centerPosition,
 	_radius,
@@ -114,7 +145,8 @@ private _params = [
 	_side,
 	_vehicle,
 	_pilotsGroup,
-	_vehicleCrew
+	_vehicleCrew,
+	_postSupportCode
 ];
 
 _params spawn {
@@ -127,7 +159,8 @@ _params spawn {
 		"_side",
 		"_vehicle",
 		"_pilotsGroup",
-		"_vehicleCrew"
+		"_vehicleCrew",
+		"_postSupportCode"
 	];
 
 	// once you go below a certain radius, it becomes rather unnecessary
@@ -182,6 +215,16 @@ _params spawn {
 
 	// remove speed limit
 	_vehicle limitSpeed 99999;
+
+	if (_postSupportCode isNotEqualTo {}) exitWith {
+		[
+			_vehicle,
+			_pilotsGroup,
+			_vehicleCrew,
+			_centerPosition
+		] call _postSupportCode;
+	};
+
 
 	// get helicopter to disengage and rtb
 	(currentPilot _vehicle) disableAI "AUTOTARGET";
