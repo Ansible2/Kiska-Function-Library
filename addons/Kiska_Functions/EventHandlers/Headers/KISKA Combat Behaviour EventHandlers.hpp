@@ -6,7 +6,7 @@
 
 #define COMBAT_BEHAVIOUR_STATE(NAME) KISKA_combatBehaviourState_##NAME
 #define COMBAT_BEHAVIOUR_EVENT KISKA_combatBehaviourChangedEvent
-#define ON_STATE_ENTERED(NAME,EVENT) onStateEntered = "[_this,"#EVENT",[_this,"#NAME"],false] call BIS_fnc_callScriptedEventHandler";
+#define ON_STATE_ENTERED(NAME,EVENT) onStateEntered = "[_this,"#EVENT",[_this,"#NAME",configFile >> 'KISKA_eventHandlers' >> 'CombatBehaviour'],false] call BIS_fnc_callScriptedEventHandler";
 
 class CombatBehaviour
 {

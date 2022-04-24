@@ -51,6 +51,7 @@ if (isNull _stateMachine) exitWith {
 
 private _eventName = getText(_eventConfig >> "eventName");
 private _removed = [_removeFrom, _eventName, _id] call BIS_fnc_removeScriptedEventHandler;
+
 // remove from statemachine list if no events are left for this machine
 if (_removed) then {
     private _eventCountMap = _stateMachine getVariable "KISKA_entity_eventhandlerCount_map";
