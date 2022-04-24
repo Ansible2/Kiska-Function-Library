@@ -132,7 +132,10 @@ if (_durationToPlayTrack > 0) then {
 		{
 			private _currentTrackID = call KISKA_fnc_getLatestPlayedMusicID;
 			_this set [3,_currentTrackID];
-			
+
+			// the primary concern of needing to wait for the fade time here is
+			/// to account for the fading out of the music.
+			// the _durationToPlayTrack includes the time to fade out
 			private _fadeTime = _this select 2;
 			[
 				{
