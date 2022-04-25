@@ -70,7 +70,7 @@ if (_baseConfig isEqualType "") then {
 
 if (isNull _baseConfig) exitWith {
     [[_baseConfig, " is a null config path"],true] call KISKA_fnc_log;
-
+    nil
 };
 
 
@@ -182,6 +182,12 @@ _infantryClasses apply {
         _side
     ] call KISKA_fnc_spawn;
 
+    private _animate = [_x >> "ambientAnim"] call BIS_fnc_getCfgDataBool;
+    if (_animate) then {
+        _units apply {
+            [_x] call BIS_fnc_ambientAnimCombat;
+        };
+    };
 
     private _onUnitCreated = getText(_x >> "onUnitCreated");
     if (_onUnitCreated isNotEqualTo "") then {
