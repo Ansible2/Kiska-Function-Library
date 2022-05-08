@@ -117,10 +117,18 @@ _turretClasses apply {
     private _onUnitCreated = compile getText(_x >> "onUnitCreated");
     private _onUnitMovedInGunner = compile getText(_x >> "onUnitMovedInGunner");
 
-    private ["_group","_unit"];
+    private ["_group","_unit","_unitClass"];
+    private _weightedArray = _unitClasses isEqualTypeParams ["",1];
     _turrets apply {
         _group = createGroup _side;
-        _unit = _group createUnit [selectRandom _unitClasses,[0,0,0],[],0,"NONE"];
+
+        _unitClass = [
+            selectRandom _unitClasses,
+            selectRandomWeighted _unitClasses
+        ] select _weightedArray;
+        
+        _unit = _group createUnit [_unitClass,[0,0,0],[],0,"NONE"];
+
         [_group,_excludeFromHeadlessTransfer] call KISKA_fnc_ACEX_setHCTransfer;
 
 
@@ -171,10 +179,15 @@ _infantryClasses apply {
     DEFINE_UNIT_CLASSES(_infantryClassUnitClasses)
     DEFINE_SIDE
 
+    private _numberOfUnits = getNumber(_x >> "numberOfUnits");
+    private _unitsPerGroup = getNumber(_x >> "unitsPerGroup");
+    if (_unitsPerGroup < 1) then {
+        _unitsPerGroup = _numberOfUnits;
+    };
 
     private _units = [
-        getNumber(_x >> "numberOfUnits"),
-        getNumber(_x >> "unitsPerGroup"),
+        _numberOfUnits,
+        _unitsPerGroup,
         _unitClasses,
         _spawnPositions,
         [_x >> "canPath"] call BIS_fnc_getCfgDataBool,
