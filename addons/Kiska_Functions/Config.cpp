@@ -60,6 +60,8 @@ class CfgFunctions
 			{};
 			class driveTo
 			{};
+			class dropOff
+			{};
 			class engageHeliTurretsLoop
 			{};
 			class heliLand
