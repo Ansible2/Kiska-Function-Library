@@ -8,7 +8,8 @@ Description:
 Parameters:
 	0: _array : <ARRAY> - The array to check
 	1: _codeToCheck : <CODE> - The code to check against the array indexes.
-		Needs to return a BOOl
+		Needs to return a BOOl.
+		Params are passed within _thisArgs.
 	2: _thisArgs : <ARRAY> - Any local arguements that can be passed
 
 Returns:
@@ -32,9 +33,5 @@ params [
 ];
 
 private _index = _array findIf _codeToCheck;
-
-if (_index != -1) then {
-	true
-} else {
-	false
-};
+// if index is found, return true
+_index >= 0
