@@ -144,7 +144,7 @@ private _deletePosition = _dropZone getPos [2000,_flyDirection];
 _leader doMove _deletePosition;
 WAIT_TILL_NEAR(_dropZone,100,0.25)
 // get units out of aircraft
-[_unitsToDrop,_invincibleOnDrop] call KISKA_fnc_staticLine;
+[_aircraft,_unitsToDrop,_invincibleOnDrop] call KISKA_fnc_staticLine;
 _leader doMove _deletePosition;
 
 

@@ -462,6 +462,8 @@ class CfgFunctions
 			};
 			class staticLine
 			{};
+			class staticLine_eject
+			{};
 			class str
 			{};
 			class triggerWait
