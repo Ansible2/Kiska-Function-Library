@@ -6,8 +6,10 @@ Description:
 	Used to reduce network messages.
 
 Parameters:
-	0: _unit <ARRAY, GROUP, OBJECT> - Units to drop. If array, can be groups and/or objects (example 2)
-	1: _invincibleOnDrop <BOOL> - Should the units be invincible while dropping?
+	0: _unit <OBJECT> - The unit to parachute
+	1: _chuteType <STRING> - Class name of the chute
+    2: _index <NUMBER> - index in drop order
+    3: _invincibleOnDrop <BOOL> - Whether or not the unit is invincible on drop
 
 Returns:
 	NOTHING
