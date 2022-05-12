@@ -9,7 +9,7 @@ Parameters:
 	1: _vehicle : <OBJECT> - The vehicle to put units into
 	2: _dismountPoint : <OBJECT or ARRAY> - The position to move to, can be object or position array
 	3: _completionRadius : <NUMBER> - The radius at which the waypoint is complete and the units can disembark from the _dismountPoint, -1 for exact placement
-	4: _speed : <STRING> - The waypoint speed
+	4: _speed : <STRING> - The for the driver group to move at
 	5: _codeOnComplete : <CODE> - Code to run upon completion of disembark, passed args is the vehicle (OBJECT), crew (ARRAY), and crew groups (ARRAY)
 
 Returns:
@@ -63,6 +63,7 @@ private _crewGroups = [];
 } forEach _crew;
 
 private _driverGroup = group (driver _vehicle);
+_driverGroup setSpeedMode _speed;
 
 
 // disable HC transfer while driving
@@ -70,7 +71,6 @@ private _driverGroup = group (driver _vehicle);
 
 [_driverGroup] call CBA_fnc_clearWaypoints;
 /* [_driverGroup,_dismountPoint,-1,"MOVE","UNCHANGED","NO CHANGE",_speed,"NO CHANGE","",[0,0,0],_completionRadius] call CBA_fnc_addWaypoint; */
-(driver _vehicle) move _dismountPoint;
 
 // position loop
 [_vehicle,_crew,_codeOnComplete,_completionRadius,_dismountPoint,_driverGroup,_crewGroups] spawn {
