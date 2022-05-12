@@ -7,12 +7,15 @@ Description:
 
 Parameters:
 	0: _spawnPosition <ARRAY or OBJECT> - 3D array in the format of PositionATL
-		(PositionAGL if boat or amphibious)
+		(PositionAGL if boat or amphibious). Objects can be used, however, this
 	1: _spawnDirection <NUMBER> - The direction the vehicle is facing when created (relative to north)
+		if _spawnPosition is an object and _spawnDirection == -1, _spawnDirection will be set to the
+		direction of the _spawnPosition object
 	2: _vehicleClass <STRING> - The typeOf vehicle to spawn
 	3. _group <SIDE or GROUP> - Either the side to create a group on or an
 		already existing group to add the units to
 	4. _forcePosition <BOOL> - Force vehicle to spawn at exact coordinates
+		Does nothing when _spawnPosition is an object
 	5. _crewInstructions <ARRAY> - An array of classnames of unit types and/or man objects
 		for the crew. Units are moved into the vehicle using moveInAny in the order provided
 	6. _deleteOverflow <BOOL> - Delete any units from _crewInstructions that prexisted if they don't fit in the vehicle
@@ -35,7 +38,7 @@ Author(s):
 scriptName "KISKA_fnc_spawnVehicle";
 
 params [
-	["_spawnPosition",[0,0,0],[[]]],
+	["_spawnPosition",[0,0,0],[[],objNull]],
 	["_spawnDirection",0,[123]],
 	["_vehicleClass","",[""]],
 	["_group",BLUFOR,[sideUnknown,grpNull]],
@@ -44,6 +47,15 @@ params [
 	["_deleteOverflow",true,[true]]
 ];
 
+private _positionIsObject = _spawnPosition isEqualType objNull;
+if (_positionIsObject AND isNull _object) exitWith {
+	["_spawnPosition is null object!",true] call KISKA_fnc_log;
+	[]
+};
+
+if (_positionIsObject AND (_spawnDirection isEqualTo -1)) then {
+	_spawnDirection = getDir _spawnPosition;
+};
 
 if (_vehicleClass isEqualTo "") exitWith {
 	["_vehicleClass is empty string, exiting...",true] call KISKA_fnc_log;
@@ -81,6 +93,9 @@ switch (toLowerANSI _simulationType) do {
 	case "helicopter";
 	case "helicopterx": {
 		// make sure Z position has height for air vehicles
+		if (_positionIsObject) then {
+			_spawnPosition = getPosATL _spawnPosition;
+		};
 		_spawnPosition set [2,(_spawnPosition select 2) max 50];
 		_createdVehicle = createVehicle [_vehicleClass,_spawnPosition,[],0,"FLY"];
 	};
@@ -89,10 +104,9 @@ switch (toLowerANSI _simulationType) do {
 	};
 };
 
-
 _createdVehicle setDir _spawnDirection;
 
-if (_forcePosition) then {
+if (_forcePosition AND !(_positionIsObject)) then {
 	_createdVehicle setPos _spawnPosition;
 };
 
