@@ -48,14 +48,11 @@ params [
 ];
 
 private _positionIsObject = _spawnPosition isEqualType objNull;
-if (_positionIsObject AND isNull _object) exitWith {
+if (_positionIsObject AND {isNull _spawnPosition}) exitWith {
 	["_spawnPosition is null object!",true] call KISKA_fnc_log;
 	[]
 };
 
-if (_positionIsObject AND (_spawnDirection isEqualTo -1)) then {
-	_spawnDirection = getDir _spawnPosition;
-};
 
 if (_vehicleClass isEqualTo "") exitWith {
 	["_vehicleClass is empty string, exiting...",true] call KISKA_fnc_log;
@@ -65,6 +62,15 @@ if (_vehicleClass isEqualTo "") exitWith {
 if (_group isEqualType grpNull AND {isNull _group}) exitWith {
 	[["Tried to spawn class: ",_vehicleClass," but the _group is type GROUP and the group is null, exiting..."],true] call KISKA_fnc_log;
 	[]
+};
+
+if (_positionIsObject AND (_spawnDirection isEqualTo -1)) then {
+	_spawnDirection = getDir _spawnPosition;
+};
+
+private _spawnPositionATL = _spawnPosition;
+if (_positionIsObject) then {
+	_spawnPositionATL = getPosATL _spawnPosition;
 };
 
 // make a group if side is provided
@@ -92,12 +98,13 @@ switch (toLowerANSI _simulationType) do {
 	case "helicopterrtd";
 	case "helicopter";
 	case "helicopterx": {
-		// make sure Z position has height for air vehicles
-		if (_positionIsObject) then {
-			_spawnPosition = getPosATL _spawnPosition;
+		private _spawnType = "NONE";
+		if (!_forcePosition) then {
+			_spawnType = "FLY";
+			_spawnPositionATL set [2,(_spawnPositionATL select 2) max 50];
 		};
-		_spawnPosition set [2,(_spawnPosition select 2) max 50];
-		_createdVehicle = createVehicle [_vehicleClass,_spawnPosition,[],0,"FLY"];
+
+		_createdVehicle = createVehicle [_vehicleClass,_spawnPositionATL,[],0,_spawnType];
 	};
 	default {
 		_createdVehicle = createvehicle [_vehicleClass,_spawnPosition,[],0,"NONE"];
@@ -106,8 +113,8 @@ switch (toLowerANSI _simulationType) do {
 
 _createdVehicle setDir _spawnDirection;
 
-if (_forcePosition AND !(_positionIsObject)) then {
-	_createdVehicle setPos _spawnPosition;
+if (_forcePosition) then {
+	_createdVehicle setPosATL _spawnPositionATL;
 };
 
 
