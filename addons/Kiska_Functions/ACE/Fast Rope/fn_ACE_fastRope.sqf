@@ -13,6 +13,8 @@ Parameters:
             (code is run in unscheduled)
             Parameters:
                 0: _vehicle - The drop vehicle
+    4: _hoverHeight <NUMBER> - The height the helicopter should hover above the drop position
+        while units are fastroping. Max is 28, min is 5
 
 Returns:
 	NOTHING
@@ -32,6 +34,9 @@ Author(s):
 	Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ACE_fastRope";
+
+#define MIN_HOVER_HEIGHT 5
+#define MAX_HOVER_HEIGHT 28
 
 if !(["ace_fastroping"] call KISKA_fnc_isPatchLoaded) exitWith {
     ["ace_fastroping is required for this function",true] call KISKA_fnc_log;
@@ -65,8 +70,8 @@ if (_dropPosition isEqualType objNull) then {
     _dropPosition = getPosASL _dropPosition;
 };
 
-_hoverHeight = _hoverHeight max 5;
-_hoverHeight = _hoverHeight min 28;
+_hoverHeight = _hoverHeight max MIN_HOVER_HEIGHT;
+_hoverHeight = _hoverHeight min MAX_HOVER_HEIGHT;
 
 if (_afterDropCode isEqualType "") then {
     _afterDropCode = compile _afterDropCode;
