@@ -49,6 +49,7 @@ class KISKA_basicSupport_baseClass
 
 class KISKA_artillery_baseClass : KISKA_basicSupport_baseClass
 {
+    text = "Artillery Fire Support";
     supportTypeId = SUPPORT_TYPE_ARTY;
     icon = ARTILLERY_ICON;
     radiuses[] = {};
@@ -90,9 +91,14 @@ class KISKA_CAS_baseClass : KISKA_basicSupport_baseClass
         BOMB_CLUSTER_ID
     };
     // class names for any vehicle that the player can select from
-    vehicleTypes[] = {};
+    vehicleTypes[] = {
+        "B_Plane_CAS_01_dynamicLoadout_F"
+    };
 };
 
+/* ----------------------------------------------------------------------------
+	Heli CAS
+---------------------------------------------------------------------------- */
 class KISKA_attackHelicopterCAS_baseClass : KISKA_basicSupport_baseClass
 {
     text = "Helicopter Gunship";
@@ -104,7 +110,9 @@ class KISKA_attackHelicopterCAS_baseClass : KISKA_basicSupport_baseClass
 
     radiuses[] = {};
     flyinHeights[] = {};
-    vehicleTypes[] = {};
+    vehicleTypes[] = {
+        "B_Heli_Attack_01_dynamicLoadout_F"
+    };
 };
 
 class KISKA_helicopterCAS_baseClass : KISKA_basicSupport_baseClass
@@ -118,21 +126,30 @@ class KISKA_helicopterCAS_baseClass : KISKA_basicSupport_baseClass
 
     radiuses[] = {};
     flyinHeights[] = {};
-    vehicleTypes[] = {};
+    vehicleTypes[] = {
+        "B_Heli_Transport_01_F"
+    };
 };
 
+/* ----------------------------------------------------------------------------
+	Supplies
+---------------------------------------------------------------------------- */
 class KISKA_arsenalSupplyDrop_baseClass : KISKA_basicSupport_baseClass
 {
+    text = "Airdropped Arsenal";
     supportTypeId = SUPPORT_TYPE_ARSENAL_DROP;
 
     icon = SUPPLY_DROP_ICON;
 
     flyinHeights[] = {};
-    vehicleTypes[] = {};
+    vehicleTypes[] = {
+
+    };
 };
 
 class KISKA_supplyDrop_aircraft_baseClass : KISKA_basicSupport_baseClass
 {
+    text = "Airdropped Supplies";
     supportTypeId = SUPPORT_TYPE_SUPPLY_DROP_AIRCRAFT;
 
     icon = SUPPLY_DROP_ICON;
@@ -142,7 +159,9 @@ class KISKA_supplyDrop_aircraft_baseClass : KISKA_basicSupport_baseClass
     crateList[] = {}; // class names of each crate to be dropped
 
     flyinHeights[] = {};
-    vehicleTypes[] = {};
+    vehicleTypes[] = {
+
+    };
 };
 
 
@@ -162,12 +181,14 @@ class KISKA_CAS_customBomb : KISKA_CAS_bombs_templateClass
 */
 class KISKA_CAS_guns_templateClass : KISKA_CAS_baseClass
 {
+    text = "CAS - Gun Run";
     attackTypes[] = {
         GUN_RUN_ID
     };
 };
 class KISKA_CAS_gunsRockets_templateClass : KISKA_CAS_baseClass
 {
+    text = "CAS - Guns & Rockets";
     attackTypes[] = {
         GUN_RUN_ID,
         GUNS_AND_ROCKETS_ARMOR_PIERCING_ID,
@@ -178,6 +199,7 @@ class KISKA_CAS_gunsRockets_templateClass : KISKA_CAS_baseClass
 };
 class KISKA_CAS_rockets_templateClass : KISKA_CAS_baseClass
 {
+    text = "CAS - Rockets";
     attackTypes[] = {
         ROCKETS_ARMOR_PIERCING_ID,
         ROCKETS_HE_ID
@@ -185,6 +207,7 @@ class KISKA_CAS_rockets_templateClass : KISKA_CAS_baseClass
 };
 class KISKA_CAS_bombs_templateClass : KISKA_CAS_baseClass
 {
+    text = "CAS - Bombs";
     attackTypes[] = {
         BOMB_LGB_ID,
         BOMB_CLUSTER_ID
@@ -192,12 +215,14 @@ class KISKA_CAS_bombs_templateClass : KISKA_CAS_baseClass
 };
 class KISKA_CAS_AGM_templateClass : KISKA_CAS_baseClass
 {
+    text = "CAS - Air to Ground Missile";
     attackTypes[] = {
         AGM_ID
     };
 };
 class KISKA_CAS_napalm_templateClass : KISKA_CAS_baseClass
 {
+    text = "CAS - Napalm";
     attackTypes[] = {
         BOMB_NAPALM_ID
     };
@@ -208,6 +233,7 @@ class KISKA_CAS_napalm_templateClass : KISKA_CAS_baseClass
 ---------------------------------------------------------------------------- */
 class KISKA_ARTY_155_templateClass : KISKA_artillery_baseClass
 {
+    text = "Artillery - 155mm";
     ammoTypes[] = {
         AMMO_155_HE_ID,
         AMMO_155_CLUSTER_ID,
@@ -217,6 +243,8 @@ class KISKA_ARTY_155_templateClass : KISKA_artillery_baseClass
 };
 class KISKA_ARTY_120_templateClass : KISKA_artillery_baseClass
 {
+    text = "Artillery - 120mm";
+
     ammoTypes[] = {
         AMMO_120_HE_ID,
         AMMO_120_CLUSTER_ID,
@@ -227,6 +255,8 @@ class KISKA_ARTY_120_templateClass : KISKA_artillery_baseClass
 };
 class KISKA_ARTY_82_templateClass : KISKA_artillery_baseClass
 {
+    text = "Artillery - 82mm";
+
     icon = MORTAR_ICON;
     ammoTypes[] = {
         AMMO_82_HE_ID,
@@ -236,6 +266,8 @@ class KISKA_ARTY_82_templateClass : KISKA_artillery_baseClass
 };
 class KISKA_ARTY_230_templateClass : KISKA_artillery_baseClass
 {
+    text = "Artillery - 230mm Rockets";
+
     ammoTypes[] = {
         AMMO_230_HE_ID,
         AMMO_230_CLUSTER_ID
