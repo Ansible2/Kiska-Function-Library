@@ -39,14 +39,9 @@ if (_key isEqualType grpNull OR (_key isEqualType objNull)) then {
     _key = (hashValue _key) + ([_key] call KISKA_fnc_netId);
 };
 
-private "_value";
-if (!isNil "_default") then {
-    _value = _map getOrDefault [_key,_default];
-
-} else {
-    _value = _map get _key;
-
+if (!isNil "_default") exitWith {
+    _map getOrDefault [_key,_default];
 };
 
 
-_value
+_map get _key;
