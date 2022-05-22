@@ -18,17 +18,15 @@ Examples:
 		[someGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
     (end)
 
+    (begin example)
+        // enable transfer
+		[someGroup,false] call KISKA_fnc_ACEX_setHCTransfer;
+    (end)
+
 Author(s):
 	Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ACEX_setHCTransfer";
-
-/*
-if !(["acex_headless"] call KISKA_fnc_isPatchLoaded) exitWith {
-    ["ACEX Headless module is not loaded, will not transfer"] call KISKA_fnc_log;
-    nil
-};
-*/
 
 if (!isMultiplayer) exitWith {
 	["No need to run in singleplayer..."] call KISKA_fnc_log;
