@@ -41,7 +41,7 @@ if (_crew isEqualTo []) exitWith {
 	false
 };
 
-if (isNull _vehicle OR {!(alive _vehicle)}) exitWith {
+if !(alive _vehicle) exitWith {
 	[["Found that ",_vehicle," is either null or dead already, exiting..."]] call KISKA_fnc_log;
 
 	if (_deleteCrewIfNull) then {

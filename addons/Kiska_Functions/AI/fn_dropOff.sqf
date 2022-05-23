@@ -47,7 +47,7 @@ if (isNull _vehicle) exitWith {
 };
 
 private _driver = driver _vehicle;
-if (isNull _driver OR !(alive _driver)) exitWith {
+if !(alive _driver) exitWith {
     ["_driver is null or dead, exiting...",true] call KISKA_fnc_log;
     nil
 };
