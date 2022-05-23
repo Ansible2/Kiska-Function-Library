@@ -454,6 +454,8 @@ class CfgFunctions
 			{};
 			class setContainerCargo
 			{};
+			class setupKillTask
+			{};
 			class showHide
 			{};
 			class skipBrief
