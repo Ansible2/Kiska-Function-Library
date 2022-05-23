@@ -49,6 +49,8 @@ if (isMultiplayer AND {!isServer}) exitWith {
 private _config = _taskId;
 if (_taskId isEqualType "") then {
     _config = missionConfigFile >> "KISKA_cfgTasks" >> _taskId;
+} else {
+    _taskId = configName _config;
 };
 
 private _taskHasClass = isClass _config;
