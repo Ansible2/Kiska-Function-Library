@@ -89,7 +89,7 @@ private _codeString = [
         "private _totalKilledCount = localNamespace getVariable [", [_killedCountVar] call KISKA_fnc_str, ", 0]; ",
         "_totalKilledCount = _totalKilledCount + 1; ",
         "if (_totalStartingCount isEqualTo _totalKilledCount) then { ",
-            "[localNamespace getVariable[", [_taskToCompleteVar] call KISKA_fnc_str,"],''] call KISKA_fnc_endTask; ",
+            "[localNamespace getVariable [", [_taskToCompleteVar] call KISKA_fnc_str,",'']] call KISKA_fnc_endTask; ",
         "} else { ",
             "localNamespace setVariable [", [_killedCountVar] call KISKA_fnc_str, ",_totalKilledCount]; ",
         "}; ",
