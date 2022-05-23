@@ -126,7 +126,7 @@ _turretClasses apply {
             selectRandom _unitClasses,
             selectRandomWeighted _unitClasses
         ] select _weightedArray;
-        
+
         _unit = _group createUnit [_unitClass,[0,0,0],[],0,"NONE"];
 
         [_group,_excludeFromHeadlessTransfer] call KISKA_fnc_ACEX_setHCTransfer;
@@ -202,15 +202,13 @@ _infantryClasses apply {
         };
     };
 
-    private _onUnitCreated = getText(_x >> "onUnitCreated");
-    if (_onUnitCreated isNotEqualTo "") then {
-        _onUnitCreated = compile _onUnitCreated;
-        _units apply {
-            [
-                _onUnitCreated,
-                [_x]
-            ] call CBA_fnc_directCall;
-        };
+    private _onUnitsCreated = getText(_x >> "onUnitsCreated");
+    if (_onUnitsCreated isNotEqualTo "") then {
+        _onUnitsCreated = compile _onUnitsCreated;
+        [
+            _onUnitCreated,
+            [_units]
+        ] call CBA_fnc_directCall;
     };
 };
 
