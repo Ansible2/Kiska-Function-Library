@@ -3,9 +3,9 @@ Function: KISKA_fnc_remoteReturn_receive
 
 Description:
 	The send back component of KISKAs remote returns.
-	This catches that was sent in KISKA_fnc_remoteReturn_send and will send the
+	This catches what was sent in KISKA_fnc_remoteReturn_send and will send the
 	 variable back to the remoteExecutedOwner.
-	
+
 Parameters:
 	0: _code <STRING> - The code to execute to get a return
 	1: _args : <ARRAY> - An array of arguements for the _code
@@ -36,9 +36,9 @@ params [
 private _sendBackTarget = remoteExecutedOwner;
 // setVariable handling
 if (_sendBackTarget isEqualTo 0) then {
-	
+
 	[["Found _sendBackTarget isEqualTo 0 for ",_uniqueId],false] call KISKA_fnc_log;
-	
+
 	// if it's multiplayer, do not send all connected the value, just put it on server
 	if (isMultiplayer) then {
 		["Found to be multiplayer, setting target to 2 ",false] call KISKA_fnc_log;
@@ -47,8 +47,8 @@ if (_sendBackTarget isEqualTo 0) then {
 } else {
 
 	[["Found _sendBackTarget ise ",_sendBackTarget," for ",_uniqueId],false] call KISKA_fnc_log;
-	
-	// setVariable in single player does not work with 2 to set on the local machine 
+
+	// setVariable in single player does not work with 2 to set on the local machine
 	if (!isMultiplayer AND {_sendBackTarget isEqualTo 2}) then {
 		[["Not multiplayer and _sendBackTarget is 2, setting ",_uniqueId," to 0 target"],false] call KISKA_fnc_log;
 		_sendBackTarget = 0;
@@ -59,7 +59,7 @@ if (_sendBackTarget isEqualTo 0) then {
 
 private _compiledCode = compileFinal _code;
 if (_scheduled) then {
-	
+
 	[_compiledCode,_args,_uniqueId,_sendBackTarget] spawn {
 		params ["_code","_args","_uniqueId","_sendBackTarget"];
 
