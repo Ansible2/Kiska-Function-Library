@@ -10,7 +10,11 @@ Parameters:
 	2: _dismountPoint : <OBJECT or ARRAY> - The position to move to, can be object or position array
 	3: _completionRadius : <NUMBER> - The radius at which the waypoint is complete and the units can disembark from the _dismountPoint, -1 for exact placement
 	4: _speed : <STRING> - The for the driver group to move at
-	5: _codeOnComplete : <CODE> - Code to run upon completion of disembark, passed args is the vehicle (OBJECT), crew (ARRAY), and crew groups (ARRAY)
+	5: _codeOnComplete : <CODE> - Code to run upon completion of disembark,
+		Params:
+			0: <OBJECT> - The vehicle, crew (ARRAY), and crew groups (ARRAY)
+			1: <ARRAY (of OBJECTs)> - The crew of the vehicle
+			2: <ARRAY (of GROUPs)> - All the groups that are in the vehicle crew
 
 Returns:
 	<BOOL> - false if encountered error, true if success
@@ -58,8 +62,8 @@ private _crewGroups = [];
 {
 	if !(_x in _vehicleCrew) then {
 		_x moveInAny _vehicle;
-		_crewGroups pushBackUnique (group _x);
 	};
+	_crewGroups pushBackUnique (group _x);
 } forEach _crew;
 
 private _driverGroup = group (driver _vehicle);
@@ -69,7 +73,7 @@ _driverGroup setSpeedMode _speed;
 // disable HC transfer while driving
 [_driverGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
 
-[_driverGroup] call CBA_fnc_clearWaypoints;
+/* [_driverGroup] call CBA_fnc_clearWaypoints; */
 /* [_driverGroup,_dismountPoint,-1,"MOVE","UNCHANGED","NO CHANGE",_speed,"NO CHANGE","",[0,0,0],_completionRadius] call CBA_fnc_addWaypoint; */
 
 // position loop
@@ -93,10 +97,17 @@ _driverGroup setSpeedMode _speed;
         unitReady _driver;
     };
 
-    _driverGroup move _dismountPoint;
+	private _dismountPointPos = [_dismountPoint, getPosATL _dismountPoint] select (_dismountPoint isEqualType objNull);
+    _driverGroup move _dismountPointPos;
 
 	waitUntil {
-		if (_vehicle distance _dismountPoint <= _completionRadius OR !(alive _vehicle) OR (isNull (driver _vehicle) OR {!(_driver in _vehicle)})) exitWith {true};
+		if (
+			_vehicle distance _dismountPoint <= _completionRadius OR
+			 !(alive _vehicle) OR
+			 (isNull (driver _vehicle) OR
+			  {!(_driver in _vehicle)})
+		) exitWith {true};
+
 		sleep 1;
 		false
 	};
