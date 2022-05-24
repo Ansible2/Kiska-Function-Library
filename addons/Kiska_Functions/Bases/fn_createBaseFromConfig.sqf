@@ -206,7 +206,7 @@ _infantryClasses apply {
     if (_onUnitsCreated isNotEqualTo "") then {
         _onUnitsCreated = compile _onUnitsCreated;
         [
-            _onUnitCreated,
+            _onUnitsCreated,
             [_units]
         ] call CBA_fnc_directCall;
     };
