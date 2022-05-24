@@ -58,8 +58,8 @@ if (
     nil
 };
 
-private _thisArgs = _callBackFunction select 1;
-_callBackFunction = _callBackFunction select 0;
+private _thisArgs = _callBackFunction select 0;
+_callBackFunction = _callBackFunction select 1;
 if (_callBackFunction isEqualType "") then {
     _callBackFunction = compile _callBackFunction;
 };
