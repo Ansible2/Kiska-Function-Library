@@ -10,7 +10,7 @@ Parameters:
     2: _unitsToDropOff : <GROUP, ARRAY, or OBJECT> - The units to drop off
     3: _completionRadius : <NUMBER> - The radius at which the waypoint is complete and the units can disembark from the _dropOffPosition, -1 for exact placement
 	4: _speed : <STRING> - The for the driver group to move at
-	5: _codeOnComplete : <CODE> - Code to run upon completion of disembark (unscheduled)
+	5: _codeOnComplete : <CODE, STRING, or ARRAY> - Code to run upon completion of disembark. See KISKA_fnc_callBack
         Params:
         0: <OBJECT> - The vehicle that will drop of units
         1: <ARRAY> - The units dropped off at this location
@@ -38,7 +38,7 @@ params [
     ["_unitsToDropOff",[],[[],grpNull,objNull]],
 	["_completionRadius",10,[123]],
 	["_speed","NORMAL",[""]],
-	["_codeOnComplete",{},[{}]]
+	["_codeOnComplete",{},[{},"",[]]]
 ];
 
 if (isNull _vehicle) exitWith {
@@ -174,12 +174,10 @@ _driverGroup setSpeedMode _speed;
 	// enable HC transfer
 	[_driverGroup,false] call KISKA_fnc_ACEX_setHCTransfer;
 
-	if (_codeOnComplete isNotEqualTo {}) then {
-        [
-    		_codeOnComplete,
-    		[_vehicle,_unitsToDropOffFiltered]
-    	] call CBA_fnc_directCall;
-	};
+	[
+		[_vehicle,_unitsToDropOffFiltered],
+		_codeOnComplete
+	] call KISKA_fnc_callBack;
 };
 
 nil

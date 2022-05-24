@@ -9,10 +9,10 @@ Parameters:
     1: _dropPosition <ARRAY> - The positionASL to drop the units off at; Z coordinate
         matters
     2: _unitsToDeploy <ARRAY> - An array of units to drop from the _vehicle.
-    3: _afterDropCode <CODE or STRING> - Code to execute after the drop is complete
-            (code is run in unscheduled)
+    3: _afterDropCode <CODE or STRING or ARRAY> - Code to execute after the drop is complete, see KISKA_fnc_callBack
             Parameters:
                 0: _vehicle - The drop vehicle
+
     4: _hoverHeight <NUMBER> - The height the helicopter should hover above the drop position
         while units are fastroping. Max is 28, min is 5
 
@@ -47,7 +47,7 @@ params [
     ["_vehicle",objNull,[objNull]],
     ["_dropPosition",[],[[],objNull]],
     ["_unitsToDeploy",[],[[],grpNull,objNull]],
-    ["_afterDropCode",{},["",{}]],
+    ["_afterDropCode",{},["",{},[]]],
     ["_hoverHeight",20,[123]]
 ];
 
@@ -249,9 +249,11 @@ _pilot move (ASLToATL _hoverPosition);
 
                 _vehicle setVariable ["ACE_Rappelling",nil];
 
-                if (_afterDropCode isNotEqualTo {}) then {
-                    [_vehicle] call _afterDropCode;
-                };
+                [
+                    [_vehicle],
+                    _afterDropCode
+                ] call KISKA_fnc_callBack;
+
             };
         };
 
