@@ -35,7 +35,7 @@ params [
 	["_landingPosition",[],[[],objNull]],
 	["_landMode","LAND",[""]],
 	["_createHelipad",true,[true]],
-	["_afterLandCode",{},[{}]]
+	["_afterLandCode",{},[{},"",[]]]
 ];
 
 if (isNull _aircraft) exitWith {
@@ -131,8 +131,15 @@ if (_landMode isNotEqualTo "LAND") then {
 	_aircraft setVariable ["KISKA_cancelLanding",false];
 	_aircraft setVariable ["KISKA_isLanding",false];
 
-	if (_afterLandCode isNotEqualTo {}) then {
-		[_aircraft] spawn _afterLandCode;
+
+
+	[_aircraft,_afterLandCode] spawn {
+		params ["_aircraft","_afterLandCode"];
+
+		[
+			[_aircraft],
+			_afterLandCode
+		] call KISKA_fnc_callBack;
 	};
 
 	[_aircraft,LAND_EVENT,[_aircraft]] call BIS_fnc_callScriptedEventHandler;

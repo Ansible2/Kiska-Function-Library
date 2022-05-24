@@ -372,6 +372,8 @@ class CfgFunctions
 			{};
 			class balanceHeadless
 			{};
+			class callBack
+			{};
 			class classTurretsWithGuns
 			{};
 			class countdown
