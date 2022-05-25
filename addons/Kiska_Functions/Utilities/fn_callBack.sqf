@@ -20,8 +20,8 @@ Examples:
             [],
             [
                 // hint player
-                {hint (_thisArgs select 0)},
-                [player]
+                [player],
+                {hint (_thisArgs select 0)}
             ],
         ] call KISKA_fnc_callBack
     (end)
@@ -51,10 +51,10 @@ if (_callBackFunction isEqualType "") exitWith {
 };
 
 if (
-    !(_callBackFunction isEqualTypeParams ["",[]]) AND
-    {!(_callBackFunction isEqualTypeParams [{},[]])}
+    !(_callBackFunction isEqualTypeParams [[],""]) AND
+    {!(_callBackFunction isEqualTypeParams [[],{}])}
 ) exitWith {
-    [["_callBackFunction improperly configured array. Must be [STRING,ARRAY] or [CODE,ARRAY]. Got: ", _callBackFunction],true] call KISKA_fnc_log;
+    [["_callBackFunction improperly configured array. Must be [ARRAY,STRING] or [ARRAY,CODE]. Got: ", _callBackFunction],true] call KISKA_fnc_log;
     nil
 };
 
