@@ -16,7 +16,8 @@ Parameters:
 	6: _approachBearing : <NUMBER> - The bearing from which the aircraft will approach from (if below 0, it will be random)
 		This has no effect if an object is used for _aircraftType
 	7: _side : <SIDE> - The side of the created helicopter
-	8: _postSupportCode : <CODE or STRING> - Scheduled Code to execute after the support completes
+	8: _postSupportCode : <CODE, ARRAY, or STRING> - Code to execute after the support completes.
+			See KISKA_fnc_callBack.
 			The default behaviour is for the aircraft to move 2000 meters away and for
 			its complete crew and self to be deleted.
 		Params:
@@ -59,7 +60,7 @@ params [
 	["_flyInHeight",30,[123]],
 	["_approachBearing",-1,[123]],
 	["_side",BLUFOR,[sideUnknown]],
-	["_postSupportCode",{},["",{}]]
+	["_postSupportCode",{},["",{},[]]]
 ];
 
 
@@ -130,10 +131,6 @@ private _vehicleCrew = _vehicleArray select 1;
 // move command only supports position arrays
 if (_centerPosition isEqualType objNull) then {
 	_centerPosition = getPosATL _centerPosition;
-};
-
-if (_postSupportCode isEqualType "") then {
-	_postSupportCode = compile _postSupportCode;
 };
 
 private _params = [
@@ -218,13 +215,15 @@ _params spawn {
 
 	if (_postSupportCode isNotEqualTo {}) exitWith {
 		[
-			_vehicle,
-			_pilotsGroup,
-			_vehicleCrew,
-			_centerPosition
-		] call _postSupportCode;
+			[
+				_vehicle,
+				_pilotsGroup,
+				_vehicleCrew,
+				_centerPosition
+			],
+			_postSupportCode
+		] call KISKA_fnc_callBack;
 	};
-
 
 	// get helicopter to disengage and rtb
 	(currentPilot _vehicle) disableAI "AUTOTARGET";
