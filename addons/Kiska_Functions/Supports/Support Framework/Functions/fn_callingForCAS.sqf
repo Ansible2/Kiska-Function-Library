@@ -139,7 +139,7 @@ _args pushBack _menuVariables;
 		private _commMenuArgs = _args select 1;
 		private _targetPosition = _commMenuArgs select 1;
 		[
-			_targetPosition,
+			AGLToASL _targetPosition,
 			_attackType,
 			_approachBearing,
 			_vehicleClass,

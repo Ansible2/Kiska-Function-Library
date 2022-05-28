@@ -39,7 +39,7 @@ Author(s):
 scriptName "KISKA_fnc_CAS";
 
 if !(canSuspend) exitWith {
-	["Needs to be run in scheduled, exiting to scheduled...",true] call KISKA_fnc_log;
+	["Needs to be run in scheduled, exiting to scheduled...",false] call KISKA_fnc_log;
 	_this spawn KISKA_fnc_CAS;
 };
 
