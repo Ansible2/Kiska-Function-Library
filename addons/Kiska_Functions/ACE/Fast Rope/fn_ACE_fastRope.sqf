@@ -187,15 +187,6 @@ _pilot move (ASLToATL _hoverPosition);
 
                 };
 
-                /* if ( _distanceToHoverPosition <= 15 ) then {
-                    _velocityMagnitude = (_distanceToHoverPosition / 10) * 5;
-
-                };
-
-                private _currentVelocity = velocity _vehicle;
-                _currentVelocity = _currentVelocity vectorAdd (( _currentVehiclePosition_AGL vectorFromTo _hoverPosition_AGL ) vectorMultiply _velocityMagnitude);
-                _currentVelocity = (vectorNormalized _currentVelocity) vectorMultiply ( (vectorMagnitude _currentVelocity) min _velocityMagnitude );
-                _vehicle setVelocity _currentVelocity; */
             };
 
         } else {

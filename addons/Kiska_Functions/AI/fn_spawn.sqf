@@ -29,7 +29,7 @@ Returns:
 
 Examples:
     (begin example)
-		_spawnedUnits = [2, 2, _arrayOfTypes, [[0,0,0],spawnLogic]] call KISKA_fnc_spawn;
+		_spawnedUnits = [2, 2, _arrayOfTypes, [[0,0,0],spawnObject]] call KISKA_fnc_spawn;
     (end)
 
 Author:
