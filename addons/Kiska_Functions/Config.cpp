@@ -56,6 +56,8 @@ class CfgFunctions
 			{};
 			class changeAI
 			{};
+			class configureConvoy
+			{};
 			class defend
 			{};
 			class driveTo
