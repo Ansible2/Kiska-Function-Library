@@ -143,7 +143,7 @@ class KISKA_arsenalSupplyDrop_baseClass : KISKA_basicSupport_baseClass
 
     flyinHeights[] = {};
     vehicleTypes[] = {
-
+        "B_T_VTOL_01_infantry_F"
     };
 };
 
@@ -160,7 +160,7 @@ class KISKA_supplyDrop_aircraft_baseClass : KISKA_basicSupport_baseClass
 
     flyinHeights[] = {};
     vehicleTypes[] = {
-
+        "B_T_VTOL_01_infantry_F"
     };
 };
 

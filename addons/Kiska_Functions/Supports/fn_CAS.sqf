@@ -212,7 +212,7 @@ if (_exitToDefault) exitwith {
 ---------------------------------------------------------------------------- */
 private _planeSpawnPosition = _attackPosition getPos [_spawnDistance,_attackDirection + 180];
 _planeSpawnPosition set [2,_spawnHeight];
-private _planeArray = [_planeSpawnPosition,_attackDirection,_planeClass,_side] call KISKA_fnc_spawnVehicle;
+private _planeArray = [_planeSpawnPosition,_attackDirection,_planeClass,_side,false] call KISKA_fnc_spawnVehicle;
 private _plane = _planeArray select 0;
 private _crew = _planeArray select 1;
 

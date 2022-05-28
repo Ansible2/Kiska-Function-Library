@@ -45,6 +45,8 @@ params [
 	["_side",BLUFOR,[sideUnknown]]
 ];
 
+hint str _this;
+
 // get directions for vehicle to fly
 if (_flyDirection < 0) then {
 	_flyDirection = round (random 360);
@@ -62,7 +64,7 @@ private _vehicleArray = [
 	_relativeDirection,
 	_vehicleClass,
 	_side,
-	true,
+	false,
 	[_pilotClass] // spawn just a pilot
 ] call KISKA_fnc_spawnVehicle;
 

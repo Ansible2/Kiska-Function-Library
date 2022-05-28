@@ -63,7 +63,7 @@ private _vehicleArray = [
 	_relativeDirection,
 	_vehicleClass,
 	_side,
-	true,
+	false,
 	[_pilotClass] // spawn just a pilot
 ] call KISKA_fnc_spawnVehicle;
 

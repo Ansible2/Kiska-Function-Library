@@ -92,30 +92,34 @@ switch (toLowerANSI _simulationType) do {
 		if !(_createdNewGroup) then {
 			[_createdVehicle] joinSilent _group
 		};
+
+		break;
 	};
 	case "airplanex";
 	case "airplane"; // CUP planes do not use airplaneX
 	case "helicopterrtd";
 	case "helicopter";
 	case "helicopterx": {
-		private _spawnType = "NONE";
 		if (!_forcePosition) then {
-			_spawnType = "FLY";
 			_spawnPositionATL set [2,(_spawnPositionATL select 2) max 50];
+			_createdVehicle = createVehicle [_vehicleClass,_spawnPositionATL,[],0,"FLY"];
+			
+			_forcePosition = true;
+			break;
 		};
 
-		_createdVehicle = createVehicle [_vehicleClass,_spawnPositionATL,[],0,_spawnType];
+		_createdVehicle = createVehicle [_vehicleClass,_spawnPositionATL,[],0,"NONE"];
 	};
 	default {
 		_createdVehicle = createvehicle [_vehicleClass,_spawnPosition,[],0,"NONE"];
 	};
 };
 
-_createdVehicle setDir _spawnDirection;
-
 if (_forcePosition) then {
 	_createdVehicle setPosATL _spawnPositionATL;
 };
+
+_createdVehicle setDir _spawnDirection;
 
 
 
@@ -134,7 +138,6 @@ if (_simulationType != "soldier") then {
 		_crew = crew _createdVehicle;
 
 	} else {
-
 		private _movedIn = false;
 		private "_unit";
 		_crewInstructions apply {
@@ -162,8 +165,7 @@ if (_simulationType != "soldier") then {
 	_group addVehicle _createdVehicle;
 
 	// If this is a new group, select a leader
-	if (_createdNewGroup) then
-	{
+	if (_createdNewGroup) then {
 		_group selectLeader (commander _createdVehicle);
 	};
 

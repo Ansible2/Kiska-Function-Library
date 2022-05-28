@@ -95,7 +95,7 @@ private _spawnPosition = _centerPosition getPos [SPAWN_DISTANCE,_approachBearing
 _spawnPosition set [2,_flyInHeight];
 
 if (_vehicleArray isEqualTo []) then {
-	_vehicleArray = [_spawnPosition,0,_aircraftType,_side] call KISKA_fnc_spawnVehicle;
+	_vehicleArray = [_spawnPosition,0,_aircraftType,_side, false] call KISKA_fnc_spawnVehicle;
 };
 
 // disable HC transfer

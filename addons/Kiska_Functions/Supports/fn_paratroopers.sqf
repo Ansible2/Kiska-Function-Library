@@ -111,7 +111,7 @@ _spawnPosition set [2,_flyInHeight];
 /* ----------------------------------------------------------------------------
 	Create vehicle to drop units
 ---------------------------------------------------------------------------- */
-private _vehicleArray = [_spawnPosition,_flyDirection,_dropVehicleClass,_side] call KISKA_fnc_spawnVehicle;
+private _vehicleArray = [_spawnPosition,_flyDirection,_dropVehicleClass,_side,false] call KISKA_fnc_spawnVehicle;
 private _aircraft = _vehicleArray select 0;
 allCurators apply {
 	[_x,[[_aircraft],true]] remoteExec ["addCuratorEditableObjects",2];
