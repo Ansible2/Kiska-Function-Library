@@ -69,6 +69,13 @@ class KISKA_loadouts_koreaWinter
         [["rhs_weap_ak74m","rhs_acc_dtk","rhs_acc_perst1ik","rhs_acc_ekp1",["rhs_30Rnd_545x39_7N22_AK",30],[],""],["launch_B_Titan_olive_F","","","",["Titan_AA",1],[],""],["hgun_Rook40_F","","","",["16Rnd_9x21_Mag",16],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["FirstAidKit",1],["rhs_30Rnd_545x39_7N22_AK",3,30]]],["V_CarrierRigKBT_01_light_Olive_F",[["rhs_30Rnd_545x39_7N22_AK",2,30],["16Rnd_9x21_Mag",2,17],["HandGrenade",2,1],["SmokeShell",1,1],["SmokeShellRed",1,1],["Chemlight_red",2,1]]],["B_FieldPack_oli",[["Titan_AA",2,1]]],"CUP_H_RUS_6B47_v2_GogglesDown_Winter","",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]],
         [["rhs_weap_ak74m","rhs_acc_dtk","rhs_acc_perst1ik","rhs_acc_pkas",["rhs_30Rnd_545x39_7N22_AK",30],[],""],["launch_B_Titan_olive_F","","","",["Titan_AA",1],[],""],["hgun_Rook40_F","","","",["16Rnd_9x21_Mag",16],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["FirstAidKit",1],["rhs_30Rnd_545x39_7N22_AK",3,30]]],["V_CarrierRigKBT_01_light_Olive_F",[["rhs_30Rnd_545x39_7N22_AK",2,30],["16Rnd_9x21_Mag",2,17],["HandGrenade",2,1],["SmokeShell",1,1],["SmokeShellRed",1,1],["Chemlight_red",2,1]]],["B_FieldPack_oli",[["Titan_AA",2,1]]],"CUP_H_RUS_6B47_v2_GogglesDown_Winter","G_Bandanna_blk",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]]
     };
+
+    O_T_soldier_mine_F[] = {
+        [["rhs_weap_ak74m","rhs_acc_dtk","rhs_acc_perst1ik","rhs_acc_pkas",["rhs_30Rnd_545x39_7N22_AK",30],[],""],[],["hgun_Rook40_F","","","",["16Rnd_9x21_Mag",16],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["FirstAidKit",1],["rhs_30Rnd_545x39_7N22_AK",3,30]]],["V_CarrierRigKBT_01_light_Olive_F",[["rhs_30Rnd_545x39_7N22_AK",2,30],["16Rnd_9x21_Mag",2,17],["APERSMine_Range_Mag",3,1],["HandGrenade",2,1],["SmokeShell",1,1],["SmokeShellRed",1,1],["Chemlight_red",2,1]]],["B_Carryall_green_F",[["ToolKit",1],["MineDetector",1],["APERSMine_Range_Mag",2,1],["APERSBoundingMine_Range_Mag",2,1],["APERSMineDispenser_Mag",2,1],["APERSTripMine_Wire_Mag",2,1]]],"CUP_H_RUS_6B47_v2_GogglesClosed_Winter","",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]],
+        [["rhs_weap_ak74m_camo","rhs_acc_dtk","rhs_acc_perst1ik","rhs_acc_ekp1",["rhs_30Rnd_545x39_7N22_AK",30],[],""],[],["hgun_Rook40_F","","","",["16Rnd_9x21_Mag",16],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["FirstAidKit",1],["rhs_30Rnd_545x39_7N22_AK",3,30]]],["V_CarrierRigKBT_01_light_Olive_F",[["rhs_30Rnd_545x39_7N22_AK",2,30],["16Rnd_9x21_Mag",2,17],["APERSMine_Range_Mag",3,1],["HandGrenade",2,1],["SmokeShell",1,1],["SmokeShellRed",1,1],["Chemlight_red",2,1]]],["B_Carryall_green_F",[["ToolKit",1],["MineDetector",1],["APERSMine_Range_Mag",2,1],["APERSBoundingMine_Range_Mag",2,1],["APERSMineDispenser_Mag",2,1],["APERSTripMine_Wire_Mag",2,1]]],"CUP_H_RUS_6B47_v2_GogglesClosed_Winter","G_Bandanna_blk",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]],
+        [["rhs_weap_ak74m","rhs_acc_dtk","rhs_acc_perst1ik","rhs_acc_pkas",["rhs_30Rnd_545x39_7N22_AK",30],[],""],[],["hgun_Rook40_F","","","",["16Rnd_9x21_Mag",16],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["FirstAidKit",1],["rhs_30Rnd_545x39_7N22_AK",3,30]]],["V_CarrierRigKBT_01_light_Olive_F",[["rhs_30Rnd_545x39_7N22_AK",2,30],["16Rnd_9x21_Mag",2,17],["APERSMine_Range_Mag",3,1],["HandGrenade",2,1],["SmokeShell",1,1],["SmokeShellRed",1,1],["Chemlight_red",2,1]]],["B_Carryall_green_F",[["ToolKit",1],["MineDetector",1],["APERSMine_Range_Mag",2,1],["APERSBoundingMine_Range_Mag",2,1],["APERSMineDispenser_Mag",2,1],["APERSTripMine_Wire_Mag",2,1]]],"CUP_H_RUS_6B47_v2_GogglesDown_Winter","G_Sport_Checkered",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]],
+        [["rhs_weap_ak74m_camo","rhs_acc_dtk","rhs_acc_perst1ik","rhs_acc_1p63",["rhs_30Rnd_545x39_7N22_AK",30],[],""],[],["hgun_Rook40_F","","","",["16Rnd_9x21_Mag",16],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["FirstAidKit",1],["rhs_30Rnd_545x39_7N22_AK",3,30]]],["V_CarrierRigKBT_01_light_Olive_F",[["rhs_30Rnd_545x39_7N22_AK",2,30],["16Rnd_9x21_Mag",2,17],["APERSMine_Range_Mag",3,1],["HandGrenade",2,1],["SmokeShell",1,1],["SmokeShellRed",1,1],["Chemlight_red",2,1]]],["B_Carryall_green_F",[["ToolKit",1],["MineDetector",1],["APERSMine_Range_Mag",2,1],["APERSBoundingMine_Range_Mag",2,1],["APERSMineDispenser_Mag",2,1],["APERSTripMine_Wire_Mag",2,1]]],"CUP_H_RUS_6B47_v2_GogglesDown_Winter","G_Bandanna_blk",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]]
+    };
 };
 // CUP_U_O_RUS_Ratnik_Winter
 // vkpo_msv
@@ -119,18 +126,9 @@ class KISKA_loadouts_koreaWinter_night
         [["rhs_weap_ak74m_desert","rhs_acc_dtk","rhs_acc_perst1ik","rhs_acc_ekp1",["rhs_30Rnd_545x39_7N22_AK",30],[],""],["launch_B_Titan_olive_F","","","",["Titan_AA",1],[],""],["hgun_Rook40_F","","","",["16Rnd_9x21_Mag",16],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["FirstAidKit",1],["rhs_30Rnd_545x39_7N22_AK",3,30]]],["V_CarrierRigKBT_01_light_Olive_F",[["rhs_30Rnd_545x39_7N22_AK",2,30],["16Rnd_9x21_Mag",2,17],["HandGrenade",2,1],["SmokeShell",1,1],["SmokeShellRed",1,1],["Chemlight_red",2,1]]],["B_FieldPack_oli",[["Titan_AA",2,1]]],"CUP_H_RUS_6B47_v2_Winter","",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch","rhs_1PN138"]],
         [["rhs_weap_ak74m_desert","rhs_acc_dtk","rhs_acc_perst1ik","rhs_acc_pkas",["rhs_30Rnd_545x39_7N22_AK",30],[],""],["launch_B_Titan_olive_F","","","",["Titan_AA",1],[],""],["hgun_Rook40_F","","","",["16Rnd_9x21_Mag",16],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["FirstAidKit",1],["rhs_30Rnd_545x39_7N22_AK",3,30]]],["V_CarrierRigKBT_01_light_Olive_F",[["rhs_30Rnd_545x39_7N22_AK",2,30],["16Rnd_9x21_Mag",2,17],["HandGrenade",2,1],["SmokeShell",1,1],["SmokeShellRed",1,1],["Chemlight_red",2,1]]],["B_FieldPack_oli",[["Titan_AA",2,1]]],"CUP_H_RUS_6B47_v2_Winter","G_Bandanna_blk",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch","rhs_1PN138"]]
     };
+
+    O_T_soldier_mine_F[] = {
+        [["rhs_weap_ak74m","rhs_acc_dtk","rhs_acc_perst1ik","rhs_acc_ekp8_02",["rhs_30Rnd_545x39_7N22_AK",30],[],""],[],["hgun_Rook40_F","","","",["16Rnd_9x21_Mag",16],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["FirstAidKit",1],["rhs_30Rnd_545x39_7N22_AK",3,30]]],["V_CarrierRigKBT_01_light_Olive_F",[["rhs_30Rnd_545x39_7N22_AK",2,30],["16Rnd_9x21_Mag",2,17],["APERSMine_Range_Mag",3,1],["HandGrenade",2,1],["SmokeShell",1,1],["SmokeShellRed",1,1],["Chemlight_red",2,1]]],["B_Carryall_green_F",[["ToolKit",1],["MineDetector",1],["APERSMine_Range_Mag",2,1],["APERSBoundingMine_Range_Mag",2,1],["APERSMineDispenser_Mag",2,1],["APERSTripMine_Wire_Mag",2,1]]],"CUP_H_RUS_6B47_v2_Winter","G_Spectacles",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch","rhs_1PN138"]],
+        [["rhs_weap_ak74m","rhs_acc_dtk","rhs_acc_perst1ik","rhs_acc_1p63",["rhs_30Rnd_545x39_7N22_AK",30],[],""],[],["hgun_Rook40_F","","","",["16Rnd_9x21_Mag",16],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["FirstAidKit",1],["rhs_30Rnd_545x39_7N22_AK",3,30]]],["V_CarrierRigKBT_01_light_Olive_F",[["rhs_30Rnd_545x39_7N22_AK",2,30],["16Rnd_9x21_Mag",2,17],["APERSMine_Range_Mag",3,1],["HandGrenade",2,1],["SmokeShell",1,1],["SmokeShellRed",1,1],["Chemlight_red",2,1]]],["B_Carryall_green_F",[["ToolKit",1],["MineDetector",1],["APERSMine_Range_Mag",2,1],["APERSBoundingMine_Range_Mag",2,1],["APERSMineDispenser_Mag",2,1],["APERSTripMine_Wire_Mag",2,1]]],"CUP_H_RUS_6B47_v2_Winter","G_Bandanna_blk",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch","rhs_1PN138"]]
+    };
 };
-
-
-
-
-
-
-[
-
-
-
-
-
-
-]
