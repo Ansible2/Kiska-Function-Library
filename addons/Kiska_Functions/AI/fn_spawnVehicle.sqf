@@ -93,7 +93,6 @@ switch (toLowerANSI _simulationType) do {
 			[_createdVehicle] joinSilent _group
 		};
 
-		break;
 	};
 	case "airplanex";
 	case "airplane"; // CUP planes do not use airplaneX
@@ -103,12 +102,13 @@ switch (toLowerANSI _simulationType) do {
 		if (!_forcePosition) then {
 			_spawnPositionATL set [2,(_spawnPositionATL select 2) max 50];
 			_createdVehicle = createVehicle [_vehicleClass,_spawnPositionATL,[],0,"FLY"];
-			
+
 			_forcePosition = true;
-			break;
+		} else {
+			_createdVehicle = createVehicle [_vehicleClass,_spawnPositionATL,[],0,"NONE"];
+
 		};
 
-		_createdVehicle = createVehicle [_vehicleClass,_spawnPositionATL,[],0,"NONE"];
 	};
 	default {
 		_createdVehicle = createvehicle [_vehicleClass,_spawnPosition,[],0,"NONE"];
