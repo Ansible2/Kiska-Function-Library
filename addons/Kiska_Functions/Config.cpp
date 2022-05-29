@@ -496,6 +496,12 @@ class KISKA_eventHandlers
 	#include "EventHandlers\Headers\KISKA Combat Mode EventHandlers.hpp"
 };
 
+class KISKA_loadouts
+{
+	#include "Loadouts\Headers\Korea Winter Loadouts.hpp"
+	#include "Loadouts\Headers\Korea Summer Loadouts.hpp"
+	#include "Loadouts\Headers\Korea Ratnik Loadouts.hpp"
+};
 
 class Extended_PreInit_EventHandlers {
     class support_settings_preInitEvent {
