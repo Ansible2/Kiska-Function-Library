@@ -150,6 +150,23 @@ class KISKA_loadouts_koreaWinter
         [["rhs_weap_svds","","","rhs_acc_pso1m21",["rhs_10Rnd_762x54mmR_7N1",10],[],""],[],["hgun_Rook40_F","","","",["16Rnd_9x21_Mag",16],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["FirstAidKit",1],["rhs_10Rnd_762x54mmR_7N1",3,10],["SmokeShell",1,1]]],["V_CarrierRigKBT_01_light_Olive_F",[["rhs_10Rnd_762x54mmR_7N1",6,10],["16Rnd_9x21_Mag",2,17],["HandGrenade",2,1],["SmokeShellRed",1,1],["Chemlight_red",2,1]]],[],"CUP_H_RUS_6B47_v2_GogglesDown_Winter","",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]],
         [["rhs_weap_svds","","","rhs_acc_pso1m21",["rhs_10Rnd_762x54mmR_7N1",10],[],""],[],["hgun_Rook40_F","","","",["16Rnd_9x21_Mag",16],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["FirstAidKit",1],["rhs_10Rnd_762x54mmR_7N1",3,10],["SmokeShell",1,1]]],["V_CarrierRigKBT_01_light_Olive_F",[["rhs_10Rnd_762x54mmR_7N1",6,10],["16Rnd_9x21_Mag",2,17],["HandGrenade",2,1],["SmokeShellRed",1,1],["Chemlight_red",2,1]]],[],"CUP_H_RUS_6B47_v2_GogglesDown_Winter","G_Bandanna_blk",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]]
     };
+
+    O_T_Helipilot_F[] = {
+        [["SMG_02_F","","","optic_ACO_grn_smg",["30Rnd_9x21_Mag_SMG_02_Tracer_Green",30],[],""],[],["hgun_Rook40_F","","","",[],[],""],["U_C_WorkerCoveralls",[["FirstAidKit",1],["30Rnd_9x21_Mag_SMG_02_Tracer_Green",2,30]]],["V_CarrierRigKBT_01_Olive_F",[["Chemlight_red",2,1]]],[],"rhs_zsh7a_mike_green","G_Aviator",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]],
+        [["SMG_02_F","","","optic_ACO_grn_smg",["30Rnd_9x21_Mag_SMG_02_Tracer_Green",30],[],""],[],["hgun_Rook40_F","","","",[],[],""],["U_C_WorkerCoveralls",[["FirstAidKit",1],["30Rnd_9x21_Mag_SMG_02_Tracer_Green",2,30]]],["V_CarrierRigKBT_01_Olive_F",[["Chemlight_red",2,1]]],[],"rhs_zsh7a_mike_green_alt","G_Aviator",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]]
+    };
+
+    O_T_Helicrew_F[] = {
+        [["SMG_02_F","","","optic_ACO_grn_smg",["30Rnd_9x21_Mag_SMG_02_Tracer_Green",30],[],""],[],["hgun_Rook40_F","","","",[],[],""],["U_C_WorkerCoveralls",[["30Rnd_9x21_Mag_SMG_02_Tracer_Green",2,30]]],["V_CarrierRigKBT_01_Olive_F",[["Chemlight_red",2,1]]],[],"rhs_zsh7a_mike_alt","G_Aviator",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]],
+        [["SMG_02_F","","","optic_ACO_grn_smg",["30Rnd_9x21_Mag_SMG_02_Tracer_Green",30],[],""],[],["hgun_Rook40_F","","","",[],[],""],["U_C_WorkerCoveralls",[["30Rnd_9x21_Mag_SMG_02_Tracer_Green",2,30]]],["V_CarrierRigKBT_01_Olive_F",[["Chemlight_red",2,1]]],[],"rhs_zsh7a_mike","G_Aviator",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]]
+    };
+
+    O_T_Crew_F[] = {
+        [["SMG_02_F","","","optic_ACO_grn_smg",["30Rnd_9x21_Mag_SMG_02_Tracer_Green",30],[],""],[],["hgun_Rook40_F","","","",[],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["30Rnd_9x21_Mag_SMG_02_Tracer_Green",2,30]]],["V_CarrierRigKBT_01_Olive_F",[["Chemlight_red",2,1]]],[],"H_HelmetCrew_I_E","G_Aviator",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]],
+        [["SMG_02_F","","","optic_ACO_grn_smg",["30Rnd_9x21_Mag_SMG_02_Tracer_Green",30],[],""],[],["hgun_Rook40_F","","","",[],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["30Rnd_9x21_Mag_SMG_02_Tracer_Green",2,30]]],["V_CarrierRigKBT_01_Olive_F",[["Chemlight_red",2,1]]],[],"H_HelmetCrew_I_E","",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]],
+        [["SMG_02_F","","","optic_ACO_grn_smg",["30Rnd_9x21_Mag_SMG_02_Tracer_Green",30],[],""],[],["hgun_Rook40_F","","","",[],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["30Rnd_9x21_Mag_SMG_02_Tracer_Green",2,30]]],["V_CarrierRigKBT_01_Olive_F",[["Chemlight_red",2,1]]],[],"H_Tank_eaf_F","G_Aviator",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]],
+        [["SMG_02_F","","","optic_ACO_grn_smg",["30Rnd_9x21_Mag_SMG_02_Tracer_Green",30],[],""],[],["hgun_Rook40_F","","","",[],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["30Rnd_9x21_Mag_SMG_02_Tracer_Green",2,30]]],["V_CarrierRigKBT_01_Olive_F",[["Chemlight_red",2,1]]],[],"H_Tank_eaf_F","",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]]
+    };
 };
 // CUP_U_O_RUS_Ratnik_Winter
 // vkpo_msv
@@ -258,5 +275,22 @@ class KISKA_loadouts_koreaWinter_night
     O_T_Soldier_M_F[] = {
         [["rhs_weap_svds","","","rhs_acc_pso1m21",["rhs_10Rnd_762x54mmR_7N1",10],[],""],[],["hgun_Rook40_F","","","",["16Rnd_9x21_Mag",16],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["FirstAidKit",1],["rhs_10Rnd_762x54mmR_7N1",3,10],["SmokeShell",1,1]]],["V_CarrierRigKBT_01_light_Olive_F",[["rhs_10Rnd_762x54mmR_7N1",6,10],["16Rnd_9x21_Mag",2,17],["HandGrenade",2,1],["SmokeShellRed",1,1],["Chemlight_red",2,1]]],[],"CUP_H_RUS_6B47_v2_Winter","",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch","rhs_1PN138"]],
         [["rhs_weap_svds","","","rhs_acc_pso1m2",["rhs_10Rnd_762x54mmR_7N1",10],[],""],[],["hgun_Rook40_F","","","",["16Rnd_9x21_Mag",16],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["FirstAidKit",1],["rhs_10Rnd_762x54mmR_7N1",3,10],["SmokeShell",1,1]]],["V_CarrierRigKBT_01_light_Olive_F",[["rhs_10Rnd_762x54mmR_7N1",6,10],["16Rnd_9x21_Mag",2,17],["HandGrenade",2,1],["SmokeShellRed",1,1],["Chemlight_red",2,1]]],[],"CUP_H_RUS_6B47_v2_Winter","G_Bandanna_blk",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch","rhs_1PN138"]]
+    };
+
+    O_T_Helipilot_F[] = {
+        [["SMG_02_F","","","optic_ACO_grn_smg",["30Rnd_9x21_Mag_SMG_02_Tracer_Green",30],[],""],[],["hgun_Rook40_F","","","",[],[],""],["U_C_WorkerCoveralls",[["FirstAidKit",1],["30Rnd_9x21_Mag_SMG_02_Tracer_Green",2,30]]],["V_CarrierRigKBT_01_Olive_F",[["Chemlight_red",2,1]]],[],"rhs_zsh7a_mike_green","G_Aviator",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]],
+        [["SMG_02_F","","","optic_ACO_grn_smg",["30Rnd_9x21_Mag_SMG_02_Tracer_Green",30],[],""],[],["hgun_Rook40_F","","","",[],[],""],["U_C_WorkerCoveralls",[["FirstAidKit",1],["30Rnd_9x21_Mag_SMG_02_Tracer_Green",2,30]]],["V_CarrierRigKBT_01_Olive_F",[["Chemlight_red",2,1]]],[],"rhs_zsh7a_mike_green_alt","G_Aviator",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]]
+    };
+
+    O_T_Helicrew_F[] = {
+        [["SMG_02_F","","","optic_ACO_grn_smg",["30Rnd_9x21_Mag_SMG_02_Tracer_Green",30],[],""],[],["hgun_Rook40_F","","","",[],[],""],["U_C_WorkerCoveralls",[["30Rnd_9x21_Mag_SMG_02_Tracer_Green",2,30]]],["V_CarrierRigKBT_01_Olive_F",[["Chemlight_red",2,1]]],[],"rhs_zsh7a_mike_alt","G_Aviator",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]],
+        [["SMG_02_F","","","optic_ACO_grn_smg",["30Rnd_9x21_Mag_SMG_02_Tracer_Green",30],[],""],[],["hgun_Rook40_F","","","",[],[],""],["U_C_WorkerCoveralls",[["30Rnd_9x21_Mag_SMG_02_Tracer_Green",2,30]]],["V_CarrierRigKBT_01_Olive_F",[["Chemlight_red",2,1]]],[],"rhs_zsh7a_mike","G_Aviator",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]]
+    };
+
+    O_T_Crew_F[] = {
+        [["SMG_02_F","","","optic_ACO_grn_smg",["30Rnd_9x21_Mag_SMG_02_Tracer_Green",30],[],""],[],["hgun_Rook40_F","","","",[],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["30Rnd_9x21_Mag_SMG_02_Tracer_Green",2,30]]],["V_CarrierRigKBT_01_Olive_F",[["Chemlight_red",2,1]]],[],"H_HelmetCrew_I_E","G_Aviator",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]],
+        [["SMG_02_F","","","optic_ACO_grn_smg",["30Rnd_9x21_Mag_SMG_02_Tracer_Green",30],[],""],[],["hgun_Rook40_F","","","",[],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["30Rnd_9x21_Mag_SMG_02_Tracer_Green",2,30]]],["V_CarrierRigKBT_01_Olive_F",[["Chemlight_red",2,1]]],[],"H_HelmetCrew_I_E","",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]],
+        [["SMG_02_F","","","optic_ACO_grn_smg",["30Rnd_9x21_Mag_SMG_02_Tracer_Green",30],[],""],[],["hgun_Rook40_F","","","",[],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["30Rnd_9x21_Mag_SMG_02_Tracer_Green",2,30]]],["V_CarrierRigKBT_01_Olive_F",[["Chemlight_red",2,1]]],[],"H_Tank_eaf_F","G_Aviator",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]],
+        [["SMG_02_F","","","optic_ACO_grn_smg",["30Rnd_9x21_Mag_SMG_02_Tracer_Green",30],[],""],[],["hgun_Rook40_F","","","",[],[],""],["CUP_U_O_RUS_Ratnik_Winter",[["30Rnd_9x21_Mag_SMG_02_Tracer_Green",2,30]]],["V_CarrierRigKBT_01_Olive_F",[["Chemlight_red",2,1]]],[],"H_Tank_eaf_F","",[],["ItemMap","","ItemRadio","ItemCompass","ItemWatch",""]]
     };
 };
