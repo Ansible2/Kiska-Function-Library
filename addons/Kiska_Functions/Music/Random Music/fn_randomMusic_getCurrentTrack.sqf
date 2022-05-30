@@ -1,6 +1,6 @@
 #include "Headers\Music Common Defines.hpp"
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_getCurrentRandomMusicTrack
+Function: KISKA_fnc_randomMusic_getCurrentTrack
 
 Description:
 	Returns the most recent track selected by the random music system.
@@ -16,12 +16,12 @@ Returns:
 
 Examples:
     (begin example)
-		_mostRecentRandomTrack = call KISKA_fnc_getCurrentRandomMusicTrack;
+		_mostRecentRandomTrack = call KISKA_fnc_randomMusic_getCurrentTrack;
     (end)
 
 Author(s):
 	Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_getCurrentRandomMusicTrack";
+scriptName "KISKA_fnc_randomMusic_getCurrentTrack";
 
 GET_MUSIC_CURRENT_RANDOM_TRACK;

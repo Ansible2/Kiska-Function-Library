@@ -65,7 +65,7 @@ private _fadeDown = false;
 if (_musicPlaying) then {
 	if (_isRandomTrack) then {
 		// if the current playing track is also random
-		if ((call KISKA_fnc_getCurrentRandomMusicTrack) isNotEqualTo "") then {
+		if ((call KISKA_fnc_randomMusic_getCurrentTrack) isNotEqualTo "") then {
 			_fadeDown = true;
 
 		} else {
@@ -193,7 +193,7 @@ if (_durationToPlayTrack > 0) then {
 
 
 if (_isRandomTrack) then {
-	[_track] call KISKA_fnc_setCurrentRandomMusicTrack;
+	[_track] call KISKA_fnc_randomMusic_setCurrentTrack;
 
 };
 

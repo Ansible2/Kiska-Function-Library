@@ -35,7 +35,7 @@ _randomMusicTimeToolTip = _randomMusicTimeToolTip + "\n3. '[1,2,3]' - All random
         params ["_value"];
         _value = [_value] call BIS_fnc_parseNumberSafe;
 
-        if !([_value] call KISKA_fnc_setRandomMusicTime) then {
+        if !([_value] call KISKA_fnc_randomMusic_setTrackInterval) then {
             KISKA_CBA_randomMusicTime = GET_MUSIC_RANDOM_TIME_BETWEEN;
         };
     }

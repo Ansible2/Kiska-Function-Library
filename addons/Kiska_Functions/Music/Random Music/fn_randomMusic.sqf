@@ -1,10 +1,10 @@
-#include "Headers\Music Common Defines.hpp"
+#include "..\Headers\Music Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_randomMusic
 
 Description:
 	Starts playing a random assortment of curated music tracks to all players on a server.
-	This is essentially a multipleyer jukebox. Should only be executed on the server.
+	This is essentially a multiplayer jukebox. Should only be executed on the server.
 
 	All songs will be played in a random order and then loop back to play in another random order infinitely.
 
@@ -15,7 +15,7 @@ Description:
 Parameters:
 	0: _tickId <NUMBER> - Used to superceed another random music loop, passs -1 to start a new one
 	1: _musicTracks <ARRAY> - An array of strings (music tracks) to use
-	2: _timeBetween <ARRAY or NUMBER> - A random or set time between tracks.
+	2: _interval <ARRAY or NUMBER> - A random or set time between tracks.
 		Formats are [min,mid,max] & [max] for random numbers and
 		just a single number for a set time between (see example)
 	3: _usedMusicTracks <ARRAY> - An array of already used music tracks, don't bother manually entering anyhting, this is for looping purposes
@@ -26,12 +26,12 @@ Returns:
 Examples:
     (begin example)
 		// space tracks by 20 seconds exactly each
-		[-1,"",arrayOfTracks,20] spawn KISKA_fnc_randomMusic;
+		[-1,"",arrayOfTracks,20] call KISKA_fnc_randomMusic;
    	(end)
 
 	(begin example)
 		// space tracks by UP TO 20 seconds each
-		[-1,"",arrayOfTracks,[20]] spawn KISKA_fnc_randomMusic;
+		[-1,"",arrayOfTracks,[20]] call KISKA_fnc_randomMusic;
    	(end)
 
 Author:
@@ -46,20 +46,14 @@ if !(isServer) exitWith {
 	nil
 };
 
-if (!canSuspend) exitWith {
-	["Was not executed in a scheduled environment, exiting...",true] call KISKA_fnc_log;
-	nil
-};
-
-
 /* ----------------------------------------------------------------------------
 	Params
 ---------------------------------------------------------------------------- */
 params [
 	["_tickId",-1,[123]],
-	["_musicTracks",GET_MUSIC_RANDOM_UNUSED_TRACKS,[[]]],
-	["_timeBetween",GET_MUSIC_RANDOM_TIME_BETWEEN,[[],123]],
-	["_usedMusicTracks",GET_MUSIC_RANDOM_USED_TRACKS,[[]]]
+	["_musicTracks",call KISKA_fnc_randomMusic_getUnusedTracks,[[]]],
+	["_interval",call KISKA_fnc_randomMusic_getTrackInterval,[[],123]],
+	["_usedMusicTracks",call KISKA_fnc_randomMusic_getUsedTracks,[[]]]
 ];
 
 private _latestTickID = GET_MUSIC_RANDOM_START_TIME;
@@ -70,13 +64,13 @@ if ((!_isNewLoop) AND (_tickId < _latestTickID)) exitWith {
 };
 
 
-if (_musicTracks isEqualTo [] AND {_usedMusicTracks isEqualTo []}) exitWith {
+if (_musicTracks isEqualTo [] AND (_usedMusicTracks isEqualTo [])) exitWith {
 	["No music tracks were passed! Can't start.",true] call KISKA_fnc_log;
 	nil
 };
 
-// check if _timeBetween is an array AND if it is the correct formats OR if it is just a single number
-if !([_timeBetween] call KISKA_fnc_setRandomMusicTime) exitWith {
+// check if _interval is an array AND if it is the correct formats OR if it is just a single number
+if !([_interval] call KISKA_fnc_randomMusic_setTrackInterval) exitWith {
 	nil
 };
 
@@ -92,12 +86,12 @@ if (_musicTracks isEqualTo []) then {
 
 private _selectedTrack = selectRandom _musicTracks;
 // get defined volume for random music system
-private _volume = GET_MUSIC_RANDOM_VOLUME;
+private _volume = call KISKA_fnc_randomMusic_getVolume;
 [_selectedTrack,0,false,_volume,3,true] remoteExec ["KISKA_fnc_playMusic",[0,-2] select isDedicated];
 
 
-if !(GET_MUSIC_RANDOM_SYS_RUNNING) then {
-	SET_MUSIC_VAR(MUSIC_RANDOM_SYS_RUNNING_VAR_STR,true);
+if !(call KISKA_fnc_randomMusic_isSystemRunning) then {
+	[true] call KISKA_fnc_randomMusic_setSystemRunning;
 };
 
 
@@ -106,11 +100,11 @@ if !(GET_MUSIC_RANDOM_SYS_RUNNING) then {
 ---------------------------------------------------------------------------- */
 // clear array of selected Track
 _musicTracks deleteAt (_musicTracks find _selectedTrack);
-SET_MUSIC_VAR(MUSIC_RANDOM_UNUSED_TRACKS_VAR_STR,_musicTracks);
+[_musicTracks] call KISKA_fnc_randomMusic_setUnusedTracks;
+
 // store track as used
 _usedMusicTracks pushBackUnique _selectedTrack;
-SET_MUSIC_VAR(MUSIC_RANDOM_USED_TRACKS_VAR_STR,_usedMusicTracks);
-
+[_usedMusicTracks] call KISKA_fnc_randomMusic_setUsedTracks;
 
 /* ----------------------------------------------------------------------------
 	Get Wait Time
@@ -118,17 +112,17 @@ SET_MUSIC_VAR(MUSIC_RANDOM_USED_TRACKS_VAR_STR,_usedMusicTracks);
 private _durationOfTrack = [_selectedTrack] call KISKA_fnc_getMusicDuration;
 // decide how much time should be between tracks
 private "_randomWaitTime";
-if (_timeBetween isEqualType []) then {
-	if (_timeBetween isEqualTypeArray [1,2,3]) then {
-		_randomWaitTime = round (random _timeBetween);
+if (_interval isEqualType []) then {
+	if (_interval isEqualTypeArray [1,2,3]) then {
+		_randomWaitTime = round (random _interval);
 
 	} else {
-		_randomWaitTime = round (random (_timeBetween select 0));
+		_randomWaitTime = round (random (_interval select 0));
 
 	};
 
 } else {
-	_randomWaitTime = _timeBetween;
+	_randomWaitTime = _interval;
 
 };
 
@@ -156,9 +150,14 @@ if (_isNewLoop) then {
 	_tickId = diag_tickTime;
 	SET_MUSIC_VAR(MUSIC_RANDOM_START_TIME_VAR_STR,_tickId);
 };
-sleep _waitTime;
 
-[_tickId] spawn KISKA_fnc_randomMusic;
+[
+	{
+		_this call KISKA_fnc_randomMusic;
+	},
+	[_tickId],
+	_waitTime
+] call CBA_fnc_waitAndExecute;
 
 
 nil

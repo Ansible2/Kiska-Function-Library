@@ -203,8 +203,6 @@ class CfgFunctions
 		class Music
 		{
 			file = "Kiska_functions\Music";
-			class getCurrentRandomMusicTrack
-			{};
 			class getLatestPlayedMusicID
 			{};
 			class getMusicDuration
@@ -224,18 +222,6 @@ class CfgFunctions
 			class musicStopEvent
 			{};
 			class playMusic
-			{};
-			class randomMusic
-			{};
-			class setCurrentRandomMusicTrack
-			{};
-			class setRandomMusicTime
-			{};
-			class setRandomMusicVolume
-			{};
-			class stopRandomMusicServer
-			{};
-			class stopRandomMusicClient
 			{};
 			class stopMusic
 			{};
@@ -260,6 +246,40 @@ class CfgFunctions
 			class updateRespawnMarkerQuery
 			{};
 		};
+
+		class RandomMusic
+		{
+			file = "Kiska_functions\Music\Random Music";
+			class randomMusic_getCurrentTrack
+			{};
+			class randomMusic_getTrackInterval
+			{};
+			class randomMusic_getUnusedTracks
+			{};
+			class randomMusic_getUsedTracks
+			{};
+			class randomMusic_getVolume
+			{};
+			class randomMusic_isSystemRunning
+			{};
+			class randomMusic_setCurrentTrack
+			{};
+			class randomMusic_setSystemRunning
+			{};
+			class randomMusic_setTrackInterval
+			{};
+			class randomMusic_setUnusedTracks
+			{};
+			class randomMusic_setVolume
+			{};
+			class randomMusic_stopClient
+			{};
+			class randomMusic_stopServer
+			{};
+			class randomMusic
+			{};
+		};
+
 		class Respawn
 		{
 			file = "Kiska_functions\Respawn";

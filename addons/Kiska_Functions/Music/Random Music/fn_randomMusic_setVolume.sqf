@@ -1,6 +1,6 @@
 #include "Headers\Music Common Defines.hpp"
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_setRandomMusicVolume
+Function: KISKA_fnc_randomMusic_setVolume
 
 Description:
 	Changes the volume at which random music specifically will play at (on all clients).
@@ -15,13 +15,13 @@ Returns:
 
 Examples:
     (begin example)
-        [1] remoteExecCall ["KISKA_fnc_setRandomMusicVolume",2];
+        [1] remoteExecCall ["KISKA_fnc_randomMusic_setVolume",2];
     (end)
 
 Authors:
 	Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_setRandomMusicVolume";
+scriptName "KISKA_fnc_randomMusic_setVolume";
 
 if (!isServer) exitWith {
     ["Needs to be executed on the server. There is no affect on clients.",true] call KISKA_fnc_log;

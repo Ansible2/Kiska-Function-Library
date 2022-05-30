@@ -37,7 +37,7 @@ if (_stopAudio) then {
 
 SET_MUSIC_VAR(MUSIC_IS_PLAYING_VAR_STR,false);
 SET_MUSIC_VAR(MUSIC_CURRENT_TRACK_VAR_STR,"");
-[""] call KISKA_fnc_setCurrentRandomMusicTrack;
+[""] call KISKA_fnc_randomMusic_setCurrentTrack;
 
 ["Music stopped",false] call KISKA_fnc_log;
 

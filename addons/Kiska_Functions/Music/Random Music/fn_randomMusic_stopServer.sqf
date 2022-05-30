@@ -1,6 +1,6 @@
 #include "Headers\Music Common Defines.hpp"
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_stopRandomMusicServer
+Function: KISKA_fnc_randomMusic_stopServer
 
 Description:
 	Stops the random music system either abrubtly or allows the last song to play.
@@ -13,13 +13,13 @@ Returns:
 
 Examples:
     (begin example)
-		call KISKA_fnc_stopRandomMusicServer;
+		call KISKA_fnc_randomMusic_stopServer;
     (end)
 
 Author(s):
 	Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_stopRandomMusicServer";
+scriptName "KISKA_fnc_randomMusic_stopServer";
 
 if (!isServer) exitWith {
 	["Needs to only be run on server, exiting...",true] call KISKA_fnc_log;
@@ -33,7 +33,7 @@ params [
 SET_MUSIC_VAR(MUSIC_RANDOM_SYS_RUNNING_VAR_STR,false);
 SET_MUSIC_VAR(GET_MUSIC_RANDOM_START_TIME,nil);
 if (!_playLastSong) then {
-	remoteExecCall ["KISKA_fnc_stopRandomMusicClient",[0,-2] select isDedicated];
+	remoteExecCall ["KISKA_fnc_randomMusic_stopClient",[0,-2] select isDedicated];
 };
 
 true

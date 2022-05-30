@@ -33,7 +33,7 @@ SET_MUSIC_VAR(MUSIC_CURRENT_TRACK_VAR_STR,_trackClassName);
 SET_MUSIC_VAR(MUSIC_CURRENT_TRACK_ID_VAR_STR,(GET_MUSIC_CURRENT_TRACK_ID) + 1);
 // clear out any track. Any new MUSIC_CURRENT_RANDOM_TRACK_VAR_STR will be set to the new track in KISKA_fnc_playMusic after this event has fired
 // this is to avoid a track random music track not being cleared
-//[""] call KISKA_fnc_setCurrentRandomMusicTrack;
+//[""] call KISKA_fnc_randomMusic_setCurrentTrack;
 
 
 [["Started playing track: ", _trackClassname],false] call KISKA_fnc_log;
