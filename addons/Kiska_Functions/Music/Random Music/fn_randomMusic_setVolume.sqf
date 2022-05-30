@@ -1,4 +1,4 @@
-#include "Headers\Music Common Defines.hpp"
+#include "..\Headers\Music Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_randomMusic_setVolume
 
