@@ -39,7 +39,7 @@ scriptName "KISKA_fnc_callingForArty";
 #define AMMO_TYPE_MENU_GVAR "KISKA_menu_ammoSelect"
 #define ROUND_COUNT_MENU_GVAR "KISKA_menu_roundCount"
 #define RADIUS_MENU_GVAR "KISKA_menu_radius"
-#define MIN_RADIUS 25
+#define MIN_RADIUS 0
 
 
 params [
