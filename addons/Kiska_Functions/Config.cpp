@@ -270,6 +270,8 @@ class CfgFunctions
 			{};
 			class randomMusic_setUnusedTracks
 			{};
+			class randomMusic_setUsedTracks
+			{};
 			class randomMusic_setVolume
 			{};
 			class randomMusic_stopClient
