@@ -27,15 +27,21 @@ if (call KISKA_fnc_isMainMenu) exitWith {
 	nil
 };
 
+
 addMissionEventHandler ["GroupCreated", {
-    if !(isNull (uiNamespace getVariable ["KISKA_GCH_display",displayNull])) then {
+	params ["_group"];
+	_group setVariable ["KISKA_GCH_exclude", true];
+
+	private _groupChangerOpen = !(isNull (uiNamespace getVariable ["KISKA_GCH_display",displayNull]));
+    if (_groupChangerOpen) then {
         [] call KISKA_fnc_GCH_updateSideGroupsList;
     };
 }];
 
 
 addMissionEventHandler ["GroupDeleted", {
-    if !(isNull (uiNamespace getVariable ["KISKA_GCH_display",displayNull])) then {
+	private _groupChangerOpen = !(isNull (uiNamespace getVariable ["KISKA_GCH_display",displayNull]));
+    if (_groupChangerOpen) then {
         [] call KISKA_fnc_GCH_updateSideGroupsList;
     };
 }];

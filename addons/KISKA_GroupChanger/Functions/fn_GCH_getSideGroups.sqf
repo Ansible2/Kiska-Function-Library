@@ -27,5 +27,11 @@ params [
 
 allGroups select {
     (side _x) isEqualTo _side AND
-    {!(_x getVariable ["KISKA_GCH_exclude",false])}
+    {!(_x getVariable ["KISKA_GCH_exclude",false])} AND
+    {
+        [
+            units _x,
+            {isPlayer _x}
+        ] call KISKA_fnc_findIfBool;
+    }
 };
