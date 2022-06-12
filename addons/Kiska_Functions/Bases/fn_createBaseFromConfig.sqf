@@ -9,7 +9,14 @@ Parameters:
         in missionConfigFile >> "KISKA_bases" config, its class
 
 Returns:
-	NOTHING
+    <ARRAY> - A list of several arrays:
+        0: <ARRAY of OBJECTs> - All spawned units (includes turret units)
+        1: <ARRAY of GROUPs> - All spawned groups (does NOT include turret units)
+        2: <ARRAY of OBJECTs> - All turret units
+        3: <ARRAY of OBJECTs> - All infantry spawned units
+        4: <ARRAY of GROUPs> - All infantry spawned groups
+        5: <ARRAY of OBJECTs> - All patrol spawned units
+        6: <ARRAY of GROUPs> - All patrol spawned groups
 
 Examples:
     (begin example)
@@ -76,6 +83,15 @@ if (isNull _baseConfig) exitWith {
 
 private _baseUnitClasses = getArray(_baseConfig >> INFANTRY_CLASSES_PROPERTY);
 private _baseSide = (getNumber(_baseConfig >> "side")) call BIS_fnc_sideType;
+
+private _unitList = [];
+private _groupList = [];
+private _turretGunners = [];
+private _infantryUnits = [];
+private _infantryGroups = [];
+private _patrolUnits = [];
+private _patrolGroups = [];
+
 
 /* ----------------------------------------------------------------------------
     Turrets
@@ -152,6 +168,10 @@ _turretClasses apply {
                 [_unit,_x]
             ] call CBA_fnc_directCall;
         };
+
+        _turretGunners pushBack _unit;
+        _unitList pushBack _unit;
+
     };
 
 };
@@ -195,6 +215,7 @@ _infantryClasses apply {
         _side
     ] call KISKA_fnc_spawn;
 
+
     private _animate = [_x >> "ambientAnim"] call BIS_fnc_getCfgDataBool;
     if (_animate) then {
         _units apply {
@@ -209,6 +230,14 @@ _infantryClasses apply {
             _onUnitsCreated,
             [_units]
         ] call CBA_fnc_directCall;
+    };
+
+    _unitList append _units;
+    _infantryUnits append _units;
+    _units apply {
+        private _group = group _x;
+        _groupList pushBackUnique _group;
+        _infantryGroups pushBackUnique _group;
     };
 };
 
@@ -314,6 +343,13 @@ _patrolClasses apply {
             [_group]
         ] call CBA_fnc_directCall;
     };
+
+    _groupList pushBack _group;
+    _patrolGroups pushBack _group;
+
+    private _units = units _group;
+    _unitList append _units;
+    _patrolUnits append _units;
 };
 
 
@@ -445,4 +481,12 @@ _simplesConfigClasses apply {
 };
 
 
-nil
+[
+    _unitList,
+    _groupList,
+    _turretGunners,
+    _infantryUnits,
+    _infantryGroups,
+    _patrolUnits,
+    _patrolGroups
+]
