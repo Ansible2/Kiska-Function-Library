@@ -77,12 +77,13 @@ if (_baseConfig isEqualType "") then {
 
 if (isNull _baseConfig) exitWith {
     [[_baseConfig, " is a null config path"],true] call KISKA_fnc_log;
-    nil
+    []
 };
 
 
 private _baseUnitClasses = getArray(_baseConfig >> INFANTRY_CLASSES_PROPERTY);
 private _baseSide = (getNumber(_baseConfig >> "side")) call BIS_fnc_sideType;
+private _baseName = configName _baseConfig;
 
 private _unitList = [];
 private _groupList = [];
@@ -91,7 +92,25 @@ private _infantryUnits = [];
 private _infantryGroups = [];
 private _patrolUnits = [];
 private _patrolGroups = [];
+private _reinforceMap = createHashMap;
+private _baseData = [
+    _unitList,
+    _groupList,
+    _turretGunners,
+    _infantryUnits,
+    _infantryGroups,
+    _patrolUnits,
+    _patrolGroups,
+    _reinforceMap
+];
 
+if (isNil "KISKA_bases_map") then {
+    missionNamespace setVariable ["KISKA_bases_map",createHashMap];
+    missionNamespace setVariable ["KISKA_bases_entityToBaseMap",createHashMap];
+    missionNamespace setVariable ["KISKA_bases_idToReinforceGroups",createHashMap];
+};
+
+KISKA_bases_map set [_baseName,_baseData];
 
 /* ----------------------------------------------------------------------------
     Turrets
@@ -187,7 +206,6 @@ private _infantryClassUnitClasses = getArray(_infantryConfig >> INFANTRY_CLASSES
 _infantryClasses apply {
     private _spawnPositions = [_x >> "positions"] call BIS_fnc_getCfgData;
     if (_spawnPositions isEqualType "") then {
-        [_spawnPositions] call KISKA_fnc_log;
         _spawnPositions = GET_MISSION_LAYER_OBJECTS(_spawnPositions);
     };
 
@@ -239,8 +257,78 @@ _infantryClasses apply {
         _groupList pushBackUnique _group;
         _infantryGroups pushBackUnique _group;
     };
-};
 
+    private _reinforceClass = _x >> "reinforce";
+    if !(isNull _reinforceClass) then {
+        private _groups = [];
+        _units apply {
+            _groups pushBackUnique (group _x);
+        };
+
+        private _reinforceId = getText(_reinforceClass >> "id");
+        KISKA_bases_idToReinforceGroups set [
+            _reinforceId,
+            _groups
+        ];
+
+        _groups apply {
+
+            [
+                KISKA_bases_entityToBaseMap,
+                _x,
+                _baseData
+            ] call KISKA_fnc_hashmap_set;
+
+            [
+                _reinforceMap,
+                _x,
+                getArray(_reinforceClass >> "canReinforce")
+            ] call KISKA_fnc_hashmap_set;
+
+            [
+                _x,
+                configFile >> "KISKA_eventHandlers" >> "CombatBehaviour",
+                {
+                    params ["_group","_combatBehaviour","_eventConfig"];
+
+                    if (_combatBehaviour == "combat") then {
+                        private _baseData = [
+                            KISKA_bases_entityToBaseMap,
+                            _group,
+                            []
+                        ] call KISKA_fnc_hashmap_get;
+
+                        if (_baseData isNotEqualTo []) then {
+                            private _reinforceMap = _baseData select 7;
+
+                            private _reinforceGroupIds = [
+                                _reinforceMap,
+                                _group
+                            ] call KISKA_fnc_hashmap_get;
+
+                            private _groupsToRespond = [];
+                            _reinforceGroupIds apply {
+                                private _groups = KISKA_bases_idToReinforceGroups get _x;
+                                _groupsToRespond append _groups;
+                            };
+                            hint str _groupsToRespond;
+                            _groupsToRespond apply {
+                                _x setBehaviour "combat";
+                                [units _x, leader _x] remoteExec ["doFollow",leader _x];
+                                [leader _x,getPosATL (leader _group)] remoteExec ["move",leader _x];
+                                _x setBehaviour "aware";
+                            };
+                        };
+                    };
+                }
+            ] call KISKA_fnc_eventHandler_addFromConfig;
+        };
+    };
+};
+// units need their standing positons reset so they are not crouched when moving to target
+// units can be triggered for each other
+// optimizations
+// readability
 
 /* ----------------------------------------------------------------------------
     Patrols
@@ -481,12 +569,4 @@ _simplesConfigClasses apply {
 };
 
 
-[
-    _unitList,
-    _groupList,
-    _turretGunners,
-    _infantryUnits,
-    _infantryGroups,
-    _patrolUnits,
-    _patrolGroups
-]
+_baseData
