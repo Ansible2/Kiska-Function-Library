@@ -7,7 +7,7 @@ Description:
 
 Parameters:
     0: _side <SIDE> - What side this convoy is on
-	1: _spawnInfo <ARRAY> -
+	1: _spawnInfo <ARRAY> - An array of either or both option types:
         Option 1: <ARRAY> [spawnPosition (positionATL or OBJECT), spawnDirection, className] -
             Vehicle will be created from from the class name and spawned at the given position
             using KISKA_fnc_spawnVehicle
@@ -62,7 +62,7 @@ private _vehicles = [];
         continue;
     };
 
-    
+
     private _vehicleInfo = [
         _x select 0,
         _x select 1,
