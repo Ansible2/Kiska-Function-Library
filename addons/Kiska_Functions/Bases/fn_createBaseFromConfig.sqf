@@ -83,34 +83,39 @@ if (isNull _baseConfig) exitWith {
 
 private _baseUnitClasses = getArray(_baseConfig >> INFANTRY_CLASSES_PROPERTY);
 private _baseSide = (getNumber(_baseConfig >> "side")) call BIS_fnc_sideType;
+
+
+/* ----------------------------------------------------------------------------
+    Setup return data and globals
+---------------------------------------------------------------------------- */
 private _baseName = configName _baseConfig;
 
-private _unitList = [];
-private _groupList = [];
-private _turretGunners = [];
-private _infantryUnits = [];
-private _infantryGroups = [];
-private _patrolUnits = [];
-private _patrolGroups = [];
-private _reinforceMap = createHashMap;
-private _baseData = [
-    _unitList,
-    _groupList,
-    _turretGunners,
-    _infantryUnits,
-    _infantryGroups,
-    _patrolUnits,
-    _patrolGroups,
-    _reinforceMap
+private _base_unitList = [];
+private _base_groupList = [];
+private _base_turretGunners = [];
+private _base_infantryUnits = [];
+private _base_infantryGroups = [];
+private _base_patrolUnits = [];
+private _base_patrolGroups = [];
+private _base_reinforceMap = createHashMap;
+private _baseData = createHashMapFromArray [
+    ["unit list",_base_unitList],
+    ["group list",_base_groupList],
+    ["turret gunners",_base_turretGunners],
+    ["infantry units",_base_infantryUnits],
+    ["infantry groups",_base_infantryGroups],
+    ["patrol units",_base_patrolUnits],
+    ["patrol groups",_base_patrolGroups]
 ];
+
 
 if (isNil "KISKA_bases_map") then {
     missionNamespace setVariable ["KISKA_bases_map",createHashMap];
-    missionNamespace setVariable ["KISKA_bases_entityToBaseMap",createHashMap];
-    missionNamespace setVariable ["KISKA_bases_idToReinforceGroups",createHashMap];
 };
 
 KISKA_bases_map set [_baseName,_baseData];
+
+
 
 /* ----------------------------------------------------------------------------
     Turrets
@@ -188,8 +193,8 @@ _turretClasses apply {
             ] call CBA_fnc_directCall;
         };
 
-        _turretGunners pushBack _unit;
-        _unitList pushBack _unit;
+        _base_turretGunners pushBack _unit;
+        _base_unitList pushBack _unit;
 
     };
 
@@ -204,7 +209,8 @@ private _infantryConfig = _baseConfig >> "infantry";
 private _infantryClasses = configProperties [_infantryConfig,"isClass _x"];
 private _infantryClassUnitClasses = getArray(_infantryConfig >> INFANTRY_CLASSES_PROPERTY);
 _infantryClasses apply {
-    private _spawnPositions = [_x >> "positions"] call BIS_fnc_getCfgData;
+    private _classConfig = _x;
+    private _spawnPositions = [_classConfig >> "positions"] call BIS_fnc_getCfgData;
     if (_spawnPositions isEqualType "") then {
         _spawnPositions = GET_MISSION_LAYER_OBJECTS(_spawnPositions);
     };
@@ -217,8 +223,8 @@ _infantryClasses apply {
     DEFINE_UNIT_CLASSES(_infantryClassUnitClasses)
     DEFINE_SIDE
 
-    private _numberOfUnits = getNumber(_x >> "numberOfUnits");
-    private _unitsPerGroup = getNumber(_x >> "unitsPerGroup");
+    private _numberOfUnits = getNumber(_classConfig >> "numberOfUnits");
+    private _unitsPerGroup = getNumber(_classConfig >> "unitsPerGroup");
     if (_unitsPerGroup < 1) then {
         _unitsPerGroup = _numberOfUnits;
     };
@@ -228,20 +234,20 @@ _infantryClasses apply {
         _unitsPerGroup,
         _unitClasses,
         _spawnPositions,
-        [_x >> "canPath"] call BIS_fnc_getCfgDataBool,
-        [_x >> "dynamicSim"] call BIS_fnc_getCfgDataBool,
+        [_classConfig >> "canPath"] call BIS_fnc_getCfgDataBool,
+        [_classConfig >> "dynamicSim"] call BIS_fnc_getCfgDataBool,
         _side
     ] call KISKA_fnc_spawn;
 
 
-    private _animate = [_x >> "ambientAnim"] call BIS_fnc_getCfgDataBool;
+    private _animate = [_classConfig >> "ambientAnim"] call BIS_fnc_getCfgDataBool;
     if (_animate) then {
         _units apply {
             [_x] call BIS_fnc_ambientAnimCombat;
         };
     };
 
-    private _onUnitsCreated = getText(_x >> "onUnitsCreated");
+    private _onUnitsCreated = getText(_classConfig >> "onUnitsCreated");
     if (_onUnitsCreated isNotEqualTo "") then {
         _onUnitsCreated = compile _onUnitsCreated;
         [
@@ -250,80 +256,23 @@ _infantryClasses apply {
         ] call CBA_fnc_directCall;
     };
 
-    _unitList append _units;
-    _infantryUnits append _units;
+    _base_unitList append _units;
+    _base_infantryUnits append _units;
+
+    private _groups = [];
     _units apply {
         private _group = group _x;
-        _groupList pushBackUnique _group;
-        _infantryGroups pushBackUnique _group;
+        _groups pushBackUnique _group;
     };
 
-    private _reinforceClass = _x >> "reinforce";
-    if !(isNull _reinforceClass) then {
-        private _groups = [];
-        _units apply {
-            _groups pushBackUnique (group _x);
-        };
-
-        private _reinforceId = getText(_reinforceClass >> "id");
-        KISKA_bases_idToReinforceGroups set [
-            _reinforceId,
-            _groups
-        ];
-
-        _groups apply {
-
-            [
-                KISKA_bases_entityToBaseMap,
-                _x,
-                _baseData
-            ] call KISKA_fnc_hashmap_set;
-
-            [
-                _reinforceMap,
-                _x,
-                getArray(_reinforceClass >> "canReinforce")
-            ] call KISKA_fnc_hashmap_set;
-
-            [
-                _x,
-                configFile >> "KISKA_eventHandlers" >> "CombatBehaviour",
-                {
-                    params ["_group","_combatBehaviour","_eventConfig"];
-
-                    if (_combatBehaviour == "combat") then {
-                        private _baseData = [
-                            KISKA_bases_entityToBaseMap,
-                            _group,
-                            []
-                        ] call KISKA_fnc_hashmap_get;
-
-                        if (_baseData isNotEqualTo []) then {
-                            private _reinforceMap = _baseData select 7;
-
-                            private _reinforceGroupIds = [
-                                _reinforceMap,
-                                _group
-                            ] call KISKA_fnc_hashmap_get;
-
-                            private _groupsToRespond = [];
-                            _reinforceGroupIds apply {
-                                private _groups = KISKA_bases_idToReinforceGroups get _x;
-                                _groupsToRespond append _groups;
-                            };
-                            hint str _groupsToRespond;
-                            _groupsToRespond apply {
-                                _x setBehaviour "combat";
-                                [units _x, leader _x] remoteExec ["doFollow",leader _x];
-                                [leader _x,getPosATL (leader _group)] remoteExec ["move",leader _x];
-                                _x setBehaviour "aware";
-                            };
-                        };
-                    };
-                }
-            ] call KISKA_fnc_eventHandler_addFromConfig;
-        };
+    _base_groupList append _groups;
+    _base_infantryGroups append _groups;
+    _groups apply {
+        _x setVariable ["KISKA_bases_config",_classConfig];
+        _x setVariable ["KISKA_bases_baseId",_baseName];
     };
+
+
 };
 // units need their standing positons reset so they are not crouched when moving to target
 // units can be triggered for each other
@@ -432,12 +381,12 @@ _patrolClasses apply {
         ] call CBA_fnc_directCall;
     };
 
-    _groupList pushBack _group;
-    _patrolGroups pushBack _group;
+    _base_groupList pushBack _group;
+    _base_patrolGroups pushBack _group;
 
     private _units = units _group;
-    _unitList append _units;
-    _patrolUnits append _units;
+    _base_unitList append _units;
+    _base_patrolUnits append _units;
 };
 
 
