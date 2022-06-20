@@ -38,14 +38,24 @@ if (!canSuspend) exitWith {
 };
 
 
-private _priority = _group getVariable ["KISKA_bases_reinforcePriority",-1];
+private _reinforceGroupIds = _group getVariable ["KISKA_bases_canCallReinforceIds",[]];
 
 private _groupsToRespond = [];
 _reinforceGroupIds apply {
-    private _groups = KISKA_bases_idToReinforceGroups get _x;
+    private _groups = KISKA_bases_reinforceGroupsMap get _x;
     _groupsToRespond append _groups;
 };
 
+
+private _priority = _group getVariable ["KISKA_bases_reinforcePriority",-1];
+private _onEnteredCombat = _group getVariable ["KISKA_bases_reinforceOnEnteredCombat",{}];
+if (_onEnteredCombat isNotEqualTo {}) then {
+    private _preventDefault = [
+        _group,
+        _groupsToRespond,
+        _priority
+    ] call _onEnteredCombat;
+};
 
 private _reinforceGroupIds = _group getVariable ["KISKA_bases_canCallReinforceIds",[]];
 private _leaderOfCallingGroup = leader _group;
@@ -85,6 +95,8 @@ _groupsToRespond apply {
     [_groupUnits, _leaderOfRespondingGroup] remoteExec ["doFollow", _leaderOfRespondingGroup];
     [_leaderOfRespondingGroup, _moveToPosition] remoteExec ["move", _leaderOfRespondingGroup];
 };
+
+
 
 
 nil

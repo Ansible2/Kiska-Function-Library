@@ -246,7 +246,7 @@ _infantryClasses apply {
             [
                 _x,
                 "STAND",
-                "RANDOM",
+                "ASIS",
                 {
                     _this getVariable ["KISKA_bases_stopAmbientAnim",false];
                 }
@@ -280,11 +280,26 @@ _infantryClasses apply {
     };
 
 
+    private _reinforceClass = _x >> "reinforce";
+    if (isNull _reinforceClass) then {
+        continue;
+    };
+
+    private _reinforceId = [_reinforceClass >> "id"] call BIS_fnc_getCfgData;
+    private _canCallIds = getArray(_reinforceClass >> "canReinforce");
+    private _reinforcePriority = getNumber(_reinforceClass >> "priority");
+    private _onEnteredCombat = getText(_reinforceClass >> "onEnteredCombat");
+    _groups apply {
+        [
+            _x,
+            _reinforceId,
+            _canCallIds,
+            _reinforcePriority,
+            _onEnteredCombat
+        ] call KISKA_fnc_bases_setupReactivity;
+    };
 };
-// units need their standing positons reset so they are not crouched when moving to target
-// units can be triggered for each other
-// optimizations
-// readability
+
 
 /* ----------------------------------------------------------------------------
     Patrols
@@ -394,6 +409,23 @@ _patrolClasses apply {
     private _units = units _group;
     _base_unitList append _units;
     _base_patrolUnits append _units;
+
+    private _reinforceClass = _x >> "reinforce";
+    if (isNull _reinforceClass) then {
+        continue;
+    };
+
+    private _reinforceId = [_reinforceClass >> "id"] call BIS_fnc_getCfgData;
+    private _canCallIds = getArray(_reinforceClass >> "canReinforce");
+    private _reinforcePriority = getNumber(_reinforceClass >> "priority");
+    private _onEnteredCombat = getText(_reinforceClass >> "onEnteredCombat");
+    [
+        _group,
+        _reinforceId,
+        _canCallIds,
+        _reinforcePriority,
+        _onEnteredCombat
+    ] call KISKA_fnc_bases_setupReactivity;
 };
 
 

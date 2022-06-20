@@ -26,7 +26,7 @@ scriptName "KISKA_fnc_bases_setupReactivity";
 params [
     ["_group",grpNull,[grpNull]],
     ["_reinforceId","",[123,""]],
-    ["_canCallIds",[],[]],
+    ["_canCallIds",[],[[]]],
     ["_priority",1,[123]],
     ["_onEnteredCombat",{},["",{}]]
 ];
@@ -41,6 +41,11 @@ params [
 ---------------------------------------------------------------------------- */
 _group setVariable ["KISKA_bases_canCallReinforceIds",_canCallIds];
 _group setVariable ["KISKA_bases_reinforcePriority",_priority];
+
+if (_onEnteredCombat isEqualType "") then {
+    _onEnteredCombat = compile _onEnteredCombat;
+};
+_group setVariable ["KISKA_bases_reinforceOnEnteredCombat",_onEnteredCombat];
 
 
 /* ----------------------------------------------------------------------------
