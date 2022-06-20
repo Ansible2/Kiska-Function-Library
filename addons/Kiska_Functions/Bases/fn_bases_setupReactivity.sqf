@@ -55,8 +55,9 @@ if (isNull _group) exitWith {
 };
 
 
-_group setVariable ["KISKA_bases_canCallReinforceIds",_canCallIds];
-_group setVariable ["KISKA_bases_reinforcePriority",_priority];
+_group setVariable ["KISKA_bases_canCallReinforceIds", _canCallIds];
+_group setVariable ["KISKA_bases_reinforcePriority", _priority];
+_group setVariable ["KISKA_bases_reinforceId", _reinforceId];
 
 if (_onEnteredCombat isEqualType "") then {
     _onEnteredCombat = compile _onEnteredCombat;

@@ -35,11 +35,6 @@ if (isNull _group) exitWith {};
 
 if (_combatBehaviour != "combat") exitWith {};
 
-if (!canSuspend) exitWith {
-    _this spawn KISKA_fnc_bases_triggerReaction;
-    nil
-};
-
 
 private _reinforceGroupIds = _group getVariable ["KISKA_bases_canCallReinforceIds",[]];
 
@@ -60,13 +55,27 @@ if (_onEnteredCombat isNotEqualTo {}) then {
     ] call _onEnteredCombat;
 };
 
-private _reinforceGroupIds = _group getVariable ["KISKA_bases_canCallReinforceIds",[]];
+
+
 private _leaderOfCallingGroup = leader _group;
 private _moveToPosition = getPosATL _leaderOfCallingGroup;
+private _groupRespondingToId = _group getVariable ["KISKA_bases_respondingToId",""];
+private _groupIsAlsoResponding = _groupRespondingToId isNotEqualTo "";
+private _groupReinforceId = _group getVariable ["KISKA_bases_reinforceId",""];
 
 _groupsToRespond apply {
     private _currentMissionPriority = _x getVariable ["KISKA_bases_responseMissionPriority",-1];
     if (_currentMissionPriority > _priority) then {
+        continue;
+    };
+
+    // check that the group being called doesn't already have
+    // the group calling responding to them
+    // e.g. group1 calls for group2, group2 then calls for group1
+    // group2 shouldn't acknowledge this because group1 already called
+    private _reinforceId = _x getVariable ["KISKA_bases_reinforceId",""];
+    private _willBeCircularResponse = _reinforceId isEqualTo _groupRespondingToId;
+    if (_groupIsAlsoResponding AND _willBeCircularResponse) then {
         continue;
     };
 
@@ -97,6 +106,7 @@ _groupsToRespond apply {
     // in case unit was told to stop with doStop
     [_groupUnits, _leaderOfRespondingGroup] remoteExec ["doFollow", _leaderOfRespondingGroup];
     [_leaderOfRespondingGroup, _moveToPosition] remoteExec ["move", _leaderOfRespondingGroup];
+    _x setVariable ["KISKA_bases_respondingToId", _groupReinforceId];
 };
 
 
