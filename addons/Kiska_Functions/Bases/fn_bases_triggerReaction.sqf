@@ -52,7 +52,7 @@ _reinforceGroupIds apply {
 
 private _priority = _group getVariable ["KISKA_bases_reinforcePriority",-1];
 private _onEnteredCombat = _group getVariable ["KISKA_bases_reinforceOnEnteredCombat",{}];
-if (_onEnteredCombat isNotEqualTo {}) the-n {
+if (_onEnteredCombat isNotEqualTo {}) then {
     private _preventDefault = [
         _group,
         _groupsToRespond,
