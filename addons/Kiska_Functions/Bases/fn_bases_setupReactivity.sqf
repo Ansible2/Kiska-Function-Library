@@ -5,8 +5,7 @@ Description:
 	Spawns a configed KISKA base.
 
 Parameters:
-    0: _baseConfig <STRING or CONFIG> - The config path of the base config or if
-        in missionConfigFile >> "KISKA_bases" config, its class
+    0:  <> -
 
 Returns:
     <> -
@@ -27,7 +26,9 @@ scriptName "KISKA_fnc_bases_setupReactivity";
 params [
     ["_group",grpNull,[grpNull]],
     ["_reinforceId","",[123,""]],
-    ["_canCallIds",[],[]]
+    ["_canCallIds",[],[]],
+    ["_priority",1,[123]],
+    ["_onEnteredCombat",{},["",{}]]
 ];
 
 // what the groups reinforce class is
@@ -38,14 +39,8 @@ params [
 /* ----------------------------------------------------------------------------
 
 ---------------------------------------------------------------------------- */
-if (isNil "KISKA_bases_groupCanCallReinforceMap") then {
-    missionNamespace setVariable ["KISKA_bases_groupCanCallReinforceMap",createHashMap];
-};
-[
-    KISKA_bases_groupCanCallReinforceMap,
-    _group,
-    _canCallIds
-] call KISKA_fnc_hashmap_set;
+_group setVariable ["KISKA_bases_canCallReinforceIds",_canCallIds];
+_group setVariable ["KISKA_bases_reinforcePriority",_priority];
 
 
 /* ----------------------------------------------------------------------------
@@ -69,35 +64,10 @@ if !(_idTaken) then {
 /* ----------------------------------------------------------------------------
 
 ---------------------------------------------------------------------------- */
-private _onGroupEnteredCombat = {
-    params ["_group","_combatBehaviour","_eventConfig"];
-
-    if (_combatBehaviour == "combat") then {
-        private _reinforceGroupIds = [
-            KISKA_bases_groupCanCallReinforceMap,
-            _group
-        ] call KISKA_fnc_hashmap_get;
-
-        private _groupsToRespond = [];
-        _reinforceGroupIds apply {
-            private _groups = KISKA_bases_idToReinforceGroups get _x;
-            _groupsToRespond append _groups;
-        };
-
-        _groupsToRespond apply {
-            /* _x setBehaviour "combat"; */
-            [units _x, leader _x] remoteExec ["doFollow",leader _x];
-            [leader _x,getPosATL (leader _group)] remoteExec ["move",leader _x];
-            _x setBehaviour "aware";
-        };
-    };
-};
-
-
 [
     _x,
     configFile >> "KISKA_eventHandlers" >> "CombatBehaviour",
-    _onGroupEnteredCombat
+    KISKA_fnc_bases_triggerReaction
 ] call KISKA_fnc_eventHandler_addFromConfig;
 
 // have something like a mission importance factor to assign in the class

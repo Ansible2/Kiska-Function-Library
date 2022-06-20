@@ -88,7 +88,11 @@ class CfgFunctions
 		class Bases
 		{
 			file = "Kiska_functions\Bases";
-			class createBaseFromConfig
+			class bases_createFromConfig
+			{};
+			class bases_triggerReaction
+			{};
+			class bases_setupReactivity
 			{};
 		};
 		class Buildings

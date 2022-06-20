@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_createBaseFromConfig
+Function: KISKA_fnc_bases_createFromConfig
 
 Description:
 	Spawns a configed KISKA base.
@@ -20,13 +20,13 @@ Returns:
 
 Examples:
     (begin example)
-		["SomeBaseConfig"] call KISKA_fnc_createBaseFromConfig;
+		["SomeBaseConfig"] call KISKA_fnc_bases_createFromConfig;
     (end)
 
 Author:
 	Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_createBaseFromConfig";
+scriptName "KISKA_fnc_bases_createFromConfig";
 
 
 #define GET_MISSION_LAYER_OBJECTS(LAYER) (getMissionLayerEntities LAYER) select 0
@@ -243,7 +243,14 @@ _infantryClasses apply {
     private _animate = [_classConfig >> "ambientAnim"] call BIS_fnc_getCfgDataBool;
     if (_animate) then {
         _units apply {
-            [_x] call BIS_fnc_ambientAnimCombat;
+            [
+                _x,
+                "STAND",
+                "RANDOM",
+                {
+                    _this getVariable ["KISKA_bases_stopAmbientAnim",false];
+                }
+            ] call BIS_fnc_ambientAnimCombat;
         };
     };
 
