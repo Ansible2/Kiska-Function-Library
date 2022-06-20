@@ -9,18 +9,18 @@ Parameters:
         in missionConfigFile >> "KISKA_bases" config, its class
 
 Returns:
-    <ARRAY> - A list of several arrays:
-        0: <ARRAY of OBJECTs> - All spawned units (includes turret units)
-        1: <ARRAY of GROUPs> - All spawned groups (does NOT include turret units)
-        2: <ARRAY of OBJECTs> - All turret units
-        3: <ARRAY of OBJECTs> - All infantry spawned units
-        4: <ARRAY of GROUPs> - All infantry spawned groups
-        5: <ARRAY of OBJECTs> - All patrol spawned units
-        6: <ARRAY of GROUPs> - All patrol spawned groups
+    <HASHMAP> - a hashmap containing data abou the base:
+        "unit list": <ARRAY of OBJECTs> - All spawned units (includes turret units)
+        "group list": <ARRAY of GROUPs> - All spawned groups (does NOT include turret units)
+        "turret gunners": <ARRAY of OBJECTs> - All turret units
+        "infantry units": <ARRAY of OBJECTs> - All infantry spawned units
+        "infantry groups": <ARRAY of GROUPs> - All infantry spawned groups
+        "patrol units": <ARRAY of OBJECTs> - All patrol spawned units
+        "patrol groups": <ARRAY of GROUPs> - All patrol spawned groups
 
 Examples:
     (begin example)
-		["SomeBaseConfig"] call KISKA_fnc_bases_createFromConfig;
+		private _baseMap = ["SomeBaseConfig"] call KISKA_fnc_bases_createFromConfig;
     (end)
 
 Author:
@@ -159,6 +159,7 @@ _turretClasses apply {
 
     private ["_group","_unit","_unitClass"];
     private _weightedArray = _unitClasses isEqualTypeParams ["",1];
+    private _reinforceClass = _x >> "reinforce";
     _turrets apply {
         _group = createGroup _side;
 
@@ -196,6 +197,21 @@ _turretClasses apply {
         _base_turretGunners pushBack _unit;
         _base_unitList pushBack _unit;
 
+
+        if (isNull _reinforceClass) then {
+            continue;
+        };
+        private _reinforceId = [_reinforceClass >> "id"] call BIS_fnc_getCfgData;
+        private _canCallIds = getArray(_reinforceClass >> "canReinforce");
+        private _reinforcePriority = getNumber(_reinforceClass >> "priority");
+        private _onEnteredCombat = getText(_reinforceClass >> "onEnteredCombat");
+        [
+            _group,
+            _reinforceId,
+            _canCallIds,
+            _reinforcePriority,
+            _onEnteredCombat
+        ] call KISKA_fnc_bases_setupReactivity;
     };
 
 };

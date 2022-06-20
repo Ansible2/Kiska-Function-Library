@@ -1,13 +1,13 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_bases_createFromConfig
+Function: KISKA_fnc_bases_triggerReaction
 
 Description:
-	Spawns a configed KISKA base.
+	Acts as the default event for the reactive bases when a group calls for reinforcements.
 
 Parameters:
-    0: _group <GROUP> -
-    1: _combatBehaviour <STRING> -
-    1: _eventConfig <CONFIG> -
+    0: _group <GROUP> - The group the event is triggering for
+    1: _combatBehaviour <STRING> - The group's current behviour
+    2: _eventConfig <CONFIG> - The eventhandler config (OPTIONAL)
 
 Returns:
     NOTHING
@@ -15,8 +15,9 @@ Returns:
 Examples:
     (begin example)
 		[
-
-        ] call KISKA_fnc_bases_triggerReaction;
+            someGroup,
+            "combat"
+        ] call KISKA_fnc_bases_triggerReaction
     (end)
 
 Author:
@@ -29,6 +30,8 @@ params [
     ["_combatBehaviour","",[""]],
     ["_eventConfig",configNull,[configNull]]
 ];
+
+if (isNull _group) exitWith {};
 
 if (_combatBehaviour != "combat") exitWith {};
 
@@ -49,7 +52,7 @@ _reinforceGroupIds apply {
 
 private _priority = _group getVariable ["KISKA_bases_reinforcePriority",-1];
 private _onEnteredCombat = _group getVariable ["KISKA_bases_reinforceOnEnteredCombat",{}];
-if (_onEnteredCombat isNotEqualTo {}) then {
+if (_onEnteredCombat isNotEqualTo {}) the-n {
     private _preventDefault = [
         _group,
         _groupsToRespond,
