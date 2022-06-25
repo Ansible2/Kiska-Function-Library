@@ -82,6 +82,8 @@ class CfgFunctions
 			{};
 			class spawnVehicle
 			{};
+			class stalk
+			{};
 			class vlsFireAt
 			{};
 		};
@@ -441,6 +443,8 @@ class CfgFunctions
 			class getVectorToTarget
 			{};
 			class hintDiary
+			{};
+			class isGroupAlive
 			{};
 			class isAdminOrHost
 			{};

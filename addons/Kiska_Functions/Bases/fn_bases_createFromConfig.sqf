@@ -302,7 +302,7 @@ _infantryClasses apply {
     };
 
     private _reinforceId = [_reinforceClass >> "id"] call BIS_fnc_getCfgData;
-    private _canCallIds = getArray(_reinforceClass >> "canReinforce");
+    private _canCallIds = getArray(_reinforceClass >> "canCall");
     private _reinforcePriority = getNumber(_reinforceClass >> "priority");
     private _onEnteredCombat = getText(_reinforceClass >> "onEnteredCombat");
     _groups apply {
@@ -369,6 +369,11 @@ _patrolClasses apply {
             _patrolPoints = GET_MISSION_LAYER_OBJECTS(_patrolPoints);
         };
 
+        if (_patrolPoints isEqualTo []) then {
+            [["Retrieved empty patrol points array for config class: ", _x >> "SpecificPatrol"],true] call KISKA_fnc_log;
+            continue;
+        };
+
         [
             _group,
             _patrolPoints,
@@ -432,7 +437,7 @@ _patrolClasses apply {
     };
 
     private _reinforceId = [_reinforceClass >> "id"] call BIS_fnc_getCfgData;
-    private _canCallIds = getArray(_reinforceClass >> "canReinforce");
+    private _canCallIds = getArray(_reinforceClass >> "canCall");
     private _reinforcePriority = getNumber(_reinforceClass >> "priority");
     private _onEnteredCombat = getText(_reinforceClass >> "onEnteredCombat");
     [

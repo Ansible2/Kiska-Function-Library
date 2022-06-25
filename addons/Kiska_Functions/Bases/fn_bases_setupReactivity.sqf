@@ -83,7 +83,7 @@ if !(_idTaken) then {
 
 
 [
-    _x,
+    _group,
     configFile >> "KISKA_eventHandlers" >> "CombatBehaviour",
     KISKA_fnc_bases_triggerReaction
 ] call KISKA_fnc_eventHandler_addFromConfig;
