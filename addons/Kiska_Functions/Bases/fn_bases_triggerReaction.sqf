@@ -143,7 +143,6 @@ if (_preventDefault) exitWith {};
 
         [_x, group _closestEnemy, 15, {
             params ["_stalkerGroup"];
-            hint ("reset group: " + (str _stalkedGroup));
             _stalkerGroup setVariable ["KISKA_bases_responseMissionPriority", nil];
             _stalkerGroup setVariable ["KISKA_bases_respondingToId", nil];
         }] spawn KISKA_fnc_stalk;
