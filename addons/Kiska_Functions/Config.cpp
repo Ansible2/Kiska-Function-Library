@@ -76,6 +76,8 @@ class CfgFunctions
 			{};
 			class setCrew
 			{};
+			class slingLoad
+			{};
 			class spawn
 			{};
 			class spawnGroup
