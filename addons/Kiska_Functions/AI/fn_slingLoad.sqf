@@ -95,7 +95,7 @@ private _group = group _pilot;
 [
     _group,
     _liftObject,
-    0,
+    -1,
     "HOOK",
     "SAFE",
     "BLUE"
