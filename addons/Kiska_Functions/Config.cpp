@@ -398,6 +398,8 @@ class CfgFunctions
 			{};
 			class addMagRepack
 			{};
+			class addProximityPlayerAction
+			{};
 			class addTeleportAction
 			{};
 			class alivePlayers
@@ -487,6 +489,8 @@ class CfgFunctions
 			class removeArsenal
 			{};
 			class removeBISArsenalAction
+			{};
+			class removeProximityPlayerAction
 			{};
 			class setContainerCargo
 			{};
