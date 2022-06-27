@@ -284,7 +284,7 @@ private _fn_whileTargetsIncoming = {
 
 			[[_turret," found target ",_target," at ",_targetDistance,". Its netId is: ",_targetNetId],false] call KISKA_fnc_log;
 
-			call _fn_waitToFireOnTarget
+			call _fn_waitToFireOnTarget;
 
 			call _fn_fireAtTarget
 
