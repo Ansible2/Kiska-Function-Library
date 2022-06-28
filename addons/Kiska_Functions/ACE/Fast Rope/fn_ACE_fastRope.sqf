@@ -121,8 +121,7 @@ if (_unitsToDeployFiltered isEqualTo []) then {
     Prepare FRIES
 ---------------------------------------------------------------------------- */
 _vehicle setVariable ["ACE_Rappelling",true];
-private _hoverPosition = _dropPosition vectorAdd [0,0,_hoverHeight];
-private _hoverPosition_AGL = ASLToAGL _hoverPosition;
+private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
 private _pilot = driver _vehicle;
 
 private _vehicleGroup = group (commander _vehicle);
@@ -130,7 +129,7 @@ _vehicleGroup allowFleeing 0;
 
 private _pilot = driver _vehicle;
 _pilot setSkill 1;
-_pilot move (ASLToATL _hoverPosition);
+_pilot move (ASLToATL _hoverPosition_ASL);
 
 // guides helicopter to drop position
 [
@@ -138,9 +137,8 @@ _pilot move (ASLToATL _hoverPosition);
         params ["_args", "_id"];
         _args params [
             "_vehicle",
-            "_hoverPosition_AGL",
-            "_pilot",
-            "_hoverPosition"
+            "_hoverPosition_ASL",
+            "_pilot"
         ];
 
         if (
@@ -148,8 +146,8 @@ _pilot move (ASLToATL _hoverPosition);
             alive _pilot AND
             !isNil {_vehicle getVariable "ACE_Rappelling"}
         ) then {
-            private _currentVehiclePosition_AGL = ASLToAGL (getPosASL _vehicle);
-            private _distanceToHoverPosition = _currentVehiclePosition_AGL distance _hoverPosition_AGL;
+            private _currentVehiclePosition_ASL = getPosASL _vehicle;
+            private _distanceToHoverPosition = _currentVehiclePosition_ASL vectorDistance _hoverPosition_ASL;
 
             if ( _distanceToHoverPosition <= 400 ) then {
                 if (isNil {_vehicle getVariable "KISKA_fastRopeTransformStart_speed"}) then {
@@ -171,7 +169,7 @@ _pilot move (ASLToATL _hoverPosition);
 
                 _velocityMagnitude = _speed;
 
-                if ((_currentVehiclePosition_AGL distance2d _hoverPosition_AGL) < 2.5) then {
+                if ((_currentVehiclePosition_ASL distance2d _hoverPosition_ASL) < 2.5) then {
                     _vehicle setVelocityModelSpace [0,0,0];
 
                 } else {
@@ -181,8 +179,7 @@ _pilot move (ASLToATL _hoverPosition);
                     };
 
                     private _currentVelocity = velocity _vehicle;
-                    _currentVelocity = _currentVelocity vectorAdd (( _currentVehiclePosition_AGL vectorFromTo _hoverPosition_AGL ) vectorMultiply _velocityMagnitude);
-                    _currentVelocity = (vectorNormalized _currentVelocity) vectorMultiply ( (vectorMagnitude _currentVelocity) min _velocityMagnitude );
+                    _currentVelocity = (_currentVehiclePosition_ASL vectorFromTo _hoverPosition_ASL) vectorMultiply _velocityMagnitude;
                     _vehicle setVelocity _currentVelocity;
 
                 };
@@ -195,7 +192,7 @@ _pilot move (ASLToATL _hoverPosition);
         };
     },
     0.05,
-    [_vehicle, _hoverPosition_AGL, _pilot, _hoverPosition]
+    [_vehicle, _hoverPosition_ASL, _pilot]
 ] call CBA_fnc_addPerFrameHandler;
 
 
@@ -204,19 +201,19 @@ _pilot move (ASLToATL _hoverPosition);
 ---------------------------------------------------------------------------- */
 [
     {
-        params ["_vehicle","_hoverPosition_AGL","_pilot","",""];
+        params ["_vehicle","_hoverPosition_ASL","_pilot","",""];
         if (!alive _vehicle) exitWith {true};
         if (!alive _pilot) exitWith {true};
-        private _currentVehiclePosition_AGL = ASLToAGL (getPosASL _vehicle);
+        private _currentVehiclePosition_ASL = getPosASL _vehicle;
 
         (speed _vehicle < (2.5 * 3.6))
         AND
         {
-            (_hoverPosition_AGL distance2d _currentVehiclePosition_AGL) < 25
+            (_hoverPosition_ASL distance2d _currentVehiclePosition_ASL) < 25
         }
         AND
         {
-            (_hoverPosition_AGL vectorDiff _currentVehiclePosition_AGL) select 2 < 25
+            (_hoverPosition_ASL vectorDiff _currentVehiclePosition_ASL) select 2 < 25
         }
     },
     {
@@ -249,5 +246,5 @@ _pilot move (ASLToATL _hoverPosition);
         };
 
     },
-    [_vehicle,_hoverPosition_AGL,_pilot,_unitsToDeployFiltered,_afterDropCode]
+    [_vehicle,_hoverPosition_ASL,_pilot,_unitsToDeployFiltered,_afterDropCode]
 ] call CBA_fnc_waitUntilAndExecute;
