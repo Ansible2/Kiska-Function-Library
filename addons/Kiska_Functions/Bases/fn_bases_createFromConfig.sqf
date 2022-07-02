@@ -474,10 +474,15 @@ _landVehicleConfigClasses apply {
         };
     };
 
+    private _vehicleClass = (_x >> "vehicleClass") call BIS_fnc_getCfgData;
+    if (_vehicleClass isEqualType []) then {
+        _vehicleClass = selectRandom _vehicleClass;
+    };
+
     private _vehicleInfo = [
         _spawnPosition,
         _spawnDirection,
-        getText(_x >> "vehicleClass"),
+        _vehicleClass,
         _side,
         true,
         getArray(_x >> "crew"),
