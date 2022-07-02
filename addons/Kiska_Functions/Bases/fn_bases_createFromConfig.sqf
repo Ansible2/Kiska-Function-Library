@@ -17,6 +17,8 @@ Returns:
         "infantry groups": <ARRAY of GROUPs> - All infantry spawned groups
         "patrol units": <ARRAY of OBJECTs> - All patrol spawned units
         "patrol groups": <ARRAY of GROUPs> - All patrol spawned groups
+        "land vehicles": <ARRAY of OBJECTs> - All land spawned vehicles
+        "land vehicle groups": <ARRAY of GROUPs> - All land vehicle crew groups
 
 Examples:
     (begin example)
@@ -97,6 +99,8 @@ private _base_infantryUnits = [];
 private _base_infantryGroups = [];
 private _base_patrolUnits = [];
 private _base_patrolGroups = [];
+private _base_landVehicleGroups = [];
+private _base_landVehicles = [];
 private _base_reinforceMap = createHashMap;
 private _baseData = createHashMapFromArray [
     ["unit list",_base_unitList],
@@ -105,7 +109,9 @@ private _baseData = createHashMapFromArray [
     ["infantry units",_base_infantryUnits],
     ["infantry groups",_base_infantryGroups],
     ["patrol units",_base_patrolUnits],
-    ["patrol groups",_base_patrolGroups]
+    ["patrol groups",_base_patrolGroups],
+    ["land vehicles",_base_landVehicles],
+    ["land vehicle groups",_base_landVehicleGroups]
 ];
 
 
@@ -132,14 +138,11 @@ _turretClasses apply {
 
         _turrets = _turrets apply {
             private _turret = missionNamespace getVariable [_x,objNull];
-            if !(isNull _turret) then {
-                continueWith _turret;
-
-            } else {
+            if (isNull _turret) then {
                 continue;
-
             };
 
+            _turret
         };
     };
 
@@ -196,7 +199,7 @@ _turretClasses apply {
 
         _base_turretGunners pushBack _unit;
         _base_unitList pushBack _unit;
-
+        _base_groupList pushBack _group;
 
         if (isNull _reinforceClass) then {
             continue;
@@ -330,7 +333,7 @@ _patrolClasses apply {
     };
 
     DEFINE_UNIT_CLASSES(_patrolClassUnitClasses) // _unitClasses
-    DEFINE_SIDE // side
+    DEFINE_SIDE // _side
 
 
     private _group = [
@@ -430,6 +433,81 @@ _patrolClasses apply {
     private _units = units _group;
     _base_unitList append _units;
     _base_patrolUnits append _units;
+
+    private _reinforceClass = _x >> "reinforce";
+    if (isNull _reinforceClass) then {
+        continue;
+    };
+
+    private _reinforceId = [_reinforceClass >> "id"] call BIS_fnc_getCfgData;
+    private _canCallIds = getArray(_reinforceClass >> "canCall");
+    private _reinforcePriority = getNumber(_reinforceClass >> "priority");
+    private _onEnteredCombat = getText(_reinforceClass >> "onEnteredCombat");
+    [
+        _group,
+        _reinforceId,
+        _canCallIds,
+        _reinforcePriority,
+        _onEnteredCombat
+    ] call KISKA_fnc_bases_setupReactivity;
+};
+
+
+/* ----------------------------------------------------------------------------
+    Land Vehicles
+---------------------------------------------------------------------------- */
+private _landVehiclesConfig = _baseConfig >> "landVehicles";
+private _landVehicleConfigClasses = configProperties [_landVehiclesConfig,"isClass _x"];
+_landVehicleConfigClasses apply {
+    DEFINE_SIDE // _side
+
+    private _spawnPosition = (_x >> "position") call BIS_fnc_getCfgData;
+    private _spawnDirection = -1;
+    if (_spawnPosition isEqualType "") then {
+        _spawnPosition = missionNamespace getVariable [_spawnPosition,objNull];
+    };
+
+    if (_spawnPosition isEqualType []) then {
+        _spawnDirection = 0;
+        if (count _spawnPosition > 3) then {
+            _spawnDirection = _spawnPosition deleteAt 3;
+        };
+    };
+
+    private _vehicleInfo = [
+        _spawnPosition,
+        _spawnDirection,
+        getText(_x >> "vehicleClass"),
+        _side,
+        true,
+        getArray(_x >> "crew"),
+        true
+    ] call KISKA_fnc_spawnVehicle;
+    _vehicleInfo params ["_vehicle","_units","_group"];
+
+    _base_unitList append _units;
+    _base_groupList pushBack _group;
+    _base_landVehicles pushBack _vehicle;
+    _base_landVehicleGroups pushBack _group;
+
+
+    if ([_x >> "dynamicSim"] call BIS_fnc_getCfgDataBool) then {
+        [_vehicle] remoteExec ["enableDynamicSimulation",0,true];
+        [_group] remoteExec ["enableDynamicSimulation",0,true];
+    };
+
+    if !([_x >> "dynamicSim"] call BIS_fnc_getCfgDataBool) then {
+        (driver _vehicle) disableAI "PATH";
+    };
+
+    private _onVehicleCreated = getText(_x >> "onVehicleCreated");
+    if (_onVehicleCreated isNotEqualTo "") then {
+        [
+            compile _onVehicleCreated,
+            _vehicleInfo
+        ] call CBA_fnc_directCall;
+    };
+
 
     private _reinforceClass = _x >> "reinforce";
     if (isNull _reinforceClass) then {
