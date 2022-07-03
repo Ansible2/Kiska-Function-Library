@@ -50,7 +50,7 @@ Returns:
                 Params:
                     0: <ARRAY> - the killed evenhandler params
                     1: <HASHMAP> - the hashmap described
-        "eventCode": <STRING> - The code that is attached to the killed eventhandler
+        "eventCode": <CODE> - The code that is attached to the killed eventhandler
         "type": <STRING> - Type of event, ("KILLED" or "MPKILLED")
         "objectToEventIdMap": <HASHMAP> -  A hashmap that uses objects as keys (should use KISKA_fnc_hashmap_get)
             to get the killed eventhandler id attached to an object.
@@ -67,7 +67,7 @@ Examples:
         ] call KISKA_fnc_setupMultiKillEvent;
     (end)
 
-    // add more to the existing event made above
+    // add more objects to the existing event made above
     (begin example)
         [
             [andAdditionalObject],
@@ -113,7 +113,7 @@ private _existingEventId = "";
 if (_onThresholdMet isEqualType "") then {
     private _startsWithHashTag = (_onThresholdMet select [0,1]) isEqualTo "#";
     if (_startsWithHashTag) then {
-        _existingEventId = _onThresholdMet trim [1,"#"];
+        _existingEventId = _onThresholdMet trim ["#",1];
     };
 };
 
@@ -146,14 +146,14 @@ if (_existingEventId isNotEqualTo "") exitWith {
         []
     };
 
-    private _eventCode = _eventMap getOrDefault ["eventCode",{}];
+    private _eventHandlerCode = _eventMap getOrDefault ["eventHandlerCode",{}];
     _aliveObjects apply {
         private _eventId = -1;
         if (_useMPKilled) then {
-            _eventId = _x addMPEventHandler ["MPKILLED", _eventCode];
+            _eventId = _x addMPEventHandler ["MPKILLED", _eventHandlerCode];
 
         } else {
-            _eventId = _x addEventHandler ["KILLED", _eventCode];
+            _eventId = _x addEventHandler ["KILLED", _eventHandlerCode];
 
         };
 
@@ -201,6 +201,7 @@ private _eventHandlerCode = [
     "private _eventCode = _eventMap getOrDefault ['eventCode',{}]; ",
     "[_this, [[_eventMap],_eventCode]] call KISKA_fnc_callBack;"
 ] joinString "";
+_eventMap set ["eventHandlerCode", _eventHandlerCode];
 
 private _type = "";
 if (_useMPKilled) then {
@@ -239,7 +240,7 @@ private _eventCode = {
         _eventMap set ["killed", _killedCount];
 
         private _threshold = _eventMap getOrDefault ["threshold",1];
-        private _metThreshold = (_currentDeadCount / _totalUnitCount) >= _threshold;
+        private _metThreshold = (_killedCount / _total) >= _threshold;
 
         if (_metThreshold) then {
             _eventMap set ["thresholdMet", true];
@@ -252,6 +253,7 @@ private _eventCode = {
     // _this is normal eventhandler parameters from "killed" event
     [[_this, _eventMap], _onKilled] call KISKA_fnc_callBack;
 };
+
 _eventMap set ["eventCode", _eventCode];
 _eventMap set ["type", _type];
 _eventMap set ["objectToEventIdMap",_objectToEventIdMap];
