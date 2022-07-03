@@ -38,6 +38,9 @@ params [
 ];
 
 
+// as a developer, I want to be able to dynamically add and remove entities from the kill task
+// as a developer, I want to be able to choose between mpkilled and killed eventhandlers
+
 /* ----------------------------------------------------------------------------
     Verify Params
 ---------------------------------------------------------------------------- */
@@ -114,3 +117,109 @@ _aliveObjects apply {
 
 
 _hashmap
+
+
+
+
+
+
+params [
+    ["_objects",[],[[]]],
+    ["_onThresholdMet",{},[[],{},""]],
+    ["_threshold",1,[123]],
+    ["_onKilled",{},[{},[],""]],
+    ["_useMPKilled",true,[false]]
+];
+
+/* ----------------------------------------------------------------------------
+    Verify Params
+---------------------------------------------------------------------------- */
+if (_objects isEqualTo []) exitWith {
+    ["Empty _objects passed!",true] call KISKA_fnc_log;
+    []
+};
+
+private _existingEventId = "";
+if (_onThresholdMet isEqualType "") then {
+    private _startsWithHashTag = (_onThresholdMet select [0,1]) isEqualTo "#";
+    if (_startsWithHashTag) then {
+        _existingEventId = _onThresholdMet trim [1,"#"];
+    };
+};
+
+
+private _aliveObjects = [];
+_objects apply {
+    if (alive _x) then {
+        _aliveObjects pushBackUnique _x;
+    };
+};
+
+if (_aliveObjects isEqualTo []) exitWith {
+    ["There are no alive objects to setup kill event for...",false] call KISKA_fnc_log;
+    []
+};
+
+
+/* ----------------------------------------------------------------------------
+    Handle existing event
+---------------------------------------------------------------------------- */
+if (_existingEventId isNotEqualTo "") exitWith {
+
+};
+
+
+/* ----------------------------------------------------------------------------
+    Setup Event
+---------------------------------------------------------------------------- */
+private _eventId = localNamespace getVariable ["KISKA_killedManyEvent_idCount",0];
+private _eventIdStr = str _eventId;
+localNamespace setVariable ["KISKA_killedManyEvent_idCount",_eventId + 1];
+
+private _eventMap = createHashMap;
+private _eventMapVar = "KISKA_killedManyEvent_map_" + _eventIdStr;
+localNamespace setVariable [_eventMapVar, _eventMap];
+_eventMap set ["id", _eventMapVar];
+_eventMap set ["total", count _aliveObjects];
+_eventMap set ["killed", 0];
+_eventMap set ["threshold", _threshold];
+_eventMap set ["thresholdMet", false];
+_eventMap set ["onKilled", _onKilled];
+_eventMap set ["onThresholdMet", _onthresholdMet];
+
+
+
+// giving it and extra set of quotes with KISKA_fnc_str so that it is a string when compiled
+{
+    private _eventMap = localNamespace getVariable [", [_eventMapVar] call KISKA_fnc_str, ", []];
+    if !(_eventMap getOrDefault ['thresholdMet',false]) then {
+        private _total = _eventMap getOrDefault ['total',0];
+        private _killedCount = _eventMap getOrDefault ['killed',0];
+        _killedCount = _killedCount + 1;
+        _eventMap set ['killed', _killedCount];
+
+        private _threshold = _eventMap getOrDefault ['threshold',1];
+        private _metThreshold = (_currentDeadCount / _totalUnitCount) >= _threshold;
+        if (_metThreshold) then {
+            _eventMap set ['thresholdMet', true];
+            private _onThresholdMet = _eventMap getOrDefault ['onThresholdMet',{}];
+            [_eventMap, _onThresholdMet] call KISKA_fnc_callBack;
+        };
+    };
+
+}
+private _codeString = [
+    /* "if (isServer) then { ", */
+    "private _eventMap = localNamespace getVariable [", [_eventMapVar] call KISKA_fnc_str, ", []]; ",
+    "private _totalKilledCount = localNamespace getVariable [", [_killedCountVar] call KISKA_fnc_str, ", 0]; ",
+    "_totalKilledCount = _totalKilledCount + 1; ",
+    "if (_totalStartingCount isEqualTo _totalKilledCount) then { ",
+        "[localNamespace getVariable [", [_taskToCompleteVar] call KISKA_fnc_str,",'']] call KISKA_fnc_endTask; ",
+    "} else { ",
+        "localNamespace setVariable [", [_killedCountVar] call KISKA_fnc_str, ",_totalKilledCount]; ",
+    "}; "
+    /* "};" */
+] joinString "";
+
+
+_eventMap
