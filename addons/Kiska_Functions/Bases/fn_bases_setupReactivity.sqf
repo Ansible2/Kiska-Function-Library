@@ -87,7 +87,3 @@ if !(_idTaken) then {
     configFile >> "KISKA_eventHandlers" >> "CombatBehaviour",
     KISKA_fnc_bases_triggerReaction
 ] call KISKA_fnc_eventHandler_addFromConfig;
-
-// have something like a mission importance factor to assign in the class
-// if a unit is responding to a lower priority call when called by a higher one
-// they will drop that mission and move to the more important one
