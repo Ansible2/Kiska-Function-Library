@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_setupKillTask
+Function: KISKA_fnc_setupMultiKillEvent
 
 Description:
     Sets up an event that will fire when a percentage of objects are killed.
@@ -46,22 +46,40 @@ Returns:
             that the threshold has been met or exceeded. (See KISKA_fnc_callBack)
                 Params:
                     0: <HASHMAP> - the hashmap described
+        "eventCode": <STRING> - The code that is attached to the killed eventhandler
+        "type": <STRING> - Type of event, ("KILLED" or "MPKILLED")
+        "objectToEventIdMap": <HASHMAP> -  A hashmap that uses objects as keys (should use KISKA_fnc_hashmap_get)
+            to get the killed eventhandler id attached to an object.
 
 Examples:
     (begin example)
+        private _eventMap = [
+            [someObject, anotherObject],
+            {
+                params ["_eventMap"];
+                hint str _eventMap;
+            }
+        ] call KISKA_fnc_setupMultiKillEvent;
     (end)
 
+    // add more to the existing event made above
+    (begin example)
+        [
+            [andAdditionalObject],
+            ("#" + (_eventMap get "id"))
+        ] call KISKA_fnc_setupMultiKillEvent;
+    (end)
 Author:
 	Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_setupKillTask";
+scriptName "KISKA_fnc_setupMultiKillEvent";
 
 params [
     ["_objects",[],[[]]],
     ["_onThresholdMet",{},[[],{},""]],
     ["_threshold",1,[123]],
     ["_onKilled",{},[{},[],""]],
-    ["_useMPKilled",true,[false]]
+    ["_useMPKilled",false,[true]]
 ];
 
 /* ----------------------------------------------------------------------------
@@ -117,14 +135,21 @@ if (_existingEventId isNotEqualTo "") exitWith {
         [["Could not locate event map for ", _existingEventId],true] call KISKA_fnc_log;
         []
     };
+    _useMPKilled = (_eventMap getOrDefault ["type","KILLED"]) == "MPKILLED";
+    if (_useMPKilled AND (!isServer)) exitWith {
+        ["If using MPKILLED eventhandlers, this must be executed on the server!",true] call KISKA_fnc_log;
+        []
+    };
 
     private _eventCode = _eventMap getOrDefault ["eventCode",{}];
     _aliveObjects apply {
         private _eventId = -1;
         if (_useMPKilled) then {
             _eventId = _x addMPEventHandler ["MPKILLED", _eventCode];
+
         } else {
             _eventId = _x addEventHandler ["KILLED", _eventCode];
+
         };
 
         [
