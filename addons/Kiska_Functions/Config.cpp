@@ -494,7 +494,7 @@ class CfgFunctions
 			{};
 			class setContainerCargo
 			{};
-			class setupKillTask
+			class setupMultiKillEvent
 			{};
 			class showHide
 			{};
