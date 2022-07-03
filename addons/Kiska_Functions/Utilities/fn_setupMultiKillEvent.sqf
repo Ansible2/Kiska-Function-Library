@@ -15,7 +15,8 @@ Parameters:
         to add more units to an existing event, use the event id here (see returned hashmap below for id)
         and preceed the event id with a "#" (see examples)
             Params:
-                0: <HASHMAP> - the hashmap described below in "Returns"
+                0: <ARRAY> - the killed evenhandler params
+                1: <HASHMAP> - the hashmap described below in "Returns"
 
     // NOT USED if adding to existing event
     2: _threshold <NUMBER> - A number between 0 and 1 that denotes the percentage of objects that
@@ -24,7 +25,8 @@ Parameters:
     3: _onKilled <CODE, ARRAY, or STRING> - Code that executes each time a unit has been
             killed (after the _onThresholdMet if threshold has been met). (See KISKA_fnc_callBack)
                 Params:
-                    0: <HASHMAP> - the hashmap described below in "Returns"
+                    0: <ARRAY> - the killed evenhandler params
+                    1: <HASHMAP> - the hashmap described below in "Returns"
     4: _useMPKilled <BOOL> - Whether or not to use "MPKILLED" events instead of "KILLED".
         IF TRUE, MUST BE RUN ON THE SERVER
 
@@ -41,11 +43,13 @@ Returns:
         "onKilled": <CODE, ARRAY, or STRING> - Code that executes each time a unit has been
             killed (after the _onThresholdMet if threshold has been met). (See KISKA_fnc_callBack)
                 Params:
-                    0: <HASHMAP> - the hashmap described
+                    0: <ARRAY> - the killed evenhandler params
+                    1: <HASHMAP> - the hashmap described
         "onThresholdMet": <CODE, ARRAY, or STRING> - Code that executes once it has been determined
             that the threshold has been met or exceeded. (See KISKA_fnc_callBack)
                 Params:
-                    0: <HASHMAP> - the hashmap described
+                    0: <ARRAY> - the killed evenhandler params
+                    1: <HASHMAP> - the hashmap described
         "eventCode": <STRING> - The code that is attached to the killed eventhandler
         "type": <STRING> - Type of event, ("KILLED" or "MPKILLED")
         "objectToEventIdMap": <HASHMAP> -  A hashmap that uses objects as keys (should use KISKA_fnc_hashmap_get)
@@ -56,8 +60,9 @@ Examples:
         private _eventMap = [
             [someObject, anotherObject],
             {
-                params ["_eventMap"];
-                hint str _eventMap;
+                params ["_killedEventParams","_eventMap"];
+                _killedEventParams params ["_killedObject"];
+                hint str [_killedEventParams, _eventMap];
             }
         ] call KISKA_fnc_setupMultiKillEvent;
     (end)
@@ -190,33 +195,17 @@ _eventMap set ["onThresholdMet", _onthresholdMet];
 /* ----------------------------------------------------------------------------
     Add eventhandlers
 ---------------------------------------------------------------------------- */
-private _eventCode = [
+private _eventHandlerCode = [
     // giving it and extra set of quotes with KISKA_fnc_str so that it is a string when compiled
     "private _eventMap = localNamespace getVariable [", [_eventMapVar] call KISKA_fnc_str, ", []]; ",
-    "if !(_eventMap getOrDefault ['thresholdMet',false]) then { ",
-        "private _total = _eventMap getOrDefault ['total',0]; ",
-        "private _killedCount = _eventMap getOrDefault ['killed',0]; ",
-        "_killedCount = _killedCount + 1; ",
-        "_eventMap set ['killed', _killedCount]; ",
-
-        "private _threshold = _eventMap getOrDefault ['threshold',1]; ",
-        "private _metThreshold = (_currentDeadCount / _totalUnitCount) >= _threshold; ",
-
-        "if (_metThreshold) then { ",
-            "_eventMap set ['thresholdMet', true]; ",
-            "private _onThresholdMet = _eventMap getOrDefault ['onThresholdMet',{}]; ",
-            "[_eventMap, _onThresholdMet] call KISKA_fnc_callBack; ",
-        "}; ",
-    "};",
-    "private _onKilled = _eventMap getOrDefault ['onKilled',{}]; ",
-    "[_eventMap, _onKilled] call KISKA_fnc_callBack; "
+    "private _eventCode = _eventMap getOrDefault ['eventCode',{}]; ",
+    "[_this, [[_eventMap],_eventCode]] call KISKA_fnc_callBack;"
 ] joinString "";
-
 
 private _type = "";
 if (_useMPKilled) then {
     _type = "MPKILLED";
-    _eventCode = "if (isServer) then { " + _eventCode + "};";
+    _eventHandlerCode = "if (isServer) then { " + _eventHandlerCode + " };";
 
 } else {
     _type = "KILLED";
@@ -227,9 +216,9 @@ private _objectToEventIdMap = createHashMap;
 _aliveObjects apply {
     private _eventId = -1;
     if (_useMPKilled) then {
-        _eventId = _x addMPEventHandler ["MPKILLED",_eventCode];
+        _eventId = _x addMPEventHandler ["MPKILLED", _eventHandlerCode];
     } else {
-        _eventId = _x addEventHandler ["KILLED", _eventCode];
+        _eventId = _x addEventHandler ["KILLED", _eventHandlerCode];
     };
 
     [
@@ -239,6 +228,30 @@ _aliveObjects apply {
     ] call KISKA_fnc_hashmap_set;
 };
 
+
+private _eventCode = {
+    _thisArgs params ["_eventMap"];
+
+    if !(_eventMap getOrDefault ["thresholdMet",false]) then {
+        private _total = _eventMap getOrDefault ["total",0];
+        private _killedCount = _eventMap getOrDefault ["killed",0];
+        _killedCount = _killedCount + 1;
+        _eventMap set ["killed", _killedCount];
+
+        private _threshold = _eventMap getOrDefault ["threshold",1];
+        private _metThreshold = (_currentDeadCount / _totalUnitCount) >= _threshold;
+
+        if (_metThreshold) then {
+            _eventMap set ["thresholdMet", true];
+            private _onThresholdMet = _eventMap getOrDefault ["onThresholdMet",{}];
+            [[_this, _eventMap], _onThresholdMet] call KISKA_fnc_callBack;
+        };
+    };
+
+    private _onKilled = _eventMap getOrDefault ["onKilled",{}];
+    // _this is normal eventhandler parameters from "killed" event
+    [[_this, _eventMap], _onKilled] call KISKA_fnc_callBack;
+};
 _eventMap set ["eventCode", _eventCode];
 _eventMap set ["type", _type];
 _eventMap set ["objectToEventIdMap",_objectToEventIdMap];
