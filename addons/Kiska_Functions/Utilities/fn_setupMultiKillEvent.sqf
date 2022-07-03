@@ -241,7 +241,7 @@ _aliveObjects apply {
 
 _eventMap set ["eventCode", _eventCode];
 _eventMap set ["type", _type];
-_eventMap set ["objectToEventIdMap",_objectToEventIdMap]
+_eventMap set ["objectToEventIdMap",_objectToEventIdMap];
 
 
 
