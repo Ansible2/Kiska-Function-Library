@@ -104,10 +104,12 @@ while {_stalkerGroupCanStalk AND _stalkedGroupIsStalkable} do {
     // waypoints don't work great for buildings, move command in close will have them
     // got up stairs and get on top of enemies
     private _distance2DBetweenGroups = _stalkerGroupLeader distance2D _stalkedGroupLeader;
-    if (_distance2DBetweenGroups > 20) then {
+    if (_distance2DBetweenGroups > 50) then {
         [_stalkerGroup, _stalkedGroupLeader, 25, "MOVE", "AWARE", "YELLOW", "FULL"] call CBA_fnc_addWaypoint;
     } else {
-        [_stalkerGroup, (getPosATL _stalkedGroupLeader)] remoteExec ["move", _stalkerGroupLeader];
+        // if not slept before and remoteExecCalled (not just remoteExec'd) unit will just stand still
+        sleep 0.5;
+        [_stalkerGroupLeader, (getPosATL _stalkedGroupLeader)] remoteExecCall ["move", _stalkerGroupLeader];
     };
 
     private _conditionMet = [
