@@ -206,10 +206,10 @@ private _eventCode = [
             "_eventMap set ['thresholdMet', true]; ",
             "private _onThresholdMet = _eventMap getOrDefault ['onThresholdMet',{}]; ",
             "[_eventMap, _onThresholdMet] call KISKA_fnc_callBack; ",
-        "}; "
-    "};"
+        "}; ",
+    "};",
     "private _onKilled = _eventMap getOrDefault ['onKilled',{}]; ",
-    "[_eventMap, _onKilled] call KISKA_fnc_callBack; ",
+    "[_eventMap, _onKilled] call KISKA_fnc_callBack; "
 ] joinString "";
 
 
