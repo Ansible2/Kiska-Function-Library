@@ -69,7 +69,7 @@ Examples:
 
     // add more objects to the existing event made above
     (begin example)
-        [
+        private _eventMap = [
             [andAdditionalObject],
             ("#" + (_eventMap get "id"))
         ] call KISKA_fnc_setupMultiKillEvent;
