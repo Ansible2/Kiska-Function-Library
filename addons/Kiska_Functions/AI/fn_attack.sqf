@@ -33,7 +33,7 @@ params [
 	["_radius",-1,[123]],
 	["_behaviour","AWARE",[""]],
 	["_combatMode","RED",[""]],
-	["_override",false,[true]]
+	["_override",true,[true]]
 ];
 
 _group = _group call CBA_fnc_getGroup;
