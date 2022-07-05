@@ -6,7 +6,7 @@ Description:
      a certain radius of a given position.
 
 Parameters:
-	0: _center : <OBJECT or ARRAY> - The position the player needs to be close to.
+    0: _center : <OBJECT or ARRAY> - The position the player needs to be close to.
         If array, format as Postion2D or PositionAGL.
     1: _radius : <NUMBER> - The max distance the player can be from the _center to
         get the action.
@@ -14,7 +14,7 @@ Parameters:
     3: _refreshInterval : <NUMBER> - How often to look to update action visibility
 
 Returns:
-	<NUMBER> - The porximity action id to be used with KISKA_fnc_removeProximityPlayerAction
+    <NUMBER> - The porximity action id to be used with KISKA_fnc_removeProximityPlayerAction
         (-1 if failure)
 
 Examples:
@@ -27,7 +27,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_addProximityPlayerAction";
 
@@ -53,8 +53,13 @@ private _proximityActionId = localNamespace getVariable ["KISKA_proximityPlayerA
 localNamespace setVariable ["KISKA_proximityPlayerActionLatestId",_proximityActionId + 1];
 localNamespace setVariable ["KISKA_proximityAction_" + (str _proximityActionId), true];
 
-_this pushBack _proximityActionId;
-_this spawn {
+[
+    _center,
+    _radius,
+    _action,
+    _refreshInterval,
+    _proximityActionId
+] spawn {
     params [
         "_center",
         "_radius",
