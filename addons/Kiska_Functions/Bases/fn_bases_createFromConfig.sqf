@@ -265,10 +265,7 @@ _infantryClasses apply {
             [
                 _x,
                 "STAND",
-                "ASIS",
-                {
-                    _this getVariable ["KISKA_bases_stopAmbientAnim",false];
-                }
+                "ASIS"
             ] call BIS_fnc_ambientAnimCombat;
         };
     };
