@@ -185,7 +185,7 @@ _turretClasses apply {
 
 
         if (_enableDynamicSim) then {
-            _group enableDynamicSimulation true;
+            [_group, true] remoteExec ["enableDynamicSimulation", 2];
         };
         _unit moveInGunner _x;
 
@@ -494,8 +494,8 @@ _landVehicleConfigClasses apply {
 
 
     if ([_x >> "dynamicSim"] call BIS_fnc_getCfgDataBool) then {
-        [_vehicle] remoteExec ["enableDynamicSimulation",0,true];
-        [_group] remoteExec ["enableDynamicSimulation",0,true];
+        [_vehicle, true] remoteExec ["enableDynamicSimulation", 2];
+        [_group, true] remoteExec ["enableDynamicSimulation", 2];
     };
 
     if !([_x >> "dynamicSim"] call BIS_fnc_getCfgDataBool) then {
