@@ -4,6 +4,8 @@ Function: KISKA_fnc_ACE_fastRope
 Description:
     Sends a vehicle to a given point and fastropes the given units from the helicopter.
 
+    Pilots should ideally be placed in "CARELESS" behaviour when around enemies.
+    
 Parameters:
 	0: _vehicle <OBJECT> - The vehicle to fastrope from
     1: _dropPosition <ARRAY> - The positionASL to drop the units off at; Z coordinate
