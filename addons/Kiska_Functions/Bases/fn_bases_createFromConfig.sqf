@@ -52,4 +52,5 @@ if (isNull _baseConfig) exitWith {
 [_baseConfig] call KISKA_fnc_bases_createFromConfig_simples;
 
 
-_baseData
+// return base map
+[_baseConfig] call KISKA_fnc_bases_getHashmap

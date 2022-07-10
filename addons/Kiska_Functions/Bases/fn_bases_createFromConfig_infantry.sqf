@@ -131,13 +131,30 @@ _infantryClasses apply {
     ] call KISKA_fnc_spawn;
 
 
-    private _animate = [_classConfig >> "ambientAnim"] call BIS_fnc_getCfgDataBool;
-    if (_animate) then {
+    private _animateClass = _classConfig >> "ambientAnim";
+    if !(isNull _animateClass) then {
+        private _animationSet = getText(_animateClass >> "animationSet");
+        if (_animationSet isEqualTo "") then {_equipmentLevel = "STAND"};
+
+        private _equipmentLevel = getText(_animateClass >> "equipmentLevel");
+        if (_equipmentLevel isEqualTo "") then {_equipmentLevel = "ASIS"};
+
+        private _conditionToExit = getText(_animateClass >> "conditionToExit");
+        _conditionToExit = compile _conditionToExit;
+        if (_conditionToExit isEqualTo {}) then {
+            _conditionToExit = { false };
+        };
+
+        private _behaviourAfterExit = getText(_animateClass >> "behaviourAfterExit");
+        if (_behaviourAfterExit isEqualTo "") then {_behaviourAfterExit = "COMBAT"};
+
         _units apply {
             [
                 _x,
-                "STAND",
-                "ASIS"
+                _animationSet,
+                _equipmentLevel,
+                _conditionToExit,
+                _behaviourAfterExit
             ] call BIS_fnc_ambientAnimCombat;
         };
     };
