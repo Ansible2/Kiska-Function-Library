@@ -1,12 +1,11 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_bases_createFromConfig
+Function: KISKA_fnc_bases_getHashmap
 
 Description:
-	Spawns a configed KISKA base.
+	Returns a KISKA bases' hashmap data and initializes it did not exist.
 
 Parameters:
-    0: _baseConfig <STRING or CONFIG> - The config path of the base config or if
-        in missionConfigFile >> "KISKA_bases" config, its class
+    0: _baseConfig <CONFIG> - The config path of the base config
 
 Returns:
     <HASHMAP> - a hashmap containing data abou the base:
@@ -22,18 +21,20 @@ Returns:
 
 Examples:
     (begin example)
-		private _baseMap = ["SomeBaseConfig"] call KISKA_fnc_bases_createFromConfig;
+		[
+            "SomeBaseConfig"
+        ] call KISKA_fnc_bases_getHashmap;
     (end)
 
 Author:
 	Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_bases_createFromConfig";
-
+scriptName "KISKA_fnc_bases_getHashmap";
 
 params [
     ["_baseConfig",configNull,["",configNull]]
 ];
+
 
 if (_baseConfig isEqualType "") then {
     _baseConfig = missionConfigFile >> "KISKA_Bases" >> _baseConfig;
@@ -44,12 +45,27 @@ if (isNull _baseConfig) exitWith {
 };
 
 
+private _baseName = configName _baseConfig;
+if (isNil "KISKA_bases_map") then {
+    missionNamespace setVariable ["KISKA_bases_map",createHashMap];
+};
 
-[_baseConfig] call KISKA_fnc_bases_createFromConfig_turrets;
-[_baseConfig] call KISKA_fnc_bases_createFromConfig_infantry;
-[_baseConfig] call KISKA_fnc_bases_createFromConfig_patrols;
-[_baseConfig] call KISKA_fnc_bases_createFromConfig_landVehicles;
-[_baseConfig] call KISKA_fnc_bases_createFromConfig_simples;
+private _baseData = KISKA_bases_map getOrDefault [_baseName, -1];
+if (_baseData isNotEqualTo -1) exitWith {_baseData};
+
+
+_baseData = createHashMapFromArray [
+    ["unit list",[]],
+    ["group list",[]],
+    ["turret gunners",[]],
+    ["infantry units",[]],
+    ["infantry groups",[]],
+    ["patrol units",[]],
+    ["patrol groups",[]],
+    ["land vehicles",[]],
+    ["land vehicle groups",[]]
+];
+KISKA_bases_map set [_baseName,_baseData];
 
 
 _baseData

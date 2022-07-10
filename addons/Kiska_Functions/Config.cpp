@@ -94,6 +94,18 @@ class CfgFunctions
 			file = "Kiska_functions\Bases";
 			class bases_createFromConfig
 			{};
+			class bases_createFromConfig_landVehicles
+			{};
+			class bases_createFromConfig_infantry
+			{};
+			class bases_createFromConfig_patrols
+			{};
+			class bases_createFromConfig_simples
+			{};
+			class bases_createFromConfig_turrets
+			{};
+			class bases_getHashmap
+			{};
 			class bases_triggerReaction
 			{};
 			class bases_setupReactivity
