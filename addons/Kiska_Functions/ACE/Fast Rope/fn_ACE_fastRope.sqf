@@ -27,10 +27,11 @@ Examples:
     (begin example)
 		[
             _vehicle,
-            [0,0,0],
+            _position,
             (fullCrew [_vehicle,"cargo"]) apply {
                 _x select 0
             },
+            28,
             [[0,0,0]]
 		] call KISKA_fnc_ACE_fastRope;
     (end)
