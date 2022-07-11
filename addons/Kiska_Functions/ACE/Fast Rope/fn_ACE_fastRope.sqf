@@ -31,6 +31,7 @@ Examples:
             (fullCrew [_vehicle,"cargo"]) apply {
                 _x select 0
             },
+            {hint "fastrope done"},
             28,
             [[0,0,0]]
 		] call KISKA_fnc_ACE_fastRope;
