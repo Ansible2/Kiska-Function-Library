@@ -74,7 +74,7 @@ if (_ropeOrigins isEqualTo []) then {
 };
 
 
-private _canEquipFRIES = [_vehicle] call ace_fastroping_fnc_canPrepareFRIES
+private _canEquipFRIES = [_vehicle] call ace_fastroping_fnc_canPrepareFRIES;
 if (
     !(_canEquipFRIES) AND
     (_ropeOrigins isEqualTo [])
