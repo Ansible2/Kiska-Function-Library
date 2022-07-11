@@ -5,7 +5,7 @@ Description:
     Sends a vehicle to a given point and fastropes the given units from the helicopter.
 
     Pilots should ideally be placed in "CARELESS" behaviour when around enemies.
-    
+
 Parameters:
 	0: _vehicle <OBJECT> - The vehicle to fastrope from
     1: _dropPosition <ARRAY> - The positionASL to drop the units off at; Z coordinate
@@ -17,6 +17,8 @@ Parameters:
 
     4: _hoverHeight <NUMBER> - The height the helicopter should hover above the drop position
         while units are fastroping. Max is 28, min is 5
+    5: _ropeOrigins <ARRAY> - An array of either relative (to the vehicle) attachment
+        points for the ropes or a memory point to attachTo
 
 Returns:
 	NOTHING
@@ -28,7 +30,8 @@ Examples:
             [0,0,0],
             (fullCrew [_vehicle,"cargo"]) apply {
                 _x select 0
-            }
+            },
+            [[0,0,0]]
 		] call KISKA_fnc_ACE_fastRope;
     (end)
 
@@ -50,7 +53,8 @@ params [
     ["_dropPosition",[],[[],objNull]],
     ["_unitsToDeploy",[],[[],grpNull,objNull]],
     ["_afterDropCode",{},["",{},[]]],
-    ["_hoverHeight",20,[123]]
+    ["_hoverHeight",20,[123]],
+    ["_ropeOrigins",[],[[]]]
 ];
 
 
@@ -62,9 +66,20 @@ if (isNull _vehicle) exitWith {
     nil
 };
 
+if (_ropeOrigins isEqualTo []) then {
+    private _config = configOf _vehicle;
+    _ropeOrigins = getArray (_config >> "ace_fastroping_ropeOrigins");
+};
+
 [_vehicle] call ace_fastroping_fnc_equipFRIES;
-if !([_vehicle] call ace_fastroping_fnc_canPrepareFRIES) exitWith {
-    [[typeOf _vehicle," is not configured for ACE FRIES system! or this vehicle can't fastrope"],true] call KISKA_fnc_log;
+if (
+    !([_vehicle] call ace_fastroping_fnc_canPrepareFRIES) AND
+    (_ropeOrigins isEqualTo [])
+) exitWith {
+    [
+        [typeOf _vehicle," is not configured for ACE FRIES system, can't fastrope, or no _ropeOrigins were passed"],
+        true
+    ] call KISKA_fnc_log;
 
 };
 
@@ -74,10 +89,6 @@ if (_dropPosition isEqualType objNull) then {
 
 _hoverHeight = _hoverHeight max MIN_HOVER_HEIGHT;
 _hoverHeight = _hoverHeight min MAX_HOVER_HEIGHT;
-
-if (_afterDropCode isEqualType "") then {
-    _afterDropCode = compile _afterDropCode;
-};
 
 
 /* ----------------------------------------------------------------------------
@@ -219,10 +230,10 @@ _pilot move (ASLToATL _hoverPosition_ASL);
         }
     },
     {
-        params ["_vehicle","","_pilot","_unitsToDeploy","_afterDropCode"];
+        params ["_vehicle","","_pilot","_unitsToDeploy","_afterDropCode","_ropeOrigins"];
 
         if (alive _vehicle AND (alive _pilot)) then {
-            [_vehicle, _unitsToDeploy] call KISKA_fnc_ACE_deployFastRope;
+            [_vehicle, _unitsToDeploy, _ropeOrigins] call KISKA_fnc_ACE_deployFastRope_test;
 
             [_vehicle,_afterDropCode] spawn {
                 params ["_vehicle","_afterDropCode"];
@@ -248,5 +259,5 @@ _pilot move (ASLToATL _hoverPosition_ASL);
         };
 
     },
-    [_vehicle,_hoverPosition_ASL,_pilot,_unitsToDeployFiltered,_afterDropCode]
+    [_vehicle,_hoverPosition_ASL,_pilot,_unitsToDeployFiltered,_afterDropCode,_ropeOrigins]
 ] call CBA_fnc_waitUntilAndExecute;
