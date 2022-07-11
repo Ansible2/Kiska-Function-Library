@@ -76,11 +76,15 @@ class CfgFunctions
 			{};
 			class setCrew
 			{};
+			class slingLoad
+			{};
 			class spawn
 			{};
 			class spawnGroup
 			{};
 			class spawnVehicle
+			{};
+			class stalk
 			{};
 			class vlsFireAt
 			{};
@@ -88,7 +92,23 @@ class CfgFunctions
 		class Bases
 		{
 			file = "Kiska_functions\Bases";
-			class createBaseFromConfig
+			class bases_createFromConfig
+			{};
+			class bases_createFromConfig_landVehicles
+			{};
+			class bases_createFromConfig_infantry
+			{};
+			class bases_createFromConfig_patrols
+			{};
+			class bases_createFromConfig_simples
+			{};
+			class bases_createFromConfig_turrets
+			{};
+			class bases_getHashmap
+			{};
+			class bases_triggerReaction
+			{};
+			class bases_setupReactivity
 			{};
 		};
 		class Buildings
@@ -390,6 +410,8 @@ class CfgFunctions
 			{};
 			class addMagRepack
 			{};
+			class addProximityPlayerAction
+			{};
 			class addTeleportAction
 			{};
 			class alivePlayers
@@ -438,6 +460,8 @@ class CfgFunctions
 			{};
 			class hintDiary
 			{};
+			class isGroupAlive
+			{};
 			class isAdminOrHost
 			{};
 			class isMainMenu
@@ -478,9 +502,11 @@ class CfgFunctions
 			{};
 			class removeBISArsenalAction
 			{};
+			class removeProximityPlayerAction
+			{};
 			class setContainerCargo
 			{};
-			class setupKillTask
+			class setupMultiKillEvent
 			{};
 			class showHide
 			{};

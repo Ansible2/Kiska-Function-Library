@@ -30,7 +30,19 @@ if (call KISKA_fnc_isMainMenu) exitWith {
 
 addMissionEventHandler ["GroupCreated", {
 	params ["_group"];
-	_group setVariable ["KISKA_GCH_exclude", true];
+
+	_this spawn {
+		params ["_group"];
+		sleep 1;
+
+		private _units = units _group;
+		private _playerInGroup = [
+			_units,
+			{isPlayer _x}
+		] call KISKA_fnc_findIfBool;
+
+		_group setVariable ["KISKA_GCH_exclude", !(_playerInGroup)];
+	};
 
 	private _groupChangerOpen = !(isNull (uiNamespace getVariable ["KISKA_GCH_display",displayNull]));
     if (_groupChangerOpen) then {

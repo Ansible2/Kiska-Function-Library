@@ -44,7 +44,17 @@ params [
 KISKA_playersSupportMap deleteAt (_commMenuArgs select 4);
 
 private _supportConfig = [["CfgCommunicationMenu",_supportClass]] call KISKA_fnc_findConfigAny;
+if (isNull _supportConfig) exitWith {
+	[["Did not find a support class matching ",_supportClass," in any CfgCommunicationMenu config"],true] call KISKA_fnc_log;
+	nil
+};
+
 private _supportTypeId = [_supportConfig >> "supportTypeId"] call BIS_fnc_getCfgData;
+if (isNil "_supportTypeId") exitWith {
+	[["Did not find a support _supportTypeId for CfgCommunicationMenu class ",_supportClass],true] call KISKA_fnc_log;
+	nil
+};
+
 _commMenuArgs pushBack _supportTypeId;
 
 if (_supportTypeId isEqualTo SUPPORT_TYPE_ARTY) exitWith {
@@ -55,7 +65,10 @@ if (_supportTypeId isEqualTo SUPPORT_TYPE_SUPPLY_DROP) exitWith {
 
 };
 
-if (_supportTypeId isEqualTo SUPPORT_TYPE_HELI_CAS OR {_supportTypeId isEqualTo SUPPORT_TYPE_ATTACKHELI_CAS}) exitWith {
+if (
+	(_supportTypeId isEqualTo SUPPORT_TYPE_HELI_CAS) OR
+	(_supportTypeId isEqualTo SUPPORT_TYPE_ATTACKHELI_CAS)
+) exitWith {
 	_this call KISKA_fnc_callingForHelicopterCAS;
 };
 
@@ -71,6 +84,8 @@ if (_supportTypeId isEqualTo SUPPORT_TYPE_SUPPLY_DROP_AIRCRAFT) exitWith {
 	_this call KISKA_fnc_callingForSupplyDrop_aircraft;
 };
 
+
+
 /*
 _commMenuArgs params [
 	"_caller",
@@ -80,5 +95,7 @@ _commMenuArgs params [
 	"_commMenuId"
 ];
 */
+
+[["Unknown _supportTypeId (",_supportTypeId,") used with _supportClass ",_supportClass],true] call KISKA_fnc_log;
 
 nil

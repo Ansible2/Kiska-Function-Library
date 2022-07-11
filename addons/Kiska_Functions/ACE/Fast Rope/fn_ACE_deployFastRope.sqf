@@ -8,6 +8,8 @@ Parameters:
     0: _vehicle <OBJECT> - The vehicle to fastrope from
     1: _unitsToDeploy <ARRAY> - An array of units to drop from the _vehicle.
         This function has a destructive effect on this array (deletes entries)
+    2: _ropeOrigins <ARRAY> - An array of either relative (to the vehicle) attachment
+        points for the ropes or a memory point to attachTo
 
 Returns:
 	NOTHING
@@ -38,7 +40,8 @@ if !(["ace_fastroping"] call KISKA_fnc_isPatchLoaded) exitWith {
 
 params [
     ["_vehicle", objNull, [objNull]],
-    ["_unitsToDeploy",[],[[]]]
+    ["_unitsToDeploy",[],[[]]],
+    ["_ropeOrigins",[],[[]]]
 ];
 
 /* ----------------------------------------------------------------------------
@@ -56,12 +59,23 @@ if (_unitsToDeploy isEqualTo []) exitWith {
 
 private _config = configOf _vehicle;
 private _configEnabled = getNumber (_config >> QGVAR(enabled));
-if (_configEnabled isEqualTo 0) exitWith {
-    [["Fastrope not configured for vehicle: ", getText(_config >> "DisplayName")],true] call KISKA_fnc_log;
+if (_configEnabled isEqualTo 0 AND (_ropeOrigins isEqualTo [])) exitWith {
+    [
+        [
+            "Fastrope not configured for vehicle: ",
+            getText(_config >> "DisplayName"),
+            " or no rope origins were passed"
+        ],
+        true
+    ] call KISKA_fnc_log;
+
     nil
 };
 
-if (_configEnabled isEqualTo 2 AND (isNull (_vehicle getVariable [QGVAR(FRIES), objNull]))) exitWith {
+if (
+    _configEnabled isEqualTo 2 AND
+    (isNull (_vehicle getVariable [QGVAR(FRIES), objNull]))
+) exitWith {
     [[getText(_config >> "DisplayName")," requires a FRIES for fastroping but has not been equipped with one"],true] call KISKA_fnc_log;
     nil
 };
@@ -70,13 +84,13 @@ if (_configEnabled isEqualTo 2 AND (isNull (_vehicle getVariable [QGVAR(FRIES), 
     Deploy Ropes
 ---------------------------------------------------------------------------- */
 private  _deployTime = 4;
-if (getText (_config >> QGVAR(onPrepare)) isNotEqualTo "") then {
-    _deployTime = [_vehicle] call (missionNamespace getVariable (getText (_config >> QGVAR(onPrepare))));
+private _onPrepare = getText (_config >> QGVAR(onPrepare));
+if (_onPrepare isEqualTo "") then {
+    _onPrepare = "ace_fastroping_onPrepare";
 };
+_deployTime = [_vehicle] call (missionNamespace getVariable _onPrepare);
 
-/* _vehicle call KISKA_fnc_ACE_deployRopes; */
-_vehicle call FUNC(deployRopes);
-/* [FUNC(deployRopes), _vehicle, _deployTime] call CBA_fnc_waitAndExecute; */
+[_vehicle,_ropeOrigins] call KISKA_fnc_ACE_deployRopes;
 
 (driver _vehicle) disableAI "MOVE";
 

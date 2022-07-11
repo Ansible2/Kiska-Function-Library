@@ -31,9 +31,9 @@ params [
 	["_group",grpNull,[objNull,grpNull]],
 	["_position",objNull,[[],objNull,locationNull,grpNull]],
 	["_radius",-1,[123]],
-	["_behaviour","COMBAT",[""]],
+	["_behaviour","AWARE",[""]],
 	["_combatMode","RED",[""]],
-	["_override",false,[true]]
+	["_override",true,[true]]
 ];
 
 _group = _group call CBA_fnc_getGroup;

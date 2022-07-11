@@ -4,6 +4,8 @@ Function: KISKA_fnc_ACE_fastRope
 Description:
     Sends a vehicle to a given point and fastropes the given units from the helicopter.
 
+    Pilots should ideally be placed in "CARELESS" behaviour when around enemies.
+
 Parameters:
 	0: _vehicle <OBJECT> - The vehicle to fastrope from
     1: _dropPosition <ARRAY> - The positionASL to drop the units off at; Z coordinate
@@ -15,6 +17,8 @@ Parameters:
 
     4: _hoverHeight <NUMBER> - The height the helicopter should hover above the drop position
         while units are fastroping. Max is 28, min is 5
+    5: _ropeOrigins <ARRAY> - An array of either relative (to the vehicle) attachment
+        points for the ropes or a memory point to attachTo
 
 Returns:
 	NOTHING
@@ -26,7 +30,8 @@ Examples:
             [0,0,0],
             (fullCrew [_vehicle,"cargo"]) apply {
                 _x select 0
-            }
+            },
+            [[0,0,0]]
 		] call KISKA_fnc_ACE_fastRope;
     (end)
 
@@ -48,7 +53,8 @@ params [
     ["_dropPosition",[],[[],objNull]],
     ["_unitsToDeploy",[],[[],grpNull,objNull]],
     ["_afterDropCode",{},["",{},[]]],
-    ["_hoverHeight",20,[123]]
+    ["_hoverHeight",20,[123]],
+    ["_ropeOrigins",[],[[]]]
 ];
 
 
@@ -60,9 +66,20 @@ if (isNull _vehicle) exitWith {
     nil
 };
 
+if (_ropeOrigins isEqualTo []) then {
+    private _config = configOf _vehicle;
+    _ropeOrigins = getArray (_config >> "ace_fastroping_ropeOrigins");
+};
+
 [_vehicle] call ace_fastroping_fnc_equipFRIES;
-if !([_vehicle] call ace_fastroping_fnc_canPrepareFRIES) exitWith {
-    [[typeOf _vehicle," is not configured for ACE FRIES system! or this vehicle can't fastrope"],true] call KISKA_fnc_log;
+if (
+    !([_vehicle] call ace_fastroping_fnc_canPrepareFRIES) AND
+    (_ropeOrigins isEqualTo [])
+) exitWith {
+    [
+        [typeOf _vehicle," is not configured for ACE FRIES system, can't fastrope, or no _ropeOrigins were passed"],
+        true
+    ] call KISKA_fnc_log;
 
 };
 
@@ -72,10 +89,6 @@ if (_dropPosition isEqualType objNull) then {
 
 _hoverHeight = _hoverHeight max MIN_HOVER_HEIGHT;
 _hoverHeight = _hoverHeight min MAX_HOVER_HEIGHT;
-
-if (_afterDropCode isEqualType "") then {
-    _afterDropCode = compile _afterDropCode;
-};
 
 
 /* ----------------------------------------------------------------------------
@@ -121,8 +134,7 @@ if (_unitsToDeployFiltered isEqualTo []) then {
     Prepare FRIES
 ---------------------------------------------------------------------------- */
 _vehicle setVariable ["ACE_Rappelling",true];
-private _hoverPosition = _dropPosition vectorAdd [0,0,_hoverHeight];
-private _hoverPosition_AGL = ASLToAGL _hoverPosition;
+private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
 private _pilot = driver _vehicle;
 
 private _vehicleGroup = group (commander _vehicle);
@@ -130,7 +142,7 @@ _vehicleGroup allowFleeing 0;
 
 private _pilot = driver _vehicle;
 _pilot setSkill 1;
-_pilot move (ASLToATL _hoverPosition);
+_pilot move (ASLToATL _hoverPosition_ASL);
 
 // guides helicopter to drop position
 [
@@ -138,9 +150,8 @@ _pilot move (ASLToATL _hoverPosition);
         params ["_args", "_id"];
         _args params [
             "_vehicle",
-            "_hoverPosition_AGL",
-            "_pilot",
-            "_hoverPosition"
+            "_hoverPosition_ASL",
+            "_pilot"
         ];
 
         if (
@@ -148,8 +159,8 @@ _pilot move (ASLToATL _hoverPosition);
             alive _pilot AND
             !isNil {_vehicle getVariable "ACE_Rappelling"}
         ) then {
-            private _currentVehiclePosition_AGL = ASLToAGL (getPosASL _vehicle);
-            private _distanceToHoverPosition = _currentVehiclePosition_AGL distance _hoverPosition_AGL;
+            private _currentVehiclePosition_ASL = getPosASL _vehicle;
+            private _distanceToHoverPosition = _currentVehiclePosition_ASL vectorDistance _hoverPosition_ASL;
 
             if ( _distanceToHoverPosition <= 400 ) then {
                 if (isNil {_vehicle getVariable "KISKA_fastRopeTransformStart_speed"}) then {
@@ -171,7 +182,7 @@ _pilot move (ASLToATL _hoverPosition);
 
                 _velocityMagnitude = _speed;
 
-                if ((_currentVehiclePosition_AGL distance2d _hoverPosition_AGL) < 2.5) then {
+                if ((_currentVehiclePosition_ASL distance2d _hoverPosition_ASL) < 2.5) then {
                     _vehicle setVelocityModelSpace [0,0,0];
 
                 } else {
@@ -181,8 +192,7 @@ _pilot move (ASLToATL _hoverPosition);
                     };
 
                     private _currentVelocity = velocity _vehicle;
-                    _currentVelocity = _currentVelocity vectorAdd (( _currentVehiclePosition_AGL vectorFromTo _hoverPosition_AGL ) vectorMultiply _velocityMagnitude);
-                    _currentVelocity = (vectorNormalized _currentVelocity) vectorMultiply ( (vectorMagnitude _currentVelocity) min _velocityMagnitude );
+                    _currentVelocity = (_currentVehiclePosition_ASL vectorFromTo _hoverPosition_ASL) vectorMultiply _velocityMagnitude;
                     _vehicle setVelocity _currentVelocity;
 
                 };
@@ -195,7 +205,7 @@ _pilot move (ASLToATL _hoverPosition);
         };
     },
     0.05,
-    [_vehicle, _hoverPosition_AGL, _pilot, _hoverPosition]
+    [_vehicle, _hoverPosition_ASL, _pilot]
 ] call CBA_fnc_addPerFrameHandler;
 
 
@@ -204,26 +214,26 @@ _pilot move (ASLToATL _hoverPosition);
 ---------------------------------------------------------------------------- */
 [
     {
-        params ["_vehicle","_hoverPosition_AGL","_pilot","",""];
+        params ["_vehicle","_hoverPosition_ASL","_pilot","",""];
         if (!alive _vehicle) exitWith {true};
         if (!alive _pilot) exitWith {true};
-        private _currentVehiclePosition_AGL = ASLToAGL (getPosASL _vehicle);
+        private _currentVehiclePosition_ASL = getPosASL _vehicle;
 
         (speed _vehicle < (2.5 * 3.6))
         AND
         {
-            (_hoverPosition_AGL distance2d _currentVehiclePosition_AGL) < 25
+            (_hoverPosition_ASL distance2d _currentVehiclePosition_ASL) < 25
         }
         AND
         {
-            (_hoverPosition_AGL vectorDiff _currentVehiclePosition_AGL) select 2 < 25
+            (_hoverPosition_ASL vectorDiff _currentVehiclePosition_ASL) select 2 < 25
         }
     },
     {
-        params ["_vehicle","","_pilot","_unitsToDeploy","_afterDropCode"];
+        params ["_vehicle","","_pilot","_unitsToDeploy","_afterDropCode","_ropeOrigins"];
 
         if (alive _vehicle AND (alive _pilot)) then {
-            [_vehicle, _unitsToDeploy] call KISKA_fnc_ACE_deployFastRope;
+            [_vehicle, _unitsToDeploy, _ropeOrigins] call KISKA_fnc_ACE_deployFastRope_test;
 
             [_vehicle,_afterDropCode] spawn {
                 params ["_vehicle","_afterDropCode"];
@@ -249,5 +259,5 @@ _pilot move (ASLToATL _hoverPosition);
         };
 
     },
-    [_vehicle,_hoverPosition_AGL,_pilot,_unitsToDeployFiltered,_afterDropCode]
+    [_vehicle,_hoverPosition_ASL,_pilot,_unitsToDeployFiltered,_afterDropCode,_ropeOrigins]
 ] call CBA_fnc_waitUntilAndExecute;

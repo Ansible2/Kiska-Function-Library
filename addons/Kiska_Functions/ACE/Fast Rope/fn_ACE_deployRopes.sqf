@@ -6,15 +6,15 @@ Description:
 
 Parameters:
     0: _vehicle <OBJECT> - The vehicle to fastrope from
+    1: _ropeOrigins <ARRAY> - An array of either relative (to the vehicle) attachment
+        points for the ropes or a memory point to attachTo
 
 Returns:
 	NOTHING
 
 Examples:
     (begin example)
-		[
-
-		] call KISKA_fnc_ACE_deployRopes;
+		[heli] call KISKA_fnc_ACE_deployRopes;
     (end)
 
 Author(s):
@@ -23,36 +23,19 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ACE_deployRopes";
 
-
 #if __has_include("\z\ace\addons\fastroping\functions\script_component.hpp")
     #include "\z\ace\addons\fastroping\functions\script_component.hpp"
 
-params ["_vehicle", ["_player", objNull], ["_ropeClass", ""]];
+params [
+    ["_vehicle",objNull,[objNull]],
+    ["_ropeOrigins",[],[[]]]
+];
 
-TRACE_3("deployRopes",_vehicle,_player,_ropeClass);
 
 private _config = configOf _vehicle;
-
-private _ropeOrigins = getArray (_config >> QGVAR(ropeOrigins));
 private _deployedRopes = _vehicle getVariable [QGVAR(deployedRopes), []];
 private _hookAttachment = _vehicle getVariable [QGVAR(FRIES), _vehicle];
-
-private _ropeLength = getNumber (configfile >> "CfgWeapons" >> _ropeClass >> QEGVAR(logistics_rope,length));
-
-if (_ropeLength <= 0) then {
-    _ropeLength = DEFAULT_ROPE_LENGTH;
-};
-
-TRACE_3("",_ropeClass,_ropeLength,GVAR(requireRopeItems));
-
-if (GVAR(requireRopeItems) && {_ropeClass != ""}) then {
-    if (_ropeClass in (_player call EFUNC(common,uniqueItems))) then {
-        _player removeItem _ropeClass;
-    } else {
-        _vehicle removeItem _ropeClass;
-    };
-};
-
+private _ropeLength = DEFAULT_ROPE_LENGTH;
 
 _ropeOrigins apply {
     private _ropeOrigin = _x;
@@ -65,26 +48,7 @@ _ropeOrigins apply {
     };
 
     private _origin = getPosATL _hook;
-
-
-    /*
-        NOTICE:
-        Strange thing, when the helicopter is completely filled, and
-        a player is in the vehicle and NOT all units are part of the same group.
-
-        When the helicopter reaches the drop position and the _dummy is created,
-        it seems to push out the top most unit before the ropes are fully deployed.
-
-        Other strange behaviour occurs with the heli too, but you can also change
-        the _dummy spawn position (_origin vectorAdd [0, 0, -1]) to say [0,0,0]
-        to also mitigate this.
-
-        No idea what this means though...
-    */
     private _dummy = createVehicle [QGVAR(helper), _origin vectorAdd [0, 0, -1], [], 0, "CAN_COLLIDE"];
-
-
-
     _dummy allowDamage false;
     _dummy disableCollisionWith _vehicle;
 
@@ -107,6 +71,6 @@ _vehicle setVariable [QGVAR(ropeLength), _ropeLength, true];
 
 #else
 ["ACE #include for \z\ace\addons\fastroping\functions\script_component.hpp not found!",true] call KISKA_fnc_log;
-false
+nil
 
 #endif
