@@ -73,9 +73,10 @@ if (_ropeOrigins isEqualTo []) then {
     _ropeOrigins = getArray (_config >> "ace_fastroping_ropeOrigins");
 };
 
-[_vehicle] call ace_fastroping_fnc_equipFRIES;
+
+private _canEquipFRIES = [_vehicle] call ace_fastroping_fnc_canPrepareFRIES
 if (
-    !([_vehicle] call ace_fastroping_fnc_canPrepareFRIES) AND
+    !(_canEquipFRIES) AND
     (_ropeOrigins isEqualTo [])
 ) exitWith {
     [
@@ -83,7 +84,14 @@ if (
         true
     ] call KISKA_fnc_log;
 
+    nil
 };
+
+if (_canEquipFRIES) then {
+    [_vehicle] call ace_fastroping_fnc_equipFRIES;
+};
+
+
 
 if (_dropPosition isEqualType objNull) then {
     _dropPosition = getPosASL _dropPosition;
@@ -235,7 +243,7 @@ _pilot move (ASLToATL _hoverPosition_ASL);
         params ["_vehicle","","_pilot","_unitsToDeploy","_afterDropCode","_ropeOrigins"];
 
         if (alive _vehicle AND (alive _pilot)) then {
-            [_vehicle, _unitsToDeploy, _ropeOrigins] call KISKA_fnc_ACE_deployFastRope_test;
+            [_vehicle, _unitsToDeploy, _ropeOrigins] call KISKA_fnc_ACE_deployFastRope;
 
             [_vehicle,_afterDropCode] spawn {
                 params ["_vehicle","_afterDropCode"];
