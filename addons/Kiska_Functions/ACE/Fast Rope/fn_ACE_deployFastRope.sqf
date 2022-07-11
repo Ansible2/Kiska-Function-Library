@@ -83,12 +83,12 @@ if (
 /* ----------------------------------------------------------------------------
     Deploy Ropes
 ---------------------------------------------------------------------------- */
-private  _deployTime = 4;
 private _onPrepare = getText (_config >> QGVAR(onPrepare));
 if (_onPrepare isEqualTo "") then {
     _onPrepare = "ace_fastroping_onPrepare";
 };
-_deployTime = [_vehicle] call (missionNamespace getVariable _onPrepare);
+private _deployTime = [_vehicle] call (missionNamespace getVariable _onPrepare);
+_deployTime = _vehicle getVariable ["KISKA_ACEFastRope_ropeDeploymentTime", _deployTime];
 
 [_vehicle,_ropeOrigins] call KISKA_fnc_ACE_deployRopes;
 
@@ -145,7 +145,11 @@ DFUNC(deployAIRecursive) = {
     };
 };
 
-[FUNC(deployAIRecursive), [_vehicle, _unitsToDeploy], _deployTime] call CBA_fnc_waitAndExecute;
+[
+    FUNC(deployAIRecursive),
+    [_vehicle, _unitsToDeploy],
+    _deployTime
+] call CBA_fnc_waitAndExecute;
 
 
 #else
