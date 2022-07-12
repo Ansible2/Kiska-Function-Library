@@ -1,8 +1,8 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_bases_createFromConfig_infantry
+Function: KISKA_fnc_bases_createFromConfig_agents
 
 Description:
-	Spawns a configed KISKA bases' infantry.
+	Spawns a configed KISKA bases' agents.
 
 Parameters:
     0: _baseConfig <CONFIG> - The config path of the base config
@@ -69,12 +69,10 @@ private _fn_getUnitClasses = {
 
 /* ----------------------------------------------------------------------------
 
-    Create Infantry
+    Create Agents
 
 ---------------------------------------------------------------------------- */
-
-
-_infantryClasses apply {
+_agentClasses apply {
     private _classConfig = _x;
     private _spawnPositions = (_classConfig >> "positions" ) call BIS_fnc_getCfgData;
     if (_spawnPositions isEqualType "") then {
@@ -91,15 +89,32 @@ _infantryClasses apply {
     _spawnPositions = [_spawnPositions] call CBA_fnc_shuffle;
     private _agents = [];
 
+    private _placement = "CAN_COLLIDE";
+    private _placementConfigValue = getText(_x >> "placement");
+    if (_placementConfigValue isNotEqualTo "") then {
+        _placement = _placementConfigValue;
+    };
+
     for "_i" from 0 to (_numberOfAgents - 1) do {
+        private _spawnPosition = _spawnPositions select _i;
+        private _direction = 0;
+        if (_spawnPosition isEqualType objNull) then {
+            _direction = getDir _spawnPosition;
+        };
+        if (_spawnPosition isEqualType [] AND (count _spawnPosition > 3)) then {
+            _direction = _spawnPosition deleteAt 3;
+        };
+
         private _agent = createAgent [
             selectRandom _unitClasses,
-            _spawnPositions select _i,
+            _spawnPosition,
             [],
             0,
-            "CAN_COLLIDE"
+            _placement
         ];
 
+
+        _agent setDir _direction;
         _agents pushBack _agent;
     };
 
