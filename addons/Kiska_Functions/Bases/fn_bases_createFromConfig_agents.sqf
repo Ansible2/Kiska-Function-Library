@@ -86,6 +86,11 @@ _agentClasses apply {
 
     private _unitClasses = [_x] call _fn_getUnitClasses;
     private _numberOfAgents = getNumber(_classConfig >> "numberOfAgents");
+    private _numberOfSpawns = count _spawnPositions;
+    if (_numberOfSpawns < _numberOfAgents OR (_numberOfAgents isEqualTo -1)) then {
+        _numberOfAgents = _numberOfSpawns;
+    };
+
     _spawnPositions = [_spawnPositions] call CBA_fnc_shuffle;
     private _agents = [];
 
@@ -101,7 +106,7 @@ _agentClasses apply {
         if (_spawnPosition isEqualType objNull) then {
             _direction = getDir _spawnPosition;
         };
-        if (_spawnPosition isEqualType [] AND (count _spawnPosition > 3)) then {
+        if (_spawnPosition isEqualType [] AND {count _spawnPosition > 3}) then {
             _direction = _spawnPosition deleteAt 3;
         };
 
