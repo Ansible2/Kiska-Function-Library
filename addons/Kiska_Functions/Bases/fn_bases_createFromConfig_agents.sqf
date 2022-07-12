@@ -128,8 +128,9 @@ _agentClasses apply {
     --------------------------------- */
     private _animateClass = _classConfig >> "ambientAnim";
     if !(isNull _animateClass) then {
-        private _animationSet = getText(_animateClass >> "animationSet");
+        private _animationSet = (_animateClass >> "animationSet") call BIS_fnc_getCfgData;
         if (_animationSet isEqualTo "") then {_animationSet = "STAND"};
+        if (_animationSet isEqualType []) then {_animationSet = selectRandom _animationSet};
 
         private _equipmentLevel = getText(_animateClass >> "equipmentLevel");
         if (_equipmentLevel isEqualTo "") then {_equipmentLevel = "ASIS"};
