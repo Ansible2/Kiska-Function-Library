@@ -128,10 +128,11 @@ _infantryClasses apply {
     if !(isNull _animateClass) then {
         private _animationSet = (_animateClass >> "animationSet") call BIS_fnc_getCfgData;
         if (_animationSet isEqualTo "") then {_animationSet = "STAND"};
-        if (_animationSet isEqualType []) then {_animationSet = selectRandom _animationSet};
+        private _randomAnimationSet = _animationSet isEqualType [];
 
-        private _equipmentLevel = getText(_animateClass >> "equipmentLevel");
+        private _equipmentLevel = (_animateClass >> "equipmentLevel") call BIS_fnc_getCfgData;
         if (_equipmentLevel isEqualTo "") then {_equipmentLevel = "ASIS"};
+        private _randomEquipmentLevel = _equipmentLevel isEqualType [];
 
         private _conditionToExit = getText(_animateClass >> "conditionToExit");
         _conditionToExit = compile _conditionToExit;
@@ -145,10 +146,15 @@ _infantryClasses apply {
         private _combat = [_x >> "combat"] call BIS_fnc_getCfgDataBool;
         if (_combat) exitWith {
             _units apply {
+                private _equipment = _equipmentLevel;
+                private _animationType = _animationSet;
+                if (_randomAnimationSet) then {_animationType = selectRandom _animationSet};
+                if (_randomEquipmentLevel) then {_equipment = selectRandom _equipmentLevel};
+
                 [
                     _x,
-                    _animationSet,
-                    _equipmentLevel,
+                    _animationType,
+                    _equipment,
                     _conditionToExit,
                     _behaviourAfterExit
                 ] call BIS_fnc_ambientAnimCombat;
@@ -160,10 +166,15 @@ _infantryClasses apply {
         // this ensures that intention if dontAttachToLogic is undefined in the config
         private _attachToLogic = !([_x >> "dontAttachToLogic"] call BIS_fnc_getCfgDataBool);
         _units apply {
+            private _equipment = _equipmentLevel;
+            private _animationType = _animationSet;
+            if (_randomAnimationSet) then {_animationType = selectRandom _animationSet};
+            if (_randomEquipmentLevel) then {_equipment = selectRandom _equipmentLevel};
+
             [
                 _x,
-                _animationSet,
-                _equipmentLevel,
+                _animationType,
+                _equipment,
                 objNull,
                 _interpolate,
                 _attachToLogic
