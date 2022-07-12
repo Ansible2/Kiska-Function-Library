@@ -138,7 +138,7 @@ _simplesConfigClasses apply {
     _topConfig = _x;
     _typeConfigs = configProperties [_topConfig,"isClass _x"];
 
-    private _positions = [_topConfig >> "positions"] call BIS_fnc_getCfgData;
+    private _positions = (_topConfig >> "positions") call BIS_fnc_getCfgData;
     if (_positions isEqualType "") then {
         private _layerObjects = [_positions] call KISKA_fnc_getMissionLayerObjects;
         _positions = _layerObjects apply {

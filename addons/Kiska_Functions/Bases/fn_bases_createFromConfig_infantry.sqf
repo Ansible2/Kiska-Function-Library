@@ -56,14 +56,18 @@ private _base_infantryGroups = _baseMap get "infantry groups";
     Helper functions
 
 ---------------------------------------------------------------------------- */
+private _infantryConfig = _baseConfig >> "infantry";
+private _infantryClasses = configProperties [_infantryConfig,"isClass _x"];
+private _infantryClassUnitClasses = getArray(_infantryConfig >> "infantryClasses");
+
 private _baseUnitClasses = getArray(_baseConfig >> "infantryClasses");
 private _fn_getUnitClasses = {
-    params ["_configClass"];
+    params ["_configClass","_moduleUnitClasses"];
 
     private _unitClasses = getArray(_configClass >> "infantryClasses");
     if (_unitClasses isEqualTo []) then {
-        if (_turretClassUnitClasses isNotEqualTo []) then {
-            _unitClasses = _turretClassUnitClasses;
+        if (_infantryClassUnitClasses isNotEqualTo []) then {
+            _unitClasses = _infantryClassUnitClasses;
         } else {
             _unitClasses = _baseUnitClasses;
         };
@@ -94,13 +98,9 @@ private _fn_getSide = {
     Create Infantry
 
 ---------------------------------------------------------------------------- */
-private _infantryConfig = _baseConfig >> "infantry";
-private _infantryClasses = configProperties [_infantryConfig,"isClass _x"];
-private _infantryClassUnitClasses = getArray(_infantryConfig >> "infantryClasses");
-
 _infantryClasses apply {
     private _classConfig = _x;
-    private _spawnPositions = [_classConfig >> "positions"] call BIS_fnc_getCfgData;
+    private _spawnPositions = (_classConfig >> "positions") call BIS_fnc_getCfgData;
     if (_spawnPositions isEqualType "") then {
         _spawnPositions = [_spawnPositions] call KISKA_fnc_getMissionLayerObjects;
     };
@@ -148,15 +148,34 @@ _infantryClasses apply {
         private _behaviourAfterExit = getText(_animateClass >> "behaviourAfterExit");
         if (_behaviourAfterExit isEqualTo "") then {_behaviourAfterExit = "COMBAT"};
 
+        private _combat = [_x >> "combat"] call BIS_fnc_getCfgDataBool;
+        if (_combat) exitWith {
+            _units apply {
+                [
+                    _x,
+                    _animationSet,
+                    _equipmentLevel,
+                    _conditionToExit,
+                    _behaviourAfterExit
+                ] call BIS_fnc_ambientAnimCombat;
+            };
+        };
+
+        private _interpolate = [_x >> "interpolate"] call BIS_fnc_getCfgDataBool;
+        // attachToLogic in BIS_fnc_ambientAnim is default true,
+        // this ensures that intention if dontAttachToLogic is undefined in the config
+        private _attachToLogic = !([_x >> "dontAttachToLogic"] call BIS_fnc_getCfgDataBool);
         _units apply {
             [
                 _x,
                 _animationSet,
                 _equipmentLevel,
-                _conditionToExit,
-                _behaviourAfterExit
-            ] call BIS_fnc_ambientAnimCombat;
+                objNull,
+                _interpolate,
+                _attachToLogic
+            ] call BIS_fnc_ambientAnim;
         };
+
     };
 
     private _onUnitsCreated = getText(_classConfig >> "onUnitsCreated");
@@ -193,7 +212,7 @@ _infantryClasses apply {
         continue;
     };
 
-    private _reinforceId = [_reinforceClass >> "id"] call BIS_fnc_getCfgData;
+    private _reinforceId = (_reinforceClass >> "id") call BIS_fnc_getCfgData;
     private _canCallIds = getArray(_reinforceClass >> "canCall");
     private _reinforcePriority = getNumber(_reinforceClass >> "priority");
     private _onEnteredCombat = getText(_reinforceClass >> "onEnteredCombat");

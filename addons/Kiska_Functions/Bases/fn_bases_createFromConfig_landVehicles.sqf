@@ -143,7 +143,7 @@ _landVehicleConfigClasses apply {
         continue;
     };
 
-    private _reinforceId = [_reinforceClass >> "id"] call BIS_fnc_getCfgData;
+    private _reinforceId = (_reinforceClass >> "id") call BIS_fnc_getCfgData;
     private _canCallIds = getArray(_reinforceClass >> "canCall");
     private _reinforcePriority = getNumber(_reinforceClass >> "priority");
     private _onEnteredCombat = getText(_reinforceClass >> "onEnteredCombat");

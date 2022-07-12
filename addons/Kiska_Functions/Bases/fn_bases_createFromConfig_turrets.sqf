@@ -55,6 +55,10 @@ private _base_groupList = _baseMap get "group list";
     Helper functions
 
 ---------------------------------------------------------------------------- */
+private _turretConfig = _baseConfig >> "turrets";
+private _turretClasses = configProperties [_turretConfig,"isClass _x"];
+private _turretClassUnitClasses = getArray(_turretConfig >> "infantryClasses");
+
 private _baseUnitClasses = getArray(_baseConfig >> "infantryClasses");
 private _fn_getUnitClasses = {
     params ["_configClass"];
@@ -93,12 +97,8 @@ private _fn_getSide = {
     Create Turrets
 
 ---------------------------------------------------------------------------- */
-private _turretConfig = _baseConfig >> "turrets";
-private _turretClasses = configProperties [_turretConfig,"isClass _x"];
-private _turretClassUnitClasses = getArray(_turretConfig >> "infantryClasses");
-
 _turretClasses apply {
-    private _turrets = [_x >> "turrets"] call BIS_fnc_getCfgData;
+    private _turrets = (_x >> "turrets") call BIS_fnc_getCfgData;
     if (_turrets isEqualType "") then {
         _turrets = [_turrets] call KISKA_fnc_getMissionLayerObjects;
 
@@ -175,7 +175,7 @@ _turretClasses apply {
         if (isNull _reinforceClass) then {
             continue;
         };
-        private _reinforceId = [_reinforceClass >> "id"] call BIS_fnc_getCfgData;
+        private _reinforceId = (_reinforceClass >> "id") call BIS_fnc_getCfgData;
         private _canCallIds = getArray(_reinforceClass >> "canCall");
         private _reinforcePriority = getNumber(_reinforceClass >> "priority");
         private _onEnteredCombat = getText(_reinforceClass >> "onEnteredCombat");

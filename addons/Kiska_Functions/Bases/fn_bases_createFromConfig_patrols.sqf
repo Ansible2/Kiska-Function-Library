@@ -61,14 +61,18 @@ private _base_patrolGroups = _baseMap get "patrol groups";
     Helper functions
 
 ---------------------------------------------------------------------------- */
+private _patrolsConfig = _baseConfig >> "patrols";
+private _patrolClasses = configProperties [_patrolsConfig,"isClass _x"];
+private _patrolClassUnitClasses = getArray(_patrolsConfig >> "infantryClasses");
+
 private _baseUnitClasses = getArray(_baseConfig >> "infantryClasses");
 private _fn_getUnitClasses = {
     params ["_configClass"];
 
     private _unitClasses = getArray(_configClass >> "infantryClasses");
     if (_unitClasses isEqualTo []) then {
-        if (_turretClassUnitClasses isNotEqualTo []) then {
-            _unitClasses = _turretClassUnitClasses;
+        if (_patrolClassUnitClasses isNotEqualTo []) then {
+            _unitClasses = _patrolClassUnitClasses;
         } else {
             _unitClasses = _baseUnitClasses;
         };
@@ -99,12 +103,8 @@ private _fn_getSide = {
     Create Patrols
 
 ---------------------------------------------------------------------------- */
-private _patrolsConfig = _baseConfig >> "patrols";
-private _patrolClasses = configProperties [_patrolsConfig,"isClass _x"];
-private _patrolClassUnitClasses = getArray(_patrolsConfig >> "infantryClasses");
-
 _patrolClasses apply {
-    private _spawnPosition = [_x >> "spawnPosition"] call BIS_fnc_getCfgData;
+    private _spawnPosition = (_x >> "spawnPosition") call BIS_fnc_getCfgData;
     if (_spawnPosition isEqualType "") then {
         _spawnPosition = missionNamespace getVariable [_spawnPosition,objNull];
     };
@@ -144,7 +144,7 @@ _patrolClasses apply {
 
     private _specificPatrolClass = _x >> "SpecificPatrol";
     if (isClass _specificPatrolClass) then {
-        private _patrolPoints = [_specificPatrolClass >> "patrolPoints"] call BIS_fnc_getCfgData;
+        private _patrolPoints = (_specificPatrolClass >> "patrolPoints") call BIS_fnc_getCfgData;
         if (_patrolPoints isEqualType "") then {
             _patrolPoints = [_patrolPoints] call KISKA_fnc_getMissionLayerObjects;
         };
@@ -219,7 +219,7 @@ _patrolClasses apply {
         continue;
     };
 
-    private _reinforceId = [_reinforceClass >> "id"] call BIS_fnc_getCfgData;
+    private _reinforceId = (_reinforceClass >> "id") call BIS_fnc_getCfgData;
     private _canCallIds = getArray(_reinforceClass >> "canCall");
     private _reinforcePriority = getNumber(_reinforceClass >> "priority");
     private _onEnteredCombat = getText(_reinforceClass >> "onEnteredCombat");
