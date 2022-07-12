@@ -64,7 +64,7 @@ _baseData = createHashMapFromArray [
     ["patrol units",[]],
     ["patrol groups",[]],
     ["land vehicles",[]],
-    ["land vehicle groups",[]]
+    ["land vehicle groups",[]],
     ["agent list",[]]
 ];
 KISKA_bases_map set [_baseName,_baseData];
