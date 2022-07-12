@@ -18,6 +18,7 @@ Returns:
         "patrol groups": <ARRAY of GROUPs> - All patrol spawned groups
         "land vehicles": <ARRAY of OBJECTs> - All land spawned vehicles
         "land vehicle groups": <ARRAY of GROUPs> - All land vehicle crew groups
+        "agent list": <ARRAY of OBJECTs> - All spawned agents
 
 Examples:
     (begin example)
@@ -64,6 +65,7 @@ _baseData = createHashMapFromArray [
     ["patrol groups",[]],
     ["land vehicles",[]],
     ["land vehicle groups",[]]
+    ["agent list",[]]
 ];
 KISKA_bases_map set [_baseName,_baseData];
 

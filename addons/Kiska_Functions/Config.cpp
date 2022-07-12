@@ -94,6 +94,8 @@ class CfgFunctions
 			file = "Kiska_functions\Bases";
 			class bases_createFromConfig
 			{};
+			class bases_createFromConfig_agents
+			{};
 			class bases_createFromConfig_landVehicles
 			{};
 			class bases_createFromConfig_infantry
