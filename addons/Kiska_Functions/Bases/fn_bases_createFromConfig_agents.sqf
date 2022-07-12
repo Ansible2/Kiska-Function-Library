@@ -151,7 +151,7 @@ _agentClasses apply {
     };
 
     private _onAgentsCreated = getText(_classConfig >> "onAgentsCreated");
-    if (_onUnitsCreated isNotEqualTo "") then {
+    if (_onAgentsCreated isNotEqualTo "") then {
         _onAgentsCreated = compile _onAgentsCreated;
         [
             _onAgentsCreated,

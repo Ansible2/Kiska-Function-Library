@@ -121,11 +121,13 @@ _infantryClasses apply {
         _side
     ] call KISKA_fnc_spawn;
 
-
+    /* -------------------------------------------
+        Animate Class
+    ------------------------------------------- */
     private _animateClass = _classConfig >> "ambientAnim";
     if !(isNull _animateClass) then {
         private _animationSet = getText(_animateClass >> "animationSet");
-        if (_animationSet isEqualTo "") then {_equipmentLevel = "STAND"};
+        if (_animationSet isEqualTo "") then {_animationSet = "STAND"};
 
         private _equipmentLevel = getText(_animateClass >> "equipmentLevel");
         if (_equipmentLevel isEqualTo "") then {_equipmentLevel = "ASIS"};
