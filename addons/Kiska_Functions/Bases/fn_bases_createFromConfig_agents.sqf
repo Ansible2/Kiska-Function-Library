@@ -123,11 +123,13 @@ _agentClasses apply {
         _agents pushBack _agent;
     };
 
-
+    /* ---------------------------------
+        Animate
+    --------------------------------- */
     private _animateClass = _classConfig >> "ambientAnim";
     if !(isNull _animateClass) then {
         private _animationSet = getText(_animateClass >> "animationSet");
-        if (_animationSet isEqualTo "") then {_equipmentLevel = "STAND"};
+        if (_animationSet isEqualTo "") then {_animationSet = "STAND"};
 
         private _equipmentLevel = getText(_animateClass >> "equipmentLevel");
         if (_equipmentLevel isEqualTo "") then {_equipmentLevel = "ASIS"};
