@@ -506,6 +506,8 @@ class CfgFunctions
 			{};
 			class removeProximityPlayerAction
 			{};
+			class selectRandom
+			{};
 			class setContainerCargo
 			{};
 			class setupMultiKillEvent

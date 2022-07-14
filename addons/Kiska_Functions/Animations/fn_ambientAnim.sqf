@@ -8,11 +8,15 @@
 // user can manually terminate the animation
 // attempts to not play the same animation twice within the same general area
 // user can define levels of gear to remove from the unit
-//
+
+// handle remote units being passed
 
 params [
     ["_units",objNull,[[],objNull]],
-    ["_animationMap",configNull,[createHashMap,configNull]]
+    ["_animationMap",configNull,[createHashMap,configNull]],
+    ["_animSet","",["",[]]],
+    ["_equipmentLevel","",["",[]]],
+    ["_onAnimate",{},[{},[],""]]
 ];
 
 /* ----------------------------------------------------------------------------
@@ -53,10 +57,24 @@ JSON rep of map
             "anim1",
             "anim2"
         ],
-        unarmed: true
+        allowedGear: [
+            "full",
+            "light",
+            "medium"
+        ],
+        unarmed: true,
+        forceHolster: true,
+        interpolate: true // means animations will be played in a sequence
     }
 }
 */
+
+private _randomAnimSet = _animset isEqualType [];
+private _randomEquipmentLevel = _equipmentLevel isEqualType [];
+
+if (isNil "KISKA_ambientAnimUnitMap") then {
+    missionNamespace setVariable ["KISKA_ambientAnimUnitMap",createHashMap];
+};
 
 /* ----------------------------------------------------------------------------
 
@@ -64,7 +82,89 @@ JSON rep of map
 
 ---------------------------------------------------------------------------- */
 _units apply {
+    private _unit = _x;
+    private _unitInfoMap = createHashmap;
 
+    /* --------------------------------------
+        Get Animation Set Info
+    -------------------------------------- */
+    private _animSetSelection = _animset;
+    if (_randomAnimSet) then {
+        _animSetSelection = [_animSet,""] call KISKA_fnc_selectRandom;
+    };
+    private _animationSetInfo = _animationMap getOrDefault [_animSetSelection,[]];
+    if (_animationSetInfo isEqualTo []) then {
+        [["Empty animation set provided: ", _animSetSelection], true] call KISKA_fnc_log;
+        continue;
+    };
+
+    /* --------------------------------------
+        Handle Equipment
+    -------------------------------------- */
+    private _equipmentLevelSelection = _equipmentLevel;
+    if (_randomEquipmentLevel) then {
+        _equipmentLevelSelection = [_equipmentLevel,""] call KISKA_fnc_selectRandom;
+    };
+
+    private _unitLoadout = getUnitLoadout _unit;
+    _unitInfoMap set ["loadout",_unitLoadout];
+
+    private _makeUnitUnarmed = _animationSetInfo getOrDefault ["unarmed",false];
+    if (_makeUnitUnarmed) then {
+        removeAllWeapons _unit;
+    };
+
+    switch (_equipmentLevelSelection) do
+    {
+        case "NONE":
+        {
+            removeGoggles _unit;
+            removeHeadgear _unit;
+            removeVest _unit;
+            removeAllWeapons _unit;
+
+            _noBackpack = true;
+            _noWeapon = true;
+        };
+        case "LIGHT":
+        {
+            removeGoggles _unit;
+            removeHeadgear _unit;
+            removeVest _unit;
+
+            _noBackpack = true;
+        };
+        case "MEDIUM":
+        {
+            removeGoggles _unit;
+            removeHeadgear _unit;
+        };
+        case "FULL":
+        {
+            removeGoggles _unit;
+        };
+        default
+        {
+        };
+    };
+
+
+    private _isAgent = isAgent (teamMember _unit);
+    ["ANIM","AUTOTARGET","FSM","MOVE","TARGET"] apply {
+        _unit disableAI _x;
+    };
+
+    detach _unit;
+
+
+
+
+
+    [
+        missionNamespace getVariable "KISKA_ambientAnimUnitMap",
+        _unit,
+        _unitInfoMap
+    ] call KISKA_fnc_hashmap_set;
 };
 
 
