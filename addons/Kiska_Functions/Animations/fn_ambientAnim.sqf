@@ -15,9 +15,7 @@
 // TODO properties in map that can be object that units can get attached to and the relative coordinates needed
 //  to do so with setPosWorld
 
-// TODO: play animation function
 // TODO: terminate animations function
-// TODO: can interpolate property in animation set
 
 params [
     ["_units",objNull,[[],objNull]],
@@ -70,8 +68,13 @@ JSON rep of map
             "light",
             "medium"
         ],
+        snapToObjects: [
+            ["type",[[5,10,15],[0,1,0],[0,1,0]]] // relative pos, relative vectorDir, and vectorUp
+        ],
         unarmed: true,
         forceHolster: true,
+        removeAllWeapons: true,
+        removeBackpack: true,
         interpolate: true // means animations will be played in a sequence
     }
 }
@@ -109,6 +112,38 @@ _units apply {
 
 
     /* --------------------------------------
+        Handle Object Snapping
+    -------------------------------------- */
+    detach _unit;
+    private _snapToObjectsMap = _animationSetInfo getOrDefault ["snapToObjectsMap",[]];
+    if (_snapToObjectsMap isNotEqualTo []) then {
+        private _types = keys _snapToObjectsMap;
+
+        private _nearestObjects = nearestObjects [_unit, _types, 5, true];
+        _nearestObjects apply {
+            private _unitUsing = _x getVariable ["KISKA_ambientAnim_objectUsedBy",objNull];
+            if !(isNull _unitUsing) then {
+                continue;
+            };
+
+            _x setVariable ["KISKA_ambientAnim_objectUsedBy",_unit];
+            _unitInfoMap set ["snapToObject",_x];
+
+            private _relativeObjectInfo = _snapToObjectsMap get (typeOf _x);
+            private _relativeObjectPos = _relativeObjectInfo select 0;
+            private _relativeObjectVectorDir = _relativeObjectInfo select 1;
+            private _relativeObjectVectorUp = _relativeObjectInfo select 2;
+
+            _unit disableCollisionWith _x;
+            _unit setPosWorld (_x modelToWorld _relativeObjectPos);
+            _unit setVectorDir (_x vectorModelToWorld _relativeObjectVectorDir);
+            _unit setVectorUp (_x vectorModelToWorld _relativeObjectVectorUp);
+            break;
+        };
+    };
+
+
+    /* --------------------------------------
         Handle Equipment
     -------------------------------------- */
     private _unitLoadout = getUnitLoadout _unit;
@@ -117,6 +152,11 @@ _units apply {
     private _removeWeapons = _animationSetInfo getOrDefault ["removeWeapons",false];
     if (_removeWeapons) then {
         removeAllWeapons _unit;
+    };
+
+    private _removeBackpack = _animationSetInfo getOrDefault ["removeBackpack",false];
+    if (_removeBackpack) then {
+        removeBackpack _unit;
     };
 
     private _removeNightVision = _animationSetInfo getOrDefault ["removeNightVison",false];
@@ -167,7 +207,6 @@ _units apply {
         };
     };
 
-    detach _unit;
 
     private _nearUnits = _unit nearEntities ["man", 5];
     _unitInfoMap set ["_nearUnits",_nearUnits];
