@@ -11,6 +11,14 @@
 
 // handle remote units being passed
 
+
+// TODO properties in map that can be object that units can get attached to and the relative coordinates needed
+//  to do so with setPosWorld
+
+// TODO: play animation function
+// TODO: terminate animations function
+// TODO: can interpolate property in animation set
+
 params [
     ["_units",objNull,[[],objNull]],
     ["_animationMap",configNull,[createHashMap,configNull]],
@@ -72,10 +80,6 @@ JSON rep of map
 private _randomAnimSet = _animset isEqualType [];
 private _randomEquipmentLevel = _equipmentLevel isEqualType [];
 
-if (isNil "KISKA_ambientAnimUnitMap") then {
-    missionNamespace setVariable ["KISKA_ambientAnimUnitMap",createHashMap];
-};
-
 /* ----------------------------------------------------------------------------
 
     Apply Animations
@@ -83,6 +87,10 @@ if (isNil "KISKA_ambientAnimUnitMap") then {
 ---------------------------------------------------------------------------- */
 _units apply {
     private _unit = _x;
+    if !(alive _unit) then {
+        continue;
+    };
+
     private _unitInfoMap = createHashmap;
 
     /* --------------------------------------
@@ -97,23 +105,29 @@ _units apply {
         [["Empty animation set provided: ", _animSetSelection], true] call KISKA_fnc_log;
         continue;
     };
+    _unitInfoMap set ["_animationSetInfo",_animationSetInfo];
+
 
     /* --------------------------------------
         Handle Equipment
     -------------------------------------- */
+    private _unitLoadout = getUnitLoadout _unit;
+    _unitInfoMap set ["_unitLoadout",_unitLoadout];
+
+    private _removeWeapons = _animationSetInfo getOrDefault ["removeWeapons",false];
+    if (_removeWeapons) then {
+        removeAllWeapons _unit;
+    };
+
+    private _removeNightVision = _animationSetInfo getOrDefault ["removeNightVison",false];
+    if (_removeNightVision) then {
+        removeAllAssignedItems _unit;
+    };
+
     private _equipmentLevelSelection = _equipmentLevel;
     if (_randomEquipmentLevel) then {
         _equipmentLevelSelection = [_equipmentLevel,""] call KISKA_fnc_selectRandom;
     };
-
-    private _unitLoadout = getUnitLoadout _unit;
-    _unitInfoMap set ["loadout",_unitLoadout];
-
-    private _makeUnitUnarmed = _animationSetInfo getOrDefault ["unarmed",false];
-    if (_makeUnitUnarmed) then {
-        removeAllWeapons _unit;
-    };
-
     switch (_equipmentLevelSelection) do
     {
         case "NONE":
@@ -122,17 +136,14 @@ _units apply {
             removeHeadgear _unit;
             removeVest _unit;
             removeAllWeapons _unit;
-
-            _noBackpack = true;
-            _noWeapon = true;
+            removeBackpack _unit;
         };
         case "LIGHT":
         {
             removeGoggles _unit;
             removeHeadgear _unit;
             removeVest _unit;
-
-            _noBackpack = true;
+            removeBackpack _unit;
         };
         case "MEDIUM":
         {
@@ -150,21 +161,48 @@ _units apply {
 
 
     private _isAgent = isAgent (teamMember _unit);
-    ["ANIM","AUTOTARGET","FSM","MOVE","TARGET"] apply {
-        _unit disableAI _x;
+    if !(_isAgent) then {
+        ["ANIM","AUTOTARGET","FSM","MOVE","TARGET"] apply {
+            _unit disableAI _x;
+        };
     };
 
     detach _unit;
 
+    private _nearUnits = _unit nearEntities ["man", 5];
+    _unitInfoMap set ["_nearUnits",_nearUnits];
+
+
+    /* --------------------------------------
+        Add Eventhandlers
+    -------------------------------------- */
+    private _animDoneEventHandlerId = _unit addEventHandler ["AnimDone",
+        {
+            params ["_unit","_anim"];
+
+            if (alive _unit) then {
+                _this call KISKA_fnc_ambientAnim_play;
+
+            } else {
+                [_unit] call KISKA_fnc_ambientAnim_terminate;
+
+            };
+        }
+    ];
+    _unitInfoMap set ["_animDoneEventHandlerId",_animDoneEventHandlerId];
+
+
+    private _unitKilledEventHandlerId = _unit addEventHandler ["KILLED",
+        {
+            params ["_unit"];
+            [_unit] call KISKA_fnc_ambientAnim_terminate;
+        }
+    ];
+    _unitInfoMap set ["_unitKilledEventHandlerId",_unitKilledEventHandlerId];
 
 
 
-
-    [
-        missionNamespace getVariable "KISKA_ambientAnimUnitMap",
-        _unit,
-        _unitInfoMap
-    ] call KISKA_fnc_hashmap_set;
+    _unit setVariable ["KISKA_ambientAnimMap",_unitInfoMap];
 };
 
 

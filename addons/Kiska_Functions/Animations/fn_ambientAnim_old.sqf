@@ -275,7 +275,8 @@ _linked = _linked - [_unit];
         };
     };
 }
-forEach _linked; _linked = _linked - [objNull];
+forEach _linked;
+_linked = _linked - [objNull];
 
 //["[%1] AFTER CLEAN linked: %2",_unit,_linked] call BIS_fnc_logFormat;
 
