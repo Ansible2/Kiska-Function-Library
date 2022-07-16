@@ -149,8 +149,8 @@ _units apply {
     private _unitLoadout = getUnitLoadout _unit;
     _unitInfoMap set ["_unitLoadout",_unitLoadout];
 
-    private _removeWeapons = _animationSetInfo getOrDefault ["removeWeapons",false];
-    if (_removeWeapons) then {
+    private _removeAllWeapons = _animationSetInfo getOrDefault ["removeAllWeapons",false];
+    if (_removeAllWeapons) then {
         removeAllWeapons _unit;
     };
 

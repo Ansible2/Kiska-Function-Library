@@ -18,22 +18,34 @@ _animationMap = createHashMap;
 private _classes = configProperties [_config, "isClass _x", true];
 
 _classes apply {
-    private _animationSetMap = createHashMap;
+    // map for specific animation set class
+    private _animationSetInfo = createHashMap;
     private _animations = getArray(_x >> "animations");
     if (_animations isEqualTo []) then {
         [["Class: ", _x," did not have any animations defined and will not be parsed!",true]] call KISKA_fnc_log;
         continue;
     };
-    _animationSetMap set ["animations", _animations];
+    _animationSetInfo set ["animations", _animations];
 
 
     private _snapToObjects = getArray(_x >> "snapToObjects");
     if (_snapToObjects isNotEqualTo []) then {
         private _snapToObjectsMap = createHashMapFromArray _snapToObjects;
-        _animationSetMap set ["snapToObjectsMap", _snapToObjectsMap];
+        _animationSetInfo set ["snapToObjectsMap", _snapToObjectsMap];
     };
 
 
+    private _removeAllWeapons = [_x >> "removeAllWeapons"] call BIS_fnc_getCfgDataBool;
+    _animationSetInfo set ["removeAllWeapons",_removeAllWeapons];
+
+    private _removeBackpack = [_x >> "removeBackpack"] call BIS_fnc_getCfgDataBool;
+    _animationSetInfo set ["removeBackpack",_removeBackpack];
+
+    private _removeNightVision = [_x >> "removeNightVision"] call BIS_fnc_getCfgDataBool;
+    _animationSetInfo set ["removeNightVision",_removeNightVision];
+
+
+    _animationMap set [configName _x, _animationSetInfo];
 };
 KISKA_ambientAnim_animationSetMap set [_config, _animationMap];
 
