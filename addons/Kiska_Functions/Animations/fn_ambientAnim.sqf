@@ -12,10 +12,11 @@
 // handle remote units being passed
 
 
-// TODO properties in map that can be object that units can get attached to and the relative coordinates needed
+// TODO: properties in map that can be object that units can get attached to and the relative coordinates needed
 //  to do so with setPosWorld
-
 // TODO: terminate animations function
+// TODO: combat exit
+// TODO: implement callback functions
 
 params [
     ["_units",objNull,[[],objNull]],
@@ -130,14 +131,9 @@ _units apply {
             _unitInfoMap set ["snapToObject",_x];
 
             private _relativeObjectInfo = _snapToObjectsMap get (typeOf _x);
-            private _relativeObjectPos = _relativeObjectInfo select 0;
-            private _relativeObjectVectorDir = _relativeObjectInfo select 1;
-            private _relativeObjectVectorUp = _relativeObjectInfo select 2;
-
             _unit disableCollisionWith _x;
-            _unit setPosWorld (_x modelToWorld _relativeObjectPos);
-            _unit setVectorDir (_x vectorModelToWorld _relativeObjectVectorDir);
-            _unit setVectorUp (_x vectorModelToWorld _relativeObjectVectorUp);
+            [_x,_unit,_relativeObjectInfo] call KISKA_fnc_setRelativeVectorDirAndPos;
+
             break;
         };
     };

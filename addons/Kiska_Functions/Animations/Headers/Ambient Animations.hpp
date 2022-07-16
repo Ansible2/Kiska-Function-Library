@@ -62,4 +62,49 @@ class KISKA_AmbientAnimations
 
         removeAllWeapons = TRUE;
     };
+
+    class SIT_CHAIR_UNARMED
+    {
+        animations[] = {
+            "HubSittingChairA_idle1",
+            "HubSittingChairA_idle2",
+            "HubSittingChairA_idle3",
+            "HubSittingChairA_move1"
+        };
+
+        snapToObjects[] = {
+            {"Land_ChairPlastic_F",{
+                {0.21793,-0.0107422,4.46834},
+                {0.980642,-0.0994109,0.168695},
+                {-0.166414,0.0308706,0.985573}
+            }},
+            {"Land_CampingChair_V2_F",{
+                {-0.0107422,-0.0825195,4.53242},
+                {-0.099553,-0.994288,-0.0384766},
+                {0.0308706,-0.0417363,0.998652}
+            }},
+            {"Land_CampingChair_V1_F",{
+                {-0.0107422,-0.0825195,4.53242},
+                {-0.099553,-0.994288,-0.0384766},
+                {0.0308706,-0.0417363,0.998652}
+            }},
+            {"Land_ChairWood_F",{
+                {-0.0170898,0.0266113,5.03957},
+                {-0.099553,-0.994288,-0.0384766},
+                {0.0308706,-0.0417363,0.998652}
+            }},
+            {"Land_OfficeChair_01_F",{
+                {-0.0170898,0.0266113,5.03957},
+                {-0.099553,-0.994288,-0.0384766},
+                {0.0308706,-0.0417363,0.998652}
+            }}
+        };
+
+        removeBackpack = TRUE;
+    };
+
+    class SIT_CHAIR_ARMED : SIT_CHAIR_UNARMED
+    {
+
+    };
 };

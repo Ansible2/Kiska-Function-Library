@@ -48,6 +48,9 @@ _classes apply {
     private _removeNightVision = [_x >> "removeNightVision"] call BIS_fnc_getCfgDataBool;
     _animationSetInfo set ["removeNightVision",_removeNightVision];
 
+    private _canInterpolate = [_x >> "canInterpolate"] call BIS_fnc_getCfgDataBool;
+    _animationSetInfo set ["canInterpolate",_canInterpolate];
+
 
     _animationMap set [configName _x, _animationSetInfo];
 };
