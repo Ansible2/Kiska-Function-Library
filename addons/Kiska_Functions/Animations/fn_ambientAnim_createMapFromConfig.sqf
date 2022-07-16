@@ -1,14 +1,33 @@
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_ambientAnim_createMapFromConfig
+
+Description:
+
+
+Parameters:
+	0:  <> -
+
+Returns:
+
+Examples:
+    (begin example)
+
+    (end)
+
+Author(s):
+	Ansible2
+---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ambientAnim_createMapFromConfig";
 
 params [
     ["_config",configNull,[configNull]]
 ];
 
+
 if (isNull _config) exitWith {
     ["Null config passed!",true] call KISKA_fnc_log;
     []
 };
-
 
 if (isNil "KISKA_ambientAnim_configAnimationSetMap") then {
     missionNamespace setVariable ["KISKA_ambientAnim_configAnimationSetMap",createHashMap];
@@ -18,9 +37,9 @@ private _animationMap = KISKA_ambientAnim_configAnimationSetMap getOrDefault [_c
 if (_animationMap isNotEqualTo []) exitWith {_animationMap};
 
 
+
 _animationMap = createHashMap;
 private _classes = configProperties [_config, "isClass _x", true];
-
 _classes apply {
     // map for specific animation set class
     private _animationSetInfo = createHashMap;

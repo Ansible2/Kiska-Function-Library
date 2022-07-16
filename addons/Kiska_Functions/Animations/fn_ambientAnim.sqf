@@ -1,3 +1,23 @@
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_ambientAnim
+
+Description:
+
+
+Parameters:
+	0:  <> -
+
+Returns:
+
+Examples:
+    (begin example)
+
+    (end)
+
+Author(s):
+	Ansible2
+---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_ambientAnim";
 // Works with agents
 // Is able to take an animation map as a parameter
 // Is able to convert a config into an animation map
@@ -56,33 +76,9 @@ if (_animationMapIsConfig) then {
     _animationMap = [_animationMap] call KISKA_fnc_ambientAnim_createMapFromConfig;
 };
 
-/*
-JSON rep of map
-{
-    someAnimSet: {
-        animations: [
-            "anim1",
-            "anim2"
-        ],
-        allowedGear: [
-            "full",
-            "light",
-            "medium"
-        ],
-        snapToObjects: [
-            ["type",[[5,10,15],[0,1,0],[0,1,0]]] // relative pos, relative vectorDir, and vectorUp
-        ],
-        unarmed: true,
-        forceHolster: true,
-        removeAllWeapons: true,
-        removeBackpack: true,
-        interpolate: true // means animations will be played in a sequence
-    }
-}
-*/
-
 private _randomAnimSet = _animset isEqualType [];
 private _randomEquipmentLevel = _equipmentLevel isEqualType [];
+
 
 /* ----------------------------------------------------------------------------
 
@@ -95,8 +91,12 @@ _units apply {
         continue;
     };
 
-    private _unitInfoMap = createHashmap;
+    private _unitIsAnimated = (_unit getVariable ["KISKA_ambientAnimMap",[]]) isNotEqualTo [];
+    if (_unitIsAnimated) then {
+        [_unit] call KISKA_fnc_ambientAnim_stop;
+    };
 
+    private _unitInfoMap = createHashmap;
     /* --------------------------------------
         Get Animation Set Info
     -------------------------------------- */
@@ -128,7 +128,7 @@ _units apply {
             };
 
             _x setVariable ["KISKA_ambientAnim_objectUsedBy",_unit];
-            _unitInfoMap set ["snapToObject",_x];
+            _unitInfoMap set ["_snapToObject",_x];
 
             private _relativeObjectInfo = _snapToObjectsMap get (typeOf _x);
             _unit disableCollisionWith _x;
@@ -205,10 +205,6 @@ _units apply {
     };
 
 
-    private _nearUnits = _unit nearEntities ["man", 5];
-    _unitInfoMap set ["_nearUnits",_nearUnits];
-
-
     /* --------------------------------------
         Add Eventhandlers
     -------------------------------------- */
@@ -220,7 +216,7 @@ _units apply {
                 _this call KISKA_fnc_ambientAnim_play;
 
             } else {
-                [_unit] call KISKA_fnc_ambientAnim_terminate;
+                [_unit] call KISKA_fnc_ambientAnim_stop;
 
             };
         }
@@ -231,7 +227,7 @@ _units apply {
     private _unitKilledEventHandlerId = _unit addEventHandler ["KILLED",
         {
             params ["_unit"];
-            [_unit] call KISKA_fnc_ambientAnim_terminate;
+            [_unit] call KISKA_fnc_ambientAnim_stop;
         }
     ];
     _unitInfoMap set ["_unitKilledEventHandlerId",_unitKilledEventHandlerId];

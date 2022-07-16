@@ -1,3 +1,22 @@
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_ambientAnim_play
+
+Description:
+
+
+Parameters:
+	0:  <> -
+
+Returns:
+
+Examples:
+    (begin example)
+
+    (end)
+
+Author(s):
+	Ansible2
+---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ambientAnim_play";
 
 params [
@@ -6,7 +25,7 @@ params [
 ];
 
 if !(alive _unit) exitWith {
-    [_unit] call KISKA_fnc_ambientAnim_terminate;
+    [_unit] call KISKA_fnc_ambientAnim_stop;
 };
 
 private _ambientAnimInfoMap = _unit getVariable ["KISKA_ambientAnimMap",[]];
