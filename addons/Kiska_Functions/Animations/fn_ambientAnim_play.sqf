@@ -1,12 +1,20 @@
 scriptName "KISKA_fnc_ambientAnim_play";
 
-params ["_unit","_previousAnim"];
+params [
+    ["_unit",objNull,[objNull]],
+    ["_previousAnim","",[""]]
+];
 
 if !(alive _unit) exitWith {
     [_unit] call KISKA_fnc_ambientAnim_terminate;
 };
 
 private _ambientAnimInfoMap = _unit getVariable ["KISKA_ambientAnimMap",[]];
+if (_ambientAnimInfoMap isEqualTo []) exitWith {
+    ["Error: _ambientAnimInfoMap not found",true] call KISKA_fnc_log;
+    nil
+};
+
 
 private _animationSetInfo = _ambientAnimInfoMap get "_animationSetInfo";
 private _nearUnits = _unit nearEntities ["man", 5];

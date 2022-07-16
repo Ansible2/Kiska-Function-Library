@@ -10,7 +10,11 @@ if (isNull _config) exitWith {
 };
 
 
-private _animationMap = KISKA_ambientAnim_animationSetMap getOrDefault [_config,[]];
+if (isNil "KISKA_ambientAnim_configAnimationSetMap") then {
+    missionNamespace setVariable ["KISKA_ambientAnim_configAnimationSetMap",createHashMap];
+};
+
+private _animationMap = KISKA_ambientAnim_configAnimationSetMap getOrDefault [_config,[]];
 if (_animationMap isNotEqualTo []) exitWith {_animationMap};
 
 
@@ -47,7 +51,7 @@ _classes apply {
 
     _animationMap set [configName _x, _animationSetInfo];
 };
-KISKA_ambientAnim_animationSetMap set [_config, _animationMap];
+KISKA_ambientAnim_configAnimationSetMap set [_config, _animationMap];
 
 
 _animationMap

@@ -177,6 +177,7 @@ _units apply {
             removeVest _unit;
             removeAllWeapons _unit;
             removeBackpack _unit;
+            removeAllAssignedItems _unit;
         };
         case "LIGHT":
         {
@@ -242,6 +243,7 @@ _units apply {
 
 
     _unit setVariable ["KISKA_ambientAnimMap",_unitInfoMap];
+    [_unit] call KISKA_fnc_ambientAnim_play;
 };
 
 

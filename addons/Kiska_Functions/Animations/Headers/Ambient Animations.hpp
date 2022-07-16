@@ -29,7 +29,7 @@ class KISKA_AmbientAnimations
 
     class STAND_U1
     {
-        animtions[] = {
+        animations[] = {
             "HubStandingUA_idle1",
             "HubStandingUA_idle2",
             "HubStandingUA_idle3",
@@ -41,7 +41,7 @@ class KISKA_AmbientAnimations
     };
     class STAND_U2
     {
-        animtions[] = {
+        animations[] = {
             "HubStandingUB_idle1",
             "HubStandingUB_idle2",
             "HubStandingUB_idle3",
@@ -52,7 +52,7 @@ class KISKA_AmbientAnimations
     };
     class STAND_U3
     {
-        animtions[] = {
+        animations[] = {
             "HubStandingUC_idle1",
             "HubStandingUC_idle2",
             "HubStandingUC_idle3",

@@ -16,10 +16,10 @@ Returns:
 
 Examples:
     (begin example)
-		private _randomValue = [
+		private _randomValue = [[
             "thing1",
             "thing2"
-        ] call KISKA_fnc_selectRandom;
+        ]] call KISKA_fnc_selectRandom;
     (end)
     (begin example)
         private _weight1 = 0.5;
@@ -42,9 +42,14 @@ params [
     "_valueType"
 ];
 
+if (isNil "_valueType") exitWith {
+    selectRandom _array;
+};
+
 private _weightedArray = _array isEqualTypeParams [_valueType,1];
 if (_weightedArray) exitWith {
     selectRandomWeighted _array;
 };
+
 
 selectRandom _array;
