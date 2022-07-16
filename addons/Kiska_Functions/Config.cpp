@@ -454,6 +454,8 @@ class CfgFunctions
 			{};
 			class getPlayerObject
 			{};
+			class getRelativeVectorAndPos
+			{};
 			class getVariableTarget
 			{};
 			class getVariableTarget_sendBack
@@ -509,6 +511,8 @@ class CfgFunctions
 			class selectRandom
 			{};
 			class setContainerCargo
+			{};
+			class setRelativeVectorAndPos
 			{};
 			class setupMultiKillEvent
 			{};
