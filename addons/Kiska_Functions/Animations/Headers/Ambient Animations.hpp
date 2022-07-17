@@ -2,6 +2,70 @@
 
 class KISKA_AmbientAnimations
 {
+    class BRIEFING
+    {
+        animations[] = {
+            "hubbriefing_loop",
+            "hubbriefing_loop",
+            "hubbriefing_loop",
+            "hubbriefing_lookaround1",
+            "hubbriefing_lookaround2",
+            "hubbriefing_scratch",
+            "hubbriefing_stretch",
+            "hubbriefing_talkaround"
+        };
+
+        // TEST NO backapack and weapon
+    };
+    class BRIEFING_POINT_LEFT
+    {
+        animations[] = {
+            "hubbriefing_loop",
+            "hubbriefing_loop",
+            "hubbriefing_loop",
+            "hubbriefing_lookaround1",
+            "hubbriefing_lookaround2",
+            "hubbriefing_pointleft",
+            "hubbriefing_scratch",
+            "hubbriefing_stretch",
+            "hubbriefing_talkaround"
+        };
+
+        // TEST NO backapack and weapon
+    };
+    class BRIEFING_POINT_RIGHT
+    {
+        animations[] = {
+            "hubbriefing_loop",
+            "hubbriefing_loop",
+            "hubbriefing_loop",
+            "hubbriefing_lookaround1",
+            "hubbriefing_lookaround2",
+            "hubbriefing_pointright",
+            "hubbriefing_scratch",
+            "hubbriefing_stretch",
+            "hubbriefing_talkaround"
+        };
+
+        // TEST NO backapack and weapon
+    };
+    class BRIEFING_POINT_TABLE
+    {
+        animations[] = {
+            "hubbriefing_loop",
+            "hubbriefing_loop",
+            "hubbriefing_loop",
+            "hubbriefing_lookaround1",
+            "hubbriefing_lookaround2",
+            "hubbriefing_pointattable",
+            "hubbriefing_scratch",
+            "hubbriefing_stretch",
+            "hubbriefing_talkaround"
+        };
+
+        // TEST NO backapack and weapon
+    };
+
     class KNEEL
     {
         animations[] = {
