@@ -127,60 +127,20 @@ _infantryClasses apply {
     private _animateClass = _classConfig >> "ambientAnim";
     if !(isNull _animateClass) then {
         private _animationSet = (_animateClass >> "animationSet") call BIS_fnc_getCfgData;
-        if (_animationSet isEqualTo "") then {_animationSet = "STAND"};
-        private _randomAnimationSet = _animationSet isEqualType [];
-
         private _equipmentLevel = (_animateClass >> "equipmentLevel") call BIS_fnc_getCfgData;
-        if (_equipmentLevel isEqualTo "") then {_equipmentLevel = "ASIS"};
-        private _randomEquipmentLevel = _equipmentLevel isEqualType [];
-
-        private _conditionToExit = getText(_animateClass >> "conditionToExit");
-        _conditionToExit = compile _conditionToExit;
-        if (_conditionToExit isEqualTo {}) then {
-            _conditionToExit = { false };
+        private _snapToRange = getNumber(_animateClass >> "snapToRange");
+        if (_snapToRange isEqualTo 0) then {
+            _snapToRange = 5;
         };
-
-        private _behaviourAfterExit = getText(_animateClass >> "behaviourAfterExit");
-        if (_behaviourAfterExit isEqualTo "") then {_behaviourAfterExit = "COMBAT"};
-
         private _combat = [_x >> "combat"] call BIS_fnc_getCfgDataBool;
-        if (_combat) exitWith {
-            _units apply {
-                private _equipment = _equipmentLevel;
-                private _animationType = _animationSet;
-                if (_randomAnimationSet) then {_animationType = selectRandom _animationSet};
-                if (_randomEquipmentLevel) then {_equipment = selectRandom _equipmentLevel};
 
-                [
-                    _x,
-                    _animationType,
-                    _equipment,
-                    _conditionToExit,
-                    _behaviourAfterExit
-                ] call BIS_fnc_ambientAnimCombat;
-            };
-        };
-
-        private _interpolate = [_x >> "interpolate"] call BIS_fnc_getCfgDataBool;
-        // attachToLogic in BIS_fnc_ambientAnim is default true,
-        // this ensures that intention if dontAttachToLogic is undefined in the config
-        private _attachToLogic = !([_x >> "dontAttachToLogic"] call BIS_fnc_getCfgDataBool);
-        _units apply {
-            private _equipment = _equipmentLevel;
-            private _animationType = _animationSet;
-            if (_randomAnimationSet) then {_animationType = selectRandom _animationSet};
-            if (_randomEquipmentLevel) then {_equipment = selectRandom _equipmentLevel};
-
-            [
-                _x,
-                _animationType,
-                _equipment,
-                objNull,
-                _interpolate,
-                _attachToLogic
-            ] call BIS_fnc_ambientAnim;
-        };
-
+        [
+            _units,
+            _animationSet,
+            _combat,
+            _equipmentLevel,
+            _snapToRange
+        ] call KISKA_fnc_ambientAnim;
     };
 
     private _onUnitsCreated = getText(_classConfig >> "onUnitsCreated");
