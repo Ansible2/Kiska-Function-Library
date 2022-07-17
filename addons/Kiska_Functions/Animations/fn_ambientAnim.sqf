@@ -51,7 +51,8 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ambientAnim";
 // TODO: handle remote units being passed
-// TODO: Add supplemental animation sets
+// TODO: Add supplemental animation sets by using polpox animation viewer
+// TODO: Add LEAN_ON_TABLE animation set
 
 #define DEFAULT_ANIMATION_MAP (configFile >> "KISKA_AmbientAnimations")
 
