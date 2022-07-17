@@ -7,20 +7,16 @@ class KISKA_AmbientAnimations
         animations[] = {
             "hubbriefing_loop",
             "hubbriefing_loop",
-            "hubbriefing_loop",
             "hubbriefing_lookaround1",
             "hubbriefing_lookaround2",
             "hubbriefing_scratch",
             "hubbriefing_stretch",
             "hubbriefing_talkaround"
         };
-
-        // TEST NO backapack and weapon
     };
     class BRIEFING_POINT_LEFT
     {
         animations[] = {
-            "hubbriefing_loop",
             "hubbriefing_loop",
             "hubbriefing_loop",
             "hubbriefing_lookaround1",
@@ -30,13 +26,10 @@ class KISKA_AmbientAnimations
             "hubbriefing_stretch",
             "hubbriefing_talkaround"
         };
-
-        // TEST NO backapack and weapon
     };
     class BRIEFING_POINT_RIGHT
     {
         animations[] = {
-            "hubbriefing_loop",
             "hubbriefing_loop",
             "hubbriefing_loop",
             "hubbriefing_lookaround1",
@@ -46,13 +39,10 @@ class KISKA_AmbientAnimations
             "hubbriefing_stretch",
             "hubbriefing_talkaround"
         };
-
-        // TEST NO backapack and weapon
     };
     class BRIEFING_POINT_TABLE
     {
         animations[] = {
-            "hubbriefing_loop",
             "hubbriefing_loop",
             "hubbriefing_loop",
             "hubbriefing_lookaround1",
@@ -62,8 +52,6 @@ class KISKA_AmbientAnimations
             "hubbriefing_stretch",
             "hubbriefing_talkaround"
         };
-
-        // TEST NO backapack and weapon
     };
 
     class KNEEL
@@ -134,19 +122,24 @@ class KISKA_AmbientAnimations
         removeBackpack = TRUE;
     };
 
+
+    class KNEEL_TREAT_KEEP_PRESSURE
+    {
+        animations[] = {
+            "ainvpknlmstpsnonwnondnon_medic1"
+        };
+    };
     class KNEEL_TREAT_1
     {
         animations[] = {
             "ainvpknlmstpsnonwnondnon_medic",
             "ainvpknlmstpsnonwnondnon_medic0",
-            "ainvpknlmstpsnonwnondnon_medic1",
+            /* "ainvpknlmstpsnonwnondnon_medic1", */ // this animation does not end. Ruins looping
             "ainvpknlmstpsnonwnondnon_medic2",
             "ainvpknlmstpsnonwnondnon_medic3",
             "ainvpknlmstpsnonwnondnon_medic4",
-            "ainvpknlmstpsnonwnondnon_medic5"
+            /* "ainvpknlmstpsnonwnondnon_medic5" */ // this animation does not end. Ruins looping
         };
-
-        // TEST Me to see if weapons need to be removed
     };
     class KNEEL_TREAT_2 : KNEEL_TREAT_1
     {
@@ -158,8 +151,6 @@ class KISKA_AmbientAnimations
             "acts_treatingwounded05",
             "acts_treatingwounded06"
         };
-
-        // TEST Me to see if weapons need to be removed
     };
 
     class STAND
@@ -511,9 +502,6 @@ class KISKA_AmbientAnimations
             "aidlpsitmstpsnonwnondnon_ground00",
             "amovpsitmstpsnonwnondnon_ground"
         };
-
-        // TEST ME!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // see if backpack or weapons need to be removed
     };
 
     class WATCH_1
