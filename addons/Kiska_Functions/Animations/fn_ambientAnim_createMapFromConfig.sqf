@@ -50,11 +50,46 @@ _classes apply {
     };
     _animationSetInfo set ["animations", _animations];
 
+    private _snapToObjectsConfig = _x >> "snapToObjects";
 
-    private _snapToObjects = getArray(_x >> "snapToObjects");
-    if (_snapToObjects isNotEqualTo []) then {
-        private _snapToObjectsMap = createHashMapFromArray _snapToObjects;
-        _animationSetInfo set ["snapToObjectsMap", _snapToObjectsMap];
+    private _snapToObjects = [];
+    if !(isNull _snapToObjectsConfig) then {
+        if (isArray _snapToObjectsConfig) then {
+            _snapToObjects = getArray(_x >> "snapToObjects");
+        };
+
+        if (isClass _snapToObjectsConfig) then {
+            private _snapToObjectClasses = configProperties [_snapToObjectsConfig,"isCLass _x"];
+            _snapToObjectClasses apply {
+                private _objectClassConfig = _x;
+                private _type = getText(_objectClassConfig >> "type");
+                if (_type isEqualTo "") then {
+                    [["No type found parsing relative object info for ",_objectClassConfig],true] call KISKA_fnc_log;
+                    continue;
+                };
+
+                private _relativeInfoArray = getArray(_objectClassConfig >> "relativeInfo");
+                if (_relativeInfoArray isNotEqualTo []) then {
+                    _snapToObjects pushBack [_type, _relativeInfoArray];
+
+                } else {
+                    _snapToObjects pushBack [
+                        _type,
+                        [
+                            getText(_objectClassConfig >> "relativePos"),
+                            getText(_objectClassConfig >> "relativeDir"),
+                            getText(_objectClassConfig >> "relativeUp")
+                        ]
+                    ];
+
+                };
+            };
+        };
+
+        if (_snapToObjects isNotEqualTo []) then {
+            private _snapToObjectsMap = createHashMapFromArray _snapToObjects;
+            _animationSetInfo set ["snapToObjectsMap", _snapToObjectsMap];
+        };
     };
 
 

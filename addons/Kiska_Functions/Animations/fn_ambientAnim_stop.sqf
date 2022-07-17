@@ -63,4 +63,5 @@ _unit enableCollisionWith _snapToObject;
 
 _unit setVariable ["KISKA_ambientAnimMap",nil];
 
+
 nil

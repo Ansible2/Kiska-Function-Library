@@ -34,7 +34,6 @@ scriptName "KISKA_fnc_ambientAnim";
 
 // TODO: properties in map that can be object that units can get attached to and the relative coordinates needed
 //  to do so with setPosWorld
-// TODO: terminate animations function
 // TODO: combat exit
 // TODO: implement callback functions
 
@@ -43,7 +42,7 @@ params [
     ["_animationMap",configNull,[createHashMap,configNull]],
     ["_animSet","",["",[]]],
     ["_equipmentLevel","",["",[]]],
-    ["_onAnimate",{},[{},[],""]]
+    ["_canSnap",true,[true]]
 ];
 
 /* ----------------------------------------------------------------------------
@@ -117,7 +116,7 @@ _units apply {
     -------------------------------------- */
     detach _unit;
     private _snapToObjectsMap = _animationSetInfo getOrDefault ["snapToObjectsMap",[]];
-    if (_snapToObjectsMap isNotEqualTo []) then {
+    if (_canSnap AND (_snapToObjectsMap isNotEqualTo [])) then {
         private _types = keys _snapToObjectsMap;
 
         private _nearestObjects = nearestObjects [_unit, _types, 5, true];
