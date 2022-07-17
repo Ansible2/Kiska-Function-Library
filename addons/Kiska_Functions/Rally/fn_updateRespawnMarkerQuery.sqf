@@ -38,7 +38,11 @@ if !(_groupLeader isEqualTo player) exitWith {
 };
 
 private _groupName = groupId _group;
-[_groupLeader, ([_groupName,"spawnMarker"] joinString "_"), ([_groupName,"Respawn Beacon"] joinString " ")] remoteExecCall ["KISKA_fnc_updateRespawnMarker",2];
+[
+	_groupLeader,
+	([_groupName,"spawnMarker"] joinString "_"),
+	([_groupName,"Respawn Beacon"] joinString " ")
+] remoteExecCall ["KISKA_fnc_updateRespawnMarker",2];
 
 
 nil
