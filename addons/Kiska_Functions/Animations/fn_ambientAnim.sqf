@@ -32,17 +32,21 @@ scriptName "KISKA_fnc_ambientAnim";
 // handle remote units being passed
 
 
-// TODO: properties in map that can be object that units can get attached to and the relative coordinates needed
-//  to do so with setPosWorld
-// TODO: combat exit
-// TODO: implement callback functions
+// TODO: Test exit
+// TODO: Test snapping
+// TODO: Fill out snapping
+// TODO: combat exit handling
+
+/* #define DEFAULT_ANIMATION_MAP (configFile >> "KISKA_AmbientAnimations") */
+#define DEFAULT_ANIMATION_MAP (missionConfigFile >> "KISKA_AmbientAnimations")
 
 params [
     ["_units",objNull,[[],objNull]],
-    ["_animationMap",configNull,[createHashMap,configNull]],
     ["_animSet","",["",[]]],
+    ["_exitOnCombat",false,[true]],
     ["_equipmentLevel","",["",[]]],
-    ["_canSnap",true,[true]]
+    ["_canSnap",true,[true]],
+    ["_animationMap",DEFAULT_ANIMATION_MAP,[createHashMap,configNull]]
 ];
 
 /* ----------------------------------------------------------------------------
@@ -231,7 +235,27 @@ _units apply {
     ];
     _unitInfoMap set ["_unitKilledEventHandlerId",_unitKilledEventHandlerId];
 
+    if (_exitOnCombat) then {
+        private _behaviourEventId = [
+            _unit,
+            (configFile >> "KISKA_eventHandlers" >> "Behaviour"),
+            {
+                params ["_unit","_behaviour","_eventHandlerConfig"];
 
+                if (_behaviour == "COMBAT") then {
+                    [
+                        _unit,
+                        _eventHandlerConfig,
+                        _thisScriptedEventhandler
+                    ] call KISKA_fnc_eventHandler_remove;
+
+                    [_unit] call KISKA_fnc_ambientAnim_stop;
+                };
+            }
+        ] call KISKA_fnc_eventHandler_addFromConfig;
+
+        _unitInfoMap set ["_behaviourEventId",_behaviourEventId];
+    };
 
     _unit setVariable ["KISKA_ambientAnimMap",_unitInfoMap];
     [_unit] call KISKA_fnc_ambientAnim_play;

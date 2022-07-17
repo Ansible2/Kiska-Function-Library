@@ -56,12 +56,20 @@ _unit removeEventHandler ["AnimDone", _animDoneEventHandlerId];
 private _unitKilledEventHandlerId = _ambientAnimInfoMap get "_unitKilledEventHandlerId";
 _unit removeEventHandler ["KILLED", _unitKilledEventHandlerId];
 
+private _behaviourEventId = _ambientAnimInfoMap getOrDefault ["_behaviourEventId",-1];
+if (_behaviourEventId >= 0) then {
+    [
+        _unit,
+        (configFile >> "KISKA_eventHandlers" >> "Behaviour"),
+        _behaviourEventId
+    ] call KISKA_fnc_eventHandler_remove;
+};
+
 private _snapToObject = _ambientAnimInfoMap get ["_snapToObject",objNull];
 _snapToObject setVariable ["KISKA_ambientAnim_objectUsedBy",nil];
 _unit enableCollisionWith _snapToObject;
 
 
 _unit setVariable ["KISKA_ambientAnimMap",nil];
-
 
 nil

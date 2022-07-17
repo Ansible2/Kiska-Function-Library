@@ -183,48 +183,81 @@ class KISKA_AmbientAnimations
             "HubSittingHighA_idle1"
         };
 
-        snapToObjects[] = {
-            {"Box_NATO_Equip_F", {
-                {-0.0800781,-0.050293,4.78615},
-                {0.883283,0.46884,0},
-                {0,0,1}
-            }},
-            {"Land_WoodenBox_02_F", {
-                {-0.0170898,-0.32373,4.87455},
-                {-0.634543,0.772887,0},
-                {0,0,1}
-            }},
-            {"B_supplyCrate_F", {
-                {-0.00244141,-0.150879,4.82193},
-                {-0.331876,0.943323,0},
-                {0,0,1}
-            }},
-            {"Box_NATO_Uniforms_F", {
-                {-0.0712891,-0.0720215,4.75299},
-                {0.944229,0.329291,0},
-                {0,0,1}
-            }},
-            {"", {
-                {},
-                {},
-                {}
-            }},
-            {"", {
-                {},
-                {},
-                {}
-            }},
-            {"", {
-                {},
-                {},
-                {}
-            }},
-            {"", {
-                {},
-                {},
-                {}
-            }}
-
+        class snapToObjects
+        {
+            class equipmentBox
+            {
+                type = "Box_NATO_Equip_F";
+                relativeInfo[] = {
+                    {-0.0800781,-0.050293,4.78615},
+                    {0.883283,0.46884,0},
+                    {0,0,1}
+                };
+            };
+            class woodenBox
+            {
+                type = "Land_WoodenBox_02_F";
+                relativeInfo[] = {
+                    {-0.0170898,-0.32373,4.87455},
+                    {-0.634543,0.772887,0},
+                    {0,0,1}
+                };
+            };
+            class supplyCrate
+            {
+                type = "B_supplyCrate_F";
+                relativeInfo[] = {
+                    {-0.00244141,-0.150879,4.82193},
+                    {-0.331876,0.943323,0},
+                    {0,0,1}
+                };
+            };
+            class uniformBox_NATO
+            {
+                type = "Box_NATO_Uniforms_F";
+                relativeInfo[] = {
+                    {-0.0712891,-0.0720215,4.75299},
+                    {0.944229,0.329291,0},
+                    {0,0,1}
+                };
+            };
+            class ammoPallet
+            {
+                type = "Land_Pallet_MilBoxes_F";
+                relativeInfo[] = {
+                    {0.675781,-0.145508,4.72226},
+                    {-0.972904,-0.231209,0},
+                    {0,0,1}
+                };
+            };
+            class cargoBox
+            {
+                type = "Land_CargoBox_V1_F";
+                relativeInfo[] = {
+                    {-0.0756836,-0.54248,5.15809},
+                    {-0.273105,0.961984,0},
+                    {0,0,1}
+                };
+            };
+            class hbarrierSmall_3
+            {
+                type = "Land_HBarrier_3_F";
+                relativeInfo[] = {
+                    {-0.015625,-0.595215,4.90471},
+                    {-0.273105,0.961984,0},
+                    {0,0,1}
+                };
+            };
+            class hbarrierSmall_5
+            {
+                type = "Land_HBarrier_5_F";
+                relativeInfo[] = {
+                    {0.600586,-0.576172,4.96254},
+                    {-0.273105,0.961984,0},
+                    {0,0,1}
+                };
+            };
         };
+
     };
 };
