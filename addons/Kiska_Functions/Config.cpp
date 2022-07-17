@@ -89,6 +89,18 @@ class CfgFunctions
 			class vlsFireAt
 			{};
 		};
+		class Animations
+		{
+			file = "Kiska_functions\Animations";
+			class ambientAnim_createMapFromConfig
+			{};
+			class ambientAnim_play
+			{};
+			class ambientAnim_stop
+			{};
+			class ambientAnim
+			{};
+		};
 		class Bases
 		{
 			file = "Kiska_functions\Bases";
