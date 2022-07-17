@@ -2,6 +2,102 @@
 
 class KISKA_AmbientAnimations
 {
+    class KNEEL
+    {
+        animations[] = {
+            "amovpknlmstpslowwrfldnon",
+            "aidlpknlmstpslowwrfldnon_ai",
+            "aidlpknlmstpslowwrfldnon_g01",
+            "aidlpknlmstpslowwrfldnon_g02",
+            "aidlpknlmstpslowwrfldnon_g03",
+            "aidlpknlmstpslowwrfldnon_g0s"
+        };
+
+        canInterpolate = TRUE;
+    };
+
+    class REPAIR_VEH_PRONE
+    {
+        animations[] = {
+            "hubfixingvehicleprone_idle1"
+        };
+
+        removeBackpack = TRUE;
+        removeAllWeapons = TRUE;
+    };
+    class REPAIR_VEH_KNEEL
+    {
+        animations[] = {
+            "inbasemoves_repairvehicleknl"
+        };
+    };
+    class REPAIR_VEH_STAND
+    {
+        animations[] = {
+            "inbasemoves_assemblingvehicleerc"
+        };
+    };
+
+    class PRONE_INJURED_UNARMED_1
+    {
+        animations[] = {
+            "ainjppnemstpsnonwnondnon"
+        };
+
+        removeAllWeapons = TRUE;
+        removeBackpack = TRUE;
+    };
+    class PRONE_INJURED_UNARMED_2 : PRONE_INJURED_UNARMED_1
+    {
+        animations[] = {
+            "hubwoundedprone_idle1",
+            "hubwoundedprone_idle2"
+        };
+    };
+    class PRONE_INJURED_ARMED
+    {
+        animations[] = {
+            "acts_injuredangryrifle01",
+            "acts_injuredcoughrifle02",
+            "acts_injuredlookingrifle01",
+            "acts_injuredlookingrifle02",
+            "acts_injuredlookingrifle03",
+            "acts_injuredlookingrifle04",
+            "acts_injuredlookingrifle05",
+            "acts_injuredlyingrifle01"
+        };
+
+        removeBackpack = TRUE;
+    };
+
+    class KNEEL_TREAT_1
+    {
+        animations[] = {
+            "ainvpknlmstpsnonwnondnon_medic",
+            "ainvpknlmstpsnonwnondnon_medic0",
+            "ainvpknlmstpsnonwnondnon_medic1",
+            "ainvpknlmstpsnonwnondnon_medic2",
+            "ainvpknlmstpsnonwnondnon_medic3",
+            "ainvpknlmstpsnonwnondnon_medic4",
+            "ainvpknlmstpsnonwnondnon_medic5"
+        };
+
+        // TEST Me to see if weapons need to be removed
+    };
+    class KNEEL_TREAT_2 : KNEEL_TREAT_1
+    {
+        animations[] = {
+            "acts_treatingwounded01",
+            "acts_treatingwounded02",
+            "acts_treatingwounded03",
+            "acts_treatingwounded04",
+            "acts_treatingwounded05",
+            "acts_treatingwounded06"
+        };
+
+        // TEST Me to see if weapons need to be removed
+    };
+
     class STAND
     {
         animations[] = {
@@ -332,6 +428,28 @@ class KISKA_AmbientAnimations
                 };
             };
         };
+    };
+
+    class SIT_GROUND_ARMED
+    {
+        animations[] = {
+            "amovpsitmstpslowwrfldnon",
+            "amovpsitmstpslowwrfldnon_smoking",
+            "amovpsitmstpslowwrfldnon_weaponcheck1",
+            "amovpsitmstpslowwrfldnon_weaponcheck2"
+        };
+
+        canInterpolate = TRUE;
+    };
+    class SIT_GROUND_UNARMED
+    {
+        animations[] = {
+            "aidlpsitmstpsnonwnondnon_ground00",
+            "amovpsitmstpsnonwnondnon_ground"
+        };
+
+        // TEST ME!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // see if backpack or weapons need to be removed
     };
 
     class WATCH_1
