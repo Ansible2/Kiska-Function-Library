@@ -594,3 +594,4 @@ class Extended_PreInit_EventHandlers {
 
 
 #include "GUIs\Common GUI Headers\KISKA GUI Classes.hpp"
+#include "Sound\Headers\CfgSounds.hpp"
