@@ -212,7 +212,7 @@ class KISKA_AmbientAnimations
                     {0,0,1}
                 };
             };
-            class uniformBox_NATO
+            class uniformBox
             {
                 type = "Box_NATO_Uniforms_F";
                 relativeInfo[] = {
@@ -258,6 +258,117 @@ class KISKA_AmbientAnimations
                 };
             };
         };
+    };
 
+    class SIT_HIGH_2 : SIT_HIGH_1
+    {
+        animations[] = {
+            "HubSittingHighB_move1"
+        };
+        class snapToObjects : snapToObjects
+        {
+            class equipmentBox : equipmentBox
+            {
+                relativeInfo[] = {
+                    {0.0200195,-0.0288086,4.52232},
+                    {-0.890749,-0.454495,0},
+                    {0,0,1}
+                };
+            };
+            class woodenBox : woodenBox
+            {
+                relativeInfo[] = {
+                    {0.0703125,-0.188965,4.63355},
+                    {0.317043,-0.948411,0},
+                    {0,0,1}
+                };
+            };
+            class supplyCrate : supplyCrate
+            {
+                relativeInfo[] = {
+                    {0,-0.0400391,4.57443},
+                    {0.388223,-0.921565,0},
+                    {0,0,1}
+                };
+            };
+            class uniformBox : uniformBox
+            {
+                relativeInfo[] = {
+                    {0.0219727,0.0126953,4.5194},
+                    {-0.890749,-0.454495,0},
+                    {0,0,1}
+                };
+            };
+            class ammoPallet : ammoPallet
+            {
+                relativeInfo[] = {
+                    {0.574707,-0.210938,4.47999},
+                    {0.904759,0.425924,0},
+                    {0,0,1}
+                };
+            };
+            class cargoBox : cargoBox
+            {
+                relativeInfo[] = {
+                    {0.00195313,-0.473145,4.86601},
+                    {0.434003,-0.900911,0},
+                    {0,0,1}
+                };
+            };
+            class hbarrierSmall_3 : hbarrierSmall_3
+            {
+                relativeInfo[] = {
+                    {-0.722656,-0.542969,4.59109},
+                    {0.434003,-0.900911,0},
+                    {0,0,1}
+                };
+            };
+            class hbarrierSmall_5 : hbarrierSmall_5
+            {
+                relativeInfo[] = {
+                    {0.600586,-0.513672,4.64892},
+                    {0.434003,-0.900911,0},
+                    {0,0,1}
+                };
+            };
+        };
+    };
+
+    class WATCH_1
+    {
+        animations[] = {
+            "inbasemoves_patrolling1"
+        };
+
+        canInterpolate = TRUE;
+    };
+
+    class WATCH_2 : WATCH_1
+    {
+        animations[] = {
+            "inbasemoves_patrolling2"
+        };
+    };
+
+    class STAND_HANDS_BEHIND_BACK_1
+    {
+        animations[] = {
+            "inbasemoves_handsbehindback1",
+            "inbasemoves_handsbehindback2"
+        };
+
+        // some clipping may happen but it doesn't seem to outweigh
+        // being able to see if a unit is armed
+        /* removeBackpack = TRUE; */
+        /* removeAllWeapons - TRUE; */
+    };
+    class STAND_HANDS_BEHIND_BACK_2 : STAND_HANDS_BEHIND_BACK_1
+    {
+        animations[] = {
+            "unaercposlechvelitele1",
+            "unaercposlechvelitele2",
+            "unaercposlechvelitele3",
+            "unaercposlechvelitele4"
+        };
     };
 };

@@ -45,7 +45,7 @@ params [
     ["_animSet","",["",[]]],
     ["_exitOnCombat",false,[true]],
     ["_equipmentLevel","",["",[]]],
-    ["_canSnap",true,[true]],
+    ["_snapToRange",5,[123]],
     ["_animationMap",DEFAULT_ANIMATION_MAP,[createHashMap,configNull]]
 ];
 
@@ -120,10 +120,11 @@ _units apply {
     -------------------------------------- */
     detach _unit;
     private _snapToObjectsMap = _animationSetInfo getOrDefault ["snapToObjectsMap",[]];
+    private _canSnap = _snapToRange > 0;
     if (_canSnap AND (_snapToObjectsMap isNotEqualTo [])) then {
         private _types = keys _snapToObjectsMap;
 
-        private _nearestObjects = nearestObjects [_unit, _types, 5, true];
+        private _nearestObjects = nearestObjects [_unit, _types, _snapToRange, true];
         _nearestObjects apply {
             private _unitUsing = _x getVariable ["KISKA_ambientAnim_objectUsedBy",objNull];
             if !(isNull _unitUsing) then {
