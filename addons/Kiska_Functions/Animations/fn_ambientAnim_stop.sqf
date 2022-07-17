@@ -25,7 +25,7 @@ params [
     ["_unit",objNull,[objNull]]
 ];
 
-if !(isNull _unit) exitWith {
+if (isNull _unit) exitWith {
     ["_unit is null",false] call KISKA_fnc_log;
     nil
 };
@@ -36,19 +36,20 @@ if (_ambientAnimInfoMap isEqualTo []) exitWith {
     nil
 };
 
-private _isAgent = isAgent (teamMember _unit);
-if !(_isAgent) then {
-    ["ANIM","AUTOTARGET","FSM","MOVE","TARGET"] apply {
-        _unit enableAI _x;
-    };
+
+["ANIM","AUTOTARGET","FSM","MOVE","TARGET"] apply {
+    _unit enableAI _x;
 };
 
 
 detach _unit;
 _unit switchMove "";
 
-private _unitLoadoutBeforeAnimation = _ambientAnimInfoMap get "_unitLoadout";
-_unit setUnitLoadout _unitLoadoutBeforeAnimation;
+private _unitLoadoutBeforeAnimation = _ambientAnimInfoMap getOrDefault ["_unitLoadout",[]];
+if (_unitLoadoutBeforeAnimation isNotEqualTo []) then {
+    _unit setUnitLoadout _unitLoadoutBeforeAnimation;
+};
+
 
 private _animDoneEventHandlerId = _ambientAnimInfoMap get "_animDoneEventHandlerId";
 _unit removeEventHandler ["AnimDone", _animDoneEventHandlerId];
@@ -64,6 +65,7 @@ if (_behaviourEventId >= 0) then {
         _behaviourEventId
     ] call KISKA_fnc_eventHandler_remove;
 };
+
 
 private _snapToObject = _ambientAnimInfoMap get ["_snapToObject",objNull];
 _snapToObject setVariable ["KISKA_ambientAnim_objectUsedBy",nil];

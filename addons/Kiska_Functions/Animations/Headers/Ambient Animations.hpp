@@ -1,4 +1,5 @@
-#define TRUE 1
+#define ON 1
+#define OFF 0
 
 class KISKA_AmbientAnimations
 {
@@ -65,7 +66,7 @@ class KISKA_AmbientAnimations
             "aidlpknlmstpslowwrfldnon_g0s"
         };
 
-        canInterpolate = TRUE;
+        canInterpolate = ON;
     };
 
     class REPAIR_VEH_PRONE
@@ -74,8 +75,8 @@ class KISKA_AmbientAnimations
             "hubfixingvehicleprone_idle1"
         };
 
-        removeBackpack = TRUE;
-        removeAllWeapons = TRUE;
+        removeBackpack = ON;
+        removeAllWeapons = ON;
     };
     class REPAIR_VEH_KNEEL
     {
@@ -96,8 +97,8 @@ class KISKA_AmbientAnimations
             "ainjppnemstpsnonwnondnon"
         };
 
-        removeAllWeapons = TRUE;
-        removeBackpack = TRUE;
+        removeAllWeapons = ON;
+        removeBackpack = ON;
     };
     class PRONE_INJURED_UNARMED_2 : PRONE_INJURED_UNARMED_1
     {
@@ -119,7 +120,7 @@ class KISKA_AmbientAnimations
             "acts_injuredlyingrifle01"
         };
 
-        removeBackpack = TRUE;
+        removeBackpack = ON;
     };
 
 
@@ -153,7 +154,7 @@ class KISKA_AmbientAnimations
         };
     };
 
-    class STAND
+    class STAND_ARMED_1
     {
         animations[] = {
             "HubStanding_idle1",
@@ -161,24 +162,23 @@ class KISKA_AmbientAnimations
             "HubStanding_idle3"
         };
 
-        canInterpolate = TRUE;
+        canInterpolate = OFF;
     };
 
-    class STAND2
+    class STAND_ARMED_2
     {
         animations[] = {
-            "amovpercmstpslowwrfldnon",
-            "amovpercmstpslowwrfldnon",
+            // removed amovpercmstpslowwrfldnon because they are animations that never end
             "aidlpercmstpslowwrfldnon_g01",
             "aidlpercmstpslowwrfldnon_g02",
             "aidlpercmstpslowwrfldnon_g03",
             "aidlpercmstpslowwrfldnon_g05"
         };
 
-        canInterpolate = TRUE;
+        canInterpolate = ON;
     };
 
-    class STAND_U1
+    class STAND_UNARMED_1
     {
         animations[] = {
             "HubStandingUA_idle1",
@@ -187,10 +187,8 @@ class KISKA_AmbientAnimations
             "HubStandingUA_move1",
             "HubStandingUA_move2"
         };
-
-        removeAllWeapons = TRUE;
     };
-    class STAND_U2
+    class STAND_UNARMED_2
     {
         animations[] = {
             "HubStandingUB_idle1",
@@ -199,9 +197,8 @@ class KISKA_AmbientAnimations
             "HubStandingUB_move1"
         };
 
-        removeAllWeapons = TRUE;
     };
-    class STAND_U3
+    class STAND_UNARMED_3
     {
         animations[] = {
             "HubStandingUC_idle1",
@@ -210,8 +207,6 @@ class KISKA_AmbientAnimations
             "HubStandingUC_move1",
             "HubStandingUC_move2"
         };
-
-        removeAllWeapons = TRUE;
     };
 
     class SIT_CHAIR_ARMED_1
@@ -265,7 +260,7 @@ class KISKA_AmbientAnimations
             };
         };
 
-        removeBackpack = TRUE;
+        removeBackpack = ON;
     };
 
     class SIT_CHAIR_ARMED_2 : SIT_CHAIR_ARMED_1
@@ -305,7 +300,7 @@ class KISKA_AmbientAnimations
             "HubSittingChairUA_idle3",
             "HubSittingChairUA_move1"
         };
-        removeAllWeapons = TRUE;
+        removeAllWeapons = ON;
     };
 
     class SIT_CHAIR_UNARMED_2 : SIT_CHAIR_UNARMED_1
@@ -494,7 +489,7 @@ class KISKA_AmbientAnimations
             "amovpsitmstpslowwrfldnon_weaponcheck2"
         };
 
-        canInterpolate = TRUE;
+        canInterpolate = ON;
     };
     class SIT_GROUND_UNARMED
     {
@@ -510,7 +505,7 @@ class KISKA_AmbientAnimations
             "inbasemoves_patrolling1"
         };
 
-        canInterpolate = TRUE;
+        canInterpolate = ON;
     };
 
     class WATCH_2 : WATCH_1
@@ -529,8 +524,8 @@ class KISKA_AmbientAnimations
 
         // some clipping may happen but it doesn't seem to outweigh
         // being able to see if a unit is armed
-        /* removeBackpack = TRUE; */
-        /* removeAllWeapons - TRUE; */
+        /* removeBackpack = ON; */
+        /* removeAllWeapons - ON; */
     };
     class STAND_HANDS_BEHIND_BACK_2 : STAND_HANDS_BEHIND_BACK_1
     {
@@ -539,6 +534,72 @@ class KISKA_AmbientAnimations
             "unaercposlechvelitele2",
             "unaercposlechvelitele3",
             "unaercposlechvelitele4"
+        };
+    };
+
+    class SIT_LOW
+    {
+        animations[] = {
+            "c5efe_michalloop"
+        };
+
+        class snapToObjects
+        {
+            class launchersBox_NATO
+            {
+                type = "Box_NATO_WpsLaunch_F";
+                relativeInfo[] = {
+                    {0.012207,-0.0300293,4.84837},
+                    {-0.220085,-0.975481,0},
+                    {0,0,1}
+                };
+            };
+            class launchersBox_IND : launchersBox_NATO
+            {
+                type = "Box_IND_WpsLaunch_F";
+            };
+            class launchersBox_CSAT : launchersBox_NATO
+            {
+                type = "Box_East_WpsLaunch_F";
+            };
+
+            class specialPurposeBox_NATO
+            {
+                type = "Box_NATO_WpsSpecial_F";
+                relativeInfo[] = {
+                    {0.0180664,0.0864258,4.91076},
+                    {-0.220202,-0.957546,0.186057},
+                    {0,0.190739,0.981641}
+                };
+            };
+            class specialPurposeBox_IND : specialPurposeBox_NATO
+            {
+                type = "Box_IND_WpsSpecial_F";
+            };
+            class specialPurposeBox_CSAT : specialPurposeBox_NATO
+            {
+                type = "Box_East_WpsSpecial_F";
+            };
+
+            class weaponsBox_NATO : specialPurposeBox_NATO
+            {
+                type = "Box_NATO_Wps_F";
+            };
+            class weaponsBox_IND : weaponsBox_NATO
+            {
+                type = "Box_IND_Wps_F";
+            };
+            class weaponsBox_CSAT : weaponsBox_NATO
+            {
+                type = "Box_East_Wps_F";
+            };
+        };
+    };
+
+    class SIT_LOW_SAD : SIT_LOW
+    {
+        animations[] = {
+            "c5efe_honzaloop"
         };
     };
 };
