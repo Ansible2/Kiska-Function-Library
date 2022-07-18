@@ -137,7 +137,7 @@ _agentClasses apply {
         private _combat = [_x >> "exitOnCombat"] call BIS_fnc_getCfgDataBool;
 
         [
-            _units,
+            _agents,
             _animationSet,
             _combat,
             _equipmentLevel,
