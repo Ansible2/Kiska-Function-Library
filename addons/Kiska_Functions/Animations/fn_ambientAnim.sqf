@@ -2,7 +2,7 @@
 Function: KISKA_fnc_ambientAnim
 
 Description:
-    Provides an updated version of BIS_fnc_ambientAnim in a tigher package that
+    Provides an updated version of BIS_fnc_ambientAnim in a tighter package that
      allows for more customization.
 
 Parameters:
