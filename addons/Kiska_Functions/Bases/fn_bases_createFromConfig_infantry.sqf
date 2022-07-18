@@ -132,7 +132,7 @@ _infantryClasses apply {
         if (_snapToRange isEqualTo 0) then {
             _snapToRange = 5;
         };
-        private _combat = [_x >> "combat"] call BIS_fnc_getCfgDataBool;
+        private _combat = [_x >> "exitOnCombat"] call BIS_fnc_getCfgDataBool;
 
         [
             _units,
