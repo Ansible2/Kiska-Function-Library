@@ -183,7 +183,7 @@ class KISKA_AmbientAnimations
         animations[] = {
             "HubStandingUA_idle1",
             "HubStandingUA_idle2",
-            "HubStandingUA_idle3",
+            //"HubStandingUA_idle3", causes hips to glitch for unknown reason
             "HubStandingUA_move1",
             "HubStandingUA_move2"
         };
@@ -196,7 +196,6 @@ class KISKA_AmbientAnimations
             "HubStandingUB_idle3",
             "HubStandingUB_move1"
         };
-
     };
     class STAND_UNARMED_3
     {
