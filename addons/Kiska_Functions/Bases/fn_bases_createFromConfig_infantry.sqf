@@ -133,13 +133,15 @@ _infantryClasses apply {
             _snapToRange = 5;
         };
         private _combat = [_x >> "exitOnCombat"] call BIS_fnc_getCfgDataBool;
+        private _fallbackFunction = getText(_x >> "fallbackFunction");
 
         [
             _units,
             _animationSet,
             _combat,
             _equipmentLevel,
-            _snapToRange
+            _snapToRange,
+            _fallbackFunction
         ] call KISKA_fnc_ambientAnim;
     };
 

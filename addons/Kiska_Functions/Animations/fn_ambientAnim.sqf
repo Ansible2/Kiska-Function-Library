@@ -22,6 +22,19 @@ Parameters:
 	4: _snapToRange <NUMBER> - Certain animations (such as sitting in a chair) can
         be configured to orient the unit onto certain object types. This is how far
         will be searched around the unit to find an object to "snap" onto.
+    5: _fallbackFunction <CODE, ARRAY, or STRING> - (See KISKA_fnc_callBack) In the event that
+        a unit is not able to find an object to snap to, this function will be called with the
+        following params. If you still want the unit to be animated in this case, pass {}, "", or [].
+            0: _animSetSelection <STRING> - The animation that failed to find a snap to object
+            1: _unit <OBJECT> - The unit
+            // the rest of these params are exactly as passed to the initial KISKA_fnc_ambientAnim call
+            2: _animSet <ARRAY or STRING>
+            3: _exitOnCombat <BOOL>
+            4: _equipmentLevel <ARRAY or STRING>
+            5: _snapToRange <NUMBER>
+            6: _fallbackFunction <CODE, ARRAY, or STRING>
+            7: _animationMap <HASHMAP or CONFIG>
+
 	5: _animationMap <HASHMAP or CONFIG> - See KISKA_fnc_ambientAnim_createMapFromConfig
         This is a hashmap that will searched for information for a specific _animSet
         _animset. A config can be passed and will be parsed/cached.
@@ -62,6 +75,7 @@ params [
     ["_exitOnCombat",false,[true]],
     ["_equipmentLevel","",["",[]]],
     ["_snapToRange",5,[123]],
+    ["_fallbackFunction",{},[[],"",{}]],
     ["_animationMap",DEFAULT_ANIMATION_MAP,[createHashMap,configNull]]
 ];
 
@@ -104,6 +118,10 @@ private _randomEquipmentLevel = _equipmentLevel isEqualType [];
     Apply Animations
 
 ---------------------------------------------------------------------------- */
+private _fallbackFunctionIsPresent = _fallbackFunction isNotEqualTo {} AND
+    _fallbackFunction isNotEqualTo [] AND
+    _fallbackFunction isNotEqualTo "";
+
 _units apply {
     private _unit = _x;
     if !(alive _unit) then {
@@ -141,6 +159,7 @@ _units apply {
         private _types = keys _snapToObjectsMap;
 
         private _nearestObjects = nearestObjects [_unit, _types, _snapToRange, true];
+        private _didSnap = false;
         _nearestObjects apply {
             private _unitUsing = _x getVariable ["KISKA_ambientAnim_objectUsedBy",objNull];
             if !(isNull _unitUsing) then {
@@ -153,8 +172,27 @@ _units apply {
             private _relativeObjectInfo = _snapToObjectsMap get (typeOf _x);
             _unit disableCollisionWith _x;
             [_x,_unit,_relativeObjectInfo] call KISKA_fnc_setRelativeVectorAndPos;
+            _didSnap = true;
 
             break;
+        };
+
+        if ((!_didSnap) AND _fallbackFunctionIsPresent) then {
+            [
+                [
+                    _animSetSelection,
+                    _unit,
+                    _animSet,
+                    _exitOnCombat,
+                    _equipmentLevel,
+                    _snapToRange,
+                    _fallbackFunction,
+                    _animationMap
+                ],
+                _fallbackFunction
+            ] call KISKA_fnc_callBack;
+
+            continue;
         };
     };
 
