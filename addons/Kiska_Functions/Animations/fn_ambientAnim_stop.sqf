@@ -45,6 +45,11 @@ if (_ambientAnimInfoMap isEqualTo []) exitWith {
 detach _unit;
 _unit switchMove "";
 
+private _attachToLogic = _ambientAnimInfoMap getOrDefault ["_attachToLogic",objNull];
+if !(isNull _attachToLogic) then {
+    deleteVehicle _attachToLogic;
+};
+
 private _unitLoadoutBeforeAnimation = _ambientAnimInfoMap getOrDefault ["_unitLoadout",[]];
 if (_unitLoadoutBeforeAnimation isNotEqualTo []) then {
     _unit setUnitLoadout _unitLoadoutBeforeAnimation;

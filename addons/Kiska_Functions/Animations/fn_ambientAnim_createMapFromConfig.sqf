@@ -111,6 +111,9 @@ _classes apply {
     private _removeAllWeapons = [_x >> "removeAllWeapons"] call BIS_fnc_getCfgDataBool;
     _animationSetInfo set ["removeAllWeapons",_removeAllWeapons];
 
+    private _attachToLogic = [_x >> "attachToLogic"] call BIS_fnc_getCfgDataBool;
+    _animationSetInfo set ["attachToLogic",_attachToLogic];
+    
     private _removeBackpack = [_x >> "removeBackpack"] call BIS_fnc_getCfgDataBool;
     _animationSetInfo set ["removeBackpack",_removeBackpack];
 

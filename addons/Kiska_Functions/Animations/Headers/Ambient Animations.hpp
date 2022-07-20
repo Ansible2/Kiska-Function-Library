@@ -163,6 +163,7 @@ class KISKA_AmbientAnimations
         };
 
         canInterpolate = OFF;
+        attachToLogic = ON;
     };
 
     class STAND_ARMED_2
@@ -504,7 +505,7 @@ class KISKA_AmbientAnimations
             "inbasemoves_patrolling1"
         };
 
-        canInterpolate = ON;
+        canInterpolate = OFF;
     };
 
     class WATCH_2 : WATCH_1

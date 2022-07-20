@@ -43,6 +43,8 @@ if (_ambientAnimInfoMap isEqualTo []) exitWith {
 
 private _animationSetInfo = _ambientAnimInfoMap get "_animationSetInfo";
 private _nearUnits = _unit nearEntities ["man", 5];
+_nearUnits deleteAt (_nearUnits find _unit);
+
 
 private _takenAnimations = _nearUnits apply {toLowerANSI (animationState _x)};
 _takenAnimations pushBack (toLowerANSI _previousAnim);

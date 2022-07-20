@@ -198,6 +198,33 @@ _units apply {
 
 
     /* --------------------------------------
+        Handle AttachTo Logic
+        // some animations (STAND_ARMED_1)
+        // will wind up stuttering after about ~1.5 minutes with over ~5 AI animating
+        // if not attached to a logic.
+        // This also happens with BIS_fnc_ambientAnim.
+        // unkown why.
+
+        // This does also benefit some animations with snap to objects
+    -------------------------------------- */
+    if (_animationSetInfo getOrDefault ["attachToLogic",false]) then {
+        if (isNil "KISKA_ambientAnim_attachToLogicGroup") then {
+            private _logicGroup = createGroup sideLogic;
+            missionNamespace setVariable ["KISKA_ambientAnim_attachToLogicGroup",_logicGroup];
+        };
+
+        private _logicGroup = missionNamespace getVariable ["KISKA_ambientAnim_attachToLogicGroup",grpNull];
+        private _helper = _logicGroup createUnit ["Logic", [0,0,0], [], 0, "NONE"];
+        _helper setPosWorld (getPosWorld _unit);
+        _helper setVectorDir (vectorDir _unit);
+        _helper setVectorUp (vectorUp _unit);
+
+        _unitInfoMap set ["attachToLogic",_helper];
+        _unit attachTo [_helper,[0,0,0]];
+    };
+
+
+    /* --------------------------------------
         Handle Equipment
     -------------------------------------- */
     private _unitLoadout = getUnitLoadout _unit;
@@ -271,6 +298,13 @@ _units apply {
 
 
     /* --------------------------------------
+        Initial Animate
+    -------------------------------------- */
+    _unit setVariable ["KISKA_ambientAnimMap",_unitInfoMap];
+    [_unit] call KISKA_fnc_ambientAnim_play_test;
+
+
+    /* --------------------------------------
         Add Eventhandlers
     -------------------------------------- */
     private _animDoneEventHandlerId = _unit addEventHandler ["AnimDone",
@@ -318,9 +352,6 @@ _units apply {
 
         _unitInfoMap set ["_behaviourEventId",_behaviourEventId];
     };
-
-    _unit setVariable ["KISKA_ambientAnimMap",_unitInfoMap];
-    [_unit] call KISKA_fnc_ambientAnim_play;
 };
 
 
