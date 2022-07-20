@@ -91,9 +91,9 @@ _classes apply {
                     _snapToObjects pushBack [
                         _type,
                         [
-                            getText(_objectClassConfig >> "relativePos"),
-                            getText(_objectClassConfig >> "relativeDir"),
-                            getText(_objectClassConfig >> "relativeUp")
+                            getArray(_objectClassConfig >> "relativePos"),
+                            getArray(_objectClassConfig >> "relativeDir"),
+                            getArray(_objectClassConfig >> "relativeUp")
                         ]
                     ];
 
@@ -113,7 +113,7 @@ _classes apply {
 
     private _attachToLogic = [_x >> "attachToLogic"] call BIS_fnc_getCfgDataBool;
     _animationSetInfo set ["attachToLogic",_attachToLogic];
-    
+
     private _removeBackpack = [_x >> "removeBackpack"] call BIS_fnc_getCfgDataBool;
     _animationSetInfo set ["removeBackpack",_removeBackpack];
 

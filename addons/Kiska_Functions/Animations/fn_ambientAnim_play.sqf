@@ -24,11 +24,17 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ambientAnim_play";
 
+if (canSuspend) exitWith {
+    [
+        KISKA_fnc_ambientAnim_play,
+        _this
+    ] call CBA_fnc_directCall;
+};
+
 params [
     ["_unit",objNull,[objNull]],
     ["_previousAnim","",[""]]
 ];
-
 
 if !(alive _unit) exitWith {
     [_unit] call KISKA_fnc_ambientAnim_stop;
@@ -40,11 +46,9 @@ if (_ambientAnimInfoMap isEqualTo []) exitWith {
     nil
 };
 
-
 private _animationSetInfo = _ambientAnimInfoMap get "_animationSetInfo";
 private _nearUnits = _unit nearEntities ["man", 5];
 _nearUnits deleteAt (_nearUnits find _unit);
-
 
 private _takenAnimations = _nearUnits apply {toLowerANSI (animationState _x)};
 _takenAnimations pushBack (toLowerANSI _previousAnim);
@@ -55,10 +59,15 @@ if (_animationsToUse isEqualTo []) then {
 };
 private _animation = [_animationsToUse,""] call KISKA_fnc_selectRandom;
 
+
 if (_animationSetInfo getOrDefault ["canInterpolate",false]) then {
-    _unit playMoveNow _animation;
+    [_unit,_animation] remoteExecCall ["playMoveNow",_unit];
+
 } else {
-    _unit switchMove _animation;
+    // best practice to make sure an animation actually plays is to use both switchMove and playMoveNow
+    [_unit,_animation] remoteExecCall ["switchMove",_unit];
+    [_unit,_animation] remoteExecCall ["playMoveNow",_unit];
+    
 };
 [["Play called for ", _unit," _previousAnim: ", _previousAnim, " Current Anim: ",_animation]] call KISKA_fnc_log;
 

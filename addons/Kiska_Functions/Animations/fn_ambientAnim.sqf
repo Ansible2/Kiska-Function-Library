@@ -170,7 +170,8 @@ _units apply {
             _unitInfoMap set ["_snapToObject",_x];
 
             private _relativeObjectInfo = _snapToObjectsMap get (typeOf _x);
-            _unit disableCollisionWith _x;
+            [_unit,_x] remoteExecCall ["disableCollisionWith",_unit];
+            [_x,_unit] remoteExecCall ["disableCollisionWith",_x];
             [_x,_unit,_relativeObjectInfo] call KISKA_fnc_setRelativeVectorAndPos;
             _didSnap = true;
 
@@ -196,16 +197,14 @@ _units apply {
         };
     };
 
-
     /* --------------------------------------
         Handle AttachTo Logic
         // some animations (STAND_ARMED_1)
-        // will wind up stuttering after about ~1.5 minutes with over ~5 AI animating
-        // if not attached to a logic.
-        // This also happens with BIS_fnc_ambientAnim.
+        // will wind up stuttering if not attached to a logic.
+        // this also happens with BIS_fnc_ambientAnim.
         // unkown why.
 
-        // This does also benefit some animations with snap to objects
+        // This does alos benefit some seated animations if required.
     -------------------------------------- */
     if (_animationSetInfo getOrDefault ["attachToLogic",false]) then {
         if (isNil "KISKA_ambientAnim_attachToLogicGroup") then {
@@ -219,7 +218,7 @@ _units apply {
         _helper setVectorDir (vectorDir _unit);
         _helper setVectorUp (vectorUp _unit);
 
-        _unitInfoMap set ["attachToLogic",_helper];
+        _unitInfoMap set ["_attachToLogic",_helper];
         _unit attachTo [_helper,[0,0,0]];
     };
 
@@ -293,7 +292,7 @@ _units apply {
     };
 
     ["ANIM","AUTOTARGET","FSM","MOVE","TARGET"] apply {
-        _unit disableAI _x;
+        [_unit,_x] remoteExecCall ["disableAI",_unit];
     };
 
 
@@ -301,7 +300,7 @@ _units apply {
         Initial Animate
     -------------------------------------- */
     _unit setVariable ["KISKA_ambientAnimMap",_unitInfoMap];
-    [_unit] call KISKA_fnc_ambientAnim_play_test;
+    [_unit] call KISKA_fnc_ambientAnim_play;
 
 
     /* --------------------------------------
@@ -331,6 +330,16 @@ _units apply {
     ];
     _unitInfoMap set ["_unitKilledEventHandlerId",_unitKilledEventHandlerId];
 
+
+    private _unitDeletedEventHandlerId = _unit addEventHandler ["Deleted",
+        {
+    	    params ["_unit"];
+            [_unit,true] call KISKA_fnc_ambientAnim_stop;
+        }
+    ];
+    _unitInfoMap set ["_unitDeletedEventHandlerId",_unitDeletedEventHandlerId];
+
+
     if (_exitOnCombat) then {
         private _behaviourEventId = [
             _unit,
@@ -352,6 +361,8 @@ _units apply {
 
         _unitInfoMap set ["_behaviourEventId",_behaviourEventId];
     };
+
+
 };
 
 

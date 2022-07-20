@@ -253,14 +253,15 @@ class KISKA_AmbientAnimations
             {
                 type = "Land_OfficeChair_01_F";
                 relativeInfo[] = {
-                    {-0.0170898,0.0266113,5.03957},
-                    {-0.099553,-0.994288,-0.0384766},
-                    {0.0308706,-0.0417363,0.998652}
+                    {0.0078125,-0.0603027,4.41063},
+                    {0.00617849,-0.99071,-0.135852},
+                    {0,-0.135855,0.990729}
                 };
             };
         };
 
         removeBackpack = ON;
+        attachToLogic = ON;
     };
 
     class SIT_CHAIR_ARMED_2 : SIT_CHAIR_ARMED_1
