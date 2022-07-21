@@ -77,7 +77,7 @@ _classes apply {
             private _snapToObjectClasses = configProperties [_snapToObjectsConfig,"isCLass _x"];
             _snapToObjectClasses apply {
                 private _objectClassConfig = _x;
-                private _type = getText(_objectClassConfig >> "type");
+                private _type = toLowerANSI (getText(_objectClassConfig >> "type"));
                 if (_type isEqualTo "") then {
                     [["No type found parsing relative object info for ",_objectClassConfig],true] call KISKA_fnc_log;
                     continue;

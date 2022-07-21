@@ -169,7 +169,14 @@ _units apply {
             _x setVariable ["KISKA_ambientAnim_objectUsedBy",_unit];
             _unitInfoMap set ["_snapToObject",_x];
 
-            private _relativeObjectInfo = _snapToObjectsMap get (typeOf _x);
+            private _objectType = toLowerANSI (typeOf _x);
+            if !(_objectType in _types) then {
+                _objectType = _types select (_types findIf {
+                    _objectType isKindOf _x;
+                });
+            };
+
+            private _relativeObjectInfo = _snapToObjectsMap get _objectType;
             [_unit,_x] remoteExecCall ["disableCollisionWith",_unit];
             [_x,_unit] remoteExecCall ["disableCollisionWith",_x];
             [_x,_unit,_relativeObjectInfo] call KISKA_fnc_setRelativeVectorAndPos;
