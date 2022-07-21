@@ -202,7 +202,7 @@ _units apply {
         // some animations (STAND_ARMED_1)
         // will wind up stuttering if not attached to a logic.
         // this also happens with BIS_fnc_ambientAnim.
-        // unkown why.
+        // unknown why.
 
         // This does alos benefit some seated animations if required.
     -------------------------------------- */

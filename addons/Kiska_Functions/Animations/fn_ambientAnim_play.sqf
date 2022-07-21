@@ -67,8 +67,8 @@ if (_animationSetInfo getOrDefault ["canInterpolate",false]) then {
     // best practice to make sure an animation actually plays is to use both switchMove and playMoveNow
     [_unit,_animation] remoteExecCall ["switchMove",_unit];
     [_unit,_animation] remoteExecCall ["playMoveNow",_unit];
-    
+
 };
-[["Play called for ", _unit," _previousAnim: ", _previousAnim, " Current Anim: ",_animation]] call KISKA_fnc_log;
+/* [["Play called for ", _unit," _previousAnim: ", _previousAnim, " Current Anim: ",_animation]] call KISKA_fnc_log; */
 
 nil

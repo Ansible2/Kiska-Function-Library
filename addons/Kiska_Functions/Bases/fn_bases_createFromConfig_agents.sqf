@@ -137,21 +137,22 @@ _agentClasses apply {
         private _combat = [_x >> "exitOnCombat"] call BIS_fnc_getCfgDataBool;
         private _fallbackFunction = getText(_x >> "fallbackFunction");
 
-        private "_animationMap";
-        private _getAnimationMapFunction = getText(_x >> "getAnimationMapFunction");
-        if (_getAnimationMapFunction isNotEqualTo "") then {
-            _animationMap = [[],_getAnimationMapFunction] call KISKA_fnc_callBack;
-        };
-
-        [
+        private _args = [
             _agents,
             _animationSet,
             _combat,
             _equipmentLevel,
             _snapToRange,
-            _fallbackFunction,
-            _animationMap
-        ] call KISKA_fnc_ambientAnim;
+            _fallbackFunction
+        ];
+
+        private _getAnimationMapFunction = getText(_x >> "getAnimationMapFunction");
+        if (_getAnimationMapFunction isNotEqualTo "") then {
+            private _animationMap = [[],_getAnimationMapFunction] call KISKA_fnc_callBack;
+            _args pushBack _animationMap;
+        };
+
+        _args call KISKA_fnc_ambientAnim;
     };
 
 
