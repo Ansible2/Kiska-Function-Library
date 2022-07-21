@@ -188,6 +188,8 @@ class KISKA_AmbientAnimations
             "HubStandingUA_move1",
             "HubStandingUA_move2"
         };
+
+        attachToLogic = ON;
     };
     class STAND_UNARMED_2
     {
@@ -405,6 +407,8 @@ class KISKA_AmbientAnimations
                 };
             };
         };
+
+        attachToLogic = ON;
     };
 
     class SIT_HIGH_2 : SIT_HIGH_1
@@ -595,6 +599,8 @@ class KISKA_AmbientAnimations
                 type = "Box_East_Wps_F";
             };
         };
+
+        attachToLogic = ON;
     };
 
     class SIT_LOW_SAD : SIT_LOW
