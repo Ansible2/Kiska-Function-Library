@@ -21,7 +21,7 @@ Parameters:
             > "FULL" - no goggles
 	4: _snapToRange <NUMBER> - Certain animations (such as sitting in a chair) can
         be configured to orient the unit onto certain object types. This is how far
-        will be searched around the unit to find an object to "snap" onto.
+        will be searched around the unit to find an object to "snap" onto. Cannot be more then 10m.
     5: _fallbackFunction <CODE, ARRAY, or STRING> - (See KISKA_fnc_callBack) In the event that
         a unit is not able to find an object to snap to, this function will be called with the
         following params. If you still want the unit to be animated in this case, pass {}, "", or [].
@@ -112,6 +112,9 @@ if (_animationMapIsConfig) then {
 private _randomAnimSet = _animset isEqualType [];
 private _randomEquipmentLevel = _equipmentLevel isEqualType [];
 
+if (_snapToRange > 10) then {
+    _snapToRange = 10;
+};
 
 /* ----------------------------------------------------------------------------
 
@@ -158,23 +161,30 @@ _units apply {
     if (_canSnap AND (_snapToObjectsMap isNotEqualTo [])) then {
         private _types = keys _snapToObjectsMap;
 
-        private _nearestObjects = nearestObjects [_unit, _types, _snapToRange, true];
+        // using nearObjects to support snapping to simple objects
+        private _nearObjects = _unit nearObjects _snapToRange;
         private _didSnap = false;
-        _nearestObjects apply {
+        _nearObjects apply {
             private _unitUsing = _x getVariable ["KISKA_ambientAnim_objectUsedBy",objNull];
             if !(isNull _unitUsing) then {
                 continue;
             };
 
-            _x setVariable ["KISKA_ambientAnim_objectUsedBy",_unit];
-            _unitInfoMap set ["_snapToObject",_x];
-
             private _objectType = toLowerANSI (typeOf _x);
             if !(_objectType in _types) then {
-                _objectType = _types select (_types findIf {
+                private _parentTypeIndex = _types findIf {
                     _objectType isKindOf _x;
-                });
+                };
+
+                if (_parentTypeIndex isEqualTo -1) then {
+                    continue;
+                };
+
+                _objectType = _types select _parentTypeIndex;
             };
+
+            _x setVariable ["KISKA_ambientAnim_objectUsedBy",_unit];
+            _unitInfoMap set ["_snapToObject",_x];
 
             private _relativeObjectInfo = _snapToObjectsMap get _objectType;
             [_unit,_x] remoteExecCall ["disableCollisionWith",_unit];
