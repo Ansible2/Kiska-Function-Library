@@ -177,6 +177,7 @@ class KISKA_AmbientAnimations
         };
 
         canInterpolate = ON;
+        attachToLogic = ON;
     };
 
     class STAND_UNARMED_1
@@ -188,6 +189,8 @@ class KISKA_AmbientAnimations
             "HubStandingUA_move1",
             "HubStandingUA_move2"
         };
+
+        attachToLogic = ON;
     };
     class STAND_UNARMED_2
     {
@@ -197,6 +200,8 @@ class KISKA_AmbientAnimations
             "HubStandingUB_idle3",
             "HubStandingUB_move1"
         };
+
+        attachToLogic = ON;
     };
     class STAND_UNARMED_3
     {
@@ -207,6 +212,8 @@ class KISKA_AmbientAnimations
             "HubStandingUC_move1",
             "HubStandingUC_move2"
         };
+
+        attachToLogic = ON;
     };
 
     class SIT_CHAIR_ARMED_1
