@@ -344,6 +344,7 @@ class KISKA_AmbientAnimations
                 };
             };
             class woodenBox
+            {
                 type = "Land_WoodenBox_02_F";
                 relativeInfo[] = {
                     {-0.324707,-0.144775,-0.104452},
@@ -410,7 +411,6 @@ class KISKA_AmbientAnimations
                 type = "Land_HBarrier_5_F";
             };
         };
-
     };
 
     class SIT_HIGH_2 : SIT_HIGH_1
@@ -430,7 +430,7 @@ class KISKA_AmbientAnimations
             };
             class woodenBox : woodenBox
             {
-d                relativeInfo[] = {
+                relativeInfo[] = {
                     {-0.0126953,-0.204346,-0.386857},
                     {0.426327,-0.904569,0},
                     {0,0,1}
