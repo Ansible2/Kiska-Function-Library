@@ -128,6 +128,9 @@ _infantryClasses apply {
     if !(isNull _animateClass) then {
         private _animationSet = (_animateClass >> "animationSet") call BIS_fnc_getCfgData;
         private _equipmentLevel = (_animateClass >> "equipmentLevel") call BIS_fnc_getCfgData;
+        if (isNil "_equipmentLevel") then {
+            _equipmentLevel = "";
+        };
         private _snapToRange = getNumber(_animateClass >> "snapToRange");
         if (_snapToRange isEqualTo 0) then {
             _snapToRange = 5;
