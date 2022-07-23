@@ -132,8 +132,8 @@ _infantryClasses apply {
         if (_snapToRange isEqualTo 0) then {
             _snapToRange = 5;
         };
-        private _combat = [_x >> "exitOnCombat"] call BIS_fnc_getCfgDataBool;
-        private _fallbackFunction = getText(_x >> "fallbackFunction");
+        private _combat = [_animateClass >> "exitOnCombat"] call BIS_fnc_getCfgDataBool;
+        private _fallbackFunction = getText(_animateClass >> "fallbackFunction");
 
         private _args = [
             _agents,
@@ -144,7 +144,7 @@ _infantryClasses apply {
             _fallbackFunction
         ];
 
-        private _getAnimationMapFunction = getText(_x >> "getAnimationMapFunction");
+        private _getAnimationMapFunction = getText(_animateClass >> "getAnimationMapFunction");
         if (_getAnimationMapFunction isNotEqualTo "") then {
             private _animationMap = [[],_getAnimationMapFunction] call KISKA_fnc_callBack;
             _args pushBack _animationMap;
