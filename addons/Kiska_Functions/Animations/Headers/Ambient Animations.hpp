@@ -579,9 +579,9 @@ d                relativeInfo[] = {
             {
                 type = "Box_NATO_WpsSpecial_F";
                 relativeInfo[] = {
-                    {0.0180664,0.0864258,4.91076},
-                    {-0.220202,-0.957546,0.186057},
-                    {0,0.190739,0.981641}
+                    {0.0341797,0.0270996,-0.114266},
+                    {-0.129318,-0.981674,0.139975},
+                    {0,0.14116,0.989987}
                 };
             };
             class specialPurposeBox_IND : specialPurposeBox_NATO
