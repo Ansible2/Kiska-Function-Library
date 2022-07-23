@@ -44,7 +44,7 @@ if (isNull _child) exitWith {
     []
 };
 
-private _relativePosWorld = _parent worldToModel (getPosWorld _child);
+private _relativePosWorld = _parent worldToModel (ASLToAGL (getPosASL _child));
 private _relativeVectorDir = _parent vectorWorldToModel (vectorDir _child);
 private _relativeVectorUp = _parent vectorWorldToModel (vectorUp _child);
 

@@ -188,8 +188,6 @@ class KISKA_AmbientAnimations
             "HubStandingUA_move1",
             "HubStandingUA_move2"
         };
-
-        attachToLogic = ON;
     };
     class STAND_UNARMED_2
     {
@@ -225,7 +223,7 @@ class KISKA_AmbientAnimations
             class plasticChair
             {
                 type = "Land_ChairPlastic_F";
-                relativePos[] = {0.21793,-0.0107422,4.46834};
+                relativePos[] = {0.142059,-0.00439453,-0.488663};
                 relativeDir[] = {0.980642,-0.0994109,0.168695};
                 relativeUp[] = {-0.166414,0.0308706,0.985573};
             };
@@ -233,9 +231,9 @@ class KISKA_AmbientAnimations
             {
                 type = "Land_CampingChair_V2_F";
                 relativeInfo[] = {
-                    {-0.0107422,-0.0825195,4.53242},
-                    {-0.099553,-0.994288,-0.0384766},
-                    {0.0308706,-0.0417363,0.998652}
+                    {-0.00927734,-0.0766602,-0.447827},
+                    {0.0146026,-0.992466,-0.121646},
+                    {-0.010771,-0.121808,0.992495}
                 };
             };
             class campingChair_1 : campingChair_2
@@ -246,16 +244,16 @@ class KISKA_AmbientAnimations
             {
                 type = "Land_ChairWood_F";
                 relativeInfo[] = {
-                    {-0.0170898,0.0266113,5.03957},
-                    {-0.099553,-0.994288,-0.0384766},
-                    {0.0308706,-0.0417363,0.998652}
+                    {-0.0385742,0.0432129,0.0593152},
+                    {0.0146026,-0.992466,-0.121646},
+                    {-0.010771,-0.121808,0.992495}
                 };
             };
             class officeChair
             {
                 type = "Land_OfficeChair_01_F";
                 relativeInfo[] = {
-                    {0.0078125,-0.0603027,4.41063},
+                    {0.0205078,-0.0170898,-0.615759},
                     {0.00617849,-0.99071,-0.135852},
                     {0,-0.135855,0.990729}
                 };
@@ -407,8 +405,6 @@ class KISKA_AmbientAnimations
                 };
             };
         };
-
-        attachToLogic = ON;
     };
 
     class SIT_HIGH_2 : SIT_HIGH_1
@@ -548,13 +544,15 @@ class KISKA_AmbientAnimations
             "c5efe_michalloop"
         };
 
+        attachToLogic = ON;
+
         class snapToObjects
         {
             class launchersBox_NATO
-            {
+            { // GOOD
                 type = "Box_NATO_WpsLaunch_F";
                 relativeInfo[] = {
-                    {0.012207,-0.0300293,4.84837},
+                    {0.0489197,0.00891113,-0.148207},
                     {-0.220085,-0.975481,0},
                     {0,0,1}
                 };
@@ -599,8 +597,6 @@ class KISKA_AmbientAnimations
                 type = "Box_East_Wps_F";
             };
         };
-
-        attachToLogic = ON;
     };
 
     class SIT_LOW_SAD : SIT_LOW

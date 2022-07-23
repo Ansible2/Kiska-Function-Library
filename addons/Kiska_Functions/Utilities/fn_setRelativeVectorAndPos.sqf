@@ -51,6 +51,6 @@ private _relativePosWorld = _relativeInfo select 0;
 private _relativeVectorDir = _relativeInfo select 1;
 private _relativeVectorUp = _relativeInfo select 2;
 
-_child setPosWorld (_parent modelToWorld _relativePosWorld);
+_child setPosWorld (_parent modelToWorldWorld _relativePosWorld);
 _child setVectorDir (_parent vectorModelToWorld _relativeVectorDir);
 _child setVectorUp (_parent vectorModelToWorld _relativeVectorUp);
