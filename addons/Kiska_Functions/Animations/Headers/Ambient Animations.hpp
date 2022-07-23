@@ -423,66 +423,69 @@ class KISKA_AmbientAnimations
             class equipmentBox : equipmentBox
             {
                 relativeInfo[] = {
-                    {0.0200195,-0.0288086,4.52232},
-                    {-0.890749,-0.454495,0},
+                    {0.0297852,0.0412598,-0.500562},
+                    {-0.910042,-0.414516,0},
                     {0,0,1}
                 };
             };
             class woodenBox : woodenBox
             {
-                relativeInfo[] = {
-                    {0.0703125,-0.188965,4.63355},
-                    {0.317043,-0.948411,0},
+d                relativeInfo[] = {
+                    {-0.0126953,-0.204346,-0.386857},
+                    {0.426327,-0.904569,0},
                     {0,0,1}
                 };
             };
             class supplyCrate : supplyCrate
             {
                 relativeInfo[] = {
-                    {0,-0.0400391,4.57443},
-                    {0.388223,-0.921565,0},
+                    {-0.0117188,-0.0500488,-0.427824},
+                    {0.426327,-0.904569,0},
                     {0,0,1}
                 };
             };
             class uniformBox : uniformBox
             {
                 relativeInfo[] = {
-                    {0.0219727,0.0126953,4.5194},
-                    {-0.890749,-0.454495,0},
+                    {0.00683594,0.017334,-0.492255},
+                    {-0.908667,-0.417521,0},
                     {0,0,1}
                 };
             };
             class ammoPallet : ammoPallet
             {
                 relativeInfo[] = {
-                    {0.574707,-0.210938,4.47999},
-                    {0.904759,0.425924,0},
+                    {0.556641,-0.0361328,-0.553361},
+                    {0.898839,0.438278,0},
                     {0,0,1}
                 };
             };
             class cargoBox : cargoBox
             {
                 relativeInfo[] = {
-                    {0.00195313,-0.473145,4.86601},
-                    {0.434003,-0.900911,0},
+                    {0.0141602,-0.447266,-0.100509},
+                    {0.441747,-0.89714,0},
+                    {0,0,1}
+                };
+            };
+            class palletStack : palletStack
+            {
+                relativeInfo[] = {
+                    {0.443848,-0.0473633,-0.428129},
+                    {0.929453,0.368941,0},
                     {0,0,1}
                 };
             };
             class hbarrierSmall_3 : hbarrierSmall_3
             {
                 relativeInfo[] = {
-                    {-0.722656,-0.542969,4.59109},
-                    {0.434003,-0.900911,0},
+                    {-0.012207,-0.486084,-0.30972},
+                    {0.400162,-0.916444,0},
                     {0,0,1}
                 };
             };
-            class hbarrierSmall_5 : hbarrierSmall_5
+            class hbarrierSmall_5 : hbarrierSmall_3
             {
-                relativeInfo[] = {
-                    {0.600586,-0.513672,4.64892},
-                    {0.434003,-0.900911,0},
-                    {0,0,1}
-                };
             };
         };
     };
@@ -555,7 +558,7 @@ class KISKA_AmbientAnimations
         class snapToObjects
         {
             class launchersBox_NATO
-            { // GOOD
+            {
                 type = "Box_NATO_WpsLaunch_F";
                 relativeInfo[] = {
                     {0.0489197,0.00891113,-0.148207},
