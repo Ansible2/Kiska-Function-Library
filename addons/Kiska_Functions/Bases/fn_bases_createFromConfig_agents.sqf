@@ -100,6 +100,8 @@ _agentClasses apply {
         _placement = _placementConfigValue;
     };
 
+    private _enableDynamicSim = [_classConfig >> "dynamicSim"] call BIS_fnc_getCfgDataBool;
+
     for "_i" from 0 to (_numberOfAgents - 1) do {
         private _spawnPosition = _spawnPositions select _i;
         private _direction = 0;
@@ -118,7 +120,7 @@ _agentClasses apply {
             _placement
         ];
 
-
+        _agent enableDynamicSimulation _enableDynamicSim;
         _agent setDir _direction;
         _agents pushBack _agent;
     };
