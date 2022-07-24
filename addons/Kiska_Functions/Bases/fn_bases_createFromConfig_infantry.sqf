@@ -178,7 +178,6 @@ _infantryClasses apply {
     _base_infantryGroups append _groups;
     _groups apply {
         _x setVariable ["KISKA_bases_config",_classConfig];
-        _x setVariable ["KISKA_bases_baseId",_baseName];
     };
 
 
