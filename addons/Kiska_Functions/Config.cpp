@@ -94,6 +94,8 @@ class CfgFunctions
 			file = "Kiska_functions\Animations";
 			class ambientAnim_createMapFromConfig
 			{};
+			class ambientAnim_isAnimated
+			{};
 			class ambientAnim_play
 			{};
 			class ambientAnim_stop
