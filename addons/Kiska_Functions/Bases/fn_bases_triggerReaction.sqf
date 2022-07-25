@@ -132,7 +132,11 @@ if (_preventDefault) exitWith {};
         private _groupUnits = units _x;
         // reset infantry positions
         _groupUnits apply {
-            _x call BIS_fnc_ambientAnim__terminate;
+            private _isAnimated = [_x] call KISKA_fnc_ambientAnim_isAnimated;
+            if (_isAnimated) then {
+                [_x] call KISKA_fnc_ambientAnim_stop;
+            };
+            
             [_x,"AUTO"] remoteExec ["setUnitPos",_x];
         };
         // in case unit was told to stop with doStop

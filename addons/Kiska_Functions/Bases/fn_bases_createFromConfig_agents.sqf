@@ -100,6 +100,8 @@ _agentClasses apply {
         _placement = _placementConfigValue;
     };
 
+    private _enableDynamicSim = [_classConfig >> "dynamicSim"] call BIS_fnc_getCfgDataBool;
+
     for "_i" from 0 to (_numberOfAgents - 1) do {
         private _spawnPosition = _spawnPositions select _i;
         private _direction = 0;
@@ -118,44 +120,47 @@ _agentClasses apply {
             _placement
         ];
 
-
+        _agent enableDynamicSimulation _enableDynamicSim;
         _agent setDir _direction;
         _agents pushBack _agent;
     };
 
-    /* ---------------------------------
-        Animate
-    --------------------------------- */
+    /* -------------------------------------------
+        Animate Class
+    ------------------------------------------- */
     private _animateClass = _classConfig >> "ambientAnim";
     if !(isNull _animateClass) then {
         private _animationSet = (_animateClass >> "animationSet") call BIS_fnc_getCfgData;
-        if (_animationSet isEqualTo "") then {_animationSet = "STAND"};
-        private _randomAnimationSet = _animationSet isEqualType [];
-
         private _equipmentLevel = (_animateClass >> "equipmentLevel") call BIS_fnc_getCfgData;
-        if (_equipmentLevel isEqualTo "") then {_equipmentLevel = "ASIS"};
-        private _randomEquipmentLevel = _equipmentLevel isEqualType [];
-
-        private _interpolate = [_x >> "interpolate"] call BIS_fnc_getCfgDataBool;
-        // attachToLogic in BIS_fnc_ambientAnim is default true,
-        // this ensures that intention if dontAttachToLogic is undefined in the config
-        private _attachToLogic = !([_x >> "dontAttachToLogic"] call BIS_fnc_getCfgDataBool);
-        _agents apply {
-            private _equipment = _equipmentLevel;
-            private _animationType = _animationSet;
-            if (_randomAnimationSet) then {_animationType = selectRandom _animationSet};
-            if (_randomEquipmentLevel) then {_equipment = selectRandom _equipmentLevel};
-
-            [
-                _x,
-                _animationType,
-                _equipment,
-                objNull,
-                _interpolate,
-                _attachToLogic
-            ] call BIS_fnc_ambientAnim;
+        if (isNil "_equipmentLevel") then {
+            _equipmentLevel = "";
         };
+        
+        private _snapToRange = getNumber(_animateClass >> "snapToRange");
+        if (_snapToRange isEqualTo 0) then {
+            _snapToRange = 5;
+        };
+        private _combat = [_animateClass >> "exitOnCombat"] call BIS_fnc_getCfgDataBool;
+        private _fallbackFunction = getText(_animateClass >> "fallbackFunction");
+
+        private _args = [
+            _agents,
+            _animationSet,
+            _combat,
+            _equipmentLevel,
+            _snapToRange,
+            _fallbackFunction
+        ];
+
+        private _getAnimationMapFunction = getText(_animateClass >> "getAnimationMapFunction");
+        if (_getAnimationMapFunction isNotEqualTo "") then {
+            private _animationMap = [[],_getAnimationMapFunction] call KISKA_fnc_callBack;
+            _args pushBack _animationMap;
+        };
+
+        _args call KISKA_fnc_ambientAnim;
     };
+
 
     private _onAgentsCreated = getText(_classConfig >> "onAgentsCreated");
     if (_onAgentsCreated isNotEqualTo "") then {

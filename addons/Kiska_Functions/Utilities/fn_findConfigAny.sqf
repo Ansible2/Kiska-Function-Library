@@ -5,10 +5,10 @@ Description:
 	Searchs missionConfigFile, campaignConfigFile, and the configFile
 	 (in that order) to find a config based upon the sub paths provided.
 
-	Reutrns the first one it finds.
+	Returns the first one it finds.
 
 	The BIS counterpart to this is BIS_fnc_loadClass and while it can be about 0.0005-0.0010ms
-	 faster if the path is short (about 2 entries). It can yield about 0.005ms faster in various cases
+	 faster if the path is short (about 2 entries). It can yield about 0.005ms faster in various cases.
 
 Parameters:
 	0: _pathArray : <ARRAY> - The array in string format
@@ -35,23 +35,22 @@ if (_pathArray isEqualTo []) exitWith {
 	configNull
 };
 
-private "_config_temp";
 private _configFound = false;
 private _configReturn = configNull;
 [missionConfigFile,campaignConfigFile,configFile] apply {
-	_config_temp = _x;
+	private _configPath = _x;
 	_pathArray apply {
-		// stop going down the list if config does not exist
-		if !(isClass(_config_temp >> _x)) then {
+		// stop going down this config class path does not exist
+		if !(isClass(_configPath >> _x)) then {
 			_configFound = false;
 			break;
 		};
-		_config_temp = _config_temp >> _x;
+		_configPath = _configPath >> _x;
 		_configFound = true;
 	};
 
 	if (_configFound) then {
-		_configReturn = _config_temp;
+		_configReturn = _configPath;
 		break;
 	};
 };

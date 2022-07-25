@@ -89,6 +89,20 @@ class CfgFunctions
 			class vlsFireAt
 			{};
 		};
+		class Animations
+		{
+			file = "Kiska_functions\Animations";
+			class ambientAnim_createMapFromConfig
+			{};
+			class ambientAnim_isAnimated
+			{};
+			class ambientAnim_play
+			{};
+			class ambientAnim_stop
+			{};
+			class ambientAnim
+			{};
+		};
 		class Bases
 		{
 			file = "Kiska_functions\Bases";
@@ -454,6 +468,8 @@ class CfgFunctions
 			{};
 			class getPlayerObject
 			{};
+			class getRelativeVectorAndPos
+			{};
 			class getVariableTarget
 			{};
 			class getVariableTarget_sendBack
@@ -506,7 +522,11 @@ class CfgFunctions
 			{};
 			class removeProximityPlayerAction
 			{};
+			class selectRandom
+			{};
 			class setContainerCargo
+			{};
+			class setRelativeVectorAndPos
 			{};
 			class setupMultiKillEvent
 			{};
@@ -574,5 +594,6 @@ class Extended_PreInit_EventHandlers {
     };
 };
 
-
+#include "Animations\Headers\Ambient Animations.hpp"
 #include "GUIs\Common GUI Headers\KISKA GUI Classes.hpp"
+#include "Sound\Headers\CfgSounds.hpp"

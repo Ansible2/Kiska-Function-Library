@@ -8,7 +8,7 @@ Parameters:
     0: _addTo <ANY> - The entity to add the eventhandler to
 	1: _config <CONFIG> - The config of the eventhandler
 	2: _code <CODE or STRING> - What to execute when the eventhandler is called
-        _thisScriptedEventHandler is available witht the event id
+        _thisScriptedEventHandler is available with the event id
 
 Returns:
 	<NUMBER> - The ID of the eventhandler
