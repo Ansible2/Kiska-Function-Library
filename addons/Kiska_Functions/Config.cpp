@@ -432,6 +432,8 @@ class CfgFunctions
 			{};
 			class notification
 			{};
+			class notify
+			{};
 			class playDrivePath
 			{};
 			class pushBackToArray
