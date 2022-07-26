@@ -124,9 +124,7 @@ if (_preventDefault) exitWith {};
             (_distanceBetweenGroups > 20) AND
             (_currentBehaviour != "combat")
         ) then {
-            [_x,"aware"] remoteExec ["setBehaviour",_leaderOfRespondingGroup];
-            [_x,"aware"] remoteExec ["setCombatBehaviour",_leaderOfRespondingGroup];
-
+            [_x,"aware"] remoteExec ["setBehaviourStrong",_leaderOfRespondingGroup];
         };
 
         private _groupUnits = units _x;
@@ -136,7 +134,7 @@ if (_preventDefault) exitWith {};
             if (_isAnimated) then {
                 [_x] call KISKA_fnc_ambientAnim_stop;
             };
-            
+
             [_x,"AUTO"] remoteExec ["setUnitPos",_x];
         };
         // in case unit was told to stop with doStop

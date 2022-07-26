@@ -48,13 +48,9 @@ class CfgFunctions
 			file = "Kiska_functions\AI";
 			class AAAZone
 			{};
-			class airAssault
-			{};
 			class arty
 			{};
 			class attack
-			{};
-			class changeAI
 			{};
 			class configureConvoy
 			{};
@@ -127,32 +123,7 @@ class CfgFunctions
 			class bases_setupReactivity
 			{};
 		};
-		class Buildings
-		{
-			file = "Kiska_functions\Buildings";
-			class createAndSetObject
-			{};
-			class exportBuildingTemplate
-			{};
-			class getObjectProperties
-			{};
-			class selectAndSpawnBuildingTemplate
-			{};
-		};
-		class CargoDrop
-		{
-			file = "Kiska_functions\Cargo Drop";
-			class addCargoEvents
-			{
-				//postInit = 1;
-			};
-			class addCargoActions
-			{};
-			class cargoDrop
-			{};
-			class strapCargo
-			{};
-		};
+
 		class CIWS
 		{
 			file = "Kiska_functions\CIWS";
@@ -161,28 +132,6 @@ class CfgFunctions
 			class ciwsAlarm
 			{};
 			class ciwsSiren
-			{};
-		};
-		class crateLoading
-		{
-			file = "Kiska_functions\Crate Loading";
-			class addCrateActions
-			{};
-			class addUnloadCratesAction
-			{};
-			class baseVehicleInfo
-			{};
-			class dropCrate
-			{};
-			class getVehicleInfo
-			{};
-			class loadCrate
-			{};
-			class pickUpCrate
-			{};
-			class removeUnloadAction
-			{};
-			class unloadCrates
 			{};
 		};
 
@@ -224,18 +173,7 @@ class CfgFunctions
 				preInit = 1;
 			};
 		};
-		class MAC
-		{
-			file="Kiska_functions\MAC";
-			class homing
-			{};
-			class MACStrike
-			{};
-			class MACStrike_ADD
-			{};
-			class MACStrike_REM
-			{};
-		};
+
 		class Music
 		{
 			file = "Kiska_functions\Music";
@@ -414,8 +352,6 @@ class CfgFunctions
 			{};
 			class endTask
 			{};
-			class setTaskComplete
-			{};
 		};
 		class Utilities
 		{
@@ -466,8 +402,6 @@ class CfgFunctions
 			{};
 			class getNearestIncriment
 			{};
-			class getPlayerObject
-			{};
 			class getRelativeVectorAndPos
 			{};
 			class getVariableTarget
@@ -484,8 +418,6 @@ class CfgFunctions
 			{};
 			class isMainMenu
 			{};
-			class intel
-			{};
 			class isPatchLoaded
 			{};
 			class log
@@ -501,8 +433,6 @@ class CfgFunctions
 			class notification
 			{};
 			class playDrivePath
-			{};
-			class podDrop
 			{};
 			class pushBackToArray
 			{};
@@ -532,17 +462,11 @@ class CfgFunctions
 			{};
 			class showHide
 			{};
-			class skipBrief
-			{
-				//preInit=1;
-			};
 			class staticLine
 			{};
 			class staticLine_eject
 			{};
 			class str
-			{};
-			class triggerWait
 			{};
 			class vehicleFactory
 			{};

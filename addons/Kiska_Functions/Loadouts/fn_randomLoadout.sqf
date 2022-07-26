@@ -5,12 +5,12 @@ Description:
 	Randomly assigns a loadout from the inputed array to the unit(s) provided.
 
 Parameters:
-
 	0: _units <OBJECT, GROUP, or ARRAY> - ...
-	1: _loadoutArray <ARRAY> - An array containing each loadout array. To be used with getUnitLoadout return syntax
+	1: _loadoutArray <ARRAY> - An array containing each loadout array.
+		Same syntax as getUnitLoadout return.
 
 Returns:
-	_unitsChanged <ARRAY> - All the units changed 
+	_unitsChanged <ARRAY> - All the units changed
 
 Examples:
     (begin example)

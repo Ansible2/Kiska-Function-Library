@@ -5,7 +5,7 @@ Description:
     Takes a layer of objects and produces an array of arrays that are their 3d
      ATL position and current direction ([0,0,0,0]).
 
-    Can Also convert the arrays to config compatible format.
+    Can also convert the arrays to config compatible format.
 
     This will copy its output to the clipboard if run on the server;
 

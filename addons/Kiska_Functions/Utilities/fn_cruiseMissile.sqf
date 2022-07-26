@@ -2,7 +2,9 @@
 Function: KISKA_fnc_cruiseMissile
 
 Description:
-	Spawns a cruise missile at designated "launcher" and then guides it to a target 
+	Spawns a cruise missile at designated "launcher" and then guides it to a target.
+	This is direct fire only, missile will not terrain follow.
+	See KISKA_fnc_vlsFireAt for terrain following.
 
 Parameters:
 	0: _launcher <OBJECT> - The VLS launcher to have the missile originate from (or position)
@@ -43,10 +45,10 @@ if (_hangTime <= 0) exitWith {
 };
 
 private _launcherPosition = getPosWorld _launcher;
-private _missile = "ammo_Missile_Cruise_01" createVehicle [_launcherPosition select 0, _launcherPosition select 1, (_launcherPosition select 2) + 20];  
+private _missile = "ammo_Missile_Cruise_01" createVehicle [_launcherPosition select 0, _launcherPosition select 1, (_launcherPosition select 2) + 20];
 
 // create launch effect
-private _boosterSmoke = "#particlesource" createVehicle [0,0,0]; 
+private _boosterSmoke = "#particlesource" createVehicle [0,0,0];
 _boosterSmoke setParticleClass "MLRSFired1";
 _boosterSmoke attachto [_missile,[0,0,0],"missileEnd"];
 
@@ -60,10 +62,10 @@ if (_target isEqualType objNull) then {
 	_targetPosition = _target;
 };
 
-private _laserTarget =  createVehicle ["LaserTargetW",_targetPosition,[],0,"CAN_COLLIDE"];    
-BLUFOR reportRemoteTarget [_laserTarget, 3600];  
-  
-_missile setShotParents [_launcher,gunner _launcher];  
+private _laserTarget =  createVehicle ["LaserTargetW",_targetPosition,[],0,"CAN_COLLIDE"];
+BLUFOR reportRemoteTarget [_laserTarget, 3600];
+
+_missile setShotParents [_launcher,gunner _launcher];
 
 sleep _hangTime;
 deleteVehicle _boosterSmoke;
