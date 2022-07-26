@@ -33,7 +33,7 @@ scriptName "KISKA_fnc_notification";
 params [
 	["_message","",["",[]]],
 	["_canSkip",true,[true]],
-	["_lifetime",5,[123]],
+	["_lifetime",4,[123]],
 	["_color",GREEN_RBGA,[[]],4]
 ];
 
