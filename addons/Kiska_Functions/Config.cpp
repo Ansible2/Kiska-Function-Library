@@ -374,6 +374,8 @@ class CfgFunctions
 			{};
 			class classTurretsWithGuns
 			{};
+			class clearCargoGlobal
+			{};
 			class countdown
 			{};
 			class cruiseMissile
