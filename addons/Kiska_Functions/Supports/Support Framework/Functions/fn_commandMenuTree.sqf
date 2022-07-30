@@ -79,7 +79,7 @@ _menuPath apply {
 	localNamespace setVariable ["KISKA_commMenuTree_proceedToNextMenu",false];
 	showCommandingMenu _x;
 
-	// wait for menu to allow proceed or menu is closed
+	// wait for player to select and option from the current menu or for them to close the menu
 	waitUntil {
 		if (localNamespace getVariable "KISKA_commMenuTree_proceedToNextMenu") exitWith {true};
 		if (COMMAND_MENU_CLOSED) exitWith {
