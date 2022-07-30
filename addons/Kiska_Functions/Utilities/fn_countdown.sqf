@@ -26,7 +26,7 @@ Examples:
 
 Author(s):
 	Hilltop(Willtop) & omNomios,
-	Modified by: Ansible2 // Cipher
+	Modified by: Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_countdown";
 
