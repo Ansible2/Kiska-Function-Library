@@ -42,11 +42,7 @@ if (_cargo isEqualTo []) exitWith {
 };
 
 
-// make sure container is empty
-clearWeaponCargoGlobal _containerToLoad;
-clearMagazineCargoGlobal _containerToLoad;
-clearItemCargoGlobal _containerToLoad;
-clearBackpackCargoGlobal _containerToLoad;
+[_containerToLoad] call KISKA_fnc_clearCargoGlobal;
 
 
 // items

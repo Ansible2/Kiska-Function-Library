@@ -111,10 +111,7 @@ private _flyToPosition = _dropPosition getPos [_flyInRadius,_relativeDirection];
 
     if (_deleteCargo) then {
         _containers apply {
-            clearMagazineCargoGlobal _x;
-        	clearWeaponCargoGlobal _x;
-        	clearBackpackCargoGlobal _x;
-        	clearItemCargoGlobal _x;
+			[_x] call KISKA_fnc_clearCargoGlobal;
         };
     };
 

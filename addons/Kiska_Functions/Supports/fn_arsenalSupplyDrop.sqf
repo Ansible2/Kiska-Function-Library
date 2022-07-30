@@ -36,6 +36,8 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_arsenalSupplyDrop";
 
+#define DEFAULT_CRATE_CLASS "B_supplyCrate_F"
+
 params [
 	"_dropPosition",
 	["_vehicleClass","B_T_VTOL_01_vehicle_F",[""]],
@@ -120,11 +122,10 @@ private _flyToPosition = _dropPosition getPos [_flyInRadius,_relativeDirection];
 
 	private _aircraftAlt = (getPosATL _aircraft) select 2;
 	private _boxSpawnPosition = _aircraft getRelPos [15,180];
-	private _arsenalBox = ([["B_supplyCrate_F"],_aircraftAlt,_boxSpawnPosition] call KISKA_fnc_supplyDrop) select 0;
-	clearMagazineCargoGlobal _arsenalBox;
-	clearWeaponCargoGlobal _arsenalBox;
-	clearBackpackCargoGlobal _arsenalBox;
-	clearItemCargoGlobal _arsenalBox;
+	private _droppedContainers = [[DEFAULT_CRATE_CLASS],_aircraftAlt,_boxSpawnPosition] call KISKA_fnc_supplyDrop;
+
+	private _arsenalBox = _droppedContainers select 0;
+	[_arsenalBox] call KISKA_fnc_clearCargoGlobal;
 	[_arsenalBox] call KISKA_fnc_addArsenal;
 
 	if (_lifeTime > 0) then {
