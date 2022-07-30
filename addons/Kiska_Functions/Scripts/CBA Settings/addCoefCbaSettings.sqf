@@ -15,19 +15,29 @@ Parameters:
     "SLIDER",
     ["Weapon Sway","100% equals most sway possible"],
     ["KISKA Misc Settings","Weapon Coefficients"],
-    [0,1,0.15,2,true],
+    [0,1,0.55,2,true],
     0,
     {
-        params ["_value"];
+        if !(hasInterface) exitWith {};
 
-        player setCustomAimCoef _value;
+        _this spawn {
+            params ["_value"];
 
-        if (isNil "KISKA_weaponSwayRespawnEvent_id") then {
-            private _id = player addEventHandler ["RESPAWN",{
-                player setCustomAimCoef KISKA_CBA_weaponSwayCoef;
-            }];
+            waitUntil {
+                sleep 1;
+                alive player
+            };
 
-            missionNamespace setVariable ["KISKA_weaponSwayRespawnEvent_id",_id];
+            player setCustomAimCoef _value;
+
+            if (isNil "KISKA_weaponSwayRespawnEvent_id") then {
+                private _id = player addEventHandler ["RESPAWN",{
+                    params ["_player"];
+                    _player setCustomAimCoef KISKA_CBA_weaponSwayCoef;
+                }];
+
+                missionNamespace setVariable ["KISKA_weaponSwayRespawnEvent_id",_id];
+            };
         };
     }
 ] call CBA_fnc_addSetting;
@@ -40,16 +50,25 @@ Parameters:
     [0,1,0.5,2,true],
     0,
     {
-        params ["_value"];
+        if !(hasInterface) exitWith {};
+        _this spawn {
+            params ["_value"];
 
-        player setUnitRecoilCoefficient _value;
+            waitUntil {
+                sleep 1;
+                alive player
+            };
 
-        if (isNil "KISKA_recoilCoefRespawnEvent_id") then {
-            private _id = player addEventHandler ["RESPAWN",{
-                player setUnitRecoilCoefficient KISKA_CBA_recoilCoef;
-            }];
+            player setUnitRecoilCoefficient _value;
 
-            missionNamespace setVariable ["KISKA_recoilCoefRespawnEvent_id",_id];
+            if (isNil "KISKA_recoilCoefRespawnEvent_id") then {
+                private _id = player addEventHandler ["RESPAWN",{
+                    params ["_player"];
+                    _player setCustomAimCoef KISKA_CBA_recoilCoef;
+                }];
+
+                missionNamespace setVariable ["KISKA_recoilCoefRespawnEvent_id",_id];
+            };
         };
     }
 ] call CBA_fnc_addSetting;
@@ -62,16 +81,26 @@ Parameters:
     [0.1,3,1,1,false],
     0,
     {
-        params ["_value"];
+        if !(hasInterface) exitWith {};
 
-        player setUnitTrait ["loadCoef", _value];
+        _this spawn {
+            params ["_value"];
 
-        if (isNil "KISKA_loadCoefRespawnEvent_id") then {
-            private _id = player addEventHandler ["RESPAWN",{
-                player setUnitTrait ["loadCoef", KISKA_CBA_loadCoef];
-            }];
+            waitUntil {
+                sleep 1;
+                alive player
+            };
 
-            missionNamespace setVariable ["KISKA_loadCoefRespawnEvent_id",_id];
+            player setUnitTrait ["loadCoef", _value];
+
+            if (isNil "KISKA_loadCoefRespawnEvent_id") then {
+                private _id = player addEventHandler ["RESPAWN",{
+                    params ["_player"];
+                    _player setUnitTrait ["loadCoef", KISKA_CBA_loadCoef];
+                }];
+
+                missionNamespace setVariable ["KISKA_loadCoefRespawnEvent_id",_id];
+            };
         };
     }
 ] call CBA_fnc_addSetting;
@@ -84,16 +113,26 @@ Parameters:
     [0.1,3,1,1,false],
     0,
     {
-        params ["_value"];
+        if !(hasInterface) exitWith {};
 
-        player setUnitTrait ["audibleCoef", _value];
+        _this spawn {
+            params ["_value"];
 
-        if (isNil "KISKA_audibleCoefRespawnEvent_id") then {
-            private _id = player addEventHandler ["RESPAWN",{
-                player setUnitTrait ["audibleCoef", KISKA_CBA_audibleCoef];
-            }];
+            waitUntil {
+                sleep 1;
+                alive player
+            };
 
-            missionNamespace setVariable ["KISKA_audibleCoefRespawnEvent_id",_id];
+            player setUnitTrait ["audibleCoef", _value];
+
+            if (isNil "KISKA_audibleCoefRespawnEvent_id") then {
+                private _id = player addEventHandler ["RESPAWN",{
+                    params ["_player"];
+                    _player setUnitTrait ["audibleCoef", KISKA_CBA_audibleCoef];
+                }];
+
+                missionNamespace setVariable ["KISKA_audibleCoefRespawnEvent_id",_id];
+            };
         };
     }
 ] call CBA_fnc_addSetting;
@@ -106,16 +145,26 @@ Parameters:
     [0.1,3,1,1,false],
     0,
     {
-        params ["_value"];
+        if !(hasInterface) exitWith {};
 
-        player setUnitTrait ["camouflageCoef ", _value];
+        _this spawn {
+            params ["_value"];
 
-        if (isNil "KISKA_camouflageCoefRespawnEvent_id") then {
-            private _id = player addEventHandler ["RESPAWN",{
-                player setUnitTrait ["camouflageCoef", KISKA_CBA_camouflageCoef];
-            }];
+            waitUntil {
+                sleep 1;
+                alive player
+            };
 
-            missionNamespace setVariable ["KISKA_camouflageCoefRespawnEvent_id",_id];
+            player setUnitTrait ["camouflageCoef", _value];
+
+            if (isNil "KISKA_camouflageCoefRespawnEvent_id") then {
+                private _id = player addEventHandler ["RESPAWN",{
+                    params ["_player"];
+                    _player setUnitTrait ["camouflageCoef", KISKA_CBA_camouflageCoef];
+                }];
+
+                missionNamespace setVariable ["KISKA_camouflageCoefRespawnEvent_id",_id];
+            };
         };
     }
 ] call CBA_fnc_addSetting;
