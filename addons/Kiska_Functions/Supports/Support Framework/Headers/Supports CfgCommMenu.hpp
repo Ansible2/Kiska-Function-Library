@@ -52,7 +52,7 @@ class KISKA_artillery_baseClass : KISKA_basicSupport_baseClass
     text = "Artillery Fire Support";
     supportTypeId = SUPPORT_TYPE_ARTY;
     icon = ARTILLERY_ICON;
-    radiuses[] = {};
+    radiuses[] = {25,50,100};
     canSelectRounds = 1; // can the caller select a specified number of rounds each call 0 false 1 true
     roundCount = 8; // starting round count
 
@@ -72,6 +72,8 @@ class KISKA_artillery_baseClass : KISKA_basicSupport_baseClass
         AMMO_230_HE_ID,
         AMMO_230_CLUSTER_ID
     };
+
+    EXPRESSION_CALL_MASTER(KISKA_artillery_baseClass)
 };
 
 class KISKA_CAS_baseClass : KISKA_basicSupport_baseClass
@@ -94,6 +96,8 @@ class KISKA_CAS_baseClass : KISKA_basicSupport_baseClass
     vehicleTypes[] = {
         "B_Plane_CAS_01_dynamicLoadout_F"
     };
+
+    EXPRESSION_CALL_MASTER(KISKA_CAS_baseClass)
 };
 
 /* ----------------------------------------------------------------------------
@@ -113,6 +117,8 @@ class KISKA_attackHelicopterCAS_baseClass : KISKA_basicSupport_baseClass
     vehicleTypes[] = {
         "B_Heli_Attack_01_dynamicLoadout_F"
     };
+
+    EXPRESSION_CALL_MASTER(KISKA_attackHelicopterCAS_baseClass)
 };
 
 class KISKA_helicopterCAS_baseClass : KISKA_basicSupport_baseClass
@@ -129,6 +135,8 @@ class KISKA_helicopterCAS_baseClass : KISKA_basicSupport_baseClass
     vehicleTypes[] = {
         "B_Heli_Transport_01_F"
     };
+
+    EXPRESSION_CALL_MASTER(KISKA_helicopterCAS_baseClass)
 };
 
 /* ----------------------------------------------------------------------------
@@ -145,6 +153,8 @@ class KISKA_arsenalSupplyDrop_baseClass : KISKA_basicSupport_baseClass
     vehicleTypes[] = {
         "B_T_VTOL_01_infantry_F"
     };
+
+    EXPRESSION_CALL_MASTER(KISKA_arsenalSupplyDrop_baseClass)
 };
 
 class KISKA_supplyDrop_aircraft_baseClass : KISKA_basicSupport_baseClass
@@ -156,12 +166,14 @@ class KISKA_supplyDrop_aircraft_baseClass : KISKA_basicSupport_baseClass
 
     addArsenals = 1;
     deleteCargo = 1;
-    crateList[] = {}; // class names of each crate to be dropped
+    crateList[] = {"B_supplyCrate_F"}; // class names of each crate to be dropped
 
     flyinHeights[] = {};
     vehicleTypes[] = {
         "B_T_VTOL_01_infantry_F"
     };
+
+    EXPRESSION_CALL_MASTER(KISKA_supplyDrop_aircraft_baseClass)
 };
 
 
@@ -185,6 +197,8 @@ class KISKA_CAS_guns_templateClass : KISKA_CAS_baseClass
     attackTypes[] = {
         GUN_RUN_ID
     };
+
+    EXPRESSION_CALL_MASTER(KISKA_CAS_guns_templateClass)
 };
 class KISKA_CAS_gunsRockets_templateClass : KISKA_CAS_baseClass
 {
@@ -196,6 +210,8 @@ class KISKA_CAS_gunsRockets_templateClass : KISKA_CAS_baseClass
         ROCKETS_ARMOR_PIERCING_ID,
         ROCKETS_HE_ID
     };
+
+    EXPRESSION_CALL_MASTER(KISKA_CAS_gunsRockets_templateClass)
 };
 class KISKA_CAS_rockets_templateClass : KISKA_CAS_baseClass
 {
@@ -204,6 +220,8 @@ class KISKA_CAS_rockets_templateClass : KISKA_CAS_baseClass
         ROCKETS_ARMOR_PIERCING_ID,
         ROCKETS_HE_ID
     };
+
+    EXPRESSION_CALL_MASTER(KISKA_CAS_rockets_templateClass)
 };
 class KISKA_CAS_bombs_templateClass : KISKA_CAS_baseClass
 {
@@ -212,6 +230,8 @@ class KISKA_CAS_bombs_templateClass : KISKA_CAS_baseClass
         BOMB_LGB_ID,
         BOMB_CLUSTER_ID
     };
+
+    EXPRESSION_CALL_MASTER(KISKA_CAS_bombs_templateClass)
 };
 class KISKA_CAS_AGM_templateClass : KISKA_CAS_baseClass
 {
@@ -219,6 +239,8 @@ class KISKA_CAS_AGM_templateClass : KISKA_CAS_baseClass
     attackTypes[] = {
         AGM_ID
     };
+
+    EXPRESSION_CALL_MASTER(KISKA_CAS_AGM_templateClass)
 };
 class KISKA_CAS_napalm_templateClass : KISKA_CAS_baseClass
 {
@@ -226,6 +248,8 @@ class KISKA_CAS_napalm_templateClass : KISKA_CAS_baseClass
     attackTypes[] = {
         BOMB_NAPALM_ID
     };
+
+    EXPRESSION_CALL_MASTER(KISKA_CAS_napalm_templateClass)
 };
 
 /* ----------------------------------------------------------------------------
@@ -240,6 +264,8 @@ class KISKA_ARTY_155_templateClass : KISKA_artillery_baseClass
         AMMO_155_MINES_ID,
         AMMO_155_ATMINES_ID
     };
+
+    EXPRESSION_CALL_MASTER(KISKA_ARTY_155_templateClass)
 };
 class KISKA_ARTY_120_templateClass : KISKA_artillery_baseClass
 {
@@ -252,6 +278,8 @@ class KISKA_ARTY_120_templateClass : KISKA_artillery_baseClass
         AMMO_120_ATMINES_ID,
         AMMO_120_SMOKE_ID
     };
+
+    EXPRESSION_CALL_MASTER(KISKA_ARTY_120_templateClass)
 };
 class KISKA_ARTY_82_templateClass : KISKA_artillery_baseClass
 {
@@ -263,6 +291,8 @@ class KISKA_ARTY_82_templateClass : KISKA_artillery_baseClass
         AMMO_82_FLARE_ID,
         AMMO_82_SMOKE_ID
     };
+
+    EXPRESSION_CALL_MASTER(KISKA_ARTY_82_templateClass)
 };
 class KISKA_ARTY_230_templateClass : KISKA_artillery_baseClass
 {
@@ -272,4 +302,6 @@ class KISKA_ARTY_230_templateClass : KISKA_artillery_baseClass
         AMMO_230_HE_ID,
         AMMO_230_CLUSTER_ID
     };
+
+    EXPRESSION_CALL_MASTER(KISKA_ARTY_230_templateClass)
 };
