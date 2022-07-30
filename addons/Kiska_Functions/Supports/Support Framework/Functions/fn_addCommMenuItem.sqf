@@ -9,6 +9,7 @@ Description:
 	Also initializes/adds entries to the KISKA_playersSupportMap which is used for
 	 keeping track of the number of uses left on a support if they are passed between
 	 the Support Manager.
+	
 Parameters:
 	0: _owner <OBJECT> - The person to add the support to
 	1: _itemClass <STRING> - The class as defined in the CfgCommunicationMenu
