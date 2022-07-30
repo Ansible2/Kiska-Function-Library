@@ -11,9 +11,10 @@ Parameters:
         in the _this magic variable
 	1: _callBackFunction <CODE, STRING, ARRAY> - Code to call, compile and call, and/or
         arguements to pass to the code (in _thisArgs variable)
+    2: _runInScheduled <BOOL> - Spawns the code in a scheduled thread
 
 Returns:
-	<ANY> - Whatever the callback function returns
+	<ANY> - Whatever the callback function returns or scripthandle if run in scheduled
 
 Examples:
     (begin example)
@@ -34,7 +35,8 @@ scriptName "KISKA_fnc_callBack";
 
 params [
     ["_defaultArgs",[],[[]]],
-    ["_callBackFunction",{},[[],"",{}]]
+    ["_callBackFunction",{},[[],"",{}]],
+    ["_runInScheduled",false,[true]
 ];
 
 if (_callBackFunction isEqualType {}) exitWith {
@@ -63,6 +65,18 @@ private _thisArgs = _callBackFunction select 0;
 _callBackFunction = _callBackFunction select 1;
 if (_callBackFunction isEqualType "") then {
     _callBackFunction = compile _callBackFunction;
+};
+
+
+if (_runInScheduled) exitWith {
+    [
+        _defaultArgs,
+        _thisArgs,
+        _callBackFunction
+    ] spawn {
+        params ["_defaultArgs","_thisArgs","_callBackFunction"];
+        _defaultArgs call _callBackFunction;
+    };
 };
 
 
