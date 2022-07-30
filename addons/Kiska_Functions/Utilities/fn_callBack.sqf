@@ -36,7 +36,7 @@ scriptName "KISKA_fnc_callBack";
 params [
     ["_defaultArgs",[],[[]]],
     ["_callBackFunction",{},[[],"",{}]],
-    ["_runInScheduled",false,[true]
+    ["_runInScheduled",false,[true]]
 ];
 
 if (_callBackFunction isEqualType {}) exitWith {
