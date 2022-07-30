@@ -56,9 +56,11 @@ private _menuPathArray = [];
 private _menuVariables = []; // keeps track of global variable names to set to nil when done
 
 // get use count from config if -1
-if (_useCount < 0) then {
-	_useCount = getNumber(_supportConfig >> "useCount");
-	_this set [2,_useCount];
+private _args = _this; // just for readability
+private _useCountConfig = _supportConfig >> "useCount";
+if (_useCount < 0 AND (isNumber _useCountConfig)) then {
+	_useCount = getNumber _useCountConfig;
+	_args set [2,_useCount];
 };
 
 /* ----------------------------------------------------------------------------
@@ -140,7 +142,6 @@ SAVE_AND_PUSH(FLYIN_HEIGHT_MENU_STR,_flyInHeightMenu)
 /* ----------------------------------------------------------------------------
 	Create Menu Path
 ---------------------------------------------------------------------------- */
-private _args = _this; // just for readability
 _args pushBack _menuVariables;
 
 private _timeOnStation = [_supportConfig >> "timeOnStation"] call BIS_fnc_getCfgData;
@@ -153,7 +154,10 @@ _args pushBack _timeOnStation;
 
 		private _useCount = _args select 2;
 		// if a ctrl key is held and one left clicks to select the support while in the map, they can call in an infinite number of the support
-		if (visibleMap AND {missionNamespace getVariable ["KISKA_ctrlDown",false]}) exitWith {
+		if (
+			visibleMap AND
+			(missionNamespace getVariable ["KISKA_ctrlDown",false])
+		) exitWith {
 			["You can't call in a support while holding down a crtl key and in the map. It causes a bug with the support menu."] call KISKA_fnc_errorNotification;
 			ADD_SUPPORT_BACK(_useCount)
 		};

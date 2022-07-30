@@ -51,9 +51,11 @@ if (isNull _supportConfig) exitWith {
 };
 
 // get use count from config if -1
-if (_useCount < 0) then {
-	_useCount = getNumber(_supportConfig >> "useCount");
-	_this set [2,_useCount];
+private _args = _this; // just for readability
+private _useCountConfig = _supportConfig >> "useCount";
+if (_useCount < 0 AND (isNumber _useCountConfig)) then {
+	_useCount = getNumber _useCountConfig;
+	_args set [2,_useCount];
 };
 
 private _menuPathArray = [];
@@ -120,7 +122,6 @@ SAVE_AND_PUSH(BEARING_MENU_STR,_bearingsMenu)
 /* ----------------------------------------------------------------------------
 	Create Menu Path
 ---------------------------------------------------------------------------- */
-private _args = _this; // just for readability
 _args pushBack _menuVariables;
 
 

@@ -138,9 +138,10 @@ private _roundsMenu = [
 ];
 private _canSelectRounds = [_supportConfig >> "canSelectRounds"] call BIS_fnc_getCfgDataBool;
 // get default round count from config
+private _args = _this; // just for readability
 if (_roundCount < 0) then {
 	_roundCount = [_supportConfig >> "roundCount"] call BIS_fnc_getCfgData;
-	_this set [2,_roundCount]; // update round count to be passed to KISKA_fnc_commandMenuTree
+	_args set [2,_roundCount]; // update round count to be passed to KISKA_fnc_commandMenuTree
 };
 
 private _roundsString = "";
@@ -167,7 +168,6 @@ SAVE_AND_PUSH(ROUND_COUNT_MENU_GVAR,_roundsMenu)
 /* ----------------------------------------------------------------------------
 	Create Menu
 ---------------------------------------------------------------------------- */
-private _args = _this; // just for readability
 _args pushBack _menuVariables;
 
 
