@@ -45,8 +45,6 @@ params [
 	["_side",BLUFOR,[sideUnknown]]
 ];
 
-hint str _this;
-
 // get directions for vehicle to fly
 if (_flyDirection < 0) then {
 	_flyDirection = round (random 360);
