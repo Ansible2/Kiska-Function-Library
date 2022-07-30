@@ -55,7 +55,7 @@ _menuPath apply {
 	// proceed immediatetly if only one option is in custom menu
 	private _menuName = toLower _x;
 
-	// #user: prepended on the meny name denotes a custom menu
+	// #user: prepended on the menu name denotes a custom menu
 	// The menu options are saved to a global variable in the missionNamespace
 	/// that is the menu's name, minus the ""#user:"
 	/// e.g. a menu with the name "#USER:MY_SUBMENU_inCommunication" would be
