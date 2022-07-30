@@ -10,7 +10,7 @@ Description:
 
 Parameters:
 	0: _entity <ANY> - The config of the eventhandler
-	1: _eventConfig <CODE or STRING> - What to execute when the eventhandler is called
+	1: _eventConfig <CONFIG> - The eventhandler config path
 	2: _id <NUMBER> - The event to remove
 
 Returns:
@@ -20,7 +20,7 @@ Examples:
     (begin example)
 		private _removed = [
             player,
-            "KISKA_combatBehaviourChangedEvent",
+            configFile >> "KISKA_EventHandlers" >> "KISKA_combatBehaviourChangedEvent",
             0
         ] call KISKA_fnc_eventHandler_remove
     (end)
