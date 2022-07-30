@@ -95,23 +95,38 @@ if (_selectableRadiuses isEqualTo []) then {
 	};
 };
 
-private _keyCode = 0;
 private _radiusMenu = [
 	["Engagment Area",false]
 ];
+private _keyCode = 0;
+private _pushedMinRadius = false;
+private _lasUsedIndex = 0;
 {
-	if (_forEachIndex <= MAX_KEYS) then {
-		// key codes are offset by 2 (1 on the number bar is key code 2)
-		_keyCode = _forEachIndex + 2;
-	} else {
-		_keyCode = 0;
+	private _isMinRadius = _x <= MIN_RADIUS;
+	if (_pushedMinRadius AND _isMinRadius) then {
+		continue;
 	};
 
-	if (_x < MIN_RADIUS) then {
-		_radiusMenu pushBackUnique DISTANCE_LINE(MIN_RADIUS,_keyCode);
+	if (_lasUsedIndex <= MAX_KEYS) then {
+		// key codes are offset by 2 (1 on the number bar is key code 2)
+		_keyCode = _lasUsedIndex + 2;
+		_lasUsedIndex = _lasUsedIndex + 1;
+
 	} else {
-		_radiusMenu pushBackUnique DISTANCE_LINE(_x,_keyCode);
+		// zero key code means that it has no key to press to activate it
+		_keyCode = 0;
+
 	};
+
+
+	if (_isMinRadius) then {
+		_pushedMinRadius = true;
+		_radiusMenu pushBack DISTANCE_LINE(MIN_RADIUS,_keyCode);
+		continue;
+	};
+
+	_radiusMenu pushBack DISTANCE_LINE(_x,_keyCode);
+
 } forEach _selectableRadiuses;
 SAVE_AND_PUSH(RADIUS_MENU_STR,_radiusMenu)
 
