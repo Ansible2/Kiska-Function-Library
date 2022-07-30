@@ -127,17 +127,20 @@ _args pushBack _menuVariables;
 
 [
 	_menuPathArray,
-	{
+	[_args, {
 		params ["_vehicleClass","_attackType","_approachBearing"];
 
-		private _useCount = _args select 2;
+		private _useCount = _thisArgs select 2;
 		// if a ctrl key is held and one left clicks to select the support while in the map, they can call in an infinite number of the support
-		if (visibleMap AND {missionNamespace getVariable ["KISKA_ctrlDown",false]}) exitWith {
+		if (
+			visibleMap AND
+			(missionNamespace getVariable ["KISKA_ctrlDown",false])
+		) exitWith {
 			["You can't call in a support while holding down a crtl key and in the map. It causes a bug with the support menu."] call KISKA_fnc_errorNotification;
 			ADD_SUPPORT_BACK(_useCount)
 		};
 
-		private _commMenuArgs = _args select 1;
+		private _commMenuArgs = _thisArgs select 1;
 		private _targetPosition = _commMenuArgs select 1;
 		[
 			AGLToASL _targetPosition,
@@ -156,12 +159,11 @@ _args pushBack _menuVariables;
 		};
 
 		UNLOAD_GLOBALS
-	},
-	_args,
-	{
-		ADD_SUPPORT_BACK(_args select 2)
+	}],
+	[_args, {
+		ADD_SUPPORT_BACK(_thisArgs select 2)
 		UNLOAD_GLOBALS
-	}
+	}]
 ] spawn KISKA_fnc_commandMenuTree;
 
 

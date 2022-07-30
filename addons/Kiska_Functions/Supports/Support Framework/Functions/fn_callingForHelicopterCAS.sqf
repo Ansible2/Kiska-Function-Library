@@ -164,10 +164,10 @@ _args pushBack _timeOnStation;
 
 [
 	_menuPathArray,
-	{
+	[_args, {
 		params ["_vehicleClass","_approachBearing","_attackRadius","_flyinHeight"];
 
-		private _useCount = _args select 2;
+		private _useCount = _thisArgs select 2;
 		// if a ctrl key is held and one left clicks to select the support while in the map, they can call in an infinite number of the support
 		if (
 			visibleMap AND
@@ -177,9 +177,9 @@ _args pushBack _timeOnStation;
 			ADD_SUPPORT_BACK(_useCount)
 		};
 
-		private _commMenuArgs = _args select 1;
+		private _commMenuArgs = _thisArgs select 1;
 		private _targetPosition = _commMenuArgs select 1;
-		private _timeOnStation = _args select 4;
+		private _timeOnStation = _thisArgs select 4;
 		[
 			_targetPosition,
 			_attackRadius,
@@ -200,12 +200,11 @@ _args pushBack _timeOnStation;
 		};
 
 		UNLOAD_GLOBALS
-	},
-	_args,
-	{
-		ADD_SUPPORT_BACK(_args select 2)
+	}],
+	[_args, {
+		ADD_SUPPORT_BACK(_thisArgs select 2)
 		UNLOAD_GLOBALS
-	}
+	}]
 ] spawn KISKA_fnc_commandMenuTree;
 
 

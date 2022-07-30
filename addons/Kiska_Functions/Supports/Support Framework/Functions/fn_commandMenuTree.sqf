@@ -6,11 +6,11 @@ Description:
 
 Parameters:
 	0: _menuPath <ARRAY> - The menu global variable paths (in order)
-	1: _endExpression <STRING or CODE> - The code to be executed at the end of the path.
-		It receives all menu parameters in _this.
-	2: _args <ARRAY> - Arguements to be available to _endExpression & _exitExpression
-	3: _exitExpression <STRING or CODE> - The code to be executed in the event that
-		the menu is closed by the player. It gets all added params up to that point in _this
+	1: _endExpression <STRING, CODE, or ARRAY> - The code to be executed at the end of the path.
+		It receives all menu parameters in _this. (see KISKA_fnc_callBack)
+	2: _exitExpression <STRING, CODE, or ARRAY> - The code to be executed in the event that
+		the menu is closed by the player. It gets all added params up to that point in _this.
+		(see KISKA_fnc_callBack)
 
 Returns:
 	NOTHING
@@ -50,7 +50,7 @@ params [
 // create a container for holding params from menu
 localNamespace setVariable ["KISKA_commMenuTree_params",[]];
 
-private _menuClosed = false;
+private _menuWasClosed = false;
 _menuPath apply {
 	// proceed immediatetly if only one option is in custom menu
 	private _menuName = toLower _x;
@@ -83,32 +83,23 @@ _menuPath apply {
 	waitUntil {
 		if (localNamespace getVariable "KISKA_commMenuTree_proceedToNextMenu") exitWith {true};
 		if (COMMAND_MENU_CLOSED) exitWith {
-			_menuClosed = true;
+			_menuWasClosed = true;
 			true
 		};
 		false
 	};
-	if (_menuClosed) then {
+	if (_menuWasClosed) then {
 		break;
 	};
 };
 
 private _params = localNamespace getVariable "KISKA_commMenuTree_params";
-if (!_menuClosed) then {
-	if (_endExpression isEqualType "") then {
-		_endExpression = compile _endExpression;
-	};
-
-	_params call _endExpression;
-
-} else {
-	if (_exitExpression isEqualType "") then {
-		_exitExpression = compile _exitExpression;
-	};
-
-	_params call _exitExpression;
-
+private _expression = _endExpression;
+if (_menuWasClosed) then {
+	_expression = _exitExpression;
 };
+[_params, _expression] call KISKA_fnc_callBack;
+
 
 localNamespace setVariable ["KISKA_commMenuTree_params",nil];
 localNamespace setVariable ["KISKA_commMenuTree_proceedToNextMenu",nil];
