@@ -91,7 +91,8 @@ waitUntil {
 
 
 player addEventHandler ["Respawn",{
-
+    params ["_unit"];
+    
     if (captive _unit) then {
         [
             "Player is a captive",
