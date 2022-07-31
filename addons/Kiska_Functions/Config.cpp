@@ -27,7 +27,7 @@ class CfgFunctions
 		};
 		class ACE
 		{
-			file = "KISKA_functions\ACE"
+			file = "KISKA_functions\ACE";
 			class ACE_addSupportMenuAction
 			{
 				preInit = 1;
