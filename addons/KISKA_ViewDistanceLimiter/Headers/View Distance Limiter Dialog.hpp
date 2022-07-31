@@ -305,7 +305,7 @@ class KISKA_viewDistanceLimiter_dialog
 				class setButton: setButton
 				{
 					text = "Set Increment Size";
-					tooltip = "By how much will the view distance be adjusted in meters to achieve the target FPS each check frequency?"
+					tooltip = "By how much will the view distance be adjusted in meters to achieve the target FPS each check frequency?";
 				};
 				class settingSlider: settingSlider
 				{
