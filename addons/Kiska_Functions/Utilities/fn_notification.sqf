@@ -13,7 +13,7 @@ Parameters:
 			2: _color : <ARRAY> - RGB or RGBA color (range 0-1). (optional, default: [1, 1, 1, 1])
 	1: _canSkip : <BOOL> - Can the notification be skipped when another is in the queue
 	2: _lifetime : <NUMBER> - How long the notification will be visible (min of 2 seconds)
-	3: _color : <ARRAY> - An array of [R,G,B,A] color values; defaults to green
+	3: _headerColor : <ARRAY> - An array of [R,G,B,A] color values; defaults to green
 
 Returns:
 	NOTHING
@@ -32,14 +32,15 @@ scriptName "KISKA_fnc_notification";
 
 params [
 	["_message","",["",[]]],
-	["_canSkip",true,[true]],
 	["_lifetime",4,[123]],
-	["_color",GREEN_RBGA,[[]],4]
+	["_canSkip",true,[true]],
+	["_headerColor",GREEN_RBGA,[[]],[3,4]]
 ];
 
 [
-	["Notification:",1.1,_color],
+	["Notification:",1.1,_headerColor],
 	_message,
+	_lifetime,
 	_canSkip
 ] call KISKA_fnc_notify;
 
