@@ -33,14 +33,14 @@ scriptName "KISKA_fnc_datalinkMsg";
 
 if !(hasInterface) exitWith {};
 
-/* // if function is not run in the same environment, causes an issue where ther will be two
+// if function is not run in the same environment, causes an issue where there will be two
 /// at least "Datalink Messages" sub-subjects
 if (canSuspend) exitWith {
 	[
 		KISKA_fnc_datalinkMsg,
 		_this
 	] call CBA_fnc_directCall;
-}; */
+};
 
 params [
 	["_message","",["",[]]],
