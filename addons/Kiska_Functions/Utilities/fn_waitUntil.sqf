@@ -28,7 +28,9 @@ Examples:
 			{
 				true
 			},
-			false
+			0.5,
+			[],
+			true
 		] call KISKA_fnc_waitUntil;
     (end)
 
@@ -42,7 +44,7 @@ params [
 	["_function",{},[{},"",[]]],
 	["_interval",0.5,[123]],
 	["_parameters",[],[[]]],
-	["_unscheduled",false,[true]]
+	["_unscheduled",true,[true]]
 ];
 
 if (
@@ -50,7 +52,7 @@ if (
 	(_interval <= 0) AND
 	!(_condition isEqualType {})
 ) exitWith {
-	["Unscheduled,perframe waituntil will only support CODE as an arguement",true] call KISKA_fnc_log;
+	["Unscheduled, perframe waituntil will only support CODE as an arguement",true] call KISKA_fnc_log;
 	nil
 };
 
@@ -73,11 +75,11 @@ if (_unscheduled) then {
 		[
 			{
 				params [
-					"_interval",
-					"_function",
 					"_condition",
+					"_function",
+					"_interval",
 					"_parameters",
-					"_unscheduled"
+					""
 				];
 
 				private _conditionMet = [_parameters,_condition] call KISKA_fnc_callBack;
@@ -87,7 +89,7 @@ if (_unscheduled) then {
 
 				_this call KISKA_fnc_waitUntil;
 			},
-			[_interval,_function,_condition,_parameters,_unscheduled],
+			_this,
 			_interval
 		] call CBA_fnc_waitAndExecute;
 
