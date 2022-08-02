@@ -2,7 +2,7 @@
 Function: KISKA_fnc_notification
 
 Description:
-	Prints a simple CBA Notify notification on screen.
+	Prints a simple KISKA Notify notification on screen.
 
 Parameters:
 	0: _message : <STRING or ARRAY> - If string, the message to display as title.
