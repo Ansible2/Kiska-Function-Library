@@ -2,7 +2,7 @@
 Function: KISKA_fnc_errorNotification
 
 Description:
-	Prints a simple CBA Notify error notification on screen.
+	Prints a simple KISKA Notify error notification on screen.
 
 Parameters:
 	0: _message : <STRING or ARRAY> - The second line of the notification.
@@ -12,7 +12,6 @@ Parameters:
                 _size  - Text or image size multiplier. (optional, default: 1) <NUMBER>
                 _color - RGB or RGBA color (range 0-1). (optional, default: [1, 1, 1, 1]) <ARRAY>
 	1: _lifetime : <NUMBER> - How long the notification lasts in seconds (at least 2)
-
 
 Returns:
 	NOTHING
