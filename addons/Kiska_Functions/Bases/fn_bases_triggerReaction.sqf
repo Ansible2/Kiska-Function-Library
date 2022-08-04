@@ -74,18 +74,23 @@ if (_preventDefault) exitWith {};
     private _targets = [];
     private "_leaderOfCallingGroup";
     waitUntil {
-        sleep 1;
+        sleep 2;
         // in case leader changes
         _leaderOfCallingGroup = leader _group;
         if !(alive _leaderOfCallingGroup) exitWith {true};
         _targets = _leaderOfCallingGroup targets [true, _simDistance];
-        _targets isNotEqualTo []
+        if (_targets isEqualTo []) then {continueWith false};
+
+        private _foundEnemyIndex = _targets findIf { !(captive _x) };
+        _foundEnemyIndex isNotEqualTo -1;
     };
 
     // in case _closestEnemy dies while processing
     private _closestEnemy = objNull;
     private _distanceOfClosest = -1;
     _targets apply {
+        if (captive _x) then {continue};
+
         private _distance = _x distance _leaderOfCallingGroup;
         if (!(alive _closestEnemy) OR (_distance < _distanceOfClosest)) then {
             _distanceOfClosest = _distance;
