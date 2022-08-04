@@ -42,9 +42,9 @@ if (!canSuspend) exitWith {
 
 params [
 	["_menuPath",[],[[]]],
-	["_endExpression","",["",{}]],
+	["_endExpression","",["",{},[]]],
 	["_args",[],[[]]],
-	["_exitExpression","",["",{}]]
+	["_exitExpression","",["",{},[]]]
 ];
 
 // create a container for holding params from menu
