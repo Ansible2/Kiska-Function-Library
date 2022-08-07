@@ -33,7 +33,7 @@ addMissionEventHandler ["GroupCreated", {
 
 	_this spawn {
 		params ["_group"];
-		sleep 1;
+		sleep 3;
 
 		private _units = units _group;
 		private _playerInGroup = [
