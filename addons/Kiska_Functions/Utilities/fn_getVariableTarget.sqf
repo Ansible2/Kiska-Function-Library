@@ -8,7 +8,7 @@ Description:
 
 Parameters:
 	0: _variableName : <STRING> - The string name of the varaible to get
-	1: _namespace : <NAMESPACE, OBJECT, STRING, CONTROL, or LOCATION> - The namespace to get the variable from
+	1: _namespace : <NAMESPACE, OBJECT, STRING, CONTROL, GROUP, or LOCATION> - The namespace to get the variable from
 	2: _defaultValue : <ANY> - If the variable does not exist for the target, what should be returned instead
 	3: _target : <NUMBER, OBJECT, or STRING> - Where the _target is local will be where the variable is taken from
 
@@ -35,7 +35,7 @@ if (!canSuspend) exitWith {
 
 params [
 	["_variableName","",[""]],
-	["_namespace",missionNamespace,[missionNamespace,objNull,"",controlNull,locationNull]],
+	["_namespace",missionNamespace,[missionNamespace,objNull,"",controlNull,locationNull,grpNull]],
 	["_defaultValue",-1],
 	["_target",2,[123,objNull,""]]
 ];
