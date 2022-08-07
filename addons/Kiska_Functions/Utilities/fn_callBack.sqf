@@ -24,7 +24,7 @@ Examples:
                 // hint player
                 [player],
                 {hint (_thisArgs select 0)}
-            ],
+            ]
         ] call KISKA_fnc_callBack
     (end)
 
