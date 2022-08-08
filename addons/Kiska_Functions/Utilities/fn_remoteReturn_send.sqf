@@ -58,7 +58,7 @@ if (_regularMultiplayer) then {
 			private _split = _target splitString ":";
 			private _splitCount = count _split;
 			(_splitCount isEqualTo 2) AND {
-				private _splitParsed = _split call BIS_fnc_parseNumberSafe;
+				private _splitParsed = _split apply {parseNumber _x};
 				private _splitCompare = _splitParsed apply {str _x};
 				_splitCompare isEqualTo _split
 			}
