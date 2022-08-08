@@ -36,9 +36,14 @@ if (!canSuspend) exitWith {
 params [
 	["_variableName","",[""]],
 	["_namespace",missionNamespace,[missionNamespace,objNull,"",controlNull,locationNull,grpNull]],
-	["_defaultValue",-1],
+	["_defaultValue",nil],
 	["_target",2,[123,objNull,""]]
 ];
+
+if ((_target isEqualType objNull) AND {isNull _target}) exitWith {
+	["_target is null object!"] call KISKA_fnc_log;
+	_defaultValue
+};
 
 private _targetIsNetId = false;
 private _targetsMultipleUsers = false;
@@ -50,7 +55,10 @@ if (_regularMultiplayer) then {
 		_exitForMultiUserTarget = true;
 	};
 
-	private _targetIsNetId = (_target isEqualType "") AND {
+	private _targetIsString = _target isEqualType "";
+	if (!_targetIsString) exitWith {};
+
+	private _targetIsNetId = _targetIsString AND {
 			private _split = _target splitString ":";
 			private _splitCount = count _split;
 			(_splitCount isEqualTo 2) AND {
@@ -67,12 +75,12 @@ if (_regularMultiplayer) then {
 
 if (_exitForMultiUserTarget) exitWith {
 	[["_target: ",_target," is invalid as it will be sent to more then one machine!"],true] call KISKA_fnc_log;
-	nil
+	_defaultValue
 };
 
 if (_variableName isEqualTo "") exitWith {
 	["_variableName is empty",true] call KISKA_fnc_log;
-	nil
+	_defaultValue
 };
 
 

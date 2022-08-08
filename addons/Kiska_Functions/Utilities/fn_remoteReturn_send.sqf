@@ -44,6 +44,11 @@ params [
 	["_scheduled",false,[true]]
 ];
 
+if ((_target isEqualType objNull) AND {isNull _target}) exitWith {
+	["_target is null object!"] call KISKA_fnc_log;
+	nil
+};
+
 private _targetIsNetId = false;
 private _targetsMultipleUsers = false;
 private _exitForMultiUserTarget = false;
@@ -54,7 +59,10 @@ if (_regularMultiplayer) then {
 		_exitForMultiUserTarget = true;
 	};
 
-	private _targetIsNetId = (_target isEqualType "") AND {
+	private _targetIsString = _target isEqualType "";
+	if (!_targetIsString) exitWith {};
+
+	private _targetIsNetId = _targetIsString AND {
 			private _split = _target splitString ":";
 			private _splitCount = count _split;
 			(_splitCount isEqualTo 2) AND {
@@ -68,6 +76,7 @@ if (_regularMultiplayer) then {
 		_exitForMultiUserTarget = true;
 	};
 };
+
 
 if (_exitForMultiUserTarget) exitWith {
 	[["_target: ",_target," is invalid as it will be sent to more then one machine!"],true] call KISKA_fnc_log;
