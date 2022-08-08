@@ -44,8 +44,32 @@ params [
 	["_scheduled",false,[true]]
 ];
 
-// keep from remoting onto multiple machines
-if (_target <= 0) exitWith {
+private _targetIsNetId = false;
+private _targetsMultipleUsers = false;
+private _exitForMultiUserTarget = false;
+private _regularMultiplayer = isMultiplayer AND (!isMultiplayerSolo);
+if (_regularMultiplayer) then {
+	private _targetsMultipleUsers = (_target isEqualType 123) AND {_target <= 0};
+	if (_targetsMultipleUsers) exitWith {
+		_exitForMultiUserTarget = true;
+	};
+
+	private _targetIsNetId = (_target isEqualType "") AND {
+			private _split = _target splitString ":";
+			private _splitCount = count _split;
+			(_splitCount isEqualTo 2) AND {
+				private _splitParsed = _split call BIS_fnc_parseNumberSafe;
+				private _splitCompare = _splitParsed apply {str _x};
+				_splitCompare isEqualTo _split
+			}
+		};
+
+	if (!_targetIsNetId) exitWith {
+		_exitForMultiUserTarget = true;
+	};
+};
+
+if (_exitForMultiUserTarget) exitWith {
 	[["_target: ",_target," is invalid as it will be sent to more then one machine!"],true] call KISKA_fnc_log;
 	nil
 };
