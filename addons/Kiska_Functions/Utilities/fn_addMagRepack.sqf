@@ -2,7 +2,8 @@
 Function: KISKA_fnc_addMagRepack
 
 Description:
-	Add mag repack to player via Ctrl+R
+	Adds a mag repack to the player via Ctrl+R.
+	To remove see KISKA_fnc_removeMagRepack.
 
 Parameters:
 	NONE
@@ -12,9 +13,7 @@ Returns:
 
 Examples:
     (begin example)
-
 		call KISKA_fnc_addMagRepack;
-
     (end)
 
 Author(s):
@@ -22,16 +21,42 @@ Author(s):
 	Modified by: Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_addMagRepack";
-// check if has interface
-// wait for display
-// add mag repeack eventhandler
-// add the eventhandler id to a variable in the localNamespace (or uiNamespace?)
-waituntil {!isNull (findDisplay 46)};
 
-(findDisplay 46) displayAddEventHandler ["KeyDown",{
+#define DISPLAY_CODE 46
+#define R_KEY_CODE 19
 
-	// passes the pressed key and whether or not a ctrl key is down. The proper combo is ctrl+R
-	if ((_this select 1) isEqualTo 19 AND {_this select 3}) exitWith {
-		[player] call KISKA_fnc_doMagRepack;
-	};
-}];
+if (!hasInterface) exitWith {};
+
+if (localNamespace getVariable ["KISKA_magRepackEventId",-1] isNotEqualTo -1) exitWith {
+	["Mag repack has already been added",true] call KISKA_fnc_log;
+	nil
+};
+
+[
+	{
+		!(isNull (findDisplay DISPLAY_CODE))
+	},
+	{
+		// possibility of two mag repack waitUntils runnning at once
+		if (localNamespace getVariable ["KISKA_magRepackEventId",-1] isNotEqualTo -1) exitWith {
+			["Mag repack has already been added",true] call KISKA_fnc_log;
+			nil
+		};
+
+		private _eventId = (findDisplay DISPLAY_CODE) displayAddEventHandler ["KeyDown",{
+			params ["", "_key", "", "_ctrlPressed"];
+			// passes the pressed key and whether or not a ctrl key is down. The proper combo is ctrl+R
+			if ((_key isEqualTo R_KEY_CODE) AND (_ctrlPressed)) then {
+				[player] call KISKA_fnc_doMagRepack;
+			};
+
+			false
+		}];
+
+		localNamespace setVariable ["KISKA_magRepackEventId",_eventId];
+	},
+	0.1
+] call KISKA_fnc_waitUntil;
+
+
+nil
