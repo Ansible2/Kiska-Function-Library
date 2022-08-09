@@ -378,8 +378,6 @@ class CfgFunctions
 			{};
 			class countdown
 			{};
-			class cruiseMissile
-			{};
 			class dataLinkMsg
 			{};
 			class deleteAtArray
