@@ -71,7 +71,6 @@ if (_target isEqualType []) then {
 				}],
 				[[_target],{
 					_thisArgs params ["_target"];
-					hint "delete target";
 					deleteVehicle _target;
 				}],
 				5
