@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA__fnc_vlsFireAt
+Function: KISKA_fnc_vlsFireAt
 
 Description:
 	Orders VLS to fire at a target. Projectile will follow terrain.
@@ -13,13 +13,13 @@ Returns:
 
 Examples:
     (begin example)
-		[VLS_1,target_1] call KISKA__fnc_vlsFireAt;
+		[VLS_1,target_1] call KISKA_fnc_vlsFireAt;
     (end)
 
 Author:
 	Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA__fnc_vlsFireAt";
+scriptName "KISKA_fnc_vlsFireAt";
 
 #define VLS_WEAPON "weapon_vls_01"
 #define VLS_CLASS "B_Ship_MRLS_01_F"
