@@ -22,7 +22,10 @@ Author(s):
 	Modified by: Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_addMagRepack";
-
+// check if has interface
+// wait for display
+// add mag repeack eventhandler
+// add the eventhandler id to a variable in the localNamespace (or uiNamespace?)
 waituntil {!isNull (findDisplay 46)};
 
 (findDisplay 46) displayAddEventHandler ["KeyDown",{
