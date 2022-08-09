@@ -21,12 +21,11 @@ Returns:
 Examples:
     (begin example)
 		[
-			1,
-			{
-				hint "wait";
-			},
 			{
 				true
+			},
+			{
+				hint "wait";
 			},
 			0.5,
 			[],
