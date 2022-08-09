@@ -452,6 +452,8 @@ class CfgFunctions
 			{};
 			class removeBISArsenalAction
 			{};
+			class removeMagRepack
+			{};
 			class removeProximityPlayerAction
 			{};
 			class selectRandom
