@@ -3,22 +3,40 @@ Function: KISKA_fnc_radioChatter
 
 Description:
 	Plays a random radio ambient at the specified position.
-	This is a global effect now and should be executed on one machine, preferably the server
+
+	This has a global effect now and should be executed on one machine.
 
 Parameters:
-	0: _source <OBJECT> - Where the sound is coming from
-	1: _distance <NUMBER> - Distance at which the sound can be heard
-	2: _followSource <BOOL> - Should the radio audio be attached to the _source object?
+	0: _followSource <BOOL> - Should the radio audio be attached to the _source object?
 		This will use say3D instead of playSound3d.
-	3: _volume <NUMBER> - Volume of the sound between 1-5 (only available when _followSource is false)
-	4: _offset <ARRAY> - AttachTo coordinates that can be used when _followSource is true
+	1: _soundParams <ARRAY> - An array of parameters that are slightly different depending on the _followSource value
+		If _followSource is true:
+			0: _source <OBJECT> - Where the sound is coming from
+			1: _distance <NUMBER> - Max distance at which the sound can be heard
+			2: _offset <ARRAY> - AttachTo coordinates that can be used to offset the sound
+		If _followSource is false:
+			0: _source <OBJECT or ARRAY> - Where the sound is coming from.
+				If array format positionASL.
+			1: _distance <NUMBER> - Max distance at which the sound can be heard
+			2: _volume <NUMBER> - How loud the sound plays
 
 Returns:
-	NOTHING
+	<NUMBER> - the "chatter ID" that can be used with KISKA_fnc_stopRadioChatter. -1 if error
 
 Examples:
     (begin example)
-		[player,20,1,true] call KISKA_fnc_radioChatter;
+		// radio sound follows player
+		[
+			true,
+			[player]
+		] call KISKA_fnc_radioChatter;
+    (end)
+    (begin example)
+		// radio sound follows front of player
+		[
+			true,
+			[player,5,[0,1,0]]
+		] call KISKA_fnc_radioChatter;
     (end)
 
 Author(s):
@@ -35,7 +53,8 @@ params [
 	["_soundParams",[],[[]]],
 	["_chatterId",-1,[123]]
 ];
-
+// helper object and all variables are deleted if the object dies
+// stop radio knows how to delete helper object
 
 private _hasChatterId = _chatterId > -1;
 private _idIsPlaying = localNamespace getVariable ["KISKA_radioChatterIsPlaying_" + (str _chatterId), false];
@@ -55,7 +74,7 @@ if (_soundParams isEqualTo []) exitWith {
 private _numberStr = str ([2,30] call BIS_fnc_randomInt);
 private _radioSound = "KISKA_radioAmbient" + _numberStr;
 private _soundCreated = false;
-
+private _helperObject = objNull;
 if (_followSource) then {
 	_soundParams params [
 		["_source",objNull,[objNull]],
@@ -65,16 +84,25 @@ if (_followSource) then {
 
 	if (isNull _source) exitWith {
 		["Sound source isNull"] call KISKA_fnc_log;
+		if (_hasChatterId) then {
+			// delete helper object if source is dead
+			[_chatterId] call KISKA_fnc_stopRadioChatter;
+		};
 	};
 
-	private _actualSource = _source getVariable ["KISKA_radioChatter_offsetObject",objNull];
+	private _actualSource = objNull;
+	if (_hasChatterId) then {
+		_actualSource = localNamespace getVariable ["KISKA_radioChatter_offsetObject_" + (str _chatterId), objNull];
+	};
+
 	private _hasOffsetObject = !(isNull _actualSource);
 	if !(_hasOffsetObject) then {
 		_actualSource = _source;
 		if (_offset isNotEqualTo DEFAULT_OFFSET) then {
 			_actualSource = HELPER_OBJECT_CLASS createVehicle [0,0,0];
+			_helperObject = _actualSource;
+			/* [_actualSource, true] remoteExec ["hideObjectGlobal", 2]; */
 			_actualSource attachTo [_source,_offset];
-			_source setVariable ["KISKA_radioChatter_offsetObject",_actualSource];
 		};
 
 	};
@@ -93,6 +121,9 @@ if (_followSource) then {
 	private _sourceIsObject = _source isEqualType objNull;
 	if (_sourceIsObject AND {isNull _source}) exitWith {
 		["Sound source isNull"] call KISKA_fnc_log;
+		if (_hasChatterId) then {
+			[_chatterId] call KISKA_fnc_stopRadioChatter;
+		};
 	};
 
 	private _actualSource = _source;
@@ -114,7 +145,12 @@ if !(_soundCreated) exitWith {
 if !(_hasChatterId) then {
 	_chatterId = localNamespace getVariable ["KISKA_radioChatterId_latestIndex",0];
 	localNamespace setVariable ["KISKA_radioChatterId_latestIndex",_chatterId + 1];
-	localNamespace setVariable [("KISKA_radioChatterIsPlaying_" + (str _chatterId)), true];
+
+	private _stringChatterId = str _chatterId;
+	localNamespace setVariable [("KISKA_radioChatterIsPlaying_" + _stringChatterId), true];
+	if !(isNull _helperObject) then {
+		localNamespace setVariable ["KISKA_radioChatter_offsetObject_" + _stringChatterId, _helperObject];
+	};
 };
 
 
@@ -122,7 +158,7 @@ private _soundDuration = getNumber (configFile >> "CfgSounds" >> _radioSound >> 
 private _randomBuffer = random [1,5,10];
 [
 	{
-		_this call KISKA_TEST_fnc_radioChatter;
+		_this call KISKA_fnc_radioChatter;
 	},
 	[_followSource, _soundParams, _chatterId],
 	(_soundDuration + _randomBuffer)
