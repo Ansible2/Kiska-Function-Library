@@ -8,8 +8,9 @@ Parameters:
     0: _property <STRING> - The config property to search for in all of the classes
     1: _configs <ARRAY> - An array of CONFIGs that you would like to look for the
         property. These should be within the same configHierarchy.
-    2: _ignoredValue <ARRAY, NUMBER, or STRING> - What is considered an invalid value
-        for the property to have in order to be ignored. (NIL will always be ignored)
+    2: _ignoredValues <ARRAY of ARRAY, NUMBER, or STRING> - A list of invalid values
+        for the property to have in order to be ignored. (strings should be lowercase)
+        (NIL will always be ignored)
 
 Returns:
     <NIL, ARRAY, NUMBER, or STRING> - The config value returned by the most specific config passed
@@ -24,7 +25,7 @@ Examples:
                 missionConfigFile >> "SomeClass" >> "SomeSubClass",
                 missionConfigFile >> "SomeClass" >> "SomeSubClass" >> "SomeFurtherSubClass",
             ],
-            "" // shouldn't be an empty string
+            [""] // shouldn't be an empty string
         ] call KISKA_fnc_getMostSpecificCfgValue;
     (end)
 
@@ -36,7 +37,7 @@ scriptName "KISKA_fnc_getMostSpecificCfgValue";
 params [
     ["_property","",[""]],
     ["_configs",[],[[]]],
-    ["_ignoredValue",0,[123,[],""]]
+    ["_ignoredValues",0,[123,[],""]]
 ];
 
 if (_property isEqualTo "") exitWith {
@@ -55,7 +56,13 @@ _configs apply {
     if (_hierarchyCount <= _mostSpecificHierarchyCount) then {continue};
 
     private _propertyValue = (_x >> _property) call BIS_fnc_getCfgData;
-    if ((isNil "_propertyValue") OR {_propertyValue isEqualTo _ignoredValue}) then {continue};
+    if (isNil "_propertyValue") then {continue};
+
+    private _propertyValueCompare = _propertyValue;
+    if (_propertyValueCompare isEqualType "") then {
+        _propertyValueCompare = toLower _propertyValueCompare
+    };
+    if (_propertyValueCompare in _ignoredValues) then {continue};
 
     _mostSpecificValue = _propertyValue;
     _mostSpecificHierarchyCount = _hierarchyCount;
