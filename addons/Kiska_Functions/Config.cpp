@@ -400,6 +400,8 @@ class CfgFunctions
 			{};
 			class getMissionLayerObjects
 			{};
+			class getMostSpecificCfgValue
+			{};
 			class getNearestIncriment
 			{};
 			class getRelativeVectorAndPos
