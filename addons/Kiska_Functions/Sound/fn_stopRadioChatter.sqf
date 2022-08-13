@@ -18,7 +18,7 @@ Examples:
 Author(s):
 	Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_TEST_fnc_stopRadioChatter";
+scriptName "KISKA_fnc_stopRadioChatter";
 
 params [
     ["_chatterId",-1,[123]]

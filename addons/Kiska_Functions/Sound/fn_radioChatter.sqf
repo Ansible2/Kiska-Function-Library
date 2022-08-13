@@ -53,8 +53,6 @@ params [
 	["_soundParams",[],[[]]],
 	["_chatterId",-1,[123]]
 ];
-// helper object and all variables are deleted if the object dies
-// stop radio knows how to delete helper object
 
 private _hasChatterId = _chatterId > -1;
 private _idIsPlaying = localNamespace getVariable ["KISKA_radioChatterIsPlaying_" + (str _chatterId), false];
@@ -101,7 +99,7 @@ if (_followSource) then {
 		if (_offset isNotEqualTo DEFAULT_OFFSET) then {
 			_actualSource = HELPER_OBJECT_CLASS createVehicle [0,0,0];
 			_helperObject = _actualSource;
-			/* [_actualSource, true] remoteExec ["hideObjectGlobal", 2]; */
+			[_actualSource, true] remoteExec ["hideObjectGlobal", 2];
 			_actualSource attachTo [_source,_offset];
 		};
 

@@ -283,6 +283,8 @@ class CfgFunctions
 			{};
 			class radioChatter
 			{};
+			class stopRadioChatter
+			{};
 		};
 		class Supports
 		{
