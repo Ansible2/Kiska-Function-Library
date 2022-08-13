@@ -39,32 +39,8 @@ if (isNull _baseConfig) exitWith {
 private _baseMap = [_baseConfig] call KISKA_fnc_bases_getHashmap;
 private _base_agentsList = _baseMap get "agent list";
 
-/* ----------------------------------------------------------------------------
-
-    Helper functions
-
----------------------------------------------------------------------------- */
 private _agentsConfig = _baseConfig >> "agents";
 private _agentClasses = configProperties [_agentsConfig,"isClass _x"];
-private _agentClassUnitClasses = getArray(_agentsConfig >> "infantryClasses");
-
-private _baseUnitClasses = getArray(_baseConfig >> "infantryClasses");
-private _fn_getUnitClasses = {
-    params ["_configClass"];
-
-    private _unitClasses = getArray(_configClass >> "infantryClasses");
-    if (_unitClasses isEqualTo []) then {
-        if (_agentClassUnitClasses isNotEqualTo []) then {
-            _unitClasses = _agentClassUnitClasses;
-        } else {
-            _unitClasses = _baseUnitClasses;
-        };
-    };
-
-
-    _unitClasses
-};
-
 
 
 /* ----------------------------------------------------------------------------
@@ -84,7 +60,8 @@ _agentClasses apply {
         continue;
     };
 
-    private _unitClasses = [_x] call _fn_getUnitClasses;
+    private _unitClasses = [[_x,_baseConfig,_agentsConfig]] call KISKA_fnc_bases_getInfantryClasses;
+
     private _numberOfAgents = getNumber(_classConfig >> "numberOfAgents");
     private _numberOfSpawns = count _spawnPositions;
     if (_numberOfSpawns < _numberOfAgents OR (_numberOfAgents isEqualTo -1)) then {
@@ -135,7 +112,7 @@ _agentClasses apply {
         if (isNil "_equipmentLevel") then {
             _equipmentLevel = "";
         };
-        
+
         private _snapToRange = getNumber(_animateClass >> "snapToRange");
         if (_snapToRange isEqualTo 0) then {
             _snapToRange = 5;

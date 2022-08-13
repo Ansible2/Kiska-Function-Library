@@ -41,47 +41,8 @@ private _base_turretGunners = _baseMap get "turret gunners";
 private _base_unitList = _baseMap get "unit list";
 private _base_groupList = _baseMap get "group list";
 
-/* ----------------------------------------------------------------------------
-
-    Helper functions
-
----------------------------------------------------------------------------- */
-private _turretConfig = _baseConfig >> "turrets";
-private _turretClasses = configProperties [_turretConfig,"isClass _x"];
-private _turretClassUnitClasses = getArray(_turretConfig >> "infantryClasses");
-
-private _baseUnitClasses = getArray(_baseConfig >> "infantryClasses");
-private _fn_getUnitClasses = {
-    params ["_configClass"];
-
-    private _unitClasses = getArray(_configClass >> "infantryClasses");
-    if (_unitClasses isEqualTo []) then {
-        if (_turretClassUnitClasses isNotEqualTo []) then {
-            _unitClasses = _turretClassUnitClasses;
-        } else {
-            _unitClasses = _baseUnitClasses;
-        };
-    };
-
-
-    _unitClasses
-};
-
-private _baseSide = (getNumber(_baseConfig >> "side")) call BIS_fnc_sideType;
-private _fn_getSide = {
-    params ["_configClass"];
-
-    private _side = _baseSide;
-    private _sideProperty = _configClass >> "side";
-    if !(isNull _sideProperty) then {
-        _side = (getNumber(_sideProperty)) call BIS_fnc_sideType;
-    };
-
-
-    _side
-};
-
-
+private _turretsConfig = _baseConfig >> "turrets";
+private _turretClasses = configProperties [_turretsConfig,"isClass _x"];
 
 /* ----------------------------------------------------------------------------
 
@@ -96,10 +57,7 @@ _turretClasses apply {
     } else {
         _turrets = _turrets apply {
             private _turret = missionNamespace getVariable [_x,objNull];
-            if (isNull _turret) then {
-                continue;
-            };
-
+            if (isNull _turret) then {continue};
             _turret
         };
 
@@ -110,8 +68,8 @@ _turretClasses apply {
         continue;
     };
 
-    private _unitClasses = [_x] call _fn_getUnitClasses;
-    private _side = [_x] call _fn_getSide;
+    private _unitClasses = [[_x,_baseConfig,_turretsConfig]] call KISKA_fnc_bases_getInfantryClasses;
+    private _side = [[_x,_baseConfig,_turretsConfig]] call KISKA_fnc_bases_getSide;
 
     private _enableDynamicSim = [_x >> "dynamicSim"] call BIS_fnc_getCfgDataBool;
     private _excludeFromHeadlessTransfer = [_x >> "excludeHCTransfer"] call BIS_fnc_getCfgDataBool;

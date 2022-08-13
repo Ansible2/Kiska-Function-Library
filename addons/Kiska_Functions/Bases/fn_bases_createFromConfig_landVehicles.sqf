@@ -42,25 +42,6 @@ private _base_groupList = _baseMap get "group list";
 private _base_landVehicles = _baseMap get "land vehicles";
 private _base_landVehicleGroups = _baseMap get "land vehicle groups";
 
-/* ----------------------------------------------------------------------------
-
-    Helper functions
-
----------------------------------------------------------------------------- */
-private _baseSide = (getNumber(_baseConfig >> "side")) call BIS_fnc_sideType;
-private _fn_getSide = {
-    params ["_configClass"];
-
-    private _side = _baseSide;
-    private _sideProperty = _configClass >> "side";
-    if !(isNull _sideProperty) then {
-        _side = (getNumber(_sideProperty)) call BIS_fnc_sideType;
-    };
-
-
-    _side
-};
-
 
 
 /* ----------------------------------------------------------------------------
@@ -71,7 +52,7 @@ private _fn_getSide = {
 private _landVehiclesConfig = _baseConfig >> "landVehicles";
 private _landVehicleConfigClasses = configProperties [_landVehiclesConfig,"isClass _x"];
 _landVehicleConfigClasses apply {
-    private _side = [_x] call _fn_getSide;
+    private _side = [[_x,_baseConfig,_landVehiclesConfig]] call KISKA_fnc_bases_getSide;
 
     private _spawnPosition = (_x >> "position") call BIS_fnc_getCfgData;
     private _spawnDirection = -1;

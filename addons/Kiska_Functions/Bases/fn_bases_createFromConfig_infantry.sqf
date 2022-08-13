@@ -42,45 +42,8 @@ private _base_groupList = _baseMap get "group list";
 private _base_infantryUnits = _baseMap get "infantry units";
 private _base_infantryGroups = _baseMap get "infantry groups";
 
-/* ----------------------------------------------------------------------------
-
-    Helper functions
-
----------------------------------------------------------------------------- */
 private _infantryConfig = _baseConfig >> "infantry";
 private _infantryClasses = configProperties [_infantryConfig,"isClass _x"];
-private _infantryClassUnitClasses = getArray(_infantryConfig >> "infantryClasses");
-
-private _baseUnitClasses = getArray(_baseConfig >> "infantryClasses");
-private _fn_getUnitClasses = {
-    params ["_configClass","_moduleUnitClasses"];
-
-    private _unitClasses = getArray(_configClass >> "infantryClasses");
-    if (_unitClasses isEqualTo []) then {
-        if (_infantryClassUnitClasses isNotEqualTo []) then {
-            _unitClasses = _infantryClassUnitClasses;
-        } else {
-            _unitClasses = _baseUnitClasses;
-        };
-    };
-
-
-    _unitClasses
-};
-
-private _baseSide = (getNumber(_baseConfig >> "side")) call BIS_fnc_sideType;
-private _fn_getSide = {
-    params ["_configClass"];
-
-    private _side = _baseSide;
-    private _sideProperty = _configClass >> "side";
-    if !(isNull _sideProperty) then {
-        _side = (getNumber(_sideProperty)) call BIS_fnc_sideType;
-    };
-
-
-    _side
-};
 
 
 
@@ -101,9 +64,8 @@ _infantryClasses apply {
         continue;
     };
 
-
-    private _unitClasses = [_x] call _fn_getUnitClasses;
-    private _side = [_x] call _fn_getSide;
+    private _unitClasses = [[_x,_baseConfig,_infantryConfig]] call KISKA_fnc_bases_getInfantryClasses;
+    private _side = [[_x,_baseConfig,_infantryConfig]] call KISKA_fnc_bases_getSide;
 
     private _numberOfUnits = getNumber(_classConfig >> "numberOfUnits");
     private _unitsPerGroup = getNumber(_classConfig >> "unitsPerGroup");

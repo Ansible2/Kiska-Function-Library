@@ -47,47 +47,8 @@ private _base_groupList = _baseMap get "group list";
 private _base_patrolUnits = _baseMap get "patrol units";
 private _base_patrolGroups = _baseMap get "patrol groups";
 
-/* ----------------------------------------------------------------------------
-
-    Helper functions
-
----------------------------------------------------------------------------- */
 private _patrolsConfig = _baseConfig >> "patrols";
 private _patrolClasses = configProperties [_patrolsConfig,"isClass _x"];
-private _patrolClassUnitClasses = getArray(_patrolsConfig >> "infantryClasses");
-
-private _baseUnitClasses = getArray(_baseConfig >> "infantryClasses");
-private _fn_getUnitClasses = {
-    params ["_configClass"];
-
-    private _unitClasses = getArray(_configClass >> "infantryClasses");
-    if (_unitClasses isEqualTo []) then {
-        if (_patrolClassUnitClasses isNotEqualTo []) then {
-            _unitClasses = _patrolClassUnitClasses;
-        } else {
-            _unitClasses = _baseUnitClasses;
-        };
-    };
-
-
-    _unitClasses
-};
-
-private _baseSide = (getNumber(_baseConfig >> "side")) call BIS_fnc_sideType;
-private _fn_getSide = {
-    params ["_configClass"];
-
-    private _side = _baseSide;
-    private _sideProperty = _configClass >> "side";
-    if !(isNull _sideProperty) then {
-        _side = (getNumber(_sideProperty)) call BIS_fnc_sideType;
-    };
-
-
-    _side
-};
-
-
 
 /* ----------------------------------------------------------------------------
 
@@ -100,9 +61,8 @@ _patrolClasses apply {
         _spawnPosition = missionNamespace getVariable [_spawnPosition,objNull];
     };
 
-    private _unitClasses = [_x] call _fn_getUnitClasses;
-    private _side = [_x] call _fn_getSide;
-
+    private _unitClasses = [[_x,_baseConfig,_patrolsConfig]] call KISKA_fnc_bases_getInfantryClasses;
+    private _side = [[_x,_baseConfig,_patrolsConfig]] call KISKA_fnc_bases_getSide;
 
     private _group = [
         getNumber(_x >> "numberOfUnits"),
