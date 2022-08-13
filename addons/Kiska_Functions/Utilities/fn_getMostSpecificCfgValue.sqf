@@ -11,6 +11,7 @@ Parameters:
     2: _ignoredValues <ARRAY of ARRAY, NUMBER, or STRING> - A list of invalid values
         for the property to have in order to be ignored. (strings should be lowercase)
         (NIL will always be ignored)
+    3: _ignoredTypes <ARRAY of ARRAY, NUMBER, or STRING> - A list of invalid types for the property
 
 Returns:
     <NIL, ARRAY, NUMBER, or STRING> - The config value returned by the most specific config passed
@@ -25,7 +26,8 @@ Examples:
                 missionConfigFile >> "SomeClass" >> "SomeSubClass",
                 missionConfigFile >> "SomeClass" >> "SomeSubClass" >> "SomeFurtherSubClass",
             ],
-            [""] // shouldn't be an empty string
+            [""], // shouldn't be an empty string,
+            [123] // ignore number properties
         ] call KISKA_fnc_getMostSpecificCfgValue;
     (end)
 
@@ -37,7 +39,8 @@ scriptName "KISKA_fnc_getMostSpecificCfgValue";
 params [
     ["_property","",[""]],
     ["_configs",[],[[]]],
-    ["_ignoredValues",0,[123,[],""]]
+    ["_ignoredValues",0,[123,[],""]],
+    ["_ignoredTypes",[],[[]]]
 ];
 
 if (_property isEqualTo "") exitWith {
@@ -56,7 +59,10 @@ _configs apply {
     if (_hierarchyCount <= _mostSpecificHierarchyCount) then {continue};
 
     private _propertyValue = (_x >> _property) call BIS_fnc_getCfgData;
-    if (isNil "_propertyValue") then {continue};
+    if (
+        isNil "_propertyValue" OR
+        {_propertyValue isEqualTypeAny _ignoredTypes}
+    ) then {continue};
 
     private _propertyValueCompare = _propertyValue;
     if (_propertyValueCompare isEqualType "") then {
