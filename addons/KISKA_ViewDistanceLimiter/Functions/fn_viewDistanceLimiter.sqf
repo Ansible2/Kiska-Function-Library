@@ -30,6 +30,8 @@ Examples:
 Author(s):
 	Ansible2
 ---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_viewDistanceLimiter";
+
 if (!hasInterface) exitWith {};
 
 if (!canSuspend) exitWith {
