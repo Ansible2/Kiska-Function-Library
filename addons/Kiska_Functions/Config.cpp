@@ -118,6 +118,10 @@ class CfgFunctions
 			{};
 			class bases_getHashmap
 			{};
+			class bases_getInfantryClasses
+			{};
+			class bases_getSide
+			{};
 			class bases_triggerReaction
 			{};
 			class bases_setupReactivity
