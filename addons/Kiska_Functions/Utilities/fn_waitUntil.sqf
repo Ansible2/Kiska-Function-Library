@@ -55,6 +55,13 @@ if (
 	nil
 };
 
+if (_condition isEqualType "") then {
+	_condition = compileFinal _condition;
+};
+if (_function isEqualType "") then {
+	_function = compileFinal _function;
+};
+
 if (_unscheduled) then {
 
 	if (_interval <= 0) then {
