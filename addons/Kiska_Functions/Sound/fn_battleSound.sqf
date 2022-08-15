@@ -122,6 +122,19 @@ playSound3D [
     [_distance,random _distance] select _distanceIsArray
 ];
 
+if (_duration > 0) then {
+	[
+		{
+			_this call KISKA_TEST_fnc_stopBattleSound;
+		},
+		[_battleSoundId],
+		_duration
+	] call CBA_fnc_waitAndExecute;
+
+	_duration = -1;
+};
+
+
 private _timeUntilSecondSound = random _intensityArray;
 private _timeBetweenNextCall = _intensityArray vectorMultiply 4;
 [
@@ -150,6 +163,15 @@ private _timeBetweenNextCall = _intensityArray vectorMultiply 4;
     ],
     _timeUntilSecondSound
 ] call CBA_fnc_waitAndExecute;
+
+
+if !(_hasBattleSoundId) then {
+	_battleSoundId = localNamespace getVariable ["KISKA_battleSoundId_latestIndex",0];
+	localNamespace setVariable ["KISKA_battleSoundId_latestIndex",_battleSoundId + 1];
+
+	private _stringBattleSoundId = str _battleSoundId;
+	localNamespace setVariable [("KISKA_battleSoundIsPlaying_" + _stringBattleSoundId), true];
+};
 
 [
     {
