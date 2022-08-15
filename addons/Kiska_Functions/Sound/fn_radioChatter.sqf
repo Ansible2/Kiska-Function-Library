@@ -58,7 +58,7 @@ private _hasChatterId = _chatterId > -1;
 private _idIsPlaying = localNamespace getVariable ["KISKA_radioChatterIsPlaying_" + (str _chatterId), false];
 if (
 	_hasChatterId AND
-	{!_idIsPlaying}
+	(!_idIsPlaying)
 ) exitWith {
 	-1
 };
