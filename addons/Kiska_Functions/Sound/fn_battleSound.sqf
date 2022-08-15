@@ -34,38 +34,41 @@ scriptName "KISKA_fnc_battleSound";
 #define EXPLOSION_WEIGHT 0.25
 #define FIREFIGHT_WEIGHT 1
 
-if (!isServer) then {
-	["Was not run on the server, recommend execution on server in the future",false] call KISKA_fnc_log;
-	nil
-};
-if (!canSuspend) exitWith {
-	["Must be run in scheduled envrionment, exiting to scheduled",true] call KISKA_fnc_log;
-	_this spawn KISKA_fnc_battleSound;
-};
-
 params [
-	["_source",objNull,[objNull,[]]],
-	["_distance",500,[[],123]],
+	["_source",objNull,[objNull,[]],[3]],
+	["_distance",500,[[],123],[3]],
 	["_duration",60,[123]],
-	["_intensity",1,[123]]
+	["_intensity",1,[123]],
+    ["_battleSoundId",-1,[123]]
 ];
 
-if (_source isEqualType objNull AND {isNull _source}) exitWith {
+private _hasBattleSoundId = _battleSoundId > -1;
+private _idIsPlaying = localNamespace getVariable ["KISKA_battleSoundIsPlaying_" + (str _battleSoundId), false];
+if (
+	_hasBattleSoundId AND
+	(!_idIsPlaying)
+) exitWith {
+	-1
+};
+
+private _sourceIsObject = _source isEqualType objNull;
+if (_sourceIsObject AND {isNull _source}) exitWith {
 	["_source isNull",true] call KISKA_fnc_log;
 	nil
 };
-if (_distance isEqualType 123 AND {_distance <= 0}) exitWith {
+if ((_distance isEqualType 123) AND {_distance <= 0}) exitWith {
 	[["_distance is: ",_distance,". It must be higher then 0"],true] call KISKA_fnc_log;
 	nil
 };
-if (_distance isEqualType [] AND {!(_distance isEqualTypeParams [0,0,0])}) exitWith {
+private _sourceIsArray = _distance isEqualType [];
+if (_sourceIsArray AND {!(_distance isEqualTypeParams [0,0,0])}) exitWith {
 	["_distance random array is not configured properly",true] call KISKA_fnc_log;
 	nil
 };
 
-
-if (_source isEqualType objNull) then {
-	_source = getPosASL _source;
+private _actualSource = _source;
+if (_sourceIsObject) then {
+	_actualSource = getPosASL _source;
 };
 
 if (_intensity > MAX_INTENSITY) then {
@@ -76,60 +79,88 @@ if (_intensity > MAX_INTENSITY) then {
 	};
 };
 
-private _intensityArray = switch _intensity do {
-	case 1: {[2.5,3,3.5]};
-	case 2: {[2,2.5,3]};
-	case 3: {[1.5,2,2.5]};
-	case 4: {[1,1.5,2]};
-	case 5: {[0.5,1,1.5]};
+private _intensities = localNamespace getVariable ["KISKA_battleSoundIntensities",[]];
+if (_intensities isEqualTo []) then {
+    _intensities = [
+        [2.5,3,3.5],
+        [2,2.5,3],
+        [1.5,2,2.5],
+        [1,1.5,2],
+        [0.5,1,1.5]
+    ];
+    localNamespace setVariable ["KISKA_battleSoundIntensities",_intensities];
+};
+private _intensityArray = _intensities select (_intensity - 1);
+
+
+private _soundsArray = localNamespace getVariable ["KISKA_battleSounds",[]];
+if (_soundsArray isEqualTo []) then {
+    _soundsArray = [
+    	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions1.wss",EXPLOSION_WEIGHT,
+    	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions2.wss",EXPLOSION_WEIGHT,
+    	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions3.wss",EXPLOSION_WEIGHT,
+    	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions4.wss",EXPLOSION_WEIGHT,
+    	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions5.wss",EXPLOSION_WEIGHT,
+    	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight1.wss",FIREFIGHT_WEIGHT,
+    	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight2.wss",FIREFIGHT_WEIGHT,
+    	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight3.wss",FIREFIGHT_WEIGHT,
+    	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight4.wss",FIREFIGHT_WEIGHT
+    ];
+    localNamespace setVariable ["KISKA_battleSounds",_intensities];
 };
 
-private _soundArr = [
-	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions1.wss",EXPLOSION_WEIGHT,
-	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions2.wss",EXPLOSION_WEIGHT,
-	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions3.wss",EXPLOSION_WEIGHT,
-	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions4.wss",EXPLOSION_WEIGHT,
-	"A3\Sounds_F\environment\ambient\battlefield\battlefield_explosions5.wss",EXPLOSION_WEIGHT,
-	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight1.wss",FIREFIGHT_WEIGHT,
-	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight2.wss",FIREFIGHT_WEIGHT,
-	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight3.wss",FIREFIGHT_WEIGHT,
-	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight4.wss",FIREFIGHT_WEIGHT
-];
-private _endTime = _duration + time;
-private _timeBetweenSounds = _intensityArray vectorMultiply 4;
 
 private _distanceIsArray = _distance isEqualType [];
-waitUntil {
-	if (_endTime <= time) exitWith {true};
+private _volume = floor (random [3,4,5]);
+playSound3D [
+    selectRandomWeighted _soundsArray,
+    objNull,
+    false,
+    _actualSource,
+    _volume,
+    random [-2,0,1],
+    [_distance,random _distance] select _distanceIsArray
+];
 
-	private _volume = floor (random [3,4,5]);
+private _timeUntilSecondSound = random _intensityArray;
+private _timeBetweenNextCall = _intensityArray vectorMultiply 4;
+[
+    {
+        params [
+            "_soundsArray",
+            "_actualSource",
+            "_volume",
+            "_distance"
+        ];
+        playSound3D [
+    		selectRandomWeighted _soundsArray,
+    		objNull,
+    		false,
+    		_actualSource,
+    		_volume,
+    		random [-2,0,1],
+    		_distance
+    	];
+    },
+    [
+        _soundsArray,
+        _actualSource,
+        _volume,
+        [_distance,random _distance] select _distanceIsArray
+    ],
+    _timeUntilSecondSound
+] call CBA_fnc_waitAndExecute;
 
-	playSound3D [
-		selectRandomWeighted _soundArr,
-		objNull,
-		false,
-		_source,
-		_volume,
-		random [-2,-1,0],
-		[_distance,random _distance] select _distanceIsArray
-	];
-	
-	sleep (random _intensityArray);
-
-	playSound3D [
-		selectRandomWeighted _soundArr,
-		objNull,
-		false,
-		_source,
-		_volume,
-		random [-2,-1,0],
-		[_distance,random _distance] select _distanceIsArray
-	];
-
-	sleep (random _timeBetweenSounds);
-
-	false
-};
-
-
-nil
+[
+    {
+        _this call KISKA_TEST_fnc_battleSound;
+    },
+    [
+        _source,
+        _distance,
+        _duration,
+        _intensity,
+        _battleSoundId
+    ],
+    (_timeUntilSecondSound + _timeBetweenNextCall)
+] call CBA_fnc_waitAndExecute;
