@@ -275,6 +275,8 @@ class CfgFunctions
 			{};
 			class battleSound
 			{};
+			class stopBattleSound
+			{};
 			class playSoundNSub
 			{};
 			class playsound2D
