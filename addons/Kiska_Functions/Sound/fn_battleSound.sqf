@@ -106,7 +106,7 @@ if (_soundsArray isEqualTo []) then {
     	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight3.wss",FIREFIGHT_WEIGHT,
     	"A3\Sounds_F\environment\ambient\battlefield\battlefield_firefight4.wss",FIREFIGHT_WEIGHT
     ];
-    localNamespace setVariable ["KISKA_battleSounds",_intensities];
+    localNamespace setVariable ["KISKA_battleSounds",_soundsArray];
 };
 
 
@@ -122,11 +122,18 @@ playSound3D [
     [_distance,random _distance] select _distanceIsArray
 ];
 
+
+if !(_hasBattleSoundId) then {
+	_battleSoundId = localNamespace getVariable ["KISKA_battleSoundId_latestIndex",0];
+	localNamespace setVariable ["KISKA_battleSoundId_latestIndex",_battleSoundId + 1];
+
+	private _stringBattleSoundId = str _battleSoundId;
+	localNamespace setVariable [("KISKA_battleSoundIsPlaying_" + _stringBattleSoundId), true];
+};
+
 if (_duration > 0) then {
 	[
-		{
-			_this call KISKA_TEST_fnc_stopBattleSound;
-		},
+		KISKA_fnc_stopBattleSound,
 		[_battleSoundId],
 		_duration
 	] call CBA_fnc_waitAndExecute;
@@ -165,17 +172,9 @@ private _timeBetweenNextCall = _intensityArray vectorMultiply 4;
 ] call CBA_fnc_waitAndExecute;
 
 
-if !(_hasBattleSoundId) then {
-	_battleSoundId = localNamespace getVariable ["KISKA_battleSoundId_latestIndex",0];
-	localNamespace setVariable ["KISKA_battleSoundId_latestIndex",_battleSoundId + 1];
-
-	private _stringBattleSoundId = str _battleSoundId;
-	localNamespace setVariable [("KISKA_battleSoundIsPlaying_" + _stringBattleSoundId), true];
-};
-
 [
     {
-        _this call KISKA_TEST_fnc_battleSound;
+        _this call KISKA_fnc_battleSound;
     },
     [
         _source,
@@ -184,5 +183,8 @@ if !(_hasBattleSoundId) then {
         _intensity,
         _battleSoundId
     ],
-    (_timeUntilSecondSound + _timeBetweenNextCall)
+    (_timeUntilSecondSound + (random _timeBetweenNextCall))
 ] call CBA_fnc_waitAndExecute;
+
+
+_battleSoundId
