@@ -392,6 +392,8 @@ class CfgFunctions
 			{};
 			class deleteAtArray_interface
 			{};
+			class deleteRandomIndex
+			{};
 			class doMagRepack
 			{};
 			class errorNotification
@@ -449,6 +451,8 @@ class CfgFunctions
 			class pushBackToArray
 			{};
 			class pushBackToArray_interface
+			{};
+			class randomIndex
 			{};
 			class recordDrivePath
 			{};
