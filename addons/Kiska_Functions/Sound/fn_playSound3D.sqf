@@ -5,7 +5,8 @@ Description:
 	Plays a sound 3D but the function accepts the CFGSounds name rather then the file path.
 
 Parameters:
-	0: _sound <STRING> - The sound to play. Sound classname like the command playSound or playMusic (this also accepts music tracks)
+	0: _sound <STRING or CONFIG> - The sound to play. The classname of a CfgSounds entry (if string)
+		or any config class that has a "sound[]" array and "duration" number property (such as CfgMusic classes)
 	1: _origin <OBJECT or ARRAY> - The position (ASL) or object from which the sound comes from
 	2: _distance <NUMBER> - Distance at which the sound can be heard
 	3: _volume <NUMBER> - Range from 0-5
@@ -29,7 +30,7 @@ scriptName "KISKA_fnc_playSound3D";
 #define FILE_EXTENSIONS [".wss",".ogg",".wav"]
 
 params [
-	["_sound","",[""]],
+	["_sound","",["",configNull]],
 	["_origin",objNull,[objNull,[]]],
 	["_distance",20,[123]],
 	["_volume",1,[123]],
@@ -37,31 +38,43 @@ params [
 	["_pitch",1,[123]]
 ];
 
+private _soundIsConfig = _sound isEqualType configNull;
+if (_soundIsConfig AND {isNull _sound}) exitWith {
+	[["_sound: ", _sound," is null config"],true] call KISKA_fnc_log;
+	false
+};
 
-// verify params
+/* -----------------------------------
+	Verify Params
+----------------------------------- */
 if (_sound isEqualTo "") exitWith {
 	["_sound is empty string",true] call KISKA_fnc_log;
 	false
 };
-
 if ((_origin isEqualType objNull) AND {isNull _origin}) exitWith {
 	["_origin object isNull",true] call KISKA_fnc_log;
 	false
 };
-
 if ((_origin isEqualType []) AND {_origin isEqualTo []}) exitWith {
 	["_origin is empty array",true] call KISKA_fnc_log;
 	false
 };
-
 if (_distance < 0) exitWith {
 	[["_distance is: ",_distance," and cannot be negative"],true] call KISKA_fnc_log;
 	false
 };
 
 
-// get actual path of file from config
-private _soundConfig = [["CfgSounds",_sound]] call KISKA_fnc_findConfigAny;
+/* -----------------------------------
+	Verify Sound configuration
+----------------------------------- */
+private _soundConfig = configNull;
+if (_soundIsConfig) then {
+	_soundConfig = _sound;
+} else {
+	_soundConfig = [["CfgSounds",_sound]] call KISKA_fnc_findConfigAny;
+};
+
 if (isNull _soundConfig) exitWith {
 	[["Could not find a config for the sound: ",_sound],true] call KISKA_fnc_log;
 	false
@@ -72,25 +85,21 @@ if ([_soundConfig, missionConfigFile] call CBA_fnc_inheritsFrom) then {
 	_soundPath = getMissionPath + _soundPath;
 };
 
-
-if (!(_soundPath isEqualType "") OR {_soundPath isEqualTo ""}) exitWith {
+if (!(_soundPath isEqualType "") OR (_soundPath isEqualTo "")) exitWith {
 	["_sound: ",_sound," is configed incorrectly",true] call KISKA_fnc_log;
 	false
 };
 
 
-if (_origin isEqualType objNull) then {
-	_origin = getPosASL _origin;
-};
-
+/* -----------------------------------
+	Verify Audio file
+----------------------------------- */
 // Some Bohmemia sound paths had a "@" or "\" at the front
 // playSound3D will not find the file if this is the case
 private _firstChar = _soundPath select [0,1];
 if (_firstChar in ["@","\"]) then {
 	_soundPath = _soundPath trim [_firstChar,1];
 };
-
-
 private _fileNotFound = false;
 private _tempPath = "";
 if !(fileExists _soundPath) then {
@@ -114,12 +123,19 @@ if !(fileExists _soundPath) then {
 	};
 
 };
-
 if (_fileNotFound) exitWith {
 	[["Could not find file at path: ", _soundPath],true] call KISKA_fnc_log;
 	false
 };
 
+
+
+/* -----------------------------------
+	Playsound
+----------------------------------- */
+if (_origin isEqualType objNull) then {
+	_origin = getPosASL _origin;
+};
 playSound3D [_soundPath,objNull,_isInside,_origin,_volume,_pitch,_distance];
 
 
