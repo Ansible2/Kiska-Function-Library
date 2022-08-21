@@ -277,6 +277,10 @@ class CfgFunctions
 			{};
 			class stopBattleSound
 			{};
+			class playRandom3dSoundLoop
+			{};
+			class stopRandom3dSoundLoop
+			{};
 			class playsound2D
 			{};
 			class playsound3D
@@ -421,6 +425,8 @@ class CfgFunctions
 			class getVectorToTarget
 			{};
 			class hintDiary
+			{};
+			class idCounter
 			{};
 			class isGroupAlive
 			{};

@@ -23,18 +23,11 @@ Author:
 scriptName "KISKA_fnc_playRandom3dSoundLoop";
 
 params [
-	["_source",objNull,[objNull,[]],[3]]
+	["_source",objNull,[objNull,[]],[3]],
 	["_sounds",[],[[]]],
 	["_timeBetweenSounds",5,[[],123]]
 ];
 
-// parse sounds into hashmap with configs
-
-
-// takes an array of sounds
-// sounds can be string (cfgSound classname) or an array [classname,duration of sound]
-// sounds are ultimately evaluated into an array of [config of sound,duration of sound]
-// update playound 3d to also accept configs and skip trying to find it
 
 private _soundsParsed = _sounds apply {
 	private _sound = _x;
@@ -46,16 +39,17 @@ private _soundsParsed = _sounds apply {
 		_duration = _sound select 1;
 
 	} else {
-		if (_sound isEqualType "") exitWith {
+		if (_sound isEqualType "") then {
 			["CfgSounds","CfgMusic"] apply {
 				_soundConfig = [[_x,_sound]] call KISKA_fnc_findConfigAny;
 				if !(isNull _soundConfig) then {break};
 			};
+		} else {
+			_soundConfig = _sound;
 		};
 
-		_soundConfig = _sound;
-		_duration = getNumber(_soundsConfig >> "duration");
-		
+		_duration = getNumber(_soundConfig >> "duration");
+
 	};
 
 	if (isNull _soundConfig OR _duration <= 0) then {continue};
@@ -65,12 +59,18 @@ private _soundsParsed = _sounds apply {
 
 private _playNextSound = {
 	params [
+		"_source",
 		"_unusedSounds",
 		"_usedSounds",
 		"_playNextSound",
-		"_timeBetweenSounds"
+		"_timeBetweenSounds",
+		"_id"
 	];
 
+	private _isPlaying = localNamespace getVariable [("KISKA_random3dSoundLoopIsPlaying_" + (str _id)), false];
+	if (!_isPlaying) exitWith {};
+
+	private _params = _this;
 	private _unusedIsEmpty = _unusedSounds isEqualTo [];
 	if (_unusedIsEmpty AND (_usedSounds isEqualTo [])) exitWith {
 		["Both _unusedSounds and _usedSounds were empty arrays. Exited loop...",true] call KISKA_fnc_log;
@@ -79,11 +79,14 @@ private _playNextSound = {
 
 	if (_unusedIsEmpty) then {
 		_unusedSounds = _usedSounds;
+		_usedSounds = [];
+		_params set [1,_unusedSounds];
+		_params set [2,_usedSounds];
 	};
 
 	private _selectedSound = [_unusedSounds] call KISKA_fnc_deleteRandomIndex;
 	private _soundConfig = _selectedSound select 0;
-	[_soundConfig] call KISKA_fnc_playSound3d;
+	[_soundConfig,_source] call KISKA_fnc_playSound3d;
 
 	_usedSounds pushBack _selectedSound;
 
@@ -92,17 +95,21 @@ private _playNextSound = {
 	private _timeUntilNextSound = _soundDuration + _interval;
 	[
 		_playNextSound,
-		_this,
+		_params,
 		_timeUntilNextSound
 	] call CBA_fnc_waitAndExecute;
 };
 
+private _id = ["KISKA_random3dSoundLoop"] call KISKA_fnc_idCounter;
+localNamespace setVariable [("KISKA_random3dSoundLoopIsPlaying_" + (str _id)), true];
 
 [
+	_source,
 	_soundsParsed,
 	[],
 	_playNextSound,
-	_timeBetweenSounds
+	_timeBetweenSounds,
+	_id
 ] call _playNextSound;
 
 
