@@ -141,8 +141,7 @@ if !(_soundCreated) exitWith {
 };
 
 if !(_hasChatterId) then {
-	_chatterId = localNamespace getVariable ["KISKA_radioChatterId_latestIndex",0];
-	localNamespace setVariable ["KISKA_radioChatterId_latestIndex",_chatterId + 1];
+	_chatterId = ["KISKA_radioChatterId_latestIndex"] call KISKA_fnc_idCounter;
 
 	private _stringChatterId = str _chatterId;
 	localNamespace setVariable [("KISKA_radioChatterIsPlaying_" + _stringChatterId), true];

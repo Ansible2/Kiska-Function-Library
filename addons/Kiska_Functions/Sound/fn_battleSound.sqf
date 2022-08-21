@@ -124,9 +124,7 @@ playSound3D [
 
 
 if !(_hasBattleSoundId) then {
-	_battleSoundId = localNamespace getVariable ["KISKA_battleSoundId_latestIndex",0];
-	localNamespace setVariable ["KISKA_battleSoundId_latestIndex",_battleSoundId + 1];
-
+	_battleSoundId = ["KISKA_battleSoundId_latestIndex"] call KISKA_fnc_idCounter;
 	private _stringBattleSoundId = str _battleSoundId;
 	localNamespace setVariable [("KISKA_battleSoundIsPlaying_" + _stringBattleSoundId), true];
 };
