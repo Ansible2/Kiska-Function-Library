@@ -13,7 +13,6 @@ Parameters:
 	4: _isInside <BOOL> - Is _origin inside
 	5: _pitch <NUMBER> - Range from 0-5
 
-
 Returns:
 	<BOOL> - True if sound found and played, false if error
 
