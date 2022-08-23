@@ -141,11 +141,11 @@ if !(localNamespace getVariable ["KISKA_notificationLoopRunning",false]) then {
     localNamespace setVariable ["KISKA_notificationLoopRunning",true];
 
     [] spawn {
-        disableSerialization;
         /* ----------------------------------------------------------------------------
             _fn_createNotification
         ---------------------------------------------------------------------------- */
         private _fn_createNotification = {
+            disableSerialization;
             params [
                 "_composition",
                 "_lifetime"
