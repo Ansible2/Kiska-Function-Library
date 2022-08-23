@@ -5,7 +5,7 @@ Description:
 
 
 Parameters:
-	0:  <> -
+	0:  <> - 
 
 Returns:
 	NOTHING
@@ -23,9 +23,19 @@ Author:
 scriptName "KISKA_fnc_playRandom3dSoundLoop";
 
 params [
-	["_source",objNull,[objNull,[]],[3]],
+	["_origin",objNull,[objNull,[]],[3]]
 	["_sounds",[],[[]]],
-	["_timeBetweenSounds",5,[[],123]]
+	["_timeBetweenSounds",5,[[],123]],
+	["_soundParams",[],[[]]],
+	["_onSoundPlayed",{},[[],{},""]]
+];
+
+// verify params
+_soundParams params [
+	["_distance",20,[123]],
+	["_volume",1,[123]],
+	["_isInside",false,[true]],
+	["_pitch",1,[123]]
 ];
 
 
@@ -59,7 +69,7 @@ private _soundsParsed = _sounds apply {
 
 private _playNextSound = {
 	params [
-		"_source",
+		"_origin",
 		"_unusedSounds",
 		"_usedSounds",
 		"_playNextSound",
@@ -86,7 +96,26 @@ private _playNextSound = {
 
 	private _selectedSound = [_unusedSounds] call KISKA_fnc_deleteRandomIndex;
 	private _soundConfig = _selectedSound select 0;
-	[_soundConfig,_source] call KISKA_fnc_playSound3d;
+	_soundParams params [
+		["_distance",20,[123]],
+		["_volume",1,[123]],
+		["_isInside",false,[true]],
+		["_pitch",1,[123]]
+	];
+
+	[
+		_soundConfig,
+		_origin,
+		_distance,
+		_volume,
+		_isInside,
+		_pitch
+	] call KISKA_fnc_playSound3d;
+	
+	[
+		[_origin,_soundConfig],
+		_onSoundPlayed
+	] call KISKA_fnc_callBack;
 
 	_usedSounds pushBack _selectedSound;
 
@@ -104,11 +133,13 @@ private _id = ["KISKA_random3dSoundLoop"] call KISKA_fnc_idCounter;
 localNamespace setVariable [("KISKA_random3dSoundLoopIsPlaying_" + (str _id)), true];
 
 [
-	_source,
+	_origin,
 	_soundsParsed,
 	[],
 	_playNextSound,
 	_timeBetweenSounds,
+	_soundParams,
+	_onSoundPlayed,
 	_id
 ] call _playNextSound;
 
