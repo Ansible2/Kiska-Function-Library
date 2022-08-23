@@ -35,20 +35,20 @@ params [
 	["_updateCanRallyCombo",false,[true]]
 ];
 
-private _selectedGroup = uiNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
+private _selectedGroup = localNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
 
 if (isNull _selectedGroup) exitWith {};
 
 if (_updateUnitList) then {
-	private _currentGroupListBox_ctrl = uiNamespace getVariable "KISKA_GCH_currentGroupListBox_ctrl";
+	private _currentGroupListBox_ctrl = localNamespace getVariable "KISKA_GCH_currentGroupListBox_ctrl";
 	lbClear _currentGroupListBox_ctrl;
 
 	private _groupUnits = units _selectedGroup;
-	if !(uiNamespace getVariable "KISKA_GCH_showAI") then {
+	if !(localNamespace getVariable "KISKA_GCH_showAI") then {
 		_groupUnits = _groupUnits select {isPlayer _x};
 	};
 
-	uiNamespace setVariable ["KISKA_GCH_groupUnitList",_groupUnits];
+	localNamespace setVariable ["KISKA_GCH_groupUnitList",_groupUnits];
 
 	if !(count _groupUnits > 0) exitWith {};
 
@@ -108,20 +108,20 @@ if (_updateLeaderIndicator) then {
 	} else {
 		_leaderName = name _leader;
 	};
-	private _leaderNameIndicator_ctrl = uiNamespace getVariable "KISKA_GCH_leaderNameIndicator_ctrl";
+	private _leaderNameIndicator_ctrl = localNamespace getVariable "KISKA_GCH_leaderNameIndicator_ctrl";
 	_leaderNameIndicator_ctrl ctrlSetText _leaderName;
 };
 
 
 if (_updateGroupId) then {
 	private _groupId = groupId _selectedGroup;
-	private _groupEditId_ctrl = uiNamespace getVariable "KISKA_GCH_groupIdEdit_ctrl";
+	private _groupEditId_ctrl = localNamespace getVariable "KISKA_GCH_groupIdEdit_ctrl";
 	_groupEditId_ctrl ctrlSetText _groupId;
 };
 
 
 if (_updateCanDeleteCombo) then {
-	private _canBeDeletedCombo_ctrl = uiNamespace getVariable "KISKA_GCH_canBeDeletedCombo_ctrl";
+	private _canBeDeletedCombo_ctrl = localNamespace getVariable "KISKA_GCH_canBeDeletedCombo_ctrl";
 	private _canDeleteWhenEmpty = isGroupDeletedWhenEmpty _selectedGroup;
 	_canBeDeletedCombo_ctrl setVariable ["KISKA_firstTimeComboChanged",true];
 	_canBeDeletedCombo_ctrl lbSetCurSel ([0,1] select _canDeleteWhenEmpty);
@@ -142,10 +142,10 @@ if (_updateCanRallyCombo) then {
 		// make sure the menu is still open as it takes time to get a message from the server
 		// also make sure the same group is selected in the list
 		if (
-			!isNull (uiNamespace getVariable "KISKA_GCH_display") AND
-			{_selectedGroup isEqualTo (uiNamespace getVariable "KISKA_GCH_selectedGroup")}
+			!isNull (localNamespace getVariable "KISKA_GCH_display") AND
+			{_selectedGroup isEqualTo (localNamespace getVariable "KISKA_GCH_selectedGroup")}
 		) then {
-			private _canRallyCombo_ctrl = uiNamespace getVariable "KISKA_GCH_canRallyCombo_ctrl";
+			private _canRallyCombo_ctrl = localNamespace getVariable "KISKA_GCH_canRallyCombo_ctrl";
 			_canRallyCombo_ctrl setVariable ["KISKA_firstTimeComboChanged",true];
 			_canRallyCombo_ctrl lbSetCurSel ([0,1] select _groupCanRally);
 		};

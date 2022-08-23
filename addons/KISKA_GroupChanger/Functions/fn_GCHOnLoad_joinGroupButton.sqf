@@ -25,7 +25,7 @@ scriptName "KISKA_fnc_GCH_joinGroupButton";
 params ["_control"];
 
 _control ctrlAddEventHandler ["ButtonClick",{
-	private _selectedGroup = uiNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
+	private _selectedGroup = localNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
 
 	if !(isNull _selectedGroup) then {
 		if ((group player) isNotEqualTo _selectedGroup) then {

@@ -24,13 +24,13 @@ scriptName "KISKA_fnc_GCH_updateSideGroupsList";
 #define PLAYER_GROUP_COLOR [0,1,0,0.6] // Green
 
 params [
-    ["_listControl",uiNamespace getVariable ["KISKA_GCH_sidesGroupListBox_ctrl",controlNull]]
+    ["_listControl",localNamespace getVariable ["KISKA_GCH_sidesGroupListBox_ctrl",controlNull]]
 ];
 
 lbClear _listControl;
 
 private _sideGroups = [side player] call KISKA_fnc_GCH_getSideGroups;
-uiNamespace setVariable ["KISKA_GCH_sideGroupsArray",_sideGroups];
+localNamespace setVariable ["KISKA_GCH_sideGroupsArray",_sideGroups];
 
 // add to listbox
 private "_index";

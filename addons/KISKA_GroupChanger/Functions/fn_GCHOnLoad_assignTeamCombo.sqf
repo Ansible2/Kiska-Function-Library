@@ -28,12 +28,12 @@ params ["_control"];
 _control ctrlAddEventHandler ["LBSelChanged",{
 	params ["_control", "_selectedIndex"];
 
-	private _unitList = uiNamespace getVariable ["KISKA_GCH_groupUnitList",[]];
-	private _currentGroupListBox_ctrl = uiNamespace getVariable "KISKA_GCH_currentGroupListBox_ctrl";
+	private _unitList = localNamespace getVariable ["KISKA_GCH_groupUnitList",[]];
+	private _currentGroupListBox_ctrl = localNamespace getVariable "KISKA_GCH_currentGroupListBox_ctrl";
 	private _unitLBIndex = lbCurSel _currentGroupListBox_ctrl;
 	private _selectedUnit = _unitList select (_currentGroupListBox_ctrl lbValue _unitLBIndex);
 
-	private _selectedgroup = uiNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
+	private _selectedgroup = localNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
 	private _groupLeader = leader _selectedgroup;
 
 	private _unitIsPlayer = _selectedUnit isEqualTo player;

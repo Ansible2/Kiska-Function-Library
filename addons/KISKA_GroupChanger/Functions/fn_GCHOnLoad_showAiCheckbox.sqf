@@ -28,11 +28,11 @@ _control ctrlAddEventHandler ["CheckedChanged",{
 
 	// convert from number to bool
 	_checked = [false,true] select _checked;
-	uiNamespace setVariable ["KISKA_GCH_showAI",_checked];
+	localNamespace setVariable ["KISKA_GCH_showAI",_checked];
 
 	[true] call KISKA_fnc_GCH_updateCurrentGroupSection;
 }];
 
 
 // set checked or not initially on open
-_control cbSetChecked (uiNamespace getVariable ["KISKA_GCH_showAI",true]);
+_control cbSetChecked (localNamespace getVariable ["KISKA_GCH_showAI",true]);

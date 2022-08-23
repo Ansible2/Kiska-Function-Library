@@ -44,7 +44,7 @@ addMissionEventHandler ["GroupCreated", {
 		_group setVariable ["KISKA_GCH_exclude", !(_playerInGroup)];
 	};
 
-	private _groupChangerOpen = !(isNull (uiNamespace getVariable ["KISKA_GCH_display",displayNull]));
+	private _groupChangerOpen = !(isNull (localNamespace getVariable ["KISKA_GCH_display",displayNull]));
     if (_groupChangerOpen) then {
         [] call KISKA_fnc_GCH_updateSideGroupsList;
     };
@@ -52,7 +52,7 @@ addMissionEventHandler ["GroupCreated", {
 
 
 addMissionEventHandler ["GroupDeleted", {
-	private _groupChangerOpen = !(isNull (uiNamespace getVariable ["KISKA_GCH_display",displayNull]));
+	private _groupChangerOpen = !(isNull (localNamespace getVariable ["KISKA_GCH_display",displayNull]));
     if (_groupChangerOpen) then {
         [] call KISKA_fnc_GCH_updateSideGroupsList;
     };

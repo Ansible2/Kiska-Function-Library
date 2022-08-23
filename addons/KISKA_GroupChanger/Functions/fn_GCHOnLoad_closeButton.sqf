@@ -24,7 +24,7 @@ scriptName "KISKA_fnc_GCHOnLoad_closeButton";
 params ["_control"];
 
 _control ctrlAddEventHandler ["ButtonClick",{
-	(uiNamespace getVariable "KISKA_GCH_display") closeDisplay 2;
+	(localNamespace getVariable "KISKA_GCH_display") closeDisplay 2;
 }];
 
 

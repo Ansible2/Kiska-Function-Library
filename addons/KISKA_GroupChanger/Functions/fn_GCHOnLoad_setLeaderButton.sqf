@@ -27,14 +27,14 @@ params ["_control"];
 
 _control ctrlAddEventHandler ["ButtonClick",{
 
-	private _group = uiNamespace getVariable "KISKA_GCH_selectedGroup";
+	private _group = localNamespace getVariable "KISKA_GCH_selectedGroup";
 
 	if ([_group] call KISKA_fnc_GCH_isAllowedToEdit) then {
-		private _currentGroupListBox_ctrl = uiNamespace getVariable "KISKA_GCH_currentGroupListBox_ctrl";
+		private _currentGroupListBox_ctrl = localNamespace getVariable "KISKA_GCH_currentGroupListBox_ctrl";
 		private _selectedindex = lbCurSel _currentGroupListBox_ctrl;
 		private _unitArrayIndex = _currentGroupListBox_ctrl lbValue _selectedindex;
 
-		private _unitArray = uiNamespace getVariable "KISKA_GCH_groupUnitList";
+		private _unitArray = localNamespace getVariable "KISKA_GCH_groupUnitList";
 		private _unitToSet = _unitArray select _unitArrayIndex;
 
 		if !(_unitToSet isEqualTo (leader _group)) then {

@@ -28,10 +28,10 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 	params ["_control", "_selectedIndex"];
 
 	// get selected group
-	private _sideGroups = uiNamespace getVariable "KISKA_GCH_sideGroupsArray";
+	private _sideGroups = localNamespace getVariable "KISKA_GCH_sideGroupsArray";
 	private _sideGroupsIndex = _control lbValue _selectedIndex;
 	private _selectedGroup = _sideGroups select _sideGroupsIndex;
-	uiNamespace setVariable ["KISKA_GCH_selectedGroup",_selectedGroup];
+	localNamespace setVariable ["KISKA_GCH_selectedGroup",_selectedGroup];
 
 	[true,true,true,true,true] call KISKA_fnc_GCH_updateCurrentGroupSection;
 }];

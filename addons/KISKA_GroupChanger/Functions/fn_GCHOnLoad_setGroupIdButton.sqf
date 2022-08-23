@@ -26,16 +26,16 @@ scriptName "KISKA_fnc_GCH_setGroupIdButton";
 params ["_control"];
 
 _control ctrlAddEventHandler ["ButtonClick",{
-	private _editBox_ctrl = uiNamespace getVariable "KISKA_GCH_groupIdEdit_ctrl";
+	private _editBox_ctrl = localNamespace getVariable "KISKA_GCH_groupIdEdit_ctrl";
 	private _newId = ctrlText _editBox_ctrl;
 
-	private _selectedGroup = uiNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
+	private _selectedGroup = localNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
 
 	if !(isNull _selectedGroup) then {
 		// case sensetive check to see if there is a change in the name
 		if !(_newId isEqualTo (groupId _selectedGroup)) then {
 
-			private _sideGroups = uiNamespace getVariable "KISKA_GCH_sideGroupsArray";
+			private _sideGroups = localNamespace getVariable "KISKA_GCH_sideGroupsArray";
 			// check if another group already has the id
 			private _alreadyHasName = [
 				_sideGroups,
@@ -51,7 +51,7 @@ _control ctrlAddEventHandler ["ButtonClick",{
 					_x isEqualTo _selectedGroup
 				};
 
-				private _sideGroupsList_ctrl = uiNamespace getVariable "KISKA_GCH_sidesGroupListBox_ctrl";
+				private _sideGroupsList_ctrl = localNamespace getVariable "KISKA_GCH_sidesGroupListBox_ctrl";
 				_sideGroupsList_ctrl lbSetText [_index,_newId];
 				["Group Id Updated"] call KISKA_fnc_errorNotification;
 			} else {
