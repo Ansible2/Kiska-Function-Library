@@ -5,15 +5,40 @@ Description:
 
 
 Parameters:
-	0:  <> - 
+	0: _origin <OBJECT or ARRAY> - The positionASL or object from which the sound will
+		originate.
+	1: _sounds <ARRAY> - An array of sounds to play randomly with any combination of three formats:
+		- <STRING>: A config name of a sound in either CfgSounds and/or CfgMusic. This config Must
+			have a "duration" number property. 
+		- [<STRING>,<NUMBER>] ([<configClassName>,<duration>]): a config class name that is in CfgSounds 
+			and/or CfgMusic and the duration the sound lasts.
+		- <CONFIG>: a config path to a class with a "sound[]" array property that has it's first entry
+			as a sound file path, and has a "duration" number property.
+	2: _timeBetweenSounds1 <NUMBER or ARRAY> - A buffer time between each sound once one completes. 
+		If array, random syntax of random [min,mid,max] is used to get buffer each time a sound completes.
+	3: _soundParams <ARRAY> - An array of parameters for playSound3D:
+		0: _distance <NUMBER> - Distance at which the sound can be heard
+		1: _volume <NUMBER> - Range from 0-5
+		2: _isInside <BOOL> - Is _origin inside
+		3: _pitch <NUMBER> - Range from 0-5
+	4: _onSoundPlayed <ARRAY, CODE, STRING> - A callback function that executes each time a sound is played
+		(See KISKA_fnc_callback). Parameters are:
+		0: <NUMBER> - An id that can be used with KISKA_fnc_stopRandom3dSoundLoop to stop sounds
+		1: <OBJECT or ARRAY> - The position the sound is playing at
+		2: <CONFIG> - The config of the current sound being played
 
 Returns:
-	NOTHING
+	<NUMBER> - An id that can be used with KISKA_fnc_stopRandom3dSoundLoop to stop
+		the sound loop.
 
 Examples:
     (begin example)
 		[
-
+			player,
+			[],
+			5,
+			[],
+			{hint str _this}
 		] call KISKA_fnc_playRandom3dSoundLoop;
     (end)
 
@@ -23,9 +48,9 @@ Author:
 scriptName "KISKA_fnc_playRandom3dSoundLoop";
 
 params [
-	["_origin",objNull,[objNull,[]],[3]]
+	["_origin",objNull,[objNull,[]],[3]],
 	["_sounds",[],[[]]],
-	["_timeBetweenSounds",5,[[],123]],
+	["_timeBetweenSounds",5,[[],123],[3]],
 	["_soundParams",[],[[]]],
 	["_onSoundPlayed",{},[[],{},""]]
 ];
@@ -46,7 +71,17 @@ private _soundsParsed = _sounds apply {
 	if (_sound isEqualType []) then {
 		if ((count _sound) < 2) then {continue};
 		_soundConfig = _sound select 0;
+
+		if !(_soundConfig isEqualTypeAny ["",configNull]) then {continue};
+		if (_soundConfig isEqualType "") then {
+			private _soundConfigName = _soundConfig;
+			["CfgSounds","CfgMusic"] apply {
+				_soundConfig = [[_x,_soundConfigName]] call KISKA_fnc_findConfigAny;
+				if !(isNull _soundConfig) then {break};
+			};
+		};
 		_duration = _sound select 1;
+
 
 	} else {
 		if (_sound isEqualType "") then {
@@ -74,6 +109,8 @@ private _playNextSound = {
 		"_usedSounds",
 		"_playNextSound",
 		"_timeBetweenSounds",
+		"_soundParams",
+		"_onSoundPlayed",
 		"_id"
 	];
 
@@ -113,7 +150,7 @@ private _playNextSound = {
 	] call KISKA_fnc_playSound3d;
 	
 	[
-		[_origin,_soundConfig],
+		[_id,_origin,_soundConfig],
 		_onSoundPlayed
 	] call KISKA_fnc_callBack;
 
@@ -144,4 +181,4 @@ localNamespace setVariable [("KISKA_random3dSoundLoopIsPlaying_" + (str _id)), t
 ] call _playNextSound;
 
 
-nil
+_id
