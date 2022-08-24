@@ -129,8 +129,11 @@ if (_updateCanDeleteCombo) then {
 
 
 if (_updateCanRallyCombo) then {
-	[_selectedGroup] spawn {
-		params ["_selectedGroup"];
+	private _canRallyCombo_ctrl = localNamespace getVariable ["KISKA_GCH_canRallyCombo_ctrl",controlNull];
+	_canRallyCombo_ctrl ctrlEnable false;
+
+	[_selectedGroup,_canRallyCombo_ctrl] spawn {
+		params ["_selectedGroup","_canRallyCombo_ctrl"];
 
 		private _groupCanRally = [
 			"KISKA_canRally",
@@ -138,14 +141,13 @@ if (_updateCanRallyCombo) then {
 			false,
 			2
 		] call KISKA_fnc_getVariableTarget;
-
+		
 		// make sure the menu is still open as it takes time to get a message from the server
 		// also make sure the same group is selected in the list
-		if (
-			!isNull (localNamespace getVariable "KISKA_GCH_display") AND
-			{_selectedGroup isEqualTo (localNamespace getVariable "KISKA_GCH_selectedGroup")}
-		) then {
-			private _canRallyCombo_ctrl = localNamespace getVariable "KISKA_GCH_canRallyCombo_ctrl";
+		private _menuIsOpen = !isNull (localNamespace getVariable ["KISKA_GCH_display",displayNull]);
+		private _didNotSelectAnotherGroup = _selectedGroup isEqualTo (localNamespace getVariable "KISKA_GCH_selectedGroup");
+		if (_menuIsOpen AND	_didNotSelectAnotherGroup) then {
+			_canRallyCombo_ctrl ctrlEnable true;
 			_canRallyCombo_ctrl setVariable ["KISKA_firstTimeComboChanged",true];
 			_canRallyCombo_ctrl lbSetCurSel ([0,1] select _groupCanRally);
 		};
