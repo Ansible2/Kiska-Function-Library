@@ -509,7 +509,6 @@ class KISKA_eventHandlers
 {
 	#include "EventHandlers\Headers\KISKA Behaviour EventHandlers.hpp"
 	#include "EventHandlers\Headers\KISKA Combat Behaviour EventHandlers.hpp"
-	#include "EventHandlers\Headers\KISKA Combat Mode EventHandlers.hpp"
 };
 
 class KISKA_loadouts
