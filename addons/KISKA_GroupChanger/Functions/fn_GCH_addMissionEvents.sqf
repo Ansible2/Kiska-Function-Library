@@ -30,7 +30,11 @@ if (call KISKA_fnc_isMainMenu) exitWith {
 
 addMissionEventHandler ["GroupCreated", {
 	params ["_group"];
-
+	// TODO: Make this more reliable with waiting until the group has units
+	// Need to also check that the group does not already have KISKA_GCH_exclude set
+	/// before determining this from the value
+	// Also make sure that KISKA_fnc_GCH_updateSideGroupsList is only called (or not)
+	/// after these verifications.
 	_this spawn {
 		params ["_group"];
 		sleep 3;

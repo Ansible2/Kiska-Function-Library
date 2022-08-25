@@ -28,6 +28,8 @@ params [
 allGroups select {
     (side _x) isEqualTo _side AND
     {!(_x getVariable ["KISKA_GCH_exclude",false])} AND
+    // TODO: Determine if this filter for only groups with players is necessary
+    // This is already somewhat filtered with the GroupCreated mission event
     {
         [
             units _x,

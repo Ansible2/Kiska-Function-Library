@@ -24,6 +24,11 @@ scriptName "KISKA_fnc_GCH_updateSideGroupsList";
 #define PLAYER_GROUP_COLOR [0,1,0,0.6] // Green
 
 
+// TODO: add parameter for whether or not you actually need to perform KISKA_fnc_GCH_getSideGroups
+/// This can happen when just a group's id changes for example
+
+// TODO: Make sure the group that was selected remains so
+
 private _listControl = localNamespace getVariable ["KISKA_GCH_sidesGroupListBox_ctrl",controlNull];
 if (isNull _listControl) exitWith {
     ["_listControl is null",true] call KISKA_fnc_log;
