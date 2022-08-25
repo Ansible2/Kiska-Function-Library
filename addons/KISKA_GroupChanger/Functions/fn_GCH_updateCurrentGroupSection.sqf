@@ -56,7 +56,7 @@ if (_updateUnitList) then {
 	private ["_index","_team"];
 	private _fn_setTeamColor = {
 		// don't change white team
-		if (_team == "MAIN" OR {_team == ""}) exitWith {};
+		if ((_team == "MAIN") OR (_team == "")) exitWith {};
 
 		if (_team == "BLUE") exitWith {
 			_currentGroupListBox_ctrl lbSetColor [_index,COLOR_BLUE];
