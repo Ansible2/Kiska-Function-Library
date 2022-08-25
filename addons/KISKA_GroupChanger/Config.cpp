@@ -36,9 +36,13 @@ class CfgFunctions
 			{};
 			class GCH_isAllowedToEdit
 			{};
+			class GCH_isGroupExcluded
+			{};
 			class GCH_isOpen
 			{};
 			class GCH_setLeaderRemote
+			{};
+			class GCH_setGroupExcluded
 			{};
 			class GCH_updateCurrentGroupSection
 			{};

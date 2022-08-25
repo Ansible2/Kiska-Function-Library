@@ -2,7 +2,7 @@
 Function: KISKA_fnc_GCH_isOpen
 
 Description:
-	
+	Checks if the group changer is open or not.
 
 Parameters:
 	NONE
