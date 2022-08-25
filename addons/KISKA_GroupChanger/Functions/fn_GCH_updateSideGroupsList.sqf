@@ -5,7 +5,7 @@ Description:
 	Updates the side's groups list for the GCH dialog.
 
 Parameters:
-	0: _listControl <CONTROL> - The control of the list
+	NONE
 
 Returns:
 	NOTHING
@@ -23,9 +23,13 @@ scriptName "KISKA_fnc_GCH_updateSideGroupsList";
 
 #define PLAYER_GROUP_COLOR [0,1,0,0.6] // Green
 
-params [
-    ["_listControl",localNamespace getVariable ["KISKA_GCH_sidesGroupListBox_ctrl",controlNull]]
-];
+
+private _listControl = localNamespace getVariable ["KISKA_GCH_sidesGroupListBox_ctrl",controlNull];
+if (isNull _listControl) exitWith {
+    ["_listControl is null",true] call KISKA_fnc_log;
+    nil
+};
+
 
 lbClear _listControl;
 

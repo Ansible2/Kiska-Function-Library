@@ -33,6 +33,18 @@ if (isNull _group) exitWith {
 
 private _id = _group addEventHandler ["GroupIdChanged", {
 	params ["_group", "_newGroupId"];
+	if !(isNull _group) then {
+		private _selectedGroup = localNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
+		if (_group isEqualTo _selectedGroup) then {
+			[false,false,true] call KISKA_fnc_GCH_updateCurrentGroupSection;
+
+		} else {
+			[] call KISKA_fnc_GCH_updateSideGroupList;
+
+		};
+
+	};
+	
 }];
 private _id = _group addEventHandler ["LeaderChanged", {
 	params ["_group", "_newLeader"];

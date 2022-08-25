@@ -27,6 +27,9 @@ Author:
 disableSerialization;
 scriptName "KISKA_fnc_GCH_updateCurrentGroupSection";
 
+private _gchIsOpen = [] call KISKA_fnc_GCH_isOpen;
+if !(_gchIsOpen) exitWith {};
+
 params [
 	["_updateUnitList",false,[true]],
 	["_updateLeaderIndicator",false,[true]],
@@ -36,7 +39,6 @@ params [
 ];
 
 private _selectedGroup = localNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
-
 if (isNull _selectedGroup) exitWith {};
 
 if (_updateUnitList) then {
