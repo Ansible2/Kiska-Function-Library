@@ -21,6 +21,8 @@ Author:
 disableSerialization;
 scriptName "KISKA_fnc_GCHOnLoad_canBeDeletedCombo";
 
+if !(hasInterface) exitWith {};
+
 params ["_control"];
 
 _control ctrlAddEventHandler ["LBSelChanged",{

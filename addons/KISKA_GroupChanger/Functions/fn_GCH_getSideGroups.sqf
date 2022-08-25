@@ -20,6 +20,8 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_GCH_getSideGroups";
 
+if !(hasInterface) exitWith {[]};
+
 params [
     ["_side",BLUFOR,[sideUnknown]]
 ];

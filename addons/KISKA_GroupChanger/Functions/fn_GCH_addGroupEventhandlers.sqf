@@ -8,7 +8,7 @@ Parameters:
 	0: _group <GROUP> - The Group to add the eventhandlers to
 
 Returns:
-	NOTHING
+	<HASHMAP> - A map with all event ids contained within it
 
 Examples:
     (begin example)
@@ -19,6 +19,8 @@ Author:
 	Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_GCH_addGroupEventhandlers";
+
+if !(hasInterface) exitWith {[]};
 
 params [
 	["_group",grpNull,[grpNull]]
@@ -38,8 +40,16 @@ if !(isNil "_eventMap") exitWith {
 
 private _unitJoinedGroup_eventId = _group addEventHandler ["UnitJoined", {
 	params ["_group", "_newUnit"];
-
+// as a player, I want new groups that are filled with only ai to be automatically excluded
+// but groups created with only players to be NOT excluded by default
 	if !(isNull _group) then {
+		private _isExcluded = [_group] call KISKA_fnc_GCH_isGroupExcluded;
+		private _groupsUnits = units _group;
+		private _isNewGroupWithPlayer = (_groupUnits isEqualTo []) AND (isPlayer _newUnit);
+		if (_isNewGroupWithPlayer AND _isExcluded) then {
+			[_group,false,false] call KISKA_fnc_GCH_setGroupExcluded;
+		};
+
 		private _selectedGroup = [] call KISKA_fnc_GCH_getSelectedGroup;
 		if (_group isEqualTo _selectedGroup) then {
 			[true] call KISKA_fnc_GCH_updateCurrentGroupSection;

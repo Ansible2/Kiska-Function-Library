@@ -21,6 +21,8 @@ Author:
 disableSerialization;
 scriptName "KISKA_fnc_GCHOnLoad_closeButton";
 
+if !(hasInterface) exitWith {};
+
 params ["_control"];
 
 _control ctrlAddEventHandler ["ButtonClick",{

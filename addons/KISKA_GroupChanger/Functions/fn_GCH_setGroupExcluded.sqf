@@ -24,10 +24,11 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_GCH_setGroupExcluded";
 
+if !(hasInterface) exitWith {true};
+
 params [
 	["_group",grpNull,[grpNull]],
-	["_isExcluded",true,[true]],
-	["_targets",true,[123,true,[]]]
+	["_isExcluded",true,[true]]
 ];
 
 if (isNull _group) exitWith {
@@ -36,6 +37,9 @@ if (isNull _group) exitWith {
 };
 
 
-_group setVariable ["KISKA_GCH_exclude",_isExcluded,_targets];
+_group setVariable ["KISKA_GCH_exclude",_isExcluded];
+[true] call KISKA_fnc_GCH_updateSideGroupsList;
+
+
 _isExcluded
 

@@ -22,6 +22,8 @@ Author:
 disableSerialization;
 scriptName "KISKA_fnc_GCH_joinGroupButton";
 
+if !(hasInterface) exitWith {};
+
 params ["_control"];
 
 _control ctrlAddEventHandler ["ButtonClick",{

@@ -21,6 +21,8 @@ Author:
 disableSerialization;
 scriptName "KISKA_fnc_GCHOnLoad_showAiCheckbox";
 
+if !(hasInterface) exitWith {};
+
 params ["_control"];
 
 _control ctrlAddEventHandler ["CheckedChanged",{

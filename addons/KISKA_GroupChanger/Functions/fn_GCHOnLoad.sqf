@@ -22,6 +22,8 @@ Author:
 disableSerialization;
 scriptName "KISKA_fnc_GCH_dialogOnLoad";
 
+if !(hasInterface) exitWith {};
+
 params ["_display"];
 
 if (missionNamespace getVariable ["KISKA_CBA_GCH_closeMap",true]) then {

@@ -21,6 +21,8 @@ Author:
 disableSerialization;
 scriptName "KISKA_fnc_GCHOnLoad_sideGroupList";
 
+if !(hasInterface) exitWith {};
+
 params ["_control"];
 
 // add event handler

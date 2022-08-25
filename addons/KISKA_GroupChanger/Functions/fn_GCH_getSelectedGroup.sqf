@@ -20,5 +20,6 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_GCH_getSelectedGroup";
 
+if !(hasInterface) exitWith {grpNull};
 
 localNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull]

@@ -20,6 +20,8 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_GCH_isGroupExcluded";
 
+if !(hasInterface) exitWith {true};
+
 params [
 	["_group",grpNull,[grpNull]]
 ];

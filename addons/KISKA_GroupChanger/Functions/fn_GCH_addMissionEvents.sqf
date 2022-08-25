@@ -30,37 +30,22 @@ if (call KISKA_fnc_isMainMenu) exitWith {
 
 addMissionEventHandler ["GroupCreated", {
 	params ["_group"];
-
 	[_group] call KISKA_fnc_GCH_addGroupEventhandlers;
-	// TODO: Make this more reliable with waiting until the group has units
-	// Need to also check that the group does not already have KISKA_GCH_exclude set
-	/// before determining this from the value
-	// Also make sure that KISKA_fnc_GCH_updateSideGroupsList is only called (or not)
-	/// after these verifications.
-	_this spawn {
-		params ["_group"];
-		sleep 3;
-
-		private _units = units _group;
-		private _playerInGroup = [
-			_units,
-			{isPlayer _x}
-		] call KISKA_fnc_findIfBool;
-
-		_group setVariable ["KISKA_GCH_exclude", !(_playerInGroup)];
-	};
-
-	private _groupChangerOpen = [] call KISKA_fnc_GCH_isOpen;
-    if (_groupChangerOpen) then {
-        [] call KISKA_fnc_GCH_updateSideGroupsList;
-    };
 }];
 
 
 addMissionEventHandler ["GroupDeleted", {
+	params ["_group"];
+
 	private _groupChangerOpen = [] call KISKA_fnc_GCH_isOpen;
     if (_groupChangerOpen) then {
-        [] call KISKA_fnc_GCH_updateSideGroupsList;
+		private _groupIsExcluded = [_group] call KISKA_fnc_GCH_isGroupExcluded;
+		private _deletedGroupSide = side _group;
+		private _playerSide = side player;
+
+		if ((_playerSide isEqualTo _deletedGroupSide) AND (!_groupIsExcluded)) then {
+        	[] call KISKA_fnc_GCH_updateSideGroupsList;
+		};
     };
 }];
 

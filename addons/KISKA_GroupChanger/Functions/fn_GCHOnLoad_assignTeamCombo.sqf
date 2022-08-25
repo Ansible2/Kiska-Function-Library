@@ -22,6 +22,7 @@ Author:
 disableSerialization;
 scriptName "KISKA_fnc_GCHOnLoad_assignTeamCombo";
 
+if !(hasInterface) exitWith {};
 
 params ["_control"];
 

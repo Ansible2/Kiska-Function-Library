@@ -22,13 +22,14 @@ Author:
 disableSerialization;
 scriptName "KISKA_fnc_GCH_leaveGroupButton";
 
+if !(hasInterface) exitWith {};
+
 params ["_control"];
 
 _control ctrlAddEventHandler ["ButtonClick",{
 	private _side = side player;
 	private _newGroup = createGroup [_side, false];
 	[player] joinSilent _newGroup;
-	[_newGroup,false,true] call KISKA_fnc_GCH_setGroupExcluded;
 }];
 
 
