@@ -30,6 +30,8 @@ if (call KISKA_fnc_isMainMenu) exitWith {
 
 addMissionEventHandler ["GroupCreated", {
 	params ["_group"];
+
+	[_group] call KISKA_fnc_GCH_addGroupEventhandlers;
 	// TODO: Make this more reliable with waiting until the group has units
 	// Need to also check that the group does not already have KISKA_GCH_exclude set
 	/// before determining this from the value
