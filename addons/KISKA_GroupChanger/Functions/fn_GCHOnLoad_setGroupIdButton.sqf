@@ -29,7 +29,7 @@ _control ctrlAddEventHandler ["ButtonClick",{
 	private _editBox_ctrl = localNamespace getVariable "KISKA_GCH_groupIdEdit_ctrl";
 	private _newId = ctrlText _editBox_ctrl;
 
-	private _selectedGroup = localNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
+	private _selectedGroup = [] call KISKA_fnc_GCH_getSelectedGroup;;
 
 	if !(isNull _selectedGroup) then {
 		// case sensetive check to see if there is a change in the name

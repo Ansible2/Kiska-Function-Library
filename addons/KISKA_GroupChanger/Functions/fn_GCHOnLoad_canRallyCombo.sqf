@@ -26,7 +26,7 @@ params ["_control"];
 _control ctrlAddEventHandler ["LBSelChanged",{
 	params ["_control", "_selectedIndex"];
 
-	private _selectedgroup = localNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
+	private _selectedgroup = [] call KISKA_fnc_GCH_getSelectedGroup;;
 	if !(isNull _selectedgroup) then {
 
 		if ([_selectedgroup] call KISKA_fnc_GCH_isAllowedToEdit) then {

@@ -38,7 +38,7 @@ params [
 	["_updateCanRallyCombo",false,[true]]
 ];
 
-private _selectedGroup = localNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
+private _selectedGroup = [] call KISKA_fnc_GCH_getSelectedGroup;;
 if (isNull _selectedGroup) exitWith {};
 
 if (_updateUnitList) then {

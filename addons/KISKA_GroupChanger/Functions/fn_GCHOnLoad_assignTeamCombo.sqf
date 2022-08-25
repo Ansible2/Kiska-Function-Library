@@ -33,7 +33,7 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 	private _unitLBIndex = lbCurSel _currentGroupListBox_ctrl;
 	private _selectedUnit = _unitList select (_currentGroupListBox_ctrl lbValue _unitLBIndex);
 
-	private _selectedgroup = localNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
+	private _selectedgroup = [] call KISKA_fnc_GCH_getSelectedGroup;;
 	private _groupLeader = leader _selectedgroup;
 
 	private _unitIsPlayer = _selectedUnit isEqualTo player;

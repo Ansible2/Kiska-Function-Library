@@ -28,7 +28,7 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 
 	if (call KISKA_fnc_isAdminOrHost) then {
 
-		private _selectedgroup = localNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
+		private _selectedgroup = [] call KISKA_fnc_GCH_getSelectedGroup;;
 
 		if !(isNull _selectedgroup) then {
 

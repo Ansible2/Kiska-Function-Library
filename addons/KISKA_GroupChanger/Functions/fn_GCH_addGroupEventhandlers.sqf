@@ -38,31 +38,54 @@ if !(isNil "_eventMap") exitWith {
 
 private _unitJoinedGroup_eventId = _group addEventHandler ["UnitJoined", {
 	params ["_group", "_newUnit"];
+
+	if !(isNull _group) then {
+		private _selectedGroup = [] call KISKA_fnc_GCH_getSelectedGroup;
+		if (_group isEqualTo _selectedGroup) then {
+			[true] call KISKA_fnc_GCH_updateCurrentGroupSection;
+		};
+	};
 }];
 
 private _unitLeftGroup_eventId = _group addEventHandler ["UnitLeft", {
 	params ["_group", "_oldUnit"];
+
+	if !(isNull _group) then {
+		private _selectedGroup = [] call KISKA_fnc_GCH_getSelectedGroup;
+		if (_group isEqualTo _selectedGroup) then {
+			[true] call KISKA_fnc_GCH_updateCurrentGroupSection;
+		};
+	};
 }];
 
 private _groupIdChanged_eventId = _group addEventHandler ["GroupIdChanged", {
 	params ["_group", "_newGroupId"];
+
 	if !(isNull _group) then {
-		private _selectedGroup = localNamespace getVariable ["KISKA_GCH_selectedGroup",grpNull];
+		private _selectedGroup = [] call KISKA_fnc_GCH_getSelectedGroup;
 		if (_group isEqualTo _selectedGroup) then {
 			[false,false,true] call KISKA_fnc_GCH_updateCurrentGroupSection;
 		};
 
 		[] call KISKA_fnc_GCH_updateSideGroupList;
 	};
-	
 }];
 
 private _groupLeaderChanged_eventId = _group addEventHandler ["LeaderChanged", {
 	params ["_group", "_newLeader"];
+
+	if !(isNull _group) then {
+		private _selectedGroup = [] call KISKA_fnc_GCH_getSelectedGroup;
+		if (_group isEqualTo _selectedGroup) then {
+			[false,true] call KISKA_fnc_GCH_updateCurrentGroupSection;
+		};
+	};
 }];
 
 private _groupEmpty_eventId = _group addEventHandler ["Empty", {
 	params ["_group"];
+
+
 }];
 
 
