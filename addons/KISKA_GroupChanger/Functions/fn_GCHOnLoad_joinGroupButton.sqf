@@ -33,18 +33,6 @@ _control ctrlAddEventHandler ["ButtonClick",{
 		if ((group player) isNotEqualTo _selectedGroup) then {
 			private _groupIsLocal = local _selectedGroup;
 			[player] joinSilent _selectedGroup;
-
-			[_groupIsLocal] spawn {
-				params ["_groupIsLocal"];
-				// give the group change some time to travel over the network
-				if (!_groupIsLocal) then {
-					sleep 1;
-				};
-
-				[true,true] call KISKA_fnc_GCH_updateCurrentGroupSection;
-				[] call KISKA_fnc_GCH_updateSideGroupsList;
-			};
-
 		};
 
 	} else {

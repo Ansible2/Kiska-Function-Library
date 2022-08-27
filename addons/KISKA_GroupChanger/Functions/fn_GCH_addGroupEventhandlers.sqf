@@ -38,16 +38,19 @@ if !(isNil "_eventMap") exitWith {
 	_eventMap
 };
 
-private _unitJoinedGroup_eventId = _group addEventHandler ["UnitJoined", {
-	params ["_group", "_newUnit"];
 // as a player, I want new groups that are filled with only ai to be automatically excluded
 // but groups created with only players to be NOT excluded by default
+private _unitJoinedGroup_eventId = _group addEventHandler ["UnitJoined", {
+	params ["_group", "_newUnit"];
 	if !(isNull _group) then {
 		private _isExcluded = [_group] call KISKA_fnc_GCH_isGroupExcluded;
-		private _groupsUnits = units _group;
-		private _isNewGroupWithPlayer = (_groupUnits isEqualTo []) AND (isPlayer _newUnit);
+
+		private _onlyOneUnitInGroup = (count (units _group)) isEqualTo 1;
+		private _isNewGroupWithPlayer = _onlyOneUnitInGroup AND (isPlayer _newUnit);
+
 		if (_isNewGroupWithPlayer AND _isExcluded) then {
-			[_group,false,false] call KISKA_fnc_GCH_setGroupExcluded;
+			hint str ["adjusted exclusion",_newUnit];
+			[_group,false] call KISKA_fnc_GCH_setGroupExcluded;
 		};
 
 		private _selectedGroup = [] call KISKA_fnc_GCH_getSelectedGroup;
@@ -56,6 +59,7 @@ private _unitJoinedGroup_eventId = _group addEventHandler ["UnitJoined", {
 		};
 	};
 }];
+
 
 private _unitLeftGroup_eventId = _group addEventHandler ["UnitLeft", {
 	params ["_group", "_oldUnit"];

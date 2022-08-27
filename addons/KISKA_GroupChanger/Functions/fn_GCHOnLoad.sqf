@@ -20,7 +20,7 @@ Author:
 	Ansible2
 ---------------------------------------------------------------------------- */
 disableSerialization;
-scriptName "KISKA_fnc_GCH_dialogOnLoad";
+scriptName "KISKA_fnc_GCHOnLoad";
 
 if !(hasInterface) exitWith {};
 
@@ -77,7 +77,7 @@ localNamespace setVariable ["KISKA_GCH_currentGroupListBox_ctrl",_currentGroupLi
 // side groups list
 private _sidesGroupListBox_ctrl = _display displayCtrl GCH_SIDE_GROUPS_LISTBOX_IDC;
 localNamespace setVariable ["KISKA_GCH_sidesGroupListBox_ctrl",_sidesGroupListBox_ctrl];
-[_sidesGroupListBox_ctrl] spawn KISKA_fnc_GCHOnLoad_sideGroupsList;
+[_sidesGroupListBox_ctrl] call KISKA_fnc_GCHOnLoad_sideGroupsList;
 
 
 /* ----------------------------------------------------------------------------
@@ -122,19 +122,23 @@ _display displayAddEventHandler ["unload",{
 	[
 		"KISKA_GCH_display",
 		"KISKA_GCH_selectedGroup",
+		"KISKA_GCH_currentGroupListBox_ctrl",
+		"KISKA_GCH_leaveGroupButton_ctrl",
 		"KISKA_GCH_groupUnitList",
 		"KISKA_GCH_leaderNameIndicator_ctrl",
+		"KISKA_GCH_setLeaderButton_ctrl",
+		"KISKA_GCH_joinGroupButton_ctrl",
+		"KISKA_GCH_showAiCheckBox_ctrl",
 		"KISKA_GCH_groupIdEdit_ctrl",
 		"KISKA_GCH_canBeDeletedCombo_ctrl",
 		"KISKA_GCH_canRallyCombo_ctrl",
 		"KISKA_GCH_sidesGroupListBox_ctrl",
 		"KISKA_GCH_sideGroupsArray",
-		"KISKA_GCH_sidesGroupListBox_ctrl",
+		"KISKA_GCH_setGroupIdButton_ctrl",
 		"KISKA_GCH_assignTeamCombo_ctrl"
 	] apply {
 		localNamespace setVariable [_x,nil];
 	};
-
 }];
 
 

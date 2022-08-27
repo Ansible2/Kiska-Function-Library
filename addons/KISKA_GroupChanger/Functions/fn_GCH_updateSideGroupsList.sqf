@@ -34,7 +34,7 @@ params [
 
 private _listControl = localNamespace getVariable ["KISKA_GCH_sidesGroupListBox_ctrl",controlNull];
 if (isNull _listControl) exitWith {
-    ["_listControl is null",true] call KISKA_fnc_log;
+    ["_listControl is null",false] call KISKA_fnc_log;
     nil
 };
 
@@ -43,13 +43,18 @@ lbClear _listControl;
 
 private _sideGroups = localNamespace getVariable ["KISKA_GCH_sideGroupsArray",[]];
 if (_queryForGroups OR (_sideGroups isEqualTo [])) then {
-    _sideGroups = [side player] call KISKA_fnc_GCH_getSideGroups;
+    private _playerSide = [] call KISKA_fnc_GCH_getPlayerSide;
+    _sideGroups = [_playerSide] call KISKA_fnc_GCH_getSideGroups;
     localNamespace setVariable ["KISKA_GCH_sideGroupsArray",_sideGroups];
 };
+
+// as a user, i want to maintain my current selection when the group list updates
 
 // add to listbox
 private "_index";
 private _playerGroup = group player;
+private _selectedGroup = call KISKA_fnc_GCH_getSelectedGroup;
+private _selectedGroupIsNotNull = !(isNull _selectedGroup);
 {
     _index = _listControl lbAdd (groupId _x);
     // saving the index as a value so that it can be referenced against the _sideGroups array
@@ -58,6 +63,10 @@ private _playerGroup = group player;
     // highlight the player group
     if (_x isEqualTo _playerGroup) then {
         _listControl lbSetColor [_index, PLAYER_GROUP_COLOR];
+    };
+    
+    if (_selectedGroupIsNotNull AND (_x isEqualTo _selectedGroup)) then {
+        _listControl lbSetCurSel _index;
     };
 } forEach _sideGroups;
 

@@ -27,8 +27,8 @@ if !(hasInterface) exitWith {};
 params ["_control"];
 
 _control ctrlAddEventHandler ["ButtonClick",{
-	private _side = side player;
-	private _newGroup = createGroup [_side, false];
+	private _playerSide = [] call KISKA_fnc_GCH_getPlayerSide;
+	private _newGroup = createGroup [_playerSide, true];
 	[player] joinSilent _newGroup;
 }];
 

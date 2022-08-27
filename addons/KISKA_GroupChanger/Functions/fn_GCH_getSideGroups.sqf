@@ -12,7 +12,8 @@ Returns:
 
 Examples:
     (begin example)
-        _groups = [side player] call KISKA_fnc_GCH_getSideGroups;
+        private _playerSide = [] call KISKA_fnc_GCH_getPlayerSide;
+        _groups = [_playerSide] call KISKA_fnc_GCH_getSideGroups;
     (end)
 
 Author:
