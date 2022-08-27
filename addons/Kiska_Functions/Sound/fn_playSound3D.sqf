@@ -7,7 +7,8 @@ Description:
 Parameters:
 	0: _sound <STRING or CONFIG> - The sound to play. The classname of a CfgSounds entry (if string)
 		or any config class that has a "sound[]" array and "duration" number property (such as CfgMusic classes)
-	1: _origin <OBJECT or ARRAY> - The position (ASL) or object from which the sound comes from
+	1: _origin <OBJECT or ARRAY> - The position (ASL), object from which the sound comes from, 
+		or an array of any combination of the two (effectively multiple origins)
 	2: _distance <NUMBER> - Distance at which the sound can be heard
 	3: _volume <NUMBER> - Range from 0-5
 	4: _isInside <BOOL> - Is _origin inside
@@ -54,14 +55,19 @@ if (_sound isEqualTo "") exitWith {
 	["_sound is empty string",true] call KISKA_fnc_log;
 	false
 };
-if ((_origin isEqualType objNull) AND {isNull _origin}) exitWith {
+
+private _originIsObject = _origin isEqualType objNull;
+if (_originIsObject AND {isNull _origin}) exitWith {
 	["_origin object isNull",true] call KISKA_fnc_log;
 	false
 };
-if ((_origin isEqualType []) AND {_origin isEqualTo []}) exitWith {
+
+private _originIsArray = _origin isEqualType [];
+if (_originIsArray AND {_origin isEqualTo []}) exitWith {
 	["_origin is empty array",true] call KISKA_fnc_log;
 	false
 };
+
 if (_distance < 0) exitWith {
 	[["_distance is: ",_distance," and cannot be negative"],true] call KISKA_fnc_log;
 	false
@@ -136,10 +142,63 @@ if (_fileNotFound) exitWith {
 /* -----------------------------------
 	Playsound
 ----------------------------------- */
-if (_origin isEqualType objNull) then {
-	_origin = getPosASL _origin;
+if (_originIsObject) exitWith {
+	playSound3D [
+		_soundPath,
+		objNull,
+		_isInside,
+		getPosASL _origin,
+		_volume,
+		_pitch,
+		_distance
+	];
+
+	true
 };
-playSound3D [_soundPath,objNull,_isInside,_origin,_volume,_pitch,_distance];
+
+private _positionCompareArray = [1,2,3];
+if (_origin isEqualTypeParams _positionCompareArray) exitWith {
+	playSound3D [
+		_soundPath,
+		objNull,
+		_isInside,
+		_origin,
+		_volume,
+		_pitch,
+		_distance
+	];
+
+	true
+};
+
+
+private _origins = _origin;
+_origins apply {
+	if (_x isEqualTypeParams _positionCompareArray) then {
+		playSound3D [
+			_soundPath,
+			objNull,
+			_isInside,
+			_x,
+			_volume,
+			_pitch,
+			_distance
+		];
+		continue;
+	};
+
+	if ((_x isEqualType objNull) AND {!(isNull _x)}) then {
+		playSound3D [
+			_soundPath,
+			objNull,
+			_isInside,
+			getPosASL _x,
+			_volume,
+			_pitch,
+			_distance
+		];
+	};
+};
 
 
 true
