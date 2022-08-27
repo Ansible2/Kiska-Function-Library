@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_GCHOnLoad_sideGroupList
+Function: KISKA_fnc_GCHOnLoad_sideGroupsList
 
 Description:
 	Adds eventhandler to the listbox.
@@ -12,14 +12,14 @@ Returns:
 
 Examples:
     (begin example)
-        [_control] call KISKA_fnc_GCHOnLoad_sideGroupList;
+        [_control] call KISKA_fnc_GCHOnLoad_sideGroupsList;
     (end)
 
 Author:
 	Ansible2
 ---------------------------------------------------------------------------- */
 disableSerialization;
-scriptName "KISKA_fnc_GCHOnLoad_sideGroupList";
+scriptName "KISKA_fnc_GCHOnLoad_sideGroupsList";
 
 if !(hasInterface) exitWith {};
 
@@ -39,7 +39,7 @@ _control ctrlAddEventHandler ["LBSelChanged",{
 }];
 
 
-[_control] call KISKA_fnc_GCH_updateSideGroupsList;
+[true] call KISKA_fnc_GCH_updateSideGroupsList;
 
 
 nil

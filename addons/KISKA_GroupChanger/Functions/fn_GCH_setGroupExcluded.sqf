@@ -42,4 +42,3 @@ _group setVariable ["KISKA_GCH_exclude",_isExcluded];
 
 
 _isExcluded
-

@@ -28,9 +28,13 @@ class CfgFunctions
 			{
 				preInit = 1;
 			};
+			class GCH_addGroupEventhandlers
+			{};
 			class GCH_assignTeam
 			{};
 			class GCH_getSideGroups
+			{};
+			class GCH_getPlayerSide
 			{};
 			class GCH_groupDeleteQuery
 			{};

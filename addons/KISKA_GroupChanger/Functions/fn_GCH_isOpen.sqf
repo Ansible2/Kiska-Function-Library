@@ -22,8 +22,8 @@ disableSerialization;
 scriptName "KISKA_fnc_GCH_isOpen";
 
 if !(hasInterface) exitWith {false};
-private _gchDisplay = localNamespace setVariable ["KISKA_GCH_display",displayNull];
+private _gchDisplay = localNamespace getVariable ["KISKA_GCH_display",displayNull];
 
 
-isNull _gchDisplay
+!(isNull _gchDisplay)
 

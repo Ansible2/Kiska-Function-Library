@@ -41,7 +41,7 @@ addMissionEventHandler ["GroupDeleted", {
     if (_groupChangerOpen) then {
 		private _groupIsExcluded = [_group] call KISKA_fnc_GCH_isGroupExcluded;
 		private _deletedGroupSide = side _group;
-		private _playerSide = side player;
+		private _playerSide = [] call KISKA_fnc_GCH_getPlayerSide;
 
 		if ((_playerSide isEqualTo _deletedGroupSide) AND (!_groupIsExcluded)) then {
         	[] call KISKA_fnc_GCH_updateSideGroupsList;
