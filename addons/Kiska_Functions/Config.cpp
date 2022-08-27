@@ -271,8 +271,8 @@ class CfgFunctions
 		class Sound
 		{
 			file = "Kiska_functions\Sound";
-			// class ambientRadio
-			// {};
+			class ambientNewsRadio
+			{};
 			class battleSound
 			{};
 			class stopBattleSound
