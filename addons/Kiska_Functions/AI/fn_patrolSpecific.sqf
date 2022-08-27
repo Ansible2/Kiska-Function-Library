@@ -83,8 +83,7 @@ for "_i" from 1 to _numWaypoints do {
 	private "_waypoint";
 
 	if (_random) then {
-		private _randomIndex = random (floor (count _positions));
-		_selectedPosition = _positions deleteAt _randomIndex;
+		_selectedPosition = [_positions] call KISKA_fnc_deleteRandomIndex;
 		_waypoint = _group addWaypoint [_selectedPosition,0];
 	} else {
 		_selectedPosition = _positions select (_i - 1);

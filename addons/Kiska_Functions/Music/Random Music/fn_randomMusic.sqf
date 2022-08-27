@@ -84,8 +84,7 @@ if (_musicTracks isEqualTo []) then {
 };
 
 
-private _randomTrackIndex = random (floor (count _musicTracks));
-private _selectedTrack = _musicTracks deleteAt _randomTrackIndex;
+private _selectedTrack = [_musicTracks] call KISKA_fnc_deleteRandomIndex;
 // get defined volume for random music system
 private _volume = call KISKA_fnc_randomMusic_getVolume;
 [_selectedTrack,0,false,_volume,3,true] remoteExec ["KISKA_fnc_playMusic",[0,-2] select isDedicated];

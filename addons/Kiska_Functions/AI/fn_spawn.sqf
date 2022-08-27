@@ -131,9 +131,7 @@ for "_i1" from 1 to _numberOfGroups do {
 		// check if number of units requested have been created
 		if ((count _spawnedUnits) isEqualTo _numberOfUnits) exitWith {};
 
-		// get spawn position
-		private _randomIndex = random (floor (count _spawnPositions));
-		_selectedSpawnPosition = _spawnPositions deleteAt _randomIndex;
+		_selectedSpawnPosition = [_spawnPositions] call KISKA_fnc_deleteRandomIndex;
 
 		// get unit type
 		if (_weightedArray) then {
