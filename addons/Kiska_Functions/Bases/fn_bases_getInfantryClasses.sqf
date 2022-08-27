@@ -15,7 +15,7 @@ Returns:
 
 Examples:
     (begin example)
-		[
+        [
             [
                 missionConfigFile >> "KISKA_Bases" >> "myBase"
                 missionConfigFile >> "KISKA_Bases" >> "myBase" >> "Infantry",
