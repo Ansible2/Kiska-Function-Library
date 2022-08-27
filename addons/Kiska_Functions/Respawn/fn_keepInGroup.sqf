@@ -38,27 +38,27 @@ waitUntil {
 	false
 };
 
-missionNamespace setVariable ["KISKA_playerGroup",grpNull];
-missionNamespace setVariable ["KISKA_team",""];
+localNamespace setVariable ["KISKA_playerGroup",grpNull];
+localNamespace setVariable ["KISKA_team",""];
 
 player addEventHandler ["KILLED", {
 	params ["_corpse"];
-
-	missionNamespace setVariable ["KISKA_playerGroup",group _corpse];
-	missionNamespace setVariable ["KISKA_team",assignedTeam _corpse];
+	// set values player had just before death
+	localNamespace setVariable ["KISKA_playerGroup",group _corpse];
+	localNamespace setVariable ["KISKA_team",assignedTeam _corpse];
 }];
 
 player addEventHandler ["RESPAWN", {
 	params ["_unit"];
 
-	private _previousGroup = missionNamespace getVariable ["KISKA_playerGroup",grpNull];
+	private _previousGroup = localNamespace getVariable ["KISKA_playerGroup",grpNull];
 	if (
 		!isNull _previousGroup AND
 		{(group _unit) isNotEqualTo _previousGroup}
 	) then {
 		[_unit] joinSilent _previousGroup;
 
-		private _previousTeam = missionNamespace getVariable ["KISKA_team",""];
+		private _previousTeam = localNamespace getVariable ["KISKA_team",""];
 		if (
 			_previousTeam isNotEqualTo "" AND
 			{_previousTeam isNotEqualTo "MAIN"}
