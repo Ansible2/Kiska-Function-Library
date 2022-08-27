@@ -65,21 +65,13 @@ if (_unitTypesFiltered isEqualTo []) exitWith {
 private _group = createGroup [_side,true];
 
 for "_i" from 1 to _numberOfUnits do {
-
-	private "_selectedUnitType";
-	if (_weightedArray) then {
-		_selectedUnitType = selectRandomWeighted _unitTypesFiltered;
-	} else {
-		_selectedUnitType = selectRandom _unitTypesFiltered;
-	};
-
+	private _selectedUnitType = [_unitTypesFiltered,""] call KISKA_fnc_selectRandom;
 	private _unit = _group createUnit [_selectedUnitType,_position,[],5,"NONE"];
 
 	[_unit] joinSilent _group;
-
 	_unit triggerDynamicSimulation false;
 
-	if (_i isEqualTo 1) then {_unit setUnitRank "LIEUTENANT"};
+	if (_i isEqualTo 1) then {_unit setUnitRank "LIEUTENANT"; continue;};
 	if (_i isEqualTo 2) then {_unit setUnitRank "SERGEANT"};
 };
 

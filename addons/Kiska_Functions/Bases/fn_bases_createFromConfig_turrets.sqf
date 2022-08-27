@@ -78,15 +78,11 @@ _turretClasses apply {
     private _onUnitMovedInGunner = compile getText(_x >> "onUnitMovedInGunner");
 
     private ["_group","_unit","_unitClass"];
-    private _weightedArray = _unitClasses isEqualTypeParams ["",1];
     private _reinforceClass = _x >> "reinforce";
     _turrets apply {
         _group = createGroup _side;
 
-        _unitClass = [
-            selectRandom _unitClasses,
-            selectRandomWeighted _unitClasses
-        ] select _weightedArray;
+        _unitClass = [_unitClasses,""] call KISKA_fnc_selectRandom;
 
         _unit = _group createUnit [_unitClass,[0,0,0],[],0,"NONE"];
 

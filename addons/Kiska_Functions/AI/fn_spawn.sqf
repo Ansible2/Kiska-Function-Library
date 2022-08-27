@@ -129,17 +129,12 @@ for "_i1" from 1 to _numberOfGroups do {
 	// create units for group
 	for "_i2" from 1 to _numberOfUnitsPerGroup do {
 		// check if number of units requested have been created
-		if ((count _spawnedUnits) isEqualTo _numberOfUnits) exitWith {};
+		if ((count _spawnedUnits) isEqualTo _numberOfUnits) then {break};
 
 		_selectedSpawnPosition = [_spawnPositions] call KISKA_fnc_deleteRandomIndex;
 
 		// get unit type
-		if (_weightedArray) then {
-			_selectedUnitType = selectRandomWeighted _unitTypesFiltered;
-		} else {
-			_selectedUnitType = selectRandom _unitTypesFiltered;
-		};
-
+		_selectedUnitType = [_unitTypesFiltered,""] call KISKA_fnc_selectRandom;
 
 		// if spawn position includes a rotation param, set it
 		if (_selectedSpawnPosition isEqualType objNull) then {

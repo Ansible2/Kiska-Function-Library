@@ -58,13 +58,7 @@ private _gearArray = [];
 
 private _fn_selectGear = {
 	if (_gearArray isNotEqualTo []) then {
-		if (_gearArray isEqualTypeParams ["",123]) then {
-			_selectedGear = selectRandomWeighted _gearArray;
-
-		} else {
-			_selectedGear = selectRandom _gearArray;
-
-		};
+		_selectedGear = [_gearArray,""] call KISKA_fnc_selectRandom;
 
 	} else {
 		_selectedGear = "";
