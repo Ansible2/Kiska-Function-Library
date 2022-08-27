@@ -49,7 +49,7 @@ private _unitJoinedGroup_eventId = _group addEventHandler ["UnitJoined", {
 		private _isNewGroupWithPlayer = _onlyOneUnitInGroup AND (isPlayer _newUnit);
 
 		if (_isNewGroupWithPlayer AND _isExcluded) then {
-			[_group,false] call KISKA_fnc_GCH_setGroupExcluded;
+			[_group,false,false] call KISKA_fnc_GCH_setGroupExcluded;
 		};
 
 		private _selectedGroup = [] call KISKA_fnc_GCH_getSelectedGroup;

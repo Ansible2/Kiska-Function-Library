@@ -33,7 +33,7 @@ params [
 
 private _listControl = localNamespace getVariable ["KISKA_GCH_sidesGroupListBox_ctrl",controlNull];
 if (isNull _listControl) exitWith {
-    ["_listControl is null",true] call KISKA_fnc_log;
+    ["_listControl is null",false] call KISKA_fnc_log;
     nil
 };
 
