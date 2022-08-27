@@ -97,19 +97,19 @@ _units apply {
 	} else {
 		// Respect chance to patrol, or force if no building positions left
 		if !((_buildings isEqualto []) || { (random 1 < _patrol) }) then {
-			private _randomBuildingIndex = random (floor (count _buildings));
+			private _randomBuildingIndex = [_buildings] call KISKA_fnc_randomIndex;
 			private _building = _buildings select _randomBuildingIndex;
-			private _array = _building getVariable ["CBA_taskDefend_positions", []];
 
-			if !(_array isEqualTo []) then {
-				private _pos = _array deleteAt (floor (random (count _array)));
+			private _buildingDefendPositions = _building getVariable ["CBA_taskDefend_positions", []];
+			if (_buildingDefendPositions isNotEqualTo []) then {
+				private _pos = [_buildingDefendPositions] call KISKA_fnc_deleteRandomIndex;
 
 				// If building positions are all taken remove from possible buildings
-				if (_array isEqualTo []) then {
+				if (_buildingDefendPositions isEqualTo []) then {
 					_buildings deleteAt _randomBuildingIndex;
 					_building setVariable ["CBA_taskDefend_positions", nil];
 				} else {
-					_building setVariable ["CBA_taskDefend_positions", _array];
+					_building setVariable ["CBA_taskDefend_positions", _buildingDefendPositions];
 				};
 
 				// Wait until AI is in position then force them to stay
