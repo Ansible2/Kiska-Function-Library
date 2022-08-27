@@ -29,18 +29,17 @@ if !([] call KISKA_fnc_GCH_isOpen) exitWith {};
 params [
     ["_queryForGroups",true,[true]]
 ];
-
 // TODO: Make sure the group that was selected remains so
 
 private _listControl = localNamespace getVariable ["KISKA_GCH_sidesGroupListBox_ctrl",controlNull];
 if (isNull _listControl) exitWith {
-    ["_listControl is null",false] call KISKA_fnc_log;
+    ["_listControl is null",true] call KISKA_fnc_log;
     nil
 };
 
 
 lbClear _listControl;
-
+;
 private _sideGroups = localNamespace getVariable ["KISKA_GCH_sideGroupsArray",[]];
 if (_queryForGroups OR (_sideGroups isEqualTo [])) then {
     private _playerSide = [] call KISKA_fnc_GCH_getPlayerSide;

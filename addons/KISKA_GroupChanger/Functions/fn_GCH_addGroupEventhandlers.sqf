@@ -49,7 +49,6 @@ private _unitJoinedGroup_eventId = _group addEventHandler ["UnitJoined", {
 		private _isNewGroupWithPlayer = _onlyOneUnitInGroup AND (isPlayer _newUnit);
 
 		if (_isNewGroupWithPlayer AND _isExcluded) then {
-			hint str ["adjusted exclusion",_newUnit];
 			[_group,false] call KISKA_fnc_GCH_setGroupExcluded;
 		};
 
@@ -74,14 +73,14 @@ private _unitLeftGroup_eventId = _group addEventHandler ["UnitLeft", {
 
 private _groupIdChanged_eventId = _group addEventHandler ["GroupIdChanged", {
 	params ["_group", "_newGroupId"];
-
+	
 	if !(isNull _group) then {
 		private _selectedGroup = [] call KISKA_fnc_GCH_getSelectedGroup;
 		if (_group isEqualTo _selectedGroup) then {
 			[false,false,true] call KISKA_fnc_GCH_updateCurrentGroupSection;
 		};
 
-		[] call KISKA_fnc_GCH_updateSideGroupList;
+		[] call KISKA_fnc_GCH_updateSideGroupsList;
 	};
 }];
 

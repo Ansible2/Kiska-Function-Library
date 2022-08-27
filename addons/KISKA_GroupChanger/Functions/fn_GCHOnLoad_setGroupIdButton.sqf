@@ -55,7 +55,7 @@ _control ctrlAddEventHandler ["ButtonClick",{
 
 				private _sideGroupsList_ctrl = localNamespace getVariable "KISKA_GCH_sidesGroupListBox_ctrl";
 				_sideGroupsList_ctrl lbSetText [_index,_newId];
-				["Group Id Updated"] call KISKA_fnc_errorNotification;
+				["Group Id Updated"] call KISKA_fnc_notification;
 			} else {
 				["Another group on your side already has this ID"] call KISKA_fnc_errorNotification;
 			};

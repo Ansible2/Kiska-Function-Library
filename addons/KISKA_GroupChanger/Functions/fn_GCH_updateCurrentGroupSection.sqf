@@ -38,7 +38,7 @@ params [
 	["_updateCanRallyCombo",false,[true]]
 ];
 
-private _selectedGroup = [] call KISKA_fnc_GCH_getSelectedGroup;;
+private _selectedGroup = [] call KISKA_fnc_GCH_getSelectedGroup;
 if (isNull _selectedGroup) exitWith {};
 
 if (_updateUnitList) then {
@@ -147,7 +147,7 @@ if (_updateCanRallyCombo) then {
 		// make sure the menu is still open as it takes time to get a message from the server
 		// also make sure the same group is selected in the list
 		private _menuIsOpen = !isNull (localNamespace getVariable ["KISKA_GCH_display",displayNull]);
-		private _didNotSelectAnotherGroup = _selectedGroup isEqualTo (localNamespace getVariable "KISKA_GCH_selectedGroup");
+		private _didNotSelectAnotherGroup = _selectedGroup isEqualTo ([] call KISKA_fnc_GCH_getSelectedGroup);
 		if (_menuIsOpen AND	_didNotSelectAnotherGroup) then {
 			_canRallyCombo_ctrl ctrlEnable true;
 			_canRallyCombo_ctrl setVariable ["KISKA_firstTimeComboChanged",true];

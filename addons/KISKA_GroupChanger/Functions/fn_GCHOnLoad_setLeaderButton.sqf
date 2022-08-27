@@ -29,7 +29,7 @@ params ["_control"];
 
 _control ctrlAddEventHandler ["ButtonClick",{
 
-	private _group = localNamespace getVariable "KISKA_GCH_selectedGroup";
+	private _group = [] call KISKA_fnc_GCH_getSelectedGroup;
 
 	if ([_group] call KISKA_fnc_GCH_isAllowedToEdit) then {
 		private _currentGroupListBox_ctrl = localNamespace getVariable "KISKA_GCH_currentGroupListBox_ctrl";

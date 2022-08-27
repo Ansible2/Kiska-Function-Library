@@ -34,6 +34,8 @@ class CfgFunctions
 			{};
 			class GCH_getSideGroups
 			{};
+			class GCH_getSelectedGroup
+			{};
 			class GCH_getPlayerSide
 			{};
 			class GCH_groupDeleteQuery
