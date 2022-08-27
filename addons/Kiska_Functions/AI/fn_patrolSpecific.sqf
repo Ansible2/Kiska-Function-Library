@@ -83,8 +83,8 @@ for "_i" from 1 to _numWaypoints do {
 	private "_waypoint";
 
 	if (_random) then {
-		_selectedPosition = selectRandom _positions;
-		_positions deleteAt (_positions find _selectedPosition);
+		private _randomIndex = random (floor (count _positions));
+		_selectedPosition = _positions deleteAt _randomIndex;
 		_waypoint = _group addWaypoint [_selectedPosition,0];
 	} else {
 		_selectedPosition = _positions select (_i - 1);

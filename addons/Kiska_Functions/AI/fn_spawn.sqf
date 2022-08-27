@@ -132,8 +132,8 @@ for "_i1" from 1 to _numberOfGroups do {
 		if ((count _spawnedUnits) isEqualTo _numberOfUnits) exitWith {};
 
 		// get spawn position
-		_selectedSpawnPosition = selectRandom _spawnPositions;
-		_spawnPositions deleteAt (_spawnPositions find _selectedSpawnPosition);
+		private _randomIndex = random (floor (count _spawnPositions));
+		_selectedSpawnPosition = _spawnPositions deleteAt _randomIndex;
 
 		// get unit type
 		if (_weightedArray) then {

@@ -97,7 +97,8 @@ _units apply {
 	} else {
 		// Respect chance to patrol, or force if no building positions left
 		if !((_buildings isEqualto []) || { (random 1 < _patrol) }) then {
-			private _building = selectRandom _buildings;
+			private _randomBuildingIndex = random (floor (count _buildings));
+			private _building = _buildings select _randomBuildingIndex;
 			private _array = _building getVariable ["CBA_taskDefend_positions", []];
 
 			if !(_array isEqualTo []) then {
@@ -105,7 +106,7 @@ _units apply {
 
 				// If building positions are all taken remove from possible buildings
 				if (_array isEqualTo []) then {
-					_buildings deleteAt (_buildings find _building);
+					_buildings deleteAt _randomBuildingIndex;
 					_building setVariable ["CBA_taskDefend_positions", nil];
 				} else {
 					_building setVariable ["CBA_taskDefend_positions", _array];
