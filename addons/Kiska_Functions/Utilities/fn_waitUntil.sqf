@@ -16,7 +16,7 @@ Parameters:
 	4. _unscheduled <BOOL> - Run in unscheduled environment
 
 Returns:
-	BOOL
+	NOTHING
 
 Examples:
     (begin example)
