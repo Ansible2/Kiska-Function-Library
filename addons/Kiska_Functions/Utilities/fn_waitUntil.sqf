@@ -67,7 +67,8 @@ if (_unscheduled) then {
 	if (_interval <= 0) then {
 		[
 			{
-				(_this select 0) call _condition
+				params ["_parameters","","_condition"];
+				_parameters call _condition
 			},
 			{
 				params ["_parameters","_function",""];
