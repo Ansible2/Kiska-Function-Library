@@ -39,7 +39,23 @@ params [
 ];
 
 private _selectedGroup = [] call KISKA_fnc_GCH_getSelectedGroup;
-if (isNull _selectedGroup) exitWith {};
+if (isNull _selectedGroup) exitWith {
+	private _currentGroupListBox_ctrl = localNamespace getVariable "KISKA_GCH_currentGroupListBox_ctrl";
+	lbClear _currentGroupListBox_ctrl;
+
+	private _leaderNameIndicator_ctrl = localNamespace getVariable "KISKA_GCH_leaderNameIndicator_ctrl";
+	_leaderNameIndicator_ctrl ctrlSetText "";
+
+	private _groupEditId_ctrl = localNamespace getVariable "KISKA_GCH_groupIdEdit_ctrl";
+	_groupEditId_ctrl ctrlSetText "";
+
+	private _canBeDeletedCombo_ctrl = localNamespace getVariable "KISKA_GCH_canBeDeletedCombo_ctrl";
+	lbClear _canBeDeletedCombo_ctrl;
+
+	private _canRallyCombo_ctrl = localNamespace getVariable ["KISKA_GCH_canRallyCombo_ctrl",controlNull];
+	lbClear _canRallyCombo_ctrl;
+};
+
 
 if (_updateUnitList) then {
 	private _currentGroupListBox_ctrl = localNamespace getVariable "KISKA_GCH_currentGroupListBox_ctrl";
