@@ -1,5 +1,16 @@
 params ["_timeline"];
 
+private _timelineId = ["KISKA_timelines"] call KISKA_fnc_idCounter;
+localNamespace setVariable ["KISKA_timelineIsRunning_" + (str _timelineId),true];
+
+[
+	_timeline,
+	_timelineId
+] call KISKA_fnc_executeTimelineEvent;
+
+
+_timelineId
+
 // example events
 [
 	{
@@ -7,16 +18,18 @@ params ["_timeline"];
 	},
 	{
 		// condition perframe
-	}
+	},
+	0
 ]
 
 [
 	{
 		
 	},
-	[{
+	{
 		// condition eval every second
-	},1]
+	},
+	1
 ]
 
 [
@@ -33,21 +46,7 @@ params ["_timeline"];
 [
 	{
 		params ["_timeline","_id"];
-		private _timelineIsStopped = [_id] call KISKA_fnc_isTimelineStopped;
-		if (_timelineIsStopped) exitWith {};
-
-		private _event = _timeline deleteAt 0;
-
-		private _code = _timeline select 0;
-		private _waitFor = _timeline select 1;
-		private _returnFromCode = [[],_code] call KISKA_fnc_callBack;
-		if (_waitFor isEqualType 123) exitWith {
-			[
-				KISKA_fnc_executeTimelineEvent,
-				[_timeline],
-				_waitFor
-			] call CBA_fnc_waitAndExecute;
-		};
+		
 	},
 	[_timeline]
 ] call CBA_fnc_execNextFrame;
