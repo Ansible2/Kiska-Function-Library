@@ -17,14 +17,15 @@ params [
 // timeline
 
 private _timelineId = ["KISKA_timelines"] call KISKA_fnc_idCounter;
-private _timelineMap = localNamespace getVariable "KISKA_timelineInfoMap";
-if (isNil "_timelineMap") then {
-	_timelineMap = createHashMap;
-	localNamespace setVariable ["KISKA_timelineInfoMap",_timelineMap];
+
+private _timelineMap = call KISKA_fnc_getTimelineMap;
+private _timelineMapId = "KISKA_timeline_" + (str _timelineId);
+private _timelineValues = [_timeline];
+if (_onTimelineStopped isNotEqualTo {}) then {
+	_timelineValues pushBack _onTimelineStopped;
 };
 
-private _timelineMapId = "KISKA_timeline_" + (str _timelineId);
-_timelineMap set [_timelineMapId,[_timeline,_onTimelineStopped]];
+_timelineMap set [_timelineMapId,_timelineValues];
 
 [
 	_timeline,

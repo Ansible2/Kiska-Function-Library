@@ -7,7 +7,20 @@ params [
 ];
 
 private _timelineIsStopped = [_timelineId] call KISKA_fnc_isTimelineStopped;
-if (_timelineIsStopped) exitWith {};
+if (_timelineIsStopped) exitWith {
+	// execute call back function for when timeline is stopped here only
+	private _timelineMap = call KISKA_fnc_getTimelineMap;
+	private _timelineValues = _timelineMap getOrDefault [_timelineId,[]];
+	_timelineValues params [
+		["_timeline",[],[[]]],
+		["_onTimelineStopped",{},[[],{},""]]
+	];
+
+	if (_onTimelineStopped isNotEqualTo {}) then {
+		[[_timeline],_onTimelineStopped] call KISKA_fnc_callBack;
+	};
+};
+
 
 private _event = _timeline deleteAt 0;
 _event params [
@@ -22,8 +35,8 @@ if (_timeline isEqualTo []) exitWith {
 };
 
 
-private _nextEventParams = [_timeline,_timelineId,_eventReturn];
 
+private _nextEventParams = [_timeline,_timelineId,_eventReturn];
 if (_waitFor isEqualType 123) exitWith {
 	[
 		KISKA_fnc_executeTimelineEvent,
