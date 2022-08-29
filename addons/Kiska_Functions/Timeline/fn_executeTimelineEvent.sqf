@@ -30,6 +30,8 @@ if (_waitFor isEqualType 123) exitWith {
 		_nextEventParams,
 		_waitFor
 	] call CBA_fnc_waitAndExecute;
+
+	nil
 };
 
 

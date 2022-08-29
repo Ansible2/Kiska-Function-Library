@@ -1,7 +1,30 @@
-params ["_timeline"];
+params [
+	["_timeline",[],[[]]],
+	["_onTimelineStopped",{},[[],{},""]]
+];
+
+// as a user
+// I want to be able to provide a custom function to execute
+// when manually calling KISKA_fnc_stopTimeline
+
+// as a user
+// I want my timeline to not execute the next timeline event if
+// it is manually stopped and I wan to execute the _onTimelineStopped
+// code I defined
+
+// as a user
+// I want to have all the above happen also when I reach the end of the
+// timeline
 
 private _timelineId = ["KISKA_timelines"] call KISKA_fnc_idCounter;
-localNamespace setVariable ["KISKA_timelineIsRunning_" + (str _timelineId),true];
+private _timelineMap = localNamespace getVariable "KISKA_timelineInfoMap";
+if (isNil "_timelineMap") then {
+	_timelineMap = createHashMap;
+	localNamespace setVariable ["KISKA_timelineInfoMap",_timelineMap];
+};
+
+private _timelineMapId = "KISKA_timeline_" + (str _timelineId);
+_timelineMap set [_timelineMapId,[_timeline,_onTimelineStopped]];
 
 [
 	_timeline,
@@ -41,12 +64,3 @@ _timelineId
 	},
 	2 // execute 2 seconds after previous event
 ]
-
-
-[
-	{
-		params ["_timeline","_id"];
-		
-	},
-	[_timeline]
-] call CBA_fnc_execNextFrame;
