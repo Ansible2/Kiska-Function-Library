@@ -6,7 +6,7 @@ params [
 	"_previousReturn"
 ];
 
-private _timelineIsStopped = [_timelineId] call KISKA_fnc_isTimelineStopped;
+private _timelineIsStopped = [_timelineId,false] call KISKA_fnc_isTimelineStopped;
 if (_timelineIsStopped) exitWith {
 	// execute call back function for when timeline is stopped here only
 	private _timelineMap = call KISKA_fnc_getTimelineMap;

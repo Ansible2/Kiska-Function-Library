@@ -1,3 +1,42 @@
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_startTimeline
+
+Description:
+	Creates a timeline of events that can happen. Waits/executes in an unscheduled
+	 environment. 
+	
+	There is a non-trivial amount of overhead to this, however, so
+	 do not use with the intention of needing precise events to happen but rather to
+	 not clog the scheduler or use a decent interface with smaller units of code.
+
+	
+
+Parameters:
+	0: _timeline <ARRAY> - An array of timeline events that will happen.
+	1: _onTimelineStopped <CODE, STRING, or ARRAY> - (see KISKA_fnc_callBack),
+		code that will be executed once a timeline is stopped. Params:
+			0: <ARRAY> - The timeline array in the state when the stoppage actually happens.
+
+Returns:
+	<NUMBER> - The id of the new timeline
+
+Examples:
+    (begin example)
+		private _timeline = [
+			[
+				{
+
+				}
+			]
+		];
+		private _timelineId = [_timeline,{hint "timeline end"}] call KISKA_fnc_startTimeline;
+    (end)
+
+Author(s):
+	Ansible2
+---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_startTimeline";
+
 params [
 	["_timeline",[],[[]]],
 	["_onTimelineStopped",{},[[],{},""]]
