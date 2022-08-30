@@ -11,7 +11,8 @@ if (_timelineId < 0) exitWith {
 if (_onTimelineStopped isNotEqualTo {}) then {
 	private _timelineMap = call KISKA_fnc_getTimelineMap;
 	private _timelineValues = _timelineMap getOrDefault [_timelineId,[]];
-	if (_timelineValues isNotEqualTo []) then {
+	private _timelineHasNotEnded = _timelineValues isNotEqualTo [];
+	if (_timelineHasNotEnded) then {
 		_timelineValues set [1,_onTimelineStopped];
 	};
 };

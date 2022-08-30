@@ -19,6 +19,11 @@ if (_timelineIsStopped) exitWith {
 	if (_onTimelineStopped isNotEqualTo {}) then {
 		[[_timeline],_onTimelineStopped] call KISKA_fnc_callBack;
 	};
+
+	_timelineMap deleteAt _timelineId;
+
+
+	nil
 };
 
 
@@ -32,6 +37,7 @@ _event params [
 private _eventReturn = [_this,_code] call KISKA_fnc_callBack;
 if (_timeline isEqualTo []) exitWith {
 	[_timelineId] call KISKA_fnc_stopTimeline;
+	[_timeline,_timelineId] call KISKA_fnc_executeTimelineEvent;
 };
 
 
