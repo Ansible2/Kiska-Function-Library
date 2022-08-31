@@ -129,7 +129,8 @@ _overallTimelineMap set [_timelineId,_timelineValues];
 
 [
 	_timeline,
-	_timelineId
+	_timelineId,
+	_timelineHashmap
 ] call KISKA_fnc_executeTimelineEvent;
 
 
