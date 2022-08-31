@@ -1,10 +1,39 @@
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_getTimelineMap
+
+Description:
+	Executes a recursive chain timeline events. This should not be executed on its
+	 own but begins from KISKA_fnc_startTimeline.
+
+Parameters:
+	0: _timeline <ARRAY> - An array of timeline events that will happen. 
+		See KISKA_fnc_startTimeline for formats
+	1: _timelineId <NUMBER> - The id of the timeline to stop
+	2: _previousReturn <ANY> - The returned value from the previous events function
+
+Returns:
+	NOTHING
+
+Examples:
+    (begin example)
+		[_timeline,123] call KISKA_fnc_executeTimelineEvent
+    (end)
+
+Author(s):
+	Ansible2
+---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_executeTimelineEvent";
 
 params [
-	"_timeline",
-	"_timelineId",
+	["_timeline",[],[[]]],
+	["_timelineId",-1,[123]],
 	"_previousReturn"
 ];
+
+if (_timelineId < 0) exitWith {
+	[[_timelineId," is invalid _timelineId"],true] call KISKA_fnc_log;
+	nil
+};
 
 private _timelineIsStopped = [_timelineId,false] call KISKA_fnc_isTimelineStopped;
 if (_timelineIsStopped) exitWith {
