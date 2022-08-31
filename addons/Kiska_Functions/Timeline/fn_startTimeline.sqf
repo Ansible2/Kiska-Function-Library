@@ -118,14 +118,14 @@ if (_timeline isEqualTo []) exitWith {
 private _timelineId = ["KISKA_timelines"] call KISKA_fnc_idCounter;
 localNamespace setVariable ["KISKA_timelineIsRunning_" + (str _timelineId),true];
 
-private _timelineMap = call KISKA_fnc_getTimelineMap;
+private _overallTimelineMap = call KISKA_fnc_getOverallTimelineMap;
 private _timelineHashmap = createHashMap;
 private _timelineValues = [_timeline,_timelineHashmap];
 if (_onTimelineStopped isNotEqualTo {}) then {
 	_timelineValues pushBack _onTimelineStopped;
 };
 
-_timelineMap set [_timelineId,_timelineValues];
+_overallTimelineMap set [_timelineId,_timelineValues];
 
 [
 	_timeline,

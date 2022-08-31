@@ -367,6 +367,8 @@ class CfgFunctions
 			file="KISKA_functions\Timeline";
             class executeTimelineEvent
 			{};
+            class getOverallTimelineMap
+			{};
             class getTimelineMap
 			{};
             class isTimelineRunning

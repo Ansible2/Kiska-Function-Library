@@ -38,7 +38,7 @@ if (_timelineId < 0) exitWith {
 };
 
 if (_checkForFullCompletion) exitWith {
-	private _timelineMap = call KISKA_fnc_getTimelineMap;
+	private _timelineMap = call KISKA_fnc_getOverallTimelineMap;
 	_timelineId in _timelineMap
 };
 

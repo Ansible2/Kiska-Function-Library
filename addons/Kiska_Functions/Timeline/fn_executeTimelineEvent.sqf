@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_getTimelineMap
+Function: KISKA_fnc_executeTimelineEvent
 
 Description:
 	Executes a recursive chain timeline events. This should not be executed on its
@@ -28,7 +28,7 @@ scriptName "KISKA_fnc_executeTimelineEvent";
 params [
 	["_timeline",[],[[]]],
 	["_timelineId",-1,[123]],
-	"_timelineMap"
+	"_timelineMap",
 	"_previousReturn"
 ];
 
@@ -40,7 +40,7 @@ if (_timelineId < 0) exitWith {
 private _timelineIsRunning = [_timelineId,false] call KISKA_fnc_isTimelineRunning;
 if !(_timelineIsRunning) exitWith {
 	// execute call back function for when timeline is stopped here only
-	private _overAllTimelineMap = call KISKA_fnc_getTimelineMap;
+	private _overAllTimelineMap = call KISKA_fnc_getOverallTimelineMap;
 	private _timelineValues = _timelineMap getOrDefault [_timelineId,[]];
 	_timelineValues params [
 		["_timeline",[],[[]]],

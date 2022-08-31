@@ -2,8 +2,6 @@
 Function: KISKA_fnc_getTimelineMap
 
 Description:
-	Returns the global timeline map of IDs and the individual info for a timeline.
-	OR
 	The Individual map defined for a specific timeline of the given ID. This is
 	 the hashmap available in each timeline's event's code.
 
@@ -12,14 +10,9 @@ Parameters:
 		for the global timeline map
 
 Returns:
-	<HASHMAP> - A hashmap containing the timelines corresponding to their IDs
-		OR the hashmap for an ID
+	<HASHMAP> - A hashmap containing information for the timeline events
 
 Examples:
-    (begin example)
-		private _timelineMapOfAllTimelines = call KISKA_fnc_getTimelineMap;
-    (end)
-
     (begin example)
 		private _timelineMapForIdZero = [0] call KISKA_fnc_getTimelineMap;
     (end)
@@ -33,18 +26,16 @@ params [
 	["_timelineId",-1,[123]]
 ];
 
-private _overallTimelineMap = localNamespace getVariable "KISKA_timelineInfoMap";
-if (isNil "_timelineMap") then {
-	_overallTimelineMap = createHashMap;
-	localNamespace setVariable ["KISKA_timelineInfoMap",_timelineMap];
+private _overallTimelineMap = call KISKA_fnc_getOverallTimelineMap;
+private _timelineInfo = _overallTimelineMap getOrDefault [_timelineId,[]];
+
+if (_timelineInfo isEqualTo []) then {
+	[["_timlineId: ",_timlineId," does not currently have a map"],true] call KISKA_fnc_log;
 };
-
-if (_timelineId < 0) exitWith {
-	_overallTimelineMap
-};
-
-private _timelineMap = _overallTimelineMap getOrDefault [_timelineId,-1];
-if (_timelineMap isNotEqualTo -1) exitWith {_timelineMap};
+_timelineInfo params [
+	"",
+	["_timelineMap",createHashMap]
+];
 
 
-createHashMap
+_timelineMap
