@@ -43,10 +43,8 @@ if (_timelineId < 0) exitWith {
 	_overallTimelineMap
 };
 
+private _timelineMap = _overallTimelineMap getOrDefault [_timelineId,-1];
+if (_timelineMap isNotEqualTo -1) exitWith {_timelineMap};
 
-// TODO: should this return nil or empty array or empty hashmap if the map is undefined
 
-private _timelineMap = _overallTimelineMap getOrDefault [_timelineId,[]];
-if (_timelineMap isNotEqualTo []) then {
-	
-};
+createHashMap

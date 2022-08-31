@@ -11,6 +11,7 @@ Parameters:
 	1: _onTimelineStopped <CODE, STRING, or ARRAY> - (see KISKA_fnc_callBack),
 		code that will be executed once a timeline is stopped. Params:
 			0: <ARRAY> - The timeline array in the state when the stoppage actually happens.
+			1: <HASHMAP> - The Individual map defined for a specific timeline of the given ID
 
 Returns:
 	NOTHING
@@ -44,7 +45,7 @@ if (_onTimelineStopped isNotEqualTo {}) then {
 	private _timelineValues = _timelineMap getOrDefault [_timelineId,[]];
 	private _timelineHasNotEnded = _timelineValues isNotEqualTo [];
 	if (_timelineHasNotEnded) then {
-		_timelineValues set [1,_onTimelineStopped];
+		_timelineValues set [2,_onTimelineStopped];
 	};
 };
 

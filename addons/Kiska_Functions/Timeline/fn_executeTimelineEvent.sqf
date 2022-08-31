@@ -9,7 +9,8 @@ Parameters:
 	0: _timeline <ARRAY> - An array of timeline events that will happen. 
 		See KISKA_fnc_startTimeline for formats
 	1: _timelineId <NUMBER> - The id of the timeline to stop
-	2: _previousReturn <ANY> - The returned value from the previous events function
+	2: _timelineMap <HASHMAP> - The Individual map defined for a specific timeline of the given ID
+	3: _previousReturn <ANY> - The returned value from the previous events function
 
 Returns:
 	NOTHING
@@ -27,6 +28,7 @@ scriptName "KISKA_fnc_executeTimelineEvent";
 params [
 	["_timeline",[],[[]]],
 	["_timelineId",-1,[123]],
+	"_timelineMap"
 	"_previousReturn"
 ];
 
@@ -38,18 +40,19 @@ if (_timelineId < 0) exitWith {
 private _timelineIsRunning = [_timelineId,false] call KISKA_fnc_isTimelineRunning;
 if !(_timelineIsRunning) exitWith {
 	// execute call back function for when timeline is stopped here only
-	private _timelineMap = call KISKA_fnc_getTimelineMap;
+	private _overAllTimelineMap = call KISKA_fnc_getTimelineMap;
 	private _timelineValues = _timelineMap getOrDefault [_timelineId,[]];
 	_timelineValues params [
 		["_timeline",[],[[]]],
+		"_timelineMap",
 		["_onTimelineStopped",{},[[],{},""]]
 	];
 
 	if (_onTimelineStopped isNotEqualTo {}) then {
-		[[_timeline],_onTimelineStopped] call KISKA_fnc_callBack;
+		[[_timeline,_timelineMap],_onTimelineStopped] call KISKA_fnc_callBack;
 	};
 
-	_timelineMap deleteAt _timelineId;
+	_overAllTimelineMap deleteAt _timelineId;
 
 
 	nil
@@ -69,7 +72,7 @@ if (_timeline isEqualTo []) then {
 };
 
 
-private _nextEventParams = [_timeline,_timelineId];
+private _nextEventParams = [_timeline,_timelineId,_timelineMap];
 if !(isNil "_eventReturn") then {
 	_nextEventParams pushBack _eventReturn
 };
