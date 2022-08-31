@@ -364,6 +364,7 @@ class CfgFunctions
 		};
 		class Timeline
 		{
+			file="KISKA_functions\Timeline";
             class executeTimelineEvent
 			{};
             class getTimelineMap
