@@ -109,16 +109,21 @@ params [
 	["_onTimelineStopped",{},[[],{},""]]
 ];
 
+if (_timeline isEqualTo []) exitWith {
+	["Empty _timeline provided"] call KISKA_fnc_log;
+	nil
+};
+
 private _timelineId = ["KISKA_timelines"] call KISKA_fnc_idCounter;
+localNamespace setVariable ["KISKA_timelineIsRunning_" + (str _timelineId),true];
 
 private _timelineMap = call KISKA_fnc_getTimelineMap;
-private _timelineMapId = "KISKA_timeline_" + (str _timelineId);
 private _timelineValues = [_timeline];
 if (_onTimelineStopped isNotEqualTo {}) then {
 	_timelineValues pushBack _onTimelineStopped;
 };
 
-_timelineMap set [_timelineMapId,_timelineValues];
+_timelineMap set [_timelineId,_timelineValues];
 
 [
 	_timeline,

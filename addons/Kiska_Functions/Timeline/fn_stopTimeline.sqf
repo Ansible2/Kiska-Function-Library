@@ -3,7 +3,7 @@ Function: KISKA_fnc_stopTimeline
 
 Description:
 	Ques a timeline to end on the next execution of an event in it or at the very
-	 end of the timeline. This will immediately set KISKA_fnc_isTimelineStopped
+	 end of the timeline. This will immediately set KISKA_fnc_isTimelineRunning
 	 (where _isFullyComplete-is-false) to be true.
 
 Parameters:

@@ -35,8 +35,8 @@ if (_timelineId < 0) exitWith {
 	nil
 };
 
-private _timelineIsStopped = [_timelineId,false] call KISKA_fnc_isTimelineStopped;
-if (_timelineIsStopped) exitWith {
+private _timelineIsRunning = [_timelineId,false] call KISKA_fnc_isTimelineRunning;
+if !(_timelineIsRunning) exitWith {
 	// execute call back function for when timeline is stopped here only
 	private _timelineMap = call KISKA_fnc_getTimelineMap;
 	private _timelineValues = _timelineMap getOrDefault [_timelineId,[]];
@@ -64,14 +64,17 @@ _event params [
 ];
 
 private _eventReturn = [_this,_code] call KISKA_fnc_callBack;
-if (_timeline isEqualTo []) exitWith {
+if (_timeline isEqualTo []) then {
 	[_timelineId] call KISKA_fnc_stopTimeline;
-	[_timeline,_timelineId] call KISKA_fnc_executeTimelineEvent;
 };
 
 
+private _nextEventParams = [_timeline,_timelineId];
+if !(isNil "_eventReturn") then {
+	_nextEventParams pushBack _eventReturn
+};
 
-private _nextEventParams = [_timeline,_timelineId,_eventReturn];
+
 if (_waitFor isEqualType 123) exitWith {
 	[
 		KISKA_fnc_executeTimelineEvent,
@@ -84,9 +87,9 @@ if (_waitFor isEqualType 123) exitWith {
 
 
 [
-	KISKA_fnc_executeTimelineEvent,
 	_waitFor,
-	_interavl,
+	KISKA_fnc_executeTimelineEvent,
+	_interval,
 	_nextEventParams
 ] call KISKA_fnc_waitUntil;
 

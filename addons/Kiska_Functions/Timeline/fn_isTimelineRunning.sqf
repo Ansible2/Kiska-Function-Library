@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_isTimelineStopped
+Function: KISKA_fnc_isTimelineRunning
 
 Description:
 	Checks if a timeline has either fully been complete (_isFullyComplete = true) 
@@ -15,17 +15,17 @@ Returns:
 
 Examples:
     (begin example)
-		private _hasBeenStopped = [123,false] call KISKA_fnc_isTimelineStopped;
+		private _isRunning = [123,false] call KISKA_fnc_isTimelineRunning;
     (end)
 
     (begin example)
-		private _isComplete = [123,true] call KISKA_fnc_isTimelineStopped;
+		private _isComplete = [123,true] call KISKA_fnc_isTimelineRunning;
     (end)
 
 Author(s):
 	Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_stopTimeline";
+scriptName "KISKA_fnc_isTimelineRunning";
 
 params [
 	["_timelineId",-1,[123]],

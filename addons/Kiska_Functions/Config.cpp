@@ -354,13 +354,25 @@ class CfgFunctions
 			class updateFlareEffects
 			{};
 		};
-
 		class Tasks
 		{
 			file="Kiska_functions\Tasks";
 			class createTaskFromConfig
 			{};
 			class endTask
+			{};
+		};
+		class Timeline
+		{
+            class executeTimelineEvent
+			{};
+            class getTimelineMap
+			{};
+            class isTimelineRunning
+			{};
+			class startTimeline
+			{};
+            class stopTimeline
 			{};
 		};
 		class Utilities
