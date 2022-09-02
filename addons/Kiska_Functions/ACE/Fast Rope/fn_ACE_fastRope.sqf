@@ -17,8 +17,8 @@ Parameters:
 
     4: _hoverHeight <NUMBER> - The height the helicopter should hover above the drop position
         while units are fastroping. Max is 28, min is 5
-    5: _ropeOrigins <ARRAY> - An array of either relative (to the vehicle) attachment
-        points for the ropes or a memory point to attachTo
+    5: _ropeOrigins <ARRAY> - An array of: either relative (to the vehicle) attachment
+        points for the ropes and/or memory points to attachTo
 
 Returns:
 	NOTHING

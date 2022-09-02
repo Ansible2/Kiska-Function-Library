@@ -32,6 +32,8 @@ scriptName "KISKA_fnc_ACE_deployFastRope";
 
 #if __has_include("\z\ace\addons\fastroping\functions\script_component.hpp")
     #include "\z\ace\addons\fastroping\functions\script_component.hpp"
+    #define DEFAULT_ROPE_DEPLOY_TIME 4
+
 
 if !(["ace_fastroping"] call KISKA_fnc_isPatchLoaded) exitWith {
     ["ace_fastroping is required for this function",true] call KISKA_fnc_log;
@@ -73,7 +75,7 @@ if (_configEnabled isEqualTo 0 AND (_ropeOrigins isEqualTo [])) exitWith {
 };
 
 if (
-    _configEnabled isEqualTo 2 AND
+    (_configEnabled isEqualTo 2) AND
     (isNull (_vehicle getVariable [QGVAR(FRIES), objNull]))
 ) exitWith {
     [[getText(_config >> "DisplayName")," requires a FRIES for fastroping but has not been equipped with one"],true] call KISKA_fnc_log;
@@ -83,12 +85,17 @@ if (
 /* ----------------------------------------------------------------------------
     Deploy Ropes
 ---------------------------------------------------------------------------- */
-private _onPrepare = getText (_config >> QGVAR(onPrepare));
-if (_onPrepare isEqualTo "") then {
-    _onPrepare = "ace_fastroping_onPrepare";
+private _onPrepareFunctionName = getText (_config >> QGVAR(onPrepare));
+if (_onPrepareFunctionName isEqualTo "") then {
+    _onPrepareFunctionName = "ace_fastroping_onPrepare";
 };
-private _deployTime = [_vehicle] call (missionNamespace getVariable _onPrepare);
-_deployTime = _vehicle getVariable ["KISKA_ACEFastRope_ropeDeploymentTime", _deployTime];
+private _onPrepareFunction = missionNamespace getVariable _onPrepareFunctionName;
+// overwrite if needed
+_onPrepareFunction = _vehicle getVariable ["KISKA_ACE_onPrepareFastrope", _onPrepareFunction];
+private _deployTime = [[_vehicle],_onPrepareFunction] call KISKA_fnc_callBack;
+if (isNil "_deployTime" OR {!(_deployTime isEqualType 123)}) then {
+    _deployTime = DEFAULT_ROPE_DEPLOY_TIME;
+};
 
 [_vehicle,_ropeOrigins] call KISKA_fnc_ACE_deployRopes;
 
