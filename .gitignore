@@ -2,6 +2,7 @@
 .vscode/
 
 # Extension stuff
+/addons/KISKA_SpeechRecognition/ArmaSpeech/packages/
 .vs/
 [Dd]ebug/
 [Dd]ebugPublic/
