@@ -5,6 +5,10 @@ using System.Runtime.InteropServices;
 using System.Text;
 using RGiesecke.DllExport;
 
+
+// TODO: As a user, I want to be able to say words into my microphone
+// and have the extension tell arma what I said with an array of words
+
 namespace SpeechRecognition
 {
     public class ArmaExtension
