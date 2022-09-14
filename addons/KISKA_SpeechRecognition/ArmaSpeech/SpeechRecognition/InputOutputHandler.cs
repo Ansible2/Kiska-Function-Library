@@ -2,23 +2,23 @@
 {
     internal class InputOutputHandler
     {
-        public static void OnGameStart(Input input)
+        public static void OnGameStart(ExtensionCall extensionCall)
         {
-            input.outputBuilder.Append("Test-Extension v1.0");
+            extensionCall.outputBuilder.Append("Test-Extension v1.0");
         }
 
-        public static void OnExtensionCalled(Input input)
+        public static void OnExtensionCalled(ExtensionCall extensionCall)
         {
-            input.callbackFunction.Invoke("SpeechArgCallback", "someFunction", "data");
-            input.outputBuilder.Append(input.functionToRun);
+            extensionCall.callbackFunction.Invoke("SpeechArgCallback", "someFunction", "data");
+            extensionCall.outputBuilder.Append(extensionCall.functionToRun);
         }
 
-        public static void OnExtensionCalledWithArgs(Input input)
+        public static void OnExtensionCalledWithArgs(ExtensionCall extensionCall)
         {
-            input.callbackFunction.Invoke("SpeechArgCallback", "someFunction", "data");
-            foreach (var arg in input.args)
+            extensionCall.callbackFunction.Invoke("SpeechArgCallback", "someFunction", "data");
+            foreach (var arg in extensionCall.args)
             {
-                input.outputBuilder.Append(arg);
+                extensionCall.outputBuilder.Append(arg);
             }
         }
 

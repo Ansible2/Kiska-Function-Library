@@ -3,7 +3,7 @@ using static SpeechRecognition.ArmaExtension;
 
 namespace SpeechRecognition
 {
-    internal class Input
+    internal class ExtensionCall
     {
         public readonly StringBuilder outputBuilder = null;
         public readonly int outputSizeLimit = 0;
@@ -12,13 +12,13 @@ namespace SpeechRecognition
         public readonly int argCount = 0;
         public readonly string[] args = null;
 
-        public Input(StringBuilder outputBuilder, int outputSizeLimit)
+        public ExtensionCall(StringBuilder outputBuilder, int outputSizeLimit)
         {
             this.outputBuilder = outputBuilder;
             this.outputSizeLimit = outputSizeLimit;
         }
 
-        public Input(
+        public ExtensionCall(
             StringBuilder outputBuilder, 
             int outputSizeLimit, 
             string functionToRun, 
@@ -31,7 +31,7 @@ namespace SpeechRecognition
             this.callbackFunction = callbackFunction;
         }
 
-        public Input(
+        public ExtensionCall(
             StringBuilder outputBuilder,
             int outputSizeLimit,
             string functionToRun, 

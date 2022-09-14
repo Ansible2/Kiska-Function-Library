@@ -9,9 +9,6 @@ using RGiesecke.DllExport;
 // TODO: As a user, I want to be able to say words into my microphone
 // and have the extension tell arma what I said with an array of words
 
-// trigger microphone capture variable (true)
-// end microphone capture variable (false)
-
 // trigger voice recording
 // end voice recording
 
@@ -48,8 +45,8 @@ namespace SpeechRecognition
 #endif
         public static void RvExtensionVersion(StringBuilder output, int outputSize)
         {
-            Input input = new Input(output, outputSize);
-            InputOutputHandler.OnGameStart(input);
+            ExtensionCall extensionCall = new ExtensionCall(output, outputSize);
+            InputOutputHandler.OnGameStart(extensionCall);
         }
 
 
@@ -67,8 +64,8 @@ namespace SpeechRecognition
         public static void RvExtension(StringBuilder output, int outputSize,
             [MarshalAs(UnmanagedType.LPStr)] string function)
         {
-            Input input = new Input(output, outputSize, function, callback);
-            InputOutputHandler.OnExtensionCalled(input);
+            ExtensionCall extensionCall = new ExtensionCall(output, outputSize, function, callback);
+            InputOutputHandler.OnExtensionCalled(extensionCall);
         }
 
 
@@ -94,8 +91,8 @@ namespace SpeechRecognition
             int argCount
         )
         {
-            Input input = new Input(output, outputSize, function, callback, args, argCount);
-            InputOutputHandler.OnExtensionCalledWithArgs(input);
+            ExtensionCall extensionCall = new ExtensionCall(output, outputSize, function, callback, args, argCount);
+            InputOutputHandler.OnExtensionCalledWithArgs(extensionCall);
             return 0;
         }
     }
