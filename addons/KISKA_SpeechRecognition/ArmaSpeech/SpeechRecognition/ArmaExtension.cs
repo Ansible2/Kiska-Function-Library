@@ -9,6 +9,14 @@ using RGiesecke.DllExport;
 // TODO: As a user, I want to be able to say words into my microphone
 // and have the extension tell arma what I said with an array of words
 
+// trigger microphone capture variable (true)
+// end microphone capture variable (false)
+
+// trigger voice recording
+// end voice recording
+
+// show player what they said in callback
+
 namespace SpeechRecognition
 {
     public class ArmaExtension
@@ -40,7 +48,8 @@ namespace SpeechRecognition
 #endif
         public static void RvExtensionVersion(StringBuilder output, int outputSize)
         {
-            InputOutputHandler.onGameStart(output,outputSize);
+            Input input = new Input(output, outputSize);
+            InputOutputHandler.OnGameStart(input);
         }
 
 
@@ -58,7 +67,8 @@ namespace SpeechRecognition
         public static void RvExtension(StringBuilder output, int outputSize,
             [MarshalAs(UnmanagedType.LPStr)] string function)
         {
-            InputOutputHandler.onExtensionCalled(output, outputSize, function, callback);
+            Input input = new Input(output, outputSize, function, callback);
+            InputOutputHandler.OnExtensionCalled(input);
         }
 
 
@@ -84,7 +94,8 @@ namespace SpeechRecognition
             int argCount
         )
         {
-            InputOutputHandler.onExtensionCalledWithArgs(output, outputSize, function, args, argCount, callback);
+            Input input = new Input(output, outputSize, function, callback, args, argCount);
+            InputOutputHandler.OnExtensionCalledWithArgs(input);
             return 0;
         }
     }

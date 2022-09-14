@@ -1,48 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using static SpeechRecognition.ArmaExtension;
-
-namespace SpeechRecognition
+﻿namespace SpeechRecognition
 {
-
     internal class InputOutputHandler
     {
-        public static void onGameStart(
-            StringBuilder outputBuilder, 
-            int outputSizeLimit, 
-            ExtensionCallback callbackFunction = null
-        )
+        public static void OnGameStart(Input input)
         {
-            outputBuilder.Append("Test-Extension v1.0");
+            input.outputBuilder.Append("Test-Extension v1.0");
         }
 
-        public static void onExtensionCalled(
-            StringBuilder outputBuilder,
-            int outputSizeLimit, 
-            string functionToRun, 
-            ExtensionCallback callbackFunction
-        )
+        public static void OnExtensionCalled(Input input)
         {
-            callbackFunction.Invoke("SpeechArgCallback", "someFunction", "data");
-            outputBuilder.Append(functionToRun);
+            input.callbackFunction.Invoke("SpeechArgCallback", "someFunction", "data");
+            input.outputBuilder.Append(input.functionToRun);
         }
-        public static void onExtensionCalledWithArgs(
-            StringBuilder outputBuilder, 
-            int outputSizeLimit, 
-            string functionToRun, 
-            string[] args,
-            int argCount,
-            ExtensionCallback callbackFunction
-        )
+
+        public static void OnExtensionCalledWithArgs(Input input)
         {
-            callbackFunction.Invoke("SpeechArgCallback", "someFunction", "data");
-            foreach (var arg in args)
+            input.callbackFunction.Invoke("SpeechArgCallback", "someFunction", "data");
+            foreach (var arg in input.args)
             {
-                outputBuilder.Append(arg);
+                input.outputBuilder.Append(arg);
             }
         }
+
+        public static void
     }
 }
