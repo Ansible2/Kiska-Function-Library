@@ -18,7 +18,7 @@ namespace SpeechRecognition
 {
     public class ArmaExtension
     {
-        public static ExtensionCallback callback;
+        internal static InputOutputHandler inputOutputHandler;
         public delegate int ExtensionCallback([MarshalAs(UnmanagedType.LPStr)] string name, [MarshalAs(UnmanagedType.LPStr)] string function, [MarshalAs(UnmanagedType.LPStr)] string data);
 
 #if WIN64
@@ -26,9 +26,9 @@ namespace SpeechRecognition
 #else
         [DllExport("_RVExtensionRegisterCallback@4", CallingConvention = CallingConvention.Winapi)]
 #endif
-        public static void RVExtensionRegisterCallback([MarshalAs(UnmanagedType.FunctionPtr)] ExtensionCallback func)
+        public static void RVExtensionRegisterCallback([MarshalAs(UnmanagedType.FunctionPtr)] ExtensionCallback callbackFunction)
         {
-            callback = func;
+            inputOutputHandler = new InputOutputHandler(callbackFunction);
         }
 
 
@@ -46,7 +46,7 @@ namespace SpeechRecognition
         public static void RvExtensionVersion(StringBuilder output, int outputSize)
         {
             ExtensionCall extensionCall = new ExtensionCall(output, outputSize);
-            InputOutputHandler.OnGameStart(extensionCall);
+            inputOutputHandler.OnGameStart(extensionCall);
         }
 
 
@@ -64,8 +64,8 @@ namespace SpeechRecognition
         public static void RvExtension(StringBuilder output, int outputSize,
             [MarshalAs(UnmanagedType.LPStr)] string function)
         {
-            ExtensionCall extensionCall = new ExtensionCall(output, outputSize, function, callback);
-            InputOutputHandler.OnExtensionCalled(extensionCall);
+            ExtensionCall extensionCall = new ExtensionCall(output, outputSize, function);
+            inputOutputHandler.OnExtensionCalled(extensionCall);
         }
 
 
@@ -91,8 +91,8 @@ namespace SpeechRecognition
             int argCount
         )
         {
-            ExtensionCall extensionCall = new ExtensionCall(output, outputSize, function, callback, args, argCount);
-            InputOutputHandler.OnExtensionCalledWithArgs(extensionCall);
+            ExtensionCall extensionCall = new ExtensionCall(output, outputSize, function, args, argCount);
+            inputOutputHandler.OnExtensionCalledWithArgs(extensionCall);
             return 0;
         }
     }

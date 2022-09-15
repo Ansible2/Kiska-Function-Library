@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using static SpeechRecognition.ArmaExtension;
 
 namespace SpeechRecognition
 {
@@ -8,7 +7,6 @@ namespace SpeechRecognition
         public readonly StringBuilder outputBuilder = null;
         public readonly int outputSizeLimit = 0;
         public readonly string functionToRun = "";
-        public readonly ExtensionCallback callbackFunction = null;
         public readonly int argCount = 0;
         public readonly string[] args = null;
 
@@ -21,21 +19,18 @@ namespace SpeechRecognition
         public ExtensionCall(
             StringBuilder outputBuilder, 
             int outputSizeLimit, 
-            string functionToRun, 
-            ExtensionCallback callbackFunction
+            string functionToRun
         )
         {
             this.outputBuilder = outputBuilder;
             this.outputSizeLimit = outputSizeLimit;
             this.functionToRun = functionToRun;
-            this.callbackFunction = callbackFunction;
         }
 
         public ExtensionCall(
             StringBuilder outputBuilder,
             int outputSizeLimit,
             string functionToRun, 
-            ExtensionCallback callbackFunction,
             string[] args,
             int argCount
         )
@@ -43,7 +38,6 @@ namespace SpeechRecognition
             this.outputBuilder = outputBuilder;
             this.outputSizeLimit = outputSizeLimit;
             this.functionToRun = functionToRun;
-            this.callbackFunction = callbackFunction;
             this.args = args;
             this.argCount = argCount;
         }

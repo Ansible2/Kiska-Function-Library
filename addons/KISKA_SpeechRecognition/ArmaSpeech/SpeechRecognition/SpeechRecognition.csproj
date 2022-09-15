@@ -42,6 +42,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,7 +52,7 @@
   <ItemGroup>
     <Compile Include="ArmaExtension.cs" />
     <Compile Include="Functions\Functions.cs" />
-    <Compile Include="Functions\pushToTalk.cs" />
+    <Compile Include="Functions\StartStopRecording.cs" />
     <Compile Include="ExtensionCall.cs" />
     <Compile Include="InputOutputHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,27 +1,69 @@
-﻿namespace SpeechRecognition
+﻿using System.Text;
+using static SpeechRecognition.ArmaExtension;
+
+namespace SpeechRecognition
 {
     internal class InputOutputHandler
     {
-        public static void OnGameStart(ExtensionCall extensionCall)
+        private readonly ExtensionCallback callbackFunction = null;
+        private readonly Functions functions = null;
+        /* ----------------------------------------------------------------------------
+		    Constructor
+	    ---------------------------------------------------------------------------- */
+        internal InputOutputHandler(ExtensionCallback callbackFunction)
+        {
+            this.callbackFunction = callbackFunction;
+            functions = new Functions();
+        }
+
+        /* ----------------------------------------------------------------------------
+		    OnGameStart
+	    ---------------------------------------------------------------------------- */
+        internal void OnGameStart(ExtensionCall extensionCall)
         {
             extensionCall.outputBuilder.Append("Test-Extension v1.0");
         }
 
-        public static void OnExtensionCalled(ExtensionCall extensionCall)
+        /* ----------------------------------------------------------------------------
+		    OnExtensionCalled
+	    ---------------------------------------------------------------------------- */
+        internal void OnExtensionCalled(ExtensionCall extensionCall)
         {
-            extensionCall.callbackFunction.Invoke("SpeechArgCallback", "someFunction", "data");
+            functions.CallFunction(extensionCall);
+
+            //InvokeCallBack("someFunction", "data");
             extensionCall.outputBuilder.Append(extensionCall.functionToRun);
         }
 
-        public static void OnExtensionCalledWithArgs(ExtensionCall extensionCall)
+        /* ----------------------------------------------------------------------------
+		    OnExtensionCalledWithArgs
+	    ---------------------------------------------------------------------------- */
+        internal void OnExtensionCalledWithArgs(ExtensionCall extensionCall)
         {
-            extensionCall.callbackFunction.Invoke("SpeechArgCallback", "someFunction", "data");
+            functions.CallFunction(extensionCall);
+            
+            //InvokeCallBack("someFunction", "data");
             foreach (var arg in extensionCall.args)
             {
                 extensionCall.outputBuilder.Append(arg);
             }
         }
 
-        public static void
+        /* ----------------------------------------------------------------------------
+		    InvokeCallBack
+	    ---------------------------------------------------------------------------- */
+        internal void InvokeCallBack(string functionName, StringBuilder data = null)
+        {
+            if (data == null)
+            {
+                InvokeCallBack(functionName,"");
+            }
+
+            InvokeCallBack(functionName, data.ToString());
+        }
+        internal void InvokeCallBack(string functionName, string data)
+        {
+            callbackFunction("KISKA_SpeechRecognition", functionName, data);
+        }
     }
 }

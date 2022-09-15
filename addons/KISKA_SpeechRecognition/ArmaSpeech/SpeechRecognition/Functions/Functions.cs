@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SpeechRecognition.Functions
+﻿namespace SpeechRecognition
 {
-    internal static partial class Functions
+    internal partial class Functions
     {
-        public static void CallFunction(ExtensionCall input)
+        public void CallFunction(ExtensionCall input)
         {
-            switch (input.functionToRun)
+            switch (input.functionToRun.ToLower())
             {
-                case "PTTDOWN":
+                case "kiska_ext_sr_startrecording":
                 {
-                    PushToTalkPressed();
+                    StartRecording(input);
                     break;
                 }
-                case "PTTUP":
+                case "kiska_ext_sr_stoprecording":
                 {
-                    PushToTalkReleased();
+                    StopRecording();
                     break;
                 }
                 default:
@@ -29,9 +24,9 @@ namespace SpeechRecognition.Functions
             }
         }
 
-        private static void HandleDefault(ExtensionCall input)
+        private void HandleDefault(ExtensionCall input)
         {
-            input.outputBuilder.Append("ERROR-:[Could not find function to run]");
+            input.outputBuilder.Append($"ERROR-:{input.functionToRun} was not a function to run");
         }
     }
 }
