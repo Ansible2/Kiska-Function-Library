@@ -18,7 +18,10 @@ namespace SpeechRecognition
 {
     public class ArmaExtension
     {
+        public static ExtensionCallback callbackFunction;
         internal static InputOutputHandler inputOutputHandler;
+        internal static SpeechRecognizer speechRecognizer;
+        private static bool initComplete = false;
         public delegate int ExtensionCallback([MarshalAs(UnmanagedType.LPStr)] string name, [MarshalAs(UnmanagedType.LPStr)] string function, [MarshalAs(UnmanagedType.LPStr)] string data);
 
 #if WIN64
@@ -28,7 +31,7 @@ namespace SpeechRecognition
 #endif
         public static void RVExtensionRegisterCallback([MarshalAs(UnmanagedType.FunctionPtr)] ExtensionCallback callbackFunction)
         {
-            inputOutputHandler = new InputOutputHandler(callbackFunction);
+            ArmaExtension.callbackFunction = callbackFunction;
         }
 
 
@@ -45,8 +48,13 @@ namespace SpeechRecognition
 #endif
         public static void RvExtensionVersion(StringBuilder output, int outputSize)
         {
+            if (initComplete) return;
+
+            inputOutputHandler = new InputOutputHandler();
             ExtensionCall extensionCall = new ExtensionCall(output, outputSize);
+            speechRecognizer = new SpeechRecognizer(); // TODO: Causes crash on function call (not on game startup???)
             inputOutputHandler.OnGameStart(extensionCall);
+            initComplete = true;
         }
 
 
@@ -64,8 +72,9 @@ namespace SpeechRecognition
         public static void RvExtension(StringBuilder output, int outputSize,
             [MarshalAs(UnmanagedType.LPStr)] string function)
         {
-            ExtensionCall extensionCall = new ExtensionCall(output, outputSize, function);
-            inputOutputHandler.OnExtensionCalled(extensionCall);
+            output.Append("true");
+            // ExtensionCall extensionCall = new ExtensionCall(output, outputSize, function);
+            // inputOutputHandler.OnExtensionCalled(extensionCall);
         }
 
 

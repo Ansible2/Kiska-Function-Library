@@ -5,14 +5,12 @@ namespace SpeechRecognition
 {
     internal class InputOutputHandler
     {
-        private readonly ExtensionCallback callbackFunction = null;
         private readonly Functions functions = null;
         /* ----------------------------------------------------------------------------
 		    Constructor
 	    ---------------------------------------------------------------------------- */
-        internal InputOutputHandler(ExtensionCallback callbackFunction)
+        internal InputOutputHandler()
         {
-            this.callbackFunction = callbackFunction;
             functions = new Functions();
         }
 
@@ -63,7 +61,7 @@ namespace SpeechRecognition
         }
         internal void InvokeCallBack(string functionName, string data)
         {
-            callbackFunction("KISKA_SpeechRecognition", functionName, data);
+            ArmaExtension.callbackFunction("KISKA_SpeechRecognition", functionName, data);
         }
     }
 }
