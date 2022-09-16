@@ -55,6 +55,7 @@
     <Compile Include="Functions\StartStopRecording.cs" />
     <Compile Include="ExtensionCall.cs" />
     <Compile Include="InputOutputHandler.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpeechRecognizer.cs" />
   </ItemGroup>

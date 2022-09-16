@@ -52,7 +52,7 @@ namespace SpeechRecognition
 
             inputOutputHandler = new InputOutputHandler();
             ExtensionCall extensionCall = new ExtensionCall(output, outputSize);
-            speechRecognizer = new SpeechRecognizer(); // TODO: Causes crash on function call (not on game startup???)
+            speechRecognizer = new SpeechRecognizer();
             inputOutputHandler.OnGameStart(extensionCall);
             initComplete = true;
         }
@@ -72,9 +72,9 @@ namespace SpeechRecognition
         public static void RvExtension(StringBuilder output, int outputSize,
             [MarshalAs(UnmanagedType.LPStr)] string function)
         {
+            ExtensionCall extensionCall = new ExtensionCall(output, outputSize, function);
+            inputOutputHandler.OnExtensionCalled(extensionCall);
             output.Append("true");
-            // ExtensionCall extensionCall = new ExtensionCall(output, outputSize, function);
-            // inputOutputHandler.OnExtensionCalled(extensionCall);
         }
 
 

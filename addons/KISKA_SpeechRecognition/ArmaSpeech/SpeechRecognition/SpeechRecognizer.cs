@@ -19,14 +19,29 @@ namespace SpeechRecognition
             speechRecognitionEngine = new SpeechRecognitionEngine(culture);
 
 			// TODO: Remove with implement of custom grammars
-			AddGrammarFromXmlString(testGrammarXml2);
+			AddGrammarFromXmlString(testGrammarXml);
         }
 
         internal void AddGrammarFromXmlString(string xml)
         {
-            Grammar grammar = GetGrammar(xml);
-            grammarDictionary["testGrammar"] = grammar; // TODO get ID for grammar
-            speechRecognitionEngine.LoadGrammarAsync(grammar);
+			try
+			{
+				Grammar grammar = GetGrammar(xml);
+				grammarDictionary["testGrammar"] = grammar; // TODO get ID for grammar
+				speechRecognitionEngine.LoadGrammarAsync(grammar);
+			} 
+			catch (ArgumentNullException ex)	
+			{
+                Logger.Write("ArgumentNullException"); // TODO: Better message
+            }
+            catch (InvalidOperationException ex)
+            {
+                Logger.Write("InvalidOperationException"); // TODO: Better Message
+            }
+            catch (OperationCanceledException)
+			{
+                Logger.Write("OperationCanceledException"); // TODO: Better message
+            }
         }
 
         // Handle the SpeechRecognized event.  
@@ -37,6 +52,8 @@ namespace SpeechRecognition
 			// TODO: implement
 			// TODO: add the ability to attach custom event id to an output?
 			// Console.WriteLine("Recognized text: " + e.Result.Text);
+			Logger.Write("Recognized Text:");
+			Logger.Write(eventArgs.Result.Text);
 			ArmaExtension.inputOutputHandler.InvokeCallBack("KISKA_ext_sr_speechRecognizedEvent", eventArgs.Result.Text);
         }
 
@@ -54,12 +71,14 @@ namespace SpeechRecognition
 			
             // Start asynchronous, continuous speech recognition.  
             speechRecognitionEngine.RecognizeAsync(RecognizeMode.Single);
+            Logger.Write("Started recording");
         }
 
         internal void StopRecording()
         {
             // TODO implement stop recording
 			speechRecognitionEngine.RecognizeAsyncCancel();
+            Logger.Write("Ended recording");
         }
 
         private static MemoryStream GenerateStreamFromString(string xml)
@@ -149,6 +168,6 @@ namespace SpeechRecognition
 	</rule>
 
 </grammar>";
-		const string testGrammarXml2 = "<!-- Grammar file \"cityList.grxml\" -->\r\n<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<grammar version=\"1.0\" xml:lang=\"en-US\" mode=\"voice\" root=\"location\"\r\n xmlns=\"http://www.w3.org/2001/06/grammar\" tag-format=\"semantics/1.0\">\r\n\r\n  <rule id=\"location\"> \r\n    <item> Fly me to <\\item>\r\n    <ruleref uri=\"#city\"/> \r\n  </rule>\r\n\r\n  <rule id=\"city\">\r\n    <one-of>\r\n      <item> Boston </item>\r\n      <item> Madrid </item>\r\n    </one-of>\r\n  </rule>\r\n\r\n</grammar>";
+		const string testGrammarXml2 = @"<!-- Grammar file ""cityList.grxml"" -->\r\n<?xml version=""1.0"" encoding=""utf-8""?>\r\n<grammar version=""1.0"" xml:lang=""en-US"" mode=""voice"" root=""location""\r\n xmlns=""http://www.w3.org/2001/06/grammar"" tag-format=""semantics/1.0"">\r\n\r\n  <rule id=""location""> \r\n    <item> Fly me to <\\item>\r\n    <ruleref uri=""#city""/> \r\n  </rule>\r\n\r\n  <rule id=""city"">\r\n    <one-of>\r\n      <item> Boston </item>\r\n      <item> Madrid </item>\r\n    </one-of>\r\n  </rule>\r\n\r\n</grammar>";
     }
 }
