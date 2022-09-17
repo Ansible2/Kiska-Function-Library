@@ -3,15 +3,19 @@
     internal partial class Functions
     {
         private bool recording = false;
-        private void StartRecording(ExtensionCall input)
+        private string StartRecording(ExtensionCall input)
         {
             ArmaExtension.speechRecognizer.StartRecording();
             recording = true;
+
+            return "true";
         }
-        private void StopRecording()
+        private string StopRecording()
         {
             ArmaExtension.speechRecognizer.StopRecording();
             recording = false;
+
+            return "false";
         }
     }
 }

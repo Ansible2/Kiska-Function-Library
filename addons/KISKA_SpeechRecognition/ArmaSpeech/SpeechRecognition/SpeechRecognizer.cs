@@ -9,8 +9,38 @@ namespace SpeechRecognition
 {
     internal class SpeechRecognizer
     {
-        private readonly Dictionary<string,Grammar> grammarDictionary;
+		private static class Events
+		{
+			public const string StartedRecording = "KISKA_ext_sr_events_startedrecording";
+			public const string StoppedRecording = "KISKA_ext_sr_events_stoppedrecording";
+			public const string SpeechRecognized = "KISKA_ext_sr_events_speechrecognized";
+			public const string LoadedGrammar = "KISKA_ext_sr_events_loadedgrammar";
 
+            // Handle the SpeechRecognized event.  
+            public static void SpeechRecognizedEvent(object sender, SpeechRecognizedEventArgs eventArgs)
+            {
+                // eventArgs.Result.Words.
+                // eventArgs.Result.Grammar
+                // TODO: implement
+                // TODO: add the ability to attach custom event id to an output?
+                Logger.Write($"Recognized Audio: {eventArgs.Result.Text}");
+                ArmaExtension.inputOutputHandler.InvokeCallBack(SpeechRecognized, eventArgs.Result.Text);
+            }
+
+			public static void LoadedGrammarEvent(object sender,LoadGrammarCompletedEventArgs eventArgs)
+			{
+				string name = eventArgs.Grammar.Name;
+				if (name == null)
+				{
+					name = "null";
+				}
+                Logger.Write($"Loaded grammar: {name}");
+				ArmaExtension.inputOutputHandler.InvokeCallBack(LoadedGrammar, name);
+			}
+        }
+
+
+        private readonly Dictionary<string,Grammar> grammarDictionary;
         private readonly SpeechRecognitionEngine speechRecognitionEngine = null;
         public SpeechRecognizer() {
             grammarDictionary = new Dictionary<string,Grammar>();
@@ -18,8 +48,15 @@ namespace SpeechRecognition
             CultureInfo culture = new CultureInfo(CultureInfo.CurrentCulture.Name); // en-US for .Name for example
             speechRecognitionEngine = new SpeechRecognitionEngine(culture);
 
-			// TODO: Remove with implement of custom grammars
-			AddGrammarFromXmlString(testGrammarXml);
+            // Add a handler for the speech recognized event.  
+            speechRecognitionEngine.SpeechRecognized +=
+              new EventHandler<SpeechRecognizedEventArgs>(Events.SpeechRecognizedEvent);
+
+			speechRecognitionEngine.LoadGrammarCompleted += 
+				new EventHandler<LoadGrammarCompletedEventArgs>(Events.LoadedGrammarEvent);
+
+            // TODO: Remove with implement of custom grammars
+            AddGrammarFromXmlString(testGrammarXml);
         }
 
         internal void AddGrammarFromXmlString(string xml)
@@ -44,41 +81,26 @@ namespace SpeechRecognition
             }
         }
 
-        // Handle the SpeechRecognized event.  
-        static void SpeechRecognizedEvent(object sender, SpeechRecognizedEventArgs eventArgs)
-        {
-			// eventArgs.Result.Words.
-			// eventArgs.Result.Grammar
-			// TODO: implement
-			// TODO: add the ability to attach custom event id to an output?
-			// Console.WriteLine("Recognized text: " + e.Result.Text);
-			Logger.Write("Recognized Text:");
-			Logger.Write(eventArgs.Result.Text);
-			ArmaExtension.inputOutputHandler.InvokeCallBack("KISKA_ext_sr_speechRecognizedEvent", eventArgs.Result.Text);
-        }
 
         internal void StartRecording()
         {
             // TODO implement start recording
-            
 
 			// Configure input to the speech recognizer.  
             speechRecognitionEngine.SetInputToDefaultAudioDevice();
-
-            // Add a handler for the speech recognized event.  
-            speechRecognitionEngine.SpeechRecognized +=
-              new EventHandler<SpeechRecognizedEventArgs>(SpeechRecognizedEvent);
 			
             // Start asynchronous, continuous speech recognition.  
             speechRecognitionEngine.RecognizeAsync(RecognizeMode.Single);
             Logger.Write("Started recording");
+            ArmaExtension.inputOutputHandler.InvokeCallBack(Events.StartedRecording); // TODO: causes crashes
         }
 
         internal void StopRecording()
         {
             // TODO implement stop recording
 			speechRecognitionEngine.RecognizeAsyncCancel();
-            Logger.Write("Ended recording");
+            Logger.Write("Manually Ended recording");
+            ArmaExtension.inputOutputHandler.InvokeCallBack(Events.StoppedRecording); // TODO: causes crashes
         }
 
         private static MemoryStream GenerateStreamFromString(string xml)

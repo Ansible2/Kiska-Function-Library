@@ -48,6 +48,7 @@ namespace SpeechRecognition
 #endif
         public static void RvExtensionVersion(StringBuilder output, int outputSize)
         {
+            // TODO: this does not seem to actually be running on game start, by initial "callExtension" command
             if (initComplete) return;
 
             inputOutputHandler = new InputOutputHandler();
@@ -74,7 +75,6 @@ namespace SpeechRecognition
         {
             ExtensionCall extensionCall = new ExtensionCall(output, outputSize, function);
             inputOutputHandler.OnExtensionCalled(extensionCall);
-            output.Append("true");
         }
 
 

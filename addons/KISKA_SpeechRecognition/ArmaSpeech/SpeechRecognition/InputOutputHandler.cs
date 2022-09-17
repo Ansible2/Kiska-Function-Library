@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using static SpeechRecognition.ArmaExtension;
 
 namespace SpeechRecognition
 {
@@ -20,6 +19,7 @@ namespace SpeechRecognition
         internal void OnGameStart(ExtensionCall extensionCall)
         {
             extensionCall.outputBuilder.Append("Test-Extension v1.0");
+            Logger.Write("Game Start...");
         }
 
         /* ----------------------------------------------------------------------------
@@ -30,7 +30,7 @@ namespace SpeechRecognition
             functions.CallFunction(extensionCall);
 
             //InvokeCallBack("someFunction", "data");
-            extensionCall.outputBuilder.Append(extensionCall.functionToRun);
+            //extensionCall.outputBuilder.Append(extensionCall.functionToRun);
         }
 
         /* ----------------------------------------------------------------------------

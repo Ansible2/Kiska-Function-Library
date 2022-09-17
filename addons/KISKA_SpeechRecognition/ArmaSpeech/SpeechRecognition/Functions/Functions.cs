@@ -2,26 +2,35 @@
 {
     internal partial class Functions
     {
+        private static class Names
+        {
+            public const string StartRecording = "kiska_ext_sr_startrecording";
+            public const string StopRecording = "kiska_ext_sr_stoprecording";
+        }
+
         public void CallFunction(ExtensionCall input)
         {
+            string output = "false";
             switch (input.functionToRun.ToLower())
             {
-                case "kiska_ext_sr_startrecording":
+                case Names.StartRecording:
                 {
-                    StartRecording(input);
+                    output = StartRecording(input);
                     break;
                 }
-                case "kiska_ext_sr_stoprecording":
+                case Names.StopRecording:
                 {
-                    StopRecording();
+                    output = StopRecording();
                     break;
                 }
                 default:
                 {
                     HandleDefault(input);
-                    break;
+                    return;
                 }
             }
+
+            input.outputBuilder.Append(output);
         }
 
         private void HandleDefault(ExtensionCall input)
