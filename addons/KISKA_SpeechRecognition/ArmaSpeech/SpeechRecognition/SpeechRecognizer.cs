@@ -92,15 +92,16 @@ namespace SpeechRecognition
             // Start asynchronous, continuous speech recognition.  
             speechRecognitionEngine.RecognizeAsync(RecognizeMode.Single);
             Logger.Write("Started recording");
-            ArmaExtension.inputOutputHandler.InvokeCallBack(Events.StartedRecording); // TODO: causes crashes
+            ArmaExtension.inputOutputHandler.InvokeCallBack(Events.StartedRecording);
         }
 
         internal void StopRecording()
         {
+
             // TODO implement stop recording
-			speechRecognitionEngine.RecognizeAsyncCancel();
             Logger.Write("Manually Ended recording");
-            ArmaExtension.inputOutputHandler.InvokeCallBack(Events.StoppedRecording); // TODO: causes crashes
+			speechRecognitionEngine.RecognizeAsyncCancel();
+            ArmaExtension.inputOutputHandler.InvokeCallBack(Events.StoppedRecording);
         }
 
         private static MemoryStream GenerateStreamFromString(string xml)
@@ -112,7 +113,7 @@ namespace SpeechRecognition
         {
             using (var stream = GenerateStreamFromString(xml))
             {
-                Grammar grammar = new Grammar(stream);
+                Grammar grammar = new Grammar(stream,"Test Grammar");
                 return grammar;
             }
         }

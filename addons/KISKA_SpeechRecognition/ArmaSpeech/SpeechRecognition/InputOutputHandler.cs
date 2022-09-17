@@ -54,13 +54,19 @@ namespace SpeechRecognition
         {
             if (data == null)
             {
-                InvokeCallBack(functionName,"");
+                InvokeCallBack(functionName,"EMPTY");
+                return;
             }
 
             InvokeCallBack(functionName, data.ToString());
         }
         internal void InvokeCallBack(string functionName, string data)
         {
+            if (data == "")
+            {
+                data = "EMPTY";
+            }
+
             ArmaExtension.callbackFunction("KISKA_SpeechRecognition", functionName, data);
         }
     }
