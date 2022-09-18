@@ -56,7 +56,8 @@ namespace SpeechRecognition
 				new EventHandler<LoadGrammarCompletedEventArgs>(Events.LoadedGrammarEvent);
 
             // TODO: Remove with implement of custom grammars
-            AddGrammarFromXmlString(testGrammarXml);
+            //AddGrammarFromXmlString(testGrammarXml);
+            AddGrammarFromXmlString(cityGrammarXml);
         }
 
         internal void AddGrammarFromXmlString(string xml)
@@ -97,7 +98,6 @@ namespace SpeechRecognition
 
         internal void StopRecording()
         {
-
             // TODO implement stop recording
             Logger.Write("Manually Ended recording");
 			speechRecognitionEngine.RecognizeAsyncCancel();
@@ -113,7 +113,7 @@ namespace SpeechRecognition
         {
             using (var stream = GenerateStreamFromString(xml))
             {
-                Grammar grammar = new Grammar(stream,"Test Grammar");
+                Grammar grammar = new Grammar(stream);
                 return grammar;
             }
         }
@@ -191,6 +191,23 @@ namespace SpeechRecognition
 	</rule>
 
 </grammar>";
-		const string testGrammarXml2 = @"<!-- Grammar file ""cityList.grxml"" -->\r\n<?xml version=""1.0"" encoding=""utf-8""?>\r\n<grammar version=""1.0"" xml:lang=""en-US"" mode=""voice"" root=""location""\r\n xmlns=""http://www.w3.org/2001/06/grammar"" tag-format=""semantics/1.0"">\r\n\r\n  <rule id=""location""> \r\n    <item> Fly me to <\\item>\r\n    <ruleref uri=""#city""/> \r\n  </rule>\r\n\r\n  <rule id=""city"">\r\n    <one-of>\r\n      <item> Boston </item>\r\n      <item> Madrid </item>\r\n    </one-of>\r\n  </rule>\r\n\r\n</grammar>";
+		const string cityGrammarXml = @"
+			<grammar version=""1.0"" xml:lang=""en-US"" mode=""voice"" root=""location""
+			 xmlns=""http://www.w3.org/2001/06/grammar"" tag-format=""semantics/1.0"">
+
+			  <rule id=""location""> 
+				<item> Fly me to </item>
+				<ruleref uri=""#city""/> 
+			  </rule>
+
+			  <rule id=""city"">
+				<one-of>
+				  <item> Boston </item>
+				  <item> Madrid </item>
+				</one-of>
+			  </rule>
+
+			</grammar>
+		";
     }
 }
