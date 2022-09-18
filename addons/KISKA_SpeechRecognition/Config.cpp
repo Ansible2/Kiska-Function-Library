@@ -19,9 +19,13 @@ class CfgFunctions
 		class SpeechRecognition
 		{
 			file="KISKA_SpeechRecognition\SQF Functions";
+			class SR_callbackHandler
+			{};
 			class SR_callExtension
 			{};
 			class SR_startRecording 
+			{};
+			class SR_stopRecording 
 			{};
 		};
 	};

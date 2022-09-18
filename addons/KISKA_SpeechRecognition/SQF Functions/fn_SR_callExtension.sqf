@@ -32,7 +32,7 @@ if (_functionToRun isEqualTo "") exitWith {
 };
 
 
-private _extensionReturn = "KISKA_speechRecognition" callExtension _functionToRun;
+private _extensionReturn = "KISKA_SpeechRecognition" callExtension _functionToRun;
 
 
 _extensionReturn
