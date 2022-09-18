@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
@@ -8,12 +7,13 @@ namespace SpeechRecognition
     internal static class Logger
     {
         private static string m_exePath = string.Empty;
+        private static readonly string fileName = "KISKA_SpeechRecognitionLog.txt";
         public static void Write(string logMessage)
         {
             m_exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             try
             {
-                using (StreamWriter w = File.AppendText(m_exePath + "\\" + "SpeechRecognitionLog.txt"))
+                using (StreamWriter w = File.AppendText(m_exePath + "\\" + fileName))
                 {
                     Log(logMessage, w);
                 }
