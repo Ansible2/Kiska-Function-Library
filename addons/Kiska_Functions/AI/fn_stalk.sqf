@@ -91,13 +91,13 @@ if (_stalkedGroup isEqualType objNull) then {
     Main loop
 ---------------------------------------------------------------------------- */
 _stalkerGroup setVariable ["KISKA_stalkingGroup",_stalkedGroup];
-[_stalkerGroup] call CBA_fnc_clearWaypoints;
+[_stalkerGroup] call KISKA_fnc_clearWaypoints;
 
 private _stalkedGroupIsStalkable = true;
 private _stalkerGroupCanStalk = true;
 
 while {_stalkerGroupCanStalk AND _stalkedGroupIsStalkable} do {
-    [_stalkerGroup] call CBA_fnc_clearWaypoints;
+    [_stalkerGroup] call KISKA_fnc_clearWaypoints;
 
     private _stalkerGroupLeader = leader _stalkerGroup;
     private _stalkedGroupLeader = leader _stalkedGroup;
@@ -134,7 +134,7 @@ if !(isNull _stalkerGroup) then {
     (units _stalkerGroup) apply {
         [_x,objNull] remoteExec ["commandTarget",_x];
     };
-    [_stalkerGroup] call CBA_fnc_clearWaypoints;
+    [_stalkerGroup] call KISKA_fnc_clearWaypoints;
 };
 
 

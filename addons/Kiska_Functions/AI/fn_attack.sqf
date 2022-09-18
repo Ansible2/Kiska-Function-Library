@@ -46,7 +46,7 @@ if !(local _group) exitWith {
 
 // Allow TaskAttack to override other set waypoints
 if (_override) then {
-	[_group] call CBA_fnc_clearWaypoints;
+	[_group] call KISKA_fnc_clearWaypoints;
 
 	(units _group) apply {
 		_x enableAI "PATH";

@@ -92,7 +92,7 @@ _helicopter flyInHeight _patrolHeight;
     private _landingZone = [_foundTarget,300,500,5,0,0,0,[],[_foundTargetPosition,_foundTargetPosition]] call BIS_fnc_findSafePos;
     _landingZone pushBack 0;
 
-    [_helicopterGroup] call CBA_fnc_clearWaypoints;
+    [_helicopterGroup] call KISKA_fnc_clearWaypoints;
     [_helicopterGroup,_landingZone,0,"TR UNLOAD","AWARE","WHITE","NORMAL"] call CBA_fnc_addwaypoint;
 
 

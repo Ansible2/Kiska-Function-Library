@@ -73,7 +73,7 @@ _driverGroup setSpeedMode _speed;
 // disable HC transfer while driving
 [_driverGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
 
-/* [_driverGroup] call CBA_fnc_clearWaypoints; */
+/* [_driverGroup] call KISKA_fnc_clearWaypoints; */
 /* [_driverGroup,_dismountPoint,-1,"MOVE","UNCHANGED","NO CHANGE",_speed,"NO CHANGE","",[0,0,0],_completionRadius] call CBA_fnc_addWaypoint; */
 
 // position loop

@@ -52,6 +52,8 @@ class CfgFunctions
 			{};
 			class attack
 			{};
+			class clearWaypoints
+			{};
 			class configureConvoy
 			{};
 			class defend

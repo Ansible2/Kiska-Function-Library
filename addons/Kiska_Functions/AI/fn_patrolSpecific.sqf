@@ -74,7 +74,7 @@ if (_group isEqualType objNull) then {
 };
 
 
-[_group] call CBA_fnc_clearWaypoints;
+[_group] call KISKA_fnc_clearWaypoints;
 
 private "_cyclePosition";
 

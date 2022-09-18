@@ -89,7 +89,7 @@ if (_dropOffPointIsInvalid) exitWith {
     Add waypoints
 ---------------------------------------------------------------------------- */
 private _group = group _pilot;
-[_group] call CBA_fnc_clearWaypoints;
+[_group] call KISKA_fnc_clearWaypoints;
 
 
 [
