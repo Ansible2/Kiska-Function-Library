@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Speech.Recognition;
@@ -19,12 +20,19 @@ namespace SpeechRecognition
             // Handle the SpeechRecognized event.  
             public static void SpeechRecognizedEvent(object sender, SpeechRecognizedEventArgs eventArgs)
             {
-                // eventArgs.Result.Words.
-                // eventArgs.Result.Grammar
-                // TODO: implement
-                // TODO: add the ability to attach custom event id to an output?
                 Logger.Write($"Recognized Audio: {eventArgs.Result.Text}");
-                ArmaExtension.inputOutputHandler.InvokeCallBack(SpeechRecognized, eventArgs.Result.Text);
+				ReadOnlyCollection<RecognizedWordUnit> recognizedWords = eventArgs.Result.Words;
+				
+				int count = 0;
+				List<string> wordsList = new List<string>(recognizedWords.Count);
+				foreach(RecognizedWordUnit word in recognizedWords)
+				{
+                    wordsList.Add(word.Text);
+                    Logger.Write($"Recognized word number: {++count} is {word.Text}");	
+				}
+
+				string completeWordList = String.Join(",",wordsList);
+				ArmaExtension.inputOutputHandler.InvokeCallBack(SpeechRecognized,$"[{completeWordList}]");
             }
 
 			public static void LoadedGrammarEvent(object sender,LoadGrammarCompletedEventArgs eventArgs)
@@ -56,7 +64,7 @@ namespace SpeechRecognition
 				new EventHandler<LoadGrammarCompletedEventArgs>(Events.LoadedGrammarEvent);
 
             // TODO: Remove with implement of custom grammars
-            //AddGrammarFromXmlString(testGrammarXml);
+            // AddGrammarFromXmlString(callForFireGrammarXml);
             AddGrammarFromXmlString(cityGrammarXml);
         }
 
@@ -118,7 +126,7 @@ namespace SpeechRecognition
             }
         }
 
-        const string testGrammarXml = @"<grammar version=""1.0"" xml:lang=""en-US"" root=""supportCall""
+        const string callForFireGrammarXml = @"<grammar version=""1.0"" xml:lang=""en-US"" root=""supportCall""
  xmlns=""http://www.w3.org/2001/06/grammar"">
 
 	<!--<rule id=""callForFire"">
