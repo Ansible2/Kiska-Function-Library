@@ -24,4 +24,9 @@ scriptName "KISKA_fnc_str";
 
 params ["_value"];
 
-[str _value,format ["'%1'",_value]] select (_value isEqualType "")
+if (_value isEqualType "") exitWith {
+	format ["'%1'",_value]
+};
+
+
+str _value
