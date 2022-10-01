@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Speech.Recognition;
+using System.Speech.Recognition.SrgsGrammar;
 using System.Text;
 
 namespace SpeechRecognition
@@ -27,7 +28,7 @@ namespace SpeechRecognition
 				List<string> wordsList = new List<string>(recognizedWords.Count);
 				foreach(RecognizedWordUnit word in recognizedWords)
 				{
-                    wordsList.Add(word.Text);
+                    wordsList.Add(word.Text.ToLower());
                     Logger.Write($"Recognized word number: {++count} is {word.Text}");	
 				}
 
@@ -40,7 +41,7 @@ namespace SpeechRecognition
 				string name = eventArgs.Grammar.Name;
 				if (name == null)
 				{
-					name = "null";
+					name = "null name";
 				}
                 Logger.Write($"Loaded grammar: {name}");
 				ArmaExtension.inputOutputHandler.InvokeCallBack(LoadedGrammar, name);
@@ -65,15 +66,17 @@ namespace SpeechRecognition
 
             // TODO: Remove with implement of custom grammars
             // AddGrammarFromXmlString(callForFireGrammarXml);
-            AddGrammarFromXmlString(cityGrammarXml);
+            AddGrammarFromXmlString("cities",cityGrammarXml);
         }
 
-        internal void AddGrammarFromXmlString(string xml)
+        internal void AddGrammarFromXmlString(string name, string xml)
         {
 			try
 			{
 				Grammar grammar = GetGrammar(xml);
-				grammarDictionary["testGrammar"] = grammar; // TODO get ID for grammar
+				grammar.Name = name;
+
+				grammarDictionary[name] = grammar; // TODO get ID for grammar
 				speechRecognitionEngine.LoadGrammarAsync(grammar);
 			} 
 			catch (ArgumentNullException ex)	
@@ -119,6 +122,7 @@ namespace SpeechRecognition
 
         private Grammar GetGrammar(string xml)
         {
+			// TODO: see about parsing xml in srgs doc first so that variables can be added/modified later by scripters
             using (var stream = GenerateStreamFromString(xml))
             {
                 Grammar grammar = new Grammar(stream);

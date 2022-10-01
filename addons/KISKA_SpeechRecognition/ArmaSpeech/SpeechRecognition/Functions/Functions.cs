@@ -6,6 +6,7 @@
         {
             public const string StartRecording = "kiska_ext_sr_startrecording";
             public const string StopRecording = "kiska_ext_sr_stoprecording";
+            public const string AddGrammar = "kiska_ext_sr_addgrammarxml";
         }
 
         public void CallFunction(ExtensionCall input)
@@ -21,6 +22,11 @@
                 case Names.StopRecording:
                 {
                     output = StopRecording();
+                    break;
+                }
+                case Names.AddGrammar:
+                {
+                    output = AddGrammar(input);
                     break;
                 }
                 default:
