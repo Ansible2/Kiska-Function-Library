@@ -28,9 +28,6 @@ namespace SpeechRecognition
         internal void OnExtensionCalled(ExtensionCall extensionCall)
         {
             functions.CallFunction(extensionCall);
-
-            //InvokeCallBack("someFunction", "data");
-            //extensionCall.outputBuilder.Append(extensionCall.functionToRun);
         }
 
         /* ----------------------------------------------------------------------------
@@ -39,12 +36,6 @@ namespace SpeechRecognition
         internal void OnExtensionCalledWithArgs(ExtensionCall extensionCall)
         {
             functions.CallFunction(extensionCall);
-            
-            //InvokeCallBack("someFunction", "data");
-            foreach (var arg in extensionCall.args)
-            {
-                extensionCall.outputBuilder.Append(arg);
-            }
         }
 
         /* ----------------------------------------------------------------------------

@@ -1,4 +1,6 @@
-﻿namespace SpeechRecognition
+﻿using System.Text.RegularExpressions;
+
+namespace SpeechRecognition
 {
     internal partial class Functions
     {
@@ -12,6 +14,8 @@
                 return "false";
             }
 
+            Logger.Write($"AddGrammar: {input.args[0]}");
+            Logger.Write($"AddGrammar: {input.args[1]}");
             ArmaExtension.speechRecognizer.AddGrammarFromXmlString(input.args[0], input.args[1]);
             return "true";
         }

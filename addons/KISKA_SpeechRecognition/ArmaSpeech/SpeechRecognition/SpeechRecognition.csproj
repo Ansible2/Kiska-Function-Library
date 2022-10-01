@@ -24,17 +24,17 @@
     <OutputPath>bin\x64\Release\</OutputPath>
     <AssemblyName>KSIKA_SpeechRecognition_x64</AssemblyName>
     <DefineConstants>WIN64</DefineConstants>
-</PropertyGroup>
-<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-	<OutputPath>bin\x86\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <OutputPath>bin\x86\Debug\</OutputPath>
     <PlatformTarget>x86</PlatformTarget>
-	<AssemblyName>KSIKA_SpeechRecognition</AssemblyName>
+    <AssemblyName>KSIKA_SpeechRecognition</AssemblyName>
     <DefineConstants>WIN32</DefineConstants>
-</PropertyGroup>
-<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-	<OutputPath>bin\x86\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
     <PlatformTarget>x86</PlatformTarget>
-	<AssemblyName>KSIKA_SpeechRecognition</AssemblyName>
+    <AssemblyName>KSIKA_SpeechRecognition</AssemblyName>
     <DefineConstants>WIN32</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArmaExtension.cs" />
+    <Compile Include="Functions\AddRemoveGrammar.cs" />
     <Compile Include="Functions\Functions.cs" />
     <Compile Include="Functions\StartStopRecording.cs" />
     <Compile Include="ExtensionCall.cs" />

@@ -66,18 +66,26 @@ namespace SpeechRecognition
 
             // TODO: Remove with implement of custom grammars
             // AddGrammarFromXmlString(callForFireGrammarXml);
-            AddGrammarFromXmlString("cities",cityGrammarXml);
+            //AddGrammarFromXmlString("cities",cityGrammarXml);
         }
 
         internal void AddGrammarFromXmlString(string name, string xml)
         {
 			try
 			{
+                Logger.Write("AddGrammarFromXmlString: Call in try");
 				Grammar grammar = GetGrammar(xml);
+				if (grammar == null)
+				{
+                    Logger.Write("AddGrammarFromXmlString: null grammar returned");
+                    return;
+				}
+                Logger.Write("AddGrammarFromXmlString: got grammar");
 				grammar.Name = name;
-
-				grammarDictionary[name] = grammar; // TODO get ID for grammar
+                Logger.Write("AddGrammarFromXmlString: set grammar name");
+                grammarDictionary[name] = grammar; // TODO get ID for grammar
 				speechRecognitionEngine.LoadGrammarAsync(grammar);
+                Logger.Write("AddGrammarFromXmlString: set started async load");
 			} 
 			catch (ArgumentNullException ex)	
 			{
@@ -117,7 +125,21 @@ namespace SpeechRecognition
 
         private static MemoryStream GenerateStreamFromString(string xml)
         {
-            return new MemoryStream(Encoding.UTF8.GetBytes(xml ?? ""));
+			try
+			{
+				var encoding = Encoding.UTF8.GetBytes(xml ?? "");
+				Logger.Write("GenerateStreamFromString: Got Encoding");
+				var stream = new MemoryStream(encoding);
+				Logger.Write("GenerateStreamFromString: Got Stream");
+				return stream;
+
+            } 
+			catch (Exception ex)
+			{
+				Logger.Write("GenerateStreamFromString: error follows:");
+				Logger.Write(ex.Message);
+				return new MemoryStream(Encoding.UTF8.GetBytes(""));
+            }
         }
 
         private Grammar GetGrammar(string xml)
@@ -125,8 +147,18 @@ namespace SpeechRecognition
 			// TODO: see about parsing xml in srgs doc first so that variables can be added/modified later by scripters
             using (var stream = GenerateStreamFromString(xml))
             {
-                Grammar grammar = new Grammar(stream);
-                return grammar;
+				try
+				{
+					Grammar grammar = new Grammar(stream);
+					return grammar;
+
+				}
+				catch (Exception ex)
+				{
+					Logger.Write("GetGrammar: had error");
+					Logger.Write(ex.Message);
+					return null;
+				}
             }
         }
 
