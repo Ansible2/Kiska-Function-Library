@@ -155,7 +155,8 @@ namespace SpeechRecognition
 				}
 				catch (Exception ex)
 				{
-					Logger.Write("GetGrammar: had error");
+					Logger.Write("GetGrammar: had error, here is good grammar:");
+					Logger.Write(cityGrammarXml);
 					Logger.Write(ex.Message);
 					return null;
 				}
