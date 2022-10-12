@@ -2,7 +2,7 @@
 Function: KISKA_fnc_ACE_deployFastRope
 
 Description:
-    An edit of KISKA_fnc_ACE_deployFastRope to allow for custom drop of units.
+    An edit of the ACE function to allow for custom drop of units.
 
 Parameters:
     0: _vehicle <OBJECT> - The vehicle to fastrope from

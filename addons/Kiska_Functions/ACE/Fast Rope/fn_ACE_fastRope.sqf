@@ -8,9 +8,9 @@ Description:
 
 Parameters:
 	0: _vehicle <OBJECT> - The vehicle to fastrope from
-    1: _dropPosition <ARRAY> - The positionASL to drop the units off at; Z coordinate
+    1: _dropPosition <ARRAY or OBJECT> - The positionASL to drop the units off at; Z coordinate
         matters
-    2: _unitsToDeploy <ARRAY> - An array of units to drop from the _vehicle.
+    2: _unitsToDeploy <ARRAY, GROUP, or OBJECT> - An array of units to drop from the _vehicle.
     3: _afterDropCode <CODE or STRING or ARRAY> - Code to execute after the drop is complete, see KISKA_fnc_callBack
             Parameters:
                 0: _vehicle - The drop vehicle
