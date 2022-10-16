@@ -2,7 +2,7 @@
 Function: KISKA_fnc_supportManager_openDialog
 
 Description:
-    Opens KISKA Group Changer dialog.
+    Opens KISKA Support Manager dialog.
 
 Parameters:
     NONE
