@@ -34,8 +34,7 @@ Parameters:
             5: _snapToRange <NUMBER>
             6: _fallbackFunction <CODE, ARRAY, or STRING>
             7: _animationMap <HASHMAP or CONFIG>
-
-	5: _animationMap <HASHMAP or CONFIG> - See KISKA_fnc_ambientAnim_createMapFromConfig
+	6: _animationMap <HASHMAP or CONFIG> - See KISKA_fnc_ambientAnim_createMapFromConfig
         This is a hashmap that will searched for information for a specific _animSet
         _animset. A config can be passed and will be parsed/cached.
 
