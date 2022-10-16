@@ -45,7 +45,7 @@ waitUntil {
 [
 	[
 		"Group Manager GUI",
-		"<execute expression='call KISKA_fnc_openGCHDialog;'>Open Group Changer Dialog</execute>"
+		"<execute expression='call KISKA_fnc_GCH_openDialog;'>Open Group Changer Dialog</execute>"
 	]
 ] call KISKA_fnc_addKiskaDiaryEntry;
 

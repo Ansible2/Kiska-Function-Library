@@ -76,7 +76,7 @@ class CfgFunctions
 			{};
 			class GCHOnLoad_sideGroupsList
 			{};
-			class openGCHDialog
+			class GCH_openDialog
 			{};
 		};
 	};
