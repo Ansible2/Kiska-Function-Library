@@ -2,7 +2,7 @@
 Function: KISKA_fnc_GCH_openDialog
 
 Description:
-    Remotely sets a leader of a group from the server. (Must be run on the server)
+    Opens KISKA Group Changer dialog.
 
 Parameters:
     NONE
