@@ -20,7 +20,7 @@ Parameters:
 	0: _config <CONFIG> - A config to parse into a hashmap
 
 Returns:
-    <HASHMAP> -  A map of the animation sets and their properties.
+    <HASHMAP> - A map of the animation sets and their properties.
 
 Examples:
     (begin example)

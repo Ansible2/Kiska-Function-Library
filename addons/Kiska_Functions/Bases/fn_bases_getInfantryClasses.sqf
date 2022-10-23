@@ -21,7 +21,7 @@ Examples:
                 missionConfigFile >> "KISKA_Bases" >> "myBase" >> "Infantry",
                 missionConfigFile >> "KISKA_Bases" >> "myBase" >> "Infantry" >> "myInfantryClass"
             ]
-        ] call KISKA_fnc_bases_createFromConfig_infantry;
+        ] call KISKA_fnc_bases_getInfantryClasses;
     (end)
 
 Author:

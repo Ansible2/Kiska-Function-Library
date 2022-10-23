@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_bases_getInfantryClasses
+Function: KISKA_fnc_bases_getSide
 
 Description:
 	Selects the most specific config's infantryClasses property and returns its
@@ -20,7 +20,7 @@ Examples:
                 missionConfigFile >> "KISKA_Bases" >> "myBase" >> "Infantry",
                 missionConfigFile >> "KISKA_Bases" >> "myBase" >> "Infantry" >> "myInfantryClass"
             ]
-        ] call KISKA_fnc_bases_createFromConfig_infantry;
+        ] call KISKA_fnc_bases_getSide;
     (end)
 
 Author:

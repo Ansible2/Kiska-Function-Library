@@ -8,7 +8,7 @@ Parameters:
     0: _baseConfig <CONFIG> - The config path of the base config
 
 Returns:
-    <HASHMAP> - a hashmap containing data abou the base:
+    <HASHMAP> - a hashmap containing data about the base:
         "unit list": <ARRAY of OBJECTs> - All spawned units (includes turret units)
         "group list": <ARRAY of GROUPs> - All spawned groups (does NOT include turret units)
         "turret gunners": <ARRAY of OBJECTs> - All turret units
