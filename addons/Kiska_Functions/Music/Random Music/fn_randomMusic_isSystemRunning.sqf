@@ -23,6 +23,7 @@ scriptName "KISKA_fnc_randomMusic_isSystemRunning";
 
 if (!isServer) then {
     ["The random music system only runs on the server",true] call KISKA_fnc_log;
+	false
 };
 
 

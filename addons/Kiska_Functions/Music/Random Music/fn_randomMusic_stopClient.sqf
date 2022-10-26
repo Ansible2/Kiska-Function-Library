@@ -13,9 +13,7 @@ Returns:
 
 Examples:
     (begin example)
-
 		call KISKA_fnc_randomMusic_stopClient;
-
     (end)
 
 Author(s):

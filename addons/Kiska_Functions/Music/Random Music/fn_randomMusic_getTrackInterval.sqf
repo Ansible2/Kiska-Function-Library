@@ -29,6 +29,7 @@ scriptName "KISKA_fnc_randomMusic_getTrackInterval";
 
 if (!isServer) then {
     ["The random music system only runs on the server",true] call KISKA_fnc_log;
+    -1
 };
 
 GET_MUSIC_RANDOM_TIME_BETWEEN

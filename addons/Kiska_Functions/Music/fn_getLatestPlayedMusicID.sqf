@@ -17,7 +17,7 @@ Returns:
 
 Examples:
     (begin example)
-		call KISKA_fnc_getLatestPlayedMusicID;
+		private _id = call KISKA_fnc_getLatestPlayedMusicID;
     (end)
 
 Author(s):

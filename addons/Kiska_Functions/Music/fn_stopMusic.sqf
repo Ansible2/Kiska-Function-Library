@@ -12,7 +12,7 @@ Returns:
 
 Examples:
     (begin example)
-		call KISKA_fnc_stopMusic;
+		[] spawn KISKA_fnc_stopMusic;
     (end)
 
 Author(s):

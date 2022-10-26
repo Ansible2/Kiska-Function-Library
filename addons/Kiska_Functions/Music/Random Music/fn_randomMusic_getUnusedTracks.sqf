@@ -23,6 +23,7 @@ scriptName "KISKA_fnc_randomMusic_getUnusedTracks";
 
 if (!isServer) then {
     ["The random music system only runs on the server",true] call KISKA_fnc_log;
+	[]
 };
 
 GET_MUSIC_RANDOM_UNUSED_TRACKS

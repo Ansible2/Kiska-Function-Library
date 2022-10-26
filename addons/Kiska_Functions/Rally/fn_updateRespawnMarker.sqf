@@ -6,7 +6,7 @@ Description:
 
 Parameters:
 	0: _caller <OBJECT> - The person calling the respawn update action
-	1: _marker <MARKER/STRING> - The old marker to delete
+	1: _marker <MARKER> - The old marker to delete
 	2: _markerText <STRING> - The text of the new marker
 
 Returns:

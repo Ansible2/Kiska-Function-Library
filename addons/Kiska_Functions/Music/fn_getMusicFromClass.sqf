@@ -8,7 +8,7 @@ Parameters:
 	0: _musicClass <STRING> - a class of music to search for (e.g. "stealth")
 
 Returns:
-	<ARRAY> - list of tracks from class
+	<ARRAY> - list of tracks names from the class
 
 Examples:
     (begin example)
