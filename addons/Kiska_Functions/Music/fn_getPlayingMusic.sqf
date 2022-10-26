@@ -13,7 +13,7 @@ Returns:
 
 Examples:
     (begin example)
-		call KISKA_fnc_getPlayingMusic;
+		private _track = call KISKA_fnc_getPlayingMusic;
     (end)
 
 Author(s):

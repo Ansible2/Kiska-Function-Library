@@ -13,15 +13,15 @@ Parameters:
 	3: _intensity <NUMBER> - Value between 1-5 that determines how frequent these sounds are played (5 being the fastest)
 
 Returns:
-	NOTHING
+	<NUMBER> - The Handler ID for stopping the sound with KISKA_fnc_stopBattleSound
 
 Examples:
     (begin example)
-		[player,20,10] spawn KISKA_fnc_battleSound;
+		[player,20,10] call KISKA_fnc_battleSound;
     (end)
 	(begin example)
 		// distance will be between 10-30m, leaning towards 20m
-		[player,[10,20,30],10] spawn KISKA_fnc_battleSound;
+		[player,[10,20,30],10] call KISKA_fnc_battleSound;
     (end)
 
 Author(s):

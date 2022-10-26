@@ -10,7 +10,8 @@ Parameters:
         writer would put inside of their code as arguements that will always be passed
         in the _this magic variable
 	1: _callBackFunction <CODE, STRING, ARRAY> - Code to call, compile and call, and/or
-        arguements to pass to the code (in _thisArgs variable)
+        arguements to pass to the code (in _thisArgs variable). Array is formatted as
+        [<args array>,code or string (to compile)]
     2: _runInScheduled <BOOL> - Spawns the code in a scheduled thread
 
 Returns:
