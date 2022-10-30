@@ -17,7 +17,7 @@ Returns:
 
 Examples:
     (begin example)
-		[target_1] spawn KISKA_fnc_cruiseMissileStrike;
+		[target_1] call KISKA_fnc_cruiseMissileStrike;
     (end)
 
 Authors:

@@ -15,7 +15,7 @@ Parameters:
     (OPTIONAL)
     2: _taskState <STRING, BOOL, or configNull> - The state of the task, will overwrite config entry
     3: _destination <OBJECT, ARRAY, or configNull> The position of the task. Array can be either
-        [x,y,z] or [OBJECT,precision]. The destination can be a configed array, however, this will
+        [x,y,z] or [OBJECT,precision] (see setSimpleTaskTarget). The destination can be a configed array, however, this will
         overwrite it if provided here.
     4: _type <STRING or configNull> - The task type (defined in CfgTaskTypes)
     5: _notifyOnCreate <BOOL or configNull> - Should a notification pop up when the task is created?

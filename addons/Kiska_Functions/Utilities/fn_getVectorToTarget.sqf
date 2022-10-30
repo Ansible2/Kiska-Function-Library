@@ -8,8 +8,8 @@ Description:
      setVector commands.
 
 Parameters:
-	0: _object : <OBJECT,ARRAY> - The object to set the vectors of or its ASL position
-	1: _target : <OBJECT,ARRAY> - The target to angle towards or its ASL position
+	0: _object : <OBJECT, ARRAY> - The object to set the vectors of or its ASL position
+	1: _target : <OBJECT, ARRAY> - The target to angle towards or its ASL position
 
 Returns:
 	<ARRAY> - An array of arrays formatted as [directionVector,upVector]

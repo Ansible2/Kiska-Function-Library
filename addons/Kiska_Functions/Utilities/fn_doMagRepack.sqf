@@ -13,9 +13,7 @@ Returns:
 
 Examples:
     (begin example)
-
 		[player] call KISKA_fnc_doMagRepack;
-
     (end)
 
 Author(s):

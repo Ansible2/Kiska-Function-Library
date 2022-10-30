@@ -23,6 +23,11 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_monitorFPS";
 
+if (!canSuspend) exitWith {
+    ["Must be run in scheduled evnironment, exiting to scheduled...",true] call KISKA_fnc_log;
+    _this spawn KISKA_fnc_monitorFPS;
+};
+
 params [
     ["_duration",60,[123]],
     ["_frequency",0.1,[123]],
@@ -57,3 +62,6 @@ _average = _average / (count _fpsArray);
 private _printOut = "FPS Test has ended: AVERAGE: " + str _average + " MAX: " + str _high + " MIN: " + str _low;
 hint _printOut;
 diag_log _printOut;
+
+
+nil

@@ -15,11 +15,11 @@ Parameters:
         (this is only needed in the event that the task is ended without it having been created)
 
 Returns:
-	<STRING> - Task id
+	<BOOL> - Whether or not the state of the task was set to the desired one
 
 Examples:
     (begin example)
-		["mytaskID",0] call KISKA_fnc_endTask;
+		private _taskIsSucceeded = ["mytaskID",0] call KISKA_fnc_endTask;
     (end)
 
 Author(s):

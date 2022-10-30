@@ -55,7 +55,7 @@ Description:
 		[
 			{
 				hint "executed event #1";
-				time + 3 // return/send to next and current wait condition
+				time + 3 // return/send to the next event and current wait condition
 			},
 			{
 				params ["","","","_eventReturn"];

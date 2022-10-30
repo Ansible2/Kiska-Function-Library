@@ -11,8 +11,8 @@ Parameters:
 	2: _silent <BOOL> - true for silent hint
 
 Returns:
-	NOTHING
-
+	<DIARY-RECORD> - The created diary record.
+	
 Examples:
     (begin example)
 		["this is the message", "Subject"] call KISKA_fnc_hintDiary;
@@ -48,9 +48,10 @@ if (_silent) then {
 
 [["Chronological Hint List","- " + _hintText]] call KISKA_fnc_addKiskaDiaryEntry;
 
+private _diaryRecord = diaryRecordNull;
 if (_subject isNotEqualTo "") then {
-	[[_subject,"- " + _hintText]] call KISKA_fnc_addKiskaDiaryEntry;
+	_diaryRecord = [[_subject,"- " + _hintText]] call KISKA_fnc_addKiskaDiaryEntry;
 };
 
 
-nil
+_diaryRecord

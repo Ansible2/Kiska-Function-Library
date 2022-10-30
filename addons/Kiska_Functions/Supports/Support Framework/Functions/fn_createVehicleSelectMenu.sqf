@@ -15,7 +15,9 @@ Returns:
 
 Examples:
     (begin example)
-		_menuArray = [["B_Heli_Transport_01_F","B_Heli_Attack_01_dynamicLoadout_F"]] call KISKA_fnc_createClassSelectMenu;
+		_menuArray = [
+			["B_Heli_Transport_01_F","B_Heli_Attack_01_dynamicLoadout_F"]
+		] call KISKA_fnc_createClassSelectMenu;
     (end)
 
 Author(s):

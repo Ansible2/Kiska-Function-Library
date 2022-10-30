@@ -1,9 +1,8 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_getVariableTarget
+Function: KISKA_fnc_getVariableTarget_sendBack
 
 Description:
 	The send back component of KISKA_fnc_getVariableTarget that is executed on the target.
-
 	Shouldn't be called on its own.
 
 Parameters:
@@ -18,7 +17,13 @@ Returns:
 
 Examples:
     (begin example)
-		[_namespace,_variableName,_saveVariable,_defaultValue,clientOwner] remoteExecCall ["KISKA_fnc_getVariableTarget_sendBack",_target];
+		[
+			_namespace,
+			_variableName,
+			_saveVariable,
+			_defaultValue,
+			clientOwner
+		] remoteExecCall ["KISKA_fnc_getVariableTarget_sendBack",_target];
     (end)
 
 Author(s):
