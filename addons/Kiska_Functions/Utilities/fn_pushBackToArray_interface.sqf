@@ -17,7 +17,11 @@ Returns:
 
 Examples:
     (begin example)
-		["myGlobalArrayVar",someInfoHere,missionNamespace] call KISKA_fnc_pushBackToArray_interface;
+		[
+			"myGlobalArrayVar",
+			someInfoHere,
+			missionNamespace
+		] call KISKA_fnc_pushBackToArray_interface;
     (end)
 
 Author(s):

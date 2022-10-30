@@ -15,6 +15,7 @@ Parameters:
 	0: _code <STRING> - The command to execute on the target machine
 	1: _defaultValue : <ANY> - If the variable does not exist for the target, what should be returned instead
 	2: _target : <NUMBER, OBJECT, or STRING> - The target to execute the _code on
+	3: _scheduled : <BOOL> - Should _code be run in a scheduled environment (on target machine)
 
 Returns:
 	<ANY> - Whatever the code returns

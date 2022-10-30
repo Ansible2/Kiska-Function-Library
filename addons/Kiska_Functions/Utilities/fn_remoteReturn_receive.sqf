@@ -18,7 +18,13 @@ Returns:
 Examples:
 	// called specifically from KISKA_fnc_remoteReturn_send
     (begin example)
-        [_code,_args,_scheduled,_uniqueId,clientOwner] remoteExecCall ["KISKA_fnc_remoteReturn_receive",_target];
+        [
+			_code,
+			_args,
+			_scheduled,
+			_uniqueId,
+			clientOwner
+		] remoteExecCall ["KISKA_fnc_remoteReturn_receive",_target];
     (end)
 
 Author:

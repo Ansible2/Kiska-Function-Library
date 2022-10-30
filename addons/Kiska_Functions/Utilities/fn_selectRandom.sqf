@@ -21,6 +21,7 @@ Examples:
             "thing2"
         ]] call KISKA_fnc_selectRandom;
     (end)
+    
     (begin example)
         private _weight1 = 0.5;
         private _weight2 = 0.5;

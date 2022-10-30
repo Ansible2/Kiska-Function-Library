@@ -5,7 +5,7 @@ Description:
 	Returns a random index of an array ~2x faster than BIS_fnc_randomIndex;
 
 Parameters:
-	0: _radio <ARRAY> - The array to find a random index of.
+	0: _array <ARRAY> - The array to find a random index of.
 
 Returns:
 	<NUMBER> - The random index
