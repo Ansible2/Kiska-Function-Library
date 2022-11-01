@@ -13,7 +13,6 @@ Description:
 		executed, the aircraft will ignore all commands and attempt to pickup those units
 		that were dropped.
 
-
 Parameters:
 	0: _aircraft <OBJECT> - The aircraft to drop units from
 	1: _dropArray <ARRAY, GROUP, OBJECT> - Units to drop. If array, can be groups and/or objects (example 2)
@@ -24,11 +23,11 @@ Returns:
 
 Examples:
     (begin example)
-		[group1] call KISKA_fnc_staticLine;
+		[plane,group] spawn KISKA_fnc_staticLine;
     (end)
 
 	(begin example)
-		[[group1,unit2]] call KISKA_fnc_staticLine;
+		[plane,[group1,unit2]] spawn KISKA_fnc_staticLine;
     (end)
 
 Author:

@@ -6,7 +6,7 @@ Description:
 	Adds an entry into the global trait manager pool.
 
 Parameters:
-	0: _entryToAdd <STRING or ARRAY> - The trait to add
+	0: _entryToAdd <STRING> - The trait to add
 
 Returns:
 	NOTHING
