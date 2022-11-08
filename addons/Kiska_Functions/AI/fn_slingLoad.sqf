@@ -12,7 +12,9 @@ Parameters:
         This is saved to the pilot's namespace in "KISKA_postSlingLoadCode" which is deleted after
         it is called. (See KISKA_fnc_callBack)
             Parmeters:
-                0: <OBJECT> - The pilot of the helicopter
+
+                0. <OBJECT> - The pilot of the helicopter
+                
     4: _flightPath : <ARRAY> - An array of sequential positions (<ARRAY, OBJECT, LOCATION, or GROUP>)
         the aircraft must travel prior to droping off the _liftObject
 

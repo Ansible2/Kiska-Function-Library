@@ -15,9 +15,10 @@ Parameters:
         Must return a boolean that denotes whether to execute default functionality that happens
         with the event (see KISKA_fnc_bases_triggerReaction).
         PARAMS:
-            0: <GROUP> - The group the event is triggering for
-            1: <ARRAY> - An array of GROUPs that can respond to the call (based on _canCallIds)
-            1: <NUMBER> - The same _priority
+
+            0. <GROUP> - The group the event is triggering for
+            1. <ARRAY> - An array of GROUPs that can respond to the call (based on _canCallIds)
+            2. <NUMBER> - The same _priority
 
 Returns:
     <NUMBER> - The event id of the combatBehaviour eventhandler
