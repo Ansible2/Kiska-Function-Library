@@ -17,7 +17,7 @@ Parameters:
         the aircraft must travel prior to droping off the _liftObject
 
 Returns:
-	<ARRAY> -
+    <ARRAY> -
         0: <OBJECT> - The pilot
         1: <GROUP> - Pilot's group
         2: <ARRAY> - Generated waypoints

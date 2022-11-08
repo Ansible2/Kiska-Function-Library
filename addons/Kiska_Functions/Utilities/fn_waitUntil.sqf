@@ -12,8 +12,8 @@ Parameters:
 	1: _function <CODE, STRING, or ARRAY> - The code to execute upon condition being reached.
 		(See KISKA_fnc_callBack)
 	2: _interval <NUMBER> - How often to check the condition
-	3. _parameters <ARRAY> - An array of local parameters that can be accessed with _this
-	4. _unscheduled <BOOL> - Run in unscheduled environment
+	3: _parameters <ARRAY> - An array of local parameters that can be accessed with _this
+	4: _unscheduled <BOOL> - Run in unscheduled environment
 
 Returns:
 	NOTHING
