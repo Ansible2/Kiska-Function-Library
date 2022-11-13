@@ -5,7 +5,7 @@ Description:
 	On selected objects, will disable simulation and hide the object or the reverse.
 
 Parameters:
-	0: _objects <ARRAY, GROUP, or OBJECT> - Units to show or hide
+	0: _objects <ARRAY, GROUP, STRING, or OBJECT> - Units to show or hide, if string, it is a mission layer
 	1: _show <BOOL> - True to show and simulate, false to hide and disable simulation
 	2: _enableDynamicSim <BOOL> - Should the object be dynamically simulated after shown
 
@@ -28,7 +28,7 @@ if !(isServer) exitWith {
 };
 
 params [
-	["_objects",[],[[],grpNull,objNull]],
+	["_objects",[],[[],grpNull,objNull,""]],
 	["_show",true,[true]],
 	["_enableDynamicSim",false,[true]]
 ];
@@ -45,6 +45,10 @@ if (_objects isEqualType objNull) then {
 if (_objects isEqualType grpNull) then {
 	_objects = units _objects;
 };
+
+if (_objcects isEqualType "") then {
+	_objects = getMissionLayerEntities _objects;
+}
 
 _objects apply {
 	if (!(isNull _x) OR {!(alive _x)}) then {
