@@ -133,7 +133,7 @@ _simplesConfigClasses apply {
     if (_positions isEqualType "") then {
         private _layerObjects = [_positions] call KISKA_fnc_getMissionLayerObjects;
         _positions = _layerObjects apply {
-            private _position = getPosASL _x;
+            private _position = getPosASL _x; // TODO: This may need to be positions world?
             _position pushBack (getDir _x);
 
             _position
