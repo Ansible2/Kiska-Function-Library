@@ -2,7 +2,7 @@
 Function: KISKA_fnc_callBack
 
 Description:
-	Standerdizes a meanes of passing a callback function to another function
+	Standerdizes a means of passing a callback function to another function
     along with custom arguments.
 
 Parameters:
