@@ -24,7 +24,7 @@ Returns:
 Examples:
 	(begin example)
 		Every 3 seconds, check
-		[45,3,500,1700,3000,25] spawn KISKA_fnc_viewDistanceLimiter;
+		[45,3,500,1700,25,3000] spawn KISKA_fnc_viewDistanceLimiter;
 	(end)
 
 Author(s):
