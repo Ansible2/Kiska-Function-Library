@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_GCH_setLeaderButton
+Function: KISKA_fnc_GCHOnLoad_setLeaderButton
 
 Description:
 	The function that fires on the set leader button click event.
@@ -14,14 +14,14 @@ Returns:
 
 Examples:
     (begin example)
-        call KISKA_fnc_GCH_setLeaderButton;
+       	[buttonControl] call KISKA_fnc_GCHOnLoad_setLeaderButton;
     (end)
 
 Author:
 	Ansible2
 ---------------------------------------------------------------------------- */
 disableSerialization;
-scriptName "KISKA_fnc_GCH_setLeaderButton";
+scriptName "KISKA_fnc_GCHOnLoad_setLeaderButton";
 
 if !(hasInterface) exitWith {};
 

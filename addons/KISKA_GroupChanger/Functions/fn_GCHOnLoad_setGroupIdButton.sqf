@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_GCH_setGroupIdButton
+Function: KISKA_fnc_GCHOnLoad_setGroupIdButton
 
 Description:
 	The function that fires on the set group id button click event.
@@ -14,14 +14,14 @@ Returns:
 
 Examples:
     (begin example)
-        call KISKA_fnc_GCH_setGroupIdButton;
+        [buttonControl] call KISKA_fnc_GCHOnLoad_setGroupIdButton;
     (end)
 
 Author:
 	Ansible2
 ---------------------------------------------------------------------------- */
 disableSerialization;
-scriptName "KISKA_fnc_GCH_setGroupIdButton";
+scriptName "KISKA_fnc_GCHOnLoad_setGroupIdButton";
 
 if !(hasInterface) exitWith {};
 

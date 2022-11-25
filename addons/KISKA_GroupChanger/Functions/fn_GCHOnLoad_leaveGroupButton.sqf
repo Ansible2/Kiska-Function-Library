@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_GCH_leaveGroupButton
+Function: KISKA_fnc_GCHOnload_leaveGroupButton
 
 Description:
 	The function that fires on the leave group button click event.
@@ -13,14 +13,14 @@ Returns:
 
 Examples:
     (begin example)
-        call KISKA_fnc_GCH_leaveGroupButton;
+        [buttonControl] call KISKA_fnc_GCHOnload_leaveGroupButton;
     (end)
 
 Author:
 	Ansible2
 ---------------------------------------------------------------------------- */
 disableSerialization;
-scriptName "KISKA_fnc_GCH_leaveGroupButton";
+scriptName "KISKA_fnc_GCHOnLoad_leaveGroupButton";
 
 if !(hasInterface) exitWith {};
 

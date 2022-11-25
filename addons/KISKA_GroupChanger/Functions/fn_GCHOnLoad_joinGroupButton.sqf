@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_GCH_joinGroupButton
+Function: KISKA_fnc_GCHOnLoad_joinGroupButton
 
 Description:
 	The function that fires on the join group button click event.
@@ -13,14 +13,14 @@ Returns:
 
 Examples:
     (begin example)
-        call KISKA_fnc_GCH_joinGroupButton;
+       [buttonControl]  call KISKA_fnc_GCHOnLoad_joinGroupButton;
     (end)
 
 Author:
 	Ansible2
 ---------------------------------------------------------------------------- */
 disableSerialization;
-scriptName "KISKA_fnc_GCH_joinGroupButton";
+scriptName "KISKA_fnc_GCHOnLoad_joinGroupButton";
 
 if !(hasInterface) exitWith {};
 

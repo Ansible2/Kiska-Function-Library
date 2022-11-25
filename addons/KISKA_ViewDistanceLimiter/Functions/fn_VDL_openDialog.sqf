@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_openVdlDialog
+Function: KISKA_fnc_VDL_openDialog
 
 Description:
 	Opens the GUI for the VDL system.
@@ -12,13 +12,13 @@ Returns:
 
 Examples:
 	(begin example)
-		call KISKA_fnc_openVdlDialog;
+		call KISKA_fnc_VDL_openDialog;
 	(end)
 
 Author(s):
 	Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_openVdlDialog";
+scriptName "KISKA_fnc_VDL_openDialog";
 
 if (!hasInterface) exitWith {false};
 
