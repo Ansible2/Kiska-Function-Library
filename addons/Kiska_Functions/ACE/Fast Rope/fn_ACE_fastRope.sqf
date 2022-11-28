@@ -10,8 +10,14 @@ Parameters:
 	0: _vehicle <OBJECT> - The vehicle to fastrope from
     1: _dropPosition <ARRAY or OBJECT> - The positionASL to drop the units off at; Z coordinate
         matters
-    2: _unitsToDeploy <ARRAY, GROUP, or OBJECT> - An array of units to drop from the _vehicle.
-    3: _afterDropCode <CODE or STRING or ARRAY> - Code to execute after the drop is complete, see KISKA_fnc_callBack
+    2: _unitsToDeploy <CODE, STRING, ARRAY, OBJECT[], GROUP, or OBJECT> - An array of units to drop from the _vehicle,
+		Or code that will run once the helicopter has reached the drop point that must return an array of object
+		(see KISKA_fnc_callBack for examples)
+		Parameters:
+
+            0. _vehicle - The drop vehicle
+
+    3: _afterDropCode <CODE, STRING or ARRAY> - Code to execute after the drop is complete, see KISKA_fnc_callBack
         Parameters:
 
             0. _vehicle - The drop vehicle
@@ -54,7 +60,7 @@ if !(["ace_fastroping"] call KISKA_fnc_isPatchLoaded) exitWith {
 params [
     ["_vehicle",objNull,[objNull]],
     ["_dropPosition",[],[[],objNull]],
-    ["_unitsToDeploy",[],[[],grpNull,objNull]],
+    ["_unitsToDeploy",[],[[],grpNull,objNull,{},""]],
     ["_afterDropCode",{},["",{},[]]],
     ["_hoverHeight",20,[123]],
     ["_ropeOrigins",[],[[]]]
@@ -74,7 +80,8 @@ if (_ropeOrigins isEqualTo []) then {
     _ropeOrigins = getArray (_config >> "ace_fastroping_ropeOrigins");
 };
 
-
+[_vehicle] call ace_fastroping_fnc_equipFRIES;
+// some vehicles may fail ace_fastroping_fnc_canPrepareFRIES if not called with ace_fastroping_fnc_equipFRIES first
 private _canEquipFRIES = [_vehicle] call ace_fastroping_fnc_canPrepareFRIES;
 if (
     !(_canEquipFRIES) AND
@@ -87,12 +94,6 @@ if (
 
     nil
 };
-
-if (_canEquipFRIES) then {
-    [_vehicle] call ace_fastroping_fnc_equipFRIES;
-};
-
-
 
 if (_dropPosition isEqualType objNull) then {
     _dropPosition = getPosASL _dropPosition;
@@ -124,7 +125,13 @@ if (_unitsToDeploy isEqualType objNull) then {
 };
 
 private _unitsToDeployFiltered = [];
-if (_unitsToDeploy isEqualType []) then {
+private _unitsToDeployIsCode = 
+	(_unitsToDeploy isEqualTypeParams [[],{}]) OR 
+	(_unitsToDeploy isEqualTypeParams [[],""]) OR
+	_unitsToDeploy isEqualType "" OR 
+	_unitsToDeploy isEqualType {};
+
+if (_unitsToDeploy isEqualType [] AND !_unitsToDeployIsCode) then {
     _unitsToDeploy apply {
         if (_x isEqualType grpNull) then {
             _unitsToDeployFiltered append (units _x);
@@ -241,9 +248,16 @@ _pilot move (ASLToATL _hoverPosition_ASL);
         }
     },
     {
-        params ["_vehicle","","_pilot","_unitsToDeploy","_afterDropCode","_ropeOrigins"];
+        params ["_vehicle","","_pilot","_unitsToDeploy","_afterDropCode","_ropeOrigins","_unitsToDeployIsCode"];
 
-        if (alive _vehicle AND (alive _pilot)) then {
+        if ((alive _vehicle) AND (alive _pilot)) then {
+			if (_unitsToDeployIsCode) then {
+				_unitsToDeploy = [
+					[_vehicle],
+					_unitsToDeploy
+				] call KISKA_fnc_callBack;
+			};
+
             [_vehicle, _unitsToDeploy, _ropeOrigins] call KISKA_fnc_ACE_deployFastRope;
 
             [_vehicle,_afterDropCode] spawn {
@@ -270,5 +284,5 @@ _pilot move (ASLToATL _hoverPosition_ASL);
         };
 
     },
-    [_vehicle,_hoverPosition_ASL,_pilot,_unitsToDeployFiltered,_afterDropCode,_ropeOrigins]
+    [_vehicle,_hoverPosition_ASL,_pilot,_unitsToDeployFiltered,_afterDropCode,_ropeOrigins,_unitsToDeployIsCode]
 ] call CBA_fnc_waitUntilAndExecute;
