@@ -417,6 +417,8 @@ class CfgFunctions
 			{};
 			class errorNotification
 			{};
+			class exportLoadouts
+			{};
 			class exportSpawnPositions
 			{};
 			class findConfigAny
