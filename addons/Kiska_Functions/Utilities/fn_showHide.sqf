@@ -48,7 +48,7 @@ if (_objects isEqualType grpNull) then {
 
 if (_objcects isEqualType "") then {
 	_objects = getMissionLayerEntities _objects;
-}
+};
 
 _objects apply {
 	if (!(isNull _x) OR {!(alive _x)}) then {
