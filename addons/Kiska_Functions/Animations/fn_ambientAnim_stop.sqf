@@ -66,7 +66,7 @@ if (_triggeredByDeletion) exitWith {};
     [_unit,_x] remoteExecCall ["enableAI",_unit];
 };
 
-[_unit,""] remoteExecCall ["swtichMove",_unit];
+[_unit,""] remoteExecCall ["swtichMove"];
 
 
 private _alive = alive _unit;
