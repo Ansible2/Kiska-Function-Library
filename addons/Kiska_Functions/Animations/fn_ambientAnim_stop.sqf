@@ -66,8 +66,6 @@ if (_triggeredByDeletion) exitWith {};
     [_unit,_x] remoteExecCall ["enableAI",_unit];
 };
 
-[_unit,""] remoteExecCall ["swtichMove"];
-
 
 private _alive = alive _unit;
 private _unitLoadoutBeforeAnimation = _ambientAnimInfoMap getOrDefault ["_unitLoadout",[]];
@@ -95,6 +93,8 @@ if (!(isNull _snapToObject) AND _alive) then {
 
 
 _unit setVariable ["KISKA_ambientAnimMap",nil];
+
+[_unit,""] remoteExecCall ["KISKA_fnc_resetMove"];
 
 
 nil

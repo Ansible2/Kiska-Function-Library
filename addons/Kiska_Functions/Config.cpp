@@ -493,6 +493,8 @@ class CfgFunctions
 			{};
 			class removeProximityPlayerAction
 			{};
+			class resetMove
+			{};
 			class selectRandom
 			{};
 			class setContainerCargo
