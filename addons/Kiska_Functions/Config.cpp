@@ -90,15 +90,19 @@ class CfgFunctions
 		class Animations
 		{
 			file = "Kiska_functions\Animations";
+			class ambientAnim
+			{};
 			class ambientAnim_createMapFromConfig
+			{};
+			class ambientAnim_getAttachToLogicGroup
 			{};
 			class ambientAnim_isAnimated
 			{};
 			class ambientAnim_play
 			{};
-			class ambientAnim_stop
+			class ambientAnim_setAttachToLogicGroup
 			{};
-			class ambientAnim
+			class ambientAnim_stop
 			{};
 		};
 		class Bases

@@ -227,12 +227,12 @@ _units apply {
         // This does alos benefit some seated animations if required.
     -------------------------------------- */
     if (_animationSetInfo getOrDefault ["attachToLogic",false]) then {
-        if (isNil "KISKA_ambientAnim_attachToLogicGroup") then {
-            private _logicGroup = createGroup sideLogic;
-            missionNamespace setVariable ["KISKA_ambientAnim_attachToLogicGroup",_logicGroup];
+        private _logicGroup = call KISKA_fnc_ambientAnim_getAttachToLogicGroup;
+        if (isNull _logicGroup) then {
+            _logicGroup = createGroup sideLogic;
+            [_logicGroup] call KISKA_fnc_ambientAnim_setAttachToLogicGroup;
         };
 
-        private _logicGroup = missionNamespace getVariable ["KISKA_ambientAnim_attachToLogicGroup",grpNull];
         private _helper = _logicGroup createUnit ["Logic", [0,0,0], [], 0, "NONE"];
         _helper setPosWorld (getPosWorld _unit);
         _helper setVectorDir (vectorDir _unit);
