@@ -68,6 +68,10 @@ class CfgFunctions
 			{};
 			class heliPatrol
 			{};
+			class initDynamicSimConfig
+			{
+				postInit = 1;
+			};
 			class lookHere
 			{};
 			class patrolSpecific
