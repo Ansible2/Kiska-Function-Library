@@ -101,7 +101,7 @@ _infantryClasses apply {
         private _fallbackFunction = getText(_animateClass >> "fallbackFunction");
 
         private _args = [
-            _agents,
+            _units,
             _animationSet,
             _combat,
             _equipmentLevel,
