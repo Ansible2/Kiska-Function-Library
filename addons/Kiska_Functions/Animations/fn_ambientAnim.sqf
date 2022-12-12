@@ -40,7 +40,7 @@ Parameters:
 
 	6: _animationMap <HASHMAP or CONFIG> - See KISKA_fnc_ambientAnim_createMapFromConfig
         This is a hashmap that will searched for information for a specific _animSet
-        _animset. A config can be passed and will be parsed/cached.
+        A config can be passed and will be parsed/cached.
 
 Returns:
     NOTHING
