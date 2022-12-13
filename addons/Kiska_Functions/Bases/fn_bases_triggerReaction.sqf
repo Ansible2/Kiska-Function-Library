@@ -101,10 +101,15 @@ if (_preventDefault) exitWith {};
     private _groupRespondingToId = _group getVariable ["KISKA_bases_respondingToId",""];
     private _groupIsAlsoResponding = _groupRespondingToId isNotEqualTo "";
     private _groupReinforceId = _group getVariable ["KISKA_bases_reinforceId",""];
+    private _groupToStalk = group _closestEnemy;
 
     _groupsToRespond apply {
         private _currentMissionPriority = _x getVariable ["KISKA_bases_responseMissionPriority",-1];
-        if (_currentMissionPriority > _priority) then {
+        private _currentlyStalkedGroup = _x getVariable ["KISKA_bases_stalkingGroup",grpNull];
+        if (
+            (_currentMissionPriority > _priority) OR 
+            (!(isNull _currentlyStalkedGroup) AND (_groupToStalk isEqualTo _currentlyStalkedGroup))
+        ) then {
             continue;
         };
 
@@ -147,11 +152,13 @@ if (_preventDefault) exitWith {};
 
         // some time is needed after reseting units with doFollow or they will lock up
         sleep 1;
-
-        [_x, group _closestEnemy, 15, {
+        
+        _x setVariable ["KISKA_bases_stalkingGroup",_groupToStalk];
+        [_x, _groupToStalk, 15, {
             params ["_stalkerGroup"];
             _stalkerGroup setVariable ["KISKA_bases_responseMissionPriority", nil];
             _stalkerGroup setVariable ["KISKA_bases_respondingToId", nil];
+            _stalkerGroup setVariable ["KISKA_bases_stalkingGroup", nil];
         }] spawn KISKA_fnc_stalk;
 
         _x setVariable ["KISKA_bases_responseMissionPriority",_priority];
