@@ -107,17 +107,6 @@ if (_preventDefault) exitWith {};
     _groupsToRespond apply {
         private _currentMissionPriority = _x getVariable ["KISKA_bases_responseMissionPriority",-1];
         private _currentlyStalkedGroup = _x getVariable ["KISKA_bases_stalkingGroup",grpNull];
-        [
-            [
-                "should skip: ",(!(isNull _currentlyStalkedGroup) AND (_groupToStalk isEqualTo _currentlyStalkedGroup))
-            ]
-        ] call KISKA_fnc_log;
-        [
-            [
-                "_currentlyStalkedGroup: ",_currentlyStalkedGroup,
-                "_groupToStalk: ",_groupToStalk
-            ]
-        ] call KISKA_fnc_log;
 
         if (
             (_currentMissionPriority > _priority) OR 
@@ -168,14 +157,6 @@ if (_preventDefault) exitWith {};
         // some time is needed after reseting units with doFollow or they will lock up
         sleep 1;
         
-        [
-            [
-                "group: ",_x,
-                " was told to stalk: ", _groupToStalk,
-                " by: ", _group
-            ],
-            false
-        ] call KISKA_fnc_log;
         [_x, _groupToStalk, 15, {
             params ["_stalkerGroup"];
             _stalkerGroup setVariable ["KISKA_bases_responseMissionPriority", nil];
