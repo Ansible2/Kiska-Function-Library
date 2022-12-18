@@ -38,30 +38,29 @@ if !(isNil "_eventMap") exitWith {
 	_eventMap
 };
 
-// as a player, I want new groups that are filled with only ai to be automatically excluded
-// but groups created with only players to be NOT excluded by default
+
 private _unitJoinedGroup_eventId = _group addEventHandler ["UnitJoined", {
-	params ["_group", "_newUnit"];
-	if !(isNull _group) then {
-		private _isExcluded = [_group] call KISKA_fnc_GCH_isGroupExcluded;
+	params ["_joinedGroup","_unitThatJoined"];
+	
+	private _selectedGroup = [] call KISKA_fnc_GCH_getSelectedGroup;
+	if (_joinedGroup isEqualTo _selectedGroup) then {
+		[true] call KISKA_fnc_GCH_updateCurrentGroupSection;
+	};
 
-		private _onlyOneUnitInGroup = (count (units _group)) isEqualTo 1;
-		private _isNewGroupWithPlayer = _onlyOneUnitInGroup AND (isPlayer _newUnit);
+	if (_unitThatJoined isEqualTo player) then {
+		private _joinedGroupIsExcluded = [_joinedGroup] call KISKA_fnc_GCH_isGroupExcluded;
+		if (!_joinedGroupIsExcluded) exitWith {};
 
-		if (_isNewGroupWithPlayer AND _isExcluded) then {
-			[_group,false] call KISKA_fnc_GCH_setGroupExcluded;
-		};
+		private _joinedGroupAlreadyHasPlayer = [group player] call KISKA_fnc_GCH_doesGroupHaveAnotherPlayer;
+		if (_joinedGroupAlreadyHasPlayer) exitWith {};
 
-		private _selectedGroup = [] call KISKA_fnc_GCH_getSelectedGroup;
-		if (_group isEqualTo _selectedGroup) then {
-			[true] call KISKA_fnc_GCH_updateCurrentGroupSection;
-		};
+		[_joinedGroup,false,true] call KISKA_fnc_GCH_setGroupExcluded;
 	};
 }];
 
 
 private _unitLeftGroup_eventId = _group addEventHandler ["UnitLeft", {
-	params ["_group", "_oldUnit"];
+	params ["_group", "_unitThatLeft"];
 
 	if !(isNull _group) then {
 		private _selectedGroup = [] call KISKA_fnc_GCH_getSelectedGroup;
@@ -80,7 +79,7 @@ private _groupIdChanged_eventId = _group addEventHandler ["GroupIdChanged", {
 			[false,false,true] call KISKA_fnc_GCH_updateCurrentGroupSection;
 		};
 
-		[] call KISKA_fnc_GCH_updateSideGroupsList;
+		[false] call KISKA_fnc_GCH_updateSideGroupsList;
 	};
 }];
 
@@ -96,9 +95,7 @@ private _groupLeaderChanged_eventId = _group addEventHandler ["LeaderChanged", {
 }];
 
 private _groupEmpty_eventId = _group addEventHandler ["Empty", {
-	params ["_group"];
-
-
+	// params ["_group"];
 }];
 
 
