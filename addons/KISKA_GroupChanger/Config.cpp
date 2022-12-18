@@ -32,6 +32,12 @@ class CfgFunctions
 			{};
 			class GCH_assignTeam
 			{};
+			class GCH_dontExcludePlayerGroupDefault
+			{
+				postInit = 1;
+			};
+			class GCH_doesGroupHaveAnotherPlayer
+			{};
 			class GCH_getSideGroups
 			{};
 			class GCH_getSelectedGroup
