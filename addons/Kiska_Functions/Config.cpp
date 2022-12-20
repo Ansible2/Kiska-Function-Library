@@ -132,6 +132,8 @@ class CfgFunctions
 			{};
 			class bases_getSide
 			{};
+			class bases_initReinforceFromClass
+			{};
 			class bases_triggerReaction
 			{};
 			class bases_setupReactivity

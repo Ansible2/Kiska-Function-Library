@@ -50,7 +50,8 @@ private _turretClasses = configProperties [_turretsConfig,"isClass _x"];
 
 ---------------------------------------------------------------------------- */
 _turretClasses apply {
-    private _turrets = (_x >> "turrets") call BIS_fnc_getCfgData;
+    private _turretConfig = _x;
+    private _turrets = (_turretConfig >> "turrets") call BIS_fnc_getCfgData;
     if (_turrets isEqualType "") then {
         _turrets = [_turrets] call KISKA_fnc_getMissionLayerObjects;
 
@@ -64,28 +65,29 @@ _turretClasses apply {
     };
 
     if (_turrets isEqualTo []) then {
-        [["Found no turrets for KISKA base class: ",_x], true] call KISKA_fnc_log;
+        [["Found no turrets for KISKA base class: ",_turretConfig], true] call KISKA_fnc_log;
         continue;
     };
 
-    private _unitClasses = [[_x,_baseConfig,_turretsConfig]] call KISKA_fnc_bases_getInfantryClasses;
-    private _side = [[_x,_baseConfig,_turretsConfig]] call KISKA_fnc_bases_getSide;
+    private _unitClasses = [
+        [_turretConfig,_baseConfig,_turretsConfig]
+    ] call KISKA_fnc_bases_getInfantryClasses;
 
-    private _enableDynamicSim = [_x >> "dynamicSim"] call BIS_fnc_getCfgDataBool;
-    private _excludeFromHeadlessTransfer = [_x >> "excludeHCTransfer"] call BIS_fnc_getCfgDataBool;
+    private _side = [
+        [_turretConfig,_baseConfig,_turretsConfig]
+    ] call KISKA_fnc_bases_getSide;
 
-    private _onUnitCreated = compile getText(_x >> "onUnitCreated");
-    private _onUnitMovedInGunner = compile getText(_x >> "onUnitMovedInGunner");
+    private _enableDynamicSim = [_turretConfig >> "dynamicSim"] call BIS_fnc_getCfgDataBool;
+    private _excludeFromHeadlessTransfer = [_turretConfig >> "excludeHCTransfer"] call BIS_fnc_getCfgDataBool;
 
-    private ["_group","_unit","_unitClass"];
-    private _reinforceClass = _x >> "reinforce";
+    private _onUnitCreated = compile getText(_turretConfig >> "onUnitCreated");
+    private _onUnitMovedInGunner = compile getText(_turretConfig >> "onUnitMovedInGunner");
+
+    private _reinforceClass = _turretConfig >> "reinforce";
     _turrets apply {
-        _group = createGroup _side;
-
-        _unitClass = [_unitClasses,""] call KISKA_fnc_selectRandom;
-
-        _unit = _group createUnit [_unitClass,[0,0,0],[],0,"NONE"];
-
+        private _group = createGroup _side;
+        private _unitClass = [_unitClasses,""] call KISKA_fnc_selectRandom;
+        private _unit = _group createUnit [_unitClass,[0,0,0],[],0,"NONE"];
         [_group,_excludeFromHeadlessTransfer] call KISKA_fnc_ACEX_setHCTransfer;
 
 
@@ -114,23 +116,8 @@ _turretClasses apply {
         _base_unitList pushBack _unit;
         _base_groupList pushBack _group;
 
-        /* -------------------------------------------
-            Reinforce Class
-        ------------------------------------------- */
-        if (isNull _reinforceClass) then {
-            continue;
-        };
-        private _reinforceId = (_reinforceClass >> "id") call BIS_fnc_getCfgData;
-        private _canCallIds = getArray(_reinforceClass >> "canCall");
-        private _reinforcePriority = getNumber(_reinforceClass >> "priority");
-        private _onEnteredCombat = getText(_reinforceClass >> "onEnteredCombat");
-        [
-            _group,
-            _reinforceId,
-            _canCallIds,
-            _reinforcePriority,
-            _onEnteredCombat
-        ] call KISKA_fnc_bases_setupReactivity;
+        if (isNull _reinforceClass) then { continue; };
+        [_group,_turretConfig] call KISKA_fnc_bases_initReinforceFromClass;
     };
 
 };

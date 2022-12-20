@@ -162,25 +162,8 @@ _patrolClasses apply {
     _base_unitList append _units;
     _base_patrolUnits append _units;
 
-    /* -------------------------------------------
-        Reinforce Class
-    ------------------------------------------- */
-    private _reinforceClass = _x >> "reinforce";
-    if (isNull _reinforceClass) then {
-        continue;
-    };
-
-    private _reinforceId = (_reinforceClass >> "id") call BIS_fnc_getCfgData;
-    private _canCallIds = getArray(_reinforceClass >> "canCall");
-    private _reinforcePriority = getNumber(_reinforceClass >> "priority");
-    private _onEnteredCombat = getText(_reinforceClass >> "onEnteredCombat");
-    [
-        _group,
-        _reinforceId,
-        _canCallIds,
-        _reinforcePriority,
-        _onEnteredCombat
-    ] call KISKA_fnc_bases_setupReactivity;
+    if (isNull (_x >> "reinforce")) then { continue; };
+    [_group,_x] call KISKA_fnc_bases_initReinforceFromClass;
 };
 
 
