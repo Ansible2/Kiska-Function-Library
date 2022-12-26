@@ -71,7 +71,7 @@ scriptName "KISKA_fnc_ambientAnim";
 // TODO: Add LEAN_ON_TABLE animation set
 
 #define DEFAULT_ANIMATION_MAP (configFile >> "KISKA_AmbientAnimations")
-isEqual
+
 params [
     ["_units",objNull,[[],objNull]],
 	["_animationParams","",["",[]]],
@@ -143,19 +143,31 @@ if (_animationMapIsConfig) then {
 };
 
 
-private _randomAnimSet = _animSet isEqualType [];
+private _animSetIsArray = _animSet isEqualType [];
 private _randomEquipmentLevel = _equipmentLevel isEqualType [];
 
 
 private _setsToVerify = _animSet;
-if (!_randomAnimSet) then {
-	_setsToVerify = [_animSet]
+if (!_animSetIsArray) then {
+	_setsToVerify = [_animSet];
+    if (_isSnapAnimations) then {
+        _animSet = _setsToVerify;
+        _animSetIsArray = true;
+    };
 };
 
 private _invalidSets = [];
 _setsToVerify apply {
-	if (_animationMap getOrDefault [_x,[]] isEqualTo []) then {
+	private _animationSetInfo = _animationMap getOrDefault [_x,[]] ;
+	if (_animationSetInfo isEqualTo []) then {
 		_invalidSets pushBack _x;
+		continue;
+	};
+
+	if (!_isSnapAnimations) then {continue};
+
+	if (_animationSetInfo getOrDefault ["snapToObjectsMap",[]] isEqualTo []) then {
+		_invalidSets pushBack (_x + ":snapToObjectsMap_empty");
 	};
 };
 
@@ -172,10 +184,10 @@ if (count _invalidSets > 0) exitWith {
 
 ---------------------------------------------------------------------------- */
 private _setupAnimation = {
-	params ["_unitInfoMap","_animSet","_randomAnimSet"];
+	params ["_unitInfoMap","_animSet","_animSetIsArray"];
 
     private _animSetSelection = _animSet;
-    if (_randomAnimSet) then {
+    if (_animSetIsArray) then {
         _animSetSelection = [_animSet,""] call KISKA_fnc_selectRandom;
     };
 
@@ -184,16 +196,91 @@ private _setupAnimation = {
 
 };
 
-private _setupAnimationWithSnap = {
-	params ["_unitInfoMap","_animSet","_randomAnimSet","_unit"];
 
-    private _animSetSelection = _animSet;
-    if (_randomAnimSet) then {
-        _animSetSelection = [_animSet,""] call KISKA_fnc_selectRandom;
+// accept that only one set can be be tried from the primary
+// Try extremely hard to dynamically exclude sets from the array (the array can be weighted)
+// shuffle the entire array each time and loop through every set (this would also be hard with weighted arrays)
+// delete one random entry at a time and eventually make the array anew
+private _setupAnimationWithSnap = {
+	params [
+		"_unitInfoMap",
+		"_animSet",
+		"_animSetIsArray",
+		"_unit",
+		"_fallbackFunction",
+		"_snapToRange",
+		"_backupAnims"
+	];
+
+    // using nearObjects to support snapping to simple objects
+	private _nearObjects = _unit nearObjects _snapToRange;
+	if (_nearObjects isEqualTo []) exitWith {
+        [["No near objects to snap to ",_unit]] call KISKA_fnc_log;
+        // TODO: something with the backup animations
+	};
+
+
+    // private _isWeightedAnimSet = _animSet isEqualTypeParams ["",123];
+    // if (_isWeightedAnimSet) then {
+    //     _animSetSelection = [_animSet,""] call KISKA_fnc_selectRandom;
+
+    // } else {
+
+
+    // };
+
+    private "_animSetSelection";
+    private _objectToSnapTo = objNull;
+    private _checkedAnimSets = [];
+    for "_i" from 0 to (count _animSet) do { 
+        _animSetSelection = [_animSet] call KISKA_fnc_deleteRandomIndex;
+        _checkedAnimSets pushBack _animSetSelection;
+        
+        _nearObjects apply {
+            private _unitUsingObject = _x getVariable ["KISKA_ambientAnim_objectUsedBy",objNull];
+            if !(isNull _unitUsingObject) then {continue};
+
+            private _objectType = toLowerANSI (typeOf _x);
+            if !(_objectType in _types) then {
+                private _parentTypeIndex = _types findIf {
+                    _objectType isKindOf _x;
+                };
+
+                if (_parentTypeIndex isEqualTo -1) then {continue};
+
+                _objectType = _types select _parentTypeIndex;
+            };
+        };
+
+        if !(isNull _objectToSnapTo) then {break};
+    };
+    // array may be used by other units
+    _animSet append _checkedAnimSets;
+
+
+
+    if (isNull _objectToSnapTo) then {
+        // TODO: do stuff if no objects are found that they can snap to
+        // determine if you can use fallback function or backanimations
     };
 
-    private _animationSetInfo = _animationMap getOrDefault [_animSetSelection,[]];
+
+
+    _objectToSnapTo setVariable ["KISKA_ambientAnim_objectUsedBy",_unit];
+    _unitInfoMap set ["_snapToObject",_objectToSnapTo];
+
+    private _relativeObjectInfo = _snapToObjectsMap get _objectType;
+    [_unit,_objectToSnapTo] remoteExecCall ["disableCollisionWith",_unit];
+    [_objectToSnapTo,_unit] remoteExecCall ["disableCollisionWith",_objectToSnapTo];
+    [_objectToSnapTo,_unit,_relativeObjectInfo] call KISKA_fnc_setRelativeVectorAndPos;
+
+
+    private _animationSetInfo = _animationMap get _animSetSelection;
     _unitInfoMap set ["_animationSetInfo",_animationSetInfo];
+
+	private _snapToObjectsMap = _animationSetInfo get "snapToObjectsMap";
+
+	private _types = keys _snapToObjectsMap;
 };
 
 
@@ -220,14 +307,14 @@ _units apply {
 		[
 			_unitInfoMap,
 			_animSet,
-			_randomAnimSet
+			_animSetIsArray
 		] call _setupAnimation;
 
 	} else {
 		[
 			_unitInfoMap,
 			_animSet,
-			_randomAnimSet
+			_animSetIsArray
 		] call _setupAnimationWithSnap;
 
 	};
