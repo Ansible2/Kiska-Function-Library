@@ -193,7 +193,33 @@ private _setupAnimation = {
 
     private _animationSetInfo = _animationMap getOrDefault [_animSetSelection,[]];
     _unitInfoMap set ["_animationSetInfo",_animationSetInfo];
+};
 
+private _findObjectToSnapTo = {
+    params ["_types","_objectsToCheck"];
+    
+    private _snapToObjectInfo = [];
+    _objectsToCheck apply {
+        private _objectInUse = !(isNull (_x getVariable ["KISKA_ambientAnim_objectUsedBy",objNull]));
+        if (_objectInUse) then { continue };
+
+        private _objectType = toLowerANSI (typeOf _x);
+        if (_objectType in _types) then { _objectToSnapTo = _x };
+
+        private _parentTypeIndex = _types findIf {
+            _objectType isKindOf _x;
+        };
+        if (_parentTypeIndex isEqualTo -1) then { continue };
+        
+        _objectType = _types select _parentTypeIndex;
+        _objectToSnapTo = _x;
+
+        _snapToObjectInfo pushBack _objectType;
+        _snapToObjectInfo pushBack _objectToSnapTo;
+    };
+
+
+    _snapToObjectInfo
 };
 
 
@@ -207,9 +233,9 @@ private _setupAnimationWithSnap = {
 		"_animSet",
 		"_animSetIsArray",
 		"_unit",
-		"_fallbackFunction",
 		"_snapToRange",
-		"_backupAnims"
+		"_backupAnims",
+		"_fallbackFunction"
 	];
 
     // using nearObjects to support snapping to simple objects
@@ -230,41 +256,36 @@ private _setupAnimationWithSnap = {
     // };
 
     private "_animSetSelection";
-    private _objectToSnapTo = objNull;
+    private _snapToObjectInfo = [];
     private _checkedAnimSets = [];
-    for "_i" from 0 to (count _animSet) do { 
+    for "_i" from 1 to (count _animSet) do { 
+        // TODO: benchmark against just shuffling the array and looping through
         _animSetSelection = [_animSet] call KISKA_fnc_deleteRandomIndex;
-        _checkedAnimSets pushBack _animSetSelection;
+        private _animationSetInfo = _animationMap get _animSetSelection;
+        private _snapToObjectsMap = _animationSetInfo get "snapToObjectsMap";
+        private _types = keys _snapToObjectsMap;
         
-        _nearObjects apply {
-            private _unitUsingObject = _x getVariable ["KISKA_ambientAnim_objectUsedBy",objNull];
-            if !(isNull _unitUsingObject) then {continue};
+        // loop
+        _snapToObjectInfo = [_types,_nearObjects] call _findObjectToSnapTo;
+        _checkedAnimSets pushBack _animSetSelection;
 
-            private _objectType = toLowerANSI (typeOf _x);
-            if !(_objectType in _types) then {
-                private _parentTypeIndex = _types findIf {
-                    _objectType isKindOf _x;
-                };
-
-                if (_parentTypeIndex isEqualTo -1) then {continue};
-
-                _objectType = _types select _parentTypeIndex;
-            };
+        if (_snapToObjectInfo isNotEqualTo []) then {
+            _unitInfoMap set ["_animationSetInfo",_animationSetInfo];
+            break;
         };
-
-        if !(isNull _objectToSnapTo) then {break};
     };
-    // array may be used by other units
+    // _animSet array may be used by other units, so "restore" it
     _animSet append _checkedAnimSets;
 
 
 
-    if (isNull _objectToSnapTo) then {
+    if (_snapToObjectInfo isEqualTo []) then {
         // TODO: do stuff if no objects are found that they can snap to
         // determine if you can use fallback function or backanimations
     };
 
 
+    _snapToObjectInfo params ["_objectType","_objectToSnapTo"];
 
     _objectToSnapTo setVariable ["KISKA_ambientAnim_objectUsedBy",_unit];
     _unitInfoMap set ["_snapToObject",_objectToSnapTo];
@@ -273,14 +294,7 @@ private _setupAnimationWithSnap = {
     [_unit,_objectToSnapTo] remoteExecCall ["disableCollisionWith",_unit];
     [_objectToSnapTo,_unit] remoteExecCall ["disableCollisionWith",_objectToSnapTo];
     [_objectToSnapTo,_unit,_relativeObjectInfo] call KISKA_fnc_setRelativeVectorAndPos;
-
-
-    private _animationSetInfo = _animationMap get _animSetSelection;
-    _unitInfoMap set ["_animationSetInfo",_animationSetInfo];
-
-	private _snapToObjectsMap = _animationSetInfo get "snapToObjectsMap";
-
-	private _types = keys _snapToObjectsMap;
+    
 };
 
 
@@ -307,78 +321,22 @@ _units apply {
 		[
 			_unitInfoMap,
 			_animSet,
-			_animSetIsArray
-		] call _setupAnimation;
+			_animSetIsArray,
+            _unit,
+            _snapToRange,
+            _backupAnims,
+            _fallbackFunction
+		] call _setupAnimationWithSnap;
 
 	} else {
 		[
 			_unitInfoMap,
 			_animSet,
 			_animSetIsArray
-		] call _setupAnimationWithSnap;
+		] call _setupAnimation;
 
 	};
 
-    /* --------------------------------------
-        Handle Object Snapping
-    -------------------------------------- */
-    detach _unit;
-    private _snapToObjectsMap = _animationSetInfo getOrDefault ["snapToObjectsMap",[]];
-    if (_isSnapAnimations AND (_snapToObjectsMap isNotEqualTo [])) then {
-        private _types = keys _snapToObjectsMap;
-
-        // using nearObjects to support snapping to simple objects
-        private _nearObjects = _unit nearObjects _snapToRange;
-        private _didSnap = false;
-        _nearObjects apply {
-            private _unitUsing = _x getVariable ["KISKA_ambientAnim_objectUsedBy",objNull];
-            if !(isNull _unitUsing) then {
-                continue;
-            };
-
-            private _objectType = toLowerANSI (typeOf _x);
-            if !(_objectType in _types) then {
-                private _parentTypeIndex = _types findIf {
-                    _objectType isKindOf _x;
-                };
-
-                if (_parentTypeIndex isEqualTo -1) then {
-                    continue;
-                };
-
-                _objectType = _types select _parentTypeIndex;
-            };
-
-            _x setVariable ["KISKA_ambientAnim_objectUsedBy",_unit];
-            _unitInfoMap set ["_snapToObject",_x];
-
-            private _relativeObjectInfo = _snapToObjectsMap get _objectType;
-            [_unit,_x] remoteExecCall ["disableCollisionWith",_unit];
-            [_x,_unit] remoteExecCall ["disableCollisionWith",_x];
-            [_x,_unit,_relativeObjectInfo] call KISKA_fnc_setRelativeVectorAndPos;
-            _didSnap = true;
-
-            break;
-        };
-
-        if ((!_didSnap) AND _fallbackFunctionIsPresent) then {
-            [
-                [
-                    _animSetSelection,
-                    _unit,
-                    _animSet,
-                    _exitOnCombat,
-                    _equipmentLevel,
-                    _snapToRange,
-                    _fallbackFunction,
-                    _animationMap
-                ],
-                _fallbackFunction
-            ] call KISKA_fnc_callBack;
-
-            continue;
-        };
-    };
 
     /* --------------------------------------
         Handle AttachTo Logic
