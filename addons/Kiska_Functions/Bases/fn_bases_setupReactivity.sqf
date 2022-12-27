@@ -75,12 +75,9 @@ private _entryWithId = KISKA_bases_reinforceGroupsMap getOrDefault [_reinforceId
 private _idTaken = _entryWithId isNotEqualTo [];
 if (_idTaken) then {
     _entryWithId pushBackUnique _group;
-};
-
-if !(_idTaken) then {
+} else {
     KISKA_bases_reinforceGroupsMap set [_reinforceId,[_group]];
 };
-
 
 
 [
