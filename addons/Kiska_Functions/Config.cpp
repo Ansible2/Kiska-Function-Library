@@ -104,14 +104,10 @@ class CfgFunctions
             {};
             class ambientAnim_getAttachLogicGroupsMap
             {};
-            // class ambientAnim_getAttachToLogicGroup
-            // {};
             class ambientAnim_isAnimated
             {};
             class ambientAnim_play
             {};
-            // class ambientAnim_setAttachToLogicGroup
-            // {};
             class ambientAnim_stop
             {};
         };
