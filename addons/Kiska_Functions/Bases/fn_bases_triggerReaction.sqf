@@ -75,15 +75,34 @@ if (_preventDefault) exitWith {};
     if !(_groupIsAlive) exitWith {};
 
     private _simDistance = dynamicSimulationDistance "Group";
-    private _targets = [];
     private "_leaderOfCallingGroup";
+    private _exit = false;
+    // TODO: this loop is not needed, units not simmed will not have their EnemyDetected eventhandler fire
     waitUntil {
         sleep 2;
         // in case leader changes
         _leaderOfCallingGroup = leader _group;
-        if (!(alive _leaderOfCallingGroup) OR !(alive _detectedTarget)) exitWith {true};
+        _exit = !(alive _leaderOfCallingGroup) OR !(alive _detectedTarget);
+        if (_exit) exitWith {true};
         
         _leaderOfCallingGroup distance _detectedTarget <= _simDistance
+    };
+
+    // TODO more robust handling if one of these units is dead
+    if (_exit) exitWith {
+        [
+            [
+                "exited due to either _leaderOfCallingGroup: ",
+                _leaderOfCallingGroup,
+                " or _detectedTarget: ",
+                _detectedTarget,
+                " being dead: ",
+                alive _leaderOfCallingGroup,
+                " | ",
+                alive _detectedTarget
+            ]
+        ] call KISKA_fnc_log;
+        nil
     };
 
     private _groupRespondingToId = _group getVariable ["KISKA_bases_respondingToId",""];
