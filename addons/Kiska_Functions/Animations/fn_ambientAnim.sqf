@@ -227,8 +227,8 @@ _units apply {
         // This does alos benefit some seated animations if required.
     -------------------------------------- */
     if (_animationSetInfo getOrDefault ["attachToLogic",false]) then {
-        private _logicGroup = call KISKA_fnc_ambientAnim_getNearestAttachLogicGroup;
-        if (isNull _nearestAnimationLogicGroup) then {
+        private _logicGroup = [_x] call KISKA_fnc_ambientAnim_getNearestAttachLogicGroup;
+        if (isNull _logicGroup) then {
             _logicGroup = createGroup sideLogic;
             _logicGroup deleteGroupWhenEmpty true;
             _logicGroup addEventHandler ["Deleted",{

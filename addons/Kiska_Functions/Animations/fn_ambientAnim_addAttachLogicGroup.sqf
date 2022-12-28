@@ -2,7 +2,7 @@
 Function: KISKA_fnc_ambientAnim_addAttachLogicGroup
 
 Description:
-    Adds a group to the global attachTo logics map used to store them for reference
+    Adds a group to the global attachTo logics map used to store them for reference.
 
 Parameters:
     0: _logicGroup <GROUP> - The group to add
@@ -42,6 +42,7 @@ private _logicGroupsMap = call KISKA_fnc_ambientAnim_getAttachLogicGroupsMap;
 
 private _id = ["KISKA_ambientAnimGroup_ID"] call KISKA_fnc_idCounter;
 _logicGroup setVariable ["KISKA_ambientAnimGroup_ID",_id];
-_logicsGroupsMap set [_id,_logicGroup];
+_logicGroupsMap set [_id,_logicGroup];
+
 
 nil
