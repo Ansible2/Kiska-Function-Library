@@ -1,3 +1,4 @@
+
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_assignUnitLoadout
 
@@ -18,12 +19,12 @@ Examples:
             missionConfigFile >> "KISKA_loadouts" >> ONL,
             unit1
         ] call KISKA_fnc_assignUnitLoadout
-
     (end)
 
 Author:
     Ansible2
 ---------------------------------------------------------------------------- */
+
 scriptName "KISKA_fnc_assignUnitLoadout";
 
 params [
@@ -79,41 +80,67 @@ _units apply {
             [["Class ", _unitClass, " does not have any configed loadouts in directory: ",_configPath],true] call KISKA_fnc_log;
 
         } else {
-            // units don't like being not simmed on dedicated servers while changing loadouts this, so do it temporarily if needed
-            private _simEnabled = simulationEnabled _unit;
-            if (!_simEnabled) then {
-                [_unit,true] remoteExecCall ["enableSimulationGlobal",2];
-            };
-
             private _newLoadout = selectRandom _loadoutsForClass;
             private _oldLoadout = getUnitLoadout _unit;
-            _unit setUnitLoadout _newLoadout;
             // making sure changes took over network
             [
                 {
-                    params ["_unit","_newLoadout","_oldLoadout","_simEnabled","_loopCount"];
-                    if (_loopCount isEqualTo 1) then {
+                    params ["_unit","_newLoadout","_oldLoadout","","_loopCount"];
+
+                    // units don't like being not simmed on dedicated servers while changing loadouts this, so do it temporarily if needed
+                    if !(simulationEnabled _unit) then {
+                        _this set [3,true];
+                        [_unit,true] remoteExecCall ["enableSimulationGlobal",2];
+                    };
+                    
+                    _unit setUnitLoadout _newLoadout;
+
+                    if (_loopCount > 0 AND _loopCount < 3) then {
                         [["looping for ",_unit," _loopCount ",_loopCount]] call KISKA_fnc_log;
                         [["unit loadout: ",endl,getUnitLoadout _unit]] call KISKA_fnc_log;
                         [["_newLoadout: ",endl,_newLoadout]] call KISKA_fnc_log;
                     };
+
+                    private _currentLoadout = getUnitLoadout _unit;
+                    if (_currentLoadout isEqualTo _newLoadout) exitWith {true};
+
+                    if (_currentLoadout isEqualTo _oldLoadout) exitWith {
+                        _this set [4,_loopCount + 1];
+                        false
+                    };
                     
-                    if ((getUnitLoadout _unit) isNotEqualTo _oldLoadout) exitWith {true};
+                    private _loadoutsMatch = true;
+                    {
+                        if (_forEachIndex > 5) then {break};
+
+                        private _currentLoadoutClassToCompare = _x select 0;
+                        private _newLoadoutClassToCompare = (_newLoadout select _foreachIndex) select 0;
+                        if (_currentLoadoutClassToCompare != _newLoadoutClassToCompare) then {
+                            _loadoutsMatch = false;
+                            break
+                        };
+                    } forEach _currentLoadout;
                     
-                    _unit setUnitLoadout _loadout;
-                    _this set [2,_loopCount + 1];
+                    if (_loadoutsMatch) exitWith {
+                        ["found match after deep compare"] call KISKA_fnc_log;
+                        [["unit loadout: ",endl,getUnitLoadout _unit]] call KISKA_fnc_log;
+                        [["_newLoadout: ",endl,_newLoadout]] call KISKA_fnc_log;
+                        true
+                    };
+
+                    _this set [4,_loopCount + 1];
 
                     false
                 },
                 {
-                    params ["_unit","","","_simEnabled"];
+                    params ["_unit","_newLoadout","","_simulationWasDisabled"];
                     // return units to being unsimmed if they were before
-                    if (!_simEnabled) then {
-                        _unit enableSimulationGlobal false;
+                    if (_simulationWasDisabled) then {
+                        [_unit,false] remoteExecCall ["enableSimulationGlobal",2];
                     };
                 },
                 0.5,
-                [_unit,_newLoadout,_oldLoadout,_simEnabled,0]
+                [_unit,_newLoadout,_oldLoadout,false,0]
             ] call KISKA_fnc_waitUntil;
 
         };
