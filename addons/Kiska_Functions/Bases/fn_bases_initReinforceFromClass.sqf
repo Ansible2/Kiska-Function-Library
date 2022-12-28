@@ -65,7 +65,7 @@ if (isText _idPropertyConfig) then {
 
 private _canCallIds = getArray(_reinforceClass >> "canCall");
 private _reinforcePriority = getNumber(_reinforceClass >> "priority");
-private _onEnteredCombat = getText(_reinforceClass >> "onEnteredCombat");
+private _onEnemyDetected = getText(_reinforceClass >> "onEnemyDetected");
 
 if (_groupIsArray) exitWith {
 	_group apply {
@@ -74,7 +74,7 @@ if (_groupIsArray) exitWith {
 			_reinforceId,
 			_canCallIds,
 			_reinforcePriority,
-			_onEnteredCombat
+			_onEnemyDetected
 		] call KISKA_fnc_bases_setupReactivity;
 	};
 
@@ -87,7 +87,7 @@ if (_groupIsArray) exitWith {
 	_reinforceId,
 	_canCallIds,
 	_reinforcePriority,
-	_onEnteredCombat
+	_onEnemyDetected
 ] call KISKA_fnc_bases_setupReactivity;
 
 
