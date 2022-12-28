@@ -8,7 +8,7 @@ Description:
 
 Parameters:
     0: _stalkerGroup <GROUP or OBJECT> - The group to do the stalking
-    1: _stalkedGroup <GROUP or OBJECT> - The group to be stalked
+    1: _stalked <GROUP or OBJECT> - The group or unit to be stalked
     2: _refreshInterval <NUMBER> - How often the _stalkerGroup will have their waypoint
         updated with the position of the _stalkedGroup, and how often to check the _conditionToEndStalking
     3: _postStalking <STRING, ARRAY, or CODE> - Code that after stalking is complete
@@ -46,7 +46,7 @@ if !(canSuspend) exitWith {
 
 params [
     ["_stalkerGroup",grpNull,[objNull,grpNull]],
-    ["_stalkedGroup",grpNull,[objNull,grpNull]],
+    ["_stalked",grpNull,[objNull,grpNull]],
     ["_refreshInterval",25,[123]],
     ["_postStalking",{},[[],{},""]],
     ["_conditionToEndStalking",{false},[[],{},""]]
@@ -61,59 +61,75 @@ if (isNull _stalkerGroup) exitWith {
     nil
 };
 
-if (isNull _stalkedGroup) exitWith {
-    ["_stalkedGroup is null! Exiting...",true] call KISKA_fnc_log;
+private _stalkingGroup = false;
+if (_stalked isEqualType grpNull) then {
+    _stalked = leader _stalked;
+    _stalkingGroup = true;
+};
+if (isNull _stalked) exitWith {
+    [[_stalkerGroup," was asked to stalk a null entity! Exiting..."],true] call KISKA_fnc_log;
     nil
 };
 
-if (_refreshInterval < 5) exitWith {
-    ["_refreshInterval was less than 5, adjusting to 5",true] call KISKA_fnc_log;
+
+if (_refreshInterval < 5) then {
+    ["_refreshInterval was less than 5, adjusting to 5",false] call KISKA_fnc_log;
     _refreshInterval = 5;
-    nil
 };
 
 if (_stalkerGroup isEqualType objNull) then {
     _stalkerGroup = group _stalkerGroup;
 };
 
-private _groupAlreadyBeingStalked = _stalkerGroup getVariable ["KISKA_isStalking",grpNull];
-if !(isNull _groupAlreadyBeingStalked) exitWith {
-    [[_stalkerGroup," is already stalking the group ",_groupAlreadyBeingStalked," an cannot stalk multiple groups"]] call KISKA_fnc_log;
+private _entityCurrentlyStalking = _stalkerGroup getVariable ["KISKA_stalkingThis",objNull];
+if !(isNull _entityCurrentlyStalking) exitWith {
+    [
+        [
+            _stalkerGroup,
+            " is already stalking the entity ",
+            _entityCurrentlyStalking,
+            " and cannot stalk multiple ones"
+        ]
+    ] call KISKA_fnc_log;
+
     nil
 };
 
-if (_stalkedGroup isEqualType objNull) then {
-    _stalkedGroup = group _stalkedGroup;
-};
 
 
 /* ----------------------------------------------------------------------------
     Main loop
 ---------------------------------------------------------------------------- */
-_stalkerGroup setVariable ["KISKA_stalkingGroup",_stalkedGroup];
-[_stalkerGroup] call KISKA_fnc_clearWaypoints;
+_stalkerGroup setVariable ["KISKA_stalkingThis",_stalked];
 
-private _stalkedGroupIsStalkable = true;
-private _stalkerGroupCanStalk = true;
+private _stalkedGroup = group _stalked;
+private _stalkedIsAlive = alive _stalked;
+while {
+    ([_stalkerGroup] call KISKA_fnc_isGroupAlive) AND 
+    {
+        if (_stalkingGroup) exitWith {
+            [_stalkedGroup] call KISKA_fnc_isGroupAlive
+        };
 
-while {_stalkerGroupCanStalk AND _stalkedGroupIsStalkable} do {
+        _stalkedIsAlive
+    }
+} do {
     [_stalkerGroup] call KISKA_fnc_clearWaypoints;
 
-    private _stalkerGroupLeader = leader _stalkerGroup;
-    private _stalkedGroupLeader = leader _stalkedGroup;
     // waypoints don't work great for buildings, move command in close will have them
     // got up stairs and get on top of enemies
-    private _distance2DBetweenGroups = _stalkerGroupLeader distance2D _stalkedGroupLeader;
+    private _stalkerGroupLeader = leader _stalkerGroup;
+    private _distance2DBetweenGroups = _stalkerGroupLeader distance2D _stalked;
     if (_distance2DBetweenGroups > 50) then {
-        [_stalkerGroup, _stalkedGroupLeader, 25, "MOVE", "AWARE", "YELLOW", "FULL"] call CBA_fnc_addWaypoint;
+        [_stalkerGroup, _stalked, 25, "MOVE", "AWARE", "YELLOW", "FULL"] call CBA_fnc_addWaypoint;
     } else {
         // if not slept before and remoteExecCalled (not just remoteExec'd) unit will just stand still
         sleep 0.5;
-        [_stalkerGroupLeader, (getPosATL _stalkedGroupLeader)] remoteExecCall ["move", _stalkerGroupLeader];
+        [_stalkerGroupLeader, (getPosATL _stalked)] remoteExecCall ["move", _stalkerGroupLeader];
     };
 
     private _conditionMet = [
-        [_stalkerGroup,_stalkedGroup],
+        [_stalkerGroup,_stalked],
         _conditionToEndStalking
     ] call KISKA_fnc_callBack;
     if (_conditionMet) then {break};
@@ -121,16 +137,18 @@ while {_stalkerGroupCanStalk AND _stalkedGroupIsStalkable} do {
 
     sleep _refreshInterval;
 
-
-    _stalkerGroupCanStalk = [_stalkerGroup] call KISKA_fnc_isGroupAlive;
-    _stalkedGroupIsStalkable = [_stalkedGroup] call KISKA_fnc_isGroupAlive;
+    _stalkedIsAlive = alive _stalked;
+    if (_stalkingGroup AND (!_stalkedIsAlive)) then {
+        _stalked = leader _stalkedGroup;
+        _stalkerGroup setVariable ["KISKA_stalkingThis",_stalked];
+    };
 };
 
 /* ----------------------------------------------------------------------------
     Post
 ---------------------------------------------------------------------------- */
 if !(isNull _stalkerGroup) then {
-    _stalkerGroup setVariable ["KISKA_stalkingGroup",nil];
+    _stalkerGroup setVariable ["KISKA_stalkingThis",nil];
     (units _stalkerGroup) apply {
         [_x,objNull] remoteExec ["commandTarget",_x];
     };
@@ -139,7 +157,7 @@ if !(isNull _stalkerGroup) then {
 
 
 [
-    [_stalkerGroup,_stalkedGroup],
+    [_stalkerGroup,_stalked,_stalkedGroup],
     _postStalking
 ] call KISKA_fnc_callBack;
 

@@ -126,16 +126,15 @@ private _fnc_findReplacementTarget = {
     private _groupRespondingToId = _group getVariable ["KISKA_bases_respondingToId",""];
     private _groupIsAlsoResponding = _groupRespondingToId isNotEqualTo "";
     private _groupReinforceId = _group getVariable ["KISKA_bases_reinforceId",""];
-    private _groupToStalk = group _detectedTarget;
     private _leaderOfCallingGroup = leader _group;
 
     _groupsToRespond apply {
         private _currentMissionPriority = _x getVariable ["KISKA_bases_responseMissionPriority",-1];
-        private _currentlyStalkedGroup = _x getVariable ["KISKA_bases_stalkingGroup",grpNull];
+        private _currentlyStalked = _x getVariable ["KISKA_bases_stalkingThis",objNull];
 
         if (
             (_currentMissionPriority > _priority) OR 
-            (!(isNull _currentlyStalkedGroup) AND (_groupToStalk isEqualTo _currentlyStalkedGroup))
+            (!(isNull _currentlyStalked) AND (_detectedTarget isEqualTo _currentlyStalked))
         ) then {
             continue;
         };
@@ -155,7 +154,7 @@ private _fnc_findReplacementTarget = {
             continue;
         };
 
-        _x setVariable ["KISKA_bases_stalkingGroup",_groupToStalk];
+        _x setVariable ["KISKA_bases_stalkingThis",_detectedTarget];
 
         private _currentBehaviour = combatBehaviour _x;
         private _distanceBetweenGroups = _leaderOfRespondingGroup distance _leaderOfCallingGroup;
@@ -182,11 +181,11 @@ private _fnc_findReplacementTarget = {
         // some time is needed after reseting units with doFollow or they will lock up
         sleep 1;
         
-        [_x, _groupToStalk, 15, {
+        [_x, _detectedTarget, 15, {
             params ["_stalkerGroup"];
             _stalkerGroup setVariable ["KISKA_bases_responseMissionPriority", nil];
             _stalkerGroup setVariable ["KISKA_bases_respondingToId", nil];
-            _stalkerGroup setVariable ["KISKA_bases_stalkingGroup", nil];
+            _stalkerGroup setVariable ["KISKA_bases_stalkingThis", nil];
         }] spawn KISKA_fnc_stalk;
 
         _x setVariable ["KISKA_bases_responseMissionPriority",_priority];
