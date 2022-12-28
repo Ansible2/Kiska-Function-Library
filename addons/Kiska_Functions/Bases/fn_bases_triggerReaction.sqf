@@ -60,6 +60,43 @@ if (_preventDefault) exitWith {};
 /* ----------------------------------------------------------------------------
     Default response behviour
 ---------------------------------------------------------------------------- */
+private _fnc_findReplacementTarget = {
+    params ["_group"];
+
+    private _simDistance = dynamicSimulationDistance "Group";
+    private _targets = [];
+    private "_leaderOfCallingGroup";
+    waitUntil {
+        sleep 2;
+        // in case leader changes
+        _leaderOfCallingGroup = leader _group;
+        if !(alive _leaderOfCallingGroup) exitWith {true};
+        _targets = _leaderOfCallingGroup targets [true, _simDistance];
+        if (_targets isEqualTo []) then {continueWith false};
+
+        private _foundEnemyIndex = _targets findIf { !(captive _x) };
+        _foundEnemyIndex isNotEqualTo -1;
+    };
+
+    // in case _closestEnemy dies while processing
+    private _closestEnemy = objNull;
+    private _distanceOfClosest = -1;
+    _targets apply {
+        if (captive _x) then {continue};
+
+        private _distance = _x distance _leaderOfCallingGroup;
+        if (!(alive _closestEnemy) OR (_distance < _distanceOfClosest)) then {
+            _distanceOfClosest = _distance;
+            _closestEnemy = _x;
+        };
+    };
+
+
+    _closestEnemy
+};
+
+
+
 [
     _group,
     _detectedTarget,
@@ -67,6 +104,7 @@ if (_preventDefault) exitWith {};
     _priority
 ] spawn {
     scriptName "KISKA_fnc_bases_triggerReaction";
+
     params ["_group","_detectedTarget","_groupsToRespond","_priority"];
 
     sleep 3;
@@ -74,34 +112,14 @@ if (_preventDefault) exitWith {};
     private _groupIsAlive = [_group] call KISKA_fnc_isGroupAlive;
     if !(_groupIsAlive) exitWith {};
 
-    private _simDistance = dynamicSimulationDistance "Group";
-    private "_leaderOfCallingGroup";
-    private _exit = false;
-    // TODO: this loop is not needed, units not simmed will not have their EnemyDetected eventhandler fire
-    waitUntil {
-        sleep 2;
-        // in case leader changes
-        _leaderOfCallingGroup = leader _group;
-        _exit = !(alive _leaderOfCallingGroup) OR !(alive _detectedTarget);
-        if (_exit) exitWith {true};
-        
-        _leaderOfCallingGroup distance _detectedTarget <= _simDistance
-    };
-
-    // TODO more robust handling if one of these units is dead
-    if (_exit) exitWith {
-        [
-            [
-                "exited due to either _leaderOfCallingGroup: ",
-                _leaderOfCallingGroup,
-                " or _detectedTarget: ",
-                _detectedTarget,
-                " being dead: ",
-                alive _leaderOfCallingGroup,
-                " | ",
-                alive _detectedTarget
-            ]
-        ] call KISKA_fnc_log;
+    if (
+        !(alive _detectedTarget) AND
+        {
+            _detectedTarget = [_group] call _fnc_findReplacementTarget;
+            isNull _detectedTarget
+        }
+    ) exitWith {
+        [ "Original detected target is not alive and could not find replacement"] call KISKA_fnc_log;
         nil
     };
 
@@ -109,6 +127,7 @@ if (_preventDefault) exitWith {};
     private _groupIsAlsoResponding = _groupRespondingToId isNotEqualTo "";
     private _groupReinforceId = _group getVariable ["KISKA_bases_reinforceId",""];
     private _groupToStalk = group _detectedTarget;
+    private _leaderOfCallingGroup = leader _group;
 
     _groupsToRespond apply {
         private _currentMissionPriority = _x getVariable ["KISKA_bases_responseMissionPriority",-1];
