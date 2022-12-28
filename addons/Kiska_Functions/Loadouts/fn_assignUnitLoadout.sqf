@@ -24,7 +24,6 @@ Examples:
 Author:
     Ansible2
 ---------------------------------------------------------------------------- */
-
 scriptName "KISKA_fnc_assignUnitLoadout";
 
 params [
@@ -85,7 +84,16 @@ _units apply {
             // making sure changes took over network
             [
                 {
-                    params ["_unit","_newLoadout","_oldLoadout","","_loopCount"];
+                    scriptName "KISKA_fnc_assignUnitLoadout";
+
+                    params ["_unit","_newLoadout","_oldLoadout","","_attemptedSetLoadoutCount"];
+
+                    if (_attemptedSetLoadoutCount >= 5) then {
+                        [["Attempted to set the loadout of unit: ",_unit," ",_attemptedSetLoadoutCount," times without reaching completion"]] call KISKA_fnc_log;
+                        [["unit's current loadout: ",endl,getUnitLoadout _unit]] call KISKA_fnc_log;
+                        [["loadout to set to: ",endl,_newLoadout]] call KISKA_fnc_log;
+                    };
+
 
                     // units don't like being not simmed on dedicated servers while changing loadouts this, so do it temporarily if needed
                     if !(simulationEnabled _unit) then {
@@ -95,45 +103,32 @@ _units apply {
                     
                     _unit setUnitLoadout _newLoadout;
 
-                    if (_loopCount > 0 AND _loopCount < 3) then {
-                        [["looping for ",_unit," _loopCount ",_loopCount]] call KISKA_fnc_log;
-                        [["unit loadout: ",endl,getUnitLoadout _unit]] call KISKA_fnc_log;
-                        [["_newLoadout: ",endl,_newLoadout]] call KISKA_fnc_log;
-                    };
-
                     private _currentLoadout = getUnitLoadout _unit;
                     if (_currentLoadout isEqualTo _newLoadout) exitWith {true};
 
-                    if (_currentLoadout isEqualTo _oldLoadout) exitWith {
-                        _this set [4,_loopCount + 1];
-                        false
-                    };
-                    
-                    private _loadoutsMatch = true;
+
+                    _this set [4,_attemptedSetLoadoutCount + 1];
+                    if (_currentLoadout isEqualTo _oldLoadout) exitWith {false};
+
+                    // Some loadouts may not have the exact bullet count (round in the chamber or not)
+                    // which causes isEqualTo to return false
+                    private _deepCompareMatches = true;
                     {
                         if (_forEachIndex > 5) then {break};
 
                         private _currentLoadoutClassToCompare = _x select 0;
                         private _newLoadoutClassToCompare = (_newLoadout select _foreachIndex) select 0;
                         if (_currentLoadoutClassToCompare != _newLoadoutClassToCompare) then {
-                            _loadoutsMatch = false;
+                            _deepCompareMatches = false;
                             break
                         };
                     } forEach _currentLoadout;
-                    
-                    if (_loadoutsMatch) exitWith {
-                        ["found match after deep compare"] call KISKA_fnc_log;
-                        [["unit loadout: ",endl,getUnitLoadout _unit]] call KISKA_fnc_log;
-                        [["_newLoadout: ",endl,_newLoadout]] call KISKA_fnc_log;
-                        true
-                    };
 
-                    _this set [4,_loopCount + 1];
 
-                    false
+                    _deepCompareMatches
                 },
                 {
-                    params ["_unit","_newLoadout","","_simulationWasDisabled"];
+                    params ["_unit","","","_simulationWasDisabled"];
                     // return units to being unsimmed if they were before
                     if (_simulationWasDisabled) then {
                         [_unit,false] remoteExecCall ["enableSimulationGlobal",2];
