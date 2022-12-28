@@ -36,31 +36,29 @@ if (isNull _entity) exitWith {
     -1
 };
 
-if (isMultiplayer) exitWith {
-    netId _entity
+
+
+if (isMultiplayer) exitWith {netId _entity};
+private _id = _entity getVariable ["KISKA_netId",""];
+if (_id isNotEqualTo "") exitWith {_id};
+
+
+// if object is not saved
+private _counter = localNamespace getVariable ["KISKA_netId_counter",0];
+localNamespace setVariable ["KISKA_netId_counter",_counter + 1];
+_id = ["0:",_counter] joinString "";
+_entity setVariable ["KISKA_netId",_id];
+
+// create map if needed
+private _map = localNamespace getVariable "KISKA_objectNetId_map";
+if (isNil "_map") then {
+    _map = createHashMap;
+    localNamespace setVariable ["KISKA_objectNetId_map",_map];
 };
 
 
-private _id = _entity getVariable ["KISKA_netId",""];
-
-// if object is not saved
-if (_id isEqualTo "") then {
-    private _counter = localNamespace getVariable ["KISKA_netId_counter",0];
-    localNamespace setVariable ["KISKA_netId_counter",_counter + 1];
-    _id = ["0:",_counter] joinString "";
-    _entity setVariable ["KISKA_netId",_id];
-
-    // create map if needed
-    private _map = localNamespace getVariable "KISKA_objectNetId_map";
-    if (isNil "_map") then {
-        _map = createHashMap;
-        localNamespace setVariable ["KISKA_objectNetId_map",_map];
-    };
-
-
-    if !(_id in _map) then {
-        _map set [_id,_entity];
-    };
+if !(_id in _map) then {
+    _map set [_id,_entity];
 };
 
 
