@@ -227,10 +227,21 @@ _units apply {
         // This does alos benefit some seated animations if required.
     -------------------------------------- */
     if (_animationSetInfo getOrDefault ["attachToLogic",false]) then {
-        private _logicGroup = call KISKA_fnc_ambientAnim_getAttachToLogicGroup;
-        if (isNull _logicGroup) then {
+        private _logicGroup = call KISKA_fnc_ambientAnim_getNearestAttachLogicGroup;
+        if (isNull _nearestAnimationLogicGroup) then {
             _logicGroup = createGroup sideLogic;
-            [_logicGroup] call KISKA_fnc_ambientAnim_setAttachToLogicGroup;
+            _logicGroup deleteGroupWhenEmpty true;
+            _logicGroup addEventHandler ["Deleted",{
+                params ["_group"];
+                
+                private _mapId = _group getVariable ["KISKA_ambientAnimGroup_ID",-1];
+                if (_mapId >= 0) then {
+                    private _logicGroupsMap = call KISKA_fnc_ambientAnim_getAttachLogicGroupsMap;
+                    _logicGroupsMap deleteAt _mapId;
+                };
+            }];
+
+            [_logicGroup] call KISKA_fnc_ambientAnim_addAttachLogicGroup;
         };
 
         private _helper = _logicGroup createUnit ["Logic", [0,0,0], [], 0, "NONE"];
