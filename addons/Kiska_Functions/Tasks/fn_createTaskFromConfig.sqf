@@ -95,12 +95,16 @@ if (_destination isEqualTo configNull) then {
         _destination = call (compileFinal _compiledDestination);
     };
 
-    if (isNull _destination) then {
-        _destination = GET_CFG_ARRAY("destination");
+    if ((_destination isEqualType objNull) AND {!(isNull _destination)}) exitWith {};
+    if (
+        (_destination isEqualTypeParams [123,123,123]) OR 
+        (_destination isEqualTypeParams [objNull,123])
+    ) exitWith {};
 
-        if (_destination isEqualTo []) then {
-            _destination = objNull;
-        };
+
+    _destination = GET_CFG_ARRAY("destination");
+    if (_destination isEqualTo []) then {
+        _destination = objNull;
     };
 };
 
