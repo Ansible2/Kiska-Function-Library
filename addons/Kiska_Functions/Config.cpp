@@ -108,6 +108,8 @@ class CfgFunctions
             {};
             class ambientAnim_play
             {};
+            class ambientAnim_setStoredLoadout
+            {};
             class ambientAnim_stop
             {};
         };

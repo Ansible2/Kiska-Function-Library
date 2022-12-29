@@ -128,11 +128,13 @@ _units apply {
                     _deepCompareMatches
                 },
                 {
-                    params ["_unit","","","_simulationWasDisabled"];
+                    params ["_unit","_newLoadout","","_simulationWasDisabled"];
                     // return units to being unsimmed if they were before
                     if (_simulationWasDisabled) then {
                         [_unit,false] remoteExecCall ["enableSimulationGlobal",2];
                     };
+
+                    [_unit,_newLoadout] call KISKA_fnc_ambientAnim_setStoredLoadout;
                 },
                 0.5,
                 [_unit,_newLoadout,_oldLoadout,false,0]
