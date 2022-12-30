@@ -7,8 +7,7 @@ Description:
 
 Parameters:
 	0: _unit <OBJECT> - The unit who is running KISKA ambient anims
-	1: _triggeredByDeletion <BOOL> - If this stop was initiated by the delete
-        Eventhandler
+	1: _triggeredByDeletion <BOOL> - If this stop was initiated by the delete Eventhandler
 
 Returns:
     NOTHING
@@ -58,21 +57,24 @@ if (_behaviourEventId >= 0) then {
     ] call KISKA_fnc_eventHandler_remove;
 };
 
+private _snapToObject = _ambientAnimInfoMap getOrDefault ["_snapToObject",objNull];
+private _snapObjectIsNotNull = !(isNull _snapToObject);
+if (_snapObjectIsNotNull) then {
+    _snapToObject setVariable ["KISKA_ambientAnim_objectUsedBy",nil];
+};
+
 
 if (_triggeredByDeletion) exitWith {};
+private _unitDeletedEventHandlerId = _ambientAnimInfoMap get "_unitDeletedEventHandlerId";
+_unit removeEventHandler ["Deleted", _unitDeletedEventHandlerId];
+
+
+if !(alive _unit) exitWith {};
 
 
 ["ANIM","AUTOTARGET","FSM","MOVE","TARGET"] apply {
     [_unit,_x] remoteExecCall ["enableAI",_unit];
 };
-
-
-private _alive = alive _unit;
-private _unitLoadoutBeforeAnimation = _ambientAnimInfoMap getOrDefault ["_unitLoadout",[]];
-if (_alive AND _unitLoadoutBeforeAnimation isNotEqualTo []) then {
-    _unit setUnitLoadout _unitLoadoutBeforeAnimation;
-};
-
 
 private _animDoneEventHandlerId = _ambientAnimInfoMap get "_animDoneEventHandlerId";
 _unit removeEventHandler ["AnimDone", _animDoneEventHandlerId];
@@ -80,19 +82,21 @@ _unit removeEventHandler ["AnimDone", _animDoneEventHandlerId];
 private _unitKilledEventHandlerId = _ambientAnimInfoMap get "_unitKilledEventHandlerId";
 _unit removeEventHandler ["KILLED", _unitKilledEventHandlerId];
 
-private _unitDeletedEventHandlerId = _ambientAnimInfoMap get "_unitDeletedEventHandlerId";
-_unit removeEventHandler ["Deleted", _unitDeletedEventHandlerId];
+
+_unit setVariable ["KISKA_ambientAnimMap",nil];
 
 
-private _snapToObject = _ambientAnimInfoMap getOrDefault ["_snapToObject",objNull];
-if (!(isNull _snapToObject) AND _alive) then {
-    _snapToObject setVariable ["KISKA_ambientAnim_objectUsedBy",nil];
+private _unitLoadoutBeforeAnimation = _ambientAnimInfoMap getOrDefault ["_unitLoadout",[]];
+if (_unitLoadoutBeforeAnimation isNotEqualTo []) then {
+    _unit setUnitLoadout _unitLoadoutBeforeAnimation;
+};
+
+
+if (_snapObjectIsNotNull) then {
     [_unit, _snapToObject] remoteExecCall ["enableCollisionWith", _unit];
     [_snapToObject,_unit] remoteExecCall ["enableCollisionWith", _snapToObject];
 };
 
-
-_unit setVariable ["KISKA_ambientAnimMap",nil];
 
 [_unit,""] remoteExecCall ["KISKA_fnc_resetMove"];
 

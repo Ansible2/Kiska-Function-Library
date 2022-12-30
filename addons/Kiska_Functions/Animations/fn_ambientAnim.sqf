@@ -344,9 +344,6 @@ _units apply {
             if (alive _unit) then {
                 _this call KISKA_fnc_ambientAnim_play;
 
-            } else {
-                [_unit] call KISKA_fnc_ambientAnim_stop;
-
             };
         }
     ];
@@ -356,7 +353,7 @@ _units apply {
     private _unitKilledEventHandlerId = _unit addEventHandler ["KILLED",
         {
             params ["_unit"];
-            [_unit] call KISKA_fnc_ambientAnim_stop;
+            [_unit,false] call KISKA_fnc_ambientAnim_stop;
         }
     ];
     _unitInfoMap set ["_unitKilledEventHandlerId",_unitKilledEventHandlerId];

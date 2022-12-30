@@ -81,6 +81,7 @@ Examples:
             ("#" + (_eventMap get "id"))
         ] call KISKA_fnc_setupMultiKillEvent;
     (end)
+    
 Author:
 	Ansible2
 ---------------------------------------------------------------------------- */
