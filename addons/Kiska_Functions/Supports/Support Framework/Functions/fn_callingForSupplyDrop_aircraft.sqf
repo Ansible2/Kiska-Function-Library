@@ -137,12 +137,16 @@ _args pushBack ([_supportConfig >> "addArsenals"] call BIS_fnc_getCfgDataBool);
 		private _commMenuArgs = _thisArgs select 1;
 		private _dropPosition = _commMenuArgs select 1;
 
+		private _crateList = _thisArgs select 4;
+		private _deleteCargo = _thisArgs select 5;
+		private _addArsenals = _thisArgs select 6;
+
 		[
 			_dropPosition,
 			_vehicleClass,
-			_args select 4, // crate list
-			_args select 5, // delete cargo of crates
-			_args select 6, // add arensals to crates
+			_crateList,
+			_deleteCargo,
+			_addArsenals,
 			_flyinHeight,
 			_approachBearing,
 			FLYIN_RADIUS,
