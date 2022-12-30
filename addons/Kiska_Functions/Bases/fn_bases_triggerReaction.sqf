@@ -31,7 +31,6 @@ params [
 
 if ((isNull _group) OR (isNull _detectedTarget)) exitWith {};
 
-
 private _reinforceGroupIds = _group getVariable ["KISKA_bases_canCallReinforceIds",[]];
 private _groupsToRespond = [];
 _reinforceGroupIds apply {
@@ -107,6 +106,21 @@ private _fnc_findReplacementTarget = {
 
     params ["_group","_detectedTarget","_groupsToRespond","_priority"];
 
+    private _targetVehicleALT = (getPosATL _detectedTarget) select 0;
+    if (_targetVehicleALT > 5) exitWith {
+        [
+            [
+                _group,
+                " detected a target that could not be reached: ",
+                _detectedTarget,
+                " which is of type: ",
+                typeOf _detectedTarget 
+            ],
+            false
+        ] call KISKA_fnc_log;
+        nil
+    };
+
     sleep 3;
 
     private _groupIsAlive = [_group] call KISKA_fnc_isGroupAlive;
@@ -119,7 +133,7 @@ private _fnc_findReplacementTarget = {
             isNull _detectedTarget
         }
     ) exitWith {
-        [ "Original detected target is not alive and could not find replacement"] call KISKA_fnc_log;
+        ["Original detected target is not alive and could not find replacement"] call KISKA_fnc_log;
         nil
     };
 
