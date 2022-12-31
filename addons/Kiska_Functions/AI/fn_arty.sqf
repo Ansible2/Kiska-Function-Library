@@ -51,6 +51,11 @@ if (_rounds < 1) exitWith {
 
 
 private _ammo = (getArtilleryAmmo [_gun]) select 0;
+if (isNil "_ammo") exitWith {
+	[[_gun," was told to fire but has no ammo, exiting..."]] call KISKA_fnc_log;
+	nil
+};
+
 private ["_fireDirection","_fireDistance","_targetToAimAt"];
 for "_i" from 1 to _rounds do {
 	if (!(alive _gun) OR !(alive (gunner _gun))) then {
