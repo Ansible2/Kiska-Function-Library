@@ -47,12 +47,7 @@ if (TM_POOL_GVAR isEqualTo []) exitWith {
     Change Entries
 ---------------------------------------------------------------------------- */
 private _traitPool_displayed = GET_TM_DISPLAYED_POOL;
-[[GET_TM_DISPLAY],false] call KISKA_fnc_log;
-[[GET_TM_POOL_LIST_CTRL],false] call KISKA_fnc_log;
-[[GET_TM_CURRENT_LIST_CTRL],false] call KISKA_fnc_log;
 
-[str _traitPool_displayed,false,true,false] call KISKA_fnc_log;
-[str (TM_POOL_GVAR),false,true,false] call KISKA_fnc_log;
 // subtracting 1 from this to get indexes
 private _countOfDisplayed = (count _traitPool_displayed) - 1;
 private ["_trait","_comparedIndex"];
@@ -64,12 +59,10 @@ private ["_trait","_comparedIndex"];
 		_comparedIndex = _traitPool_displayed select _forEachIndex;
 		if (_trait != _comparedIndex) then {
 			_poolControl lbSetText [_forEachIndex, _trait];
-			["1"] call KISKA_fnc_log;
 		};
 
 	} else {
 		_poolControl lbAdd _trait;
-		["2"] call KISKA_fnc_log;
 	};
 
 } forEach TM_POOL_GVAR;
@@ -84,9 +77,5 @@ if (_countOfDisplayed > _countOfCurrent) then {
 		_poolControl lbDelete _indexToDelete;
 	};
 };
-[str _traitPool_displayed,false,true,false] call KISKA_fnc_log;
-[str (TM_POOL_GVAR),false,true,false] call KISKA_fnc_log;
 // creating a copy of TM_POOL_GVAR so that when changes are made to it, the displayed array will not have those changes and therefore we can compare
 _poolControl setVariable [TM_DISPLAYED_POOL_VAR_STR,+TM_POOL_GVAR];
-[str (GET_TM_DISPLAYED_POOL),false,true,false] call KISKA_fnc_log;
-[str (TM_POOL_GVAR),false,true,false] call KISKA_fnc_log;
