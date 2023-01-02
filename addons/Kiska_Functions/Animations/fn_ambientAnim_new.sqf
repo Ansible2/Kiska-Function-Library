@@ -310,7 +310,7 @@ private _setupAnimationWithSnap = {
     [_objectToSnapTo,_unit,_relativeObjectInfo] call KISKA_fnc_setRelativeVectorAndPos;
     
 };
-
+// TDOO: this file is ready for testing, but reveiw commits to the actual one (not "_new") that were after the last one to this for what might need to be added
 
 /* ----------------------------------------------------------------------------
 
@@ -456,7 +456,6 @@ _units apply {
 
             if (alive _unit) then {
                 _this call KISKA_fnc_ambientAnim_play;
-
             };
         }
     ];

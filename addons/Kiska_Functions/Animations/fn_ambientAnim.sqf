@@ -224,7 +224,7 @@ _units apply {
         // this also happens with BIS_fnc_ambientAnim.
         // unknown why.
 
-        // This does alos benefit some seated animations if required.
+        // This does also benefit some seated animations if required.
     -------------------------------------- */
     if (_animationSetInfo getOrDefault ["attachToLogic",false]) then {
         private _logicGroup = [_x] call KISKA_fnc_ambientAnim_getNearestAttachLogicGroup;
@@ -326,6 +326,9 @@ _units apply {
         [_unit,_x] remoteExecCall ["disableAI",_unit];
     };
 
+    private _baseJipId = "KISKA_AmAnim_" + (str _unit);
+    _unitInfoMap set ["KISKA_ambientAnim_JIPId_switchMove",(_baseJipId + "_sm")];
+    _unitInfoMap set ["KISKA_ambientAnim_JIPId_playMoveNow",(_baseJipId + "_pmn")];
 
     /* --------------------------------------
         Initial Animate
@@ -343,7 +346,6 @@ _units apply {
 
             if (alive _unit) then {
                 _this call KISKA_fnc_ambientAnim_play;
-
             };
         }
     ];

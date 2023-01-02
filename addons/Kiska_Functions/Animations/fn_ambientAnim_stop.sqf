@@ -41,6 +41,10 @@ if (_ambientAnimInfoMap isEqualTo []) exitWith {
     nil
 };
 
+// remove JIP messages
+remoteExec ["", _ambientAnimInfoMap get "KISKA_ambientAnim_JIPId_switchMove"];
+remoteExec ["", _ambientAnimInfoMap get "KISKA_ambientAnim_JIPId_playMoveNow"];
+
 
 detach _unit;
 private _attachToLogic = _ambientAnimInfoMap getOrDefault ["_attachToLogic",objNull];

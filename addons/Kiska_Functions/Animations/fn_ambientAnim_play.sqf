@@ -59,14 +59,17 @@ if (_animationsToUse isEqualTo []) then {
 };
 private _animation = [_animationsToUse,""] call KISKA_fnc_selectRandom;
 
-
 if (_animationSetInfo getOrDefault ["canInterpolate",false]) then {
-    [_unit,_animation] remoteExecCall ["playMoveNow",_unit];
+    private _jipId = _ambientAnimInfoMap get "KISKA_ambientAnim_JIPId_playMoveNow";
+    [_unit,_animation] remoteExec ["playMoveNow",0,_jipId];
 
 } else {
     // best practice to make sure an animation actually plays is to use both switchMove and playMoveNow
-    [_unit,_animation] remoteExecCall ["switchMove",_unit];
-    [_unit,_animation] remoteExecCall ["playMoveNow",_unit];
+    private _jipId = _ambientAnimInfoMap get "KISKA_ambientAnim_JIPId_switchMove";
+    [_unit,_animation] remoteExec ["switchMove",0,_jipId];
+    
+    _jipId = _ambientAnimInfoMap get "KISKA_ambientAnim_JIPId_playMoveNow";
+    [_unit,_animation] remoteExec ["playMoveNow",0,_jipId];
 
 };
 /* [["Play called for ", _unit," _previousAnim: ", _previousAnim, " Current Anim: ",_animation]] call KISKA_fnc_log; */
