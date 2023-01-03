@@ -29,6 +29,9 @@ if (isNull _playerGroup) exitWith {};
 
 if !([_playerGroup] call KISKA_fnc_GCH_isGroupExcluded) exitWith {};
 
+// TODO: in a dedicated server load, this is probably too much of an assumption causing #142
+// Suspect that when multiple players are in the same group during postinit, this will not run
+// because everyone thinks the other player will have already taken care of init
 
 // current setting of exclusion in the group 
 // should be valid if a player is already in it
