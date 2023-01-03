@@ -26,8 +26,6 @@ Examples:
 Author(s):
 	Ansible2
 ---------------------------------------------------------------------------- */
-#define COMMAND_MENU_CLOSED commandingMenu isEqualTo ""
-
 scriptName "KISKA_fnc_commandMenuTree";
 
 if (!hasInterface) exitWith {
@@ -43,7 +41,6 @@ if (!canSuspend) exitWith {
 params [
 	["_menuPath",[],[[]]],
 	["_endExpression","",["",{},[]]],
-	["_args",[],[[]]],
 	["_exitExpression","",["",{},[]]]
 ];
 
@@ -78,26 +75,23 @@ _menuPath apply {
 	// keeps track of whether or not to open the next menu
 	localNamespace setVariable ["KISKA_commMenuTree_proceedToNextMenu",false];
 	showCommandingMenu _x;
-
 	// wait for player to select and option from the current menu or for them to close the menu
 	waitUntil {
 		if (localNamespace getVariable "KISKA_commMenuTree_proceedToNextMenu") exitWith {true};
-		if (COMMAND_MENU_CLOSED) exitWith {
-			_menuWasClosed = true;
-			true
-		};
-		false
+		_menuWasClosed = commandingMenu isEqualTo "";
+		_menuWasClosed
 	};
-	if (_menuWasClosed) then {
-		break;
-	};
+	if (_menuWasClosed) then {break};
 };
 
 private _params = localNamespace getVariable "KISKA_commMenuTree_params";
-private _expression = _endExpression;
+private "_expression";
 if (_menuWasClosed) then {
 	_expression = _exitExpression;
+} else {
+	_expression = _endExpression;
 };
+
 [_params, _expression] call KISKA_fnc_callBack;
 
 
