@@ -15,12 +15,12 @@ Parameters:
 		(see KISKA_fnc_callBack for examples)
 		Parameters:
 
-            0. _vehicle - The drop vehicle
+            - 0: _vehicle - The drop vehicle
 
     3: _afterDropCode <CODE, STRING or ARRAY> - Code to execute after the drop is complete, see KISKA_fnc_callBack
         Parameters:
 
-            0. _vehicle - The drop vehicle
+            - 0: _vehicle - The drop vehicle
 
     4: _hoverHeight <NUMBER> - The height the helicopter should hover above the drop position
         while units are fastroping. Max is 28, min is 5
