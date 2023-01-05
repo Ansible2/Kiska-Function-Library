@@ -136,6 +136,8 @@ class CfgFunctions
             {};
             class bases_getSide
             {};
+            class bases_initAmbientAnimFromClass
+            {};
             class bases_initReinforceFromClass
             {};
             class bases_triggerReaction

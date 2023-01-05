@@ -102,41 +102,9 @@ _agentClasses apply {
         _agents pushBack _agent;
     };
 
-    /* -------------------------------------------
-        Animate Class
-    ------------------------------------------- */
-    private _animateClass = _classConfig >> "ambientAnim";
-    if !(isNull _animateClass) then {
-        private _animationSet = (_animateClass >> "animationSet") call BIS_fnc_getCfgData;
-        private _equipmentLevel = (_animateClass >> "equipmentLevel") call BIS_fnc_getCfgData;
-        if (isNil "_equipmentLevel") then {
-            _equipmentLevel = "";
-        };
-
-        private _snapToRange = getNumber(_animateClass >> "snapToRange");
-        if (_snapToRange isEqualTo 0) then {
-            _snapToRange = 5;
-        };
-        private _combat = [_animateClass >> "exitOnCombat"] call BIS_fnc_getCfgDataBool;
-        private _fallbackFunction = getText(_animateClass >> "fallbackFunction");
-
-        private _args = [
-            _agents,
-            _animationSet,
-            _combat,
-            _equipmentLevel,
-            _snapToRange,
-            _fallbackFunction
-        ];
-
-        private _getAnimationMapFunction = getText(_animateClass >> "getAnimationMapFunction");
-        if (_getAnimationMapFunction isNotEqualTo "") then {
-            private _animationMap = [[],_getAnimationMapFunction] call KISKA_fnc_callBack;
-            _args pushBack _animationMap;
-        };
-
-        _args call KISKA_fnc_ambientAnim;
-    };
+    [
+        _classConfig >> "ambientAnim"
+    ] call KISKA_fnc_bases_initAmbientAnimFromClass;
 
 
     private _onAgentsCreated = getText(_classConfig >> "onAgentsCreated");
