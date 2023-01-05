@@ -6,13 +6,13 @@ Description:
      allows for more customization.
 
 Parameters:
-	0: _units <ARRAY or OBJECT> - An array of units or a single unit to animate
-	1: _animSet <ARRAY or STRING> - An array of animation set names (strings) that are located in the
+    0: _units <ARRAY or OBJECT> - An array of units or a single unit to animate
+    1: _animSet <ARRAY or STRING> - An array of animation set names (strings) that are located in the
         _animationMap or a single animation set. The array can be weighted or unweighted.
         (see selectRandomWeighted single array syntax)
-	2: _exitOnCombat <BOOL> - True for unit to return to the state it was in prior to
+    2: _exitOnCombat <BOOL> - True for unit to return to the state it was in prior to
         KISKA_fnc_ambientAnim being called when they are enter combat behaviour.
-	3: _equipmentLevel <STRING> - A quick means of temporarily adjusting a unit's equipment
+    3: _equipmentLevel <STRING> - A quick means of temporarily adjusting a unit's equipment
         to match a scene. Options:
 
         - "": no changes
@@ -21,7 +21,7 @@ Parameters:
         - "MEDIUM": no goggles, headgear
         - "FULL": no goggles
 
-	4: _snapToRange <NUMBER> - Certain animations (such as sitting in a chair) can
+    4: _snapToRange <NUMBER> - Certain animations (such as sitting in a chair) can
         be configured to orient the unit onto certain object types. This is how far
         will be searched around the unit to find an object to "snap" onto. Cannot be more then 10m.
     5: _fallbackFunction <CODE, ARRAY, or STRING> - (See KISKA_fnc_callBack) In the event that
@@ -38,7 +38,7 @@ Parameters:
             6. _fallbackFunction <CODE, ARRAY, or STRING>
             7. _animationMap <HASHMAP or CONFIG>
 
-	6: _animationMap <HASHMAP or CONFIG> - See KISKA_fnc_ambientAnim_createMapFromConfig
+    6: _animationMap <HASHMAP or CONFIG> - See KISKA_fnc_ambientAnim_createMapFromConfig
         This is a hashmap that will searched for information for a specific _animSet
         A config can be passed and will be parsed/cached.
 
@@ -63,7 +63,7 @@ Examples:
     (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ambientAnim";
 // TODO: handle remote units being passed
@@ -74,7 +74,7 @@ scriptName "KISKA_fnc_ambientAnim";
 
 params [
     ["_units",objNull,[[],objNull]],
-	["_animationParams","",["",[]]],
+    ["_animationParams","",["",[]]],
     ["_exitOnCombat",false,[true]],
     ["_equipmentLevel","",["",[]]],
     ["_animationMap",DEFAULT_ANIMATION_MAP,[createHashMap,configNull]]
@@ -86,29 +86,29 @@ private _fallbackFunctionIsPresent = false;
 private _isSnapAnimations = false;
 private _isRandomAnimationSet = (count _animationParams > 1) AND (_animationParams isEqualTypeAll "");
 if ((_animationParams isEqualType "") OR _isRandomAnimationSet) then {
-	_animSet = _animationParams;
+    _animSet = _animationParams;
 
 } else {
-	_snapAnimationParams params [
-		["_animSetParam","",["",[]]],
-		["_snapToRangeParam",5,[123]],
-		["_backupAnimsParam","",["",[]]],
-		["_fallbackFunctionParam",{},[[],"",{}]]
-	];
+    _snapAnimationParams params [
+        ["_snapToAnimationSet","",["",[]]],
+        ["_snapToRangeParam",5,[123]],
+        ["_backupAnimsParam","",["",[]]],
+        ["_fallbackFunctionParam",{},[[],"",{}]]
+    ];
 
-	_animSet = _animSetParam;
-	_snapToRange = _snapToRangeParam;
-	_backupAnims = _backupAnimsParam;
-	_fallbackFunction = _fallbackFunctionParam;
-	_isSnapAnimations = true;
+    _animSet = _snapToAnimationSet;
+    _snapToRange = _snapToRangeParam;
+    _backupAnims = _backupAnimsParam;
+    _fallbackFunction = _fallbackFunctionParam;
+    _isSnapAnimations = true;
 
-	if (_snapToRange > 10) then {
-		_snapToRange = 10;
-	};
+    if (_snapToRange > 10) then {
+        _snapToRange = 10;
+    };
 
-	_fallbackFunctionIsPresent = _fallbackFunction isNotEqualTo {} AND
-		_fallbackFunction isNotEqualTo [] AND
-		_fallbackFunction isNotEqualTo "";
+    _fallbackFunctionIsPresent = _fallbackFunction isNotEqualTo {} AND
+        _fallbackFunction isNotEqualTo [] AND
+        _fallbackFunction isNotEqualTo "";
 };
 
 
@@ -145,7 +145,7 @@ if (_animationMapIsConfig) then {
 
 private _setsToVerify = _animSet;
 if !(_animSet isEqualType []) then {
-	_setsToVerify = [_animSet];
+    _setsToVerify = [_animSet];
     if (_isSnapAnimations) then {
         _animSet = _setsToVerify;
     };
@@ -153,22 +153,22 @@ if !(_animSet isEqualType []) then {
 
 private _invalidSets = [];
 _setsToVerify apply {
-	private _animationSetInfo = _animationMap getOrDefault [_x,[]] ;
-	if (_animationSetInfo isEqualTo []) then {
-		_invalidSets pushBack _x;
-		continue;
-	};
+    private _animationSetInfo = _animationMap getOrDefault [_x,[]] ;
+    if (_animationSetInfo isEqualTo []) then {
+        _invalidSets pushBack _x;
+        continue;
+    };
 
-	if (!_isSnapAnimations) then {continue};
+    if (!_isSnapAnimations) then {continue};
 
-	if (_animationSetInfo getOrDefault ["snapToObjectsMap",[]] isEqualTo []) then {
-		_invalidSets pushBack (_x + ":snapToObjectsMap_empty");
-	};
+    if (_animationSetInfo getOrDefault ["snapToObjectsMap",[]] isEqualTo []) then {
+        _invalidSets pushBack (_x + ":snapToObjectsMap_empty");
+    };
 };
 
 if (count _invalidSets > 0) exitWith {
-	[["Invalid animation set(s) passed: ",_invalidSets],true] call KISKA_fnc_log;
-	nil
+    [["Invalid animation set(s) passed: ",_invalidSets],true] call KISKA_fnc_log;
+    nil
 };
 
 
@@ -179,7 +179,7 @@ if (count _invalidSets > 0) exitWith {
 
 ---------------------------------------------------------------------------- */
 private _setupAnimation = {
-	params ["_unitInfoMap","_animsToSelectFrom"];
+    params ["_unitInfoMap","_animsToSelectFrom"];
 
     private _animSetSelection = _animsToSelectFrom;
     if (_animsToSelectFrom isEqualType []) then {
@@ -244,14 +244,14 @@ private _handleNoSnap = {
 // shuffle the entire array each time and loop through every set (this would also be hard with weighted arrays)
 // delete one random entry at a time and eventually make the array anew
 private _setupAnimationWithSnap = {
-	params ["_unit","_unitInfoMap"];
+    params ["_unit","_unitInfoMap"];
 
     // using nearObjects to support snapping to simple objects
-	private _nearObjects = _unit nearObjects _snapToRange;
-	if (_nearObjects isEqualTo []) exitWith {
+    private _nearObjects = _unit nearObjects _snapToRange;
+    if (_nearObjects isEqualTo []) exitWith {
         [["No near objects to snap to ",_unit]] call KISKA_fnc_log;
         [_unit, _unitInfoMap] call _handleNoSnap;
-	};  
+    };  
 
 
     private _isWeightedAnimSet = _animSet isEqualTypeParams ["",123];
@@ -330,16 +330,17 @@ _units apply {
     };
 
     private _unitInfoMap = createHashmap;
-	detach _unit;
+    detach _unit;
  
-	if (_isSnapAnimations) then {
-		[_unit,_unitInfoMap] call _setupAnimationWithSnap;
+    if (_isSnapAnimations) then {
+        [_unit,_unitInfoMap] call _setupAnimationWithSnap;
 
-	} else {
-		[_unitInfoMap,_animSet] call _setupAnimation;
+    } else {
+        [_unitInfoMap,_animSet] call _setupAnimation;
 
-	};
-
+    };
+    
+    private _animationSetInfo = _unitInfoMap get "_animationSetInfo";
 
     /* --------------------------------------
         Handle AttachTo Logic
@@ -351,10 +352,21 @@ _units apply {
         // This does also benefit some seated animations if required.
     -------------------------------------- */
     if (_animationSetInfo getOrDefault ["attachToLogic",false]) then {
-        private _logicGroup = call KISKA_fnc_ambientAnim_getAttachToLogicGroup;
+        private _logicGroup = [_x] call KISKA_fnc_ambientAnim_getNearestAttachLogicGroup;
         if (isNull _logicGroup) then {
             _logicGroup = createGroup sideLogic;
-            [_logicGroup] call KISKA_fnc_ambientAnim_setAttachToLogicGroup;
+            _logicGroup deleteGroupWhenEmpty true;
+            _logicGroup addEventHandler ["Deleted",{
+                params ["_group"];
+                
+                private _mapId = _group getVariable ["KISKA_ambientAnimGroup_ID",-1];
+                if (_mapId >= 0) then {
+                    private _logicGroupsMap = call KISKA_fnc_ambientAnim_getAttachLogicGroupsMap;
+                    _logicGroupsMap deleteAt _mapId;
+                };
+            }];
+
+            [_logicGroup] call KISKA_fnc_ambientAnim_addAttachLogicGroup;
         };
 
         private _helper = _logicGroup createUnit ["Logic", [0,0,0], [], 0, "NONE"];
@@ -440,6 +452,10 @@ _units apply {
     };
 
 
+    private _baseJipId = "KISKA_AmAnim_" + (str _unit);
+    _unitInfoMap set ["KISKA_ambientAnim_JIPId_switchMove",(_baseJipId + "_sm")];
+    _unitInfoMap set ["KISKA_ambientAnim_JIPId_playMoveNow",(_baseJipId + "_pmn")];
+
     /* --------------------------------------
         Initial Animate
     -------------------------------------- */
@@ -473,7 +489,7 @@ _units apply {
 
     private _unitDeletedEventHandlerId = _unit addEventHandler ["Deleted",
         {
-    	    params ["_unit"];
+            params ["_unit"];
             [_unit,true] call KISKA_fnc_ambientAnim_stop;
         }
     ];
