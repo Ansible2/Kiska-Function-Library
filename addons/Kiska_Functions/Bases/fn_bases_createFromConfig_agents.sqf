@@ -102,9 +102,7 @@ _agentClasses apply {
         _agents pushBack _agent;
     };
 
-    [
-        _classConfig >> "ambientAnim"
-    ] call KISKA_fnc_bases_initAmbientAnimFromClass;
+    [_classConfig,_agents] call KISKA_fnc_bases_initAmbientAnimFromClass;
 
 
     private _onAgentsCreated = getText(_classConfig >> "onAgentsCreated");

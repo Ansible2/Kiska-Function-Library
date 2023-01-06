@@ -83,9 +83,7 @@ _infantryClasses apply {
         _side
     ] call KISKA_fnc_spawn;
 
-    [
-        _classConfig >> "ambientAnim"
-    ] call KISKA_fnc_bases_initAmbientAnimFromClass;
+    [_classConfig,_units] call KISKA_fnc_bases_initAmbientAnimFromClass;
 
     private _onUnitsCreated = getText(_classConfig >> "onUnitsCreated");
     if (_onUnitsCreated isNotEqualTo "") then {

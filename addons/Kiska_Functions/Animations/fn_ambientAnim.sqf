@@ -7,26 +7,26 @@ Description:
 
 Parameters:
     0: _units <ARRAY or OBJECT> - An array of units or a single unit to animate
-    1: _animationParams <ARRAY, STRING[], <STRING,NUMBER>[], or STRING> - This can be three things:
+    1: _animationParams <HASHMAP, STRING[], <STRING,NUMBER>[], or STRING> - This can be three things:
         
         - If a string, a single animation set that is located in the _animationMap
         - If an array, you can have weighted or unweighted array of strings that are random animation sets to select from
-        - lastly, you can have an array setup for snap to animations:
+        - lastly, you can have a HASHMAP setup for snap to animations:
          
-         - 0: _snapToAnimationSet <STRING[], <STRING,NUMBER>[], or STRING> - A single snapto animation set or weighted/unweighted array to randomly select from.
-         - 1: _snapToRange <NUMBER> - This is how far will be searched around the unit to find an object to "snap" onto. Cannot be more then 10m.
-         - 2: _backupAnims <STRING[], <STRING,NUMBER>[], or STRING> - Same as _snapToAnimationSet but for animations to use in the even that ALL of the _snapToAnimationSet animations fail to be used due to valid objects not being within range.
-         - 3: _fallbackFunction <CODE, ARRAY, or STRING> - (See KISKA_fnc_callBack) In the event that
+         - _animSet <STRING[], <STRING,NUMBER>[], or STRING> - A single snapto animation set or weighted/unweighted array to randomly select from.
+         - _snapToRange <NUMBER> - This is how far will be searched around the unit to find an object to "snap" onto. Cannot be more then 10m.
+         - _backupAnims <STRING[], <STRING,NUMBER>[], or STRING> - Same as _snapToAnimationSet but for animations to use in the even that ALL of the _snapToAnimationSet animations fail to be used due to valid objects not being within range.
+         - _fallbackFunction <CODE, ARRAY, or STRING> - (See KISKA_fnc_callBack) In the event that
             a unit is not able to find an object to snap to AND1 no _backupAnims are present, this function will be called with the
             following params. If you still want the unit to be animated in this case, pass {}, "", or []
                 
-                - 0: _unit <OBJECT> - The unit
-                - 1: _unitInfoMap <HASHMAP> - The current state of the _unitInfoMap which stores animation info for the system
-                The rest of these params are exactly as passed to the initial KISKA_fnc_ambientAnim call
-                - 2: _animationParams <ARRAY, STRING[], <STRING,NUMBER>[], or STRING>
-                - 3: _exitOnCombat <BOOL>
-                - 4: _equipmentLevel <ARRAY or STRING>
-                - 5: _animationMap <HASHMAP or CONFIG>
+             - 0: _unit <OBJECT> - The unit
+             - 1: _unitInfoMap <HASHMAP> - The current state of the _unitInfoMap which stores animation info for the system
+             The rest of these params are exactly as passed to the initial KISKA_fnc_ambientAnim call
+             - 2: _animationParams <ARRAY, STRING[], <STRING,NUMBER>[], or STRING>
+             - 3: _exitOnCombat <BOOL>
+             - 4: _equipmentLevel <ARRAY or STRING>
+             - 5: _animationMap <HASHMAP or CONFIG>
 
     2: _exitOnCombat <BOOL> - True for unit to return to the state it was in prior to
         KISKA_fnc_ambientAnim being called when they are enter combat behaviour.
@@ -84,9 +84,10 @@ scriptName "KISKA_fnc_ambientAnim";
 
 #define DEFAULT_ANIMATION_MAP (configFile >> "KISKA_AmbientAnimations")
 
+private _comparisonMap = createHashMap;
 params [
     ["_units",objNull,[[],objNull]],
-    ["_animationParams","",["",[]]],
+    ["_animationParams","",["",[],_comparisonMap]],
     ["_exitOnCombat",false,[true]],
     ["_equipmentLevel","",["",[]]],
     ["_animationMap",DEFAULT_ANIMATION_MAP,[createHashMap,configNull]]
@@ -95,29 +96,38 @@ params [
 
 private ["_fallbackFunction","_snapToRange","_animSet","_backupAnims"];
 private _fallbackFunctionIsPresent = false;
-private _isSnapAnimations = false;
-private _isRandomAnimationSet = (count _animationParams > 1) AND (_animationParams isEqualTypeAll "");
-if ((_animationParams isEqualType "") OR _isRandomAnimationSet) then {
+private _isSnapAnimations = _animationParams isEqualType _comparisonMap;
+private _parsedSnapToMapErrors = [];
+
+if !(_isSnapAnimations) then {
     _animSet = _animationParams;
 
 } else {
-    _animationParams params [
-        ["_snapToAnimationSet","",["",[]]],
-        ["_snapToRangeParam",5,[123]],
-        ["_backupAnimsParam","",["",[]]],
-        ["_fallbackFunctionParam",{},[[],"",{}]]
-    ];
-
-    _animSet = _snapToAnimationSet;
-    _snapToRange = _snapToRangeParam;
-    _backupAnims = _backupAnimsParam;
-    _fallbackFunction = _fallbackFunctionParam;
-    _isSnapAnimations = true;
-
-    if (_snapToRange > 10) then {
-        _snapToRange = 10;
+    _animSet = _animationParams getOrDefault ["_animSet",""];
+    if !(_animSet isEqualTypeAny ["",[]]) then {
+        _parsedSnapToMapErrors pushBack ((str _animSet) + " is not a valid type for _animSet (STRING or ARRAY)");
     };
 
+    _snapToRange = _animationParams getOrDefault ["_snapToRange",5];
+    if !(_snapToRange isEqualType 123) then {
+        _parsedSnapToMapErrors pushBack ((str _snapToRange) + " is not a valid type for _snapToRange (NUMBER)");
+    };
+
+    _backupAnims = _animationParams getOrDefault ["_backupAnims",""];
+    if !(_backupAnims isEqualTypeAny ["",[]]) then {
+        _parsedSnapToMapErrors pushBack ((str _backupAnims) + " is not a valid type for _backupAnims (STRING or ARRAY)");
+    };
+
+    _fallbackFunction = _animationParams getOrDefault ["_fallbackFunction",{}];
+    if !(_fallbackFunction isEqualTypeAny ["",{},[]]) then {
+        _parsedSnapToMapErrors pushBack ((str _fallbackFunction) + " is not a valid type for _fallbackFunction (STRING, CODE, or ARRAY)");
+    };
+
+
+
+    if (_parsedSnapToMapErrors isNotEqualTo []) exitWith {};
+    
+    if (_snapToRange > 10) then { _snapToRange = 10 };
     _fallbackFunctionIsPresent = _fallbackFunction isNotEqualTo {} AND
         _fallbackFunction isNotEqualTo [] AND
         _fallbackFunction isNotEqualTo "";
@@ -129,6 +139,11 @@ if ((_animationParams isEqualType "") OR _isRandomAnimationSet) then {
     Verify params
 
 ---------------------------------------------------------------------------- */
+if (_parsedSnapToMapErrors isNotEqualTo []) exitWith {
+    [["Errors with snap animation map:",_parsedSnapToMapErrors]] call KISKA_fnc_log;
+    nil
+};
+
 if (_units isEqualTo []) exitWith {
     ["Empty _units array passed!", true] call KISKA_fnc_log;
     nil
