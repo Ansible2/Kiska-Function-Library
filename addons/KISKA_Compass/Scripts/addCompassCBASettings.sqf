@@ -9,7 +9,7 @@
     "CHECKBOX",
     "Show Compass",
     "KISKA Compass",
-    true,
+    false,
     nil,
     {
         if (!hasInterface) exitWith {};
