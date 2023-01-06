@@ -49,49 +49,102 @@ if (_center isEqualType objNull AND {isNull _center}) exitWith {
     -1
 };
 
-private _proximityActionId = localNamespace getVariable ["KISKA_proximityPlayerActionLatestId",0];
-localNamespace setVariable ["KISKA_proximityPlayerActionLatestId",_proximityActionId + 1];
-localNamespace setVariable ["KISKA_proximityAction_" + (str _proximityActionId), true];
+// [
+//     _center,
+//     _radius,
+//     _action,
+//     _refreshInterval,
+//     _proximityActionId
+// ] spawn {
+//     params [
+//         "_center",
+//         "_radius",
+//         "_action",
+//         "_refreshInterval",
+//         "_proximityActionId"
+//     ];
+
+//     private _proximityActionVar = "KISKA_proximityAction_" + (str _proximityActionId);
+//     private _actionId = -1;
+//     waitUntil {
+//         sleep _refreshInterval;
+
+//         private _playerInRange = player distance _center <= _radius;
+//         private _actionIsVisible = _actionId isNotEqualTo -1;
+//         if (_playerInRange AND !(_actionIsVisible)) then {
+//             _actionId = player addAction _action;
+//             continueWith false;
+//         };
+
+//         private _endAction = !(localNamespace getVariable [_proximityActionVar, false]);
+//         if (
+//             _actionIsVisible AND
+//             (!_playerInRange OR _endAction)
+//         ) then {
+//             player removeAction _actionId;
+//             _actionId = -1;
+//         };
+
+//         _endAction
+//     };
+// };
+
+private _proximityActionId = ["KISKA_proximityPlayerActionLatestId"] call KISKA_fnc_idCounter;
+private _varBase = "KISKA_proximityAction_" + (str _proximityActionId);
+private _actionIsShouldBeRemovedVar = _varBase + "_remove";
+private _actionIdVar = _varBase + "_currentId";
+localNamespace setVariable [_actionIsShouldBeRemovedVar, false];
+localNamespace setVariable [_actionIdVar, -1];
 
 [
-    _center,
-    _radius,
-    _action,
-    _refreshInterval,
-    _proximityActionId
-] spawn {
-    params [
-        "_center",
-        "_radius",
-        "_action",
-        "_refreshInterval",
-        "_proximityActionId"
-    ];
+    {
+        params [
+            "_center",
+            "_radius",
+            "_action",
+            "_refreshInterval",
+            "_actionIsShouldBeRemovedVar",
+            "_actionIdVar"
+        ];
 
-    private _proximityActionVar = "KISKA_proximityAction_" + (str _proximityActionId);
-    private _actionId = -1;
-    waitUntil {
-        sleep _refreshInterval;
-
+        private _actionId = localNamespace getVariable [_actionIdVar, -1];
         private _playerInRange = player distance _center <= _radius;
         private _actionIsVisible = _actionId isNotEqualTo -1;
-        if (_playerInRange AND !(_actionIsVisible)) then {
+
+        if (_playerInRange AND !(_actionIsVisible)) exitWith {
             _actionId = player addAction _action;
-            continueWith false;
+            localNamespace setVariable [_actionIdVar, _actionId];
+            false;
         };
 
-        private _endAction = !(localNamespace getVariable [_proximityActionVar, false]);
+        private _endAction = localNamespace getVariable [_actionIsShouldBeRemovedVar, false];
         if (
             _actionIsVisible AND
             (!_playerInRange OR _endAction)
         ) then {
             player removeAction _actionId;
-            _actionId = -1;
+            localNamespace setVariable [_actionIdVar, -1];
         };
 
         _endAction
-    };
-};
+    },
+    {
+        params ["","","","","_actionIsShouldBeRemovedVar","_actionIdVar"];
+
+        localNamespace setVariable [_actionIsShouldBeRemovedVar, nil];
+        localNamespace setVariable [_actionIdVar, nil];
+
+    },
+    _refreshInterval,
+    [
+        _center,
+        _radius,
+        _action,
+        _refreshInterval,
+        _actionIsShouldBeRemovedVar,
+        _actionIdVar
+    ]
+] call KISKA_fnc_waitUntil;
 
 
 _proximityActionId
