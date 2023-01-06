@@ -7,13 +7,13 @@ Description:
     Pilots should ideally be placed in "CARELESS" behaviour when around enemies.
 
 Parameters:
-	0: _vehicle <OBJECT> - The vehicle to fastrope from
+    0: _vehicle <OBJECT> - The vehicle to fastrope from
     1: _dropPosition <ARRAY or OBJECT> - The positionASL to drop the units off at; Z coordinate
         matters
     2: _unitsToDeploy <CODE, STRING, ARRAY, OBJECT[], GROUP, or OBJECT> - An array of units to drop from the _vehicle,
-		Or code that will run once the helicopter has reached the drop point that must return an array of object
-		(see KISKA_fnc_callBack for examples)
-		Parameters:
+        Or code that will run once the helicopter has reached the drop point that must return an array of object
+        (see KISKA_fnc_callBack for examples)
+        Parameters:
 
             - 0: _vehicle - The drop vehicle
 
@@ -28,11 +28,11 @@ Parameters:
         points for the ropes and/or memory points to attachTo
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		[
+        [
             _vehicle,
             _position,
             (fullCrew [_vehicle,"cargo"]) apply {
@@ -41,11 +41,11 @@ Examples:
             {hint "fastrope done"},
             28,
             [[0,0,0]]
-		] call KISKA_fnc_ACE_fastRope;
+        ] call KISKA_fnc_ACE_fastRope;
     (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ACE_fastRope";
 
@@ -126,10 +126,10 @@ if (_unitsToDeploy isEqualType objNull) then {
 
 private _unitsToDeployFiltered = [];
 private _unitsToDeployIsCode = 
-	(_unitsToDeploy isEqualTypeParams [[],{}]) OR 
-	(_unitsToDeploy isEqualTypeParams [[],""]) OR
-	_unitsToDeploy isEqualType "" OR 
-	_unitsToDeploy isEqualType {};
+    (_unitsToDeploy isEqualTypeParams [[],{}]) OR 
+    (_unitsToDeploy isEqualTypeParams [[],""]) OR
+    _unitsToDeploy isEqualType "" OR 
+    _unitsToDeploy isEqualType {};
 
 if (_unitsToDeploy isEqualType [] AND !_unitsToDeployIsCode) then {
     _unitsToDeploy apply {
@@ -251,12 +251,12 @@ _pilot move (ASLToATL _hoverPosition_ASL);
         params ["_vehicle","","_pilot","_unitsToDeploy","_afterDropCode","_ropeOrigins","_unitsToDeployIsCode"];
 
         if ((alive _vehicle) AND (alive _pilot)) then {
-			if (_unitsToDeployIsCode) then {
-				_unitsToDeploy = [
-					[_vehicle],
-					_unitsToDeploy
-				] call KISKA_fnc_callBack;
-			};
+            if (_unitsToDeployIsCode) then {
+                _unitsToDeploy = [
+                    [_vehicle],
+                    _unitsToDeploy
+                ] call KISKA_fnc_callBack;
+            };
 
             [_vehicle, _unitsToDeploy, _ropeOrigins] call KISKA_fnc_ACE_deployFastRope;
 

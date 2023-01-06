@@ -12,21 +12,21 @@ Parameters:
         points for the ropes or a memory point to attachTo
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		[
+        [
             _vehicle,
             (fullCrew [_vehicle,"cargo"]) apply {
                 _x select 0
             }
-		] call KISKA_fnc_ACE_deployFastRope;
+        ] call KISKA_fnc_ACE_deployFastRope;
     (end)
 
 Author(s):
     BaerMitUmlaut,
-	Modified By: Ansible2
+    Modified By: Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ACE_deployFastRope";
 

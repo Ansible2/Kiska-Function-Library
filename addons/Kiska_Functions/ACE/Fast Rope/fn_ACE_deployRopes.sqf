@@ -10,16 +10,16 @@ Parameters:
         points for the ropes or a memory point to attachTo
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		[heli] call KISKA_fnc_ACE_deployRopes;
+        [heli] call KISKA_fnc_ACE_deployRopes;
     (end)
 
 Author(s):
     BaerMitUmlaut,
-	Modified By: Ansible2
+    Modified By: Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ACE_deployRopes";
 
