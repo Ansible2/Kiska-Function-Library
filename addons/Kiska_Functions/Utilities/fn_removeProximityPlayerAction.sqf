@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_addProximityPlayerAction
+Function: KISKA_fnc_removeProximityPlayerAction
 
 Description:
     Stages an action added with KISKA_fnc_addProximityPlayerAction for removal.
@@ -10,7 +10,7 @@ Parameters:
 	0: _id : <NUMBER> - The proximity action id returned from KISKA_fnc_addProximityPlayerAction
 
 Returns:
-	<BOOL> - False if not removed, true if removed
+	<BOOL> - False if action still exists, true if it does not
 
 Examples:
     (begin example)
@@ -31,9 +31,10 @@ if (_id < 0) exitWith {
     false
 };
 
-private _varName = "KISKA_proximityAction_" + (str _id);
-if (localNamespace getVariable [_varName,false]) exitWith {
-    localNamespace setVariable [_varName,false];
+private _varBase = "KISKA_proximityAction_" + (str _id);
+private _actionShouldBeRemovedVar = _varBase + "_remove";
+if !(localNamespace getVariable [_actionShouldBeRemovedVar,false]) exitWith {
+    localNamespace setVariable [_actionShouldBeRemovedVar,true];
     true
 };
 
