@@ -55,6 +55,22 @@ if (_onEnemyDetected isNotEqualTo {}) then {
 
 if (_preventDefault) exitWith {};
 
+// don't try to fight air vehicles
+private _targetVehicleALT = (getPosATL _detectedTarget) select 2;
+if (_targetVehicleALT >= 5) exitWith {
+    [
+        [
+            _group,
+            " detected a target that could not be reached: ",
+            _detectedTarget,
+            " which is of type: ",
+            typeOf _detectedTarget 
+        ],
+        false
+    ] call KISKA_fnc_log;
+    nil
+};
+
 
 /* ----------------------------------------------------------------------------
     Default response behviour
@@ -105,21 +121,6 @@ private _fnc_findReplacementTarget = {
     scriptName "KISKA_fnc_bases_triggerReaction";
 
     params ["_group","_detectedTarget","_groupsToRespond","_priority"];
-
-    private _targetVehicleALT = (getPosATL _detectedTarget) select 0;
-    if (_targetVehicleALT > 5) exitWith {
-        [
-            [
-                _group,
-                " detected a target that could not be reached: ",
-                _detectedTarget,
-                " which is of type: ",
-                typeOf _detectedTarget 
-            ],
-            false
-        ] call KISKA_fnc_log;
-        nil
-    };
 
     sleep 3;
 
