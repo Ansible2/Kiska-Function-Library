@@ -38,7 +38,7 @@ if (isNull _group) exitWith {
 };
 
 if (_synchronize) exitWith {
-	private _jipId = "KISKA_GCH_groupExclusion:" + str _group;
+	private _jipId = "KISKA_GCH_groupExclusion:" + (str _group);
 	[_group,_isExcluded] remoteExecCall ["KISKA_fnc_GCH_setGroupExcluded",0,_jipId];
 };
 
