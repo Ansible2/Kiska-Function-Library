@@ -31,13 +31,6 @@ private _isGroupExcluded = [_playerGroup,true] call KISKA_fnc_GCH_isGroupExclude
 private _exclusionWasSet = !(isNil "_isGroupExcluded");
 if (_exclusionWasSet) exitWith {};
 
-
-// current setting of exclusion in the group 
-// should be valid if a player is already in it
-private _groupAlreadyHasPlayer = [_playerGroup] call KISKA_fnc_GCH_doesGroupHaveAnotherPlayer;
-if (_groupAlreadyHasPlayer) exitWith {};
-
-
 [_playerGroup,false,true] call KISKA_fnc_GCH_setGroupExcluded;
 
 
