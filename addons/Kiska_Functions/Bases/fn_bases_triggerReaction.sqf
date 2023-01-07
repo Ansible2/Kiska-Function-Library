@@ -116,11 +116,12 @@ private _fnc_findReplacementTarget = {
     _group,
     _detectedTarget,
     _groupsToRespond,
-    _priority
+    _priority,
+    _fnc_findReplacementTarget
 ] spawn {
     scriptName "KISKA_fnc_bases_triggerReaction";
 
-    params ["_group","_detectedTarget","_groupsToRespond","_priority"];
+    params ["_group","_detectedTarget","_groupsToRespond","_priority","_fnc_findReplacementTarget"];
 
     sleep 3;
 
