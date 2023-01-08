@@ -15,15 +15,15 @@ Parameters:
     NONE
 
 Returns:
-	<ARRAY or NUMBER> - see Description for details
+    <ARRAY or NUMBER> - see Description for details
 
 Examples:
     (begin example)
-		private _interval = call KISKA_fnc_randomMusic_getTrackInterval;
-   	(end)
+        private _interval = call KISKA_fnc_randomMusic_getTrackInterval;
+       (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_randomMusic_getTrackInterval";
 

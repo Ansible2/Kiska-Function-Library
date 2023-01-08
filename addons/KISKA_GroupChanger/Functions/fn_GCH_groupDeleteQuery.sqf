@@ -2,17 +2,17 @@
 Function: KISKA_fnc_GCH_groupDeleteQuery
 
 Description:
-	Acts as a liason from a client to add a group to auto delete if necessary.
+    Acts as a liason from a client to add a group to auto delete if necessary.
 
-	Only works where the group is local and need to use groupOwner to get that
-	 which only works on the server.
+    Only works where the group is local and need to use groupOwner to get that
+     which only works on the server.
 
 Parameters:
-	0: _group <GROUP> - The group to change the auto-deletion on
-	1: _canDelete <BOOL> - Set the group to be deleted or not
+    0: _group <GROUP> - The group to change the auto-deletion on
+    1: _canDelete <BOOL> - Set the group to be deleted or not
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
@@ -20,13 +20,13 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_GCH_groupDeleteQuery";
 
 if (!isServer) exitWith {
-	["Must be run on server",true] call KISKA_fnc_log;
-	nil
+    ["Must be run on server",true] call KISKA_fnc_log;
+    nil
 };
 
 

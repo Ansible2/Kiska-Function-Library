@@ -6,18 +6,18 @@ Description:
     Updates the color of the ctrls for the KISKA compass.
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		call KISKA_fnc_compass_updateColors;
+        call KISKA_fnc_compass_updateColors;
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_compass_updateColors";
 

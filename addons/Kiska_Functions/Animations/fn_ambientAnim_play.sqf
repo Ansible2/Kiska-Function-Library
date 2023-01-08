@@ -8,8 +8,8 @@ Description:
      in KISKA_fnc_ambientAnim.
 
 Parameters:
-	0: _unit <OBJECT> - The unit to animate
-	1: _previousAnim <STRING> - The previous animation the unit played
+    0: _unit <OBJECT> - The unit to animate
+    1: _previousAnim <STRING> - The previous animation the unit played
 
 Returns:
     NOTHING
@@ -20,7 +20,7 @@ Examples:
     (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ambientAnim_play";
 

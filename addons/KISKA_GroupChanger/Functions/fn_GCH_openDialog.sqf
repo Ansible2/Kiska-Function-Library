@@ -12,7 +12,7 @@ Returns:
 
 Examples:
     (begin example)
-    	call KISKA_fnc_GCH_openDialog;
+        call KISKA_fnc_GCH_openDialog;
     (end)
 
 Author:

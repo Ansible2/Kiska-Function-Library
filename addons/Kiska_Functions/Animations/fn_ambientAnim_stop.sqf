@@ -6,8 +6,8 @@ Description:
      were in before it ran.
 
 Parameters:
-	0: _unit <OBJECT> - The unit who is running KISKA ambient anims
-	1: _triggeredByDeletion <BOOL> - If this stop was initiated by the delete Eventhandler
+    0: _unit <OBJECT> - The unit who is running KISKA ambient anims
+    1: _triggeredByDeletion <BOOL> - If this stop was initiated by the delete Eventhandler
 
 Returns:
     NOTHING
@@ -18,7 +18,7 @@ Examples:
     (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ambientAnim_stop";
 

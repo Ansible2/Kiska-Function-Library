@@ -10,7 +10,7 @@ Description:
      a group is deleted as opposed to having to used the `find` command with an array.
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
     <HASHMAP> - A hashmap containing all the logic group
@@ -27,8 +27,8 @@ scriptName "KISKA_fnc_ambientAnim_getAttachLogicGroupsMap";
 
 private _map = localNamespace getVariable "KISKA_ambientAnim_attachLogicGroupsMap";
 if (isNil "_map") then {
-	_map = createHashMap;
-	localNamespace setVariable ["KISKA_ambientAnim_attachLogicGroupsMap",_map];
+    _map = createHashMap;
+    localNamespace setVariable ["KISKA_ambientAnim_attachLogicGroupsMap",_map];
 };
 
 

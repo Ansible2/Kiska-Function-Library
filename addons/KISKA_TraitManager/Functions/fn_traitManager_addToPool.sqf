@@ -3,40 +3,40 @@
 Function: KISKA_fnc_traitManager_addToPool
 
 Description:
-	Adds an entry into the local trait manager pool.
+    Adds an entry into the local trait manager pool.
 
 Parameters:
-	0: _entryToAdd <STRING> - The trait to add
+    0: _entryToAdd <STRING> - The trait to add
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		["medic"] call KISKA_fnc_traitManager_addToPool;
+        ["medic"] call KISKA_fnc_traitManager_addToPool;
     (end)
 
 Authors:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_traitManager_addToPool";
 
 if !(hasInterface) exitWith {};
 
 params [
-	["_entryToAdd","",[""]]
+    ["_entryToAdd","",[""]]
 ];
 
 if (_entryToAdd isEqualTo "") exitWith {
-	["_entryToAdd is empty string!",true] call KISKA_fnc_log;
-	nil
+    ["_entryToAdd is empty string!",true] call KISKA_fnc_log;
+    nil
 };
 
 
 private _traitPoolArray = GET_TM_POOL;
 _traitPoolArray pushBack _entryToAdd;
 if (isNil TM_POOL_VAR_STR) then {
-	missionNamespace setVariable [TM_POOL_VAR_STR,_traitPoolArray];
+    missionNamespace setVariable [TM_POOL_VAR_STR,_traitPoolArray];
 };
 
 call KISKA_fnc_traitManager_updateCurrentList;

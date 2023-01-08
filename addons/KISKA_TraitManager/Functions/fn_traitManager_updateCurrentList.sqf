@@ -3,22 +3,22 @@
 Function: KISKA_fnc_traitManager_updateCurrentList
 
 Description:
-	Acts as an event that will update the current trait list of a player in
-	 the GUI.
+    Acts as an event that will update the current trait list of a player in
+     the GUI.
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		call KISKA_fnc_traitManager_updateCurrentList;
+        call KISKA_fnc_traitManager_updateCurrentList;
     (end)
 
 Authors:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 disableSerialization;
 scriptName "KISKA_fnc_traitManager_updateCurrentList";

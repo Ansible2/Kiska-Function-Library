@@ -2,7 +2,7 @@
 Function: KISKA_fnc_bases_createFromConfig_patrols
 
 Description:
-	Spawns a configed KISKA bases' patrols.
+    Spawns a configed KISKA bases' patrols.
 
 Parameters:
     0: _baseConfig <CONFIG> - The config path of the base config
@@ -12,13 +12,13 @@ Returns:
 
 Examples:
     (begin example)
-		[
+        [
             "SomeBaseConfig"
         ] call KISKA_fnc_bases_createFromConfig_patrols;
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_bases_createFromConfig_patrols";
 

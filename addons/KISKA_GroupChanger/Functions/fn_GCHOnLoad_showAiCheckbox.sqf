@@ -2,13 +2,13 @@
 Function: KISKA_fnc_GCHOnLoad_showAiCheckbox
 
 Description:
-	Adds control event handler to check box and sets its intial state.
+    Adds control event handler to check box and sets its intial state.
 
 Parameters:
-	0: _control <CONTROL> - The control for the checkbox
+    0: _control <CONTROL> - The control for the checkbox
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
@@ -16,7 +16,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 disableSerialization;
 scriptName "KISKA_fnc_GCHOnLoad_showAiCheckbox";
@@ -26,13 +26,13 @@ if !(hasInterface) exitWith {};
 params ["_control"];
 
 _control ctrlAddEventHandler ["CheckedChanged",{
-	params ["_control", "_checked"];
+    params ["_control", "_checked"];
 
-	// convert from number to bool
-	_checked = [false,true] select _checked;
-	localNamespace setVariable ["KISKA_GCH_showAI",_checked];
+    // convert from number to bool
+    _checked = [false,true] select _checked;
+    localNamespace setVariable ["KISKA_GCH_showAI",_checked];
 
-	[true] call KISKA_fnc_GCH_updateCurrentGroupSection;
+    [true] call KISKA_fnc_GCH_updateCurrentGroupSection;
 }];
 
 

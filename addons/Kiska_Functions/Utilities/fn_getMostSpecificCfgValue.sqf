@@ -2,7 +2,7 @@
 Function: KISKA_fnc_getMostSpecificCfgValue
 
 Description:
-	Picks the most specific value from a list of configs properties to check.
+    Picks the most specific value from a list of configs properties to check.
 
 Parameters:
     0: _property <STRING> - The config property to search for in all of the classes
@@ -19,7 +19,7 @@ Returns:
 
 Examples:
     (begin example)
-		private _valueFromMostSpecificClass = [
+        private _valueFromMostSpecificClass = [
             "myProperty"
             [
                 missionConfigFile >> "SomeClass",
@@ -32,7 +32,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_getMostSpecificCfgValue";
 

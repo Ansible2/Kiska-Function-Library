@@ -2,52 +2,52 @@
 Function: KISKA_fnc_remoteReturn_send
 
 Description:
-	Gets a remote return from a scripting command on a target machine.
-	Basically remoteExec but with a  return.
+    Gets a remote return from a scripting command on a target machine.
+    Basically remoteExec but with a  return.
 
-	Needs to be run in a scheduled environment as it takes time to receive
-	 the return.
+    Needs to be run in a scheduled environment as it takes time to receive
+     the return.
 
-	This should not be abused to obtain large returns over the network.
-	Be smart and use for simple types (not massive arrays).
+    This should not be abused to obtain large returns over the network.
+    Be smart and use for simple types (not massive arrays).
 
 Parameters:
-	0: _code <STRING> - The command to execute on the target machine
-	1: _defaultValue : <ANY> - If the variable does not exist for the target, what should be returned instead
-	2: _target : <NUMBER, OBJECT, or STRING> - The target to execute the _code on
-	3: _scheduled : <BOOL> - Should _code be run in a scheduled environment (on target machine)
+    0: _code <STRING> - The command to execute on the target machine
+    1: _defaultValue : <ANY> - If the variable does not exist for the target, what should be returned instead
+    2: _target : <NUMBER, OBJECT, or STRING> - The target to execute the _code on
+    3: _scheduled : <BOOL> - Should _code be run in a scheduled environment (on target machine)
 
 Returns:
-	<ANY> - Whatever the code returns
+    <ANY> - Whatever the code returns
 
 Examples:
     (begin example)
         [] spawn {
-			// need to call for direct return but in scheduled environment
-			_clientIdFromServer = ["owner (_this select 0)",[player],2] call KISKA_fnc_remoteReturn_send;
-		};
+            // need to call for direct return but in scheduled environment
+            _clientIdFromServer = ["owner (_this select 0)",[player],2] call KISKA_fnc_remoteReturn_send;
+        };
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_remoteReturn_send";
 
 if (!canSuspend) exitWith {
-	["Must be run in scheduled environment",true] call KISKA_fnc_log;
-	nil
+    ["Must be run in scheduled environment",true] call KISKA_fnc_log;
+    nil
 };
 
 params [
-	["_code","",[""]],
-	["_args",[],[[]]],
-	["_target",2,[123,objNull,""]],
-	["_scheduled",false,[true]]
+    ["_code","",[""]],
+    ["_args",[],[[]]],
+    ["_target",2,[123,objNull,""]],
+    ["_scheduled",false,[true]]
 ];
 
 if ((_target isEqualType objNull) AND {isNull _target}) exitWith {
-	["_target is null object!"] call KISKA_fnc_log;
-	nil
+    ["_target is null object!"] call KISKA_fnc_log;
+    nil
 };
 
 private _targetIsNetId = false;
@@ -55,33 +55,33 @@ private _targetsMultipleUsers = false;
 private _exitForMultiUserTarget = false;
 private _regularMultiplayer = isMultiplayer AND (!isMultiplayerSolo);
 if (_regularMultiplayer) then {
-	private _targetsMultipleUsers = (_target isEqualType 123) AND {_target <= 0};
-	if (_targetsMultipleUsers) exitWith {
-		_exitForMultiUserTarget = true;
-	};
+    private _targetsMultipleUsers = (_target isEqualType 123) AND {_target <= 0};
+    if (_targetsMultipleUsers) exitWith {
+        _exitForMultiUserTarget = true;
+    };
 
-	private _targetIsString = _target isEqualType "";
-	if (!_targetIsString) exitWith {};
+    private _targetIsString = _target isEqualType "";
+    if (!_targetIsString) exitWith {};
 
-	private _targetIsNetId = _targetIsString AND {
-			private _split = _target splitString ":";
-			private _splitCount = count _split;
-			(_splitCount isEqualTo 2) AND {
-				private _splitParsed = _split apply {parseNumber _x};
-				private _splitCompare = _splitParsed apply {str _x};
-				_splitCompare isEqualTo _split
-			}
-		};
+    private _targetIsNetId = _targetIsString AND {
+            private _split = _target splitString ":";
+            private _splitCount = count _split;
+            (_splitCount isEqualTo 2) AND {
+                private _splitParsed = _split apply {parseNumber _x};
+                private _splitCompare = _splitParsed apply {str _x};
+                _splitCompare isEqualTo _split
+            }
+        };
 
-	if (!_targetIsNetId) exitWith {
-		_exitForMultiUserTarget = true;
-	};
+    if (!_targetIsNetId) exitWith {
+        _exitForMultiUserTarget = true;
+    };
 };
 
 
 if (_exitForMultiUserTarget) exitWith {
-	[["_target: ",_target," is invalid as it will be sent to more then one machine!"],true] call KISKA_fnc_log;
-	nil
+    [["_target: ",_target," is invalid as it will be sent to more then one machine!"],true] call KISKA_fnc_log;
+    nil
 };
 
 // create a unique variable ID for network tranfer
@@ -93,13 +93,13 @@ private _uniqueId = ["KISKA_RR",clientOwner,"_",_messageNumber] joinString "";
 [_code,_args,_scheduled,_uniqueId] remoteExecCall ["KISKA_fnc_remoteReturn_receive",_target];
 
 waitUntil {
-	if (!isNil _uniqueId) exitWith {
-		[["Got variable ",_uniqueId," from target ",_target],false] call KISKA_fnc_log;
-		true
-	};
-	sleep 0.05;
-	[["Waiting for ",_uniqueId," from target: ",_target],false] call KISKA_fnc_log;
-	false
+    if (!isNil _uniqueId) exitWith {
+        [["Got variable ",_uniqueId," from target ",_target],false] call KISKA_fnc_log;
+        true
+    };
+    sleep 0.05;
+    [["Waiting for ",_uniqueId," from target: ",_target],false] call KISKA_fnc_log;
+    false
 };
 
 private _return = missionNamespace getVariable _uniqueId;

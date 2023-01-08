@@ -13,10 +13,12 @@ namespace SpeechRecognition
     {
 		private static class Events
 		{
+			// TODO: adjust names to make it clear these are event names
 			public const string StartedRecording = "KISKA_ext_sr_events_startedrecording";
 			public const string StoppedRecording = "KISKA_ext_sr_events_stoppedrecording";
 			public const string SpeechRecognized = "KISKA_ext_sr_events_speechrecognized";
 			public const string LoadedGrammar = "KISKA_ext_sr_events_loadedgrammar";
+            // TODO: a SpeechHypothesized Event can tell you each word that is thought to have been spoken in realtime
 
             // Handle the SpeechRecognized event.  
             public static void SpeechRecognizedEvent(object sender, SpeechRecognizedEventArgs eventArgs)
@@ -63,29 +65,22 @@ namespace SpeechRecognition
 
 			speechRecognitionEngine.LoadGrammarCompleted += 
 				new EventHandler<LoadGrammarCompletedEventArgs>(Events.LoadedGrammarEvent);
-
-            // TODO: Remove with implement of custom grammars
-            // AddGrammarFromXmlString(callForFireGrammarXml);
-            //AddGrammarFromXmlString("cities",cityGrammarXml);
         }
 
         internal void AddGrammarFromXmlString(string name, string xml)
         {
 			try
 			{
-                Logger.Write("AddGrammarFromXmlString: Call in try");
 				Grammar grammar = GetGrammar(xml);
 				if (grammar == null)
 				{
                     Logger.Write("AddGrammarFromXmlString: null grammar returned");
                     return;
 				}
-                Logger.Write("AddGrammarFromXmlString: got grammar");
+
 				grammar.Name = name;
-                Logger.Write("AddGrammarFromXmlString: set grammar name");
                 grammarDictionary[name] = grammar; // TODO get ID for grammar
 				speechRecognitionEngine.LoadGrammarAsync(grammar);
-                Logger.Write("AddGrammarFromXmlString: set started async load");
 			} 
 			catch (ArgumentNullException ex)	
 			{
@@ -128,16 +123,13 @@ namespace SpeechRecognition
 			try
 			{
 				var encoding = Encoding.UTF8.GetBytes(xml ?? "");
-				Logger.Write("GenerateStreamFromString: Got Encoding");
 				var stream = new MemoryStream(encoding);
-				Logger.Write("GenerateStreamFromString: Got Stream");
 				return stream;
 
             } 
 			catch (Exception ex)
 			{
-				Logger.Write("GenerateStreamFromString: error follows:");
-				Logger.Write(ex.Message);
+				Logger.Write($"GenerateStreamFromString: Error has been thrown {ex.Message}");
 				return new MemoryStream(Encoding.UTF8.GetBytes(""));
             }
         }
@@ -151,13 +143,10 @@ namespace SpeechRecognition
 				{
 					Grammar grammar = new Grammar(stream);
 					return grammar;
-
 				}
 				catch (Exception ex)
 				{
-					Logger.Write("GetGrammar: had error, here is good grammar:");
-					Logger.Write(cityGrammarXml);
-					Logger.Write(ex.Message);
+					Logger.Write($"GetGrammar: error occurred while genterating the grammar: \n{ex.Message}");
 					return null;
 				}
             }
@@ -236,23 +225,5 @@ namespace SpeechRecognition
 	</rule>
 
 </grammar>";
-		const string cityGrammarXml = @"
-			<grammar version=""1.0"" xml:lang=""en-US"" mode=""voice"" root=""location""
-			 xmlns=""http://www.w3.org/2001/06/grammar"" tag-format=""semantics/1.0"">
-
-			  <rule id=""location""> 
-				<item> Fly me to </item>
-				<ruleref uri=""#city""/> 
-			  </rule>
-
-			  <rule id=""city"">
-				<one-of>
-				  <item> Boston </item>
-				  <item> Madrid </item>
-				</one-of>
-			  </rule>
-
-			</grammar>
-		";
     }
 }

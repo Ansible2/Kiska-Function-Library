@@ -2,13 +2,13 @@
 Function: KISKA_fnc_GCH_getSideGroups
 
 Description:
-	Gets all groups of a particular side and that are not exlcuded from the GCH
+    Gets all groups of a particular side and that are not exlcuded from the GCH
 
 Parameters:
-	0: _side <SIDE> - The side to get the groups of
+    0: _side <SIDE> - The side to get the groups of
 
 Returns:
-	<ARRAY> - List of all the groups
+    <ARRAY> - List of all the groups
 
 Examples:
     (begin example)
@@ -17,7 +17,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_GCH_getSideGroups";
 

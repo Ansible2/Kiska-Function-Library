@@ -5,7 +5,7 @@ Description:
     Tells AI helicopter to pick up a given object and drop it off at a given location.
 
 Parameters:
-	0: _heli : <OBJECT> - Helicopter with pilot to perform slingload
+    0: _heli : <OBJECT> - Helicopter with pilot to perform slingload
     1: _liftObject : <OBJECT> - The object to sling load
     2: _dropOffPoint : <ARRAY, OBJECT, LOCATION, or GROUP> - Where to drop the _liftObject off at
     3: _afterDropCode : <ARRAY, CODE, or STRING> - Code to execute after the drop off waypoint is complete.
@@ -40,7 +40,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_slingLoad";
 

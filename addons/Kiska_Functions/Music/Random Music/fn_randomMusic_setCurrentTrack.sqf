@@ -3,21 +3,21 @@
 Function: KISKA_fnc_randomMusic_setCurrentTrack
 
 Description:
-	Sets the current random track from the random music system.
+    Sets the current random track from the random music system.
 
 Parameters:
-	0: _trackClass <STRING> - a classname to check the duration of or its config path
+    0: _trackClass <STRING> - a classname to check the duration of or its config path
 
 Returns:
-	<BOOL> - True when set
+    <BOOL> - True when set
 
 Examples:
     (begin example)
-		["Some_Music_Track"] call KISKA_fnc_randomMusic_setCurrentTrack;
+        ["Some_Music_Track"] call KISKA_fnc_randomMusic_setCurrentTrack;
     (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_randomMusic_setCurrentTrack";
 
@@ -27,7 +27,7 @@ if (!isServer) exitWith {
 };
 
 params [
-	["_trackClass","",[""]]
+    ["_trackClass","",[""]]
 ];
 
 SET_MUSIC_VAR(MUSIC_CURRENT_RANDOM_TRACK_VAR_STR,_trackClass);

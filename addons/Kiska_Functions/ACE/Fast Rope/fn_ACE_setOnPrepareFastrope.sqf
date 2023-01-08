@@ -26,18 +26,18 @@ Parameters:
             0. <OBJECT> - The helicopter conducting a fastrope
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		[
+        [
             _vehicle,
             {4} // takes 4 seconds to lower ropes
-		] call KISKA_fnc_ACE_setOnPrepareFastrope;
+        ] call KISKA_fnc_ACE_setOnPrepareFastrope;
     (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ACE_setOnPrepareFastrope";
 

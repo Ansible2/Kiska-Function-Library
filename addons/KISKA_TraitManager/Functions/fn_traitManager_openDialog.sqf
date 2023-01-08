@@ -12,7 +12,7 @@ Returns:
 
 Examples:
     (begin example)
-    	call KISKA_fnc_traitManager_openDialog;
+        call KISKA_fnc_traitManager_openDialog;
     (end)
 
 Author:

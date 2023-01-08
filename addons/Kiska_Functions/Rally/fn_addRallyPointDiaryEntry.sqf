@@ -2,45 +2,45 @@
 Function: KISKA_fnc_addRallyPointDiaryEntry
 
 Description:
-	Adds a rally point diary entry to the local player. Pressing it enables the
-	 player to drop a rally point if their group is registered as allowed to and
-	 they are the leader of the group.
+    Adds a rally point diary entry to the local player. Pressing it enables the
+     player to drop a rally point if their group is registered as allowed to and
+     they are the leader of the group.
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		PRE-INIT Function
+        PRE-INIT Function
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_addRallyPointDiaryEntry";
 
 
 if (!hasInterface) exitWith {
-	["Was run on machine without interface, needs an interface",false] call KISKA_fnc_log;
-	nil
+    ["Was run on machine without interface, needs an interface",false] call KISKA_fnc_log;
+    nil
 };
 
 if (call KISKA_fnc_isMainMenu) exitWith {
-	["Main menu detected, will not init",false] call KISKA_fnc_log;
-	nil
+    ["Main menu detected, will not init",false] call KISKA_fnc_log;
+    nil
 };
 
 if (!isMultiplayer) exitWith {
-	["KISKA rally point system does not run in singlePlayer",false] call KISKA_fnc_log;
-	nil
+    ["KISKA rally point system does not run in singlePlayer",false] call KISKA_fnc_log;
+    nil
 };
 
 if (!canSuspend) exitWith {
-	["Must be run in scheduled",false] call KISKA_fnc_log;
-	[] spawn KISKA_fnc_addRallyPointDiaryEntry;
+    ["Must be run in scheduled",false] call KISKA_fnc_log;
+    [] spawn KISKA_fnc_addRallyPointDiaryEntry;
 };
 
 waitUntil {
@@ -51,10 +51,10 @@ waitUntil {
 
 
 [
-	[
-		"Rally Point",
-		"<execute expression='call KISKA_fnc_updateRespawnMarkerQuery'>Set Rally Point At Current Position</execute>"
-	]
+    [
+        "Rally Point",
+        "<execute expression='call KISKA_fnc_updateRespawnMarkerQuery'>Set Rally Point At Current Position</execute>"
+    ]
 ] call KISKA_fnc_addKiskaDiaryEntry;
 
 

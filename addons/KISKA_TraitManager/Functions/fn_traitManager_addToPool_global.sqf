@@ -3,34 +3,34 @@
 Function: KISKA_fnc_traitManager_addToPool_global
 
 Description:
-	Adds an entry into the global trait manager pool.
+    Adds an entry into the global trait manager pool.
 
 Parameters:
-	0: _entryToAdd <STRING> - The trait to add
+    0: _entryToAdd <STRING> - The trait to add
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		["medic"] call KISKA_fnc_traitManager_addToPool_global;
+        ["medic"] call KISKA_fnc_traitManager_addToPool_global;
     (end)
 
 Authors:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 disableSerialization;
 scriptName "KISKA_fnc_traitManager_addToPool_global";
 
 params [
-	["_entryToAdd","",[""]]
+    ["_entryToAdd","",[""]]
 ];
 
 _entryToAdd = toUpperANSI _entryToAdd;
 
 if (_entryToAdd isEqualTo "" OR {_entryToAdd in NUMBER_TRAITS}) exitWith {
-	[[_entryToAdd," can't be added"],true] call KISKA_fnc_log;
-	nil
+    [[_entryToAdd," can't be added"],true] call KISKA_fnc_log;
+    nil
 };
 
 

@@ -2,7 +2,7 @@
 Function: KISKA_fnc_stalk
 
 Description:
-	Rewrite of BIS_fnc_stalk for optimizations and features.
+    Rewrite of BIS_fnc_stalk for optimizations and features.
     One provided group will continually be provided waypoints to another group's
      positions providing a "stalking" affect.
 
@@ -34,7 +34,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_stalk";
 

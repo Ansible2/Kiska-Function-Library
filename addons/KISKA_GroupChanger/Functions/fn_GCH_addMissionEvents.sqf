@@ -2,13 +2,13 @@
 Function: KISKA_fnc_GCH_addMissionEvents
 
 Description:
-	Adds mission event handlers for keeping track of groups.
+    Adds mission event handlers for keeping track of groups.
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
@@ -16,36 +16,36 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_GCH_addMissionEvents";
 
 if !(hasInterface) exitWith {};
 
 if (call KISKA_fnc_isMainMenu) exitWith {
-	["Main menu detected, will not init",false] call KISKA_fnc_log;
-	nil
+    ["Main menu detected, will not init",false] call KISKA_fnc_log;
+    nil
 };
 
 
 addMissionEventHandler ["GroupCreated", {
-	params ["_group"];
-	[_group] call KISKA_fnc_GCH_addGroupEventhandlers;
+    params ["_group"];
+    [_group] call KISKA_fnc_GCH_addGroupEventhandlers;
 }];
 
 
 addMissionEventHandler ["GroupDeleted", {
-	params ["_group"];
+    params ["_group"];
 
-	private _groupChangerOpen = [] call KISKA_fnc_GCH_isOpen;
-	if (_groupChangerOpen) then {
-		private _groupIsExcluded = [_group] call KISKA_fnc_GCH_isGroupExcluded;
-		private _deletedGroupSide = side _group;
-		private _playerSide = [] call KISKA_fnc_GCH_getPlayerSide;
+    private _groupChangerOpen = [] call KISKA_fnc_GCH_isOpen;
+    if (_groupChangerOpen) then {
+        private _groupIsExcluded = [_group] call KISKA_fnc_GCH_isGroupExcluded;
+        private _deletedGroupSide = side _group;
+        private _playerSide = [] call KISKA_fnc_GCH_getPlayerSide;
 
-		if ((_playerSide isEqualTo _deletedGroupSide) AND (!_groupIsExcluded)) then {
-			[true] call KISKA_fnc_GCH_updateSideGroupsList;
-		};
+        if ((_playerSide isEqualTo _deletedGroupSide) AND (!_groupIsExcluded)) then {
+            [true] call KISKA_fnc_GCH_updateSideGroupsList;
+        };
     };
 }];
 

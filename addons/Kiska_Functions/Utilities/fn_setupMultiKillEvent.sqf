@@ -9,8 +9,8 @@ Description:
     or on the server if _useMPKilled is true;
 
 Parameters:
-	0: _objects <ARRAY> - An array of objects to add some form of killed event handlers to
-	1: _onThresholdMet <CODE, ARRAY, or STRING> - Code that executes once it has been determined
+    0: _objects <ARRAY> - An array of objects to add some form of killed event handlers to
+    1: _onThresholdMet <CODE, ARRAY, or STRING> - Code that executes once it has been determined
         that the threshold has been met or exceeded. (See KISKA_fnc_callBack). If attempting
         to add more units to an existing event, use the event id here (see returned hashmap below for id)
         and preceed the event id with a "#" (see examples)
@@ -34,7 +34,7 @@ Parameters:
         IF TRUE, MUST BE RUN ON THE SERVER
 
 Returns:
-	<HASHMAP> - A hashmap containing info about the event
+    <HASHMAP> - A hashmap containing info about the event
         "id": <STRING> - A localNamespace variable name to access this hashmap
         "total": <NUMBER> - The total number of objects that have this killed event
         "killed": <NUMBER> - The total number of objects that have been killed with this event
@@ -83,7 +83,7 @@ Examples:
     (end)
     
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_setupMultiKillEvent";
 

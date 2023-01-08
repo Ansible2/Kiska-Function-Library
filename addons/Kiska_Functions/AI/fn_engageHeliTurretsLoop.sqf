@@ -2,7 +2,7 @@
 Function: KISKA_fnc_engageHeliTurretsLoop
 
 Description:
-	Sets up a helicopter's turrets to be able to properly engage enemies without
+    Sets up a helicopter's turrets to be able to properly engage enemies without
      without the pilot going crazy.
 
     Starts a loop that will reveal targets within a given radius to gunners to engage.
@@ -15,7 +15,7 @@ Description:
         "KISKA_heliTurrets_running" - checks if the system is running
 
 Parameters:
-	0: _heli : <OBJECT> - The helicopter to set up
+    0: _heli : <OBJECT> - The helicopter to set up
     1: _sleepTime : <NUMBER> - Time in between each "refresh" of the targets gunners are revealed
     2: _revealAccuracy : <NUMBER> - The accuracy of the reveals of targets for gunners
     3: _detectionRadius : <NUMBER> - The radius within to search for targets for the gunners
@@ -25,7 +25,7 @@ Parameters:
         or the function will get them.
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
@@ -40,7 +40,7 @@ Examples:
     (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_engageHeliTurretsLoop";
 
@@ -75,21 +75,21 @@ if (isNull _heli) exitWith {
 
 
 /* ----------------------------------------------------------------------------
-	verify vehicle is compatible
+    verify vehicle is compatible
 ---------------------------------------------------------------------------- */
 private _aircraftType = typeOf _heli;
 if (_turretsWithWeapons isEqualTo []) then {
     _turretsWithWeapons = [_aircraftType] call KISKA_fnc_classTurretsWithGuns;
 };
 if (_turretsWithWeapons isEqualTo []) exitWith {
-	[[_aircraftType," does not have properly configured turrets!"],true] call KISKA_fnc_log;
+    [[_aircraftType," does not have properly configured turrets!"],true] call KISKA_fnc_log;
     nil
 };
 
 
 
 /* ----------------------------------------------------------------------------
-	Prepare AI
+    Prepare AI
 ---------------------------------------------------------------------------- */
 private _turretUnits = [];
 private _turretSeperated = false;
@@ -100,33 +100,33 @@ _vehicleCrew apply {
     if (_makeInvulnerable) then {
        _x allowDamage false;
     };
-	_x setSkill _skill;
+    _x setSkill _skill;
 
     _x disableAI "SUPPRESSION";
-	_x disableAI "RADIOPROTOCOL";
+    _x disableAI "RADIOPROTOCOL";
 
-	// give turrets their own groups so that they can engage targets at will
-	if ((_heli unitTurret _x) in _turretsWithWeapons) then {
-	/*
-		About seperating one turret...
-		My testing has revealed that in order to have both turrets on a helicopter (if it has two)
-		 engaging targets simultaneously, one needs to be in a seperate group from the pilot, and one
-		 needs to be grouped with the pilot.
-	*/
-		if !(_turretSeperated) then {
-			_turretSeperated = true;
-			private _group = createGroup _side;
-			[_x] joinSilent _group;
-			_group setCombatBehaviour "COMBAT";
-			_group setCombatMode "RED";
-		};
-		_turretUnits pushBack _x;
-	} else { // disable targeting for the other crew
-		_x disableAI "AUTOCOMBAT";
-		_x disableAI "TARGET";
-		//_x disableAI "AUTOTARGET";
-		_x disableAI "FSM";
-	};
+    // give turrets their own groups so that they can engage targets at will
+    if ((_heli unitTurret _x) in _turretsWithWeapons) then {
+    /*
+        About seperating one turret...
+        My testing has revealed that in order to have both turrets on a helicopter (if it has two)
+         engaging targets simultaneously, one needs to be in a seperate group from the pilot, and one
+         needs to be grouped with the pilot.
+    */
+        if !(_turretSeperated) then {
+            _turretSeperated = true;
+            private _group = createGroup _side;
+            [_x] joinSilent _group;
+            _group setCombatBehaviour "COMBAT";
+            _group setCombatMode "RED";
+        };
+        _turretUnits pushBack _x;
+    } else { // disable targeting for the other crew
+        _x disableAI "AUTOCOMBAT";
+        _x disableAI "TARGET";
+        //_x disableAI "AUTOTARGET";
+        _x disableAI "FSM";
+    };
 };
 
 // keep the pilots from freaking out under fire
@@ -138,13 +138,13 @@ _pilotsGroup setCombatMode "RED";
 
 
 /* ----------------------------------------------------------------------------
-	Loop
+    Loop
 ---------------------------------------------------------------------------- */
 private _fn_getTargets = {
-	(_heli nearEntities [["MAN","CAR","TANK"],(_heli getVariable [DETECT_RADIUS_VAR_STR, _detectionRadius])]) select {
-		!(isAgent teamMember _x) AND
-		{[side _x, _side] call BIS_fnc_sideIsEnemy}
-	};
+    (_heli nearEntities [["MAN","CAR","TANK"],(_heli getVariable [DETECT_RADIUS_VAR_STR, _detectionRadius])]) select {
+        !(isAgent teamMember _x) AND
+        {[side _x, _side] call BIS_fnc_sideIsEnemy}
+    };
 };
 
 
@@ -168,16 +168,16 @@ waitUntil {
     _targetsInArea = call _fn_getTargets;
     if (_targetsInArea isNotEqualTo []) then {
 
-    	_targetsInArea apply {
-    		_currentTarget = _x;
+        _targetsInArea apply {
+            _currentTarget = _x;
 
-    		_turretUnits apply {
+            _turretUnits apply {
                 if !(isNull _x) then {
-		            _x reveal [_currentTarget,(_heli getVariable [REVEAL_ACC_VAR_STR, _revealAccuracy])];
+                    _x reveal [_currentTarget,(_heli getVariable [REVEAL_ACC_VAR_STR, _revealAccuracy])];
                 };
-    		};
+            };
 
-    	};
+        };
 
     };
 

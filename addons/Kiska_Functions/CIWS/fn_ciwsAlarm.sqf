@@ -2,21 +2,21 @@
 Function: KISKA_fnc_ciwsAlarm
 
 Description:
-	Sounds an alarm for the CIWS
+    Sounds an alarm for the CIWS
 
 Parameters:
-	0: _turret : <OBJECT> - The CIWS turret
+    0: _turret : <OBJECT> - The CIWS turret
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		[turret1] spawn KISKA_fnc_ciwsAlarm;
+        [turret1] spawn KISKA_fnc_ciwsAlarm;
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ciwsAlarm";
 
@@ -26,22 +26,22 @@ scriptName "KISKA_fnc_ciwsAlarm";
 #define ALARM_VOLUME 3
 
 if (!canSuspend) exitWith {
-	["Was not run in scheduled; running in scheduled",true] call KISKA_fnc_log;
-	_this spawn KISKA_fnc_ciwsAlarm;
+    ["Was not run in scheduled; running in scheduled",true] call KISKA_fnc_log;
+    _this spawn KISKA_fnc_ciwsAlarm;
 };
 
 params [
-	["_turret",objNull,[objNull]]
+    ["_turret",objNull,[objNull]]
 ];
 
 if (isNull _turret) exitWith {
-	[[_turret," is a null object. Exiting..."],true] call KISKA_fnc_log;
-	nil
+    [[_turret," is a null object. Exiting..."],true] call KISKA_fnc_log;
+    nil
 };
 
 if (_turret getVariable ["KISKA_CIWS_alarmSounding",false]) exitWith {
-	[[_turret," already has its alarm sounding"],true] call KISKA_fnc_log;
-	nil
+    [[_turret," already has its alarm sounding"],true] call KISKA_fnc_log;
+    nil
 };
 
 
@@ -60,18 +60,18 @@ sleep WAIT_FOR_AIRRAIDSTART;
 
 // start the air raid loop
 waitUntil {
-	// check if loop should end and play audio if it should
-	if (_turret getVariable "KISKA_CIWS_allClear") exitWith {
-		["KISKA_airRaidEnd",_turret,1000,3] call KISKA_fnc_playSound3d;
-		_turret setVariable ["KISKA_CIWS_alarmSounding",false];
-		true
-	};
+    // check if loop should end and play audio if it should
+    if (_turret getVariable "KISKA_CIWS_allClear") exitWith {
+        ["KISKA_airRaidEnd",_turret,1000,3] call KISKA_fnc_playSound3d;
+        _turret setVariable ["KISKA_CIWS_alarmSounding",false];
+        true
+    };
 
-	// play looped audio again
-	["KISKA_airRaidLoop",_turret,1000,3] call KISKA_fnc_playSound3d;
-	// sound should wait to loop back to end audio or loop sound
-	sleep WAIT_TO_LOOP_SOUND;
-	false
+    // play looped audio again
+    ["KISKA_airRaidLoop",_turret,1000,3] call KISKA_fnc_playSound3d;
+    // sound should wait to loop back to end audio or loop sound
+    sleep WAIT_TO_LOOP_SOUND;
+    false
 };
 
 

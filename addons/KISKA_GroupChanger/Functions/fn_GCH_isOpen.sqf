@@ -2,13 +2,13 @@
 Function: KISKA_fnc_GCH_isOpen
 
 Description:
-	Checks if the group changer is open or not.
+    Checks if the group changer is open or not.
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
-	<BOOL> - Returns true if the group changer is open and false if it is not
+    <BOOL> - Returns true if the group changer is open and false if it is not
 
 Examples:
     (begin example)
@@ -16,7 +16,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 disableSerialization;
 scriptName "KISKA_fnc_GCH_isOpen";

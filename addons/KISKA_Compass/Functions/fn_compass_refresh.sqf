@@ -3,21 +3,21 @@
 Function: KISKA_fnc_compass_refresh
 
 Description:
-	Resets the config global of the compass and then restarts the cutRSC for it.
+    Resets the config global of the compass and then restarts the cutRSC for it.
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
-	<BOOL> - true if compass restarted
+    <BOOL> - true if compass restarted
 
 Examples:
     (begin example)
-		call KISKA_fnc_compass_refresh;
+        call KISKA_fnc_compass_refresh;
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_compass_refresh";
 

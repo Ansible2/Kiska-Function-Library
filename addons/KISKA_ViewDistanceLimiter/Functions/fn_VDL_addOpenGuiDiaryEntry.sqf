@@ -2,21 +2,21 @@
 Function: KISKA_fnc_VDL_addOpenGuiDiaryEntry
 
 Description:
-	Creates a diary entry to open the VDL dialog.
+    Creates a diary entry to open the VDL dialog.
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		PRE-INIT function
+        PRE-INIT function
     (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_VDL_addOpenGuiDiaryEntry";
 
@@ -28,8 +28,8 @@ if (call KISKA_fnc_isMainMenu) exitWith {
 };
 
 if (!canSuspend) exitWith {
-	["Must be run in scheduled",false] call KISKA_fnc_log;
-	[] spawn KISKA_fnc_VDL_addOpenGuiDiaryEntry;
+    ["Must be run in scheduled",false] call KISKA_fnc_log;
+    [] spawn KISKA_fnc_VDL_addOpenGuiDiaryEntry;
 };
 
 waitUntil {
@@ -39,10 +39,10 @@ waitUntil {
 };
 
 [
-	[
-		"View Distance Limiter",
-		"<execute expression='call KISKA_fnc_VDL_openDialog;'>View Distance Limiter</execute>"
-	]
+    [
+        "View Distance Limiter",
+        "<execute expression='call KISKA_fnc_VDL_openDialog;'>View Distance Limiter</execute>"
+    ]
 ] call KISKA_fnc_addKiskaDiaryEntry;
 
 

@@ -2,14 +2,14 @@
 Function: KISKA_fnc_GCH_updateSideGroupsList
 
 Description:
-	Updates the side's groups list for the GCH dialog.
+    Updates the side's groups list for the GCH dialog.
 
 Parameters:
-	0: _queryForGroups <BOOL> - Does a search for all groups that can appear in the 
+    0: _queryForGroups <BOOL> - Does a search for all groups that can appear in the 
         Group Changer need to be reconducted?
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
@@ -17,7 +17,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 disableSerialization;
 scriptName "KISKA_fnc_GCH_updateSideGroupsList";

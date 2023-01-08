@@ -3,13 +3,13 @@
 Function: KISKA_fnc_GCHOnLoad
 
 Description:
-	Executes in the onload event for the KISKA's Group Changer Dislog
+    Executes in the onload event for the KISKA's Group Changer Dislog
 
 Parameters:
-	0: _display <DISPLAY> - The display of the dialog
+    0: _display <DISPLAY> - The display of the dialog
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
@@ -17,7 +17,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 disableSerialization;
 scriptName "KISKA_fnc_GCHOnLoad";
@@ -27,7 +27,7 @@ if !(hasInterface) exitWith {};
 params ["_display"];
 
 if (missionNamespace getVariable ["KISKA_CBA_GCH_closeMap",true]) then {
-	openMap false;
+    openMap false;
 };
 
 // prepare globals for controls
@@ -35,7 +35,7 @@ localNamespace setVariable ["KISKA_GCH_display",_display];
 
 
 /* ----------------------------------------------------------------------------
-	Misc
+    Misc
 ---------------------------------------------------------------------------- */
 // leader name indicator
 private _leaderNameIndicator_ctrl = _display displayCtrl GCH_LEADER_NAME_INDICATOR_IDC;
@@ -49,7 +49,7 @@ localNamespace setVariable ["KISKA_GCH_showAiCheckBox_ctrl",_showAiCheckBox_ctrl
 
 
 /* ----------------------------------------------------------------------------
-	Combo Boxes
+    Combo Boxes
 ---------------------------------------------------------------------------- */
 // can be deleted
 private _canBeDeletedCombo_ctrl = _display displayCtrl GCH_CAN_BE_DELETED_COMBO_IDC;
@@ -68,7 +68,7 @@ localNamespace setVariable ["KISKA_GCH_assignTeamCombo_ctrl",_assignTeamCombo_ct
 
 
 /* ----------------------------------------------------------------------------
-	List Boxes
+    List Boxes
 ---------------------------------------------------------------------------- */
 // current group unit list
 private _currentGroupListBox_ctrl = _display displayCtrl GCH_CURRENT_GROUP_LISTBOX_IDC;
@@ -81,7 +81,7 @@ localNamespace setVariable ["KISKA_GCH_sidesGroupListBox_ctrl",_sidesGroupListBo
 
 
 /* ----------------------------------------------------------------------------
-	Buttons
+    Buttons
 ---------------------------------------------------------------------------- */
 // join group button
 private _joinGroupButton_ctrl = _display displayCtrl GCH_JOIN_GROUP_BUTTON_IDC;
@@ -118,27 +118,27 @@ localNamespace setVariable ["KISKA_GCH_groupIdEdit_ctrl",_groupIdEdit_ctrl];
 
 
 _display displayAddEventHandler ["unload",{
-	// clear localNamespace variables
-	[
-		"KISKA_GCH_display",
-		"KISKA_GCH_selectedGroup",
-		"KISKA_GCH_currentGroupListBox_ctrl",
-		"KISKA_GCH_leaveGroupButton_ctrl",
-		"KISKA_GCH_groupUnitList",
-		"KISKA_GCH_leaderNameIndicator_ctrl",
-		"KISKA_GCH_setLeaderButton_ctrl",
-		"KISKA_GCH_joinGroupButton_ctrl",
-		"KISKA_GCH_showAiCheckBox_ctrl",
-		"KISKA_GCH_groupIdEdit_ctrl",
-		"KISKA_GCH_canBeDeletedCombo_ctrl",
-		"KISKA_GCH_canRallyCombo_ctrl",
-		"KISKA_GCH_sidesGroupListBox_ctrl",
-		"KISKA_GCH_sideGroupsArray",
-		"KISKA_GCH_setGroupIdButton_ctrl",
-		"KISKA_GCH_assignTeamCombo_ctrl"
-	] apply {
-		localNamespace setVariable [_x,nil];
-	};
+    // clear localNamespace variables
+    [
+        "KISKA_GCH_display",
+        "KISKA_GCH_selectedGroup",
+        "KISKA_GCH_currentGroupListBox_ctrl",
+        "KISKA_GCH_leaveGroupButton_ctrl",
+        "KISKA_GCH_groupUnitList",
+        "KISKA_GCH_leaderNameIndicator_ctrl",
+        "KISKA_GCH_setLeaderButton_ctrl",
+        "KISKA_GCH_joinGroupButton_ctrl",
+        "KISKA_GCH_showAiCheckBox_ctrl",
+        "KISKA_GCH_groupIdEdit_ctrl",
+        "KISKA_GCH_canBeDeletedCombo_ctrl",
+        "KISKA_GCH_canRallyCombo_ctrl",
+        "KISKA_GCH_sidesGroupListBox_ctrl",
+        "KISKA_GCH_sideGroupsArray",
+        "KISKA_GCH_setGroupIdButton_ctrl",
+        "KISKA_GCH_assignTeamCombo_ctrl"
+    ] apply {
+        localNamespace setVariable [_x,nil];
+    };
 }];
 
 

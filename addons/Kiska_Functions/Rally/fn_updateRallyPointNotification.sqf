@@ -2,21 +2,21 @@
 Function: KISKA_fnc_updateRallyPointNotification
 
 Description:
-	Informs the player that their rally point was updated
+    Informs the player that their rally point was updated
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		remoteExec ["KISKA_fnc_updateRallyPointNotification",somePlayer];
+        remoteExec ["KISKA_fnc_updateRallyPointNotification",somePlayer];
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_updateRallyPointNotification";
 

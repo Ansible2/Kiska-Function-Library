@@ -9,16 +9,16 @@ Description:
      isn't one that never could have existed.
 
 Parameters:
-	0: _entity <ANY> - The config of the eventhandler
-	1: _eventConfig <CONFIG> - The eventhandler config path
-	2: _id <NUMBER> - The event to remove
+    0: _entity <ANY> - The config of the eventhandler
+    1: _eventConfig <CONFIG> - The eventhandler config path
+    2: _id <NUMBER> - The event to remove
 
 Returns:
-	<BOOL> - True if removed, false if it never existed
+    <BOOL> - True if removed, false if it never existed
 
 Examples:
     (begin example)
-		private _removed = [
+        private _removed = [
             player,
             configFile >> "KISKA_EventHandlers" >> "KISKA_combatBehaviourChangedEvent",
             0
@@ -26,7 +26,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_eventHandler_remove";
 

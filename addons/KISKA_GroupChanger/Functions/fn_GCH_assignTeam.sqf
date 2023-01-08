@@ -2,14 +2,14 @@
 Function: KISKA_fnc_GCHOnLoad_assignTeamCombo
 
 Description:
-	Reassigns a unit's team
+    Reassigns a unit's team
 
 Parameters:
-	0: _unit <OBJECT> - The unit to reassign
+    0: _unit <OBJECT> - The unit to reassign
     1: _team <NUMBER> - the team to assign
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
@@ -17,7 +17,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_GCH_assignTeam";
 

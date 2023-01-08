@@ -2,7 +2,7 @@
 Function: KISKA_fnc_bases_setupReactivity
 
 Description:
-	Spawns a configed KISKA base.
+    Spawns a configed KISKA base.
 
 Parameters:
     0: _group <GROUP> - The group to add setup reactions for
@@ -26,7 +26,7 @@ Returns:
 
 Examples:
     (begin example)
-		[
+        [
             aGroup,
             123,
             ["anotherGroupsId"],
@@ -39,7 +39,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_bases_setupReactivity";
 

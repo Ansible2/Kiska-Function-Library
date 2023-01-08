@@ -2,7 +2,7 @@
 Function: KISKA_fnc_bases_getSide
 
 Description:
-	Selects the most specific config's infantryClasses property and returns its
+    Selects the most specific config's infantryClasses property and returns its
      value.
 
 Parameters:
@@ -14,7 +14,7 @@ Returns:
 
 Examples:
     (begin example)
-		[
+        [
             [
                 missionConfigFile >> "KISKA_Bases" >> "myBase"
                 missionConfigFile >> "KISKA_Bases" >> "myBase" >> "Infantry",
@@ -24,7 +24,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_bases_getSide";
 

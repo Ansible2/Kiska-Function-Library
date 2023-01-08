@@ -7,18 +7,18 @@ Description:
      - clicking while in the support menu. Each click will call in a support.
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		PRE-INIT Function
+        PRE-INIT Function
     (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_detectControlKeys";
 

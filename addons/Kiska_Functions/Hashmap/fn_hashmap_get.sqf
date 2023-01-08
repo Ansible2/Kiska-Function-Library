@@ -2,22 +2,22 @@
 Function: KISKA_fnc_hashmap_get
 
 Description:
-	Gets a value from a hashmap but also supports objects and groups as keys.
+    Gets a value from a hashmap but also supports objects and groups as keys.
 
     Ideally, not something that should be used if the map is not intended to
      also hold groups and objects as keys.
 
 Parameters:
-	0: _map <HASHMAP> - The map to get the value from
-	1: _key <ANY> - The key to find in the map
-	2: _default <ANY> - The value to return if the map does not contain the value
+    0: _map <HASHMAP> - The map to get the value from
+    1: _key <ANY> - The key to find in the map
+    2: _default <ANY> - The value to return if the map does not contain the value
 
 Returns:
-	<ANY> - The saved value, default value, or nil if not found and no default provided
+    <ANY> - The saved value, default value, or nil if not found and no default provided
 
 Examples:
     (begin example)
-		private _value = [
+        private _value = [
             myMap,
             someObject,
             "Hello World"
@@ -25,7 +25,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_hashmap_get";
 

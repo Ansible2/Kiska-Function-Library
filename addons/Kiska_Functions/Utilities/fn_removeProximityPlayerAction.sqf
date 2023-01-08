@@ -7,10 +7,10 @@ Description:
      it is NOT instant.
 
 Parameters:
-	0: _id : <NUMBER> - The proximity action id returned from KISKA_fnc_addProximityPlayerAction
+    0: _id : <NUMBER> - The proximity action id returned from KISKA_fnc_addProximityPlayerAction
 
 Returns:
-	<BOOL> - False if action still exists, true if it does not
+    <BOOL> - False if action still exists, true if it does not
 
 Examples:
     (begin example)
@@ -18,7 +18,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_removeProximityPlayerAction";
 

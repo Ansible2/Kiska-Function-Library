@@ -4,22 +4,22 @@
 Function: KISKA_fnc_compass_configure
 
 Description:
-	Initializes several display namespace variables for the compass and sets
-	 up their images for the compass.
+    Initializes several display namespace variables for the compass and sets
+     up their images for the compass.
 
 Parameters:
-	0: _display <DISPLAY> - The display of the compass
+    0: _display <DISPLAY> - The display of the compass
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		call KISKA_fnc_compass_configure;
+        call KISKA_fnc_compass_configure;
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_compass_configure";
 
@@ -28,7 +28,7 @@ if (!hasInterface) exitWith {};
 disableSerialization;
 
 params [
-	["_display",displayNull]
+    ["_display",displayNull]
 ];
 
 if (isNull _display) exitWith {};
@@ -51,43 +51,43 @@ _display setVariable [COMPASS_CENTER_MARKERS_CTRL_VAR_STR,_compassCenterMarkersC
 
 
 [
-	[ _mainCompassCtrlGroup, true ],
-	[ _compassImageCtrl, false, KISKA_compass_mainColor, KISKA_compass_image ],
-	[ _compassBackgroundCtrl, false, KISKA_compass_backgroundColor, "#(rgb,8,8,3)color(1,1,1,1)" ],
-	[ _compassCenterMarkersCtrl, false, KISKA_compass_centerColor, KISKA_compass_center_image ]
+    [ _mainCompassCtrlGroup, true ],
+    [ _compassImageCtrl, false, KISKA_compass_mainColor, KISKA_compass_image ],
+    [ _compassBackgroundCtrl, false, KISKA_compass_backgroundColor, "#(rgb,8,8,3)color(1,1,1,1)" ],
+    [ _compassCenterMarkersCtrl, false, KISKA_compass_centerColor, KISKA_compass_center_image ]
 ] apply {
-	_x params [
-		"_ctrl",
-		"_changePos",
-		[ "_color", [1,1,1,1] ],
-		[ "_image", "" ]
-	];
+    _x params [
+        "_ctrl",
+        "_changePos",
+        [ "_color", [1,1,1,1] ],
+        [ "_image", "" ]
+    ];
 
 
-	(ctrlPosition _ctrl) params[ "_ctrlX", "_ctrlY", "_ctrlW", "_ctrlH" ];
-	if (_ctrlW isEqualTo 0) then {
-		_ctrlW = KISKA_compass_widthScale * pixelW;
-	};
+    (ctrlPosition _ctrl) params[ "_ctrlX", "_ctrlY", "_ctrlW", "_ctrlH" ];
+    if (_ctrlW isEqualTo 0) then {
+        _ctrlW = KISKA_compass_widthScale * pixelW;
+    };
 
 
-	// ctrlSetScale cuts off the image (I don't know why for now, so using this scaling instead)
-	// ctrlSetScale also scales in such a way that is not ideal for the compass
-	_ctrlW = _ctrlW * KISKA_compass_scale;
-	_ctrlH = _ctrlH * KISKA_compass_scale;
-	if ( _changePos ) then {
-		_ctrlX = ( safeZoneX + ( safeZoneW / 2 ) - ( _ctrlW / 2 ) );
-		_ctrlY = safeZoneY + ((pixelH * pixelGrid) * KISKA_compass_y_offset)
-	};
+    // ctrlSetScale cuts off the image (I don't know why for now, so using this scaling instead)
+    // ctrlSetScale also scales in such a way that is not ideal for the compass
+    _ctrlW = _ctrlW * KISKA_compass_scale;
+    _ctrlH = _ctrlH * KISKA_compass_scale;
+    if ( _changePos ) then {
+        _ctrlX = ( safeZoneX + ( safeZoneW / 2 ) - ( _ctrlW / 2 ) );
+        _ctrlY = safeZoneY + ((pixelH * pixelGrid) * KISKA_compass_y_offset)
+    };
 
-	// using ctrlSetPosition instead of individual commands because setting them with those causes the compass to be offset from center
-	_ctrl ctrlSetPosition [_ctrlX,_ctrlY,_ctrlW,_ctrlH];
-	_ctrl ctrlCommit 0;
+    // using ctrlSetPosition instead of individual commands because setting them with those causes the compass to be offset from center
+    _ctrl ctrlSetPosition [_ctrlX,_ctrlY,_ctrlW,_ctrlH];
+    _ctrl ctrlCommit 0;
 
 
-	if ( _image isNotEqualTo "" ) then {
-		_ctrl ctrlSetText _image;
-		_ctrl ctrlSetTextColor _color;
-	};
+    if ( _image isNotEqualTo "" ) then {
+        _ctrl ctrlSetText _image;
+        _ctrl ctrlSetTextColor _color;
+    };
 
 };
 

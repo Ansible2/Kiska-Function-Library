@@ -9,21 +9,21 @@ Parameters:
     NONE
 
 Returns:
-	<BOOL> - True for running, false for not
+    <BOOL> - True for running, false for not
 
 Examples:
     (begin example)
-		private _isRunning = call KISKA_fnc_randomMusic_isSystemRunning;
-   	(end)
+        private _isRunning = call KISKA_fnc_randomMusic_isSystemRunning;
+       (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_randomMusic_isSystemRunning";
 
 if (!isServer) then {
     ["The random music system only runs on the server",true] call KISKA_fnc_log;
-	false
+    false
 };
 
 

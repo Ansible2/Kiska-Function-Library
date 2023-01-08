@@ -2,21 +2,21 @@
 Function: KISKA_fnc_getMissionLayerObjects
 
 Description:
-	Simply returns the objects of a mission layer.
+    Simply returns the objects of a mission layer.
 
 Parameters:
-	0: _layer : <STRING or NUMBER> - The name or ID of the mission layer
+    0: _layer : <STRING or NUMBER> - The name or ID of the mission layer
 
 Returns:
-	<ARRAY> - The layer's objects
+    <ARRAY> - The layer's objects
 
 Examples:
     (begin example)
-		_objects = ["myLayer"] call KISKA_fnc_getMissionLayerObjects;
+        _objects = ["myLayer"] call KISKA_fnc_getMissionLayerObjects;
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_getMissionLayerObjects";
 

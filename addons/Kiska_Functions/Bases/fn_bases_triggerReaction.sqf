@@ -2,7 +2,7 @@
 Function: KISKA_fnc_bases_triggerReaction
 
 Description:
-	Acts as the default event for the reactive bases when a group calls for reinforcements.
+    Acts as the default event for the reactive bases when a group calls for reinforcements.
 
 Parameters:
     0: _group <GROUP> - The group the event is triggering for
@@ -13,14 +13,14 @@ Returns:
 
 Examples:
     (begin example)
-		[
+        [
             someGroup,
             anEnemyUnit
         ] call KISKA_fnc_bases_triggerReaction
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_bases_triggerReaction";
 

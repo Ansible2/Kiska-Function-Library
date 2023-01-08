@@ -2,7 +2,7 @@
 Function: KISKA_fnc_bases_getInfantryClasses
 
 Description:
-	Selects the most specific config's infantryClasses property and returns its
+    Selects the most specific config's infantryClasses property and returns its
      value.
 
 Parameters:
@@ -25,7 +25,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_bases_getInfantryClasses";
 

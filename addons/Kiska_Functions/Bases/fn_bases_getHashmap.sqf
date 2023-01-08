@@ -2,7 +2,7 @@
 Function: KISKA_fnc_bases_getHashmap
 
 Description:
-	Returns a KISKA bases' hashmap spawn data or initializes if it did not exist.
+    Returns a KISKA bases' hashmap spawn data or initializes if it did not exist.
 
 Parameters:
     0: _baseConfig <CONFIG or STRING> - The config path of the base config
@@ -22,13 +22,13 @@ Returns:
 
 Examples:
     (begin example)
-		private _mapOfDataForSpecificBase = [
+        private _mapOfDataForSpecificBase = [
             "SomeBaseConfig"
         ] call KISKA_fnc_bases_getHashmap;
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_bases_getHashmap";
 

@@ -14,11 +14,11 @@ Returns:
 Examples:
     (begin example)
         // set to running
-		[true] call KISKA_fnc_randomMusic_setSystemRunning;
-   	(end)
+        [true] call KISKA_fnc_randomMusic_setSystemRunning;
+       (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_randomMusic_setSystemRunning";
 

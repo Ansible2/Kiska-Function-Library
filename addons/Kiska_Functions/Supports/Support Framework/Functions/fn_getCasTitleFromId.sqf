@@ -4,22 +4,22 @@
 Function: KISKA_fnc_getCasTitleFromId
 
 Description:
-	Takes a number (id) and translates it into the title name for that number.
-	Used to fill out menus with a consistent string for the corresponding round type.
+    Takes a number (id) and translates it into the title name for that number.
+    Used to fill out menus with a consistent string for the corresponding round type.
 
 Parameters:
-	0: _id : <NUMBER> - The ammo type ID
+    0: _id : <NUMBER> - The ammo type ID
 
 Returns:
-	<STRING> - ClassName for the corresponding Id number, otherwise empty string
+    <STRING> - ClassName for the corresponding Id number, otherwise empty string
 
 Examples:
     (begin example)
-		_title = [0] call KISKA_fnc_getCasTitleFromId
+        _title = [0] call KISKA_fnc_getCasTitleFromId
     (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_getCasTitleFromId";
 
@@ -28,7 +28,7 @@ scriptName "KISKA_fnc_getCasTitleFromId";
 
 
 params [
-	["_id",0,[123]]
+    ["_id",0,[123]]
 ];
 
 

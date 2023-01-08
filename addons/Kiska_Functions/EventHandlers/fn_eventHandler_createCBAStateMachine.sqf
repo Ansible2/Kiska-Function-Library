@@ -5,18 +5,18 @@ Description:
     Adds a configed custom eventhandler
 
 Parameters:
-	0: _config <CONFIG> - The config of the statemachine
+    0: _config <CONFIG> - The config of the statemachine
 
 Returns:
-	<LOCATION> - The statemachine
+    <LOCATION> - The statemachine
 
 Examples:
     (begin example)
-		_statemachine = [myConfig] call KISKA_fnc_eventHandler_createCBAStateMachine
+        _statemachine = [myConfig] call KISKA_fnc_eventHandler_createCBAStateMachine
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_eventHandler_createCBAStateMachine";
 

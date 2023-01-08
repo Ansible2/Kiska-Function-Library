@@ -11,18 +11,18 @@ Description:
 
 Parameters:
     0: _layer <STRING or NUMBER> - The name of the layer or if in 3den, its layer id
-	1: _convertToConfig <BOOL> - Change all square brackets ([]) to curly ({})
+    1: _convertToConfig <BOOL> - Change all square brackets ([]) to curly ({})
 
 Returns:
-	<STRING> - The converted Array
+    <STRING> - The converted Array
 
 Examples:
     (begin example)
-		["someLayer",true] call KISKA_fnc_exportSpawnPositions;
+        ["someLayer",true] call KISKA_fnc_exportSpawnPositions;
     (end)
 
 Authors:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_exportSpawnPositions";
 

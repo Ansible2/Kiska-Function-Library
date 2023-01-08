@@ -6,18 +6,18 @@ Description:
     This increments the id by one each time it is called.
 
 Parameters:
-	0: _id <string> - The id to increment
+    0: _id <string> - The id to increment
 
 Returns:
-	<NUMBER> - the latest index of the given id
+    <NUMBER> - the latest index of the given id
 
 Examples:
     (begin example)
-		private _latesIndexFor_myId = ["myId"] call KISKA_fnc_idCounter;
+        private _latesIndexFor_myId = ["myId"] call KISKA_fnc_idCounter;
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_idCounter";
 

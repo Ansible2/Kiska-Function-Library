@@ -6,8 +6,8 @@ Description:
      they previously had is stored and restored after their ambient animation stops.
 
 Parameters:
-	0: _unit <OBJECT> - The unit to animate
-	1: _loadout <ARRAY> - The loadout to store
+    0: _unit <OBJECT> - The unit to animate
+    1: _loadout <ARRAY> - The loadout to store
 
 Returns:
     NOTHING
@@ -21,7 +21,7 @@ Examples:
     (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ambientAnim_setStoredLoadout";
 

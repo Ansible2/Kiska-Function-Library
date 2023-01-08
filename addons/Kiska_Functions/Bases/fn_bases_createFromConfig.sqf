@@ -2,7 +2,7 @@
 Function: KISKA_fnc_bases_createFromConfig
 
 Description:
-	Spawns a configed KISKA base.
+    Spawns a configed KISKA base.
 
 Parameters:
     0: _baseConfig <STRING or CONFIG> - The config path of the base config or if
@@ -13,11 +13,11 @@ Returns:
 
 Examples:
     (begin example)
-		private _baseMap = ["SomeBaseConfig"] call KISKA_fnc_bases_createFromConfig;
+        private _baseMap = ["SomeBaseConfig"] call KISKA_fnc_bases_createFromConfig;
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_bases_createFromConfig";
 

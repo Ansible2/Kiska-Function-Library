@@ -2,23 +2,23 @@
 Function: KISKA_fnc_GCH_dontExcludePlayerGroupDefault
 
 Description:
-	In order to maintain a player-group-is-not-excluded by default in the 
-	 Group Changer, when a player joins the game, they will set their group
-	 to be not excluded on all other machines and JIP
+    In order to maintain a player-group-is-not-excluded by default in the 
+     Group Changer, when a player joins the game, they will set their group
+     to be not excluded on all other machines and JIP
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		POST-INIT Function
+        POST-INIT Function
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_GCH_dontExcludePlayerGroupDefault";
 

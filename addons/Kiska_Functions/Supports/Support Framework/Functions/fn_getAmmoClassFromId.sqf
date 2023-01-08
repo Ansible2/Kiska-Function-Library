@@ -4,21 +4,21 @@
 Function: KISKA_fnc_getAmmoClassFromId
 
 Description:
-	Takes a number (id) and translates it into the class name for that number
+    Takes a number (id) and translates it into the class name for that number
 
 Parameters:
-	0: _id : <NUMBER> - The ammo type ID
+    0: _id : <NUMBER> - The ammo type ID
 
 Returns:
-	<STRING> - ClassName for the corresponding Id number, otherwise empty string
+    <STRING> - ClassName for the corresponding Id number, otherwise empty string
 
 Examples:
     (begin example)
-		_class = [0] call KISKA_fnc_getAmmoClassFromId
+        _class = [0] call KISKA_fnc_getAmmoClassFromId
     (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_getAmmoClassFromId";
 
@@ -27,7 +27,7 @@ scriptName "KISKA_fnc_getAmmoClassFromId";
 
 
 params [
-	["_id",0,[123]]
+    ["_id",0,[123]]
 ];
 
 // 155

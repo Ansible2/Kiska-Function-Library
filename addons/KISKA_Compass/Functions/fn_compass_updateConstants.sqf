@@ -6,18 +6,18 @@ Description:
     Updates a number of constant global variables used for the KISKA compass.
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		call KISKA_fnc_compass_updateConstants;
+        call KISKA_fnc_compass_updateConstants;
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_compass_updateConstants";
 

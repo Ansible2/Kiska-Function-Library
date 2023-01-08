@@ -3,21 +3,21 @@
 Function: KISKA_fnc_traitManager_store_buttonClickEvent
 
 Description:
-	Activates when the take button is pressed and gives player the support.
+    Activates when the take button is pressed and gives player the support.
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		call KISKA_fnc_traitManager_store_buttonClickEvent;
+        call KISKA_fnc_traitManager_store_buttonClickEvent;
     (end)
 
 Authors:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 disableSerialization;
 scriptName "KISKA_fnc_traitManager_store_buttonClickEvent";

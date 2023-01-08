@@ -2,14 +2,14 @@
 Function: KISKA_fnc_createTaskFromConfig
 
 Description:
-	Creates a task from a config entry. Config should be placed inside KISKA_cfgTasks,
+    Creates a task from a config entry. Config should be placed inside KISKA_cfgTasks,
      just the string is needed to reference the config entry.
 
     Parameters from index 2 onwards will accept configNull as an alias for retrieving
      the configed value of the param if it is not changed (see example 2)
 
 Parameters:
-	0: _config <STRING or CONFIG> - The config entry to convert to a task
+    0: _config <STRING or CONFIG> - The config entry to convert to a task
     1: _owner <BOOL, OBJECT, GROUP, SIDE, or ARRAY> - Whom the task is assigned to
 
     (OPTIONAL)
@@ -22,7 +22,7 @@ Parameters:
     6: _visibleIn3D <BOOL or configNull> - Show a 3D task icon
 
 Returns:
-	<STRING> - Created Task Id
+    <STRING> - Created Task Id
 
 Examples:
     (begin example)
@@ -31,7 +31,7 @@ Examples:
     (end)
 
     (begin example)
-		[
+        [
             "someTaskClass", // will search in missionConfigFile >> "KISKA_cfgTasks"
             true,
             "ASSIGNED",
@@ -41,7 +41,7 @@ Examples:
     (end)
 
 Authors:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_createTaskFromConfig";
 

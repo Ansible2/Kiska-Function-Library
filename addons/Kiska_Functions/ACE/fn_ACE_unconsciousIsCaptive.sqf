@@ -2,22 +2,22 @@
 Function: KISKA_fnc_ACE_unconsciousIsCaptive
 
 Description:
-	Adds a CBA event that hooks into when a player becomes unconcious, making them
+    Adds a CBA event that hooks into when a player becomes unconcious, making them
      turn captive in order to keep the AI from shooting downed players.
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		POST-INIT Function
+        POST-INIT Function
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ACE_unconsciousIsCaptive";
 
@@ -35,8 +35,8 @@ if (call KISKA_fnc_isMainMenu) exitWith {
 
 
 if !(["ace_medical"] call KISKA_fnc_isPatchLoaded) exitWith {
-	["ACE medical is not loaded, will not add event...",false] call KISKA_fnc_log;
-	nil
+    ["ACE medical is not loaded, will not add event...",false] call KISKA_fnc_log;
+    nil
 };
 
 

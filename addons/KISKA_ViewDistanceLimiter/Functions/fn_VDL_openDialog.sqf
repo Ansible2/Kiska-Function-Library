@@ -2,21 +2,21 @@
 Function: KISKA_fnc_VDL_openDialog
 
 Description:
-	Opens the GUI for the VDL system.
+    Opens the GUI for the VDL system.
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
-	BOOL
+    BOOL
 
 Examples:
-	(begin example)
-		call KISKA_fnc_VDL_openDialog;
-	(end)
+    (begin example)
+        call KISKA_fnc_VDL_openDialog;
+    (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_VDL_openDialog";
 

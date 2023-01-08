@@ -2,13 +2,13 @@
 Function: KISKA_fnc_GCHOnLoad_closeButton
 
 Description:
-	Adds control event handler to the close buttont that will close the dialog.
+    Adds control event handler to the close buttont that will close the dialog.
 
 Parameters:
-	0: _control <CONTROL> - The control for the close button
+    0: _control <CONTROL> - The control for the close button
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
@@ -16,7 +16,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 disableSerialization;
 scriptName "KISKA_fnc_GCHOnLoad_closeButton";
@@ -26,7 +26,7 @@ if !(hasInterface) exitWith {};
 params ["_control"];
 
 _control ctrlAddEventHandler ["ButtonClick",{
-	(localNamespace getVariable "KISKA_GCH_display") closeDisplay 2;
+    (localNamespace getVariable "KISKA_GCH_display") closeDisplay 2;
 }];
 
 

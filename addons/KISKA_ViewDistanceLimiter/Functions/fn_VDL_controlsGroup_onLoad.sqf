@@ -3,23 +3,23 @@
 Function: KISKA_fnc_VDL_controlsGroup_onLoad
 
 Description:
-	Acts as the onload event for the KISKA View Distance Limiter Dialog
+    Acts as the onload event for the KISKA View Distance Limiter Dialog
 
 Parameters:
-	0: _controlsGroup <CONTROL> - The controls group for the particular setting
-	1: _varName <STRING> - The name of the profileNamespace variable in which this
+    0: _controlsGroup <CONTROL> - The controls group for the particular setting
+    1: _varName <STRING> - The name of the profileNamespace variable in which this
         setting will be saved when changed
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
-	(begin example)
+    (begin example)
         [controlsGroup,"someName"] call KISKA_fnc_VDL_controlsGroup_onLoad;
-	(end)
+    (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_VDL_controlsGroup_onLoad";
 

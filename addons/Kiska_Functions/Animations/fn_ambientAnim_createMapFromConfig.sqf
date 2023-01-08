@@ -17,7 +17,7 @@ Description:
     };
 
 Parameters:
-	0: _config <CONFIG> - A config to parse into a hashmap
+    0: _config <CONFIG> - A config to parse into a hashmap
 
 Returns:
     <HASHMAP> - A map of the animation sets and their properties.
@@ -30,7 +30,7 @@ Examples:
     (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ambientAnim_createMapFromConfig";
 

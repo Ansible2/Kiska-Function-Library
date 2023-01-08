@@ -4,24 +4,24 @@
 Function: KISKA_fnc_supportNotification
 
 Description:
-	Gives the player a sound or text notification that they called in a support
-	 from the KISKA systems. Just used for feedback to know a call was placed.
+    Gives the player a sound or text notification that they called in a support
+     from the KISKA systems. Just used for feedback to know a call was placed.
 
-	Players can adjust the notifcation settings in the CBA addon menu.
+    Players can adjust the notifcation settings in the CBA addon menu.
 
 Parameters:
-	0: _supportTypeId <NUMBER> - The support type that was called
+    0: _supportTypeId <NUMBER> - The support type that was called
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
-		[0] call KISKA_fnc_supportNotification;
+        [0] call KISKA_fnc_supportNotification;
     (end)
 
 Authors:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_supportNotification";
 
@@ -31,26 +31,26 @@ scriptName "KISKA_fnc_supportNotification";
 #define BOTH 3
 
 #define GET_NOTIFCAITON(GVAR,SUPPORT_ID,RADIO_ID) \
-	if (_supportTypeId isEqualTo SUPPORT_ID) exitWith { \
-		private _notificationSetting = missionNamespace getVariable [GVAR,0]; \
-		if (_notificationSetting isEqualTo NONE) exitWith {}; \
-		if (_notificationSetting isEqualTo RADIO_ONLY) exitWith { \
-			[RADIO_ID] call KISKA_fnc_supportRadio; \
-		}; \
-		if (_notificationSetting isEqualTo TEXT_ONLY) exitWith { \
-			["Request Received",0,false] call KISKA_fnc_datalinkMsg; \
-		}; \
-		if (_notificationSetting isEqualTo BOTH) exitWith { \
-			[RADIO_ID] call KISKA_fnc_supportRadio; \
-			["Request Received",0,false] call KISKA_fnc_datalinkMsg; \
-		}; \
-	};
+    if (_supportTypeId isEqualTo SUPPORT_ID) exitWith { \
+        private _notificationSetting = missionNamespace getVariable [GVAR,0]; \
+        if (_notificationSetting isEqualTo NONE) exitWith {}; \
+        if (_notificationSetting isEqualTo RADIO_ONLY) exitWith { \
+            [RADIO_ID] call KISKA_fnc_supportRadio; \
+        }; \
+        if (_notificationSetting isEqualTo TEXT_ONLY) exitWith { \
+            ["Request Received",0,false] call KISKA_fnc_datalinkMsg; \
+        }; \
+        if (_notificationSetting isEqualTo BOTH) exitWith { \
+            [RADIO_ID] call KISKA_fnc_supportRadio; \
+            ["Request Received",0,false] call KISKA_fnc_datalinkMsg; \
+        }; \
+    };
 
 
 if (!hasInterface) exitWith {};
 
 params [
-	["_supportTypeId",0,[123]]
+    ["_supportTypeId",0,[123]]
 ];
 
 

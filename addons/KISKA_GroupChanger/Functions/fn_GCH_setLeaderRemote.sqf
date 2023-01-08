@@ -13,7 +13,7 @@ Returns:
 
 Examples:
     (begin example)
-    	[group player, player] call KISKA_fnc_GCH_setLeaderRemote;
+        [group player, player] call KISKA_fnc_GCH_setLeaderRemote;
     (end)
 
 Author:
@@ -24,8 +24,8 @@ scriptName "KISKA_fnc_GCH_setLeaderRemote";
 params ["_group","_unitToSet"];
 
 if (!isServer) exitWith {
-	["Must be run on server!",true] call KISKA_fnc_log;
-	nil
+    ["Must be run on server!",true] call KISKA_fnc_log;
+    nil
 };
 
 _this remoteExecCall ["selectLeader",groupOwner _group];

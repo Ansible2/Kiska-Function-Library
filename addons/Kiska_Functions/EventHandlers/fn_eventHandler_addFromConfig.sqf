@@ -6,23 +6,23 @@ Description:
 
 Parameters:
     0: _entityToAddEventHandlerTo <ANY> - The entity to add the eventhandler to
-	1: _config <CONFIG> - The config of the eventhandler
-	2: _code <CODE or STRING> - What to execute when the eventhandler is called
+    1: _config <CONFIG> - The config of the eventhandler
+    2: _code <CODE or STRING> - What to execute when the eventhandler is called
         _thisScriptedEventHandler is available with the event id
 
 Returns:
-	<NUMBER> - The ID of the eventhandler
+    <NUMBER> - The ID of the eventhandler
 
 Examples:
     (begin example)
-		private _eventID = [
+        private _eventID = [
             player,
             myConfig
         ] call KISKA_fnc_eventHandler_addFromConfig
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_eventHandler_addFromConfig";
 

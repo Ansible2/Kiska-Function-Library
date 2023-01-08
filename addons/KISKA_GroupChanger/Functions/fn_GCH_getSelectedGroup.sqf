@@ -2,13 +2,13 @@
 Function: KISKA_fnc_GCH_getSelectedGroup
 
 Description:
-	Returns the selected group in the group changer.
+    Returns the selected group in the group changer.
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
-	<GROUP> - The currently selected group or grpNull if not found
+    <GROUP> - The currently selected group or grpNull if not found
 
 Examples:
     (begin example)
@@ -16,7 +16,7 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_GCH_getSelectedGroup";
 

@@ -2,21 +2,21 @@
 Function: KISKA_fnc_getCurrentWaypoint
 
 Description:
-	Returns the units currentWaypoint
+    Returns the units currentWaypoint
 
 Parameters:
-	0: _group <GROUP or OBJECT> - The unit to get the currentWaypoint for.
+    0: _group <GROUP or OBJECT> - The unit to get the currentWaypoint for.
 
 Returns:
-	<ARRAY> - The waypoint
+    <ARRAY> - The waypoint
 
 Examples:
     (begin example)
-		private _waypoint = [myUnit] call KISKA_fnc_getCurrentWaypoint;
+        private _waypoint = [myUnit] call KISKA_fnc_getCurrentWaypoint;
     (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_getCurrentWaypoint";
 

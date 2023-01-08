@@ -3,21 +3,21 @@
 Function: KISKA_fnc_VDL_onLoad
 
 Description:
-	Acts as the onload event for the KISKA View Distance Limiter Dialog
+    Acts as the onload event for the KISKA View Distance Limiter Dialog
 
 Parameters:
-	0: _display <DISPLAY> - The display of the dialog
+    0: _display <DISPLAY> - The display of the dialog
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
-	(begin example)
+    (begin example)
         [display] call KISKA_fnc_VDL_onLoad;
-	(end)
+    (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_VDL_onLoad";
 

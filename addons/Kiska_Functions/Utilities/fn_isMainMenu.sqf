@@ -5,18 +5,18 @@ Description:
     Checks if loaded mission is main menu.
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
-	<BOOL>
+    <BOOL>
 
 Examples:
     (begin example)
-		isMainMenu = call KISKA_fnc_isMainMenu;
+        isMainMenu = call KISKA_fnc_isMainMenu;
     (end)
 
 Author(s):
-	Leopard20
+    Leopard20
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_isMainMenu";
 

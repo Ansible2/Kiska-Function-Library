@@ -2,13 +2,13 @@
 Function: KISKA_fnc_supportManager_addDiaryEntry
 
 Description:
-	Creates a diary entry in the map for the player to open the support Manager
+    Creates a diary entry in the map for the player to open the support Manager
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
@@ -16,13 +16,13 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_supportManager_addDiaryEntry";
 
 if (!hasInterface) exitWith {
-	["Was run on machine without interface, needs an interface"] call KISKA_fnc_log;
-	nil
+    ["Was run on machine without interface, needs an interface"] call KISKA_fnc_log;
+    nil
 };
 
 if (call KISKA_fnc_isMainMenu) exitWith {
@@ -37,10 +37,10 @@ waitUntil {
 };
 
 [
-	[
-		"Support Manager GUI",
-		"<execute expression='call KISKA_fnc_supportManager_openDialog;'>Open Support Manager</execute>"
-	]
+    [
+        "Support Manager GUI",
+        "<execute expression='call KISKA_fnc_supportManager_openDialog;'>Open Support Manager</execute>"
+    ]
 ] call KISKA_fnc_addKiskaDiaryEntry;
 
 

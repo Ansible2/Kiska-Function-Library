@@ -19,16 +19,16 @@ Example:
 
 Author(s):
     SilentSpike,
-	Modified By: Ansible2
+    Modified By: Ansible2
 ---------------------------------------------------------------------------- */
 params [
-	["_group", grpNull, [grpNull, objNull]],
+    ["_group", grpNull, [grpNull, objNull]],
     ["_numberToRemove",-1,[123]],
-	["_stopUnits", false, [true]]
+    ["_stopUnits", false, [true]]
 ];
 
 if (_group isEqualType objNull) then {
-	_group = group _group;
+    _group = group _group;
 };
 
 private _numberOfCurrentWaypoints = count (waypoints _group);
@@ -39,7 +39,7 @@ if (_numberToRemove isEqualTo -1) then {
 };
 
 for "_i" from (_numberToRemove - 1) to 0 step -1 do {
-	deleteWaypoint [_group, _i];
+    deleteWaypoint [_group, _i];
 };
 
 private _removedAllWaypoints = _numberToRemove isEqualTo _numberOfCurrentWaypoints;

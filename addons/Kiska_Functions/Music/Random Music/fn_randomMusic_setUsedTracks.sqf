@@ -13,11 +13,11 @@ Returns:
 
 Examples:
     (begin example)
-		[["SomeTrack","AnotherTrack"]] call KISKA_fnc_randomMusic_setUsedTracks;
-   	(end)
+        [["SomeTrack","AnotherTrack"]] call KISKA_fnc_randomMusic_setUsedTracks;
+       (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_randomMusic_setUsedTracks";
 

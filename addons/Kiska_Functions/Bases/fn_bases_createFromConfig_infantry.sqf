@@ -2,7 +2,7 @@
 Function: KISKA_fnc_bases_createFromConfig_infantry
 
 Description:
-	Spawns a configed KISKA bases' infantry.
+    Spawns a configed KISKA bases' infantry.
 
 Parameters:
     0: _baseConfig <CONFIG> - The config path of the base config
@@ -12,13 +12,13 @@ Returns:
 
 Examples:
     (begin example)
-		[
+        [
             "SomeBaseConfig"
         ] call KISKA_fnc_bases_createFromConfig_infantry;
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_bases_createFromConfig_infantry";
 

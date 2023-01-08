@@ -2,85 +2,85 @@
 Function: KISKA_fnc_reassignCurator
 
 Description:
-	Reassigns a curator object to the local player.
+    Reassigns a curator object to the local player.
 
 Parameters:
-	0: _curatorObject : <OBJECT or STRING> - The curator object to reassign
-	1: _isManual : <BOOL> - Was this called from the diary entry (keeps hints from showing otherwise)
+    0: _curatorObject : <OBJECT or STRING> - The curator object to reassign
+    1: _isManual : <BOOL> - Was this called from the diary entry (keeps hints from showing otherwise)
 
 Returns:
-	<BOOL> - true if added to player, false otherwise
+    <BOOL> - true if added to player, false otherwise
 
 Examples:
     (begin example)
-		// show hint messages
-		[myCuratorObject,true] call KISKA_fnc_reassignCurator;
+        // show hint messages
+        [myCuratorObject,true] call KISKA_fnc_reassignCurator;
     (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_reassignCurator";
 
 if (!hasInterface) exitWith {false};
 
 params [
-	["_curatorObject",objNull,[objNull,""]],
-	["_isManual",false,[true]]
+    ["_curatorObject",objNull,[objNull,""]],
+    ["_isManual",false,[true]]
 ];
 
 // check if player is host or admin
 if !(call KISKA_fnc_isAdminOrHost) exitWith {
-	if (_isManual) then {
-		["Only admins can be assigned curator"] call KISKA_fnc_notification;
-	};
-	false
+    if (_isManual) then {
+        ["Only admins can be assigned curator"] call KISKA_fnc_notification;
+    };
+    false
 };
 
 if (_curatorObject isEqualType "") then {
-	_curatorObject = missionNamespace getVariable [_curatorObject,objNull];
+    _curatorObject = missionNamespace getVariable [_curatorObject,objNull];
 };
 
 if (isNull _curatorObject) exitWith {
-	["_curatorObject isNull!",true] call KISKA_fnc_log;
-	false
+    ["_curatorObject isNull!",true] call KISKA_fnc_log;
+    false
 };
 
 private _unitWithCurator = getAssignedCuratorUnit _curatorObject;
 if (isNull _unitWithCurator) then {
-	[player,_curatorObject] remoteExecCall ["assignCurator",2];
+    [player,_curatorObject] remoteExecCall ["assignCurator",2];
 } else {
-	if (alive _unitWithCurator) then {
-		// no sense in alerting player if they are the curator still
-		if (!(_unitWithCurator isEqualTo player)) then {
-			["Another currently alive admin has the curator assigned to them already"] call KISKA_fnc_notification;
-		} else {
-			["You are already the curator"] call KISKA_fnc_notification;
-		};
+    if (alive _unitWithCurator) then {
+        // no sense in alerting player if they are the curator still
+        if (!(_unitWithCurator isEqualTo player)) then {
+            ["Another currently alive admin has the curator assigned to them already"] call KISKA_fnc_notification;
+        } else {
+            ["You are already the curator"] call KISKA_fnc_notification;
+        };
 
-		false
-	} else {
-		[_unitWithCurator,_isManual,_curatorObject] spawn {
-			params ["_unitWithCurator","_isManual","_curatorObject"];
-			[_curatorObject] remoteExec ["unAssignCurator",2];
+        false
+    } else {
+        [_unitWithCurator,_isManual,_curatorObject] spawn {
+            params ["_unitWithCurator","_isManual","_curatorObject"];
+            [_curatorObject] remoteExec ["unAssignCurator",2];
 
-			// wait till curator doesn't have a unit to give it the player
-			waitUntil {
-				if !(isNull (getAssignedCuratorUnit _curatorObject)) exitWith {
-					[player,_curatorObject] remoteExecCall ["assignCurator",2];
-					if (_isManual) then {
-						hint "You are now the curator";
-					};
-					true
-				};
+            // wait till curator doesn't have a unit to give it the player
+            waitUntil {
+                if !(isNull (getAssignedCuratorUnit _curatorObject)) exitWith {
+                    [player,_curatorObject] remoteExecCall ["assignCurator",2];
+                    if (_isManual) then {
+                        hint "You are now the curator";
+                    };
+                    true
+                };
 
-				[_curatorObject] remoteExec ["unAssignCurator",2];
+                [_curatorObject] remoteExec ["unAssignCurator",2];
 
-				sleep 5;
-				false
-			};
-		};
+                sleep 5;
+                false
+            };
+        };
 
-		true
-	};
+        true
+    };
 };

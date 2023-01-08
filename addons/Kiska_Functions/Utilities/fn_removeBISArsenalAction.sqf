@@ -2,21 +2,21 @@
 Function: KISKA_fnc_removeBISArsenalAction
 
 Description:
-	Removes the BIS arsenal action from the given object.
+    Removes the BIS arsenal action from the given object.
 
 Parameters:
-	0: _arsenal <OBJECT> - The arsenal to remove from
+    0: _arsenal <OBJECT> - The arsenal to remove from
 
 Returns:
-	<BOOL> - true if arsenal was removed, false if action does not currently exist
+    <BOOL> - true if arsenal was removed, false if action does not currently exist
 
 Examples:
     (begin example)
-		_done = [arsenal] call KISKA_fnc_removeBISArsenalAction;
+        _done = [arsenal] call KISKA_fnc_removeBISArsenalAction;
     (end)
 
 Author(s):
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_removeBISArsenalAction";
 

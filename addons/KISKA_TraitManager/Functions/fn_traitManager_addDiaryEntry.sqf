@@ -2,13 +2,13 @@
 Function: KISKA_fnc_traitManager_addDiaryEntry
 
 Description:
-	Creates a diary entry in the map for the player to open the trait Manager.
+    Creates a diary entry in the map for the player to open the trait Manager.
 
 Parameters:
-	NONE
+    NONE
 
 Returns:
-	NOTHING
+    NOTHING
 
 Examples:
     (begin example)
@@ -16,14 +16,14 @@ Examples:
     (end)
 
 Author:
-	Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_traitManager_addDiaryEntry";
 
 
 if (!hasInterface) exitWith {
-	["Was run on machine without interface, needs an interface"] call KISKA_fnc_log;
-	nil
+    ["Was run on machine without interface, needs an interface"] call KISKA_fnc_log;
+    nil
 };
 
 if (call KISKA_fnc_isMainMenu) exitWith {
@@ -32,8 +32,8 @@ if (call KISKA_fnc_isMainMenu) exitWith {
 };
 
 if (!canSuspend) exitWith {
-	["Must be run in scheduled",false] call KISKA_fnc_log;
-	[] spawn KISKA_fnc_traitManager_addDiaryEntry;
+    ["Must be run in scheduled",false] call KISKA_fnc_log;
+    [] spawn KISKA_fnc_traitManager_addDiaryEntry;
 };
 
 waitUntil {
@@ -43,10 +43,10 @@ waitUntil {
 };
 
 [
-	[
-		"Trait Manager GUI",
-		"<execute expression='call KISKA_fnc_traitManager_openDialog;'>Open Trait Manager GUI</execute>"
-	]
+    [
+        "Trait Manager GUI",
+        "<execute expression='call KISKA_fnc_traitManager_openDialog;'>Open Trait Manager GUI</execute>"
+    ]
 ] call KISKA_fnc_addKiskaDiaryEntry;
 
 
