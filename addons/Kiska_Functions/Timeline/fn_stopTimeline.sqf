@@ -9,10 +9,11 @@ Description:
 Parameters:
     0: _timelineId <NUMBER> - The id of the timeline to stop
     1: _onTimelineStopped <CODE, STRING, or ARRAY> - (see KISKA_fnc_callBack),
-        code that will be executed once a timeline is stopped. Params:
-            
-            0. <ARRAY> - The timeline array in the state when the stoppage actually happens.
-            1. <HASHMAP> - The Individual map defined for a specific timeline of the given ID
+        code that will be executed once a timeline is stopped. 
+        
+        Parameters:
+        - 0: <ARRAY> - The timeline array in the state when the stoppage actually happens.
+        - 1: <HASHMAP> - The Individual map defined for a specific timeline of the given ID
 
 Returns:
     NOTHING

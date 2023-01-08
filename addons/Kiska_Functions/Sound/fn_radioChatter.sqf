@@ -11,14 +11,14 @@ Parameters:
         This will use say3D instead of playSound3d.
     1: _soundParams <ARRAY> - An array of parameters that are slightly different depending on the _followSource value
         If _followSource is true:
-            0: _source <OBJECT> - Where the sound is coming from
-            1: _distance <NUMBER> - Max distance at which the sound can be heard
-            2: _offset <ARRAY> - AttachTo coordinates that can be used to offset the sound
+            - 0: _source <OBJECT> - Where the sound is coming from
+            - 1: _distance <NUMBER> - Max distance at which the sound can be heard
+            - 2: _offset <ARRAY> - AttachTo coordinates that can be used to offset the sound
         If _followSource is false:
-            0: _source <OBJECT or ARRAY> - Where the sound is coming from.
+            - 0: _source <OBJECT or ARRAY> - Where the sound is coming from.
                 If array format positionASL.
-            1: _distance <NUMBER> - Max distance at which the sound can be heard
-            2: _volume <NUMBER> - How loud the sound plays
+            - 1: _distance <NUMBER> - Max distance at which the sound can be heard
+            - 2: _volume <NUMBER> - How loud the sound plays
 
 Returns:
     <NUMBER> - the "chatter ID" that can be used with KISKA_fnc_stopRadioChatter. -1 if error

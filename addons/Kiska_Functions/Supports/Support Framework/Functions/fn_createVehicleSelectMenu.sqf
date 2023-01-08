@@ -8,7 +8,7 @@ Description:
      allow a player to select a class from the menu such as when requesting CAS.
 
 Parameters:
-    0: _classes : <ARRAY> - The class names to add to the list (in the order to appear)
+    0: _classes : <STRING[]> - The class names to add to the list (in the order to appear)
 
 Returns:
     <ARRAY> - The created array

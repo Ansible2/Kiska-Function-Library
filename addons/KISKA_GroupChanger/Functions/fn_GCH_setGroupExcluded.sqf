@@ -7,7 +7,7 @@ Description:
 Parameters:
     0: _group <GROUP> - The group to check exclusion of
     1: _isExcluded <BOOL> - True to exclude group, false to include
-    1: _synchronize <BOOL> - True to remoteExec this function and provide a JIP message
+    2: _synchronize <BOOL> - True to remoteExec this function and provide a JIP message
 
 Returns:
     <BOOL> - Returns true if the group is excluded or false if not

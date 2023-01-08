@@ -20,12 +20,12 @@ Parameters:
             See KISKA_fnc_callBack.
             The default behaviour is for the aircraft to move 2000 meters away and for
             its complete crew and self to be deleted.
-        Params:
-
-            0. <OBJECT> - The helicopter confucting support
-            1. <GROUP> - The group the pilot belongs to
-            2. <ARRAY> - The full vehicle crew
-            3. <ARRAY> - The position the helicopter was supporting
+        
+            Parameters:
+            - 0: <OBJECT> - The helicopter confucting support
+            - 1: <GROUP> - The group the pilot belongs to
+            - 2: <ARRAY> - The full vehicle crew
+            - 3: <ARRAY> - The position the helicopter was supporting
 
 Returns:
     ARRAY - The vehicle info

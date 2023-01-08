@@ -17,7 +17,7 @@ Examples:
         [
             someUnit,
             getUnitLoadout someUnit
-        ] call KISKA_fnc_ambientAnim;
+        ] call KISKA_fnc_ambientAnim_setStoredLoadout;
     (end)
 
 Author(s):
