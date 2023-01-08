@@ -13,20 +13,21 @@ Parameters:
         - If an array, you can have weighted or unweighted array of strings that are random animation sets to select from
         - lastly, you can have a HASHMAP setup for snap to animations:
          
-         - _animSet <STRING[], <STRING,NUMBER>[], or STRING> - A single snapto animation set or weighted/unweighted array to randomly select from.
-         - _snapToRange <NUMBER> - This is how far will be searched around the unit to find an object to "snap" onto. Cannot be more then 10m.
-         - _backupAnims <STRING[], <STRING,NUMBER>[], or STRING> - Same as _snapToAnimationSet but for animations to use in the even that ALL of the _snapToAnimationSet animations fail to be used due to valid objects not being within range.
-         - _fallbackFunction <CODE, ARRAY, or STRING> - (See KISKA_fnc_callBack) In the event that
+            - _animSet <STRING[], <STRING,NUMBER>[], or STRING> - A single snapto animation set or weighted/unweighted array to randomly select from.
+            - _snapToRange <NUMBER> - This is how far will be searched around the unit to find an object to "snap" onto. Cannot be more then 10m.
+            - _backupAnims <STRING[], <STRING,NUMBER>[], or STRING> - Same as _snapToAnimationSet but for animations to use in the even that 
+            ALL of the _snapToAnimationSet animations fail to be used due to valid objects not being within range.
+            - _fallbackFunction <CODE, ARRAY, or STRING> - (See KISKA_fnc_callBack) In the event that
             a unit is not able to find an object to snap to AND1 no _backupAnims are present, this function will be called with the
             following params. If you still want the unit to be animated in this case, pass {}, "", or []
                 
-             - 0: _unit <OBJECT> - The unit
-             - 1: _unitInfoMap <HASHMAP> - The current state of the _unitInfoMap which stores animation info for the system
-             The rest of these params are exactly as passed to the initial KISKA_fnc_ambientAnim call
-             - 2: _animationParams <ARRAY, STRING[], <STRING,NUMBER>[], or STRING>
-             - 3: _exitOnCombat <BOOL>
-             - 4: _equipmentLevel <ARRAY or STRING>
-             - 5: _animationMap <HASHMAP or CONFIG>
+                - 0: _unit <OBJECT> - The unit
+                - 1: _unitInfoMap <HASHMAP> - The current state of the _unitInfoMap which stores animation info for the system
+                The rest of these params are exactly as passed to the initial KISKA_fnc_ambientAnim call
+                - 2: _animationParams <ARRAY, STRING[], <STRING,NUMBER>[], or STRING>
+                - 3: _exitOnCombat <BOOL>
+                - 4: _equipmentLevel <ARRAY or STRING>
+                - 5: _animationMap <HASHMAP or CONFIG>
 
     2: _exitOnCombat <BOOL> - True for unit to return to the state it was in prior to
         KISKA_fnc_ambientAnim being called when they are enter combat behaviour.

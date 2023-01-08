@@ -13,14 +13,14 @@ Parameters:
     2: _unitsToDeploy <CODE, STRING, ARRAY, OBJECT[], GROUP, or OBJECT> - An array of units to drop from the _vehicle,
         Or code that will run once the helicopter has reached the drop point that must return an array of object
         (see KISKA_fnc_callBack for examples)
-        Parameters:
 
-            - 0: _vehicle - The drop vehicle
+        Parameters:
+        - 0: _vehicle - The drop vehicle
 
     3: _afterDropCode <CODE, STRING or ARRAY> - Code to execute after the drop is complete, see KISKA_fnc_callBack
+        
         Parameters:
-
-            - 0: _vehicle - The drop vehicle
+        - 0: _vehicle - The drop vehicle
 
     4: _hoverHeight <NUMBER> - The height the helicopter should hover above the drop position
         while units are fastroping. Max is 28, min is 5
