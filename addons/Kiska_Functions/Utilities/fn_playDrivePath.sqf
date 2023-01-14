@@ -2,7 +2,8 @@
 Function: KISKA_fnc_playDrivePath
 
 Description:
-    Records an array of positons and speeds for use with setDriveOnPath command.
+    Uses setDriveOnPath to move a vehicle. Additionally makes sure the vehicle
+     can move before starting (turn engineOn and use doStop).
 
 Parameters:
     0: _vehicle <OBJECT> - The vehicle to use setDriveOnPath command on
