@@ -10,10 +10,7 @@ private _listOptions = [
 ];
 
 
-
 private _onChange = "
-    hint str _this;
-    
     private _selectedOption = _this;
     private _channelId = %1;
     
