@@ -54,8 +54,6 @@ class CfgFunctions
             {};
             class clearWaypoints
             {};
-            class configureConvoy
-            {};
             class defend
             {};
             class driveTo
@@ -154,6 +152,13 @@ class CfgFunctions
             class ciwsAlarm
             {};
             class ciwsSiren
+            {};
+        };
+
+        class Convoy
+        {
+            file = "Kiska_functions\Convoy";
+            class configureConvoy
             {};
         };
 
