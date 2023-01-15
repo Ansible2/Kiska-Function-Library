@@ -45,7 +45,9 @@ if (isNull _driver) exitWith {
 
 
 _vehicle engineOn true;
-doStop _driver;
+if !(isAgent teamMember _driver) then {
+    doStop _driver;
+};
 
 // some time (more then one frame) is needed after doStop to execute setDriveOnPath
 [
