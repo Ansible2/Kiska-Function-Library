@@ -65,7 +65,7 @@ private _onChange = "
     [
         _variable,
         "LIST",
-        _title
+        _title,
         ["KISKA Radio Channels", "Enabled Channels"],
         _listOptions,
         nil,
