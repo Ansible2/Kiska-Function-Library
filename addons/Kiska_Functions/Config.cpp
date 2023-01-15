@@ -574,6 +574,9 @@ class Extended_PreInit_EventHandlers {
     class ACE_settings_preInitEvent {
         init = "call compileScript ['KISKA_functions\ACE\Scripts\addAceCbaSettings.sqf'];";
     };
+    class enabledChannel_settings_preInitEvent {
+        init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addEnableChannelCbaSettings.sqf'];";    
+    };
 };
 
 #include "Animations\Headers\Ambient Animations.hpp"
