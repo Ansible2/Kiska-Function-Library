@@ -50,6 +50,7 @@ _convoyGroup setVariable ["KISKA_convoyDoBasicFollow",true];
 while {_convoyGroup getVariable ["KISKA_convoyDoBasicFollow",false]} do {
     private _leader = leader _convoyGroup;
     private _followUpdates = [];
+    // TODO make into perframe handler
     // TODO what happens when a vehicle is destroyed or disabled
     // TODO what happens when the leader is destroyed or disabled
     {
