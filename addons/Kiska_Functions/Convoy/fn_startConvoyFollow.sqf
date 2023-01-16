@@ -50,17 +50,17 @@ _convoyGroup setVariable ["KISKA_convoyDoBasicFollow",true];
 while {_convoyGroup getVariable ["KISKA_convoyDoBasicFollow",false]} do {
     private _leader = leader _convoyGroup;
     private _followUpdates = [];
-
+    // TODO what happens when a vehicle is destroyed or disabled
+    // TODO what happens when the leader is destroyed or disabled
     {
         private _driver = driver _x;
         if (_driver isEqualTo _leader) then {continue};
 
         private _vehicleAhead = _convoyVehicles param [_forEachIndex - 1, objNull];
-        private _convoySeperation = _convoyGroup getVariable ["KISKA_convoySeperation",30];
-        private _maxAcceptedDistance = _convoySeperation * _forEachIndex;
+        private _maxConvoySeperation = _convoyGroup getVariable ["KISKA_convoySeperation",30];
 
         private _distanceToVehicleAhead = _x distance _vehicleAhead;
-        if (_distanceToVehicleAhead > _maxAcceptedDistance) then {
+        if (_distanceToVehicleAhead > _maxConvoySeperation) then {
             _followUpdates pushBack _driver;
             _x forceFollowRoad false;
             _x setVariable ["KISKA_convoy_toldToFollow",true];
