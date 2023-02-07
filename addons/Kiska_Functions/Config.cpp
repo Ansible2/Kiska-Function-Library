@@ -516,6 +516,8 @@ class CfgFunctions
             {};
             class resetMove
             {};
+            class selectLastIndex
+            {};
             class selectRandom
             {};
             class setContainerCargo
