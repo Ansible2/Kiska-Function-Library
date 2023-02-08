@@ -446,6 +446,8 @@ class CfgFunctions
             {};
             class findIfBool
             {};
+            class getBumperPositionRelative
+            {};
             class getContainerCargo
             {};
             class getFromNetId
