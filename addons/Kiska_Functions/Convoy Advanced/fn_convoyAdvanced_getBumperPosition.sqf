@@ -28,6 +28,12 @@ params [
     ["_isRearBumper",false,[true]]
 ];
 
+if (isNull _vehicle) exitWith {
+    ["_vehicle is null",false] call KISKA_fnc_log;
+    [0,0,0]
+};
+
+
 private _hashMapId = "KISKA_convoy_vehicleRelativeRearHashMap";
 if (!_isRearBumper) then {
     _hashMapId = "KISKA_convoy_vehicleRelativeFrontHashMap";
