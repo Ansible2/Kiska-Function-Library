@@ -169,7 +169,7 @@ class CfgFunctions
             {};
             class convoyAdvanced_removeVehicle
             {};
-            class convoyAdvanced_start
+            class convoyAdvanced_create
             {};
             class convoyAdvanced_stopVehicle
             {};

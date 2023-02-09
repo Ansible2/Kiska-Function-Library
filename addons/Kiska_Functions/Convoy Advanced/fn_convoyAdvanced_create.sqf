@@ -1,3 +1,5 @@
+scriptName "KISKA_fnc_convoyAdvanced_create"
+
 #define _convoySeperation 10
 #define CLEARANCE_TO_QUEUED_POINT 0.5
 #define SPEED_LIMIT_MODIFIER 10
@@ -12,7 +14,7 @@
 #define SPEED_DIFFERENTIAL_LIMIT 20
 
 params [
-	["_vics",[],[]],
+	["_vics",[],[[]]],
     ["_convoySeperation",20,[123]]
 ];
 
@@ -36,6 +38,7 @@ _convoyHashMap set ["_convoySeperation",_convoySeperation];
 
 
 {
+    [_x] call KISKA_fnc_convoyAdvanced_addVehicle;
     _x setVariable ["KISKA_convoyAdvanced_hashMap",_convoyHashMap];
 	_convoyHashMap set [_forEachIndex,_x];
     _x setVariable ["KISKA_convoyAdvanced_index",_forEachIndex];
@@ -199,6 +202,7 @@ private _onEachFrame = {
         };
     };
 
+
     /* ----------------------------------------------------------------------------
         create new from queued point
     ---------------------------------------------------------------------------- */
@@ -235,10 +239,10 @@ private _onEachFrame = {
     // _currentVehicle setVariable ["KISKA_convoy_queuedTime",_time];
 
 
+
     /* ----------------------------------------------------------------------------
         Only Queue points that aren't too close together
     ---------------------------------------------------------------------------- */
-
     private _convoyLeadPosition = getPosATLVisual _convoyLead;
     private _lastestPointToDriveTo = [_currentVehicle_drivePath] call KISKA_fnc_selectLastIndex;
     if (isNil "_lastestPointToDriveTo") exitWith {
@@ -251,6 +255,12 @@ private _onEachFrame = {
     
     _currentVehicle setVariable ["KISKA_convoyAdvanced_queuedPoint",_convoyLeadPosition];
 };
+
+
+private _mainState = [
+    _stateMachine,
+    _onEachFrame
+] call CBA_stateMachine_fnc_addState;
 
 
 _convoyHashMap
