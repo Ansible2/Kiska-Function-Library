@@ -18,9 +18,8 @@ params [
     ["_convoySeperation",20,[123]]
 ];
 
-if (_vics isEqualTo []) exitWith {
-    ["_vics is empty array",true] call KISKA_fnc_log;
-    nil
+if (_convoySeperation < 10) then {
+    _convoySeperation = 10;
 };
 
 private _stateMachine = [
@@ -31,19 +30,13 @@ private _stateMachine = [
 
 private _convoyHashMap = createHashMap;
 _convoyHashMap set ["_stateMachine",_stateMachine];
-_convoyHashMap set ["_convoyLead",_vics select 0];
 _convoyHashMap set ["_convoyVehicles",_vics];
 _convoyHashMap set ["_minBufferBetweenPoints",1];
 _convoyHashMap set ["_convoySeperation",_convoySeperation];
 
-
-{
+_vics apply {
     [_x] call KISKA_fnc_convoyAdvanced_addVehicle;
-    _x setVariable ["KISKA_convoyAdvanced_hashMap",_convoyHashMap];
-	_convoyHashMap set [_forEachIndex,_x];
-    _x setVariable ["KISKA_convoyAdvanced_index",_forEachIndex];
-} forEach _vics;
-
+};
 
 
 private _onEachFrame = {
