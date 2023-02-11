@@ -22,12 +22,17 @@ if (_convoySeperation < 10) then {
 };
 
 private _stateMachine = [
-    _vics,
+    [],
     true
 ] call CBA_stateMachine_fnc_create;
 
 
 private _convoyHashMap = createHashMap;
+// when using skip null in CBA_stateMachine_fnc_create
+// a new array will be created and saved in the statemachine's namespace
+private _convoyVehicles = _stateMachine getVariable "CBA_statemachine_list";
+_convoyHashMap set ["_convoyVehicles",_convoyVehicles];
+
 _convoyHashMap set ["_stateMachine",_stateMachine];
 _convoyHashMap set ["_minBufferBetweenPoints",1];
 _convoyHashMap set ["_convoySeperation",_convoySeperation];
@@ -53,7 +58,7 @@ private _onEachFrame = {
 	/* ----------------------------------------------------------------------------
         Setup
     ---------------------------------------------------------------------------- */
-    private _debug = _currentVehicle getVariable ["KISKA_convoyAdvanced_debug",true];
+    private _debug = _currentVehicle getVariable ["KISKA_convoyAdvanced_debug",false];
     private "_currentVehicle_debugDrivePathObjects";
     if (_debug) then {
         _currentVehicle_debugDrivePathObjects = _currentVehicle getVariable "KISKA_convoyAdvanced_debugPathObjects";
@@ -123,7 +128,6 @@ private _onEachFrame = {
     if (_vehiclesAreWithinBoundary) then {
         private _modifier = ((_convoySeperation - _distanceBetweenVehicles) * VEHICLE_SPEED_LIMIT_MULTIPLIER) max MIN_VEHICLE_SPEED_LIMIT_MODIFIER;
         private _speedLimit = (_vehicleAhead_speed - _modifier) max MIN_VEHICLE_SPEED_LIMIT;
-        // forceSpeed seems to do nothing, using limit instead
         _currentVehicle limitSpeed _speedLimit;
         
         if (_debug) then {

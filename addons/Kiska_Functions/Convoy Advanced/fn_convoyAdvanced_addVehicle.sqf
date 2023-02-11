@@ -64,19 +64,17 @@ if ((speed _convoyLead) > 0) exitWith {
     nil
 };
 
-
-
-private _convoyVehicles = _convoyHashMap getOrDefault ["_convoyVehicles",[]];
-if (_convoyVehicles isEqualTo []) then {
-    _convoyHashMap set ["_convoyLead",_vehicle];
-    _convoyHashMap set ["_convoyVehicles",_convoyVehicles];
-};
-
-
+private _convoyVehicles = _convoyHashMap get "_convoyVehicles";
 if (_vehicle in _convoyVehicles) exitWith {
     [["_vehicle ",_vehicle," is already in _convoyHashMap ",_convoyHashMap],true] call KISKA_fnc_log;
     _vehicle getVariable ["KISKA_convoyAdvanced_index",-1]
 };
+
+
+if (_convoyVehicles isEqualTo []) then {
+    _convoyHashMap set ["_convoyLead",_vehicle];
+};
+
 
 private _convoyCount = count _convoyVehicles;
 private "_convoyIndex";
