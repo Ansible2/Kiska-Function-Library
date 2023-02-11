@@ -1,6 +1,5 @@
-scriptName "KISKA_fnc_convoyAdvanced_create"
+scriptName "KISKA_fnc_convoyAdvanced_create";
 
-#define _convoySeperation 10
 #define CLEARANCE_TO_QUEUED_POINT 0.5
 #define SPEED_LIMIT_MODIFIER 10
 #define POINT_COMPLETE_RADIUS 10
@@ -30,12 +29,14 @@ private _stateMachine = [
 
 private _convoyHashMap = createHashMap;
 _convoyHashMap set ["_stateMachine",_stateMachine];
-_convoyHashMap set ["_convoyVehicles",_vics];
 _convoyHashMap set ["_minBufferBetweenPoints",1];
 _convoyHashMap set ["_convoySeperation",_convoySeperation];
 
 _vics apply {
-    [_x] call KISKA_fnc_convoyAdvanced_addVehicle;
+    [
+        _convoyHashMap,
+        _x
+    ] call KISKA_fnc_convoyAdvanced_addVehicle;
 };
 
 
@@ -52,7 +53,7 @@ private _onEachFrame = {
 	/* ----------------------------------------------------------------------------
         Setup
     ---------------------------------------------------------------------------- */
-    private _debug = _currentVehicle getVariable ["KISKA_convoyAdvanced_debug",false];
+    private _debug = _currentVehicle getVariable ["KISKA_convoyAdvanced_debug",true];
     private "_currentVehicle_debugDrivePathObjects";
     if (_debug) then {
         _currentVehicle_debugDrivePathObjects = _currentVehicle getVariable "KISKA_convoyAdvanced_debugPathObjects";
@@ -86,8 +87,8 @@ private _onEachFrame = {
     private _vehiclesAreWithinBoundary = _distanceBetweenVehicles < _convoySeperation;
 
     private _currentVehicle_isStopped = _currentVehicle getVariable ["KISKA_convoyAdvanced_isStopped",false];
-    private _currentVehicle_shouldBeStopped = _vehicleAhead_isStopped AND _vehiclesAreWithinBoundary;
     private _vehicleAhead_isStopped = _vehicleAhead_speed <= LEAD_VEHICLE_MAX_SPEED_TO_HALT_FOLLOW;
+    private _currentVehicle_shouldBeStopped = _vehicleAhead_isStopped AND _vehiclesAreWithinBoundary;
 
     if (_currentVehicle_isStopped) then {
         if (_currentVehicle_shouldBeStopped) exitWith { _continue = true; };
@@ -122,10 +123,16 @@ private _onEachFrame = {
     if (_vehiclesAreWithinBoundary) then {
         private _modifier = ((_convoySeperation - _distanceBetweenVehicles) * VEHICLE_SPEED_LIMIT_MULTIPLIER) max MIN_VEHICLE_SPEED_LIMIT_MODIFIER;
         private _speedLimit = (_vehicleAhead_speed - _modifier) max MIN_VEHICLE_SPEED_LIMIT;
-        _currentVehicle forceSpeed _speedLimit;
+        // forceSpeed seems to do nothing, using limit instead
+        _currentVehicle limitSpeed _speedLimit;
         
         if (_debug) then {
-            hint str ["limit speed",_currentVehicle_speed,_speedLimit,_distanceBetweenVehicles];
+            hint ([
+                "limit speed",endl,
+                "Current Vehicle Speed: ", _currentVehicle_speed, endl,
+                "Current Speed Limit: ", _speedLimit, endl,
+                "Distance between: ", _distanceBetweenVehicles
+            ] joinString "");
         };
 
     } else {
@@ -136,14 +143,14 @@ private _onEachFrame = {
             };
 
             private _speedToLimitTo = [_vehicleAhead_speed,5] select _vehicleAhead_isStopped;
-            _currentVehicle forceSpeed _speedToLimitTo;
+            _currentVehicle limitSpeed _speedToLimitTo;
         };
 
         if (_distanceBetweenVehicles > VEHICLE_SHOULD_CATCH_UP_DISTANCE) exitWith { 
             if (_debug) then {
                 hint "un limit";
             };
-            _currentVehicle forceSpeed -1 
+            _currentVehicle limitSpeed -1 
         };
         
         private _speedDifferential = abs (_currentVehicle_speed - _vehicleAhead_speed);
@@ -152,13 +159,13 @@ private _onEachFrame = {
                 hint str ["Limit by differential",_currentVehicle_speed,_distanceBetweenVehicles];
             };
 
-            _currentVehicle forceSpeed _distanceBetweenVehicles;
+            _currentVehicle limitSpeed _distanceBetweenVehicles;
         };
         
         if (_debug) then {
             hint str ["un limit generic",_distanceBetweenVehicles];
         };
-        _currentVehicle forceSpeed -1;
+        _currentVehicle limitSpeed -1;
     };
 
 

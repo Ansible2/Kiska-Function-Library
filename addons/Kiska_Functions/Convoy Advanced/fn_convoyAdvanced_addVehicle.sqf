@@ -30,11 +30,16 @@ scriptName "KISKA_fnc_convoyAdvanced_addVehicle";
 #define MAX_ARRAY_LENGTH 1E7
 
 params [
-    "_convoyHashMap",
+    ["_convoyHashMap",nil,[createHashMap]],
     ["_vehicle",objNull,[objNull]],
     ["_insertIndex",-1,[123]]
 ];
 
+
+if (isNil "_convoyHashMap") exitWith {
+    ["nil _convoyHashMap passed",true] call KISKA_fnc_log;
+    -1
+};
 
 if (isNull _vehicle) exitWith {
     ["_vehicle is null",true] call KISKA_fnc_log;
@@ -53,11 +58,13 @@ if (isNil "_convoyStatemachine") exitWith {
     -1
 };
 
-private _convoyLead = _convoyHashMap get ["_convoyLead",objNull];
+private _convoyLead = _convoyHashMap getOrDefault ["_convoyLead",objNull];
 if ((speed _convoyLead) > 0) exitWith {
     [["_convoyLead ",_convoyLead," is moving, must be stopped to add vehicles to the convoy"]] call KISKA_fnc_log;
     nil
 };
+
+
 
 private _convoyVehicles = _convoyHashMap getOrDefault ["_convoyVehicles",[]];
 if (_convoyVehicles isEqualTo []) then {
@@ -72,19 +79,18 @@ if (_vehicle in _convoyVehicles) exitWith {
 };
 
 private _convoyCount = count _convoyVehicles;
+private "_convoyIndex";
 if (_insertIndex < 0) then {
-    private _convoyIndex = _convoyVehicles pushBack _vehicle;
+    _convoyIndex = _convoyVehicles pushBack _vehicle;
     _convoyHashMap set [_convoyIndex,_vehicle];
 
 } else {
     private _vehiclesToChangeIndex = _convoyVehicles select [_insertIndex,MAX_ARRAY_LENGTH];
     
     _convoyVehicles resize _insertIndex;
-    _convoyVehicles pushBack _vehicle;
+    _convoyIndex = _convoyVehicles pushBack _vehicle;
     _convoyVehicles append _vehiclesToChangeIndex;
-    
-    _vehicle setVariable ["KISKA_convoyAdvanced_index",_insertIndex];
-    _convoyHashMap set [_insertIndex,_vehicle];
+    _convoyHashMap set [_convoyIndex,_vehicle];
 
     _vehiclesToChangeIndex apply {
         private _currentIndex = _x getVariable ["KISKA_convoyAdvanced_index",-1];

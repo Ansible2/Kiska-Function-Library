@@ -42,14 +42,16 @@ if (!_isRearBumper) then {
 private _relativePointHashMap = localNamespace getVariable _hashMapId;
 if (isNil "_relativePointHashMap") then {
     _relativePointHashMap = createHashMap;
-    _relativePointHashMap = localNamespace setVariable [_hashMapId,_relativePointHashMap];
+    localNamespace setVariable [_hashMapId,_relativePointHashMap];
 };
 
 
 private _vehicleType = typeOf _vehicle;
 private _relativeBumperPosition = _relativePointHashMap get _vehicleType;
 
-if !(isNil "_relativeBumperPosition") exitWith {_relativeBumperPosition};
+if !(isNil "_relativeBumperPosition") exitWith {
+    _vehicle modelToWorldVisualWorld _relativeBumperPosition
+};
 
 
 _relativeBumperPosition = [_vehicle,_isRearBumper] call KISKA_fnc_getBumperPositionRelative;
