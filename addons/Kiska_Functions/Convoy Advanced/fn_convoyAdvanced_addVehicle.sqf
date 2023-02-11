@@ -26,7 +26,7 @@ Author(s):
     Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_convoyAdvanced_addVehicle";
-// TODO: handle vehicle or convoy is moving when trying to add vehicle
+
 #define MAX_ARRAY_LENGTH 1E7
 
 params [
@@ -53,12 +53,18 @@ if (isNil "_convoyStatemachine") exitWith {
     -1
 };
 
+private _convoyLead = _convoyHashMap get ["_convoyLead",objNull];
+if ((speed _convoyLead) > 0) exitWith {
+    [["_convoyLead ",_convoyLead," is moving, must be stopped to add vehicles to the convoy"]] call KISKA_fnc_log;
+    nil
+};
 
 private _convoyVehicles = _convoyHashMap getOrDefault ["_convoyVehicles",[]];
 if (_convoyVehicles isEqualTo []) then {
     _convoyHashMap set ["_convoyLead",_vehicle];
     _convoyHashMap set ["_convoyVehicles",_convoyVehicles];
 };
+
 
 if (_vehicle in _convoyVehicles) exitWith {
     [["_vehicle ",_vehicle," is already in _convoyHashMap ",_convoyHashMap],true] call KISKA_fnc_log;

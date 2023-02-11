@@ -1,11 +1,11 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_convoyAdvanced_removeVehicle
+Function: KISKA_fnc_convoyAdvanced_addVehicle
 
 Description:
-    Removes a given vehicle from the its convoy.
+    Adds a given vehicle to a convoy.
 
 Parameters:
-    0: _vehicle <OBJECT> - The vehicle to remove
+    0: _vehicle <OBJECT> - The vehicle to add
 
 Returns:
     NOTHING
@@ -18,7 +18,7 @@ Examples:
 Author(s):
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_convoyAdvanced_stopVehicle";
+scriptName "KISKA_fnc_convoyAdvanced_removeVehicle";
 
 params [
     ["_vehicle",objNull,[objNull]]
@@ -28,6 +28,20 @@ params [
 if (isNull _vehicle) exitWith {
     ["_vehicle is null",false] call KISKA_fnc_log;
     nil
+};
+
+[
+    "KISKA_convoyAdvanced_isStopped",
+    "KISKA_convoyAdvanced_drivePath",
+    "KISKA_convoyAdvanced_debugPathObjects",
+    "KISKA_convoyAdvanced_debug",
+    "KISKA_convoyAdvanced_hashMap",
+    "KISKA_convoyAdvanced_index",
+    "KISKA_convoyAdvanced_debugMarkerType_deletedPoint",
+    "KISKA_convoyAdvanced_debugMarkerType_queuedPoint",
+    "KISKA_convoyAdvanced_queuedPoint"
+] apply {
+    _vehicle setVariable [_x,nil];
 };
 
 // ensure recursive vehicle behind knows it needs to move up
