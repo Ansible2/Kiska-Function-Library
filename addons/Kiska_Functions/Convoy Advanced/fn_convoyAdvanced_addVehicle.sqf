@@ -2,13 +2,18 @@
 Function: KISKA_fnc_convoyAdvanced_addVehicle
 
 Description:
-    Adds a given vehicle to a convoy.
+    Adds a given vehicle to a convoy. The index returned will be a key to the
+     _convoyHashMap that can be used to get the vehicle for that index in the convoy.
 
 Parameters:
     0: _convoyHashMap <HASHMAP> - The convoy hashmap to add to
     1: _vehicle <OBJECT> - The vehicle to add
-    2: _insertIndex <NUMBER> - The index to insert the vehicle into the convoy at 
+    2: _insertIndex <NUMBER> - The index to insert the vehicle into the convoy at. 
+        Negative value means the back.
         (0 is lead vehicle, 1 is vehicle directly behind leader, etc.)
+
+    3: _convoySeperation <NUMBER> - How far the vehicle should keep from the 
+        vehicle in front (min of 10)
 
 Returns:
     <NUMBER> - The index the vehicle was inserted into the convoy at
@@ -17,7 +22,7 @@ Examples:
     (begin example)
         private _convoyMap = [] call KISKA_fnc_convoyAdvanced_create;
         private _spotInConvoy = [
-            _convoyMap
+            _convoyMap,
             vic
         ] call KISKA_fnc_convoyAdvanced_addVehicle;
     (end)
@@ -28,11 +33,13 @@ Author(s):
 scriptName "KISKA_fnc_convoyAdvanced_addVehicle";
 
 #define MAX_ARRAY_LENGTH 1E7
+#define MIN_CONVOY_SEPERATION 10
 
 params [
     ["_convoyHashMap",nil,[createHashMap]],
     ["_vehicle",objNull,[objNull]],
-    ["_insertIndex",-1,[123]]
+    ["_insertIndex",-1,[123]],
+    ["_convoySeperation",-1,[123]]
 ];
 
 
@@ -71,6 +78,8 @@ if (_vehicle in _convoyVehicles) exitWith {
 };
 
 
+
+
 if (_convoyVehicles isEqualTo []) then {
     _convoyHashMap set ["_convoyLead",_vehicle];
 };
@@ -107,6 +116,17 @@ if (_insertIndex < 0) then {
 
 _vehicle setVariable ["KISKA_convoyAdvanced_hashMap",_convoyHashMap];
 _vehicle setVariable ["KISKA_convoyAdvanced_index",_convoyIndex];
+
+if (_convoySeperation < 0) then {
+    _convoySeperation = _convoyHashMap getOrDefault ["_convoySeperation",20];
+
+} else {
+    if (_convoySeperation < MIN_CONVOY_SEPERATION) then {
+        _convoySeperation = MIN_CONVOY_SEPERATION
+    };
+
+};
+_vehicle setVariable ["KISKA_convoyAdvanced_seperation",_convoySeperation];
 
 
 _convoyIndex

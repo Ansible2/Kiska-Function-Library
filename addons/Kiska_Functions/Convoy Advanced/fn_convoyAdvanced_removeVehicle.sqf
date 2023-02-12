@@ -30,6 +30,27 @@ if (isNull _vehicle) exitWith {
     nil
 };
 
+private _convoyHashMap = _vehicle getVariable "KISKA_convoyAdvanced_hashMap";
+if (isNil "_convoyHashMap") exitWith {
+    [[_vehicle," does not have a KISKA_convoyAdvanced_hashMap in its namespace"],true] call KISKA_fnc_log;
+    nil
+};
+
+
+
+private _debugPathObjects = _vehicle getVariable ["KISKA_convoyAdvanced_debugPathObjects",[]];
+_debugObjects apply {
+    deleteVehicle _x;
+};
+
+private _debugDeletePathObjects = _vehicle getVariable ["KISKA_convoyAdvanced_debugDeletedPathObjects",[]];
+_debugDeletePathObjects apply {
+    deleteVehicle _x;
+};
+
+
+
+
 [
     "KISKA_convoyAdvanced_isStopped",
     "KISKA_convoyAdvanced_drivePath",
@@ -39,7 +60,9 @@ if (isNull _vehicle) exitWith {
     "KISKA_convoyAdvanced_index",
     "KISKA_convoyAdvanced_debugMarkerType_deletedPoint",
     "KISKA_convoyAdvanced_debugMarkerType_queuedPoint",
-    "KISKA_convoyAdvanced_queuedPoint"
+    "KISKA_convoyAdvanced_queuedPoint",
+    "KISKA_convoyAdvanced_debugDeletedPathObjects",
+    "KISKA_convoyAdvanced_seperation"
 ] apply {
     _vehicle setVariable [_x,nil];
 };

@@ -171,6 +171,8 @@ class CfgFunctions
             {};
             class convoyAdvanced_getBumperPosition
             {};
+            class convoyAdvanced_onEachFrame
+            {};
             class convoyAdvanced_removeVehicle
             {};
             class convoyAdvanced_stopVehicle
