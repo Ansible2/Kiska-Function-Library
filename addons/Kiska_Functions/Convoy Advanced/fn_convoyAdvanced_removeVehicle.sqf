@@ -20,6 +20,8 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_convoyAdvanced_removeVehicle";
 
+#define MAX_ARRAY_LENGTH 1E7
+
 params [
     ["_vehicle",objNull,[objNull]]
 ];
@@ -39,16 +41,39 @@ if (isNil "_convoyHashMap") exitWith {
 
 
 private _debugPathObjects = _vehicle getVariable ["KISKA_convoyAdvanced_debugPathObjects",[]];
-_debugObjects apply {
+_debugPathObjects apply {
     deleteVehicle _x;
 };
-
 private _debugDeletePathObjects = _vehicle getVariable ["KISKA_convoyAdvanced_debugDeletedPathObjects",[]];
 _debugDeletePathObjects apply {
     deleteVehicle _x;
 };
 
 
+private _convoyVehicles = _convoyHashMap get "_convoyVehicles";
+private _vehicleIndex = _vehicle getVariable "KISKA_convoyAdvanced_index";
+_convoyVehicles deleteAt _vehicleIndex;
+
+private _vehiclesToChangeIndex = _convoyVehicles select [_vehicleIndex,MAX_ARRAY_LENGTH];
+_vehiclesToChangeIndex apply {
+    private _currentIndex = _x getVariable ["KISKA_convoyAdvanced_index",-1];
+    if (_currentIndex isEqualTo -1) then {
+        [["Could not find 'KISKA_convoyAdvanced_index' in namespace of ", _x," to change"],true] call KISKA_fnc_log;
+        continue
+    };
+
+    private _newIndex = _currentIndex - 1;
+    _convoyHashMap set [_newIndex,_x];
+    _x setVariable ["KISKA_convoyAdvanced_index",_newIndex];
+};
+
+
+(driver _vehicle) enableAI "path";
+_vehicle limitSpeed -1;
+
+if ((speed _vehicle) > 0) then {
+    _vehicle move (getPosATLVisual _vehicle);
+};
 
 
 [
@@ -66,8 +91,3 @@ _debugDeletePathObjects apply {
 ] apply {
     _vehicle setVariable [_x,nil];
 };
-
-// ensure recursive vehicle behind knows it needs to move up
-// remove killed and deleted eventhandlers
-
-// TODO: get all namespace vars for vehicle from start function
