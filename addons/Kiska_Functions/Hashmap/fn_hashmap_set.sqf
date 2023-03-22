@@ -11,7 +11,8 @@ Parameters:
     0: _map <HASHMAP> - The map to insert in to
     1: _key <ANY> - The key to associate with the value
     2: _value <ANY> - The value to associate witht the key
-    3: _insertOnly <BOOL> - Can set overwrite an existing key
+    3: _insertOnly <BOOL> - When `true`, if the key already exists in the hashmap, 
+     the value will not be overwritten
 
 Returns:
     <BOOL> - False if key is new, true if overwriting
@@ -38,6 +39,7 @@ params [
 ];
 
 if (_key isEqualType grpNull OR (_key isEqualType objNull)) then {
+    // hashValue is not guaranteed unique
     _key = (hashValue _key) + ([_key] call KISKA_fnc_netId);
 };
 

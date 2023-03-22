@@ -2,7 +2,7 @@
 Function: KISKA_fnc_netId
 
 Description:
-    Gets a "netId" for singleplayer and a netId when in multiplayer.
+    Gets a "netId" for singleplayer and a `netId` when in multiplayer.
 
 Parameters:
     0: _entity <OBJECT or GROUP> - The group or object to get the id of
@@ -37,16 +37,15 @@ if (isNull _entity) exitWith {
 };
 
 
-
 if (isMultiplayer) exitWith {netId _entity};
+
 private _id = _entity getVariable ["KISKA_netId",""];
 if (_id isNotEqualTo "") exitWith {_id};
 
 
 // if object is not saved
-private _counter = localNamespace getVariable ["KISKA_netId_counter",0];
-localNamespace setVariable ["KISKA_netId_counter",_counter + 1];
-_id = ["0:",_counter] joinString "";
+private _netIdCount = ["KISKA_netId_counter"] call KISKA_fnc_idCounter;
+_id = ["0:",_netIdCount] joinString "";
 _entity setVariable ["KISKA_netId",_id];
 
 // create map if needed

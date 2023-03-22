@@ -197,6 +197,8 @@ class CfgFunctions
             {};
             class hashmap_get
             {};
+            class hashmap_getKey
+            {};
             class hashmap_in
             {};
             class hashmap_set
