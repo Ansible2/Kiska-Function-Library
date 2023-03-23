@@ -193,11 +193,17 @@ class CfgFunctions
         class Hashmap
         {
             file = "Kiska_functions\Hashmap";
+            class hashmap_assignObjectOrGroupKey
+            {};
             class hashmap_deleteAt
             {};
             class hashmap_get
             {};
-            class hashmap_getKey
+            class hashmap_getKiskaObjectGroupKeyMap
+            {};
+            class hashmap_getObjectOrGroupFromRealKey
+            {};
+            class hashmap_getRealKey
             {};
             class hashmap_in
             {};

@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_hashmap_get
+Function: KISKA_fnc_hashmap_getRealKey
 
 Description:
     Returns the actual value used for a key when using KISKA hashmap functions.
@@ -17,18 +17,18 @@ Returns:
 
 Examples:
     (begin example)
-        private _keyUsedInKiskaHashmap = [someObject] call KISKA_fnc_hashmap_getKey;
+        private _keyUsedInKiskaHashmap = [someObject] call KISKA_fnc_hashmap_getRealKey;
     (end)
 
 Author:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_hashmap_getKey";
+scriptName "KISKA_fnc_hashmap_getRealKey";
 
 params ["_key"];
 
-if (_key isEqualType grpNull OR (_key isEqualType objNull)) then {
-    _key = (hashValue _key) + ([_key] call KISKA_fnc_netId);
+if (_key isEqualType grpNull OR (_key isEqualType objNull)) exitWith {
+    [_key] call KISKA_fnc_hashmap_assignObjectOrGroupKey
 };
 
 

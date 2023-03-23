@@ -29,9 +29,7 @@ params [
     "_key"
 ];
 
-if (_key isEqualType grpNull OR (_key isEqualType objNull)) then {
-    _key = (hashValue _key) + ([_key] call KISKA_fnc_netId);
-};
+_key = [_key] call KISKA_fnc_hashmap_getRealKey;
 
 
 _map deleteAt _key;
