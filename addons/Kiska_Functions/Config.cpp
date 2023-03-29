@@ -162,21 +162,21 @@ class CfgFunctions
             {};
         };
 
-        class Convoy
+        class Convoy_Advanced
         {
-            file = "Kiska_functions\Convoy Advanced";
-            class convoyAdvanced_addVehicle
-            {};
-            class convoyAdvanced_create
-            {};
-            class convoyAdvanced_getBumperPosition
-            {};
-            class convoyAdvanced_onEachFrame
-            {};
-            class convoyAdvanced_removeVehicle
-            {};
-            class convoyAdvanced_stopVehicle
-            {};
+            // file = "Kiska_functions\Convoy Advanced";
+            // class convoyAdvanced_addVehicle
+            // {};
+            // class convoyAdvanced_create
+            // {};
+            // class convoyAdvanced_getBumperPosition
+            // {};
+            // class convoyAdvanced_onEachFrame
+            // {};
+            // class convoyAdvanced_removeVehicle
+            // {};
+            // class convoyAdvanced_stopVehicle
+            // {};
         };
 
         class EventHandlers
@@ -429,6 +429,8 @@ class CfgFunctions
         class Utilities
         {
             file="Kiska_functions\Utilities";
+            class addEntityKilledEventHandler
+            {};
             class addArsenal
             {};
             class addKiskaDiaryEntry
@@ -536,6 +538,8 @@ class CfgFunctions
             class removeArsenal
             {};
             class removeBISArsenalAction
+            {};
+            class removeEntityKilledEventHandler
             {};
             class removeMagRepack
             {};
