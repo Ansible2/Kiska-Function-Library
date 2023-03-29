@@ -40,8 +40,8 @@ if !(alive _unit) exitWith {
     [_unit] call KISKA_fnc_ambientAnim_stop;
 };
 
-private _ambientAnimInfoMap = _unit getVariable ["KISKA_ambientAnimMap",[]];
-if (_ambientAnimInfoMap isEqualTo []) exitWith {
+private _ambientAnimInfoMap = _unit getVariable "KISKA_ambientAnimMap";
+if (isNil "_ambientAnimInfoMap") exitWith {
     ["Error: _ambientAnimInfoMap not found",true] call KISKA_fnc_log;
     nil
 };

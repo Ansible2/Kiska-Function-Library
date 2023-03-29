@@ -358,7 +358,7 @@ _units apply {
         continue;
     };
 
-    private _unitIsAnimated = (_unit getVariable ["KISKA_ambientAnimMap",[]]) isNotEqualTo [];
+    private _unitIsAnimated = !(isNil {_unit getVariable "KISKA_ambientAnimMap"});
     if (_unitIsAnimated) then {
         [_unit] call KISKA_fnc_ambientAnim_stop;
     };

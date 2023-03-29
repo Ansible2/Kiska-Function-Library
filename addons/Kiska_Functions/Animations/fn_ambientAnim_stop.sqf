@@ -32,8 +32,8 @@ if (isNull _unit) exitWith {
     nil
 };
 
-private _ambientAnimInfoMap = _unit getVariable ["KISKA_ambientAnimMap",[]];
-if (_ambientAnimInfoMap isEqualTo []) exitWith {
+private _ambientAnimInfoMap = _unit getVariable "KISKA_ambientAnimMap";
+if (isNil "_ambientAnimInfoMap") exitWith {
     if (!_triggeredByDeletion) then {
         [[_unit," does not have a KISKA_ambientAnimMap currently in their namespace!"],true] call KISKA_fnc_log;
     };

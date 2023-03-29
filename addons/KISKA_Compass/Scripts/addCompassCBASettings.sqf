@@ -44,9 +44,8 @@
         params ["_show"];
 
         if !(_show) then {
-            private _iconMap = localNamespace getVariable [COMPASS_ICON_MAP_VAR_STR,[]];
-
-            if (_iconMap isNotEqualTo []) then {
+            private _iconMap = localNamespace getVariable COMPASS_ICON_MAP_VAR_STR;
+            if (isNil "_iconMap") then {
                 private _iconControl = controlNull;
                 _iconMap apply {
                     _iconControl = _y select ICON_CTRL;

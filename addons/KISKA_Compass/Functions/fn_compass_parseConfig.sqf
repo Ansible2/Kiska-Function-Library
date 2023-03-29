@@ -26,7 +26,7 @@ scriptName "KISKA_fnc_compass_parseConfig";
 
 params ["_config","_varName"];
 
-private _return = uiNamespace getVariable [_varName,nil];
+private _return = uiNamespace getVariable _varName;
 if (!isNil "_return") exitWith {
     _return
 };
