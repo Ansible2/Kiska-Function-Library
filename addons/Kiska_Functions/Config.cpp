@@ -429,9 +429,9 @@ class CfgFunctions
         class Utilities
         {
             file="Kiska_functions\Utilities";
-            class addEntityKilledEventHandler
-            {};
             class addArsenal
+            {};
+            class addEntityKilledEventHandler
             {};
             class addKiskaDiaryEntry
             {};
