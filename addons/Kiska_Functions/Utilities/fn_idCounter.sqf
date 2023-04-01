@@ -44,7 +44,7 @@ if (_id isEqualTo "") exitWith {
 
 
 _id = toLowerANSI _id;
-private _namespace = _namespace getVariable "KISKA_indexMap";
+private _indexMap = _namespace getVariable "KISKA_indexMap";
 if (isNil "_indexMap") then {
     _indexMap = createHashMap;
     _namespace setVariable ["KISKA_indexMap",_indexMap];
