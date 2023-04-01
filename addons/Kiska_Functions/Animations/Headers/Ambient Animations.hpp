@@ -251,7 +251,7 @@ class KISKA_AmbientAnimations
                     type = "Land_Sofa_01_F";
                     class snapPoints
                     {
-                        snap1
+                        class snap1
                         {
                             snapId = 1;
                             relativeInfo[] = {
@@ -263,7 +263,7 @@ class KISKA_AmbientAnimations
                                 {} 
                             };
                         };
-                        snap2
+                        class snap2
                         {
                             snapId = 2;
                             relativeInfo[] = {

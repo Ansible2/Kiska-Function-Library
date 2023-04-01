@@ -63,7 +63,7 @@ private _fn_getRelativeInfo = {
         getArray(_objectClassConfig >> "relativeDir"),
         getArray(_objectClassConfig >> "relativeUp")
     ]
-}
+};
 
 private _fn_parseSnapToObjectClass = {
     params ["_snapToObjectsConfig"];
