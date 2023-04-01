@@ -56,19 +56,13 @@ private _fn_getRelativeInfo = {
     params ["_objectClassConfig"];
 
     private _relativeInfoArray = getArray(_objectClassConfig >> "relativeInfo");
-    if (_relativeInfoArray isNotEqualTo []) then {
-        [_type, _relativeInfoArray]
+    if (_relativeInfoArray isNotEqualTo []) exitWith { _relativeInfoArray };
 
-    } else {
-        [
-            _type,
-            [
-                getArray(_objectClassConfig >> "relativePos"),
-                getArray(_objectClassConfig >> "relativeDir"),
-                getArray(_objectClassConfig >> "relativeUp")
-            ]
-        ]
-    };
+    [
+        getArray(_objectClassConfig >> "relativePos"),
+        getArray(_objectClassConfig >> "relativeDir"),
+        getArray(_objectClassConfig >> "relativeUp")
+    ]
 }
 
 private _fn_parseSnapToObjectClass = {
@@ -88,18 +82,32 @@ private _fn_parseSnapToObjectClass = {
         private _snapPointConfigs = configProperties [_snapToObjectsConfig,"isClass _x"];
         private _isNotMultiSnap = _snapPointConfigs isEqualTo [];
         if (_isNotMultiSnap) then {
-            _snapToObjects pushBack ([_objectClassConfig] call _fn_getRelativeInfo);
+            private _relativeInfo = [_objectClassConfig] call _fn_getRelativeInfo;
+            _snapToObjects pushBack [
+                _type,
+                _relativeInfo
+            ];
+            
             continue;
         };
 
 
         private _objectSnapPointsHashMap = createHashMap;
         _snapPointConfigs apply {
-            private _snapId = getNumber(_x >> "snapId");
-            if (_snapId isEqualTo 0) then {
-                [["Found invalid or nonexistent snap id in config: ",_x],true] call KISKA_fnc_log;
-                continue;
+            private "_snapId";
+            
+            if (isArray(_x >> "snapId")) then {
+                _snapId = getArray(_x >> "snapId");
+
+            } else {
+                _snapId = getNumber(_x >> "snapId");
+                if (_snapId isEqualTo 0) then {
+                    [["Found invalid or nonexistent snap id in config: ",_x],true] call KISKA_fnc_log;
+                    continue;
+                };
+
             };
+
 
             private _relativeInfoArray = [_x] call _fn_getRelativeInfo;
             _objectSnapPointsHashMap set [_snapId,_relativeInfoArray];

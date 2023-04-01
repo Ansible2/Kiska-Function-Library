@@ -212,7 +212,7 @@ if (count _invalidSets > 0) exitWith {
     Helper functions
 
 ---------------------------------------------------------------------------- */
-private _setupAnimation = {
+private _fn_setupAnimation = {
     params ["_unitInfoMap","_animsToSelectFrom"];
 
     private _animSetSelection = _animsToSelectFrom;
@@ -224,7 +224,7 @@ private _setupAnimation = {
     _unitInfoMap set ["_animationSetInfo",_animationSetInfo];
 };
 
-private _findObjectToSnapTo = {
+private _fn_findObjectToSnapTo = {
     params ["_snapToObjectsMap","_objectsToCheck"];
     
     private _snapToObjectTypes = keys _snapToObjectsMap;
@@ -265,29 +265,39 @@ private _findObjectToSnapTo = {
 
         private _hasSnapAllowance = _configedSnapAllowance > 1;
         if (_hasSnapAllowance) then {
-            private _usedSnapAllowance = _x getVariable ["KISKA_ambientAnim_usedSnapAllowance",[]];
-            if ((count _usedSnapAllowance) >= _configedSnapAllowance) then { 
+            private _usedSnapIds = _x getVariable ["KISKA_ambientAnim_usedSnapAllowance",[]];
+            if ((count _usedSnapIds) >= _configedSnapAllowance) then { 
                 [[
-                    "_usedSnapAllowance has been exceeded for object: ",_x,
-                    " current is ",_usedSnapAllowance,
+                    "_usedSnapIds has been used up for object: ",_x,
+                    " current is ",_usedSnapIds,
                     " and config is ",_configedSnapAllowance
                 ]] call KISKA_fnc_log;
 
                 continue; 
             };
 
+            private _snapAllowanceInfo = [];
             private _objectSnapPointsHashMap = _snapToObjectsMap get _x;
             {
-                // TODO: need to loop through _objectSnapPointsHashMap
-                // and find out what snap ids are not being used on the
-                // the object currently
+                if (_x in _usedSnapIds) then { continue };
+
+                if (_x isEqualType []) then { 
+                    private _someIdsAlreadyBeingUsed = (_x arrayIntersect _usedSnapIds) isNotEqualTo [];
+                    if (_someIdsAlreadyBeingUsed) then { continue };
+                };
+
+                _snapAllowanceInfo pushBack _x;
+                _snapAllowanceInfo pushBack _y;
             } forEach _objectSnapPointsHashMap;
 
-        } else {
-            
-        
             _snapToObjectInfo pushBack _objectType;
             _snapToObjectInfo pushBack _objectToSnapTo;
+            _snapToObjectInfo pushBack _snapAllowanceInfo;
+
+        } else {
+            _snapToObjectInfo pushBack _objectType;
+            _snapToObjectInfo pushBack _objectToSnapTo;
+            
         };
 
 
@@ -297,11 +307,11 @@ private _findObjectToSnapTo = {
     _snapToObjectInfo
 };
 
-private _handleNoSnap = {
+private _fn_handleNoSnap = {
     params ["_unit","_unitInfoMap"];
 
     if (_backupAnims isNotEqualTo []) exitWith {
-        [_unitInfoMap,_backupAnims] call _setupAnimation;
+        [_unitInfoMap,_backupAnims] call _fn_setupAnimation;
     };
 
     
@@ -323,14 +333,14 @@ private _handleNoSnap = {
 // Try extremely hard to dynamically exclude sets from the array (the array can be weighted)
 // shuffle the entire array each time and loop through every set (this would also be hard with weighted arrays)
 // delete one random entry at a time and eventually make the array anew
-private _setupAnimationWithSnap = {
+private _fn_setupAnimationWithSnap = {
     params ["_unit","_unitInfoMap"];
 
     // using nearObjects to support snapping to simple objects
     private _nearObjects = _unit nearObjects _snapToRange;
     if (_nearObjects isEqualTo []) exitWith {
         [["No near objects to snap to ",_unit]] call KISKA_fnc_log;
-        [_unit, _unitInfoMap] call _handleNoSnap;
+        [_unit, _unitInfoMap] call _fn_handleNoSnap;
     };  
 
 
@@ -359,7 +369,7 @@ private _setupAnimationWithSnap = {
         private _animationSetInfo = _animationMap get _animSetSelection;
         _snapToObjectsMap = _animationSetInfo get "snapToObjectsMap";        
         // loop
-        _snapToObjectInfo = [_snapToObjectsMap, _nearObjects] call _findObjectToSnapTo;
+        _snapToObjectInfo = [_snapToObjectsMap, _nearObjects] call _fn_findObjectToSnapTo;
 
         if (_snapToObjectInfo isNotEqualTo []) then {
             _unitInfoMap set ["_animationSetInfo",_animationSetInfo];
@@ -372,26 +382,41 @@ private _setupAnimationWithSnap = {
 
 
     if (_snapToObjectInfo isEqualTo []) exitWith {
-        [_unit, _unitInfoMap] call _handleNoSnap;
+        [_unit, _unitInfoMap] call _fn_handleNoSnap;
     };
+    
 
 
-    _snapToObjectInfo params ["_objectType","_objectToSnapTo"];
-    // TODO: this syntax may be more than needed
-    private _objectHasSnapAllowance = !(isNil {_snapToObjectInfo param [2,nil]});
-    if (_objectHasSnapAllowance) then {
-        // TODO:
-    } else {
-        _objectToSnapTo setVariable ["KISKA_ambientAnim_objectUsedBy",_unit];
-
-    };
+    _snapToObjectInfo params ["_objectType","_objectToSnapTo","_snapAllowanceInfo"];
 
     _unitInfoMap set ["_snapToObject",_objectToSnapTo];
-
-    private _relativeObjectInfo = _snapToObjectsMap get _objectType;
     [_unit,_objectToSnapTo] remoteExecCall ["disableCollisionWith",_unit];
     [_objectToSnapTo,_unit] remoteExecCall ["disableCollisionWith",_objectToSnapTo];
-    [_objectToSnapTo,_unit,_relativeObjectInfo] call KISKA_fnc_setRelativeVectorAndPos;
+
+    if (isNil "_snapAllowanceInfo") then {
+        _objectToSnapTo setVariable ["KISKA_ambientAnim_objectUsedBy",_unit];
+        private _relativeObjectInfo = _snapToObjectsMap get _objectType;
+        [_objectToSnapTo,_unit,_relativeObjectInfo] call KISKA_fnc_setRelativeVectorAndPos;
+
+    } else {
+        private _usedSnapIds = _objectToSnapTo getVariable "KISKA_ambientAnim_usedSnapAllowance";
+        if (isNil "_usedSnapIds") then {
+            _usedSnapIds = [];
+            _objectToSnapTo setVariable ["KISKA_ambientAnim_usedSnapAllowance",_usedSnapIds];
+        };
+
+        _snapAllowanceInfo params ["_snapIdsToUse","_relativeObjectInfo"];
+        if (_snapIdsToUse isEqualType 123) then {
+            _usedSnapIds pushBack _snapIdsToUse;
+        } else {
+            _usedSnapIds append _snapIdsToUse;
+        };
+        [_objectToSnapTo,_unit,_relativeObjectInfo] call KISKA_fnc_setRelativeVectorAndPos;
+        
+        // TODO: make sure this is deleted in the remove function
+        _unitInfoMap set ["_usedSnapIds",_snapIdsToUse];
+    };
+
     
 };
 
@@ -418,10 +443,10 @@ _units apply {
     detach _unit;
  
     if (_isSnapAnimations) then {
-        [_unit,_unitInfoMap] call _setupAnimationWithSnap;
+        [_unit,_unitInfoMap] call _fn_setupAnimationWithSnap;
 
     } else {
-        [_unitInfoMap,_animSet] call _setupAnimation;
+        [_unitInfoMap,_animSet] call _fn_setupAnimation;
 
     };
     
