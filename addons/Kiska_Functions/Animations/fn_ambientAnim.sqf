@@ -264,8 +264,10 @@ private _fn_findObjectToSnapTo = {
         };
 
         private _hasSnapAllowance = _configedSnapAllowance > 1;
+        private _snapAllowanceInfo = [];
+
         if (_hasSnapAllowance) then {
-            private _usedSnapIds = _x getVariable ["KISKA_ambientAnim_usedSnapAllowance",[]];
+            private _usedSnapIds = _x getVariable ["KISKA_ambientAnim_usedSnapIds",[]];
             if ((count _usedSnapIds) >= _configedSnapAllowance) then { 
                 [[
                     "_usedSnapIds has been used up for object: ",_x,
@@ -276,7 +278,6 @@ private _fn_findObjectToSnapTo = {
                 continue; 
             };
 
-            private _snapAllowanceInfo = [];
             private _objectSnapPointsHashMap = _snapToObjectsMap get _x;
             {
                 if (_x in _usedSnapIds) then { continue };
@@ -290,16 +291,13 @@ private _fn_findObjectToSnapTo = {
                 _snapAllowanceInfo pushBack _y;
             } forEach _objectSnapPointsHashMap;
 
-            _snapToObjectInfo pushBack _objectType;
-            _snapToObjectInfo pushBack _objectToSnapTo;
-            _snapToObjectInfo pushBack _snapAllowanceInfo;
-
-        } else {
-            _snapToObjectInfo pushBack _objectType;
-            _snapToObjectInfo pushBack _objectToSnapTo;
-            
         };
-
+        
+        _snapToObjectInfo pushBack _objectType;
+        _snapToObjectInfo pushBack _objectToSnapTo;
+        if (_snapAllowanceInfo isNotEqualTo []) then {
+            _snapToObjectInfo pushBack _snapAllowanceInfo;
+        };
 
     };
 
@@ -399,10 +397,10 @@ private _fn_setupAnimationWithSnap = {
         [_objectToSnapTo,_unit,_relativeObjectInfo] call KISKA_fnc_setRelativeVectorAndPos;
 
     } else {
-        private _usedSnapIds = _objectToSnapTo getVariable "KISKA_ambientAnim_usedSnapAllowance";
+        private _usedSnapIds = _objectToSnapTo getVariable "KISKA_ambientAnim_usedSnapIds";
         if (isNil "_usedSnapIds") then {
             _usedSnapIds = [];
-            _objectToSnapTo setVariable ["KISKA_ambientAnim_usedSnapAllowance",_usedSnapIds];
+            _objectToSnapTo setVariable ["KISKA_ambientAnim_usedSnapIds",_usedSnapIds];
         };
 
         _snapAllowanceInfo params ["_snapIdsToUse","_relativeObjectInfo"];
@@ -413,11 +411,9 @@ private _fn_setupAnimationWithSnap = {
         };
         [_objectToSnapTo,_unit,_relativeObjectInfo] call KISKA_fnc_setRelativeVectorAndPos;
         
-        // TODO: make sure this is deleted in the remove function
         _unitInfoMap set ["_usedSnapIds",_snapIdsToUse];
     };
 
-    
 };
 
 

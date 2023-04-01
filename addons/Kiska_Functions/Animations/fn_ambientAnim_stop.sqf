@@ -65,6 +65,20 @@ private _snapToObject = _ambientAnimInfoMap getOrDefault ["_snapToObject",objNul
 private _snapObjectIsNotNull = !(isNull _snapToObject);
 if (_snapObjectIsNotNull) then {
     _snapToObject setVariable ["KISKA_ambientAnim_objectUsedBy",nil];
+    private _snapIdsUsedByUnit = _ambientAnimInfoMap getOrDefault ["_usedSnapIds",-1];
+    if (_snapIdsUsedByUnit isEqualTo -1) exitWith {};
+    
+    
+    private _objectUsedSnapIdList = _snapToObject getVariable ["KISKA_ambientAnim_usedSnapIds",[]];
+    if (_snapIdsUsedByUnit isEqualType 123) exitWith {
+        _objectUsedSnapIdList deleteAt (_objectUsedSnapIdList find _snapIdsUsedByUnit);
+    };
+
+    if (_snapIdsUsedByUnit isEqualType []) exitWith {
+        _snapIdsUsedByUnit apply {
+            _objectUsedSnapIdList deleteAt (_objectUsedSnapIdList find _snapIdsUsedByUnit);
+        };
+    };
 };
 
 
