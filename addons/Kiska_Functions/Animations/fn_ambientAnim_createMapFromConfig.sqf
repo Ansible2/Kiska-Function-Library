@@ -53,15 +53,15 @@ if (_animationMap isNotEqualTo []) exitWith {_animationMap};
 
 
 private _fn_getRelativeInfo = {
-    params ["_objectClassConfig"];
+    params ["_snapToObjectClass"];
 
-    private _relativeInfoArray = getArray(_objectClassConfig >> "relativeInfo");
+    private _relativeInfoArray = getArray(_snapToObjectClass >> "relativeInfo");
     if (_relativeInfoArray isNotEqualTo []) exitWith { _relativeInfoArray };
 
     [
-        getArray(_objectClassConfig >> "relativePos"),
-        getArray(_objectClassConfig >> "relativeDir"),
-        getArray(_objectClassConfig >> "relativeUp")
+        getArray(_snapToObjectClass >> "relativePos"),
+        getArray(_snapToObjectClass >> "relativeDir"),
+        getArray(_snapToObjectClass >> "relativeUp")
     ]
 };
 
@@ -72,17 +72,17 @@ private _fn_parseSnapToObjectClass = {
     
     private _snapToObjects = [];
     _snapToObjectClasses apply {
-        private _objectClassConfig = _x;
-        private _type = toLowerANSI (getText(_objectClassConfig >> "type"));
+        private _snapToObjectClass = _x;
+        private _type = toLowerANSI (getText(_snapToObjectClass >> "type"));
         if (_type isEqualTo "") then {
-            [["No type found parsing relative object info for ",_objectClassConfig],true] call KISKA_fnc_log;
+            [["No type found parsing relative object info for ",_snapToObjectClass],true] call KISKA_fnc_log;
             continue;
         };
 
-        private _snapPointConfigs = configProperties [_snapToObjectsConfig,"isClass _x"];
-        private _isNotMultiSnap = _snapPointConfigs isEqualTo [];
+        private _snapPointClassConfigs = configProperties [_snapToObjectClass >> "snapPoints","isClass _x"];
+        private _isNotMultiSnap = _snapPointClassConfigs isEqualTo [];
         if (_isNotMultiSnap) then {
-            private _relativeInfo = [_objectClassConfig] call _fn_getRelativeInfo;
+            private _relativeInfo = [_snapToObjectClass] call _fn_getRelativeInfo;
             _snapToObjects pushBack [
                 _type,
                 _relativeInfo
@@ -93,7 +93,7 @@ private _fn_parseSnapToObjectClass = {
 
 
         private _objectSnapPointsHashMap = createHashMap;
-        _snapPointConfigs apply {
+        _snapPointClassConfigs apply {
             private "_snapId";
             
             if (isArray(_x >> "snapId")) then {
@@ -116,6 +116,9 @@ private _fn_parseSnapToObjectClass = {
         _snapToObjects pushBack [_type, _objectSnapPointsHashMap]
 
     };
+
+    
+    _snapToObjects
 };
 
 
@@ -133,17 +136,20 @@ _classes apply {
 
     private _snapToObjectsConfig = _x >> "snapToObjects";
 
-    private _snapToObjects = [];
+    private _parsedSnapToObjects = [];
     if !(isNull _snapToObjectsConfig) then {
         if (isArray _snapToObjectsConfig) then {
-            _snapToObjects = getArray(_x >> "snapToObjects");
-        };
-        if (isClass _snapToObjectsConfig) then {
-            _snapToObjects = [_snapToObjectsConfig] call _fn_parseSnapToObjectClass;
+            _parsedSnapToObjects = getArray(_x >> "snapToObjects");
+
+        } else {
+            if (isClass _snapToObjectsConfig) then {
+                _parsedSnapToObjects = [_snapToObjectsConfig] call _fn_parseSnapToObjectClass;
+            };
+
         };
 
-        if (_snapToObjects isNotEqualTo []) then {
-            private _snapToObjectsMap = createHashMapFromArray _snapToObjects;
+        if (_parsedSnapToObjects isNotEqualTo []) then {
+            private _snapToObjectsMap = createHashMapFromArray _parsedSnapToObjects;
             _animationSetInfo set ["snapToObjectsMap", _snapToObjectsMap];
         };
     };
