@@ -24,11 +24,11 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_idCounter";
 
-#define NULL_TYPES [grpNull,objNull,locationNull,localNamespace,controlNull,displayNull,taskNull,teamMemberNull]
+#define NULL_TYPES [grpNull,objNull,locationNull,controlNull,displayNull,taskNull,teamMemberNull]
 
 params [
     ["_id","",[""]],
-    ["_namespace",localNamespace,[grpNull,objNull,locationNull,localNamespace,controlNull,displayNull,taskNull,teamMemberNull,localNamespace]]
+    ["_namespace",localNamespace,[grpNull,objNull,locationNull,controlNull,displayNull,taskNull,teamMemberNull,localNamespace]]
 ];
 
 
