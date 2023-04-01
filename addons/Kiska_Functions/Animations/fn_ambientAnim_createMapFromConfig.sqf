@@ -52,6 +52,64 @@ private _animationMap = KISKA_ambientAnim_configAnimationSetMap getOrDefault [_c
 if (_animationMap isNotEqualTo []) exitWith {_animationMap};
 
 
+private _fn_getRelativeInfo = {
+    params ["_objectClassConfig"];
+
+    private _relativeInfoArray = getArray(_objectClassConfig >> "relativeInfo");
+    if (_relativeInfoArray isNotEqualTo []) then {
+        [_type, _relativeInfoArray]
+
+    } else {
+        [
+            _type,
+            [
+                getArray(_objectClassConfig >> "relativePos"),
+                getArray(_objectClassConfig >> "relativeDir"),
+                getArray(_objectClassConfig >> "relativeUp")
+            ]
+        ]
+    };
+}
+
+private _fn_parseSnapToObjectClass = {
+    params ["_snapToObjectsConfig"];
+    
+    private _snapToObjectClasses = configProperties [_snapToObjectsConfig,"isClass _x"];
+    
+    private _snapToObjects = [];
+    _snapToObjectClasses apply {
+        private _objectClassConfig = _x;
+        private _type = toLowerANSI (getText(_objectClassConfig >> "type"));
+        if (_type isEqualTo "") then {
+            [["No type found parsing relative object info for ",_objectClassConfig],true] call KISKA_fnc_log;
+            continue;
+        };
+
+        private _snapPointConfigs = configProperties [_snapToObjectsConfig,"isClass _x"];
+        private _isNotMultiSnap = _snapPointConfigs isEqualTo [];
+        if (_isNotMultiSnap) then {
+            _snapToObjects pushBack ([_objectClassConfig] call _fn_getRelativeInfo);
+            continue;
+        };
+
+
+        private _objectSnapPointsHashMap = createHashMap;
+        _snapPointConfigs apply {
+            private _snapId = getNumber(_x >> "snapId");
+            if (_snapId isEqualTo 0) then {
+                [["Found invalid or nonexistent snap id in config: ",_x],true] call KISKA_fnc_log;
+                continue;
+            };
+
+            private _relativeInfoArray = [_x] call _fn_getRelativeInfo;
+            _objectSnapPointsHashMap set [_snapId,_relativeInfoArray];
+        };
+
+        _snapToObjects pushBack [_type, _objectSnapPointsHashMap]
+
+    };
+};
+
 
 _animationMap = createHashMap;
 private _classes = configProperties [_config, "isClass _x", true];
@@ -72,33 +130,8 @@ _classes apply {
         if (isArray _snapToObjectsConfig) then {
             _snapToObjects = getArray(_x >> "snapToObjects");
         };
-
         if (isClass _snapToObjectsConfig) then {
-            private _snapToObjectClasses = configProperties [_snapToObjectsConfig,"isCLass _x"];
-            _snapToObjectClasses apply {
-                private _objectClassConfig = _x;
-                private _type = toLowerANSI (getText(_objectClassConfig >> "type"));
-                if (_type isEqualTo "") then {
-                    [["No type found parsing relative object info for ",_objectClassConfig],true] call KISKA_fnc_log;
-                    continue;
-                };
-
-                private _relativeInfoArray = getArray(_objectClassConfig >> "relativeInfo");
-                if (_relativeInfoArray isNotEqualTo []) then {
-                    _snapToObjects pushBack [_type, _relativeInfoArray];
-
-                } else {
-                    _snapToObjects pushBack [
-                        _type,
-                        [
-                            getArray(_objectClassConfig >> "relativePos"),
-                            getArray(_objectClassConfig >> "relativeDir"),
-                            getArray(_objectClassConfig >> "relativeUp")
-                        ]
-                    ];
-
-                };
-            };
+            _snapToObjects = [_snapToObjectsConfig] call _fn_parseSnapToObjectClass;
         };
 
         if (_snapToObjects isNotEqualTo []) then {

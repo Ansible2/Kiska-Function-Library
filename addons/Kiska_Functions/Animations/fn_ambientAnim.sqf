@@ -83,7 +83,7 @@ scriptName "KISKA_fnc_ambientAnim";
 // TODO: Add supplemental animation sets by using polpox animation viewer
 // TODO: Add LEAN_ON_TABLE animation set
 
-#define DEFAULT_ANIMATION_MAP (configFile >> "KISKA_AmbientAnimations")
+#define DEFAULT_ANIMATION_MAP (configFile >> "KISKA_AmbientAnimations" >> "DefaultAnimationMap")
 
 private _comparisonMap = createHashMap;
 params [
@@ -225,26 +225,72 @@ private _setupAnimation = {
 };
 
 private _findObjectToSnapTo = {
-    params ["_types","_objectsToCheck"];
+    params ["_snapToObjectsMap","_objectsToCheck"];
     
+    private _snapToObjectTypes = keys _snapToObjectsMap;
     private _snapToObjectInfo = [];
     _objectsToCheck apply {
+        private _objectType = toLowerANSI (typeOf _x);
         private _objectInUse = !(isNull (_x getVariable ["KISKA_ambientAnim_objectUsedBy",objNull]));
         if (_objectInUse) then { continue };
 
-        private _objectType = toLowerANSI (typeOf _x);
-        if (_objectType in _types) then { _objectToSnapTo = _x };
+        if (_objectType in _snapToObjectTypes) then { 
+            _objectToSnapTo = _x;
 
-        private _parentTypeIndex = _types findIf {
-            _objectType isKindOf _x;
+        } else {
+            private _parentTypeIndex = _snapToObjectTypes findIf {
+                _objectType isKindOf _x;
+            };
+            private _objectNotSupportedForAnimationSet = _parentTypeIndex isEqualTo -1;
+            if (_objectNotSupportedForAnimationSet) then { continue };
+            
+            _objectType = _snapToObjectTypes select _parentTypeIndex;
+            _objectToSnapTo = _x;
+
         };
-        if (_parentTypeIndex isEqualTo -1) then { continue };
-        
-        _objectType = _types select _parentTypeIndex;
-        _objectToSnapTo = _x;
 
-        _snapToObjectInfo pushBack _objectType;
-        _snapToObjectInfo pushBack _objectToSnapTo;
+
+        private _vehicleConfigSnapAllowance = configFile >> "CfgVehicles" >> _objectType >> "KISKA_AmbientAnimations" >> "snapAllowance";
+        private _configedSnapAllowance = getNumber(_vehicleConfigSnapAllowance);
+        private _allowanceNotConfigedInMainConfig = _configedSnapAllowance isEqualTo 0;
+
+        if (_allowanceNotConfigedInMainConfig) then {
+            private _objectKiskaAnimationConfig = [
+                ["KISKA_AmbientAnimations","ObjectSpecifics",_objectType]
+            ] call KISKA_fnc_findConfigAny;
+            if (isNull _objectKiskaAnimationConfig) exitWith {};
+
+            _configedSnapAllowance = getNumber(_objectKiskaAnimationConfig >> "snapAllowance");
+        };
+
+        private _hasSnapAllowance = _configedSnapAllowance > 1;
+        if (_hasSnapAllowance) then {
+            private _usedSnapAllowance = _x getVariable ["KISKA_ambientAnim_usedSnapAllowance",[]];
+            if ((count _usedSnapAllowance) >= _configedSnapAllowance) then { 
+                [[
+                    "_usedSnapAllowance has been exceeded for object: ",_x,
+                    " current is ",_usedSnapAllowance,
+                    " and config is ",_configedSnapAllowance
+                ]] call KISKA_fnc_log;
+
+                continue; 
+            };
+
+            private _objectSnapPointsHashMap = _snapToObjectsMap get _x;
+            {
+                // TODO: need to loop through _objectSnapPointsHashMap
+                // and find out what snap ids are not being used on the
+                // the object currently
+            } forEach _objectSnapPointsHashMap;
+
+        } else {
+            
+        
+            _snapToObjectInfo pushBack _objectType;
+            _snapToObjectInfo pushBack _objectToSnapTo;
+        };
+
+
     };
 
 
@@ -311,11 +357,9 @@ private _setupAnimationWithSnap = {
         };
 
         private _animationSetInfo = _animationMap get _animSetSelection;
-        _snapToObjectsMap = _animationSetInfo get "snapToObjectsMap";
-        private _types = keys _snapToObjectsMap;
-        
+        _snapToObjectsMap = _animationSetInfo get "snapToObjectsMap";        
         // loop
-        _snapToObjectInfo = [_types,_nearObjects] call _findObjectToSnapTo;
+        _snapToObjectInfo = [_snapToObjectsMap, _nearObjects] call _findObjectToSnapTo;
 
         if (_snapToObjectInfo isNotEqualTo []) then {
             _unitInfoMap set ["_animationSetInfo",_animationSetInfo];
@@ -333,8 +377,15 @@ private _setupAnimationWithSnap = {
 
 
     _snapToObjectInfo params ["_objectType","_objectToSnapTo"];
+    // TODO: this syntax may be more than needed
+    private _objectHasSnapAllowance = !(isNil {_snapToObjectInfo param [2,nil]});
+    if (_objectHasSnapAllowance) then {
+        // TODO:
+    } else {
+        _objectToSnapTo setVariable ["KISKA_ambientAnim_objectUsedBy",_unit];
 
-    _objectToSnapTo setVariable ["KISKA_ambientAnim_objectUsedBy",_unit];
+    };
+
     _unitInfoMap set ["_snapToObject",_objectToSnapTo];
 
     private _relativeObjectInfo = _snapToObjectsMap get _objectType;
