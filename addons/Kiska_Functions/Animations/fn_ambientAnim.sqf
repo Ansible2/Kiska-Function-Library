@@ -9,17 +9,17 @@ Parameters:
     0: _units <OBJECT[] or OBJECT> - An array of units or a single unit to animate
     1: _animationParams <HASHMAP, STRING[], (STRING,NUMBER)[], or STRING> - This can be three things:
         
-        - If a string, a single animation set that is located in the _animationMap
+        - If a string, a single animation set that is located in the `_animationMap`
         - If an array, you can have weighted or unweighted array of strings that are random animation sets to select from
         - lastly, you can have a HASHMAP setup for snap to animations:
          
-            - _animSet <STRING[], (STRING,NUMBER)[], or STRING> - A single snapto animation set or weighted/unweighted array to randomly select from.
-            - _snapToRange <NUMBER> - This is how far will be searched around the unit to find an object to "snap" onto. Cannot be more then 10m.
-            - _backupAnims <STRING[], (STRING,NUMBER)[], or STRING> - Same as _snapToAnimationSet but for animations to use in the even that 
-            ALL of the _snapToAnimationSet animations fail to be used due to valid objects not being within range.
-            - _fallbackFunction <CODE, ARRAY, or STRING> - (See KISKA_fnc_callBack) In the event that
+            - `_animSet` <STRING[], (STRING,NUMBER)[], or STRING> - A single snapto animation set or weighted/unweighted array to randomly select from.
+            - `_snapToRange` <NUMBER> - This is how far will be searched around the unit to find an object to "snap" onto. Cannot be more then 10m.
+            - `_backupAnims` <STRING[], (STRING,NUMBER)[], or STRING> - Same as `_snapToAnimationSet` but for animations to use in the even that 
+            ALL of the `_snapToAnimationSet` animations fail to be used due to valid objects not being within range.
+            - `_fallbackFunction` <CODE, ARRAY, or STRING> - (See `KISKA_fnc_callBack`) In the event that
             a unit is not able to find an object to snap to AND1 no _backupAnims are present, this function will be called with the
-            following params. If you still want the unit to be animated in this case, pass {}, "", or []
+            following params. If you still want the unit to be animated in this case, pass `{}`, `""`, or `[]`
                 
                 - 0: _unit <OBJECT> - The unit
                 - 1: _unitInfoMap <HASHMAP> - The current state of the _unitInfoMap which stores animation info for the system
@@ -57,22 +57,29 @@ Examples:
     (end)
 
     (begin example)
+        // use animation set SIT_CHAIR_ARMED_2 and snap
+        // to objects within 10 meters of unit's position
+        // if no objects that are snappable for SIT_CHAIR_ARMED_2
+        // are found, unit will use SIT_GROUND_ARMED animation set
         [
             someUnit,
-            "SIT_GROUND_UNARMED"
+            createHashMapFromArray [
+                ["_animSet", "SIT_CHAIR_ARMED_2"],
+                ["_snapToRange", 10],
+                ["_backupAnims","SIT_GROUND_ARMED"]
+            ]
         ] call KISKA_fnc_ambientAnim;
     (end)
 
     (begin example)
-        // snap to object valid chair, if not use STAND_ARMED_1
+        // STAND_UNARMED_3 is 10x more likely to be used than STAND_ARMED_1
         [
             someUnit,
             [
-                ["SIT_CHAIR_ARMED_1",1],
-                10,
-                "STAND_ARMED_1"
+                "STAND_ARMED_1",1,
+                "STAND_UNARMED_3",10
             ]
-        ] call KISKA_fnc_ambientAnim_test;
+        ] call KISKA_fnc_ambientAnim;
     (end)
 
 Author(s):
@@ -82,13 +89,12 @@ scriptName "KISKA_fnc_ambientAnim";
 // TODO: handle remote units being passed
 // TODO: Add supplemental animation sets by using polpox animation viewer
 // TODO: Add LEAN_ON_TABLE animation set
-
+#define HASHMAP_TYPE createHashMap
 #define DEFAULT_ANIMATION_MAP (configFile >> "KISKA_AmbientAnimations" >> "DefaultAnimationMap")
 
-private _comparisonMap = createHashMap;
 params [
     ["_units",objNull,[[],objNull]],
-    ["_animationParams","",["",[],_comparisonMap]],
+    ["_animationParams","",["",[],HASHMAP_TYPE]],
     ["_exitOnCombat",false,[true]],
     ["_equipmentLevel","",["",[]]],
     ["_animationMap",DEFAULT_ANIMATION_MAP,[createHashMap,configNull]]
@@ -97,7 +103,7 @@ params [
 
 private ["_fallbackFunction","_snapToRange","_animSet","_backupAnims"];
 private _fallbackFunctionIsPresent = false;
-private _isSnapAnimations = _animationParams isEqualType _comparisonMap;
+private _isSnapAnimations = _animationParams isEqualType HASHMAP_TYPE;
 private _parsedSnapToMapErrors = [];
 
 if !(_isSnapAnimations) then {
@@ -233,7 +239,8 @@ private _fn_findObjectToSnapTo = {
         private _objectType = toLowerANSI (typeOf _x);
         private _objectInUse = !(isNull (_x getVariable ["KISKA_ambientAnim_objectUsedBy",objNull]));
         if (_objectInUse) then { continue };
-
+        
+        private "_objectToSnapTo";
         if (_objectType in _snapToObjectTypes) then { 
             _objectToSnapTo = _x;
 
