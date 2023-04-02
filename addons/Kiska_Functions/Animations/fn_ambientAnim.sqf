@@ -237,6 +237,7 @@ private _fn_findObjectToSnapTo = {
     private _snapToObjectInfo = [];
     _objectsToCheck apply {
         private _objectType = toLowerANSI (typeOf _x);
+        private _snapToObjectMapKey = _objectType;
         private _objectInUse = !(isNull (_x getVariable ["KISKA_ambientAnim_objectUsedBy",objNull]));
         if (_objectInUse) then { continue };
         
@@ -275,17 +276,9 @@ private _fn_findObjectToSnapTo = {
 
         if (_hasSnapAllowance) then {
             private _usedSnapIds = _x getVariable ["KISKA_ambientAnim_usedSnapIds",[]];
-            if ((count _usedSnapIds) >= _configedSnapAllowance) then { 
-                [[
-                    "_usedSnapIds has been used up for object: ",_x,
-                    " current is ",_usedSnapIds,
-                    " and config is ",_configedSnapAllowance
-                ]] call KISKA_fnc_log;
+            if ((count _usedSnapIds) >= _configedSnapAllowance) then { continue };
 
-                continue; 
-            };
-
-            private _objectSnapPointsHashMap = _snapToObjectsMap get _x;
+            private _objectSnapPointsHashMap = _snapToObjectsMap get _snapToObjectMapKey;
             {
                 if (_x in _usedSnapIds) then { continue };
 
@@ -297,7 +290,6 @@ private _fn_findObjectToSnapTo = {
                 _snapAllowanceInfo pushBack _x;
                 _snapAllowanceInfo pushBack _y;
             } forEach _objectSnapPointsHashMap;
-
         };
         
         _snapToObjectInfo pushBack _objectType;
@@ -306,6 +298,7 @@ private _fn_findObjectToSnapTo = {
             _snapToObjectInfo pushBack _snapAllowanceInfo;
         };
 
+        break;
     };
 
 
@@ -355,7 +348,6 @@ private _fn_setupAnimationWithSnap = {
     private _step = [1,2] select _isWeightedAnimSet;
     for "_i" from 1 to (count _animSet) step _step do { 
         if (_isWeightedAnimSet) then {
-            [["_animSet is: ",_animSet]] call KISKA_fnc_log;
             _animSetSelection = [_animSet,""] call KISKA_fnc_selectRandom;
             private _indexOfSelectedAnim = _animSet find _animSetSelection;
             _animSet deleteAt _indexOfSelectedAnim;

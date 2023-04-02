@@ -256,21 +256,19 @@ class KISKA_AmbientAnimations
                             snapId = 1;
                             relativeInfo[] = {
                                 // pos
-                                {}, 
+                                {0.6763,0.323425,-0.496503}, 
                                 // vectorDir
-                                {}, 
+                                {-0.201698,0.957263,0.20728}, 
                                 // vectorUp
-                                {} 
+                                {-0.00295541,-0.212223,0.977217} 
                             };
                         };
                         class snap2
                         {
                             snapId = 2;
-                            relativeInfo[] = {
-                                {},
-                                {},
-                                {}
-                            };
+                            relativePos[] = {-0.598785,0.305847,-0.504665};
+                            relativeDir[] = {-0.0816875,0.974007,0.211277};
+                            relativeUp[] = {-0.00295826,-0.212222,0.977217};
                         };
                     };
                 };
