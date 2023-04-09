@@ -51,15 +51,16 @@ private _turretClasses = configProperties [_turretsConfig,"isClass _x"];
 ---------------------------------------------------------------------------- */
 _turretClasses apply {
     private _turretConfig = _x;
-    private _turrets = (_turretConfig >> "turrets") call BIS_fnc_getCfgData;
-    if (_turrets isEqualType "") then {
-        _turrets = [_turrets] call KISKA_fnc_getMissionLayerObjects;
+    private _turrets = [];
+    private _turretsUnfiltered = (_turretConfig >> "turrets") call BIS_fnc_getCfgData;
+    if (_turretsUnfiltered isEqualType "") then {
+        _turrets = [_turretsUnfiltered] call KISKA_fnc_getMissionLayerObjects;
 
     } else {
-        _turrets = _turrets apply {
+        _turretsUnfiltered apply {
             private _turret = missionNamespace getVariable [_x,objNull];
             if (isNull _turret) then {continue};
-            _turret
+            _turrets pushBackUnique _turret;
         };
 
     };
