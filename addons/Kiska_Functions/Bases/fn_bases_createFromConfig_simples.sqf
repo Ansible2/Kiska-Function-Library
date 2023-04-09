@@ -67,8 +67,16 @@ private _fn_getSimpleClassData = {
 
     } else {
         _dataArray = [];
+        
+        private "_type";
+        private _getTypeFunction = getText(_config >> "getTypeFunction");
+        if (_getTypeFunction isNotEqualTo "") then {
+            _type = [[_config],_getTypeFunction] call KISKA_fnc_callBack;
+        } else {
+           _type = getText(_config >> "type");
+        };
+        _dataArray pushBack _type;
 
-        _dataArray pushBack (getText(_config >> "type"));
 
         private _offsetConfig = _config >> "offset";
         if (isArray _offsetConfig) then {
