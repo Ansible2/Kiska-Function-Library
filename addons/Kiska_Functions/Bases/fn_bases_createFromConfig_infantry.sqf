@@ -73,6 +73,11 @@ _infantryClasses apply {
         _unitsPerGroup = _numberOfUnits;
     };
 
+    private _allowedStances = getArray(_classConfig >> "stances");
+    if (_allowedStances isEqualTo []) then {
+        _allowedStances = ["up",0.7,"middle",0.3];
+    };
+
     private _units = [
         _numberOfUnits,
         _unitsPerGroup,
@@ -80,7 +85,8 @@ _infantryClasses apply {
         _spawnPositions,
         [_classConfig >> "canPath"] call BIS_fnc_getCfgDataBool,
         [_classConfig >> "dynamicSim"] call BIS_fnc_getCfgDataBool,
-        _side
+        _side,
+        _allowedStances
     ] call KISKA_fnc_spawn;
 
     [_classConfig,_units] call KISKA_fnc_bases_initAmbientAnimFromClass;

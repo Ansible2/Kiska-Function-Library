@@ -23,6 +23,8 @@ Parameters:
     4: _canUnitsMove <BOOL> - Can units walk (optional)
     5: _enableDynamic <BOOL> - Should the units be dynamically simmed (Optional)
     6: _side <SIDE> - Side of units (optional)
+    7: _allowedStances <ARRAY> - A weighted or unweighted array of setUnitPos compatible 
+     values that the units will be randomly set to (`["up",0.7,"middle",0.3]` by default) (optional)
 
 Returns:
     <ARRAY> - All units spawned by the function
@@ -45,7 +47,8 @@ params [
 
     ["_canUnitsMove",false,[true]],
     ["_enableDynamic",true,[true]],
-    ["_side",OPFOR,[sideUnknown]]
+    ["_side",OPFOR,[sideUnknown]],
+    ["_allowedStances",["up",0.7,"middle",0.3],[[]]]
 ];
 
 // Verify Params
@@ -71,6 +74,10 @@ if (_numberOfUnits < 1) exitWith {
     []
 };
 
+if (_allowedStances isEqualTo []) exitWith {
+    [["_allowedStances is empty!"],true] call KISKA_fnc_log;
+    []
+};
 
 // Re adjust number of units if there are not enough spawn points
 if (count _spawnPositions < _numberOfUnits) then {
@@ -162,8 +169,7 @@ for "_i1" from 1 to _numberOfGroups do {
         _unit setDir _faceDirection;
         _unit doWatch _watchPosition;
 
-        // set a random stance and stop unit in place
-        _unit setUnitPos (selectRandomWeighted ["up",0.7,"middle",0.3]);
+        _unit setUnitPos ([_allowedStances,""] call KISKA_fnc_selectRandom);
         if !(_canUnitsMove) then {
             _unit disableAI "path";
         };
