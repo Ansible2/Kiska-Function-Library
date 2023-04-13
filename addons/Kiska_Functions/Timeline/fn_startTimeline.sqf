@@ -9,64 +9,72 @@ Description:
      do not use with the intention of needing precise events to happen but rather to
      not clog the scheduler or use a decent interface with smaller units of code.
 
-    A timeline is made up of events:
-    [
-        [], // event 1
-        [] // event 2
-    ]
-
-    Each event is made up of code to execute when the event comes up in the timeline,
-     and what to wait for when executing the NEXT event in the timeline AFTER the 
-     current event completes:
-    [
+    (begin example)
+        // A timeline is made up of events:
         [
-            {
-                hint "executed event #1"
-            },
-            3 // wait 3 seconds AFTER current event to execute event 2
-        ],
-        [
-            {
-                hint "executed event #2 3 seconds after event 1 completed"
-            },
-            1 // wait 1 second to run _onTimelineStopped code
+            [], // event 1
+            [] // event 2
         ]
-    ]
+    (end)
+
+    (begin example)
+        // Each event is made up of code to execute when the event comes up in the timeline,
+        /// and what to wait for when executing the NEXT event in the timeline AFTER the 
+        /// current event completes:
+        [
+            [
+                {
+                    hint "executed event #1"
+                },
+                3 // wait 3 seconds AFTER current event to execute event 2
+            ],
+            [
+                {
+                    hint "executed event #2 3 seconds after event 1 completed"
+                },
+                1 // wait 1 second to run _onTimelineStopped code
+            ]
+        ]
+    (end)
     
-    Alternativeley, you can also wait for a condition before proceeeding to the next event:
-    private _endTime = time + 10;
-    [
+    (begin example)
+        // Alternativeley, you can also wait for a condition before proceeeding to the next event:
+        private _endTime = time + 10;
         [
-            {hint "executed event #1"},
-            3 // wait 3 seconds AFTER current event to execute event 1
-        ],
-        [
-            {hint "executed event #2 3 seconds after event 1 completed"},
-            [[_endTime],{
-                _thisArgs params ["_endTime"];
-                time >= (_endTime) // wait until current time is more than _endTime
-            }],
-            1 // check condition every second
+            [
+                {hint "executed event #1"},
+                3 // wait 3 seconds AFTER current event to execute event 1
+            ],
+            [
+                {hint "executed event #2 3 seconds after event 1 completed"},
+                [[_endTime],{
+                    _thisArgs params ["_endTime"];
+                    time >= (_endTime) // wait until current time is more than _endTime
+                }],
+                1 // check condition every second
+            ]
         ]
-    ]
+    (end)
 
-    Lastly, you can chain timeline events together by returning
-    [
+    (begin example)
+        // You can chain timeline events together by returning
         [
-            {
-                hint "executed event #1";
-                time + 3 // return/send to the next event and current wait condition
-            },
-            {
-                params ["","","","_eventReturn"];
-                private _timeAfterWait = _eventReturn;
-                time >= _timeAfterWait // wait until current time is more than time + 3
-            },
-        ],
-        [
-            {hint "executed event #2 ~3 seconds after event 1 completed"}
+            [
+                {
+                    hint "executed event #1";
+                    time + 3 // return/send to the next event and current wait condition
+                },
+                {
+                    params ["","","","_eventReturn"];
+                    private _timeAfterWait = _eventReturn;
+                    time >= _timeAfterWait // wait until current time is more than time + 3
+                },
+            ],
+            [
+                {hint "executed event #2 ~3 seconds after event 1 completed"}
+            ]
         ]
-    ]
+    (end)
 
 Parameters:
     0: _timeline <ARRAY> - An array of timeline events that will happen. 
