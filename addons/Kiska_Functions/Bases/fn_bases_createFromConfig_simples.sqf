@@ -125,15 +125,13 @@ private _fn_getTypeConfigs = {
     _unfilteredTypeConfigs apply {
         private _filterCondition = getText(_x >> "filterCondition");
         
-        private _conditionIsDefined = _filterCondition isNotEqualTo "";
+        private _conditionIsNotDefined = _filterCondition isEqualTo "";
         if (
-            _conditionIsDefined AND 
-            { !([_x] call _filterCondition) }
+            _conditionIsNotDefined OR
+            { [_x] call (compile _filterCondition) }
         ) then {
-            continue;
+            _filteredTypeConfigs pushBack _x;
         };
-
-        _filteredTypeConfigs pushBack _x;
     };
 
 
@@ -157,6 +155,17 @@ private [
 _simplesConfigClasses apply {
     private _topConfig = _x;
     private _typeConfigs = [_topConfig] call _fn_getTypeConfigs;
+    if (_typeConfigs isEqualTo []) then {
+        [
+            [
+                "Skipped simple bases class: ",_topConfig,
+                " because no simple classes were found after filtering"
+            ]
+        ] call KISKA_fnc_log;
+
+        continue;
+    };
+    
 
     private _positions = (_topConfig >> "positions") call BIS_fnc_getCfgData;
     if (_positions isEqualType "") then {
@@ -167,6 +176,17 @@ _simplesConfigClasses apply {
 
             _position
         };
+    };
+
+    if (_positions isEqualTo []) then {
+        [
+            [
+                "Skipped simple bases class: ",_topConfig,
+                " because no positions were found"
+            ]
+        ] call KISKA_fnc_log;
+
+        continue;
     };
 
 
