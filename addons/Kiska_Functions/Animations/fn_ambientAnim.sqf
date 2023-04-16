@@ -487,7 +487,7 @@ _units apply {
     /* --------------------------------------
         Handle Equipment
     -------------------------------------- */
-    private _unitLoadout = getUnitLoadout _unit;
+    private _loadoutBeforeAnimation = getUnitLoadout _unit;
     private _loadoutAdjusted = false;
 
     private _removeAllWeapons = _animationSetInfo getOrDefault ["removeAllWeapons",false];
@@ -508,10 +508,13 @@ _units apply {
         _loadoutAdjusted = true;
     };
 
-    private _equipmentLevelSelection = _equipmentLevel;
+    private "_equipmentLevelSelection";
     if (_randomEquipmentLevel) then {
         _equipmentLevelSelection = [_equipmentLevel,""] call KISKA_fnc_selectRandom;
+    } else {
+        _equipmentLevelSelection = _equipmentLevel;
     };
+
     switch (_equipmentLevelSelection) do
     {
         case "NONE":
@@ -549,7 +552,7 @@ _units apply {
     };
 
     if (_loadoutAdjusted) then {
-        _unitInfoMap set ["_unitLoadout",_unitLoadout];
+        _unitInfoMap set ["_loadoutBeforeAnimation",_loadoutBeforeAnimation];
     };
 
     ["ANIM","AUTOTARGET","FSM","MOVE","TARGET"] apply {

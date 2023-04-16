@@ -60,7 +60,8 @@ if (isClass _animationSetConfig) then {
     if (isNil "_backupAnimationSets") then { _backupAnimationSets = "" };
 
     private _snapToRange = getNumber(_animationSetConfig >> "snapToRange");
-    if (_snapToRange isEqualTo 0) then {
+    private _snapRangeIsUndefined = _snapToRange isEqualTo 0;
+    if (_snapRangeIsUndefined) then {
         _snapToRange = 5;
     };
     private _fallbackFunction = getText(_animationSetConfig >> "fallbackFunction");

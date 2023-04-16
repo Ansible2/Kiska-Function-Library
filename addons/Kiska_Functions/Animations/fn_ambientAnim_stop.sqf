@@ -104,7 +104,7 @@ _unit removeEventHandler ["KILLED", _unitKilledEventHandlerId];
 _unit setVariable ["KISKA_ambientAnimMap",nil];
 
 
-private _unitLoadoutBeforeAnimation = _ambientAnimInfoMap getOrDefault ["_unitLoadout",[]];
+private _unitLoadoutBeforeAnimation = _ambientAnimInfoMap getOrDefault ["_loadoutBeforeAnimation",[]];
 if (_unitLoadoutBeforeAnimation isNotEqualTo []) then {
     _unit setUnitLoadout _unitLoadoutBeforeAnimation;
 };

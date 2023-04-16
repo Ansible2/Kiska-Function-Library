@@ -41,7 +41,7 @@ if (isNil "_ambientAnimInfoMap") exitWith {
     nil
 };
 
-_ambientAnimInfoMap set ["_unitLoadout",_loadout];
+_ambientAnimInfoMap set ["_loadoutBeforeAnimation",_loadout];
 
 
 nil
