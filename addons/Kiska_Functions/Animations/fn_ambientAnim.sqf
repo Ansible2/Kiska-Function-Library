@@ -31,7 +31,7 @@ Parameters:
 
     2: _exitOnCombat <BOOL> - True for unit to return to the state it was in prior to
         KISKA_fnc_ambientAnim being called when they are enter combat behaviour.
-    3: _equipmentLevel <STRING> - A quick means of temporarily adjusting a unit's equipment to match a scene. Options:
+    3: _equipmentLevel <ARRAY or STRING> - A quick means of temporarily adjusting a unit's equipment to match a scene. Options:
         
         - "": no changes
         - "NONE": no goggles, headgear, vest, weapon, nvgs, backpack
