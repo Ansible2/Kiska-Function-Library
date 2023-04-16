@@ -95,7 +95,8 @@ class KISKA_AmbientAnimations
             };
 
             removeBackpack = ON;
-            removeAllWeapons = ON;
+            removePrimaryWeapon = ON;
+            removeSecondaryWeapon = ON;
         };
         class REPAIR_VEH_KNEEL
         {
@@ -116,7 +117,8 @@ class KISKA_AmbientAnimations
                 "ainjppnemstpsnonwnondnon"
             };
 
-            removeAllWeapons = ON;
+            removePrimaryWeapon = ON;
+            removeSecondaryWeapon = ON;
             removeBackpack = ON;
         };
         class PRONE_INJURED_UNARMED_2 : PRONE_INJURED_UNARMED_1
@@ -354,7 +356,8 @@ class KISKA_AmbientAnimations
                 "HubSittingChairUA_idle3",
                 "HubSittingChairUA_move1"
             };
-            removeAllWeapons = ON;
+            removePrimaryWeapon = ON;
+            removeSecondaryWeapon = ON;
         };
 
         class SIT_CHAIR_UNARMED_2 : SIT_CHAIR_UNARMED_1

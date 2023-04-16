@@ -7,14 +7,16 @@ Description:
      with the config as the key.
 
     See configFile >> "KISKA_AmbientAnimations" for an example of a configed map.
-
-    class ambientAnimsConfig
-    {
-        class someAnimSet
+    
+    (begin config example)
+        class ambientAnimsConfig
         {
-            animations[] = {"myAnimation"}; // the only required property of an anim set
+            class someAnimSet
+            {
+                animations[] = {"myAnimation"}; // the only required property of an anim set
+            };
         };
-    };
+    (end)
 
 Parameters:
     0: _config <CONFIG> - A config to parse into a hashmap
@@ -154,24 +156,23 @@ _classes apply {
         };
     };
 
+    private _configClass = _x;
+    [
+        ["removeAllWeapons","removeAllWeapons"],
+        ["removeSecondaryWeapon","removeSecondaryWeapon"],
+        ["removeHandgun","removeHandgun"],
+        ["removePrimaryWeapon","removePrimaryWeapon"],
+        ["attachToLogic","attachToLogic"],
+        ["removeBackpack","removeBackpack"],
+        ["removeNightVision","removeNightVision"],
+        ["canInterpolate","canInterpolate"]
+    ] apply {
+        _x params ["_hashMapKey","_configPropertyName"];
+        private _configValue = [_configClass >> _configPropertyName] call BIS_fnc_getCfgDataBool;
+        _animationSetInfo set [_hashMapKey,_configValue];
+    };
 
-    private _removeAllWeapons = [_x >> "removeAllWeapons"] call BIS_fnc_getCfgDataBool;
-    _animationSetInfo set ["removeAllWeapons",_removeAllWeapons];
-
-    private _attachToLogic = [_x >> "attachToLogic"] call BIS_fnc_getCfgDataBool;
-    _animationSetInfo set ["attachToLogic",_attachToLogic];
-
-    private _removeBackpack = [_x >> "removeBackpack"] call BIS_fnc_getCfgDataBool;
-    _animationSetInfo set ["removeBackpack",_removeBackpack];
-
-    private _removeNightVision = [_x >> "removeNightVision"] call BIS_fnc_getCfgDataBool;
-    _animationSetInfo set ["removeNightVision",_removeNightVision];
-
-    private _canInterpolate = [_x >> "canInterpolate"] call BIS_fnc_getCfgDataBool;
-    _animationSetInfo set ["canInterpolate",_canInterpolate];
-
-
-    _animationMap set [configName _x, _animationSetInfo];
+    _animationMap set [configName _configClass, _animationSetInfo];
 };
 KISKA_ambientAnim_configAnimationSetMap set [_config, _animationMap];
 

@@ -494,7 +494,27 @@ _units apply {
     if (_removeAllWeapons) then {
         removeAllWeapons _unit;
         _loadoutAdjusted = true;
+        
+    } else {
+        private _removeSecondaryWeapon = _animationSetInfo getOrDefault ["removeSecondaryWeapon",false];
+        if (_removeSecondaryWeapon) then {
+            _unit removeWeaponGlobal (secondaryWeapon _unit);
+            _loadoutAdjusted = true;
+        };
+
+        private _removeHandgun = _animationSetInfo getOrDefault ["removeHandgun",false];
+        if (_removeHandgun) then {
+            _unit removeWeaponGlobal (handgunWeapon _unit);
+            _loadoutAdjusted = true;
+        };
+
+        private _removePrimaryWeapon = _animationSetInfo getOrDefault ["removePrimaryWeapon",false];
+        if (_removePrimaryWeapon) then {
+            _unit removeWeaponGlobal (primaryWeapon _unit);
+            _loadoutAdjusted = true;
+        };
     };
+
 
     private _removeBackpack = _animationSetInfo getOrDefault ["removeBackpack",false];
     if (_removeBackpack) then {
