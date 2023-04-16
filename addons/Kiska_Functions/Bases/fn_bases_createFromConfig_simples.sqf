@@ -123,7 +123,7 @@ private _fn_getTypeConfigs = {
     private _filteredTypeConfigs = [];
 
     _unfilteredTypeConfigs apply {
-        private _filterCondition = getText(_x >> "includeCondition");
+        private _filterCondition = getText(_x >> "filterCondition");
         
         private _conditionIsDefined = _filterCondition isNotEqualTo "";
         if (
