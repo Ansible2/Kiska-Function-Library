@@ -54,7 +54,7 @@ private _simplesConfigClasses = configProperties [_simplesConfig,"isClass _x"];
 
 /* ----------------------------------------------------------------------------
 
-    Helper function
+    Helper functions
 
 ---------------------------------------------------------------------------- */
 private _configDataHashMap = createHashMap;
@@ -116,6 +116,29 @@ private _fn_getSimpleClassData = {
     _dataArray
 };
 
+private _fn_getTypeConfigs = {
+    params ["_parentConfig"];
+    
+    private _unfilteredTypeConfigs = configProperties [_parentConfig,"isClass _x"];
+    private _filteredTypeConfigs = [];
+
+    _unfilteredTypeConfigs apply {
+        private _filterCondition = getText(_x >> "includeCondition");
+        
+        private _conditionIsDefined = _filterCondition isNotEqualTo "";
+        if (
+            _conditionIsDefined AND 
+            { !([_x] call _filterCondition) }
+        ) then {
+            continue;
+        };
+
+        _filteredTypeConfigs pushBack _x;
+    };
+
+
+    _filteredTypeConfigs
+};
 
 /* ----------------------------------------------------------------------------
 
@@ -123,8 +146,6 @@ private _fn_getSimpleClassData = {
 
 ---------------------------------------------------------------------------- */
 private [
-    "_topConfig",
-    "_typeConfigs",
     "_objectDirection",
     "_offset",
     "_vectorUp",
@@ -134,8 +155,8 @@ private [
     "_onObjectCreated"
 ];
 _simplesConfigClasses apply {
-    _topConfig = _x;
-    _typeConfigs = configProperties [_topConfig,"isClass _x"];
+    private _topConfig = _x;
+    private _typeConfigs = [_topConfig] call _fn_getTypeConfigs;
 
     private _positions = (_topConfig >> "positions") call BIS_fnc_getCfgData;
     if (_positions isEqualType "") then {
