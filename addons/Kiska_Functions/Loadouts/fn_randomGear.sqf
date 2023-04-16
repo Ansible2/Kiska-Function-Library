@@ -2,7 +2,9 @@
 Function: KISKA_fnc_randomGear
 
 Description:
-    Randomizes gear based upon input arrays for each slot. 
+    Randomizes gear based upon input arrays for each slot. Be aware that this function
+     is very slow (can take >1ms) and should be used ideally on initialization for large
+     numbers of units. 
 
     The unit must be local to the machine where this function is executed.
 
@@ -51,25 +53,25 @@ Author:
 scriptName "KISKA_fnc_randomGear";
 
 params [
-    ["_unit",objNull,[objNull]],
-    ["_uniforms",[],[[]]],
-    ["_headgear",[],[[]]],
-    ["_facewear",[],[[]]],
-    ["_vests",[],[[]]],
-    ["_backpacks",[],[[]]],
-    ["_primaryWeapons",[],[[]]],
-    ["_handguns",[],[[]]],
-    ["_secondaryWeapons",[],[[]]]
+	["_unit",objNull,[objNull]],
+	["_uniforms",[],[[]]],
+	["_headgear",[],[[]]],
+	["_facewear",[],[[]]],
+	["_vests",[],[[]]],
+	["_backpacks",[],[[]]],
+	["_primaryWeapons",[],[[]]],
+	["_handguns",[],[[]]],
+	["_secondaryWeapons",[],[[]]]
 ];
 
 if (isNull _unit) exitWith {
-    ["Null unit was passed",true] call KISKA_fnc_log;
-    nil
+	["Null unit was passed",true] call KISKA_fnc_log;
+	nil
 };
 
 if (!local _unit) exitWith {
-    [[_unit," is not a local unit; must be executed where unit is local!"],true] call KISKA_fnc_log;
-    nil
+	[[_unit," is not a local unit; must be executed where unit is local!"],true] call KISKA_fnc_log;
+	nil
 };
 
 // remove all existing stuff
@@ -83,84 +85,65 @@ removeHeadgear _unit;
 removeGoggles _unit;
 
 
-private _selectedGear = "";
-private _gearArray = [];
+private _primaryWeaponGearSelector = [
+	_primaryWeapons, 
+	{ 
+		_selectedGear params [
+			"_weapon",
+			["_weaponItems",[]]
+		];
+		_unit addWeapon _weapon;
+		_weaponItems apply { _unit addPrimaryWeaponItem _x };
+	},
+	[]
+];
 
-private _fn_selectGear = {
-    if (_gearArray isNotEqualTo []) then {
-        _selectedGear = [_gearArray,""] call KISKA_fnc_selectRandom;
-    } else {
-        _selectedGear = "";
-    };
+private _handgunGearSelector = [
+	_handguns, 
+	{ 
+		_selectedGear params [
+			"_weapon",
+			["_weaponItems",[]]
+		];
+		_unit addWeapon _weapon;
+		_weaponItems apply { _unit addHandgunItem _x };
+	},
+	[]
+];
+
+private _secondaryWeaponGearSelector = [
+	_secondaryWeapons, 
+	{ 
+		_selectedGear params [
+			"_weapon",
+			["_weaponItems",[]]
+		];
+		_unit addWeapon _weapon;
+		_weaponItems apply { _unit addSecondaryWeaponItem _x };
+	},
+	[]
+];
+
+[
+	[_uniforms, { _unit forceAddUniform _selectedGear }],
+	[_headgear, { _unit addHeadgear _selectedGear; }],
+	[_facewear, { _unit addGoggles _selectedGear; }],
+	[_vests, { _unit addVest _selectedGear; }],
+	[_backpacks, { _unit addBackpack _selectedGear; }],
+	_primaryWeaponGearSelector,
+	_handgunGearSelector,
+	_secondaryWeaponGearSelector
+] apply {
+	_x params [
+		"_availableGear",
+		"_fn_addGear",
+		["_valueType",""]
+	];
+
+	if (_availableGear isEqualTo []) then { continue };
+	
+	private _selectedGear = [_availableGear,_valueType] call KISKA_fnc_selectRandom;
+	[_unit,_selectedGear] call _fn_addGear;
 };
-private _fn_selectWeaponGear = {
-    if (_gearArray isNotEqualTo []) then {
-        _selectedGear = [_gearArray,[]] call KISKA_fnc_selectRandom;
-    } else {
-        _selectedGear = [];
-    };
-};
-
-
-// assign stuff
-
-// uniform
-_gearArray = _uniforms;
-call _fn_selectGear;
-if (_selectedGear isNotEqualTo "") then {
-    _unit forceAddUniform _selectedGear;
-};
-
-// headgear
-_gearArray = _headgear;
-call _fn_selectGear;
-if (_selectedGear isNotEqualTo "") then {
-    _unit addHeadgear _selectedGear;
-};
-
-// facewear
-_gearArray = _facewear;
-call _fn_selectGear;
-if (_selectedGear isNotEqualTo "") then {
-    _unit addGoggles _selectedGear;
-};
-
-// vest
-_gearArray = _vests;
-call _fn_selectGear;
-if (_selectedGear isNotEqualTo "") then {
-    _unit addVest _selectedGear;
-};
-
-// backpacks
-_gearArray = _backpacks;
-call _fn_selectGear;
-if (_selectedGear isNotEqualTo "") then {
-    _unit addBackpack _selectedGear;
-};
-
-// weapons
-_gearArray = _primaryWeapons;
-call _fn_selectWeaponGear;
-if (_selectedGear isNotEqualTo []) then {
-    _selectedGear params [
-        "_weapon",
-        ["_weaponItems",[]]
-    ];
-    _unit addWeapon _weapon;
-    _weaponItems apply { _unit addPrimaryWeaponItem _x };
-};
-
-_gearArray = _secondaryWeapons;
-call _fn_selectWeaponGear;
-if (_selectedGear isNotEqualTo []) then {
-        _selectedGear params [
-        "_weapon",
-        ["_weaponItems",[]]
-    ];
-    _unit addWeapon _weapon;
-    _weaponItems apply { _unit addHandgunItem _x };
-};
-
 
 nil
