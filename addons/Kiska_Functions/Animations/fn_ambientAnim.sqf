@@ -22,12 +22,10 @@ Parameters:
             following params. If you still want the unit to be animated in this case, pass `{}`, `""`, or `[]`
                 
                 - 0: _unit <OBJECT> - The unit
-                - 1: _unitInfoMap <HASHMAP> - The current state of the _unitInfoMap which stores animation info for the system
-                The rest of these params are exactly as passed to the initial KISKA_fnc_ambientAnim call
-                - 2: _animationParams <ARRAY, STRING[], (STRING,NUMBER)[], or STRING>
-                - 3: _exitOnCombat <BOOL>
-                - 4: _equipmentLevel <ARRAY or STRING>
-                - 5: _animationMap <HASHMAP or CONFIG>
+                - 1: _animationParams <ARRAY, STRING[], (STRING,NUMBER)[], or STRING>
+                - 2: _exitOnCombat <BOOL>
+                - 3: _equipmentLevel <ARRAY or STRING>
+                - 4: _animationMap <HASHMAP or CONFIG>
 
     2: _exitOnCombat <BOOL> - True for unit to return to the state it was in prior to
         KISKA_fnc_ambientAnim being called when they are enter combat behaviour.
@@ -206,6 +204,7 @@ private _invalidSets = [];
     };
 } forEach _setsToVerify;
 
+
 if (count _invalidSets > 0) exitWith {
     [["Invalid animation set(s) passed: ",_invalidSets],true] call KISKA_fnc_log;
     nil
@@ -218,18 +217,36 @@ if (count _invalidSets > 0) exitWith {
     Helper functions
 
 ---------------------------------------------------------------------------- */
-private _fn_setupAnimation = {
-    params ["_unitInfoMap","_animsToSelectFrom"];
 
-    private _animSetSelection = _animsToSelectFrom;
-    if (_animsToSelectFrom isEqualType []) then {
-        _animSetSelection = [_animsToSelectFrom,""] call KISKA_fnc_selectRandom;
+/* -------------------------------------
+    _fn_getSetupInfoWithoutSnap
+------------------------------------- */
+private _fn_getSetupInfoWithoutSnap = {
+    params ["_animSetToSelectFrom"];
+
+    private _animSetSelection = _animSetToSelectFrom;
+    if (_animSetToSelectFrom isEqualType []) then {
+        _animSetSelection = [_animSetToSelectFrom,""] call KISKA_fnc_selectRandom;
     };
 
-    private _animationSetInfo = _animationMap getOrDefault [_animSetSelection,[]];
-    _unitInfoMap set ["_animationSetInfo",_animationSetInfo];
+    private _animationSetInfo = _animationMap get _animSetSelection;
+    if (isNil "_animationSetInfo") exitWith {
+        [
+            ["Could not find animation set for: ",_animSetSelection," inside map: ",_animationMap],
+            true
+        ] call KISKA_fnc_log;
+
+        []
+    };
+
+    
+    [false, _animationSetInfo]
 };
 
+
+/* -------------------------------------
+    _fn_findObjectToSnapTo
+------------------------------------- */
 private _fn_findObjectToSnapTo = {
     params ["_snapToObjectsMap","_objectsToCheck"];
     
@@ -305,18 +322,23 @@ private _fn_findObjectToSnapTo = {
     _snapToObjectInfo
 };
 
-private _fn_handleNoSnap = {
-    params ["_unit","_unitInfoMap"];
 
-    if (_backupAnims isNotEqualTo []) exitWith {
-        [_unitInfoMap,_backupAnims] call _fn_setupAnimation;
+/* -------------------------------------
+    _fn_handleNoSnap
+------------------------------------- */
+private _fn_handleNoSnap = {
+    params ["_unit","_backupAnims"];
+
+    private _backupAnimsIsDefined = (_backupAnims isNotEqualTo []) AND (_backupAnims isNotEqualTo "");
+    if (_backupAnimsIsDefined) exitWith {
+        [_backupAnims] call _fn_getSetupInfoWithoutSnap
     };
 
-    
-    if (!_fallbackFunctionIsPresent) exitWith {};
+    // empty _setupInfo return
+    if (!_fallbackFunctionIsPresent) exitWith { [] };
     [
         [
-            _unit, _unitInfoMap,
+            _unit, 
             _animationParams,
             _exitOnCombat,
             _equipmentLevel,
@@ -324,69 +346,73 @@ private _fn_handleNoSnap = {
         ],
         _fallbackFunction
     ] call KISKA_fnc_callBack;
+
+    // empty _setupInfo
+    []
 };
 
 
+/* -------------------------------------
+    _fn_getSetupInfoWithSnap
+------------------------------------- */
 // accept that only one set can be be tried from the primary
 // Try extremely hard to dynamically exclude sets from the array (the array can be weighted)
 // shuffle the entire array each time and loop through every set (this would also be hard with weighted arrays)
 // delete one random entry at a time and eventually make the array anew
-private _fn_setupAnimationWithSnap = {
-    params ["_unit","_unitInfoMap"];
+private _fn_getSetupInfoWithSnap = {
+    params ["_unit","_animSetToSelectFrom","_backupAnims"];
 
     // using nearObjects to support snapping to simple objects
     private _nearObjects = _unit nearObjects _snapToRange;
     if (_nearObjects isEqualTo []) exitWith {
-        [["No near objects to snap to ",_unit]] call KISKA_fnc_log;
-        [_unit, _unitInfoMap] call _fn_handleNoSnap;
+        [["There are no near objects to snap to for unit: ",_unit]] call KISKA_fnc_log;
+        [_unit, _backupAnims] call _fn_handleNoSnap
     };  
 
 
-    private ["_animSetSelection","_snapToObjectsMap"];
+    private ["_animSetSelection","_snapToObjectsMap","_animationSetInfoFromSetup"];
+    private _snapObjectFound = false;
     private _snapToObjectInfo = [];
     private _checkedAnimSets = [];
     private _step = [1,2] select _isWeightedAnimSet;
-    for "_i" from 1 to (count _animSet) step _step do { 
+    for "_i" from 1 to (count _animSetToSelectFrom) step _step do { 
         if (_isWeightedAnimSet) then {
-            _animSetSelection = [_animSet,""] call KISKA_fnc_selectRandom;
-            private _indexOfSelectedAnim = _animSet find _animSetSelection;
-            _animSet deleteAt _indexOfSelectedAnim;
+            _animSetSelection = [_animSetToSelectFrom,""] call KISKA_fnc_selectRandom;
+            private _indexOfSelectedAnim = _animSetToSelectFrom find _animSetSelection;
+            _animSetToSelectFrom deleteAt _indexOfSelectedAnim;
             _checkedAnimSets pushBack _animSetSelection;
             
             // previous deleteAt will shift the weight into the anim's former index
-            private _animWeight = _animSet deleteAt _indexOfSelectedAnim;
+            private _animWeight = _animSetToSelectFrom deleteAt _indexOfSelectedAnim;
             _checkedAnimSets pushBack _animWeight;
 
         } else {
-            _animSetSelection = [_animSet] call KISKA_fnc_deleteRandomIndex;
+            _animSetSelection = [_animSetToSelectFrom] call KISKA_fnc_deleteRandomIndex;
             _checkedAnimSets pushBack _animSetSelection;
 
         };
 
-        private _animationSetInfo = _animationMap get _animSetSelection;
-        _snapToObjectsMap = _animationSetInfo get "snapToObjectsMap";        
+        _animationSetInfoFromSetup = _animationMap get _animSetSelection;
+        _snapToObjectsMap = _animationSetInfoFromSetup get "snapToObjectsMap";        
         // loop
         _snapToObjectInfo = [_snapToObjectsMap, _nearObjects] call _fn_findObjectToSnapTo;
 
-        if (_snapToObjectInfo isNotEqualTo []) then {
-            _unitInfoMap set ["_animationSetInfo",_animationSetInfo];
-            break;
-        };
+        _snapObjectFound = _snapToObjectInfo isNotEqualTo [];
+        if (_snapObjectFound) then { break };
     };
-    // _animSet array may be used by other units, so "restore" it
-    _animSet append _checkedAnimSets;
+    // _animSetToSelectFrom array may be used by other units, so "restore" it
+    _animSetToSelectFrom append _checkedAnimSets;
 
 
-
-    if (_snapToObjectInfo isEqualTo []) exitWith {
-        [_unit, _unitInfoMap] call _fn_handleNoSnap;
+    if (!_snapObjectFound) exitWith {
+        [["No objects met snapping criteria for unit: ",_unit]] call KISKA_fnc_log;
+        [_unit, _backupAnims] call _fn_handleNoSnap
     };
-    
 
 
     _snapToObjectInfo params ["_objectType","_objectToSnapTo","_snapAllowanceInfo"];
 
-    _unitInfoMap set ["_snapToObject",_objectToSnapTo];
+
     [_unit,_objectToSnapTo] remoteExecCall ["disableCollisionWith",_unit];
     [_objectToSnapTo,_unit] remoteExecCall ["disableCollisionWith",_objectToSnapTo];
 
@@ -409,10 +435,10 @@ private _fn_setupAnimationWithSnap = {
             _usedSnapIds append _snapIdsToUse;
         };
         [_objectToSnapTo,_unit,_relativeObjectInfo] call KISKA_fnc_setRelativeVectorAndPos;
-        
-        _unitInfoMap set ["_usedSnapIds",_snapIdsToUse];
     };
 
+
+    [true, _animationSetInfoFromSetup, _objectToSnapTo, _snapIdsToUse]
 };
 
 
@@ -436,16 +462,33 @@ _units apply {
 
     private _unitInfoMap = createHashmap;
     detach _unit;
- 
-    if (_isSnapAnimations) then {
-        [_unit,_unitInfoMap] call _fn_setupAnimationWithSnap;
-
-    } else {
-        [_unitInfoMap,_animSet] call _fn_setupAnimation;
-
-    };
     
-    private _animationSetInfo = _unitInfoMap get "_animationSetInfo";
+
+    private "_setupInfo";
+    if (_isSnapAnimations) then {
+        _setupInfo = [_unit,_animSet,_backupAnims] call _fn_getSetupInfoWithSnap;
+    } else {
+        _setupInfo = [_animSet] call _fn_getSetupInfoWithoutSnap;
+    };
+
+
+    if (_setupInfo isEqualTo []) then { continue };
+
+
+    _setupInfo params [
+        "_isSnapAnim",
+        "_animationSetInfo"
+    ];
+
+    _unitInfoMap set ["_animationSetInfo",_animationSetInfo];
+    if (_isSnapAnim) then {
+        private _snapIdsToUse = _setupInfo param [2,objNull];
+        _unitInfoMap set ["_snapToObject",_objectToSnapTo];
+
+        private _snapIdsToUse = _setupInfo param [3,-1];
+        _unitInfoMap set ["_usedSnapIds",_snapIdsToUse];
+    };
+
 
     /* --------------------------------------
         Handle AttachTo Logic
@@ -456,6 +499,7 @@ _units apply {
 
         // This does also benefit some seated animations if required.
     -------------------------------------- */
+    // TODO: error here, "_animationSetInfo" is not hashmap, but array???
     if (_animationSetInfo getOrDefault ["attachToLogic",false]) then {
         private _logicGroup = [_x] call KISKA_fnc_ambientAnim_getNearestAttachLogicGroup;
         if (isNull _logicGroup) then {
