@@ -73,7 +73,7 @@ private _fn_getSimpleClassData = {
         if (_getTypeFunction isNotEqualTo "") then {
             _type = [[_config],_getTypeFunction] call KISKA_fnc_callBack;
         } else {
-           _type = getText(_config >> "type");
+            _type = (_config >> "type") call BIS_fnc_getCfgData;
         };
         _dataArray pushBack _type;
 
@@ -165,7 +165,7 @@ _simplesConfigClasses apply {
 
         continue;
     };
-    
+
 
     private _positions = (_topConfig >> "positions") call BIS_fnc_getCfgData;
     if (_positions isEqualType "") then {
@@ -199,8 +199,13 @@ _simplesConfigClasses apply {
 
         private _objectClass = selectRandom _typeConfigs;
         private _objectData = [_objectClass] call _fn_getSimpleClassData;
+        private _objectType = _objectData select SIMPLE_DATA_INDEX_TYPE;
+        if (_objectType isEqualType []) then {
+            _objectType = [_objectType,""] call KISKA_fnc_selectRandom;
+        };
+
         private _object = [
-            _objectData select SIMPLE_DATA_INDEX_TYPE,
+            _objectType,
             _x,
             _objectDirection,
             _objectData select SIMPLE_DATA_INDEX_FOLLOW_TERRAIN,
