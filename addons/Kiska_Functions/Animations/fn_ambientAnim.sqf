@@ -370,7 +370,8 @@ private _fn_getSetupInfoWithSnap = {
     };  
 
 
-    private ["_animSetSelection","_snapToObjectsMap","_animationSetInfoFromSetup"];
+    private ["_animSetSelection","_snapToObjectsMap","_animationSetInfoFromSetup","_objectToSnapTo"];
+    private _snapIdsToUse = -1;
     private _snapObjectFound = false;
     private _snapToObjectInfo = [];
     private _checkedAnimSets = [];
@@ -410,8 +411,8 @@ private _fn_getSetupInfoWithSnap = {
     };
 
 
-    _snapToObjectInfo params ["_objectType","_objectToSnapTo","_snapAllowanceInfo"];
-
+    _snapToObjectInfo params ["_objectType","","_snapAllowanceInfo"];
+    _objectToSnapTo = _snapToObjectInfo param [1];
 
     [_unit,_objectToSnapTo] remoteExecCall ["disableCollisionWith",_unit];
     [_objectToSnapTo,_unit] remoteExecCall ["disableCollisionWith",_objectToSnapTo];
@@ -428,12 +429,15 @@ private _fn_getSetupInfoWithSnap = {
             _objectToSnapTo setVariable ["KISKA_ambientAnim_usedSnapIds",_usedSnapIds];
         };
 
-        _snapAllowanceInfo params ["_snapIdsToUse","_relativeObjectInfo"];
+
+        _snapIdsToUse = _snapAllowanceInfo param [0];
         if (_snapIdsToUse isEqualType 123) then {
             _usedSnapIds pushBack _snapIdsToUse;
         } else {
             _usedSnapIds append _snapIdsToUse;
         };
+
+        private _relativeObjectInfo = _snapAllowanceInfo param [1];
         [_objectToSnapTo,_unit,_relativeObjectInfo] call KISKA_fnc_setRelativeVectorAndPos;
     };
 
@@ -482,11 +486,13 @@ _units apply {
 
     _unitInfoMap set ["_animationSetInfo",_animationSetInfo];
     if (_isSnapAnim) then {
-        private _snapIdsToUse = _setupInfo param [2,objNull];
+        private _objectToSnapTo = _setupInfo param [2,objNull];
         _unitInfoMap set ["_snapToObject",_objectToSnapTo];
 
         private _snapIdsToUse = _setupInfo param [3,-1];
-        _unitInfoMap set ["_usedSnapIds",_snapIdsToUse];
+        if (_snapIdsToUse isNotEqualTo -1) then {
+            _unitInfoMap set ["_usedSnapIds",_snapIdsToUse];
+        };
     };
 
 
