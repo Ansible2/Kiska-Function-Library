@@ -89,6 +89,11 @@ _infantryClasses apply {
         _allowedStances
     ] call KISKA_fnc_spawn;
 
+    if (_units isEqualTo []) then {
+        [["Unable to create any units for config: ",_classConfig," Check KISKA Base configuration for it."],true] call KISKA_fnc_log;
+        continue;
+    };
+
     [_classConfig,_units] call KISKA_fnc_bases_initAmbientAnimFromClass;
 
     private _onUnitsCreated = getText(_classConfig >> "onUnitsCreated");
