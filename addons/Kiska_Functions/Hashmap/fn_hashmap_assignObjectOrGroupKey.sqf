@@ -36,6 +36,7 @@ if !(isNil "_keyInNamespace") exitWith { _keyInNamespace };
 private _key = (hashValue _objectOrGroup) + ([_objectOrGroup] call KISKA_fnc_netId);
 _objectOrGroup setVariable ["KISKA_hashmap_key",_key];
 
+private _objectGroupKeyMap = call KISKA_fnc_hashmap_getKiskaObjectGroupKeyMap;
 _objectGroupKeyMap set [_key,_objectOrGroup];
         
 _objectOrGroup addEventHandler ["Deleted",{
