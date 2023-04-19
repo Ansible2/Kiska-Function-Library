@@ -74,5 +74,6 @@ _configs apply {
     _mostSpecificHierarchyCount = _hierarchyCount;
 };
 
-
+// returning _mostSpecificValue in the case of it being nil causes errors
+if (isNil "_mostSpecificValue") exitWith { nil };
 _mostSpecificValue
