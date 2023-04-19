@@ -107,6 +107,7 @@ private _weightedArray = _unitTypes isEqualTypeParams ["",1];
 // exit if no valid types
 if (_unitTypesFiltered isEqualTo []) exitWith {
     [["Did not find any valid unit types in ",_unitTypes],true] call KISKA_fnc_log;
+    []
 };
 
 
