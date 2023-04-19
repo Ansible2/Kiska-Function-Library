@@ -17,7 +17,7 @@ Examples:
     (begin example)
         [
             [
-                missionConfigFile >> "KISKA_Bases" >> "myBase"
+                missionConfigFile >> "KISKA_Bases" >> "myBase",
                 missionConfigFile >> "KISKA_Bases" >> "myBase" >> "Infantry",
                 missionConfigFile >> "KISKA_Bases" >> "myBase" >> "Infantry" >> "myInfantryClass"
             ]

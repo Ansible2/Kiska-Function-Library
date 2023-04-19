@@ -65,6 +65,19 @@ _infantryClasses apply {
     };
 
     private _unitClasses = [[_x,_baseConfig,_infantryConfig]] call KISKA_fnc_bases_getInfantryClasses;
+    if (_unitClasses isEqualTo []) then { 
+        [
+            [
+                "Unable to find any infantry classes for config: ",
+                _classConfig,
+                " Check KISKA Base configuration for it."
+            ],
+            true
+        ] call KISKA_fnc_log;
+        continue 
+    };
+
+
     private _side = [[_x,_baseConfig,_infantryConfig]] call KISKA_fnc_bases_getSide;
 
     private _numberOfUnits = getNumber(_classConfig >> "numberOfUnits");
@@ -90,9 +103,17 @@ _infantryClasses apply {
     ] call KISKA_fnc_spawn;
 
     if (_units isEqualTo []) then {
-        [["Unable to create any units for config: ",_classConfig," Check KISKA Base configuration for it."],true] call KISKA_fnc_log;
+        [
+            [
+                "Unable to create any units for config: ",
+                _classConfig,
+                " Check KISKA Base configuration for it."
+            ],
+            true
+        ] call KISKA_fnc_log;
         continue;
     };
+
 
     [_classConfig,_units] call KISKA_fnc_bases_initAmbientAnimFromClass;
 
