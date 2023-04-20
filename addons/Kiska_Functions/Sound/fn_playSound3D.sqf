@@ -89,7 +89,13 @@ if (isNull _soundConfig) exitWith {
     false
 };
 
-private _soundPath = (getArray(_soundConfig >> "sound")) select 0;
+private _soundArray = getArray(_soundConfig >> "sound");
+if (_soundArray isEqualTo []) exitWith {
+    [["'sound' property in config: ",_soundConfig," is either empty array or undefined"],true] call KISKA_fnc_log;
+    false
+};
+
+private _soundPath = _soundArray select 0;
 if ([_soundConfig, missionConfigFile] call CBA_fnc_inheritsFrom) then {
     _soundPath = getMissionPath + _soundPath;
 };
