@@ -29,7 +29,7 @@ params [
 	["_key","",[""]]
 ];
 
-private _objectGroupKeyMap = [] call KISKA_fnc_hashmap_getKiskaObjectGroupKeyMap;
+private _objectGroupKeyMap = call KISKA_fnc_hashmap_getKiskaObjectGroupKeyMap;
 
 
 _objectGroupKeyMap get _key

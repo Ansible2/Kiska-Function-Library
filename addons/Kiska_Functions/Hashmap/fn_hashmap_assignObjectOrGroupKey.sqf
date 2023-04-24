@@ -33,6 +33,7 @@ params [
 private _keyInNamespace = _objectOrGroup getVariable "KISKA_hashmap_key";
 if !(isNil "_keyInNamespace") exitWith { _keyInNamespace };
 
+
 private _key = (hashValue _objectOrGroup) + ([_objectOrGroup] call KISKA_fnc_netId);
 _objectOrGroup setVariable ["KISKA_hashmap_key",_key];
 

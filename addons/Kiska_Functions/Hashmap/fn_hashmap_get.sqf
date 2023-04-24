@@ -39,9 +39,9 @@ _key = [_key] call KISKA_fnc_hashmap_getRealKey;
 
 // while not in every case, there are some instances in which 
 // a nil _default will throw an error if called.
-// in an eventhandler seems to be one such case
-// hence why it is sectioned off instead of always used
-// as `_map getOrDefault [_key,nil];`
+/// in an eventhandler seems to be one such case
+/// hence why it is sectioned off instead of always used
+/// as `_map getOrDefault [_key,nil];`
 if !(isNil "_default") exitWith {
     _map getOrDefault [_key,_default];
 };
