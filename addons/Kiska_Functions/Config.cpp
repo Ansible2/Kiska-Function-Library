@@ -158,25 +158,6 @@ class CfgFunctions
         class Convoy
         {
             file = "Kiska_functions\Convoy";
-            class configureConvoy
-            {};
-        };
-
-        class Convoy_Advanced
-        {
-            // file = "Kiska_functions\Convoy Advanced";
-            // class convoyAdvanced_addVehicle
-            // {};
-            // class convoyAdvanced_create
-            // {};
-            // class convoyAdvanced_getBumperPosition
-            // {};
-            // class convoyAdvanced_onEachFrame
-            // {};
-            // class convoyAdvanced_removeVehicle
-            // {};
-            // class convoyAdvanced_stopVehicle
-            // {};
         };
 
         class EventHandlers
