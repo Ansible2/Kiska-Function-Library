@@ -158,6 +158,93 @@ class CfgFunctions
         class Convoy
         {
             file = "Kiska_functions\Convoy";
+            
+            class convoy_addVehicle
+            {};
+            class convoy_addVehicleKilledEvent
+            {};
+            class convoy_clearVehicleDebugFollowedPath
+            {};
+            class convoy_clearVehicleDebugFollowPath
+            {};
+            class convoy_create
+            {};
+            class convoy_delete
+            {};
+            class convoy_getBumperPosition
+            {};
+            class convoy_getConvoyHashMapFromVehicle
+            {};
+            class convoy_getConvoyLeader
+            {};
+            class convoy_getConvoyStatemachine
+            {};
+            class convoy_getConvoyVehicles
+            {};
+            class convoy_getDefaultSeperation
+            {};
+            class convoy_getPointBuffer
+            {};
+            class convoy_getVehicleAtIndex
+            {};
+            class convoy_getVehicleDebugFollowedPath
+            {};
+            class convoy_getVehicleDebugFollowPath
+            {};
+            class convoy_getVehicleDebugMarkerType_followedPath
+            {};
+            class convoy_getVehicleDebugMarkerType_followPath
+            {};
+            class convoy_getVehicleDrivePath
+            {};
+            class convoy_getVehicleIndex
+            {};
+            class convoy_getVehicleKilledEvent
+            {};
+            class convoy_getVehicleLastAddedPoint
+            {};
+            class convoy_getVehicleSeperation
+            {};
+            class convoy_handleDeadDriver_default
+            {};
+            class convoy_handleUnconsciousDriver_default
+            {};
+            class convoy_handleVehicleCantMove_default
+            {};
+            class convoy_handleVehicleKilled_default
+            {};
+            class convoy_isVehicleInDebug
+            {};
+            class convoy_modifyVehicleDrivePath
+            {};
+            class convoy_onEachFrame
+            {};
+            class convoy_removeVehicle
+            {};
+            class convoy_removeVehicleKilledEvent
+            {};
+            class convoy_setDefaultSeperation
+            {};
+            class convoy_setPointBuffer
+            {};
+            class convoy_setVehicleDebug
+            {};
+            class convoy_setVehicleDebugMarkerType_followedPath
+            {};
+            class convoy_setVehicleDebugMarkerType_followPath
+            {};
+            class convoy_setVehicleDriveOnPath
+            {};
+            class convoy_setVehicleKilledEvent
+            {};
+            class convoy_setVehicleSeperation
+            {};
+            class convoy_shouldVehicleDriveOnPath
+            {};
+            class convoy_stopVehicle
+            {};
+            class convoy_syncLatestDrivePoint
+            {};
         };
 
         class EventHandlers
