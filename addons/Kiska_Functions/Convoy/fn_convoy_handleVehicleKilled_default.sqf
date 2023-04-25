@@ -14,7 +14,7 @@ Returns:
 
 Examples:
     (begin example)
-        SHOULD NOT BE CALLED DIRECTLY
+        // SHOULD NOT BE CALLED DIRECTLY
     (end)
 
 Author(s):

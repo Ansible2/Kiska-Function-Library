@@ -6,7 +6,7 @@ Description:
      it in a convoy. This function is what the statemachine runs each frame/vehicle.
 
     This function intentionally forgoes the use of several getter/setter functions 
-     to reduce overhead because it runs every frame
+     to reduce overhead because it runs every frame.
 
 Parameters:
     _this <OBJECT> - A convoy vehicle to be processed during the current frame
@@ -16,7 +16,7 @@ Returns:
 
 Examples:
     (begin example)
-        SHOULD NOT BE CALLED DIRECTLY
+        // SHOULD NOT BE CALLED DIRECTLY
     (end)
 
 Author(s):
@@ -35,11 +35,9 @@ scriptName "KISKA_fnc_convoy_onEachFrame";
 #define MIN_CONVOY_SEPERATION 10
 
 private _currentVehicle = _this;
-// TODO: vehicles handle very strangely under fire
 
 private _convoyHashMap = _currentVehicle getVariable "KISKA_convoy_hashMap";
 private _convoyLead = _convoyHashMap getOrDefault [0,objNull];
-// private _stateMachine = _convoyHashMap get "_stateMachine";
 
 
 /* ----------------------------------------------------------------------------

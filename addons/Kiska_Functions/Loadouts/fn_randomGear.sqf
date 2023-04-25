@@ -12,14 +12,14 @@ Description:
 
 Parameters:
     0: _unit : <OBJECT> - The unit to randomize gear
-    1: _uniforms : <string[]> - Potential uniforms to wear
-    2: _headgear : <string[]> - Potential headgear to wear
-    3: _facewear : <string[]> - Potential facewear (goggles) to wear
-    4: _vests : <string[]> - Potential vests to wear
-    5: _backpacks : <string[]> - Potential backpacks to wear
-    6: _primaryWeapons : <[string,string[]][]> - Primary weapons and items to add to them (see example)
-    7: _handguns : <[string,string[]][]> - Handgun weapons and items to add to them
-    8: _secondaryWeapons : <[string,string[]][]> - Secondary (launcher) weapons and items to add to them
+    1: _uniforms : <STRING[] or (STRING,NUMBER)[]> - Potential uniforms to wear
+    2: _headgear : <STRING[] or (STRING,NUMBER)[]> - Potential headgear to wear
+    3: _facewear : <STRING[] or (STRING,NUMBER)[]> - Potential facewear (goggles) to wear
+    4: _vests : <STRING[] or (STRING,NUMBER)[]> - Potential vests to wear
+    5: _backpacks : <STRING[] or (STRING,NUMBER)[]> - Potential backpacks to wear
+    6: _primaryWeapons : <[STRING,(STRING[] | (STRING,NUMBER)[])][]> - Primary weapons and items to add to them (see example)
+    7: _handguns : <[STRING,(STRING[] | (STRING,NUMBER)[])][]> - Handgun weapons and items to add to them
+    8: _secondaryWeapons : <[STRING,(STRING[] | (STRING,NUMBER)[])][]> - Secondary (launcher) weapons and items to add to them
 
 Returns:
     NOTHING
@@ -108,7 +108,7 @@ private _handgunGearSelector = [
 		_unit addWeapon _weapon;
 		_weaponItems apply { _unit addHandgunItem _x };
 	},
-	[]
+	[]/
 ];
 
 private _secondaryWeaponGearSelector = [

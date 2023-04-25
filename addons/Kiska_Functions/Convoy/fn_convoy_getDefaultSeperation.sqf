@@ -16,7 +16,7 @@ Returns:
 Examples:
     (begin example)
         private _defaultSeperation = [
-			_convoyHashMap
+            _convoyHashMap
 		] call KISKA_fnc_convoy_getDefaultSeperation;
     (end)
 
@@ -30,8 +30,6 @@ if (!isServer) exitWith {
     -1
 };
 
-params [
-    "_convoyHashMap"
-];
+params ["_convoyHashMap"];
 
 _convoyHashMap getOrDefault ["_convoySeperation",20]

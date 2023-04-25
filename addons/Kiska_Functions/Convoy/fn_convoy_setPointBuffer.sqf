@@ -15,9 +15,7 @@ Returns:
 
 Examples:
     (begin example)
-        [
-			_convoyHashMap
-		] call KISKA_fnc_convoy_setPointBuffer;
+        [_convoyHashMap,1] call KISKA_fnc_convoy_setPointBuffer;
     (end)
 
 Author(s):

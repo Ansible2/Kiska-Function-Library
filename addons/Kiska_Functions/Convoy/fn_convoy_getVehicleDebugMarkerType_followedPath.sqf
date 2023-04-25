@@ -9,7 +9,8 @@ Parameters:
     0: _vehicle <OBJECT> - The vehicle to get the marker type of
 
 Returns:
-    NOTHING
+    <STRING> - The classsName used for the 3d debug marker of the followed path
+     of the given convoy vehicle.
 
 Examples:
     (begin example)

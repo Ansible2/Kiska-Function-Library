@@ -15,6 +15,8 @@ Description:
      All other vehicles will essentially follow the path of the lead vehicle. You should 
      limit the speed and control the path of the lead vehicle for your specific use case.
 
+    A convoy requires at least one vehicle (the lead vehicle) to be valid at any given moment.
+     It will be automatically deleted otherwise.
 
 Parameters:
     0: _vics <OBJECT[]> - An array of convoy vehicles (that are in their travel order)
@@ -26,7 +28,7 @@ Returns:
 Examples:
     (begin example)
         private _convoyHashMap = [
-            [],
+            [leadVehicle],
             10
         ] call KISKA_fnc_convoy_create;
     (end)

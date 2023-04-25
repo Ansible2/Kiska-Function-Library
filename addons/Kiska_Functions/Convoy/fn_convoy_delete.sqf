@@ -13,7 +13,12 @@ Returns:
 
 Examples:
     (begin example)
-        
+        private _convoyHashMap = [
+            [leadVehicle],
+            10
+        ] call KISKA_fnc_convoy_create;
+        // some time later...
+        [_convoyHashMap] call KISKA_fnc_convoy_delete;
     (end)
 
 Author(s):

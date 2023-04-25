@@ -23,11 +23,11 @@ Parameters:
     4: _canUnitsMove <BOOL> - Can units walk (optional)
     5: _enableDynamic <BOOL> - Should the units be dynamically simmed (Optional)
     6: _side <SIDE> - Side of units (optional)
-    7: _allowedStances <ARRAY> - A weighted or unweighted array of setUnitPos compatible 
+    7: _allowedStances <STRING[] or (STRING,NUMBER)[]> - A weighted or unweighted array of setUnitPos compatible 
      values that the units will be randomly set to (`["up",0.7,"middle",0.3]` by default) (optional)
 
 Returns:
-    <ARRAY> - All units spawned by the function
+    <OBJECT[]> - All units spawned by the function
 
 Examples:
     (begin example)

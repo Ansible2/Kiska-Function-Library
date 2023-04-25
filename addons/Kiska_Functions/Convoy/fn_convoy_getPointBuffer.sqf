@@ -14,7 +14,7 @@ Returns:
 Examples:
     (begin example)
         private _minBufferBetweenPoints = [
-			_convoyHashMap
+            _convoyHashMap
 		] call KISKA_fnc_convoy_getPointBuffer;
     (end)
 

@@ -15,7 +15,7 @@ Returns:
 Examples:
     (begin example)
         private _convoyLeader = [
-			_convoyHashMap
+            _convoyHashMap
 		] call KISKA_fnc_convoy_getConvoyLeader;
     (end)
 

@@ -22,9 +22,9 @@ Parameters:
             following params. If you still want the unit to be animated in this case, pass `{}`, `""`, or `[]`
                 
                 - 0: _unit <OBJECT> - The unit
-                - 1: _animationParams <ARRAY, STRING[], (STRING,NUMBER)[], or STRING>
+                - 1: _animationParams <STRING[], (STRING,NUMBER)[], or STRING>
                 - 2: _exitOnCombat <BOOL>
-                - 3: _equipmentLevel <ARRAY or STRING>
+                - 3: _equipmentLevel <STRING[], (STRING,NUMBER)[], or STRING>
                 - 4: _animationMap <HASHMAP or CONFIG>
 
     2: _exitOnCombat <BOOL> - True for unit to return to the state it was in prior to
