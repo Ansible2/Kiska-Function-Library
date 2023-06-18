@@ -80,7 +80,7 @@ _dropArray apply {
     };
 
     if (_x isEqualType objNull) then {
-        if (_x in _aircraft) apply {
+        if (_x in _aircraft) {
             _dropArrayFiltered pushBack _x;
         };
     };
