@@ -3,7 +3,7 @@ Function: KISKA_fnc_managedRun_updateCode
 
 Description:
     Adjusts the code for a given ID that will run when called 
-     from KISKA_fnc_managedRun_runCode
+     from KISKA_fnc_managedRun_execute
 
 Parameters:
     0: _nameOfCode : <STRING> - The name of the code to update
