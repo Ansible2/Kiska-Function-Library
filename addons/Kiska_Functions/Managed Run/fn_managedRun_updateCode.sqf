@@ -24,7 +24,7 @@ Author(s):
 scriptName "KISKA_fnc_managedRun_updateCode";
 
 params [
-    ["_nameOfCode",objNull,[objNull]],
+    ["_nameOfCode","",[""]],
     ["_code",{},[{},[],""]]
 ];
 
