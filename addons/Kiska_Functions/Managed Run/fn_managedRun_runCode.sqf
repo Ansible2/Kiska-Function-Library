@@ -2,7 +2,20 @@
 Function: KISKA_fnc_managedRun_runCode
 
 Description:
-    
+	Allows multiple systems to manage a particular functionality or subset of code
+	 by restricting runs to only the latest id for a given namespace
+
+    The code must be added with KISKA_fnc_managedRun_updateCode.
+
+	An example is having competing systems that need to adjust the damage of the player
+	 at different times an perhaps with delays. Perhaps one system starts by taking ownership
+	 of this functionality to not allow the player to be damaged, however, later this system
+	 will reset wether or not the player has damage allowed after some delay.
+	If another system (or the same one again in the future) wants to take ownership of this
+	 functionality to also set the player to not allow damage BEFORE the previous system
+	 has reset the player's isDamageAllowed state, it could become complex to try and handle
+	 the reset vs continuing to allow the player to not take damage. Instead, the previous
+	 system's code will now be blocked from running, as another id has taken ownership.
 
 Parameters:
     0: _nameOfCode : <STRING> - The name of the code to run previously added with
@@ -16,7 +29,8 @@ Parameters:
     4: _isScheduled : <BOOL> - Whether the code will be executed in a scheduled environment
 
 Returns:
-    <NUMBER> - The id of the run made
+    <NUMBER> - The id of the run made, `-1` if code was not run or a new id to make future runs
+		against for a particular system.
 
 Examples:
     (begin example)
