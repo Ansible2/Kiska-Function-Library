@@ -19,7 +19,8 @@ Parameters:
     8: _postSupportCode : <CODE, ARRAY, or STRING> - Code to execute after the support completes.
             See KISKA_fnc_callBack.
             The default behaviour is for the aircraft to move 2000 meters away and for
-            its complete crew and self to be deleted.
+             its complete crew and self to be deleted. The _postSupportCode should return a `BOOL`
+             that if `true` will NOT perform the default behaviour in addition to the callback.
         
             Parameters:
             - 0: <OBJECT> - The helicopter confucting support
@@ -173,16 +174,21 @@ _params spawn {
 
     // move to support zone
     // checking driver instead of cache to see if they got out of the vehicle
+    private _vehicleEffective = true;
     waitUntil {
         if (
             (!alive _vehicle) OR 
+            (((getPosATL _vehicle) select 2) < 2) OR 
             {isNull (driver _vehicle)} OR 
             {(_vehicle distance2D _centerPosition) <= _radius}
         ) then {
+            _vehicleEffective = false;
             breakWith true
         };
+
         _pilotsGroup move _centerPosition;
         sleep 2;
+
         false
     };
 
@@ -190,43 +196,47 @@ _params spawn {
     /* ----------------------------------------------------------------------------
         Do support
     ---------------------------------------------------------------------------- */
-    [
-        _vehicle,
-        5,
-        4,
-        _radius * 2,
-        1,
-        true
-    ] spawn KISKA_fnc_engageHeliTurretsLoop;
+    if (_vehicleEffective) then {
+        [
+            _vehicle,
+            5,
+            4,
+            _radius * 2,
+            1,
+            true
+        ] spawn KISKA_fnc_engageHeliTurretsLoop;
 
-    // to keep helicopters from just wildly flying around
-    _vehicle limitSpeed _supportSpeedLimit;
+        // to keep helicopters from just wildly flying around
+        _vehicle limitSpeed _supportSpeedLimit;
 
-    private _sleepTime = _timeOnStation / 5;
-    for "_i" from 0 to 4 do {
-        if (
-            (!alive _vehicle) OR 
-            (isNull (driver _vehicle))
-        ) then {
-            break;
+        private _sleepTime = _timeOnStation / 5;
+        for "_i" from 0 to 4 do {
+            if (
+                (!alive _vehicle) OR 
+                (isNull (driver _vehicle))
+            ) then {
+                _vehicleEffective = false;
+                break;
+            };
+
+            _vehicle doMove (_centerPosition getPos [_radius,STAR_BEARINGS select _i]);
+            sleep _sleepTime;
         };
 
-        _vehicle doMove (_centerPosition getPos [_radius,STAR_BEARINGS select _i]);
-        sleep _sleepTime;
+        _vehicle setVariable ["KISKA_heliTurrets_endLoop",true];
+
+        /* ----------------------------------------------------------------------------
+            After support is done
+        ---------------------------------------------------------------------------- */
+        //[TYPE_CAS_ABORT,_vehicleCrew select 0,_side] call KISKA_fnc_supportRadio;
+
+        // remove speed limit
+        _vehicle limitSpeed 99999;
     };
 
-    _vehicle setVariable ["KISKA_heliTurrets_endLoop",true];
-
-    /* ----------------------------------------------------------------------------
-        After support is done
-    ---------------------------------------------------------------------------- */
-    //[TYPE_CAS_ABORT,_vehicleCrew select 0,_side] call KISKA_fnc_supportRadio;
-
-    // remove speed limit
-    _vehicle limitSpeed 99999;
-
-    if (_postSupportCode isNotEqualTo {}) exitWith {
-        [
+    private _exitFromCallBack = false;
+    if (_postSupportCode isNotEqualTo {}) then {
+        _exitFromCallBack = [
             [
                 _vehicle,
                 _pilotsGroup,
@@ -237,37 +247,41 @@ _params spawn {
         ] call KISKA_fnc_callBack;
     };
 
-    // get helicopter to disengage and rtb
-    (currentPilot _vehicle) disableAI "AUTOTARGET";
-    _pilotsGroup setCombatMode "BLUE";
+    if (_exitFromCallBack) exitWith {};
 
-    // not using waypoints here because they are auto-deleted for an unkown reason a few seconds after being created for the unit
 
-    // return to spawn position area
-    private _deletePosition = _centerPosition getPos [SPAWN_DISTANCE,_approachBearing + 180];
-    _vehicle doMove _deletePosition;
+    if (_vehicleEffective) then {
+        // get helicopter to disengage and rtb
+        (currentPilot _vehicle) disableAI "AUTOTARGET";
+        _pilotsGroup setCombatMode "BLUE";
 
-    waitUntil {
-        if (
-            (!alive _vehicle) OR 
-            {(_vehicle distance2D _deletePosition) <= 200}
-        ) then {
-            breakWith true
+        // not using waypoints here because they are auto-deleted for an unkown reason a few seconds after being created for the unit
+
+        // return to spawn position area
+        private _deletePosition = _centerPosition getPos [SPAWN_DISTANCE,_approachBearing + 180];
+        _vehicle doMove _deletePosition;
+
+        waitUntil {
+            if (
+                (!alive _vehicle) OR 
+                {(_vehicle distance2D _deletePosition) <= 200}
+            ) then {
+                breakWith true
+            };
+
+            // if vehicle is disabled and makes a landing, just blow it up
+            if (
+                (((getPosATL _vehicle) select 2) < 2) OR 
+                (isNull (driver _vehicle))
+            ) exitWith {
+                _vehicle setDamage 1;
+                true
+            };
+
+            sleep 2;
+            false
         };
-
-        // if vehicle is disabled and makes a landing, just blow it up
-        if (
-            (((getPosATL _vehicle) select 2) < 2) OR 
-            (isNull (driver _vehicle))
-        ) exitWith {
-            _vehicle setDamage 1;
-            true
-        };
-
-        sleep 2;
-        false
     };
-
 
     _vehicleCrew apply {
         if (alive _x) then {
