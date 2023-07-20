@@ -6,7 +6,7 @@ Description:
      engage enemy targets in a given area.
 
 Parameters:
-    0: _centerPosition : <ARRAY(AGL), OBJECT> - The position around which the helicopter will patrol
+    0: _centerPosition : <PositionAGL[], OBJECT> - The position around which the helicopter will patrol
     1: _radius : <NUMBER> - The size of the radius to patrol around
     2: _aircraftType : <STRING or OBJECT> - The class of the helicopter to spawn
         If object, it is expected that this is a helicopter with crew
@@ -24,13 +24,13 @@ Parameters:
             Parameters:
             - 0: <OBJECT> - The helicopter confucting support
             - 1: <GROUP> - The group the pilot belongs to
-            - 2: <ARRAY> - The full vehicle crew
+            - 2: <OBJECT[]> - The full vehicle crew
             - 3: <ARRAY> - The position the helicopter was supporting
 
 Returns:
     ARRAY - The vehicle info
         0: <OBJECT> - The vehicle created
-        1: <ARRAY> - The vehicle crew
+        1: <OBJECT[]> - The vehicle crew
         2: <GROUP> - The group the crew is a part of
 
 Examples:
@@ -92,8 +92,13 @@ if (_turretsWithWeapons isEqualTo []) exitWith {
 if (_approachBearing < 0) then {
     _approachBearing = round (random 360);
 };
-private _spawnPosition = _centerPosition getPos [SPAWN_DISTANCE,_approachBearing + 180];
-_spawnPosition set [2,_flyInHeight];
+
+private _spawnPosition = [
+    _centerPosition,
+    SPAWN_DISTANCE,
+    (_approachBearing + 180)
+] call KISKA_fnc_getPosRelativeSurface;
+_spawnPosition vectorAdd [0,0,_flyInHeight];
 
 if (_vehicleArray isEqualTo []) then {
     _vehicleArray = [_spawnPosition,0,_aircraftType,_side, false] call KISKA_fnc_spawnVehicle;
@@ -169,8 +174,12 @@ _params spawn {
     // move to support zone
     // checking driver instead of cache to see if they got out of the vehicle
     waitUntil {
-        if ((!alive _vehicle) OR (isNull (driver _vehicle)) OR {(_vehicle distance2D _centerPosition) <= _radius}) exitWith {
-            true
+        if (
+            (!alive _vehicle) OR 
+            {isNull (driver _vehicle)} OR 
+            {(_vehicle distance2D _centerPosition) <= _radius}
+        ) then {
+            breakWith true
         };
         _pilotsGroup move _centerPosition;
         sleep 2;
@@ -195,13 +204,15 @@ _params spawn {
 
     private _sleepTime = _timeOnStation / 5;
     for "_i" from 0 to 4 do {
-
-        if (!alive _vehicle OR (isNull (driver _vehicle))) then {
+        if (
+            (!alive _vehicle) OR 
+            (isNull (driver _vehicle))
+        ) then {
             break;
         };
+
         _vehicle doMove (_centerPosition getPos [_radius,STAR_BEARINGS select _i]);
         sleep _sleepTime;
-
     };
 
     _vehicle setVariable ["KISKA_heliTurrets_endLoop",true];
@@ -237,10 +248,18 @@ _params spawn {
     _vehicle doMove _deletePosition;
 
     waitUntil {
-        if (!alive _vehicle OR {(_vehicle distance2D _deletePosition) <= 200}) exitWith {true};
+        if (
+            (!alive _vehicle) OR 
+            {(_vehicle distance2D _deletePosition) <= 200}
+        ) then {
+            breakWith true
+        };
 
         // if vehicle is disabled and makes a landing, just blow it up
-        if (((getPosATL _vehicle) select 2) < 2 OR (isNull (driver _vehicle))) exitWith {
+        if (
+            (((getPosATL _vehicle) select 2) < 2) OR 
+            (isNull (driver _vehicle))
+        ) exitWith {
             _vehicle setDamage 1;
             true
         };

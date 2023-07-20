@@ -210,8 +210,13 @@ if (_exitToDefault) exitwith {
 /* ----------------------------------------------------------------------------
     Position plane towards target
 ---------------------------------------------------------------------------- */
-private _planeSpawnPosition = _attackPosition getPos [_spawnDistance,_attackDirection + 180];
-_planeSpawnPosition set [2,_spawnHeight];
+private _planeSpawnPosition = [
+    _attackPosition,
+    _spawnDistance,
+    (_attackDirection + 180)
+] call KISKA_fnc_getPositionRelativeATL;
+_planeSpawnPosition vectorAdd [0,0,_spawnHeight];
+
 private _planeArray = [_planeSpawnPosition,_attackDirection,_planeClass,_side,false] call KISKA_fnc_spawnVehicle;
 private _plane = _planeArray select 0;
 private _crew = _planeArray select 1;

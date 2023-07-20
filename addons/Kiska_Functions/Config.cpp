@@ -553,6 +553,8 @@ class CfgFunctions
             {};
             class getNearestIncriment
             {};
+            class getPosRelativeSurface
+            {};
             class getRelativeVectorAndPos
             {};
             class getVariableTarget

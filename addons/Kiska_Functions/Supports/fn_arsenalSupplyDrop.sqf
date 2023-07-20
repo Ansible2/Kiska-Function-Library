@@ -53,8 +53,12 @@ if (_flyDirection < 0) then {
     _flyDirection = round (random 360);
 };
 private _flyFromDirection = [_flyDirection + 180] call CBA_fnc_simplifyAngle;
-private _spawnPosition = _dropPosition getPos [_flyInRadius,_flyFromDirection];
-_spawnPosition set [2,_dropAlt];
+private _spawnPosition = [
+    _dropPosition,
+    _flyInRadius,
+    _flyFromDirection
+] call KISKA_fnc_getPosRelativeSurface;
+_spawnPosition vectorAdd [0,0,_dropAlt];
 
 private _relativeDirection = _spawnPosition getDir _dropPosition;
 
