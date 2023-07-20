@@ -42,7 +42,7 @@ private _relativePosition = _centerPosition getPos [_distance,_bearing];
 private _height = _relativePosition select 2;
 private _isUnderwater = _height < 0;
 if (_isUnderwater) then {
-    _height set [2,0];
+    _relativePosition set [2,0];
     _relativePosition = ASLToATL _relativePosition;
 };
 
