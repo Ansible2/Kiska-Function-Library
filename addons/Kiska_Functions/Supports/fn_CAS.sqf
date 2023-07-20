@@ -214,7 +214,7 @@ private _planeSpawnPosition = [
     _attackPosition,
     _spawnDistance,
     (_attackDirection + 180)
-] call KISKA_fnc_getPositionRelativeATL;
+] call KISKA_fnc_getPosRelativeSurface;
 _planeSpawnPosition vectorAdd [0,0,_spawnHeight];
 
 private _planeArray = [_planeSpawnPosition,_attackDirection,_planeClass,_side,false] call KISKA_fnc_spawnVehicle;
