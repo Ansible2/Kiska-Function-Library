@@ -6,7 +6,7 @@ Description:
      engage enemy targets in a given area.
 
 Parameters:
-    0: _centerPosition : <PositionAGL[], OBJECT> - The position around which the helicopter will patrol
+    0: _centerPosition : <Position[], OBJECT> - The position around which the helicopter will patrol
     1: _radius : <NUMBER> - The size of the radius to patrol around
     2: _aircraftType : <STRING or OBJECT> - The class of the helicopter to spawn
         If object, it is expected that this is a helicopter with crew
@@ -26,7 +26,8 @@ Parameters:
             - 0: <OBJECT> - The helicopter confucting support
             - 1: <GROUP> - The group the pilot belongs to
             - 2: <OBJECT[]> - The full vehicle crew
-            - 3: <ARRAY> - The position the helicopter was supporting
+            - 3: <OBJECT> - The unit that *should* be the pilot of the helicopter
+            - 4: <ARRAY> - The position the helicopter was supporting
 
 Returns:
     ARRAY - The vehicle info
@@ -54,7 +55,7 @@ scriptName "KISKA_fnc_helicopterGunner";
 #define STAR_BEARINGS [0,144,288,72,216]
 
 params [
-    "_centerPosition",
+    ["_centerPosition",[],[objNull,[]],[2,3]],
     ["_radius",200,[123]],
     ["_aircraftType","",["",objNull]],
     ["_timeOnStation",180,[123]],
@@ -70,7 +71,8 @@ params [
     verify vehicle has turrets that are not fire from vehicle and not copilot positions
 ---------------------------------------------------------------------------- */
 private _vehicleArray = [];
-if (_aircraftType isEqualType objNull) then {
+private _vehicleExistedBeforeFunction = _aircraftType isEqualType objNull;
+if (_vehicleExistedBeforeFunction) then {
     private _aircraft = _aircraftType;
     _aircraftType = typeOf _aircraft;
 
@@ -80,7 +82,6 @@ if (_aircraftType isEqualType objNull) then {
 };
 private _turretsWithWeapons = [_aircraftType] call KISKA_fnc_classTurretsWithGuns;
 
-// go to default aircraft type if no suitable turrets are found
 if (_turretsWithWeapons isEqualTo []) exitWith {
     [[_aircraftType," does not meet standards for function!"],true] call KISKA_fnc_log;
     []
@@ -90,46 +91,230 @@ if (_turretsWithWeapons isEqualTo []) exitWith {
 /* ----------------------------------------------------------------------------
     Create vehicle
 ---------------------------------------------------------------------------- */
-if (_approachBearing < 0) then {
-    _approachBearing = round (random 360);
+if (!_vehicleExistedBeforeFunction) then {
+    if (_approachBearing < 0) then {
+        _approachBearing = round (random 360);
+    };
+
+    private _spawnPosition = [
+        _centerPosition,
+        SPAWN_DISTANCE,
+        (_approachBearing + 180),
+        _flyInHeight
+    ] call KISKA_fnc_getPosRelativeSurface;
+
+    _vehicleArray = [
+        _spawnPosition,
+        0,
+        _aircraftType,
+        _side, 
+        false
+    ] call KISKA_fnc_spawnVehicle;
 };
 
-private _spawnPosition = [
-    _centerPosition,
-    SPAWN_DISTANCE,
-    (_approachBearing + 180)
-] call KISKA_fnc_getPosRelativeSurface;
-_spawnPosition vectorAdd [0,0,_flyInHeight];
+_vehicleArray params ["_heli","_pilotsGroup","_heliCrew"];
+private _pilot = currentPilot _heli;
 
-if (_vehicleArray isEqualTo []) then {
-    _vehicleArray = [_spawnPosition,0,_aircraftType,_side, false] call KISKA_fnc_spawnVehicle;
-};
-
-// disable HC transfer
-private _pilotsGroup = _vehicleArray select 2;
 [_pilotsGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
 
-private _vehicle = _vehicleArray select 0;
 // if using an already exisiting aircraft, the enigne must be on prior to getting a "move" command
-if !(isEngineOn _vehicle) then {
-    _vehicle engineOn true;
+if !(isEngineOn _heli) then {
+    _heli engineOn true;
 };
-_vehicle flyInHeight _flyInHeight;
-// notify side if destroyed
-_vehicle addEventHandler ["KILLED",{
-    params ["_vehicle"];
-    //[TYPE_HELO_DOWN,_vehicleCrew select 0,_side] call KISKA_fnc_supportRadio;
+_heli flyInHeight _flyInHeight;
 
-    (crew _vehicle) apply {
-        if (alive _x) then {
-            deleteVehicle _x
-        };
-    };
+
+_heli setVariable ["KISKA_helicopterGunner_vehicleInfo",[_heli,_pilotsGroup,_heliCrew,_pilot]];
+_pilot setVariable ["KISKA_helicopterGunner_vehicleInfo",[_heli,_pilotsGroup,_heliCrew,_pilot]];
+
+/* ----------------------------------------------------------------------------
+    Eventhandlers
+---------------------------------------------------------------------------- */
+/* ---------------------------------------
+    Heli Killed Event
+--------------------------------------- */
+private _heliKilledEventId = _heli addEventHandler ["KILLED", {
+    params ["_heli"];
+
+    private _args = _heli getVariable ["KISKA_helicopterGunner_vehicleInfo",[]];
+    [
+        _heli, 
+        "KISKA_helicopterGunner_event_heliKilled", 
+        _args, 
+        false
+    ] call BIS_fnc_callScriptedEventHandler;
+
+    [_heli,"KISKA_helicopterGunner_event_heliKilled"] call BIS_fnc_removeAllScriptedEventHandlers;
+
+    _heli setVariable ["KISKA_helicopterGunner_stop",true];
 }];
+_heli setVariable ["KISKA_helicopterGunner_heliKilledEventId",_heliKilledEventId];
 
 
+/* ---------------------------------------
+    Pilot Killed Event
+--------------------------------------- */
+private _pilotKilledEventId = _pilot addEventHandler ["KILLED", {
+    params ["_pilot"];
 
-private _vehicleCrew = _vehicleArray select 1;
+    private _args = _pilot getVariable ["KISKA_helicopterGunner_vehicleInfo",[]];
+    [
+        _pilot, 
+        "KISKA_helicopterGunner_event_pilotKilled", 
+        _args, 
+        false
+    ] call BIS_fnc_callScriptedEventHandler;
+
+    [_pilot,"KISKA_helicopterGunner_event_pilotKilled"] call BIS_fnc_removeAllScriptedEventHandlers;
+
+    private _heli = _args param [0,objNull];
+    _heli setVariable ["KISKA_helicopterGunner_stop",true];
+}];
+_pilot setVariable ["KISKA_helicopterGunner_pilotKilledEventId",_pilotKilledEventId];
+
+
+/* ---------------------------------------
+    Pilot Getout Event
+--------------------------------------- */
+private _pilotGetOutEventId = _pilot addEventHandler ["GetOutMan", {
+    params ["_pilot"];
+
+    private _args = _pilot getVariable ["KISKA_helicopterGunner_vehicleInfo",[]];
+    [
+        _pilot, 
+        "KISKA_helicopterGunner_event_pilotGotOut", 
+        _args, 
+        false
+    ] call BIS_fnc_callScriptedEventHandler;
+
+    [_pilot,"KISKA_helicopterGunner_event_pilotGotOut"] call BIS_fnc_removeAllScriptedEventHandlers;
+
+    private _heli = _args param [0,objNull];
+    _heli setVariable ["KISKA_helicopterGunner_stop",true];
+}];
+_pilot setVariable ["KISKA_helicopterGunner_pilotGotOutEventId",_pilotGetOutEventId];
+
+
+/* ---------------------------------------
+    Add default events
+--------------------------------------- */
+if (!_vehicleExistedBeforeFunction) then {
+    [
+        _heli,
+        "KISKA_helicopterGunner_event_heliKilled",
+        { 
+            params ["_heli","","_heliCrew"];
+
+            
+            _heliCrew apply {
+                _heli deleteVehicleCrew _x;
+            };
+        }
+    ] call BIS_fnc_addScriptedEventHandler;
+
+    [
+        _heli,
+        "KISKA_helicopterGunner_event_pilotKilled",
+        { 
+            params ["_heli"];
+            _heli setDamage 1;
+        }
+    ] call BIS_fnc_addScriptedEventHandler;
+
+    [
+        _heli,
+        "KISKA_helicopterGunner_event_pilotGotOut",
+        { 
+            params ["_heli"];
+            _heli setDamage 1;
+        }
+    ] call BIS_fnc_addScriptedEventHandler;
+};
+
+/* ----------------------------------------------------------------------------
+    Post Support Function
+---------------------------------------------------------------------------- */
+private _fn_supportEnded = {
+    params [
+        _heli,
+        _pilotsGroup,
+        _heliCrew,
+        _pilot,
+        _centerPosition
+    ];
+
+    private _runDefault = true;
+    if (_postSupportCode isNotEqualTo {}) then {
+        _runDefault = [
+            _this,
+            _postSupportCode
+        ] call KISKA_fnc_callBack;
+    };
+
+
+    if (
+        (!_runDefault) OR 
+        (_heli getVariable ["KISKA_helicopterGunner_stop",true])
+    ) exitWith {
+        [_heli,"KISKA_helicopterGunner_event_heliKilled"] call BIS_fnc_removeAllScriptedEventHandlers;
+        [_pilot,"KISKA_helicopterGunner_event_pilotKilled"] call BIS_fnc_removeAllScriptedEventHandlers;
+        [_pilot,"KISKA_helicopterGunner_event_pilotGotOut"] call BIS_fnc_removeAllScriptedEventHandlers;
+
+        _heli removeEventHandler [
+            "KILLED",
+            _heli getVariable ["KISKA_helicopterGunner_heliKilledEventId",-1]
+        ];
+        _pilot removeEventHandler [
+            "KILLED",
+            _pilot getVariable ["KISKA_helicopterGunner_pilotKilledEventId",-1]
+        ];
+        _pilot removeEventHandler [
+            "GetOutMan",
+            _pilot getVariable ["KISKA_helicopterGunner_pilotGotOutEventId",-1]
+        ];
+    };
+
+
+    // get helicopter to disengage and rtb
+    _pilot disableAI "AUTOTARGET";
+    _pilotsGroup setCombatMode "BLUE";
+
+    // not using waypoints here because they are auto-deleted for an unkown reason a few seconds after being created for the unit
+
+    // return to spawn position area
+    private _deletePosition = _centerPosition getPos [SPAWN_DISTANCE,_approachBearing + 180];
+    _heli doMove _deletePosition;
+
+    waitUntil {
+        private _isOnGround = ((getPosATL _heli) select 2) < 2;
+        if (
+            _isOnGround OR
+            (_heli getVariable ["KISKA_helicopterGunner_stop",true]) OR
+            {(_heli distance2D _deletePosition) <= 200}
+        ) then {
+            if (_isOnGround) then {
+                _heli setDamage 1;
+            };
+
+            breakWith true
+        };
+
+        sleep 2;
+        false
+    };
+
+    // killed event shousld have taken care of cleanup
+    if !(alive _heli) exitWith {};
+
+    [_heli,"KISKA_helicopterGunner_event_heliKilled"] call BIS_fnc_removeAllScriptedEventHandlers;
+    [_pilot,"KISKA_helicopterGunner_event_pilotKilled"] call BIS_fnc_removeAllScriptedEventHandlers;
+    [_pilot,"KISKA_helicopterGunner_event_pilotGotOut"] call BIS_fnc_removeAllScriptedEventHandlers;
+
+    _heliCrew apply {
+        _heli deleteVehicleCrew _x;
+    };
+    deleteVehicle _heli;
+};
 
 
 /* ----------------------------------------------------------------------------
@@ -140,6 +325,9 @@ if (_centerPosition isEqualType objNull) then {
     _centerPosition = getPosATL _centerPosition;
 };
 
+_heli setVariable ["KISKA_helicopterGunner_stop",false];
+
+
 private _params = [
     _centerPosition,
     _radius,
@@ -147,10 +335,12 @@ private _params = [
     _supportSpeedLimit,
     _approachBearing,
     _side,
-    _vehicle,
+    _heli,
     _pilotsGroup,
-    _vehicleCrew,
-    _postSupportCode
+    _heliCrew,
+    _pilot,
+    _postSupportCode,
+    _fn_supportEnded
 ];
 
 _params spawn {
@@ -161,10 +351,12 @@ _params spawn {
         "_supportSpeedLimit",
         "_approachBearing",
         "_side",
-        "_vehicle",
+        "_heli",
         "_pilotsGroup",
-        "_vehicleCrew",
-        "_postSupportCode"
+        "_heliCrew",
+        "_pilot",
+        "_postSupportCode",
+        "_fn_supportEnded"
     ];
 
     // once you go below a certain radius, it becomes rather unnecessary
@@ -176,11 +368,11 @@ _params spawn {
     // checking driver instead of cache to see if they got out of the vehicle
     private _vehicleEffective = true;
     waitUntil {
+        private _isOnGround = ((getPosATL _heli) select 2) < 2;
+
         if (
-            (!alive _vehicle) OR 
-            (((getPosATL _vehicle) select 2) < 2) OR 
-            {isNull (driver _vehicle)} OR 
-            {(_vehicle distance2D _centerPosition) <= _radius}
+            _isOnGround OR 
+            (_heli getVariable ["KISKA_helicopterGunner_stop",true])
         ) then {
             _vehicleEffective = false;
             breakWith true
@@ -192,105 +384,65 @@ _params spawn {
         false
     };
 
+    
+    if !(_vehicleEffective) exitWith {
+        [
+            _heli,
+            _pilotsGroup,
+            _heliCrew,
+            _pilot,
+            _centerPosition
+        ] call _fn_supportEnded;
+    };
+
 
     /* ----------------------------------------------------------------------------
         Do support
     ---------------------------------------------------------------------------- */
-    if (_vehicleEffective) then {
-        [
-            _vehicle,
-            5,
-            4,
-            _radius * 2,
-            1,
-            true
-        ] spawn KISKA_fnc_engageHeliTurretsLoop;
+    [
+        _heli,
+        5,
+        4,
+        _radius * 2,
+        1,
+        true
+    ] spawn KISKA_fnc_engageHeliTurretsLoop;
 
-        // to keep helicopters from just wildly flying around
-        _vehicle limitSpeed _supportSpeedLimit;
+    // to keep helicopters from just wildly flying around
+    _heli limitSpeed _supportSpeedLimit;
 
-        private _sleepTime = _timeOnStation / 5;
-        for "_i" from 0 to 4 do {
-            if (
-                (!alive _vehicle) OR 
-                (isNull (driver _vehicle))
-            ) then {
-                _vehicleEffective = false;
-                break;
-            };
-
-            _vehicle doMove (_centerPosition getPos [_radius,STAR_BEARINGS select _i]);
-            sleep _sleepTime;
+    private _sleepTime = _timeOnStation / 5;
+    for "_i" from 0 to 4 do {
+        if (
+            (!alive _heli) OR 
+            (isNull (driver _heli))
+        ) then {
+            _vehicleEffective = false;
+            break;
         };
 
-        _vehicle setVariable ["KISKA_heliTurrets_endLoop",true];
-
-        /* ----------------------------------------------------------------------------
-            After support is done
-        ---------------------------------------------------------------------------- */
-        //[TYPE_CAS_ABORT,_vehicleCrew select 0,_side] call KISKA_fnc_supportRadio;
-
-        // remove speed limit
-        _vehicle limitSpeed 99999;
+        _heli doMove (_centerPosition getPos [_radius,STAR_BEARINGS select _i]);
+        sleep _sleepTime;
     };
 
-    private _exitFromCallBack = false;
-    if (_postSupportCode isNotEqualTo {}) then {
-        _exitFromCallBack = [
-            [
-                _vehicle,
-                _pilotsGroup,
-                _vehicleCrew,
-                _centerPosition
-            ],
-            _postSupportCode
-        ] call KISKA_fnc_callBack;
-    };
+    // end engage heli turrets loop
+    _heli setVariable ["KISKA_heliTurrets_endLoop",true];
 
-    if (_exitFromCallBack) exitWith {};
+    /* ----------------------------------------------------------------------------
+        After support is done
+    ---------------------------------------------------------------------------- */
+    //[TYPE_CAS_ABORT,_heliCrew select 0,_side] call KISKA_fnc_supportRadio;
 
+    // remove speed limit
+    _heli limitSpeed 99999;
 
-    if (_vehicleEffective) then {
-        // get helicopter to disengage and rtb
-        (currentPilot _vehicle) disableAI "AUTOTARGET";
-        _pilotsGroup setCombatMode "BLUE";
-
-        // not using waypoints here because they are auto-deleted for an unkown reason a few seconds after being created for the unit
-
-        // return to spawn position area
-        private _deletePosition = _centerPosition getPos [SPAWN_DISTANCE,_approachBearing + 180];
-        _vehicle doMove _deletePosition;
-
-        waitUntil {
-            if (
-                (!alive _vehicle) OR 
-                {(_vehicle distance2D _deletePosition) <= 200}
-            ) then {
-                breakWith true
-            };
-
-            // if vehicle is disabled and makes a landing, just blow it up
-            if (
-                (((getPosATL _vehicle) select 2) < 2) OR 
-                (isNull (driver _vehicle))
-            ) exitWith {
-                _vehicle setDamage 1;
-                true
-            };
-
-            sleep 2;
-            false
-        };
-    };
-
-    _vehicleCrew apply {
-        if (alive _x) then {
-            _vehicle deleteVehicleCrew _x;
-        };
-    };
-    if (alive _vehicle) then {
-        deleteVehicle _vehicle;
-    };
+    [
+        _heli,
+        _pilotsGroup,
+        _heliCrew,
+        _pilot,
+        _centerPosition
+    ] call _fn_supportEnded;
 };
 
 
