@@ -20,7 +20,7 @@ Parameters:
             See KISKA_fnc_callBack.
             The default behaviour is for the aircraft to move 2000 meters away and for
              its complete crew and self to be deleted. The _postSupportCode should return a `BOOL`
-             that if `true` will NOT perform the default behaviour in addition to the callback.
+             that if `false` will NOT perform the default behaviour in addition to the callback.
         
             Parameters:
             - 0: <OBJECT> - The helicopter confucting support
@@ -112,7 +112,7 @@ if (!_vehicleExistedBeforeFunction) then {
     ] call KISKA_fnc_spawnVehicle;
 };
 
-_vehicleArray params ["_heli","_pilotsGroup","_heliCrew"];
+_vehicleArray params ["_heli","_heliCrew","_pilotsGroup"];
 private _pilot = currentPilot _heli;
 
 [_pilotsGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
@@ -236,15 +236,18 @@ if (!_vehicleExistedBeforeFunction) then {
 ---------------------------------------------------------------------------- */
 private _fn_supportEnded = {
     params [
-        _heli,
-        _pilotsGroup,
-        _heliCrew,
-        _pilot,
-        _centerPosition
+        ["_heli",objNull,[objNull]],
+        ["_pilotsGroup",grpNull,[grpNull]],
+        ["_heliCrew",[],[[]]],
+        ["_pilot",objNull,[objNull]],
+        ["_centerPosition",[],[[]]],
+        ["_postSupportCode",{},[{},"",[]]],
+        ["_approachBearing",0,[123]]
     ];
 
     private _runDefault = true;
-    if (_postSupportCode isNotEqualTo {}) then {
+    private _postSupportCodeIsNotEmpty = (_postSupportCode isNotEqualTo {}) AND (_postSupportCode isNotEqualTo "") AND (_postSupportCode isNotEqualTo []);
+    if (_postSupportCodeIsNotEmpty) then {
         _runDefault = [
             _this,
             _postSupportCode
@@ -369,7 +372,6 @@ _params spawn {
     private _vehicleEffective = true;
     waitUntil {
         private _isOnGround = ((getPosATL _heli) select 2) < 2;
-
         if (
             _isOnGround OR 
             (_heli getVariable ["KISKA_helicopterGunner_stop",true])
@@ -381,7 +383,7 @@ _params spawn {
         _pilotsGroup move _centerPosition;
         sleep 2;
 
-        false
+        ((_heli distance2D _centerPosition) <= _radius)
     };
 
     
@@ -391,7 +393,9 @@ _params spawn {
             _pilotsGroup,
             _heliCrew,
             _pilot,
-            _centerPosition
+            _centerPosition,
+            _postSupportCode,
+            _approachBearing
         ] call _fn_supportEnded;
     };
 
@@ -410,19 +414,36 @@ _params spawn {
 
     // to keep helicopters from just wildly flying around
     _heli limitSpeed _supportSpeedLimit;
-
-    private _sleepTime = _timeOnStation / 5;
-    for "_i" from 0 to 4 do {
+    private _sleepTime = 20;
+    private _numberOfBearings = count STAR_BEARINGS;
+    private _elapsedTime = 0;
+    private _bearingIndex = 0;
+    while {_timeOnStation > _elapsedTime} do {
+         private _isOnGround = ((getPosATL _heli) select 2) < 2;
         if (
-            (!alive _heli) OR 
-            (isNull (driver _heli))
+            _isOnGround OR 
+            (_heli getVariable ["KISKA_helicopterGunner_stop",true])
         ) then {
-            _vehicleEffective = false;
             break;
         };
 
-        _heli doMove (_centerPosition getPos [_radius,STAR_BEARINGS select _i]);
-        sleep _sleepTime;
+        private _movePos = _centerPosition getPos [_radius,STAR_BEARINGS select _bearingIndex];
+        _bearingIndex = _bearingIndex + 1;
+        if (_bearingIndex >= _numberOfBearings) then {
+            _bearingIndex = 0;
+        };
+
+        _heli doMove _movePos;
+
+        private _newElapsedTime = _elapsedTime + _sleepTime;
+        private _isLastRotation = _newElapsedTime > _timeOnStation;
+        if (_isLastRotation) then {
+            sleep (_timeOnStation - _elapsedTime);
+        } else {
+            sleep _sleepTime;
+        };
+
+        _elapsedTime = _newElapsedTime;
     };
 
     // end engage heli turrets loop
@@ -441,7 +462,9 @@ _params spawn {
         _pilotsGroup,
         _heliCrew,
         _pilot,
-        _centerPosition
+        _centerPosition,
+        _postSupportCode,
+        _approachBearing
     ] call _fn_supportEnded;
 };
 
