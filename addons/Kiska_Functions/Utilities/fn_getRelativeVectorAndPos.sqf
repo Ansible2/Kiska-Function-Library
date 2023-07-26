@@ -11,9 +11,9 @@ Parameters:
 
 Returns:
     <ARRAY> -
-        0: <ARRAY> - Relative world pos
-        1: <ARRAY> - Relative vector dir
-        2: <ARRAY> - Relative vector up
+        0: <PositionWorld[]> - Relative world pos
+        1: <Vector[]> - Relative vector dir
+        2: <Vector[]> - Relative vector up
 
 Examples:
     (begin example)
