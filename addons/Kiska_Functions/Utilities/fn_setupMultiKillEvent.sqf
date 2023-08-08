@@ -3,10 +3,10 @@ Function: KISKA_fnc_setupMultiKillEvent
 
 Description:
     Sets up an event that will fire when a percentage of objects are killed.
-    Uses KILLED or MPKILLED eventhandlers.
+    Uses `"KILLED"` or `"MPKILLED"` eventhandlers.
 
-    This should be called where the arguements are local if _useMPKilled is false
-    or on the server if _useMPKilled is true;
+    This should be called where the arguements are local if `_useMPKilled` is `false`
+    or on the server if `_useMPKilled` is `true`.
 
 Parameters:
     0: _objects <ARRAY> - An array of objects to add some form of killed event handlers to
