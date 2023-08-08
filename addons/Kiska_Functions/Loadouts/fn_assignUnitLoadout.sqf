@@ -16,7 +16,7 @@ Returns:
 Examples:
     (begin example)
         [
-            missionConfigFile >> "KISKA_loadouts" >> ONL,
+            missionConfigFile >> "KISKA_loadouts" >> "ONL",
             unit1
         ] call KISKA_fnc_assignUnitLoadout
     (end)
