@@ -13,9 +13,9 @@ Parameters:
     1: _menuTitle : <STRING> - The title of the menu that will appear when it is openned
     2: _menuParams : <ARRAY> - An array of arrays formatted as:
         
-        0. <STRING> - The name of the menu option
-        1. <NUMBER> - The key code for quick menu select (key 1 is code 2, 2 is 3, etc. use 0 for no key)
-        2. <ANY> - The value to assign to this menu option
+        - 0. <STRING> - The name of the menu option
+        - 1. <NUMBER> - The key code for quick menu select (key 1 is code 2, 2 is 3, etc. use 0 for no key)
+        - 2. <ANY> - The value to assign to this menu option
 
 Returns:
     <ARRAY> - The created menu array

@@ -11,10 +11,10 @@ Parameters:
     1: _event <CODE, STRING, or ARRAY> - The code to execute (SEE KISKA_fnc_callBack for array syntax).
         Parmeters:
 
-            0. <OBJECT> - The killed entity
-            1. <OBJECT> - The killer entity (vehicle or person)
-            2. <OBJECT> - The instigator entity
-            3. <BOOL> - same as useEffects in `setDamage` alt syntax
+            - 0. <OBJECT> - The killed entity
+            - 1. <OBJECT> - The killer entity (vehicle or person)
+            - 2. <OBJECT> - The instigator entity
+            - 3. <BOOL> - same as useEffects in `setDamage` alt syntax
 
 Returns:
     <NUMBER> - The entity killed event handler ID for the unit
