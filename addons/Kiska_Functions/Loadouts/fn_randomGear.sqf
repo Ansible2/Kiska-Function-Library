@@ -108,7 +108,7 @@ private _handgunGearSelector = [
 		_unit addWeapon _weapon;
 		_weaponItems apply { _unit addHandgunItem _x };
 	},
-	[]/
+	[]
 ];
 
 private _secondaryWeaponGearSelector = [
