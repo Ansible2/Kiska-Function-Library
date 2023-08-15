@@ -11,7 +11,7 @@ Parameters:
         that should return an array of classnames.
 
 Returns:
-    <ARRAY> - An array of STRING class names
+    <STRING[]> - An array of STRING class names
 
 Examples:
     (begin example)
