@@ -30,7 +30,7 @@ if (_baseConfig isEqualType "") then {
     _baseConfig = missionConfigFile >> "KISKA_Bases" >> _baseConfig;
 };
 if (isNull _baseConfig) exitWith {
-    [[_baseConfig, " is a null config path"],true] call KISKA_fnc_log;
+    ["A null _baseConfig was passed",true] call KISKA_fnc_log;
     []
 };
 
