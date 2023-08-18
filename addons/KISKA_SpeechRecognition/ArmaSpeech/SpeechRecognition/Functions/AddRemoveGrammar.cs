@@ -2,13 +2,13 @@
 
 namespace SpeechRecognition
 {
-    internal partial class Functions
+    internal partial class FunctionService
     {
-        private string AddGrammar(ExtensionCall input)
+        private string AddGrammar(ExtensionCall extensionCall)
         {
             if (
-                input == null ||
-                input.argCount < 2
+                extensionCall == null ||
+                extensionCall.argCount < 2
             )
             {
                 return "false";
@@ -19,14 +19,14 @@ namespace SpeechRecognition
             string startAndEndQuotesPattern = "(^\"|\"$)";
             string substitution = "";
             Regex regex = new Regex(startAndEndQuotesPattern);
-            string xmlString = regex.Replace(input.args[1], substitution);
+            string xmlString = regex.Replace(extensionCall.args[1], substitution);
             
             string doubleQuoteSub = "\"";
             string doubleQuotesPattern = "\"\"";
             regex = new Regex(doubleQuotesPattern);
             xmlString = regex.Replace(xmlString, doubleQuoteSub);
 
-            string grammarName = input.args[0];
+            string grammarName = extensionCall.args[0];
             Logger.Write($"AddGrammar: Grammar name is {grammarName}");
             Logger.Write($"AddGrammar: xml is:\n\n {xmlString}");
             // TODO: get a better return here (for example if the grammar already exists)

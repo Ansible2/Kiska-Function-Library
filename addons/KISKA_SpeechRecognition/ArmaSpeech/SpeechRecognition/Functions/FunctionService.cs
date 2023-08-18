@@ -1,6 +1,6 @@
 ﻿namespace SpeechRecognition
 {
-    internal partial class Functions
+    internal partial class FunctionService
     {
         private static class Names
         {
