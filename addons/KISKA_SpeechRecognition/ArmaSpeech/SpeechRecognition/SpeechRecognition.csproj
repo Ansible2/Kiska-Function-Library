@@ -54,7 +54,7 @@
   <ItemGroup>
     <Compile Include="ArmaExtension.cs" />
     <Compile Include="Functions\AddRemoveGrammar.cs" />
-    <Compile Include="Functions\Functions.cs" />
+    <Compile Include="Functions\FunctionService.cs" />
     <Compile Include="Functions\StartStopRecording.cs" />
     <Compile Include="ExtensionCall.cs" />
     <Compile Include="InputOutputHandler.cs" />
