@@ -541,6 +541,8 @@ class CfgFunctions
             {};
             class findIfBool
             {};
+            class generateUniqueId
+            {};
             class getBumperPositionRelative
             {};
             class getContainerCargo
