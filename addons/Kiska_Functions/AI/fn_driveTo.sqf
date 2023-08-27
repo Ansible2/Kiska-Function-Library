@@ -98,7 +98,13 @@ _driverGroup setSpeedMode _speed;
         unitReady _driver;
     };
 
-    private _dismountPointPos = [_dismountPoint, getPosATL _dismountPoint] select (_dismountPoint isEqualType objNull);
+    private "_dismountPointPos";
+    if (_dismountPoint isEqualType objNull) then {
+        _dismountPointPos = getPosATL _dismountPoint;
+    } else {
+        _dismountPointPos = _dismountPoint;
+    };
+
     _driverGroup move _dismountPointPos;
 
     waitUntil {
