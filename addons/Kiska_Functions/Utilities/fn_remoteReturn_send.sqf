@@ -3,12 +3,14 @@ Function: KISKA_fnc_remoteReturn_send
 
 Description:
     Gets a remote return from a scripting command on a target machine.
-    Basically remoteExec but with a  return.
+    
+    Basically remoteExec but with a return.
 
     Needs to be run in a scheduled environment as it takes time to receive
      the return.
 
     This should not be abused to obtain large returns over the network.
+    
     Be smart and use for simple types (not massive arrays).
 
 Parameters:
@@ -16,6 +18,13 @@ Parameters:
     1: _defaultValue : <ANY> - If the variable does not exist for the target, what should be returned instead
     2: _target : <NUMBER, OBJECT, or STRING> - The target to execute the _code on
     3: _scheduled : <BOOL> - Should _code be run in a scheduled environment (on target machine)
+    4: _awaitParams : <[NUMBER,NUMBER,BOOL]> - How the get from the target should be awaited
+
+        Parameters:
+        - 0: <NUMBER> - The sleep time between each check for the variable being received
+        - 1: <NUMBER> - The max time to wait for (this is not total game time but time slept)
+        - 2: <BOOL> - Whether or not the sleep time should be exponential (double every iteration)
+
 
 Returns:
     <ANY> - Whatever the code returns
@@ -42,7 +51,8 @@ params [
     ["_code","",[""]],
     ["_args",[],[[]]],
     ["_target",2,[123,objNull,""]],
-    ["_scheduled",false,[true]]
+    ["_scheduled",false,[true]],
+    ["_awaitParams",[],[[]]]
 ];
 
 if ((_target isEqualType objNull) AND {isNull _target}) exitWith {
@@ -84,20 +94,46 @@ if (_exitForMultiUserTarget) exitWith {
     nil
 };
 
-// create a unique variable ID for network tranfer
-private _messageNumber = missionNamespace getVariable ["KISKA_remoteReturnQueue_count",0];
-_messageNumber = _messageNumber + 1;
-missionNamespace setVariable ["KISKA_remoteReturnQueue_count",_messageNumber];
-private _uniqueId = ["KISKA_RR",clientOwner,"_",_messageNumber] joinString "";
+_awaitParams params [
+    ["_awaitTime",0.05,[123]],
+    ["_maxWaitTime",2,[123]],
+    ["_exponentialBackOff",false,[true]]
+];
 
+private _uniqueId = ["KISKA_RR_" + (str clientOwner)] call KISKA_fnc_generateUniqueId;
 [_code,_args,_scheduled,_uniqueId] remoteExecCall ["KISKA_fnc_remoteReturn_receive",_target];
 
+
+private _timeWaited = 0;
 waitUntil {
+    if (_timeWaited >= _maxWaitTime) then {
+        [
+            [
+                "Max wait time of: ",
+                _maxWaitTime,
+                " for variable ",
+                _uniqueId,
+                " from target ",
+                _target,
+                " was exceeded. Exiting with nil..."
+            ],
+            false
+        ] call KISKA_fnc_log;
+        breakWith true;
+    };
+
     if (!isNil _uniqueId) exitWith {
         [["Got variable ",_uniqueId," from target ",_target],false] call KISKA_fnc_log;
         true
     };
-    sleep 0.05;
+
+    sleep _awaitTime;
+    _timeWaited = _timeWaited + _awaitTime;
+    
+    if (_exponentialBackOff) then {
+        _awaitTime = _awaitTime * 2;
+    };
+    
     [["Waiting for ",_uniqueId," from target: ",_target],false] call KISKA_fnc_log;
     false
 };
