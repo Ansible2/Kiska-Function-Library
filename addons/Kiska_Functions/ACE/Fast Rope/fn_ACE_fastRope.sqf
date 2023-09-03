@@ -71,6 +71,7 @@ scriptName "KISKA_fnc_ACE_fastRope";
 
 #define MIN_HOVER_HEIGHT 5
 #define MAX_HOVER_HEIGHT 28
+#define HOVER_INTERVAL 0.05
 
 if !(["ace_fastroping"] call KISKA_fnc_isPatchLoaded) exitWith {
     ["ace_fastroping is required for this function",true] call KISKA_fnc_log;
@@ -182,6 +183,9 @@ private _pilot = driver _vehicle;
 _pilot setSkill 1;
 _pilot move (ASLToATL _hoverPosition_ASL);
 
+_vehicle setVariable ["KISKA_fastrope_hoverInterval",0];
+_vehicle setVariable ["KISKA_fastrope_hoverAiDisabled",false];
+
 // guides helicopter to drop position
 [
     {
@@ -197,7 +201,7 @@ _pilot move (ASLToATL _hoverPosition_ASL);
             alive _pilot AND
             !isNil {_vehicle getVariable "ACE_Rappelling"}
         ) then {
-            private _currentVehiclePosition_ASL = getPosASL _vehicle;
+            private _currentVehiclePosition_ASL = getPosASLVisual _vehicle;
             private _distanceToHoverPosition = _currentVehiclePosition_ASL vectorDistance _hoverPosition_ASL;
 
             if ( _distanceToHoverPosition <= 400 ) then {
@@ -221,7 +225,27 @@ _pilot move (ASLToATL _hoverPosition_ASL);
                 _velocityMagnitude = _speed;
 
                 if ((_currentVehiclePosition_ASL distance2d _hoverPosition_ASL) < 2.5) then {
-                    _vehicle setVelocityModelSpace [0,0,0];
+                    private _interval = _vehicle getVariable ["KISKA_fastrope_hoverInterval",0] + HOVER_INTERVAL;
+                    private _vectorDir = vectorDirVisual _vehicle;
+                    _vehicle setVelocityTransformation [
+                        _currentVehiclePosition_ASL,
+                        _hoverPosition_ASL,
+                        velocity _vehicle,
+                        [0,0,0],
+                        _vectorDir,
+                        _vectorDir,
+                        vectorUpVisual _vehicle,
+                        _vectorDir vectorCrossProduct [0,0,1]
+                        _interval
+                    ];
+                    _vehicle setVariable ["KISKA_fastrope_hoverInterval",_interval];
+
+                    if !(_vehicle getVariable ["KISKA_fastrope_hoverAiDisabled",false]) then {
+                        private _pilot = currentPilot _vehicle;
+                        [_pilot,"PATH"] remoteExecCall ["disableAI",_pilot];
+                        _vehicle setVariable ["KISKA_fastrope_hoverAiDisabled",true];
+                    };
+                    // _vehicle setVelocityModelSpace [0,0,0];
 
                 } else {
                     if ( _distanceToHoverPosition <= 15 ) then {
@@ -242,7 +266,7 @@ _pilot move (ASLToATL _hoverPosition_ASL);
 
         };
     },
-    0.05,
+    HOVER_INTERVAL,
     [_vehicle, _hoverPosition_ASL, _pilot]
 ] call CBA_fnc_addPerFrameHandler;
 
@@ -294,6 +318,11 @@ _pilot move (ASLToATL _hoverPosition_ASL);
                 };
 
                 _vehicle setVariable ["ACE_Rappelling",nil];
+                _vehicle setVariable ["KISKA_fastrope_hoverInterval",nil];
+                _vehicle setVariable ["KISKA_fastrope_hoverAiDisabled",nil];
+                
+                private _pilot = currentPilot _vehicle;
+                [_pilot,"PATH"] remoteExecCall ["enableAI",_pilot];
 
                 [
                     [_vehicle],
