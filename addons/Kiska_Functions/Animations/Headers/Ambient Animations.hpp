@@ -670,5 +670,14 @@ class KISKA_AmbientAnimations
                 "c5efe_honzaloop"
             };
         };
+
+        class LEAN
+        {
+            animations[] = {
+                "inbasemoves_lean1"
+            };
+
+            removeBackpack = ON;
+        };
     };
 };
