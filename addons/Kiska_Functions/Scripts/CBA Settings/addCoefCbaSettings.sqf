@@ -13,9 +13,9 @@ Parameters:
 [
     "KISKA_CBA_weaponSwayCoef",
     "SLIDER",
-    ["Weapon Sway","100% equals most sway possible"],
+    ["Weapon Sway","Higher means more weapon sway"],
     ["KISKA Misc Settings","Weapon Coefficients"],
-    [0,1,0.55,2,true],
+    [0,15,0.55,2],
     0,
     {
         if !(hasInterface) exitWith {};
@@ -45,9 +45,9 @@ Parameters:
 [
     "KISKA_CBA_recoilCoef",
     "SLIDER",
-    ["Recoil Strength","100% equals the most recoil"],
+    ["Recoil Strength","Higher means more recoil"],
     ["KISKA Misc Settings","Weapon Coefficients"],
-    [0,1,0.5,2,true],
+    [0,15,0.5,2],
     0,
     {
         if !(hasInterface) exitWith {};
