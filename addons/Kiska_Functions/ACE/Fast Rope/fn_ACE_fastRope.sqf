@@ -235,7 +235,7 @@ _vehicle setVariable ["KISKA_fastrope_hoverAiDisabled",false];
                         _vectorDir,
                         _vectorDir,
                         vectorUpVisual _vehicle,
-                        _vectorDir vectorCrossProduct [0,0,1]
+                        _vectorDir vectorCrossProduct [0,0,1],
                         _interval
                     ];
                     _vehicle setVariable ["KISKA_fastrope_hoverInterval",_interval];
