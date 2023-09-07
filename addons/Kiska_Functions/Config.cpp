@@ -687,6 +687,9 @@ class Extended_PreInit_EventHandlers {
     class enabledChannel_settings_preInitEvent {
         init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addEnableChannelCbaSettings.sqf'];";    
     };
+    class stamina_settings_preInitEvent {
+        init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addStaminaCbaSettings.sqf'];";    
+    };
 };
 
 #include "Animations\Headers\Ambient Animations.hpp"
