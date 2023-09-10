@@ -183,7 +183,6 @@ private _pilot = driver _vehicle;
 _pilot setSkill 1;
 _pilot move (ASLToATL _hoverPosition_ASL);
 
-_vehicle setVariable ["KISKA_fastrope_hoverInterval",0];
 _vehicle setVariable ["KISKA_fastrope_hoverAiDisabled",false];
 
 // guides helicopter to drop position
@@ -204,7 +203,7 @@ _vehicle setVariable ["KISKA_fastrope_hoverAiDisabled",false];
             private _currentVehiclePosition_ASL = getPosASLVisual _vehicle;
             private _distanceToHoverPosition = _currentVehiclePosition_ASL vectorDistance _hoverPosition_ASL;
 
-            if ( _distanceToHoverPosition <= 400 ) then {
+            if (_distanceToHoverPosition <= 400) then {
                 if (isNil {_vehicle getVariable "KISKA_fastRopeTransformStart_speed"}) then {
                     _vehicle setVariable ["KISKA_fastRopeTransformStart_speed",(speed _vehicle) / 3.6];
                 };
@@ -222,32 +221,17 @@ _vehicle setVariable ["KISKA_fastrope_hoverAiDisabled",false];
                     };
                 };
 
+                if (
+                    (_distanceToHoverPosition <= 25) AND
+                    !(_vehicle getVariable ["KISKA_fastrope_hoverAiDisabled",false])
+                ) then {
+                    private _pilot = currentPilot _vehicle;
+                    [_pilot,"PATH"] remoteExecCall ["disableAI",_pilot];
+                    _vehicle setVariable ["KISKA_fastrope_hoverAiDisabled",true];
+                };
+
                 _velocityMagnitude = _speed;
-
-                if ((_currentVehiclePosition_ASL distance2d _hoverPosition_ASL) < 2.5) then {
-                    private _interval = _vehicle getVariable ["KISKA_fastrope_hoverInterval",0] + HOVER_INTERVAL;
-                    private _vectorDir = vectorDirVisual _vehicle;
-                    _vehicle setVelocityTransformation [
-                        _currentVehiclePosition_ASL,
-                        _hoverPosition_ASL,
-                        velocity _vehicle,
-                        [0,0,0],
-                        _vectorDir,
-                        _vectorDir,
-                        vectorUpVisual _vehicle,
-                        _vectorDir vectorCrossProduct [0,0,1],
-                        _interval
-                    ];
-                    _vehicle setVariable ["KISKA_fastrope_hoverInterval",_interval];
-
-                    if !(_vehicle getVariable ["KISKA_fastrope_hoverAiDisabled",false]) then {
-                        private _pilot = currentPilot _vehicle;
-                        [_pilot,"PATH"] remoteExecCall ["disableAI",_pilot];
-                        _vehicle setVariable ["KISKA_fastrope_hoverAiDisabled",true];
-                    };
-                    // _vehicle setVelocityModelSpace [0,0,0];
-
-                } else {
+                if ((_currentVehiclePosition_ASL distance2d _hoverPosition_ASL) >= 2.5) then {
                     if ( _distanceToHoverPosition <= 15 ) then {
                         _velocityMagnitude = (_distanceToHoverPosition / 10) * 5;
 
