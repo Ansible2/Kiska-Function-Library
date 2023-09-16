@@ -37,7 +37,7 @@ if (_timelineId < 0) exitWith {
     nil
 };
 
-private _timelineIsRunning = [_timelineId,false] call KISKA_fnc_isTimelineRunning;
+private _timelineIsRunning = [_timelineId,false] call KISKA_fnc_timeline_isRunning;
 if !(_timelineIsRunning) exitWith {
     // execute call back function for when timeline is stopped here only
     private _overallTimelineMap = call KISKA_fnc_getOverallTimelineMap;

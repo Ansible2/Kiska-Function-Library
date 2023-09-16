@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_isTimelineRunning
+Function: KISKA_fnc_timeline_isRunning
 
 Description:
     Checks if a timeline has either fully been complete (_checkForFullCompletion = true) 
@@ -15,27 +15,23 @@ Returns:
 
 Examples:
     (begin example)
-        private _isRunning = [123,false] call KISKA_fnc_isTimelineRunning;
+        private _isRunning = [123,false] call KISKA_fnc_timeline_isRunning;
     (end)
 
     (begin example)
-        private _timelineIsNotComplete = [123,true] call KISKA_fnc_isTimelineRunning;
+        private _timelineIsNotComplete = [123,true] call KISKA_fnc_timeline_isRunning;
     (end)
 
 Author(s):
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_isTimelineRunning";
+scriptName "KISKA_fnc_timeline_isRunning";
 
 params [
-    ["_timelineId",-1,[123]],
+    ["_timelineId","",[""]],
     ["_checkForFullCompletion",true,[true]]
 ];
 
-if (_timelineId < 0) exitWith {
-    [[_timelineId," is invalid _timelineId"],true] call KISKA_fnc_log;
-    false
-};
 
 if (_checkForFullCompletion) exitWith {
     private _timelineMap = call KISKA_fnc_getOverallTimelineMap;
@@ -43,4 +39,5 @@ if (_checkForFullCompletion) exitWith {
 };
 
 
-localNamespace getVariable ["KISKA_timelineIsRunning_" + (str _timelineId),false]
+private _isRunningMap = call KISKA_fnc_timeline_getIsRunningMap;
+_isRunningMap getOrDefault [_timelineId,false]
