@@ -126,6 +126,7 @@ if (_timeline isEqualTo []) exitWith {
 };
 
 private _timelineId = ["KISKA_timeline"] call KISKA_fnc_generateUniqueId;
+[_timelineId,true] call KISKA_fnc_timeline_setIsRunning;
 
 private _overallTimelineMap = call KISKA_fnc_getOverallTimelineMap;
 private _timelineHashmap = createHashMap;
