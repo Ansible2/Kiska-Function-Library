@@ -489,6 +489,8 @@ class CfgFunctions
             {};
             class isTimelineRunning
             {};
+            class timeline_getIsRunningMap
+            {};
             class timeline_start
             {};
             class stopTimeline
