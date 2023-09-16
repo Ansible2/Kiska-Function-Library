@@ -7,7 +7,7 @@ Description:
      (where _isFullyComplete-is-false) to be true.
 
 Parameters:
-    0: _timelineId <NUMBER> - The id of the timeline to stop
+    0: _timelineId <STRING> - The id of the timeline to stop
     1: _onTimelineStopped <CODE, STRING, or ARRAY> - (see KISKA_fnc_callBack),
         code that will be executed once a timeline is stopped. 
         
@@ -20,11 +20,11 @@ Returns:
 
 Examples:
     (begin example)
-        [123] call KISKA_fnc_timeline_stop;
+        ["KISKA_timeline_1"] call KISKA_fnc_timeline_stop;
     (end)
 
     (begin example)
-        [123,{hint str ["timeline stopped!",_this]}] call KISKA_fnc_timeline_stop;
+        ["KISKA_timeline_1",{hint str ["timeline stopped!",_this]}] call KISKA_fnc_timeline_stop;
     (end)
 
 Author(s):
