@@ -34,7 +34,7 @@ params [
 
 
 if (_checkForFullCompletion) exitWith {
-    private _timelineMap = call KISKA_fnc_getOverallTimelineMap;
+    private _timelineMap = call KISKA_fnc_timeline_getMainMap;
     _timelineId in _timelineMap
 };
 

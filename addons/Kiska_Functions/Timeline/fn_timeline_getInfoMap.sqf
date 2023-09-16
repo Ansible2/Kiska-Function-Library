@@ -26,7 +26,7 @@ params [
 ];
 
 
-private _overallTimelineMap = call KISKA_fnc_getOverallTimelineMap;
+private _overallTimelineMap = call KISKA_fnc_timeline_getMainMap;
 if !(_timelineId in _overallTimelineMap) then {
     [["_timlineId: ",_timlineId," does not exist!"],true] call KISKA_fnc_log;
     nil

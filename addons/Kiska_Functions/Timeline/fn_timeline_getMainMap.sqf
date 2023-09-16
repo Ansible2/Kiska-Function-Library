@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_getOverallTimelineMap
+Function: KISKA_fnc_timeline_getMainMap
 
 Description:
     The map that links a given timeline id to its info map. This is an internal function
@@ -20,13 +20,13 @@ Examples:
 Author(s):
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_getOverallTimelineMap";
+scriptName "KISKA_fnc_timeline_getMainMap";
 
-private _overallTimelineMap = localNamespace getVariable "KISKA_overallTimelineMap";
-if (isNil "_overallTimelineMap") then {
-    _overallTimelineMap = createHashMap;
-    localNamespace setVariable ["KISKA_overallTimelineMap",_overallTimelineMap];
+private _mainMap = localNamespace getVariable "KISKA_timeline_mainMap";
+if (isNil "_mainMap") then {
+    _mainMap = createHashMap;
+    localNamespace setVariable ["KISKA_timeline_mainMap",_mainMap];
 };
 
 
-_overallTimelineMap
+_mainMap

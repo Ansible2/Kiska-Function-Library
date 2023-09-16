@@ -40,7 +40,7 @@ if (_timelineId < 0) exitWith {
 private _timelineIsRunning = [_timelineId,false] call KISKA_fnc_timeline_isRunning;
 if !(_timelineIsRunning) exitWith {
     // execute call back function for when timeline is stopped here only
-    private _overallTimelineMap = call KISKA_fnc_getOverallTimelineMap;
+    private _overallTimelineMap = call KISKA_fnc_timeline_getMainMap;
     private _timelineValues = _overallTimelineMap getOrDefault [_timelineId,[]];
     _timelineValues params [
         ["_timeline",[],[[]]],

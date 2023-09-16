@@ -39,7 +39,7 @@ params [
 
 
 if (_onTimelineStopped isNotEqualTo {}) then {
-    private _overallTimelineMap = call KISKA_fnc_getOverallTimelineMap;
+    private _overallTimelineMap = call KISKA_fnc_timeline_getMainMap;
     private _timelineValues = _overallTimelineMap getOrDefault [_timelineId,[]];
     private _timelineHasNotEnded = _timelineValues isNotEqualTo [];
     if (_timelineHasNotEnded) then {

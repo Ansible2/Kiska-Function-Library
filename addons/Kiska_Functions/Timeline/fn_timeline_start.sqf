@@ -128,7 +128,7 @@ if (_timeline isEqualTo []) exitWith {
 private _timelineId = ["KISKA_timeline"] call KISKA_fnc_generateUniqueId;
 [_timelineId,true] call KISKA_fnc_timeline_setIsRunning;
 
-private _overallTimelineMap = call KISKA_fnc_getOverallTimelineMap;
+private _overallTimelineMap = call KISKA_fnc_timeline_getMainMap;
 private _timelineHashmap = createHashMap;
 private _timelineValues = [_timeline,_timelineHashmap];
 if (_onTimelineStopped isNotEqualTo {}) then {

@@ -483,7 +483,7 @@ class CfgFunctions
             file="KISKA_functions\Timeline";
             class executeTimelineEvent
             {};
-            class getOverallTimelineMap
+            class timeline_getMainMap
             {};
             class timeline_getInfoMap
             {};
