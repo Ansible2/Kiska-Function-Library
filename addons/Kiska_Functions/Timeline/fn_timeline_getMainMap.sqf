@@ -3,8 +3,9 @@ Function: KISKA_fnc_timeline_getMainMap
 
 Description:
     The map that links a given timeline id to its info map. This is an internal function
-     that you (likely) don't need to use. See KISKA_fnc_timeline_getInfoMap to retrieve
-     an info map for a given timeline.
+     that you (likely) don't need to use except for altering timelines that have already started.
+     
+    See KISKA_fnc_timeline_getInfoMap to retrieve an info map for a given timeline.
 
 Parameters:
     NONE
@@ -14,7 +15,10 @@ Returns:
 
 Examples:
     (begin example)
-        // internal function that should not be called directly
+        private _mainTimelineMap = call KISKA_fnc_timeline_getMainMap;
+        private _timelineId = "KISKA_timeline_1";
+        private _timelineValues = _mainTimelineMap get _timelineId;
+        _timelineValues params ["_timelineEvents","_timelineMap","_onTimelineStopped"];
     (end)
 
 Author(s):
