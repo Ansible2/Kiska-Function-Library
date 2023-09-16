@@ -489,7 +489,7 @@ class CfgFunctions
             {};
             class isTimelineRunning
             {};
-            class startTimeline
+            class timeline_start
             {};
             class stopTimeline
             {};

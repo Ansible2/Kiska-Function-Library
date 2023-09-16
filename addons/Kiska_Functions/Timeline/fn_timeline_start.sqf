@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_startTimeline
+Function: KISKA_fnc_timeline_start
 
 Description:
     Creates a timeline of events that can happen. Waits/executes in an unscheduled
@@ -87,7 +87,7 @@ Parameters:
             - 1: <HASHMAP> - The Individual map defined for a specific timeline of the given ID
 
 Returns:
-    <NUMBER> - The id of the new timeline
+    <STRING> - The id of the new timeline
 
 Examples:
     (begin example)
@@ -107,13 +107,13 @@ Examples:
                 {hint "executed event #2 ~3 seconds after event 1 completed"}, 2
             ]
         ];
-        private _timelineId = [_timeline,{hint "timeline end"}] call KISKA_fnc_startTimeline;
+        private _timelineId = [_timeline,{hint "timeline end"}] call KISKA_fnc_timeline_start;
     (end)
 
 Author(s):
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_startTimeline";
+scriptName "KISKA_fnc_timeline_start";
 
 params [
     ["_timeline",[],[[]]],
@@ -125,7 +125,7 @@ if (_timeline isEqualTo []) exitWith {
     nil
 };
 
-private _timelineId = ["KISKA_timelineIsRunning"] call KISKA_fnc_generateUniqueId;
+private _timelineId = ["KISKA_timeline"] call KISKA_fnc_generateUniqueId;
 
 private _overallTimelineMap = call KISKA_fnc_getOverallTimelineMap;
 private _timelineHashmap = createHashMap;
