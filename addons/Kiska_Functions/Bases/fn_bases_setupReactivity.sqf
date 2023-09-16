@@ -15,11 +15,11 @@ Parameters:
         Must return a boolean that denotes whether to execute default functionality that happens
         with the event (see KISKA_fnc_bases_triggerReaction).
         
-            Parameters:
-            - 0: <GROUP> - The group the event is triggering for
-            - 1: <OBJECT> - The enemy unit that was detected
-            - 2: <ARRAY> - An array of GROUPs that can respond to the call (based on _canCallIds)
-            - 3: <NUMBER> - The same _priority
+        Parameters:
+        - 0: <GROUP> - The group the event is triggering for
+        - 1: <OBJECT> - The enemy unit that was detected
+        - 2: <ARRAY> - An array of GROUPs that can respond to the call (based on _canCallIds)
+        - 3: <NUMBER> - The same _priority
 
 Returns:
     <NUMBER> - The event id of the EnemyDetected group eventhandler
