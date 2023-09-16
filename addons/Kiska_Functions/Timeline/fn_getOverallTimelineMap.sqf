@@ -2,7 +2,9 @@
 Function: KISKA_fnc_getOverallTimelineMap
 
 Description:
-    Returns the global timeline map of IDs and the individual info for a timeline.
+    The map that links a given timeline id to its info map. This is an internal function
+     that you (likely) don't need to use. See KISKA_fnc_timeline_getInfoMap to retrieve
+     an info map for a given timeline.
 
 Parameters:
     NONE
@@ -12,7 +14,7 @@ Returns:
 
 Examples:
     (begin example)
-        private _overallTimelineMap = call KISKA_fnc_getOverallTimelineMap;
+        // internal function that should not be called directly
     (end)
 
 Author(s):
