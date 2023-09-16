@@ -125,8 +125,7 @@ if (_timeline isEqualTo []) exitWith {
     nil
 };
 
-private _timelineId = ["KISKA_timelines"] call KISKA_fnc_idCounter;
-localNamespace setVariable ["KISKA_timelineIsRunning_" + (str _timelineId),true];
+private _timelineId = ["KISKA_timelineIsRunning"] call KISKA_fnc_generateUniqueId;
 
 private _overallTimelineMap = call KISKA_fnc_getOverallTimelineMap;
 private _timelineHashmap = createHashMap;
