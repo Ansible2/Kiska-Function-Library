@@ -495,7 +495,7 @@ class CfgFunctions
             {};
             class timeline_start
             {};
-            class stopTimeline
+            class timeline_stop
             {};
         };
         class Utilities

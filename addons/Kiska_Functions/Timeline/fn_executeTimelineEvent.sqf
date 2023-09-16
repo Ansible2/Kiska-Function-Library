@@ -68,7 +68,7 @@ _event params [
 
 private _eventReturn = [_this,_code] call KISKA_fnc_callBack;
 if (_timeline isEqualTo []) then {
-    [_timelineId] call KISKA_fnc_stopTimeline;
+    [_timelineId] call KISKA_fnc_timeline_stop;
 };
 
 

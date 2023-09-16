@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_stopTimeline
+Function: KISKA_fnc_timeline_stop
 
 Description:
     Ques a timeline to end on the next execution of an event in it or at the very
@@ -20,27 +20,23 @@ Returns:
 
 Examples:
     (begin example)
-        [123] call KISKA_fnc_stopTimeline;
+        [123] call KISKA_fnc_timeline_stop;
     (end)
 
     (begin example)
-        [123,{hint str ["timeline stopped!",_this]}] call KISKA_fnc_stopTimeline;
+        [123,{hint str ["timeline stopped!",_this]}] call KISKA_fnc_timeline_stop;
     (end)
 
 Author(s):
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_stopTimeline";
+scriptName "KISKA_fnc_timeline_stop";
 
 params [
-    ["_timelineId",-1,[123]],
+    ["_timelineId","",[""]],
     ["_onTimelineStopped",{},[[],{},""]]
 ];
 
-if (_timelineId < 0) exitWith {
-    [[_timelineId," is invalid _timelineId"],true] call KISKA_fnc_log;
-    nil
-};
 
 if (_onTimelineStopped isNotEqualTo {}) then {
     private _overallTimelineMap = call KISKA_fnc_getOverallTimelineMap;
@@ -52,7 +48,8 @@ if (_onTimelineStopped isNotEqualTo {}) then {
 };
 
 
-localNamespace setVariable ["KISKA_timelineIsRunning_" + (str _timelineId),nil];
+private _isRunningMap = call KISKA_fnc_timeline_getIsRunningMap;
+_isRunningMap deleteAt _timelineId;
 
 
 nil
