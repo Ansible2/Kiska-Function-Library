@@ -294,6 +294,17 @@ class CfgFunctions
             };
         };
 
+        class ManagedRun
+        {
+            file = "Kiska_functions\Managed Run";
+            class managedRun_execute
+            {};
+            class managedRun_isDefined
+            {};
+            class managedRun_updateCode
+            {};
+        };
+
         class Music
         {
             file = "Kiska_functions\Music";
