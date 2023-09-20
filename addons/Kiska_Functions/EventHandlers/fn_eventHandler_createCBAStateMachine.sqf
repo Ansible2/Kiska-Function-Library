@@ -32,7 +32,8 @@ if (isNull _config) exitWith {
 private _skipNull = [_config >> "skipNull"] call BIS_fnc_getCfgDataBool;
 private _stateMachine = [[], _skipNull] call CBA_stateMachine_fnc_create;
 
-(configProperties [_config, "isClass _x", true]) apply {
+private _stateConfigClasses = configProperties [_config, "isClass _x", true];
+_stateConfigClasses apply {
     private _stateName = configName _x;
     [
         _stateMachine,
@@ -45,10 +46,11 @@ private _stateMachine = [[], _skipNull] call CBA_stateMachine_fnc_create;
 };
 
 // We need to add the transitions in a second loop to make sure the states exist already
-(configProperties [_config, "isClass _x", true]) apply {
+_stateConfigClasses apply {
     private _stateName = configName _x;
 
-    (configProperties [_x, "isClass _x", true]) apply {
+    private _stateTransitionConfigClasses = configProperties [_x, "isClass _x", true];
+    _stateTransitionConfigClasses apply {
         private _transitionName = configName _x;
         private _targetState = _transitionName;
         if (isText (_x >> "targetState")) then {
