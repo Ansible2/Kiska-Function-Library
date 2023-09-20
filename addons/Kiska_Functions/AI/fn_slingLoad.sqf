@@ -14,6 +14,7 @@ Parameters:
             
         Parmeters:
         - 0. <OBJECT> - The pilot of the helicopter
+        - 1. <OBJECT> - The helicopter
                 
     4: _flightPath : <(PositionASL | OBJECT | LOCATION | GROUP)[]> - An array of sequential positions
         the aircraft must travel prior to droping off the _liftObject
@@ -43,6 +44,9 @@ Author:
     Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_slingLoad";
+
+#define LIMIT_SPEED_DISTANCE 200
+#define SPEED_LIMIT 20
 
 params [
     ["_heli",objNull,[objNull]],
@@ -93,6 +97,29 @@ if (_dropOffPointIsInvalid) exitWith {
 private _group = group _pilot;
 [_group] call KISKA_fnc_clearWaypoints;
 
+private _limitSpeed = (_heli distance2D _liftObject) < LIMIT_SPEED_DISTANCE;
+if (_limitSpeed) then {
+    if !(["KISKA_limitSpeed"] call KISKA_fnc_managedRun_isDefined) then {
+        [
+            "KISKA_limitSpeed",
+            {
+                params [
+                    ["_vehicle",objNull,[objNull]],
+                    ["_speed",-1,[123]]
+                ];
+                _vehicle limitSpeed _speed;
+            }
+        ] call KISKA_fnc_managedRun_updateCode;
+    };
+
+    private _limitSpeedId = [
+        "KISKA_limitSpeed",
+        [_heli,SPEED_LIMIT],
+        _heli
+    ] call KISKA_fnc_managedRun_execute;
+
+    _pilot setVariable ["KISKA_slingLoad_limitSpeedId",_limitSpeedId];
+};
 
 [
     _group,
@@ -115,8 +142,29 @@ if (_flightPath isNotEqualTo []) then {
     };
 };
 
-
 _pilot setVariable ["KISKA_postSlingLoadCode",_afterDropCode];
+_pilot setVariable ["KISKA_onUnhook",{
+    params ["_pilot"];
+
+    private _heli = objectParent _pilot;
+    private _limitSpeedId = _pilot getVariable ["KISKA_slingLoad_limitSpeedId",-1];
+    if (_limitSpeedId > -1) then {
+        private _limitSpeedId = [
+            "KISKA_limitSpeed",
+            [_heli,-1],
+            _heli,
+            _limitSpeedId
+        ] call KISKA_fnc_managedRun_execute;
+
+        _pilot setVariable ["KISKA_slingLoad_limitSpeedId",nil];
+    };
+
+    private _afterDropCode = _pilot getVariable ['KISKA_postSlingLoadCode',{}]; 
+    [[_pilot,_heli],_afterDropCode] call KISKA_fnc_callBack; 
+
+    _pilot setVariable ['KISKA_postSlingLoadCode',nil];
+}];
+
 [
     _group,
     _dropOffPoint,
@@ -126,7 +174,7 @@ _pilot setVariable ["KISKA_postSlingLoadCode",_afterDropCode];
     "NO CHANGE",
     "UNCHANGED",
     "NO CHANGE",
-    "private _afterDropCode = this getVariable ['KISKA_postSlingLoadCode',{}]; [[this],_afterDropCode] call KISKA_fnc_callBack; this setVariable ['KISKA_postSlingLoadCode',nil]"
+    "[this] call (this getVariable ['KISKA_onUnhook',{}]); this setVariable ['KISKA_onUnhook',nil];"
 ] call CBA_fnc_addWaypoint;
 
 
