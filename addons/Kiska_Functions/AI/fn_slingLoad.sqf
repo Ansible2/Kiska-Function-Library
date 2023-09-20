@@ -45,8 +45,10 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_slingLoad";
 
+// TODO: this may need to be a gradient
 #define LIMIT_SPEED_DISTANCE 200
-#define SPEED_LIMIT 20
+#define DISTANCE_STEP_SIZE 50
+#define SPEED_STEP_SIZE 5
 
 params [
     ["_heli",objNull,[objNull]],
@@ -91,14 +93,20 @@ if (_dropOffPointIsInvalid) exitWith {
     []
 };
 
+
 /* ----------------------------------------------------------------------------
     Add waypoints
 ---------------------------------------------------------------------------- */
 private _group = group _pilot;
 [_group] call KISKA_fnc_clearWaypoints;
 
-private _limitSpeed = (_heli distance2D _liftObject) < LIMIT_SPEED_DISTANCE;
-if (_limitSpeed) then {
+
+/* -------------------------------------
+    Handle Speed
+------------------------------------- */
+private _distanceToCargo2d = _heli distance2D _liftObject;
+if (_distanceToCargo2d <= LIMIT_SPEED_DISTANCE) then {
+
     if !(["KISKA_limitSpeed"] call KISKA_fnc_managedRun_isDefined) then {
         [
             "KISKA_limitSpeed",
@@ -112,14 +120,37 @@ if (_limitSpeed) then {
         ] call KISKA_fnc_managedRun_updateCode;
     };
 
+    private _speedLimit = ((_distanceToCargo2d / DISTANCE_STEP_SIZE) * SPEED_STEP_SIZE) min SPEED_STEP_SIZE;
     private _limitSpeedId = [
         "KISKA_limitSpeed",
-        [_heli,SPEED_LIMIT],
+        [_heli,_speedLimit],
         _heli
     ] call KISKA_fnc_managedRun_execute;
 
     _pilot setVariable ["KISKA_slingLoad_limitSpeedId",_limitSpeedId];
 };
+
+/* -------------------------------------
+    Hook cargo
+------------------------------------- */
+_pilot setVariable ["KISKA_slingLoad_onHook",{
+    params ["_pilot"];
+
+    private _heli = objectParent _pilot;
+    private _limitSpeedId = _pilot getVariable ["KISKA_slingLoad_limitSpeedId",-1];
+    if (_limitSpeedId >= 0) then {
+        // TODO: KISKA_fnc_managedRun_execute seems to always return -1
+        [
+            "KISKA_limitSpeed",
+            // BOHEMIA BUG: wiki states that -1 will remove a speed limit, however, at least for helicopters, that does not seem to be the case
+            [_heli,999999],
+            _heli,
+            _limitSpeedId
+        ] call KISKA_fnc_managedRun_execute;
+    };
+
+    _pilot setVariable ["KISKA_slingLoad_limitSpeedId",nil];
+}];
 
 [
     _group,
@@ -127,10 +158,16 @@ if (_limitSpeed) then {
     -1,
     "HOOK",
     "SAFE",
-    "BLUE"
+    "BLUE",
+    "UNCHANGED",
+    "NO CHANGE",
+    "[this] call (this getVariable ['KISKA_slingLoad_onHook',{}]); this setVariable ['KISKA_slingLoad_onHook',nil];"
 ] call CBA_fnc_addWaypoint;
 
 
+/* -------------------------------------
+    Drop off
+------------------------------------- */
 if (_flightPath isNotEqualTo []) then {
     _flightPath apply {
         [
@@ -143,22 +180,10 @@ if (_flightPath isNotEqualTo []) then {
 };
 
 _pilot setVariable ["KISKA_postSlingLoadCode",_afterDropCode];
-_pilot setVariable ["KISKA_onUnhook",{
+_pilot setVariable ["KISKA_slingLoad_onUnhook",{
     params ["_pilot"];
 
     private _heli = objectParent _pilot;
-    private _limitSpeedId = _pilot getVariable ["KISKA_slingLoad_limitSpeedId",-1];
-    if (_limitSpeedId > -1) then {
-        private _limitSpeedId = [
-            "KISKA_limitSpeed",
-            [_heli,-1],
-            _heli,
-            _limitSpeedId
-        ] call KISKA_fnc_managedRun_execute;
-
-        _pilot setVariable ["KISKA_slingLoad_limitSpeedId",nil];
-    };
-
     private _afterDropCode = _pilot getVariable ['KISKA_postSlingLoadCode',{}]; 
     [[_pilot,_heli],_afterDropCode] call KISKA_fnc_callBack; 
 
@@ -174,7 +199,7 @@ _pilot setVariable ["KISKA_onUnhook",{
     "NO CHANGE",
     "UNCHANGED",
     "NO CHANGE",
-    "[this] call (this getVariable ['KISKA_onUnhook',{}]); this setVariable ['KISKA_onUnhook',nil];"
+    "[this] call (this getVariable ['KISKA_slingLoad_onUnhook',{}]); this setVariable ['KISKA_slingLoad_onUnhook',nil];"
 ] call CBA_fnc_addWaypoint;
 
 
