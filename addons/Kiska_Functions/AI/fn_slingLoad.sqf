@@ -139,7 +139,6 @@ _pilot setVariable ["KISKA_slingLoad_onHook",{
     private _heli = objectParent _pilot;
     private _limitSpeedId = _pilot getVariable ["KISKA_slingLoad_limitSpeedId",-1];
     if (_limitSpeedId >= 0) then {
-        // TODO: KISKA_fnc_managedRun_execute seems to always return -1
         [
             "KISKA_limitSpeed",
             // BOHEMIA BUG: wiki states that -1 will remove a speed limit, however, at least for helicopters, that does not seem to be the case
