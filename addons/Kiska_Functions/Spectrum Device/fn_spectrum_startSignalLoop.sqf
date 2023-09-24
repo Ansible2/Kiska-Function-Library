@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_spectrum_startLogicLoop
+Function: KISKA_fnc_spectrum_startSignalLoop
 
 Description:
     Handles starting a (sort of infinite) loop that will update a player's
@@ -13,13 +13,13 @@ Returns:
 
 Examples:
     (begin example)
-        call KISKA_fnc_spectrum_startLogicLoop;
+        call KISKA_fnc_spectrum_startSignalLoop;
     (end)
 
 Author:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_spectrum_startLogicLoop";
+scriptName "KISKA_fnc_spectrum_startSignalLoop";
 
 #define SPECTRUM_WEAPON_CLASS "hgun_esd_01"
 #define SPECTRUM_GENERAL_CTRL_IDC 1999
@@ -28,10 +28,12 @@ scriptName "KISKA_fnc_spectrum_startLogicLoop";
 #define DECIBEL_KEY "_decibels"
 #define DISTANCE_KEY "_maxDistance"
 #define DISTANCE_RATIO 0.65
+#define LOOP_TIME_WHEN_SEARCHING_FOR_DEVICE 3
+#define UPDATE_SIGNAL_EVERY 0.25
 
 // This function is less than ideal, but blame Bohemia's pretty abysmal implementation
 //  of the scripting interfaces with the spectrum analyzer.
-// And no, `destroy` and `unload` eventhandlers can not be used to mitigate this.
+// And no, `destroy` and `unload` eventhandlers can not be used to mitigate this on the controls/displays for the thing.
 
 if (
     !(hasInterface) OR 
@@ -54,7 +56,7 @@ missionNamespace setVariable ["#EM_Transmit", false];
                     private _perframeId = _this select 1;
                     [_perframeId] call CBA_fnc_removePerFrameHandler;
                     localNamespace setVariable ["KISKA_spectrum_updateLoopRunning",false];
-                    call KISKA_fnc_spectrum_startLogicLoop;
+                    call KISKA_fnc_spectrum_startSignalLoop;
                 };
                 
                 private _signalMap = call KISKA_fnc_spectrum_getSignalMap;
@@ -85,11 +87,6 @@ missionNamespace setVariable ["#EM_Transmit", false];
                     private _frequency = _y get FREQUENCY_KEY;
                     _generatedSignalValues pushBack _frequency;
 
-// TODO: vertical direction?
-// _vector = player weapondirection currentweapon player;
-// _dirH = (_vector # 0) atan2 (_vector # 1);
-// _dirV = asin (_vector # 2);
-
                     // Get the signal percentage of max based upon player's relative direction and distance
                     private _percentageOfDistance = (1 - (_playerDistanceToSource / _maxDistance));
                     private _percentageOfDirection = (1 - (_relativeDirScale / 90));
@@ -108,12 +105,14 @@ missionNamespace setVariable ["#EM_Transmit", false];
 
                 missionNamespace setVariable ["#EM_Values", _generatedSignalValues];
             },
-            0.25
+            UPDATE_SIGNAL_EVERY
         ] call CBA_fnc_addPerFrameHandler;
 
     },
-    3
+    LOOP_TIME_WHEN_SEARCHING_FOR_DEVICE
 ] call KISKA_fnc_waitUntil;
 
 
 nil
+
+

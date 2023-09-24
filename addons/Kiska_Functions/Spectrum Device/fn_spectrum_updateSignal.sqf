@@ -12,42 +12,52 @@ Description:
      `KISKA_fnc_spectrum_setSignalPosition`.
 
 Parameters:
-    0: _id : <STRING> - The id of the signal to update
-    1: _frequency : <NUMBER> - The frequency of the signal in MHz
-    2: _origin : <OBJECT or PositionASL[]> - The position of the signal
-    3: _decibels : <NUMBER> - The base signal decibel level when when near the origin
-    4: _maxDistance : <NUMBER> - The max distance that the signal can be seen on the spectrum analyzer
+    0: _signalProperties : <ARRAY> - The all the properites of the signal
+
+        `_signalProperties` Layout:
+        - 0: _id <STRING> - The id of the signal to update
+        - 1: _frequency <NUMBER> - The frequency of the signal in MHz
+        - 2: _origin <OBJECT or PositionASL[]> - The position of the signal
+        - 3: _decibels <NUMBER> - The base signal decibel level when when near the origin
+        - 4: _maxDistance <NUMBER> - The max distance that the signal can be seen on the spectrum analyzer
+    
+    1: _global : <BOOL> - `true` to broadcast the changes to all machines including JIP
 
 Returns:
     <HASHMAP> - Signal's updated property map:
 
     - `_frequency`: <NUMBER> - The frequency of the signal in MHz
     - `_origin`: <PositionASL[]> - The position of the signal
-    - `_maxDistance`: <NUMBER> - The frequency of the signal in MHz
-    - `_decibels`: <NUMBER> - The frequency of the signal in MHz
+    - `_maxDistance`: <NUMBER> - The maximum distance the signal can be seen on the analyzer
+    - `_decibels`: <NUMBER> - The max decibel level when the analyzer is directly on top of the origin
 
 Examples:
     (begin example)
-        // should use KISKA_fnc_spectrum_updateSignal_global for snyched updates
+        // should use KISKA_fnc_spectrum_updateSignal for snyched updates
         // but if you only want a subset of machines:
         [
-            "KISKA_spectrumSignal_2_1",
-            100,
-            [0,0,0],
-            100
+            [
+                "KISKA_spectrumSignal_2_1",
+                100,
+                [0,0,0],
+                100
+            ],
+            false
         ] remoteExecCall [
             "KISKA_fnc_spectrum_updateSignal",
-            [3,4],
-            "KISKA_spectrumSignal_2_1"
+            [3,4]
         ];
     (end)
 
     (begin example)
+        // broadcast to all machines by default
         [
-            "KISKA_spectrumSignal_2_1",
-            100,
-            [0,0,0],
-            100
+            [
+                "KISKA_spectrumSignal_2_1",
+                100,
+                [0,0,0],
+                100
+            ]
         ] call KISKA_fnc_spectrum_updateSignal;
     (end)
 
@@ -57,11 +67,16 @@ Author:
 scriptName "KISKA_fnc_spectrum_updateSignal";
 
 #define FREQUENCY_KEY "_frequency"
-#define ORIGIN_KEY "_origin"
 #define DECIBEL_KEY "_decibels"
 #define DISTANCE_KEY "_maxDistance"
+#define ORIGIN_KEY "_origin"
 
 params [
+    ["_signalProperties",[],[[]]],
+    ["_global",true,[true]]
+];
+
+_signalProperties params [
     ["_id","",[""]],
     ["_frequency",100,[123]],
     ["_origin",objNull,[[],objNull],[3]],
@@ -94,6 +109,14 @@ if (_maxDistance <= 0) exitWith {
 };
 
 
+if (_global AND isMultiplayer) then {
+    [
+        _signalProperties,
+        false
+    ] remoteExecCall ["KISKA_fnc_spectrum_updateSignal",-clientOwner,_id];
+};
+
+
 private _signalMap = call KISKA_fnc_spectrum_getSignalMap;
 private _idLowered = toLowerANSI _id;
 if (_originIsObject) then {
@@ -101,8 +124,9 @@ if (_originIsObject) then {
 };
 
 
-private _signalExists = [_idLowered] call KISKA_fnc_spectrum_signalExists;
-if !(_signalExists) then {
+private _signalPropertyMap = _signalMap getOrDefaultCall [_idLowered,{-1}];
+private _signalExists = _signalPropertyMap isNotEqualTo -1;
+if (!_signalExists) then {
     private _signalPropertyMap = createHashMapFromArray [
         [FREQUENCY_KEY,_frequency],
         [ORIGIN_KEY,_origin],
@@ -113,13 +137,14 @@ if !(_signalExists) then {
     _signalMap set [_idLowered,_signalPropertyMap];
 
 } else {
-    _signalMap set [FREQUENCY_KEY, _frequency];
-    _signalMap set [ORIGIN_KEY, _origin];
-    _signalMap set [DECIBEL_KEY, _decibels];
-    _signalMap set [DISTANCE_KEY, _maxDistance];
+    _signalPropertyMap set [FREQUENCY_KEY, _frequency];
+    _signalPropertyMap set [ORIGIN_KEY, _origin];
+    _signalPropertyMap set [DECIBEL_KEY, _decibels];
+    _signalPropertyMap set [DISTANCE_KEY, _maxDistance];
 
 };
 
-call KISKA_fnc_spectrum_startLogicLoop;
+call KISKA_fnc_spectrum_startSignalLoop;
+
 
 _signalMap

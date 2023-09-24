@@ -417,6 +417,50 @@ class CfgFunctions
             class stopRadioChatter
             {};
         };
+        
+        class SpectrumDevice
+		{
+			file = "Kiska_functions\Spectrum Device";
+			class spectrum_addSignal
+			{};
+			class spectrum_deleteSignal
+			{};
+			class spectrum_getMaxDecibels
+			{};
+			class spectrum_getMaxFrequency
+			{};
+			class spectrum_getMinDecibels
+			{};
+			class spectrum_getMinFrequency
+			{};
+			class spectrum_getSignalMap
+			{};
+			class spectrum_setMaxDecibels
+			{};
+			class spectrum_setMaxFrequency
+			{};
+			class spectrum_setMinDecibels
+			{};
+			class spectrum_setMinFrequency
+			{};
+			class spectrum_setSelectionWidth
+			{};
+			class spectrum_setSignalDecibels
+			{};
+			class spectrum_setSignalDistance
+			{};
+			class spectrum_setSignalFrequency
+			{};
+			class spectrum_setSignalPosition
+			{};
+			class spectrum_signalExists
+			{};
+			class spectrum_startSignalLoop
+			{};
+			class spectrum_updateSignal
+			{};
+		};
+
         class Supports
         {
             file="Kiska_functions\Supports";
