@@ -57,7 +57,8 @@ localNamespace setVariable ["KISKA_spectrum_updateLoopRunning",true];
 				private _playerPositionASL = getPosASL player;
 				private _minDecibels = call KISKA_fnc_spectrum_getMinDecibels;
 				private _maxDecibels = call KISKA_fnc_spectrum_getMaxDecibels;
-				private _decibelRange = (abs _maxDecibels) - (abs _minDecibels);
+				private _overallSignalRatioForDirection = 1 - DISTANCE_RATIO
+
 				
 				_signalMap apply {
 					private _maxDistance = _y get DISTANCE_KEY;
@@ -80,20 +81,16 @@ localNamespace setVariable ["KISKA_spectrum_updateLoopRunning",true];
 					private _frequency = _y get FREQUENCY_KEY;
 					_generatedSignalValues pushBack _frequency;
 
+
+					// Get the signal percentage of max based upon player's relative direction and distance
+					private _percentageOfDistanceCovered = (1 - (_playerDistanceToSource / _maxDistance)) * DISTANCE_RATIO;
+					private _percentageOfDirection = (1 - (_relativeDirScale / 90)) * _overallSignalRatioForDirection;
+					private _currentSignalPercentage = _percentageOfDistanceCovered + _percentageOfDirection;
+					
 					private _baseSignalLevel = _y get DECIBEL_KEY;
-					private _absoluteBaseSignalLevel = abs _baseSignalLevel; 
-					private _baseSignalIsNegative = _baseSignalLevel isNotEqualTo _absoluteBaseSignalLevel;
+					private _signalDecibelRange = _baseSignalLevel - _minDecibels;
+					private _relativeSignalLevel = (_signalDecibelRange * _currentSignalPercentage) + _minDecibels;
 
-					private _distancePercentageScale = (1 - (_playerDistanceToSource / _maxDistance)) * DISTANCE_RATIO;
-					private _directionPercentageScale = (1 - (_relativeDirScale / 90)) * (1 - DISTANCE_RATIO);
-
-					private _relativeSignalLevel = _absoluteBaseSignalLevel * (_distancePercentageScale + _directionPercentageScale);
-
-					if (_baseSignalIsNegative) then {
-						private _before = _relativeSignalLevel;
-						_relativeSignalLevel = _minDecibels + _relativeSignalLevel;
-						hint str [_absoluteBaseSignalLevel,_before,_relativeSignalLevel];
-					};
 					_generatedSignalValues pushBack _relativeSignalLevel;
 				};
 
