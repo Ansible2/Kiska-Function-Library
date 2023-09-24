@@ -21,6 +21,7 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_spectrum_startLogicLoop";
 
+#define SPECTRUM_WEAPON_CLASS ""
 #define SPECTRUM_GENERAL_CTRL_IDC 1999
 #define FREQUENCY_KEY "_frequency"
 #define ORIGIN_KEY "_origin"
@@ -43,22 +44,24 @@ localNamespace setVariable ["KISKA_spectrum_updateLoopRunning",true];
 	{
 		// This inits when the player has a spectrum device equipped
 		// The display and its controls remain until mission end
-		!(isNull (uiNamespace getVariable ["rscweaponspectrumanalyzergeneric",displayNull]))
+		(currentWeapon player) == SPECTRUM_WEAPON_CLASS
 	},
-	{
-		private _spectrumDisplay = uiNamespace getVariable ["rscweaponspectrumanalyzergeneric",displayNull];
-		private _spectrumCtrl = _spectrumDisplay displayCtrl SPECTRUM_GENERAL_CTRL_IDC;
-		private _spectrumGraphCtrl = _spectrumCtrl getVariable ["bin_focus",controlNull];
-
-		_spectrumGraphCtrl ctrlAddEventHandler ["committed",{
-			if (alive player) then {
+	{	
+		[
+			{
+				params ["","_perframeId"];
+				if (!(alive player) OR (currentWeapon player != SPECTRUM_WEAPON_CLASS)) exitWith {
+					[_perframeId] call CBA_fnc_removePerFrameHandler;
+					localNamespace setVariable ["KISKA_spectrum_updateLoopRunning",false];
+					call KISKA_fnc_spectrum_startLogicLoop;
+				};
+				
 				private _signalMap = call KISKA_fnc_spectrum_getSignalMap;
 				private _generatedSignalValues = [];
 				private _playerPositionASL = getPosASL player;
 				private _minDecibels = call KISKA_fnc_spectrum_getMinDecibels;
 				private _maxDecibels = call KISKA_fnc_spectrum_getMaxDecibels;
 				private _overallSignalRatioForDirection = 1 - DISTANCE_RATIO
-
 				
 				_signalMap apply {
 					private _maxDistance = _y get DISTANCE_KEY;
@@ -81,11 +84,19 @@ localNamespace setVariable ["KISKA_spectrum_updateLoopRunning",true];
 					private _frequency = _y get FREQUENCY_KEY;
 					_generatedSignalValues pushBack _frequency;
 
+// TODO: vertical direction?
+// _vector = player weapondirection currentweapon player;
+// _dirH = (_vector # 0) atan2 (_vector # 1);
+// _dirV = asin (_vector # 2);
 
 					// Get the signal percentage of max based upon player's relative direction and distance
-					private _percentageOfDistanceCovered = (1 - (_playerDistanceToSource / _maxDistance)) * DISTANCE_RATIO;
-					private _percentageOfDirection = (1 - (_relativeDirScale / 90)) * _overallSignalRatioForDirection;
-					private _currentSignalPercentage = _percentageOfDistanceCovered + _percentageOfDirection;
+					private _percentageOfDistance = linearConversion [0,_maxDistance,_playerDistanceToSource,0,1,true];
+					private _percentageOfDirection = linearConversion [0,90,_relativeDirScale,0,1,true];
+					
+					private _percentageOfDistanceRatioed = _percentageOfDistance * DISTANCE_RATIO;
+					private _percentageOfDirectionRatioed = _percentageOfDirection * _overallSignalRatioForDirection;
+
+					private _currentSignalPercentage = _percentageOfDistanceRatioed + _percentageOfDirectionRatioed;
 					
 					private _baseSignalLevel = _y get DECIBEL_KEY;
 					private _signalDecibelRange = _baseSignalLevel - _minDecibels;
@@ -95,8 +106,10 @@ localNamespace setVariable ["KISKA_spectrum_updateLoopRunning",true];
 				};
 
 				missionNamespace setVariable ["#EM_Values", _generatedSignalValues];
-			};
-		}];
+			},
+			0.25
+		] call CBA_fnc_addPerFrameHandler;
+
 	},
 	3
 ] call KISKA_fnc_waitUntil;
