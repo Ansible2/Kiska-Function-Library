@@ -27,7 +27,7 @@ scriptName "KISKA_fnc_spectrum_startLogicLoop";
 #define ORIGIN_KEY "_origin"
 #define DECIBEL_KEY "_decibels"
 #define DISTANCE_KEY "_maxDistance"
-#define DISTANCE_RATIO 0.75
+#define DISTANCE_RATIO 0.65
 
 // This function is less than ideal, but blame Bohemia's pretty abysmal implementation
 //  of the scripting interfaces with the spectrum analyzer.
@@ -39,6 +39,7 @@ if (
 ) exitWith {};
 
 localNamespace setVariable ["KISKA_spectrum_updateLoopRunning",true];
+missionNamespace setVariable ["#EM_Transmit", false];
 
 [
     {
@@ -47,8 +48,10 @@ localNamespace setVariable ["KISKA_spectrum_updateLoopRunning",true];
     {	
         [
             {
-                params ["","_perframeId"];
-                if (!(alive player) OR !(SPECTRUM_WEAPON_CLASS in (toLowerANSI (currentWeapon player)))) exitWith {
+
+                private _hasSpectrumDeviceEquipped = SPECTRUM_WEAPON_CLASS in (toLowerANSI (currentWeapon player));
+                if (!(alive player) OR !_hasSpectrumDeviceEquipped) exitWith {
+                    private _perframeId = _this select 1;
                     [_perframeId] call CBA_fnc_removePerFrameHandler;
                     localNamespace setVariable ["KISKA_spectrum_updateLoopRunning",false];
                     call KISKA_fnc_spectrum_startLogicLoop;
@@ -102,6 +105,7 @@ localNamespace setVariable ["KISKA_spectrum_updateLoopRunning",true];
 
                     _generatedSignalValues pushBack _relativeSignalLevel;
                 };
+
                 missionNamespace setVariable ["#EM_Values", _generatedSignalValues];
             },
             0.25
