@@ -459,6 +459,8 @@ class CfgFunctions
 			{};
 			class spectrum_setSignalPosition
 			{};
+			class spectrum_setTransmitting
+			{};
 			class spectrum_signalExists
 			{};
 			class spectrum_startSignalLoop
