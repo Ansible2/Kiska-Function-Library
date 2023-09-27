@@ -433,7 +433,13 @@ class CfgFunctions
 			{};
 			class spectrum_getMinFrequency
 			{};
+			class spectrum_getSelection
+			{};
 			class spectrum_getSignalMap
+			{};
+			class spectrum_isInitialized
+			{};
+			class spectrum_isTransmitting
 			{};
 			class spectrum_setMaxDecibels
 			{};
