@@ -27,5 +27,8 @@ params [
     ["_isTransmitting",true,[true]]
 ];
 
+if !(call KISKA_fnc_spectrum_isInitialized) then {
+    localNamespace setVariable ["KISKA_fnc_spectrum_setTransmitting",_isTransmitting];
+};
 
 missionNamespace setVariable ["#EM_Transmit",_isTransmitting];

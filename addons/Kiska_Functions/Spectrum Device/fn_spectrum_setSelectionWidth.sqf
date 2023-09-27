@@ -26,5 +26,10 @@ params [
 	["_width",2,[123]]
 ];
 
+
+if !(call KISKA_fnc_spectrum_isInitialized) then {
+    localNamespace setVariable ["KISKA_spectrum_staged_selectionWidth",_width];
+};
+
 private _currentSelectionMin = missionNamespace getVariable ["#EM_SelMin", 100];
 missionNamespace setVariable ["#EM_SelMax", _currentSelectionMin + _width];

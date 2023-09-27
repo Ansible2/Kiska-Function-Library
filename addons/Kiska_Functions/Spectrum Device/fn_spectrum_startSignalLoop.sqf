@@ -41,16 +41,31 @@ if (
 ) exitWith {};
 
 localNamespace setVariable ["KISKA_spectrum_updateLoopRunning",true];
-missionNamespace setVariable ["#EM_Transmit", false];
 
 [
     {
         SPECTRUM_WEAPON_CLASS in (toLowerANSI (currentWeapon player))
     },
     {	
+
+        [
+            ["KISKA_spectrum_staged_transmit",KISKA_fnc_spectrum_setTransmitting],
+            ["KISKA_spectrum_staged_selectionWidth",KISKA_fnc_spectrum_setSelectionWidth],
+            ["KISKA_spectrum_staged_minFreq",KISKA_fnc_spectrum_setMinFrequency],
+            ["KISKA_spectrum_staged_minDecibels",KISKA_fnc_spectrum_setMinDecibels],
+            ["KISKA_spectrum_staged_maxFreq",KISKA_fnc_spectrum_setMaxFrequency],
+            ["KISKA_spectrum_staged_maxDecibels",KISKA_fnc_spectrum_setMaxDecibels]
+        ] apply {
+            _x params ["_varName","_setter"];
+            private _stagedValue = localNamespace getVariable [_varName,""];
+            if (_stagedValue isEqualTo "") then { continue };
+
+            [_stagedValue] call _setter;
+        };
+
+
         [
             {
-
                 private _hasSpectrumDeviceEquipped = SPECTRUM_WEAPON_CLASS in (toLowerANSI (currentWeapon player));
                 if (!(alive player) OR !_hasSpectrumDeviceEquipped) exitWith {
                     private _perframeId = _this select 1;
@@ -107,7 +122,6 @@ missionNamespace setVariable ["#EM_Transmit", false];
             },
             UPDATE_SIGNAL_EVERY
         ] call CBA_fnc_addPerFrameHandler;
-
     },
     LOOP_TIME_WHEN_SEARCHING_FOR_DEVICE
 ] call KISKA_fnc_waitUntil;

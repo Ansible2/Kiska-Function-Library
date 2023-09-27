@@ -24,4 +24,8 @@ params [
 	["_min",80,[123]]
 ];
 
+if !(call KISKA_fnc_spectrum_isInitialized) then {
+    localNamespace setVariable ["KISKA_spectrum_staged_minFreq",_min];
+};
+
 missionNamespace setVariable ["#EM_FMin", _min]

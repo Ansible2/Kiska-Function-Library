@@ -24,4 +24,8 @@ params [
 	["_max",-10,[123]]
 ];
 
+if !(call KISKA_fnc_spectrum_isInitialized) then {
+    localNamespace setVariable ["KISKA_spectrum_staged_maxDecibels",_max];
+};
+
 missionNamespace setVariable ["#EM_SMax", _max];

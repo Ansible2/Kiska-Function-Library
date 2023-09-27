@@ -24,4 +24,8 @@ params [
 	["_max",100,[123]]
 ];
 
+if !(call KISKA_fnc_spectrum_isInitialized) then {
+    localNamespace setVariable ["KISKA_spectrum_staged_maxFreq",_max];
+};
+
 missionNamespace setVariable ["#EM_FMax", _max]
