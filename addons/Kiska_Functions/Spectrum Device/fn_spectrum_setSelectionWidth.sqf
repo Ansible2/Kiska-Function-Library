@@ -31,5 +31,13 @@ if !(call KISKA_fnc_spectrum_isInitialized) then {
     localNamespace setVariable ["KISKA_spectrum_staged_selectionWidth",_width];
 };
 
-private _currentSelectionMin = missionNamespace getVariable ["#EM_SelMin", 100];
+private _currentSelectionMin = missionNamespace getVariable ["#EM_SelMin", ""];
+
+// selection adjusments do not stick if set outside of the frequency AND the spectrum device ui is NOT open
+private _minFrequency = call KISKA_fnc_spectrum_getMinFrequency;
+if ((_currentSelectionMin isEqualTo "") OR {_currentSelectionMin < _minFrequency}) then {
+    missionNamespace setVariable ["#EM_SelMin",_minFrequency];
+    _currentSelectionMin = _minFrequency;
+};
+
 missionNamespace setVariable ["#EM_SelMax", _currentSelectionMin + _width];

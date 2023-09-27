@@ -48,6 +48,7 @@ localNamespace setVariable ["KISKA_spectrum_updateLoopRunning",true];
     },
     {	
 
+
         [
             ["KISKA_spectrum_staged_transmit",KISKA_fnc_spectrum_setTransmitting],
             ["KISKA_spectrum_staged_selectionWidth",KISKA_fnc_spectrum_setSelectionWidth],
@@ -60,9 +61,10 @@ localNamespace setVariable ["KISKA_spectrum_updateLoopRunning",true];
             private _stagedValue = localNamespace getVariable [_varName,""];
             if (_stagedValue isEqualTo "") then { continue };
 
+            localNamespace setVariable [_varName,nil];
             [_stagedValue] call _setter;
         };
-
+ 
 
         [
             {
