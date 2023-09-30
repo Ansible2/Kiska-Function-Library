@@ -33,7 +33,7 @@ params [
     ["_radius",-1,[123]],
     ["_behaviour","AWARE",[""]],
     ["_combatMode","RED",[""]],
-    ["_override",true,[true]]
+    ["_override",false,[true]]
 ];
 
 _group = _group call CBA_fnc_getGroup;
@@ -46,11 +46,7 @@ if !(local _group) exitWith {
 
 // Allow TaskAttack to override other set waypoints
 if (_override) then {
-    [_group] call KISKA_fnc_clearWaypoints;
-
-    (units _group) apply {
-        _x enableAI "PATH";
-    };
+    [_group,-1,true] call KISKA_fnc_clearWaypoints;
 };
 
 [_group, _position, _radius, "SAD", _behaviour, _combatMode] call CBA_fnc_addWaypoint;
