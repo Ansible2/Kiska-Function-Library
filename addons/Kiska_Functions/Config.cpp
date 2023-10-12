@@ -610,6 +610,8 @@ class CfgFunctions
             {};
             class generateUniqueId
             {};
+            class getBoundingBoxDimensions
+            {};
             class getBumperPositionRelative
             {};
             class getContainerCargo
