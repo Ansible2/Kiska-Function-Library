@@ -22,9 +22,9 @@ Parameters:
 
 Returns:
     <[OBJECT,OBJECT[],GROUP]> -
-        - 0: <OBJECT> - The created vehicle
-        - 1: <OBJECT[]> - The vehicle crew (if soldier type, it will be the same as created vehicle)
-        - 2: <GROUP> -  The group the crew is a part of
+    - 0: <OBJECT> - The created vehicle
+    - 1: <OBJECT[]> - The vehicle crew (if soldier type, it will be the same as created vehicle)
+    - 2: <GROUP> -  The group the crew is a part of
 
 Examples:
     (begin example)
