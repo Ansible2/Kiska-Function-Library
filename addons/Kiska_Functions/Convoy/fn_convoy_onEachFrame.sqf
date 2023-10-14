@@ -288,7 +288,7 @@ if !(isNil "_area") then {
 	_area set [3,_currentVehicle_direction];
 
 } else {
-	private _currentVehicle_dimensions = [vic2] call KISKA_fnc_getBoundingBoxDimensions;
+	private _currentVehicle_dimensions = [_currentVehicle] call KISKA_fnc_getBoundingBoxDimensions;
 	_currentVehicle_dimensions params ["_length","_width","_height"];
     // purposely want the width and height doubled for making sure vehicles
     // don't accidentaly miss a point
