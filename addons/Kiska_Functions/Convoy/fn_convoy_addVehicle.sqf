@@ -74,7 +74,7 @@ if (isNil "_convoyStatemachine") exitWith {
 
 private _convoyLead = [_convoyHashMap] call KISKA_fnc_convoy_getConvoyLeader;
 // there can be times where there is a slight amount of speed in a (mostly) stationary vehicle
-if ((speed _convoyLead) > 0.1) exitWith {
+if ((speed _convoyLead) > 0.5) exitWith {
     [["_convoyLead ",_convoyLead," is moving, must be stopped to add vehicles to the convoy"]] call KISKA_fnc_log;
     -1
 };
