@@ -80,8 +80,16 @@ _infantryClasses apply {
 
     private _side = [[_x,_baseConfig,_infantryConfig]] call KISKA_fnc_bases_getSide;
 
-    private _numberOfUnits = getNumber(_classConfig >> "numberOfUnits");
-    private _unitsPerGroup = getNumber(_classConfig >> "unitsPerGroup");
+    private _numberOfUnits = (_classConfig >> "numberOfUnits") call BIS_fnc_getCfgData;
+    if (_numberOfUnits isEqualType "") then {
+        _numberOfUnits = [[_spawnPositions],_numberOfUnits,false] call KISKA_fnc_callBack;
+    };
+
+    private _unitsPerGroup = (_classConfig >> "unitsPerGroup") call BIS_fnc_getCfgData;
+    if (_unitsPerGroup isEqualType "") then {
+        _unitsPerGroup = [[_numberOfUnits,_spawnPositions],_unitsPerGroup,false] call KISKA_fnc_callBack;
+    };
+
     if (_unitsPerGroup < 1) then {
         _unitsPerGroup = _numberOfUnits;
     };

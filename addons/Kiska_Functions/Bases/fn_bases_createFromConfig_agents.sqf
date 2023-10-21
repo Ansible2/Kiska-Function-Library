@@ -61,8 +61,12 @@ _agentClasses apply {
     };
 
     private _unitClasses = [[_x,_baseConfig,_agentsConfig]] call KISKA_fnc_bases_getInfantryClasses;
+    
+    private _numberOfAgents = (_classConfig >> "numberOfAgents") call BIS_fnc_getCfgData;
+    if (_numberOfAgents isEqualType "") then {
+        _numberOfAgents = [[_spawnPositions],_numberOfAgents,false] call KISKA_fnc_callBack;
+    };
 
-    private _numberOfAgents = getNumber(_classConfig >> "numberOfAgents");
     private _numberOfSpawns = count _spawnPositions;
     if (_numberOfSpawns < _numberOfAgents OR (_numberOfAgents isEqualTo -1)) then {
         _numberOfAgents = _numberOfSpawns;
