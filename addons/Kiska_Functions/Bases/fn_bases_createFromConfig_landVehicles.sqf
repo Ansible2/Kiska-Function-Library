@@ -94,7 +94,7 @@ _landVehicleConfigClasses apply {
         [_group, true] remoteExec ["enableDynamicSimulation", 2];
     };
 
-    if !([_x >> "dynamicSim"] call BIS_fnc_getCfgDataBool) then {
+    if !([_x >> "canPath"] call BIS_fnc_getCfgDataBool) then {
         (driver _vehicle) disableAI "PATH";
     };
 
