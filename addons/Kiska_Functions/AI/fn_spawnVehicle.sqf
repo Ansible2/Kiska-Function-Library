@@ -149,7 +149,17 @@ if (_simulationType != "soldier") then {
 
             _movedIn = _unit moveInAny _createdVehicle;
             if (!_movedIn) then {
-                [["Unit ",_unit," could not be moved into the vehicle ",_createdVehicle," as there was no room in the vehicle"],true] call KISKA_fnc_log;
+                [
+                    [
+                        "Unit ",
+                        _unit,
+                        " could not be moved into the vehicle ",
+                        _createdVehicle,
+                        " as there was no room in the vehicle"
+                    ],
+                    true
+                ] call KISKA_fnc_log;
+                
                 if (_deleteOverflow) then {
                     deleteVehicle _unit;
                 };
