@@ -33,7 +33,8 @@ Author(s):
 scriptName "KISKA_fnc_convoy_addVehicle";
 
 #define MAX_ARRAY_LENGTH 1E7
-
+#define MIN_COMPLETION_BOX_WIDTH 5
+#define MIN_COMPLETION_BOX_LENGTH 3
 
 if (!isServer) exitWith {
     ["Must be executed on the server!",true] call KISKA_fnc_log;
@@ -72,7 +73,8 @@ if (isNil "_convoyStatemachine") exitWith {
 };
 
 private _convoyLead = [_convoyHashMap] call KISKA_fnc_convoy_getConvoyLeader;
-if ((speed _convoyLead) > 0) exitWith {
+// there can be times where there is a slight amount of speed in a (mostly) stationary vehicle
+if ((speed _convoyLead) > 0.5) exitWith {
     [["_convoyLead ",_convoyLead," is moving, must be stopped to add vehicles to the convoy"]] call KISKA_fnc_log;
     -1
 };
@@ -143,6 +145,26 @@ if (_indexToCopyFrom isNotEqualTo -1) then {
 } else {
     _vehicle setVariable ["KISKA_convoy_drivePath",[]];
 };
+
+
+private _vehicleDimensions = [_vehicle] call KISKA_fnc_getBoundingBoxDimensions;
+_vehicleDimensions params ["_length","_width","_height"];
+// purposely want the width and height doubled for making sure vehicles
+// don't accidentaly miss a point
+// length is not doubled because if a point is deleted too soon, it will affect
+// the vehicle will try to immediately turn into the next point and may not 
+// actually follow a path closely engough and crash into objects
+_vehicle setVariable [
+    "KISKA_convoy_vehicleCompletionArea",
+    [
+        [],
+        _width max MIN_COMPLETION_BOX_WIDTH,
+        (_length / 2) max MIN_COMPLETION_BOX_LENGTH,
+        0,
+        true,
+        _height
+    ]
+];
 
 
 [_vehicle,true] call KISKA_fnc_convoy_setVehicleDriveOnPath;

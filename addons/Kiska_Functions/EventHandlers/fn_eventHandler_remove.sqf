@@ -4,7 +4,7 @@ Function: KISKA_fnc_eventHandler_remove
 Description:
     Removes a configed custom eventhandler.
 
-    Worth noting that this will still return true even after the event has been
+    Worth noting that this will still return `true` even after the event has been
      removed as BIS_fnc_removeScriptedEventHandler essentially checks that the event
      isn't one that never could have existed.
 
@@ -14,7 +14,7 @@ Parameters:
     2: _id <NUMBER> - The event to remove
 
 Returns:
-    <BOOL> - True if removed, false if it never existed
+    <BOOL> - `true` if removed, `false` if it never existed
 
 Examples:
     (begin example)

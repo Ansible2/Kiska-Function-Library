@@ -64,9 +64,11 @@ private _convoyHashMap = createHashMap;
 // a new array will be created and saved in the statemachine's namespace
 private _convoyVehicles = _stateMachine getVariable "CBA_statemachine_list";
 _convoyHashMap set ["_convoyVehicles",_convoyVehicles];
+_convoyHashMap set ["_speedLimitPoints",createHashMap];
 
 _convoyHashMap set ["_stateMachine",_stateMachine];
-[_convoyHashMap,1] call KISKA_fnc_convoy_setPointBuffer;
+// set to default value
+[_convoyHashMap] call KISKA_fnc_convoy_setPointBuffer;
 [_convoyHashMap,_convoySeperation] call KISKA_fnc_convoy_setDefaultSeperation;
 
 _vics apply {

@@ -51,7 +51,7 @@ _allVehicleTurrets apply {
     
     // some turrets are just optics, need to see they actually have ammo to shoot
     private _indexOfValidMagazine = _turretWeapons findIf {
-        private _mags = [_x] call BIS_fnc_compatibleMagazines;
+        private _mags = [_x,true] call BIS_fnc_compatibleMagazines;
         // some turrets are just laser designators, hence checking that there are no laserbatteries
         (_mags isNotEqualTo []) AND {!((_mags select 0) == "laserbatteries")}
     };
