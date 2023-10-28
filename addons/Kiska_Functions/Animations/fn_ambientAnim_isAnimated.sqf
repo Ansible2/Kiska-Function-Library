@@ -29,7 +29,7 @@ if !(alive _unit) exitWith {
     false
 };
 
-private _isAnimated = !(isNil {_unit getVariable "KISKA_ambientAnimMap"});
+private _isAnimated = !(_unit isNil "KISKA_ambientAnimMap");
 
 
 _isAnimated

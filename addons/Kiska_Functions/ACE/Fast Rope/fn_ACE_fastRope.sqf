@@ -196,15 +196,15 @@ _vehicle setVariable ["KISKA_fastrope_hoverAiDisabled",false];
         ];
 
         if (
-            alive _vehicle AND
-            alive _pilot AND
-            !isNil {_vehicle getVariable "ACE_Rappelling"}
+            (alive _vehicle) AND
+            (alive _pilot) AND
+            !(_vehicle isNil "ACE_Rappelling")
         ) then {
             private _currentVehiclePosition_ASL = getPosASLVisual _vehicle;
             private _distanceToHoverPosition = _currentVehiclePosition_ASL vectorDistance _hoverPosition_ASL;
 
             if (_distanceToHoverPosition <= 400) then {
-                if (isNil {_vehicle getVariable "KISKA_fastRopeTransformStart_speed"}) then {
+                if (_vehicle isNil "KISKA_fastRopeTransformStart_speed") then {
                     _vehicle setVariable ["KISKA_fastRopeTransformStart_speed",(speed _vehicle) / 3.6];
                 };
 
