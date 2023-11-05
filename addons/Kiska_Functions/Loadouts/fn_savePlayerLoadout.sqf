@@ -34,8 +34,8 @@ if (!canSuspend) exitWith {
 };
 
 waitUntil {
-    if !(isNull player) exitWith {true};
-    sleep 0.1;
+    if !(isNull player) then { breakWith true };
+    sleep 1;
     false
 };
 
@@ -43,17 +43,26 @@ player addEventHandler ["KILLED", {
     params ["_unit"];
 
     private _loadout = getUnitLoadout _unit;
-    missionNamespace setVariable ["KISKA_loadout",_loadout];
-    missionNamespace setVariable ["KISKA_playersBody",_unit];
+    localNamespace setVariable ["KISKA_loadout",_loadout];
+    localNamespace setVariable ["KISKA_playersBody",_unit];
 }];
 
 player addEventHandler ["RESPAWN", {
-    if (!isNil "KISKA_loadout" AND {missionNamespace getVariable ["KISKA_CBA_restorePlayerLoadout",false]}) then {
-        player setUnitLoadout (missionNamespace getVariable "KISKA_loadout");
+    private _doRestoreLoadout = missionNamespace getVariable ["KISKA_CBA_restorePlayerLoadout",false];
+    if (_doRestoreLoadout AND !(localNamespace isNil "KISKA_loadout")) then {
+        [
+            {
+                player setUnitLoadout (localNamespace getVariable "KISKA_loadout");
+            },
+            [],
+            0.5
+        ] call CBA_fnc_waitAndExecute;
+    };
 
-        if (missionNamespace getVariable ["KISKA_CBA_deleteBody",false] AND {!isNil "KISKA_playersBody"}) then {
-            deleteVehicle (missionNamespace getVariable "KISKA_playersBody");
-        };
+    private _doDeleteBody = missionNamespace getVariable ["KISKA_CBA_deleteBody",false];
+    private _playerBody = localNamespace getVariable "KISKA_playersBody";
+    if (_doDeleteBody AND !(isNil "_playerBody")) then {
+        deleteVehicle _playerBody;
     };
 }];
 
