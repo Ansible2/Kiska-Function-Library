@@ -53,7 +53,10 @@ if (
     _isPerFrame AND
     (_condition isEqualType [])
 ) exitWith {
-    ["Unscheduled, perframe waituntil will only support CODE or STRING as an arguement",true] call KISKA_fnc_log;
+    [
+        "Unscheduled, perframe waituntil will only support CODE or STRING as an arguement",
+        true
+    ] call KISKA_fnc_log;
     nil
 };
 
@@ -90,24 +93,26 @@ if (_unscheduled AND _isPerframe) exitWith {
 if (_unscheduled) exitWith {
     [
         {
-            params [
+            (_this select 0) params [
                 "_condition",
                 "_function",
                 "_interval",
-                "_parameters",
-                ""
+                "_parameters"
             ];
 
             private _conditionMet = [_parameters,_condition] call KISKA_fnc_callBack;
             if (_conditionMet) exitWith {
                 [_parameters,_function] call KISKA_fnc_callBack;
-            };
 
-            _this call KISKA_fnc_waitUntil;
+                private _id = _this select 1;
+                [_id] call CBA_fnc_removePerFrameHandler;
+            };
         },
-        _this,
-        _interval
-    ] call CBA_fnc_waitAndExecute;
+        _interval,
+        _this
+    ] call CBA_fnc_addPerFrameHandler;
+
+    nil
 };
 
 
