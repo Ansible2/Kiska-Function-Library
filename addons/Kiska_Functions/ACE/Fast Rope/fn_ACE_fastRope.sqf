@@ -179,8 +179,8 @@ private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
     _vehicle,
     _hoverPosition_ASL,
     {
-        params ["_vehice"];
-        !isNil {_vehicle getVariable "ACE_Rappelling"}
+        params ["_vehicle"];
+        isNil {_vehicle getVariable "ACE_Rappelling"}
     }
 ] call KISKA_fnc_hover;
 

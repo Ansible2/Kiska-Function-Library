@@ -10,7 +10,14 @@ Parameters:
     0: _vehicle <OBJECT> - The helicopter/vtol to hover
     1: _hoverPosition <PositionASL[] or OBJECT> - The positionASL to drop the units off at; Z coordinate
         matters
-    2: _shouldHoverStop <CODE, STRING or ARRAY> - Code to execute after the drop is complete, see KISKA_fnc_callBack.
+    2: _shouldHoverStop <CODE> - Code that should return a boolean to determine if the vehicle should stop its hover.
+        This condition is checked every 0.05s.
+        
+        Parameters:
+        - 0: _vehicle - The drop vehicle
+        - 1: _pilot - The currentPilot of _vehicle
+
+    3: _onHoverEnd <CODE, STRING, or ARRAY> - Code that executes after the hover completes, see KISKA_fnc_callBack
         This condition is checked every 0.05s.
         
         Parameters:
@@ -23,7 +30,14 @@ Returns:
 Examples:
     (begin example)
         [
-
+			myHeli,
+			myHoverPositionASL,
+			{
+				localNamespace getVariable ["stopMyHover",false]
+			},
+			{
+				hint "after hover";
+			}
         ] call KISKA_fnc_hover;
     (end)
 
@@ -43,7 +57,8 @@ scriptName "KISKA_fnc_hover";
 params [
     ["_vehicle",objNull,[objNull]],
     ["_hoverPosition",[],[objNull,[]],3],
-    ["_shouldHoverStop",{},["",{},[]]]
+    ["_shouldHoverStop",{false},[{}]],
+    ["_onHoverEnd",{},["",{},[]]]
 ];
 
 
@@ -77,22 +92,26 @@ _pilot move (ASLToATL _hoverPosition);
         _args params [
             "_vehicle",
             "_hoverPosition",
-            ["_shouldHoverStop",{false},["",{},[]]]
+            "_shouldHoverStop",
+			"_onHoverEnd"
         ];
         
         private _pilot = currentPilot _vehicle;
-        // TODO: optimize case when _shouldHoverStop is empty
-        // TODO: should a designer just be forced to call a function like do end the hover themselves? (toggle KISKA_hover_hoverAiDisabled to false)
-
         if (
             !(alive _vehicle) OR
             !(alive _pilot) OR
-            { [_vehicle,_pilot] call _shouldHoverStop }
+            { 
+				[_vehicle,_pilot] call _shouldHoverStop 
+			}
         ) exitWith {
             if (_pilot getVariable ["KISKA_hover_hoverAiDisabled",true]) then {
                 _pilot setVariable ["KISKA_hover_hoverAiDisabled",nil];
                 _pilot enableAI "PATH";
             };
+
+			if (_onHoverEnd isNotEqualTo {}) then {
+				[[_vehicle,_pilot],_onHoverEnd] call KISKA_fnc_callBack;
+			};
 
             [_id] call CBA_fnc_removePerFrameHandler;
         };
@@ -146,5 +165,8 @@ _pilot move (ASLToATL _hoverPosition);
 
     },
     HOVER_INTERVAL,
-    [_vehicle, _hoverPosition]
+    _this
 ] call CBA_fnc_addPerFrameHandler;
+
+
+nil
