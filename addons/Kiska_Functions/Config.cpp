@@ -62,6 +62,8 @@ class CfgFunctions
             {};
             class engageHeliTurretsLoop
             {};
+            class hover
+            {};
             class heliLand
             {};
             class heliPatrol

@@ -174,96 +174,26 @@ if (_unitsToDeployFiltered isEqualTo []) then {
 ---------------------------------------------------------------------------- */
 _vehicle setVariable ["ACE_Rappelling",true];
 private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
-private _pilot = driver _vehicle;
 
-private _vehicleGroup = group (commander _vehicle);
-_vehicleGroup allowFleeing 0;
-
-private _pilot = driver _vehicle;
-_pilot setSkill 1;
-_pilot move (ASLToATL _hoverPosition_ASL);
-
-_vehicle setVariable ["KISKA_fastrope_hoverAiDisabled",false];
-
-// guides helicopter to drop position
 [
+    _vehicle,
+    _hoverPosition_ASL,
     {
-        params ["_args", "_id"];
-        _args params [
-            "_vehicle",
-            "_hoverPosition_ASL",
-            "_pilot"
-        ];
-
-        if (
-            (alive _vehicle) AND
-            (alive _pilot) AND
-            !(_vehicle isNil "ACE_Rappelling")
-        ) then {
-            private _currentVehiclePosition_ASL = getPosASLVisual _vehicle;
-            private _distanceToHoverPosition = _currentVehiclePosition_ASL vectorDistance _hoverPosition_ASL;
-
-            if (_distanceToHoverPosition <= 400) then {
-                if (_vehicle isNil "KISKA_fastRopeTransformStart_speed") then {
-                    _vehicle setVariable ["KISKA_fastRopeTransformStart_speed",(speed _vehicle) / 3.6];
-                };
-
-                private _speed = _vehicle getVariable "KISKA_fastRopeTransformStart_speed";
-                private _velocityMagnitude = 50;
-                if (_speed < _velocityMagnitude AND (_distanceToHoverPosition > 100)) then {
-                    _speed = _speed + 0.25;
-                    _vehicle setVariable ["KISKA_fastRopeTransformStart_speed",_speed];
-
-                } else {
-                    if (_distanceToHoverPosition <= 100) then {
-                        _speed = (_speed - 1) max 10;
-                        _vehicle setVariable ["KISKA_fastRopeTransformStart_speed",_speed];
-                    };
-                };
-
-                if (
-                    (_distanceToHoverPosition <= 25) AND
-                    !(_vehicle getVariable ["KISKA_fastrope_hoverAiDisabled",false])
-                ) then {
-                    private _pilot = currentPilot _vehicle;
-                    [_pilot,"PATH"] remoteExecCall ["disableAI",_pilot];
-                    _vehicle setVariable ["KISKA_fastrope_hoverAiDisabled",true];
-                };
-
-                _velocityMagnitude = _speed;
-                if ((_currentVehiclePosition_ASL distance2d _hoverPosition_ASL) >= 2.5) then {
-                    if ( _distanceToHoverPosition <= 15 ) then {
-                        _velocityMagnitude = (_distanceToHoverPosition / 10) * 5;
-
-                    };
-
-                    private _currentVelocity = velocity _vehicle;
-                    _currentVelocity = (_currentVehiclePosition_ASL vectorFromTo _hoverPosition_ASL) vectorMultiply _velocityMagnitude;
-                    _vehicle setVelocity _currentVelocity;
-
-                };
-
-            };
-
-        } else {
-            [_id] call CBA_fnc_removePerFrameHandler;
-
-        };
-    },
-    HOVER_INTERVAL,
-    [_vehicle, _hoverPosition_ASL, _pilot]
-] call CBA_fnc_addPerFrameHandler;
-
+        params ["_vehice"];
+        !(_vehicle isNil "ACE_Rappelling")
+    }
+] call KISKA_fnc_hover;
 
 /* ----------------------------------------------------------------------------
     Monitor drop for completion
 ---------------------------------------------------------------------------- */
 [
     {
-        params ["_vehicle","_hoverPosition_ASL","_pilot","",""];
+        params ["_vehicle","_hoverPosition_ASL"];
+
         if (!alive _vehicle) exitWith {true};
-        if (!alive _pilot) exitWith {true};
-        private _currentVehiclePosition_ASL = getPosASL _vehicle;
+        if (!alive (currentPilot _vehicle)) exitWith {true};
+        private _currentVehiclePosition_ASL = getPosASLVisual _vehicle;
 
         (speed _vehicle < (2.5 * 3.6))
         AND
@@ -276,46 +206,47 @@ _vehicle setVariable ["KISKA_fastrope_hoverAiDisabled",false];
         }
     },
     {
-        params ["_vehicle","","_pilot","_unitsToDeploy","_afterDropCode","_ropeOrigins","_unitsToDeployIsCode"];
+        params [
+            "_vehicle",
+            "",
+            "_unitsToDeploy",
+            "_afterDropCode",
+            "_ropeOrigins",
+            "_unitsToDeployIsCode"
+        ];
 
-        if ((alive _vehicle) AND (alive _pilot)) then {
-            if (_unitsToDeployIsCode) then {
-                _unitsToDeploy = [
-                    [_vehicle],
-                    _unitsToDeploy
-                ] call KISKA_fnc_callBack;
-            };
-
-            [_vehicle, _unitsToDeploy, _ropeOrigins] call KISKA_fnc_ACE_deployFastRope;
-
-            [_vehicle,_afterDropCode] spawn {
-                params ["_vehicle","_afterDropCode"];
-
-                waitUntil {
-                    sleep 1;
-                    ((_vehicle getVariable ["ace_fastroping_deployedRopes", []]) isNotEqualTo [])
-                };
-
-                waitUntil {
-                    sleep 1;
-                    ((_vehicle getVariable ["ace_fastroping_deployedRopes", []]) isEqualTo [])
-                };
-
-                _vehicle setVariable ["ACE_Rappelling",nil];
-                _vehicle setVariable ["KISKA_fastrope_hoverInterval",nil];
-                _vehicle setVariable ["KISKA_fastrope_hoverAiDisabled",nil];
-                
-                private _pilot = currentPilot _vehicle;
-                [_pilot,"PATH"] remoteExecCall ["enableAI",_pilot];
-
-                [
-                    [_vehicle],
-                    _afterDropCode
-                ] call KISKA_fnc_callBack;
-
-            };
+        if (!(alive _vehicle) OR !(alive (currentPilot _vehicle))) exitWith {};
+            
+        if (_unitsToDeployIsCode) then {
+            _unitsToDeploy = [
+                [_vehicle],
+                _unitsToDeploy
+            ] call KISKA_fnc_callBack;
         };
 
+        [_vehicle, _unitsToDeploy, _ropeOrigins] call KISKA_fnc_ACE_deployFastRope;
+
+        [_vehicle,_afterDropCode] spawn {
+            params ["_vehicle","_afterDropCode"];
+
+            waitUntil {
+                sleep 1;
+                ((_vehicle getVariable ["ace_fastroping_deployedRopes", []]) isNotEqualTo [])
+            };
+
+            waitUntil {
+                sleep 1;
+                ((_vehicle getVariable ["ace_fastroping_deployedRopes", []]) isEqualTo [])
+            };
+
+            _vehicle setVariable ["ACE_Rappelling",nil];
+            
+            [
+                [_vehicle],
+                _afterDropCode
+            ] call KISKA_fnc_callBack;
+        };
     },
-    [_vehicle,_hoverPosition_ASL,_pilot,_unitsToDeployFiltered,_afterDropCode,_ropeOrigins,_unitsToDeployIsCode]
-] call CBA_fnc_waitUntilAndExecute;
+    0.5
+    [_vehicle,_hoverPosition_ASL,_unitsToDeployFiltered,_afterDropCode,_ropeOrigins,_unitsToDeployIsCode]
+] call KISKA_fnc_waitUntil;
