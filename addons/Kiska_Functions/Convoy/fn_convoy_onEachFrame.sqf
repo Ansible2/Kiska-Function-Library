@@ -315,6 +315,8 @@ _area set [3,_currentVehicle_direction];
     // some points can include speed limit
     // NOTE/TODO: it might be worth increasing the width/area in general as speed increases.
     // Higher speed likely means that the probability of missing a point is higher
+
+    // TODO: extend area to be further behind the vehicle
     private _pointReached = _x inArea _area;
 
     if !(_pointReached) then { break };
