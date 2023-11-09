@@ -247,6 +247,6 @@ private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
             ] call KISKA_fnc_callBack;
         };
     },
-    0.5
+    0.5,
     [_vehicle,_hoverPosition_ASL,_unitsToDeployFiltered,_afterDropCode,_ropeOrigins,_unitsToDeployIsCode]
 ] call KISKA_fnc_waitUntil;

@@ -30,8 +30,8 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ACE_deployFastRope";
 
-#if __has_include("\z\ace\addons\fastroping\functions\script_component.hpp")
-    #include "\z\ace\addons\fastroping\functions\script_component.hpp"
+#if __has_include("\z\ace\addons\fastroping\script_component.hpp")
+    #include "\z\ace\addons\fastroping\script_component.hpp"
     #define DEFAULT_ROPE_DEPLOY_TIME 4
 
 

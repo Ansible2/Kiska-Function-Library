@@ -23,8 +23,8 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_ACE_deployRopes";
 
-#if __has_include("\z\ace\addons\fastroping\functions\script_component.hpp")
-    #include "\z\ace\addons\fastroping\functions\script_component.hpp"
+#if __has_include("\z\ace\addons\fastroping\script_component.hpp")
+    #include "\z\ace\addons\fastroping\script_component.hpp"
 
 params [
     ["_vehicle",objNull,[objNull]],

@@ -102,7 +102,7 @@ _pilot move (ASLToATL _hoverPosition);
 
         if (_distanceToHoverPosition > START_VELOCITY_CONTROL_DISTANCE) exitWith {};
 
-        if (_vehicle isNil "KISKA_hoverTransformStart_speed") then {
+        if (isNil {_vehicle getVariable "KISKA_hoverTransformStart_speed"}) then {
             _vehicle setVariable ["KISKA_hoverTransformStart_speed",(speed _vehicle) / 3.6];
         };
 
