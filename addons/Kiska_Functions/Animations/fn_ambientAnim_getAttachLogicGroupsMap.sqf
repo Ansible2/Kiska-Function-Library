@@ -2,7 +2,7 @@
 Function: KISKA_fnc_ambientAnim_getAttachLogicGroupsMap
 
 Description:
-    Returns the hashmap that contains all logic groups used for ambient animatoins.
+    Returns the hashmap that contains all logic groups used for ambient animations.
 
     Users can then reference all the groups with the `values` command.
 
