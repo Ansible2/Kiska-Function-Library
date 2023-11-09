@@ -52,7 +52,7 @@ if (_arrayVariableName isEqualTo "") exitWith {
 private _array = _namespace getVariable [_arrayVariableName,[]];
 _array pushBack _entryToAdd;
 
-if (_namespace isNil _arrayVariableName) then {
+if (isNil {_namespace getVariable _arrayVariableName}) then {
     _namespace setVariable [_arrayVariableName,_array];
 };
 

@@ -23,4 +23,4 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_spectrum_isInitialized";
 
-!(uiNamespace isNil "rscweaponspectrumanalyzergeneric")
+!(isNil { uiNamespace getVariable "rscweaponspectrumanalyzergeneric" })

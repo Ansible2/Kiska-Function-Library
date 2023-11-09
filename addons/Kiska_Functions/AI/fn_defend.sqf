@@ -75,7 +75,7 @@ _statics = _statics select {locked _x != 2 && {(_x emptyPositions "Gunner") > 0}
 _buildings = _buildings select {
     private _positions = _x buildingPos -1;
 
-    if (_x isNil "CBA_taskDefend_positions") then {
+    if (isNil {_x getVariable "CBA_taskDefend_positions"}) then {
         _x setVariable ["CBA_taskDefend_positions", _positions];
     };
 

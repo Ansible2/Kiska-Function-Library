@@ -134,7 +134,7 @@ _units apply {
                         [_unit,false] remoteExecCall ["enableSimulationGlobal",2];
                     };
 
-                    if !(_unit isNil "KISKA_ambientAnimMap") then {
+                    if !(isNil {_unit getVariable "KISKA_ambientAnimMap"}) then {
                         [_unit,_newLoadout] call KISKA_fnc_ambientAnim_setStoredLoadout;
                     };
                 },

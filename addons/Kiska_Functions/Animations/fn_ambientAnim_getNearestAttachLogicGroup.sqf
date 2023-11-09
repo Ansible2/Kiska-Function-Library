@@ -41,7 +41,8 @@ private _nearestDistance = -1;
 private _nearest = grpNull;
 // radius is 3d for nearEntities
 (_position nearEntities ["Logic",RADIUS_TO_CHECK]) apply {
-    if (_x isNil "KISKA_ambientAnimGroup_ID") then {continue};
+    private _id = _x getVariable "KISKA_ambientAnimGroup_ID";
+    if (isNil "_id") then {continue};
 
     private _distance = _position distance2D _x;
     private _aNearestWasFound = !(isNull _nearest);
