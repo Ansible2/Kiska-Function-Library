@@ -49,7 +49,7 @@ player addEventHandler ["KILLED", {
 
 player addEventHandler ["RESPAWN", {
     private _doRestoreLoadout = missionNamespace getVariable ["KISKA_CBA_restorePlayerLoadout",false];
-    if (_doRestoreLoadout AND !(localNamespace isNil "KISKA_loadout")) then {
+    if (_doRestoreLoadout AND !(isNil {localNamespace getVariable "KISKA_loadout"})) then {
         [
             {
                 player setUnitLoadout (localNamespace getVariable "KISKA_loadout");
