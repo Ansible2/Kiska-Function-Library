@@ -2,7 +2,7 @@
 Function: KISKA_fnc_hover
 
 Description:
-    
+    Sends a vehicle to a given point to hover.
 
     Pilots should ideally be placed in "CARELESS" behaviour when around enemies.
 
