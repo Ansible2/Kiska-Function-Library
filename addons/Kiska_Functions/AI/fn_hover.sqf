@@ -106,7 +106,7 @@ _pilot move (ASLToATL _hoverPosition);
         ) exitWith {
             if (_pilot getVariable ["KISKA_hover_hoverAiDisabled",true]) then {
                 _pilot setVariable ["KISKA_hover_hoverAiDisabled",nil];
-                _pilot enableAI "PATH";
+                [_pilot,"PATH"] remoteExecCall ["enableAI",_pilot];
             };
 
 			if (_onHoverEnd isNotEqualTo {}) then {
@@ -144,7 +144,7 @@ _pilot move (ASLToATL _hoverPosition);
 
         if (
             (_distanceToHoverPosition <= DISTANCE_TO_DISABLE_PILOT_AI) AND
-            !(_pilot checkAIFeature "PATH")
+            (_pilot checkAIFeature "PATH")
         ) then {
             [_pilot,"PATH"] remoteExecCall ["disableAI",_pilot];
             _pilot setVariable ["KISKA_hover_hoverAiDisabled",true];
@@ -159,6 +159,7 @@ _pilot move (ASLToATL _hoverPosition);
 
             private _currentVelocity = velocity _vehicle;
             _currentVelocity = (_currentVehiclePosition_ASL vectorFromTo _hoverPosition) vectorMultiply _velocityMagnitude;
+            hint str _currentVelocity;
             _vehicle setVelocity _currentVelocity;
 
         };
