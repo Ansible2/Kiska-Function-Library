@@ -700,6 +700,8 @@ class CfgFunctions
             {};
             class showHide
             {};
+            class sortStringsNumerically
+            {};
             class staticLine
             {};
             class staticLine_eject
