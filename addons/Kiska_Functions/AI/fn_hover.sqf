@@ -74,7 +74,7 @@ if (_hoverPositionIsObject AND { isNull _hoverPosition }) exitWith {
 };
 
 if (_hoverPositionIsObject) then {
-    _dropPosition = getPosASL _dropPosition;
+    _hoverPosition = getPosASL _hoverPosition;
 };
 
 
@@ -165,7 +165,12 @@ _pilot move (ASLToATL _hoverPosition);
 
     },
     HOVER_INTERVAL,
-    _this
+    [
+        _vehicle,
+        _hoverPosition,
+        _shouldHoverStop,
+        _onHoverEnd
+    ]
 ] call CBA_fnc_addPerFrameHandler;
 
 
