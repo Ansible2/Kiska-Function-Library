@@ -159,7 +159,6 @@ _pilot move (ASLToATL _hoverPosition);
 
             private _currentVelocity = velocity _vehicle;
             _currentVelocity = (_currentVehiclePosition_ASL vectorFromTo _hoverPosition) vectorMultiply _velocityMagnitude;
-            hint str _currentVelocity;
             _vehicle setVelocity _currentVelocity;
 
         };
