@@ -86,8 +86,9 @@ _units apply {
                 {
                     scriptName "KISKA_fnc_assignUnitLoadout";
 
-                    params ["_unit","_newLoadout","_oldLoadout","","_attemptedSetLoadoutCount"];
+                    params ["_unit","_newLoadout","_oldLoadout"];
 
+                    private _attemptedSetLoadoutCount = _unit getVariable ["KISKA_assignLoadout_attemptCount",0];
                     if (_attemptedSetLoadoutCount >= 5) then {
                         [["Attempted to set the loadout of unit: ",_unit," ",_attemptedSetLoadoutCount," times without reaching completion"]] call KISKA_fnc_log;
                         [["unit's current loadout: ",endl,getUnitLoadout _unit]] call KISKA_fnc_log;
@@ -96,19 +97,20 @@ _units apply {
 
 
                     // units don't like being not simmed on dedicated servers while changing loadouts this, so do it temporarily if needed
-                    if !(simulationEnabled _unit) then {
-                        _this set [3,true];
+                    if (
+                        !(simulationEnabled _unit) AND 
+                        !(_unit getVariable ["KISKA_assignLoadout_enabledSimulation",false])
+                    ) then {
+                        _unit setVariable ["KISKA_assignLoadout_enabledSimulation",true];
                         [_unit,true] remoteExecCall ["enableSimulationGlobal",2];
                     };
                     
                     _unit setUnitLoadout _newLoadout;
+                    _unit setVariable ["KISKA_assignLoadout_attemptCount",_attemptedSetLoadoutCount + 1];
 
                     private _currentLoadout = getUnitLoadout _unit;
-                    if (_currentLoadout isEqualTo _newLoadout) exitWith {true};
-
-
-                    _this set [4,_attemptedSetLoadoutCount + 1];
-                    if (_currentLoadout isEqualTo _oldLoadout) exitWith {false};
+                    if (_currentLoadout isEqualTo _newLoadout) exitWith { true };
+                    if (_currentLoadout isEqualTo _oldLoadout) exitWith { false };
 
                     // Some loadouts may not have the exact bullet count (round in the chamber or not)
                     // which causes isEqualTo to return false
@@ -128,18 +130,23 @@ _units apply {
                     _deepCompareMatches
                 },
                 {
-                    params ["_unit","_newLoadout","","_simulationWasDisabled"];
+                    params ["_unit","_newLoadout"];
+                    
+                    private _simulationWasDisabled = _unit getVariable ["KISKA_assignLoadout_enabledSimulation",false];
                     // return units to being unsimmed if they were before
                     if (_simulationWasDisabled) then {
+                        _unit setVariable ["KISKA_assignLoadout_enabledSimulation",nil];
                         [_unit,false] remoteExecCall ["enableSimulationGlobal",2];
                     };
 
                     if !(isNil {_unit getVariable "KISKA_ambientAnimMap"}) then {
                         [_unit,_newLoadout] call KISKA_fnc_ambientAnim_setStoredLoadout;
                     };
+
+                    _unit setVariable ["KISKA_assignLoadout_attemptCount",nil];
                 },
                 0.5,
-                [_unit,_newLoadout,_oldLoadout,false,0]
+                [_unit,_newLoadout,_oldLoadout]
             ] call KISKA_fnc_waitUntil;
 
         };
