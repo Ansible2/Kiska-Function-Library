@@ -698,6 +698,8 @@ class CfgFunctions
             {};
             class setupMultiKillEvent
             {};
+            class setWaypointExecStatement
+            {};
             class showHide
             {};
             class sortStringsNumerically
