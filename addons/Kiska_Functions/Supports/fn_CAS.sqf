@@ -29,7 +29,7 @@ Returns:
 
 Examples:
     (begin example)
-        [myTarget] spawn KISKA_fnc_CAS;
+        [myTarget] call KISKA_fnc_CAS;
     (end)
 
 Author(s):
@@ -37,11 +37,6 @@ Author(s):
     Modified By: Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_CAS";
-
-if !(canSuspend) exitWith {
-    ["Needs to be run in scheduled, exiting to scheduled...",false] call KISKA_fnc_log;
-    _this spawn KISKA_fnc_CAS;
-};
 
 #define DEFAULT_CANNON_CLASS "Twin_Cannon_20mm"
 #define DEFAULT_CANNON_MAG_CLASS "PylonWeapon_300Rnd_20mm_shells"
@@ -52,6 +47,10 @@ if !(canSuspend) exitWith {
 #define PLANE_VELOCITY(THE_SPEED) [0,THE_SPEED,0]
 
 #define CUSTOM_OR_DEFAULT_MAG(defaultClass) [_customMagClass,defaultClass] select (_customMagClass isEqualTo "")
+
+#define STRAFE_INCREMENT 0.1
+#define FLARE_COUNT 4
+#define TIME_TILL_DELETE 64
 
 params [
     ["_attackPosition",objNull,[[],objNull]],
@@ -67,7 +66,12 @@ params [
     ["_allowDamage",false,[true]]
 ];
 
-if (_attackPosition isEqualType objNull AND {isNull _attackPosition} OR {_attackPosition isEqualTo []}) exitWith {
+
+if (
+	(_attackPosition isEqualType objNull) AND 
+	{isNull _attackPosition} OR 
+	{_attackPosition isEqualTo []}
+) exitWith {
     [[_attackPosition," is an invalid target"],true] call KISKA_fnc_log;
     nil
 };
@@ -96,28 +100,34 @@ _attackMagazines = switch _attackTypeID do {
         [CANNON_TYPE]
     };
     case GUNS_AND_ROCKETS_ARMOR_PIERCING_ID: {
-        [CANNON_TYPE,[ROCKETS_AP_TYPE,CUSTOM_OR_DEFAULT_MAG("PylonRack_7Rnd_Rocket_04_AP_F")]]
+        [
+			CANNON_TYPE,
+			[ROCKETS_AP_TYPE, CUSTOM_OR_DEFAULT_MAG("PylonRack_7Rnd_Rocket_04_AP_F")]
+		]
     };
     case GUNS_AND_ROCKETS_HE_ID: {
-        [CANNON_TYPE,[ROCKETS_HE_TYPE,CUSTOM_OR_DEFAULT_MAG("PylonRack_7Rnd_Rocket_04_HE_F")]]
+        [
+			CANNON_TYPE,
+			[ROCKETS_HE_TYPE, CUSTOM_OR_DEFAULT_MAG("PylonRack_7Rnd_Rocket_04_HE_F")]
+		]
     };
     case ROCKETS_ARMOR_PIERCING_ID: {
-        [[ROCKETS_AP_TYPE,CUSTOM_OR_DEFAULT_MAG("PylonRack_7Rnd_Rocket_04_AP_F")]]
+        [[ROCKETS_AP_TYPE, CUSTOM_OR_DEFAULT_MAG("PylonRack_7Rnd_Rocket_04_AP_F")]]
     };
     case ROCKETS_HE_ID: {
-        [[ROCKETS_HE_TYPE,CUSTOM_OR_DEFAULT_MAG("PylonRack_7Rnd_Rocket_04_HE_F")]]
+        [[ROCKETS_HE_TYPE, CUSTOM_OR_DEFAULT_MAG("PylonRack_7Rnd_Rocket_04_HE_F")]]
     };
     case AGM_ID: {
-        [[AGM_TYPE,CUSTOM_OR_DEFAULT_MAG("PylonRack_1Rnd_Missile_AGM_02_F")]]
+        [[AGM_TYPE, CUSTOM_OR_DEFAULT_MAG("PylonRack_1Rnd_Missile_AGM_02_F")]]
     };
     case BOMB_LGB_ID: {
-        [[BOMB_LGB_TYPE,CUSTOM_OR_DEFAULT_MAG("PylonMissile_1Rnd_Bomb_04_F")]]
+        [[BOMB_LGB_TYPE, CUSTOM_OR_DEFAULT_MAG("PylonMissile_1Rnd_Bomb_04_F")]]
     };
     case BOMB_CLUSTER_ID: {
-        [[BOMB_UGB_TYPE,CUSTOM_OR_DEFAULT_MAG("PylonMissile_1Rnd_BombCluster_01_F")]]
+        [[BOMB_UGB_TYPE, CUSTOM_OR_DEFAULT_MAG("PylonMissile_1Rnd_BombCluster_01_F")]]
     };
     case BOMB_NAPALM_ID: {
-        [[BOMB_UGB_TYPE,CUSTOM_OR_DEFAULT_MAG("vn_bomb_f4_out_500_blu1b_fb_mag_x1")]]
+        [[BOMB_UGB_TYPE, CUSTOM_OR_DEFAULT_MAG("vn_bomb_f4_out_500_blu1b_fb_mag_x1")]]
     };
 };
 
@@ -175,16 +185,20 @@ if (isClass _pylonConfig) then {
     };
 
     // if there was more then just the cannon in the _attackMagazines array
-    if !(_attackMagazines isEqualTo []) then {
-        private ["_attackTypeString","_attackMagazineClass","_attackWeaponClass"];
+    if (_attackMagazines isNotEqualTo []) then {
         {
-            [["attackMag is: ",_x],false] call KISKA_fnc_log;
-            _attackMagazineClass = _x select 1;
-            _attackWeaponClass = [configFile >> "cfgMagazines" >> _attackMagazineClass >> "pylonWeapon"] call BIS_fnc_getCfgData;
+			_x params ["_attackTypeString","_attackMagazineClass"];
+            private _attackWeaponClass = [
+				configFile >> "cfgMagazines" >> _attackMagazineClass >> "pylonWeapon"
+			] call BIS_fnc_getCfgData;
 
-            _attackTypeString = _x select 0;
             // pushBack string for attack type, the weapon used, the mag for adding a pylon, and what pylon to add it to
-            _weaponsToUse pushBack [_attackTypeString,_attackWeaponClass,[_attackMagazineClass,_allVehiclePylons deleteAt 0]];
+			private _nextPylon = _allVehiclePylons deleteAt 0;
+            _weaponsToUse pushBack [
+				_attackTypeString,
+				_attackWeaponClass,
+				[_attackMagazineClass, _nextPylon]
+			];
         } forEach _attackMagazines;
     };
 
@@ -195,10 +209,20 @@ if (isClass _pylonConfig) then {
 
 
 if (_exitToDefault) exitwith {
-    [["Weapon types of ",_attackMagazines," for plane class: ",_planeClass," not entirely found, moving to default Aircraft..."],true] call KISKA_fnc_log;
+    [
+		[
+			"Weapon types of ",
+			_attackMagazines,
+			" for plane class: ",
+			_planeClass,
+			" not entirely found, moving to default Aircraft..."
+		],
+		true
+	] call KISKA_fnc_log;
+
     // exit to default aircraft type
     _this set [3,DEFAULT_AIRCRAFT];
-    _this spawn KISKA_fnc_CAS;
+    _this call KISKA_fnc_CAS;
 };
 
 
@@ -213,12 +237,15 @@ private _planeSpawnPosition = [
 ] call KISKA_fnc_getPosRelativeSurface;
 
 _planeSpawnPosition = _planeSpawnPosition vectorAdd [0,0,_spawnHeight];
-private _planeArray = [_planeSpawnPosition,_attackDirection,_planeClass,_side,false] call KISKA_fnc_spawnVehicle;
-private _plane = _planeArray select 0;
-private _crew = _planeArray select 1;
-
-[_planeArray select 2,true] call KISKA_fnc_ACEX_setHCTransfer;
-
+private _planeArray = [
+	_planeSpawnPosition,
+	_attackDirection,
+	_planeClass,
+	_side,
+	false
+] call KISKA_fnc_spawnVehicle;
+_planeArray params ["_plane","_crew","_planeGroup"];
+[_planeGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
 
 if !(_allowDamage) then {
     _plane allowDamage false;
@@ -242,10 +269,6 @@ _weaponsToUse apply {
 
 _plane setPosASL _planeSpawnPosition;
 _plane setDir _attackDirection;
-
-
-//_plane disableAi "move";
-//_plane disableAi "target";
 _plane disableAi "autotarget";
 _plane setCombatMode "blue";
 
@@ -261,23 +284,7 @@ if (_attackPosition isEqualType objNull) then {
 private _planePositionASL = getPosASLVisual _plane;
 private _vectors = [_planePositionASL,_attackPosition] call KISKA_fnc_getVectorToTarget;
 _plane setVectorDirAndUp _vectors;
-private _planeVectorDirTo = _vectors select 0;
-private _planeVectorUp = _vectors select 1;
-/*
-// yaw
-private _planePositionASL = getPosASLVisual _plane;
-private _planeVectorDirTo = _planePositionASL vectorFromTo _attackPosition;
-_plane setVectorDir _planeVectorDirTo;
-
-
-private _planePositionATL = ASLToATL _planePositionASL;
-private _attackAngle = (_planePositionATL vectorDistance (ASLToATL _attackPosition)) / (_planePositionATL select 2);
-private _planeDir = getDir _plane;
-private _planeVectorUp = [-cos (_planeDir + 90), sin (_planeDir + 90),1 / tan _attackAngle];
-_plane setVectorUp _planeVectorUp;
-*/
-
-
+_vectors params ["_planeVectorDirTo","_planeVectorUp"];
 
 // set plane's speed to 200 km/h
 _plane setVelocityModelSpace PLANE_VELOCITY(PLANE_SPEED);
@@ -292,105 +299,161 @@ private _flightTime = (_vectorDistanceToTarget - _breakOffDistance) / PLANE_SPEE
 private _startTime = time;
 private _timeAfterFlight = time + _flightTime;
 
+[
+	{
+		params ["_args","_id"];
+		_args params [
+			"_plane",
+			"_originalAttackPosition",
+			"_attackDirection",
+			"_breakOffDistance",
+			"_planeSpawnPosition",
+			"_startTime",
+			"_timeAfterFlight",
+			"_planeSpawnPosition",
+			"_planeArray",
+			"_weaponsToUse",
+			"_attackTypeID",
+			"_planeVectorDirTo",
+			"_planeVectorUp",
+			"_side",
+			"_attackDistance",
+			"_spawnHeight"
+		];
 
-private "_interval";
+		private _attackPosition = _plane getVariable ["KISKA_CAS_attackPosition",_originalAttackPosition];
+		private _planePositionASL = getPosASLVisual _plane;
+		private _vectorDistanceToTarget = _attackPosition vectorDistance _planePositionASL;
+		private _velocity = PLANE_VELOCITY(PLANE_SPEED);
 
-waitUntil {
-    _planePositionASL = getPosASLVisual _plane;
-    _vectorDistanceToTarget = _attackPosition vectorDistance _planePositionASL;
+		if (
+			isNull _plane OR
+			{_plane getVariable ["KISKA_CAS_completedFiring",false]} OR
+			{_vectorDistanceToTarget <= _breakOffDistance}
+		)
+		exitWith {
+			/* ----------------------------------------------------------------------------
+				Handle After CAS complete
+			---------------------------------------------------------------------------- */
+			// forces plane to keep flying in the general direction they currently are
+			// if not, once the setVelocityTransformation loop is done, it can rapidly change course
+			_plane setVelocityModelSpace _velocity;
 
-    if (
-        isNull _plane OR
-        {_plane getVariable ["KISKA_completedFiring",false]} OR
-        {_vectorDistanceToTarget <= _breakOffDistance}
-    )
-    exitWith {true};
+			// telling the plane to ultimately fly past the target after we're done controlling it
+			_plane move (_attackPosition getPos [5000,_attackDirection]);
 
-    //--- Set the plane approach vector
-    _interval = linearConversion [_startTime,_timeAfterFlight,time,0,1];
+			// after fire is complete
+			_plane flyInHeight (_spawnHeight * 2);
 
-    _plane setVelocityTransformation [
-        _planeSpawnPosition, _attackPosition,
-        PLANE_VELOCITY(PLANE_SPEED), PLANE_VELOCITY(PLANE_SPEED),
-        _planeVectorDirTo,_planeVectorDirTo,
-        _planeVectorUp, _planeVectorUp,
-        _interval
-    ];
+			// pop flares
+			private _pilot = currentPilot _plane;
+			for "_i" from 1 to FLARE_COUNT do {
+				[
+					{
+						params ["_pilot"];
+						_pilot forceweaponfire ["CMFlareLauncher","Burst"];
+					},
+					[_pilot],
+					_i
+				] call CBA_fnc_waitAndExecute;
+			};
 
-    _plane setVelocityModelSpace PLANE_VELOCITY(PLANE_SPEED);
+			// give the plane some time to get out of audible distance before deletion
+			[
+				{
+					params ["_plane","_crew","_group"];
 
+					_crew apply {
+						if (!isNull _x) then {
+							_plane deleteVehicleCrew _x;
+						};
+					};
 
-    // start firing
-    // check if plane is from target and hasn't already started shooting
-    if (_vectorDistanceToTarget <= _attackDistance) then {
+					if (alive _plane) then {
+						deleteVehicle _plane;
+					};
 
-        if !(_plane getVariable ["KISKA_startedFiring",false]) then {
-            _plane setVariable ["KISKA_startedFiring",true];
-            // create a target to shoot at
-            private _dummyTargetClass = ["LaserTargetE","LaserTargetW"] select (_side getfriend west > 0.6);
-            private _dummyTarget = createvehicle [_dummyTargetClass,[0,0,0],[],0,"NONE"];
-            _plane setVariable ["KISKA_casDummyTarget",_dummyTarget];
-            _dummyTarget setPosASL _attackPosition;
-            _plane reveal laserTarget _dummyTarget;
-            _plane dowatch laserTarget _dummyTarget;
-            _plane dotarget laserTarget _dummyTarget;
+					if (!isNull _group) then {
+						deleteGroup _group;
+					};
+				},
+				_planeArray,
+				TIME_TILL_DELETE
+			] call CBA_fnc_waitAndExecute;
 
-            [_plane,_dummyTarget,_weaponsToUse,_attackTypeID,_attackPosition,_breakOffDistance] spawn KISKA_fnc_CASAttack;
+			[_id] call CBA_fnc_removePerFrameHandler;
+		};
 
-        } else {
-            // ensures strafing effect with the above setVelocityTransformation
-            /// for some reason, private variables outside the main if here do not work
-            /// had to use this method of storing the target instead
-            private _dummyTarget = _plane getVariable "KISKA_casDummyTarget";
-            _attackPosition = AGLToASL(_dummyTarget getPos [0.1,(getDirVisual _plane)]);
-            _dummyTarget setPosASL _attackPosition;
+		//--- Set the plane approach vector
+		private _interval = linearConversion [_startTime,_timeAfterFlight,time,0,1];
+		// TODO: should only need to use setVelocityTransformation here
+		_plane setVelocityTransformation [
+			_planeSpawnPosition, _attackPosition,
+			_velocity, _velocity,
+			_planeVectorDirTo, _planeVectorDirTo,
+			_planeVectorUp, _planeVectorUp,
+			_interval
+		];
 
-        };
-    };
+		_plane setVelocityModelSpace _velocity;
 
-    sleep 0.01;
+		// start firing
+		// check if plane is from target and hasn't already started shooting
+		if (_vectorDistanceToTarget > _attackDistance) exitWith {};
 
-    false
-};
+		if !(_plane getVariable ["KISKA_CAS_startedFiring",false]) then {
+			_plane setVariable ["KISKA_CAS_startedFiring",true];
+			// create a target to shoot at
+			private _dummyTargetClass = ["LaserTargetE","LaserTargetW"] select ((_side getfriend west) > 0.6);
+			private _dummyTarget = createvehicle [_dummyTargetClass,[0,0,0],[],0,"NONE"];
+			_plane setVariable ["KISKA_CAS_dummyTarget",_dummyTarget];
+			_dummyTarget setPosASL _attackPosition;
+			private _laserTarget = laserTarget _dummyTarget;
+			_plane reveal _laserTarget;
+			_plane dowatch _laserTarget;
+			_plane dotarget _laserTarget;
 
-/* ----------------------------------------------------------------------------
-    Handle After CAS complete
----------------------------------------------------------------------------- */
-// forces plane to keep flying in the general direction they currently are
-// if not, once the setVelocityTransformation loop is done, it can rapidly change course
-_plane setVelocityModelSpace PLANE_VELOCITY(PLANE_SPEED);
+			[
+				_plane,
+				_dummyTarget,
+				_weaponsToUse,
+				_attackTypeID,
+				_attackPosition,
+				_breakOffDistance
+			] spawn KISKA_fnc_CASAttack;
 
-// telling the plane to ultimately fly past the target after we're done controlling it
-_plane move (_attackPosition getPos [5000,_attackDirection]);
+		} else {
+			// ensures strafing effect with the above setVelocityTransformation
+			private _dummyTarget = _plane getVariable "KISKA_CAS_dummyTarget";
+			private _nextAttackPostition = _dummyTarget getPos [STRAFE_INCREMENT,(getDirVisual _plane)];
+			// did this here for readability
+			_nextAttackPostition = AGLToASL _nextAttackPostition;
+			
+			_plane setVariable ["KISKA_CAS_attackPosition",_nextAttackPostition];
+			_dummyTarget setPosASL _nextAttackPostition;
+		};
 
-// after fire is complete
-_plane flyInHeight (_spawnHeight * 2);
-
-
-// pop flares
-for "_i" from 1 to 4 do {
-    currentPilot _plane forceweaponfire ["CMFlareLauncher","Burst"];
-    sleep 1
-};
-
-// give the plane some time to get out of audible distance before deletion
-sleep 60;
-
-// delete
-_crew apply {
-    if (!isNull _x) then {
-        _plane deleteVehicleCrew _x;
-    };
-};
-
-if (alive _plane) then {
-    deleteVehicle _plane;
-};
-
-private _group = _planeArray select 2;
-if (!isNull _group) then {
-    deleteGroup _group;
-};
+	},
+	0.01,
+	[
+		_plane,
+		_attackPosition,
+		_attackDirection,
+		_breakOffDistance,
+		_planeSpawnPosition,
+		_startTime,
+		_timeAfterFlight,
+		_planeSpawnPosition,
+		_planeArray,
+		_weaponsToUse,
+		_attackTypeID,
+		_planeVectorDirTo,
+		_planeVectorUp,
+		_side,
+		_attackDistance,
+		_spawnHeight
+	]
+] call CBA_fnc_addPerframeHandler;
 
 
 nil
