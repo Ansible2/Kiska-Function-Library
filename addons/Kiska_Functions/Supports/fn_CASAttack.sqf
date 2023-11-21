@@ -26,13 +26,14 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_CASAttack";
 
-if !(canSuspend) exitWith {
-    ["Needs to be run in scheduled, exiting to scheduled...",true] call KISKA_fnc_log;
-    _this spawn KISKA_fnc_CASAttack;
-};
-
-
-params ["_plane","_dummyTarget","_weaponsToUse","_attackTypeID","_attackPosition","_breakOffDistance"];
+params [
+    "_plane",
+    "_dummyTarget",
+    "_weaponsToUse",
+    "_attackTypeID",
+    "_attackPosition",
+    "_breakOffDistance"
+];
 
 
 private ["_weaponClass_temp","_weaponArray_temp","_magClass_temp"];
@@ -47,9 +48,7 @@ private _fn_setWeaponTemp = {
     if (_setAsGuided) then {
         _plane setVariable ["KISKA_CAS_guidedWeapon",_weaponClass_temp];
     };
-    //_plane setVariable ["KISKA_CAS_tempWeapon",_weaponClass_temp];
     _magClass_temp = (_weaponArray_temp select 2) select 0;
-    //[["Setting weapon class temp to: ", _weaponClass_temp]] call KISKA_fnc_log;
 };
 
 
