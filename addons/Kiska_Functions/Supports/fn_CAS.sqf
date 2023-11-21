@@ -6,7 +6,7 @@ Description:
     Completes either a gun run, bomb run, rockets, or rocket and gun strike.
 
 Parameters:
-    0: _attackPosition : <OBJECT or ARRAY> - ASL position or object to attack
+    0: _attackPosition : <OBJECT or PositionASL[]> - ASL position or object to attack
     1: _attackTypeID : <NUMBER or ARRAY> - See CAS Type IDs.hpp .
         If an array, format needs to be [attackTypeId,pylonMagazineClass].
         Custom mag classes, when used for napalm or UGB ids, will drop the ENTIRE payload
@@ -211,8 +211,8 @@ private _planeSpawnPosition = [
     _spawnDistance,
     (_attackDirection + 180)
 ] call KISKA_fnc_getPosRelativeSurface;
-_planeSpawnPosition vectorAdd [0,0,_spawnHeight];
 
+_planeSpawnPosition = _planeSpawnPosition vectorAdd [0,0,_spawnHeight];
 private _planeArray = [_planeSpawnPosition,_attackDirection,_planeClass,_side,false] call KISKA_fnc_spawnVehicle;
 private _plane = _planeArray select 0;
 private _crew = _planeArray select 1;
@@ -335,7 +335,7 @@ waitUntil {
             _plane dowatch laserTarget _dummyTarget;
             _plane dotarget laserTarget _dummyTarget;
 
-            [_plane,_dummyTarget,_weaponsToUse,_attackTypeID,_attackPosition,_breakOffDistance] spawn KISKA_fnc_casAttack;
+            [_plane,_dummyTarget,_weaponsToUse,_attackTypeID,_attackPosition,_breakOffDistance] spawn KISKA_fnc_CASAttack;
 
         } else {
             // ensures strafing effect with the above setVelocityTransformation
