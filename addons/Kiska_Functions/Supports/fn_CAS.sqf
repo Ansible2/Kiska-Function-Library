@@ -286,10 +286,6 @@ private _vectors = [_planePositionASL,_attackPosition] call KISKA_fnc_getVectorT
 _plane setVectorDirAndUp _vectors;
 _vectors params ["_planeVectorDirTo","_planeVectorUp"];
 
-// set plane's speed to 200 km/h
-_plane setVelocityModelSpace PLANE_VELOCITY(PLANE_SPEED);
-
-
 /* ----------------------------------------------------------------------------
     Fix planes velocity towards the target
 ---------------------------------------------------------------------------- */
@@ -324,7 +320,6 @@ private _timeAfterFlight = time + _flightTime;
 		private _attackPosition = _plane getVariable ["KISKA_CAS_attackPosition",_originalAttackPosition];
 		private _planePositionASL = getPosASLVisual _plane;
 		private _vectorDistanceToTarget = _attackPosition vectorDistance _planePositionASL;
-		private _velocity = PLANE_VELOCITY(PLANE_SPEED);
 
 		if (
 			isNull _plane OR
@@ -335,10 +330,6 @@ private _timeAfterFlight = time + _flightTime;
 			/* ----------------------------------------------------------------------------
 				Handle After CAS complete
 			---------------------------------------------------------------------------- */
-			// forces plane to keep flying in the general direction they currently are
-			// if not, once the setVelocityTransformation loop is done, it can rapidly change course
-			_plane setVelocityModelSpace _velocity;
-
 			// telling the plane to ultimately fly past the target after we're done controlling it
 			_plane move (_attackPosition getPos [5000,_attackDirection]);
 
@@ -386,7 +377,7 @@ private _timeAfterFlight = time + _flightTime;
 
 		//--- Set the plane approach vector
 		private _interval = linearConversion [_startTime,_timeAfterFlight,time,0,1];
-		// TODO: should only need to use setVelocityTransformation here
+		private _velocity = (vectorNormalized (_attackPosition vectorDiff _planePositionASL)) vectorMultiply PLANE_SPEED;
 		_plane setVelocityTransformation [
 			_planeSpawnPosition, _attackPosition,
 			_velocity, _velocity,
@@ -394,8 +385,6 @@ private _timeAfterFlight = time + _flightTime;
 			_planeVectorUp, _planeVectorUp,
 			_interval
 		];
-
-		_plane setVelocityModelSpace _velocity;
 
 		// start firing
 		// check if plane is from target and hasn't already started shooting
