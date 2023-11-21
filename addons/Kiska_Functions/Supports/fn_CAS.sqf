@@ -80,7 +80,7 @@ private _planeCfg = configfile >> "cfgvehicles" >> _planeClass;
 if !(isclass _planeCfg) exitwith {
     [[_planeClass," Vehicle class not found, moving to default aircraft..."],true] call KISKA_fnc_log;
     _this set [3,DEFAULT_AIRCRAFT];
-    _this spawn KISKA_fnc_CAS;
+    _this call KISKA_fnc_CAS;
 };
 
 

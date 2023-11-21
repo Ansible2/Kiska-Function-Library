@@ -150,7 +150,7 @@ _args pushBack _menuVariables;
             _approachBearing,
             _vehicleClass,
             side (_commMenuArgs select 0)
-        ] spawn KISKA_fnc_CAS;
+        ] call KISKA_fnc_CAS;
 
         [SUPPORT_TYPE_CAS] call KISKA_fnc_supportNotification;
 
