@@ -41,80 +41,78 @@ params [
 ];
 
 _plane setVariable ["KISKA_CAS_guidedFireEvent",{
-    params ["_plane", "_weapon", "_projectile"];
+    params ["_plane","_projectile"];
 
-    private _isGuidedWeapon = _weapon == (_plane getVariable "KISKA_CAS_guidedWeapon");
-    if (!_isGuidedWeapon) exitWith {};
+    private _projectileStartPosASL = getPosASLVisual _projectile;
+    private _dummyTarget = _plane getVariable ["KISKA_CAS_dummyTarget",objNull];
+    private _attackPosition = getPosASLVisual _dummyTarget;
+    private _vectors = [_projectileStartPosASL,_attackPosition] call KISKA_fnc_getVectorToTarget;
+
+    private _speed = speed _projectile;
+    _projectile setVectorDirAndUp _vectors;
+    _projectile setVelocityModelSpace [0,_speed,0];
+
+    _vectors params ["_vectorDir","_vectorUp"];
+    private _vectorDistanceToTarget = _attackPosition vectorDistance _projectileStartPosASL;
+    private _flightTime = _vectorDistanceToTarget / _speed;
+    private _startTime = time;
+    private _timeAfterFlight = time + _flightTime;
 
     [
         {
-            params ["_plane","_projectile"];
+            params ["_args","_id"];
 
-            private _projectileStartPosASL = getPosASLVisual _projectile;
-            private _dummyTarget = _plane getVariable ["KISKA_CAS_dummyTarget",objNull];
-            private _attackPosition = getPosASLVisual _dummyTarget;
-            private _vectors = [_projectileStartPosASL,_attackPosition] call KISKA_fnc_getVectorToTarget;
+            if (isNull _projectile) exitWith { 
+                [_id] call CBA_fnc_removePerFrameHandler;
+            };
 
-            private _speed = speed _projectile;
-            _projectile setVectorDirAndUp _vectors;
-            _projectile setVelocityModelSpace [0,_speed,0];
+            _args params [
+                "_projectile",
+                "_projectileStartPosASL",
+                "_vectorDir",
+                "_vectorUp",
+                "_startTime",
+                "_timeAfterFlight",
+                "_attackPosition"
+            ];
 
-            _vectors params ["_vectorDir","_vectorUp"];
-            private _vectorDistanceToTarget = _attackPosition vectorDistance _projectileStartPosASL;
-            private _flightTime = _vectorDistanceToTarget / _speed;
-            private _startTime = time;
-            private _timeAfterFlight = time + _flightTime;
-
-            [
-                {
-                    params ["_args","_id"];
-
-                    if (isNull _projectile) exitWith { 
-                        [_id] call CBA_fnc_removePerFrameHandler;
-                    };
-
-                    _args params [
-                        "_projectile",
-                        "_projectileStartPosASL",
-                        "_vectorDir",
-                        "_vectorUp",
-                        "_startTime",
-                        "_timeAfterFlight"
-                    ];
-
-                    private _interval = linearConversion [_startTime,_timeAfterFlight,time,0,1];
-                    private _attackPosition = getPosASLVisual _dummyTarget;
-                    private _velocity = velocity _projectile;
-                    _projectile setVelocityTransformation [
-                        _projectileStartPosASL, _attackPosition,
-                        _velocity, _velocity,
-                        _vectorDir,_vectorDir,
-                        _vectorUp, _vectorUp,
-                        _interval
-                    ];
-                },
-                GUIDE_WEAPON_INTERVAL
-                [
-                    _projectile,
-                    _projectileStartPosASL,
-                    _vectorDir,
-                    _vectorUp,
-                    _startTime,
-                    _timeAfterFlight
-                ]
-            ] call CBA_fnc_addPerFrameHandler;
+            private _interval = linearConversion [_startTime,_timeAfterFlight,time,0,1];
+            private _velocity = velocity _projectile;
+            _projectile setVelocityTransformation [
+                _projectileStartPosASL, _attackPosition,
+                _velocity, _velocity,
+                _vectorDir,_vectorDir,
+                _vectorUp, _vectorUp,
+                _interval
+            ];
         },
-        [_plane, _projectile],
-        0.1  // allow the projectile to get some speed
-    ] call CBA_fnc_waitAndExecute;
+        GUIDE_WEAPON_INTERVAL,
+        [
+            _projectile,
+            _projectileStartPosASL,
+            _vectorDir,
+            _vectorUp,
+            _startTime,
+            _timeAfterFlight,
+            _attackPosition
+        ]
+    ] call CBA_fnc_addPerFrameHandler;
 }];
 
 
 // CUP planes in particular have an issue with rocket fire not being accurate
 // This will guide projectiles to where they should go
-private _firedEvent = _plane addEventHandler ["Fired", {
-    params ["_plane"];
-    _this call (_plane getVariable ["KISKA_CAS_guidedFireEvent",{}])
+_plane addEventHandler ["Fired", {
+    params ["_plane", "_weapon", "", "", "", "", "_projectile"];
+
+    private _isGuidedWeapon = _weapon == (_plane getVariable "KISKA_CAS_guidedWeapon");
+    if (_isGuidedWeapon) then {
+        [
+            _plane getVariable ["KISKA_CAS_guidedFireEvent",{}],
+            [_plane, _projectile],
+            0.1  // allow the projectile to get some speed
+        ] call CBA_fnc_waitAndExecute;
+    };
 }];
 
 
@@ -132,11 +130,11 @@ private _fn_generateQueuedFireItems = {
     private _weaponMagClass = _pylonInfo select 0;
 
     if (_numberOfRounds < 1) then {
-        private _configedNumberOfRoundsInMag = getNumber(configFile >> "CfgMagazines" >> _magClass >> "count");
+        private _configedNumberOfRoundsInMag = getNumber(configFile >> "CfgMagazines" >> _weaponMagClass >> "count");
         if (_configedNumberOfRoundsInMag isEqualTo 0) then {
             _numberOfRounds = 1;
         } else {
-            _numberOfRounds = _configedNumberOfRoundsInMag
+            _numberOfRounds = _configedNumberOfRoundsInMag;
         };
     };
 
@@ -210,9 +208,8 @@ _plane setVariable ["KISKA_CAS_completedFiring",false];
             // and only the dynamic info (_fireInfo) will be new arrays for each fire
             params [
                 ["_planeInfo",[],[[]],5],
-                ["_fireInfo",[],[[]],4],
-                ["_isFinal",false,[false]],
-                ["_firedEvent",-1,[123]]
+                ["_fireInfo",[],[[]],3],
+                ["_isFinal",false,[false]]
             ];
             
             _planeInfo params [
@@ -244,10 +241,9 @@ _plane setVariable ["KISKA_CAS_completedFiring",false];
 
             if (_isFinal OR ((_plane distance _attackPosition) < _breakOffDistance)) exitWith {
                 _plane setVariable ["KISKA_CAS_completedFiring",true];
-                _plane removeEventHandler ["FIRED",_firedEvent];
             };
         },
-        [_planeInfo, _fireInfo, _isFinal, _firedEvent],
+        [_planeInfo, _fireInfo, _isFinal],
         _fireIntervalTotal
     ] call CBA_fnc_waitAndExecute;
 
