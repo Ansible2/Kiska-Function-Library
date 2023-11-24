@@ -2,7 +2,8 @@
 Function: KISKA_fnc_bases_setupReactivity
 
 Description:
-    Spawns a configed KISKA base.
+    Adds values and eventhandlers to the given group's namespace to be able to 
+     interact with KISKA bases reaction system
 
 Parameters:
     0: _group <GROUP> - The group to add setup reactions for
