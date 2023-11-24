@@ -64,7 +64,7 @@ _patrolClasses apply {
     private _unitClasses = [[_x,_baseConfig,_patrolsConfig]] call KISKA_fnc_bases_getInfantryClasses;
     private _side = [[_x,_baseConfig,_patrolsConfig]] call KISKA_fnc_bases_getSide;
 
-    private _numberOfUnits = (_classConfig >> "numberOfUnits") call BIS_fnc_getCfgData;
+    private _numberOfUnits = (_x >> "numberOfUnits") call BIS_fnc_getCfgData;
     if (_numberOfUnits isEqualType "") then {
         _numberOfUnits = [[],_numberOfUnits,false] call KISKA_fnc_callBack;
     };
