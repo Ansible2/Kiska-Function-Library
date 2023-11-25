@@ -51,24 +51,50 @@ private _turretClasses = configProperties [_turretsConfig,"isClass _x"];
 ---------------------------------------------------------------------------- */
 _turretClasses apply {
     private _turretConfig = _x;
+
+
+    private _turretSpawnPositions = (_turretConfig >> "turretSpawnPositions") call BIS_fnc_getCfgData;
+    if (_turretSpawnPositions isEqualType "") then {
+        _turretSpawnPositions = [_turretSpawnPositions] call KISKA_fnc_getMissionLayerObjects;
+    };
+    if (_turretSpawnPositions isEqualTo []) then {
+        [["Could not find spawn positions for KISKA bases class: ",_x],true] call KISKA_fnc_log;
+        continue;
+    };
+
+    private _turretTypes = (_turretConfig >> "turretTypes") call BIS_fnc_getCfgData;
+    if (_turretTypes isEqualType "") then {
+        _turretTypes = [[],_turretTypes,false] call KISKA_fnc_callBack;
+    };
+    if (_turretTypes isEqualTo []) then {
+        [["Could not find types for turrets in KISKA bases class: ",_x],true] call KISKA_fnc_log;
+        continue;
+    };
+
+
+    private _numberOfTurrets = (_classConfig >> "numberOfTurrets") call BIS_fnc_getCfgData;
+    private _totalNumberOfSpawns = count _turretSpawnPositions;
+    if (_numberOfTurrets isEqualType "") then {
+        _numberOfTurrets = [[_totalNumberOfSpawns],_numberOfTurrets,false] call KISKA_fnc_callBack;
+    };
+    if (_numberOfTurrets < 0) then {
+        _numberOfTurrets = _totalNumberOfSpawns
+    };
+
+
     private _turrets = [];
-    private _turretsUnfiltered = (_turretConfig >> "turrets") call BIS_fnc_getCfgData;
-    if (_turretsUnfiltered isEqualType "") then {
-        _turrets = [_turretsUnfiltered] call KISKA_fnc_getMissionLayerObjects;
-
-    } else {
-        _turretsUnfiltered apply {
-            private _turret = missionNamespace getVariable [_x,objNull];
-            if (isNull _turret) then {continue};
-            _turrets pushBackUnique _turret;
-        };
-
+    for "_i" from 1 to _numberOfTurrets do {
+        private _spawnPosition = [_turretSpawnPositions] call KISKA_fnc_deleteRandomIndex;
+        private _class = [_turretTypes,""] call KISKA_fnc_selectRandom;
+        private _turret = createVehicle [_class, _spawnPosition, [], 0, "NONE"];
+        _turrets pushBack _turret;
     };
 
     if (_turrets isEqualTo []) then {
-        [["Found no turrets for KISKA base class: ",_turretConfig], true] call KISKA_fnc_log;
+        [["Created no turrets for KISKA base class: ",_turretConfig], true] call KISKA_fnc_log;
         continue;
     };
+
 
     private _unitClasses = [
         [_turretConfig,_baseConfig,_turretsConfig]
