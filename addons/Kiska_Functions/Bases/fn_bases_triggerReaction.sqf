@@ -198,12 +198,12 @@ private _fnc_findReplacementTarget = {
         sleep 1;
         
         [_x, _detectedTarget, 15, {
-            params ["_stalkerGroup","_stalkedUnit","_stalkedGroup"];
+            params ["_stalkerGroup","_stalkedUnit","_groupToStalk"];
             
             private _groupIsAlive = [_stalkerGroup] call KISKA_fnc_isGroupAlive;
             if (!_groupIsAlive) exitWith {};
 
-            private _canStalkGroup = [_stalkedGroup] call KISKA_fnc_isGroupAlive;
+            private _canStalkGroup = [_groupToStalk] call KISKA_fnc_isGroupAlive;
             if (!_canStalkGroup) exitWith {
                 _stalkerGroup setVariable ["KISKA_bases_responseMissionPriority", nil];
                 _stalkerGroup setVariable ["KISKA_bases_respondingToId", nil];
@@ -212,7 +212,7 @@ private _fnc_findReplacementTarget = {
  
             [
                 _stalkerGroup,
-                _stalkedGroup,
+                _groupToStalk,
                 20,
                 {
                     params ["_stalkerGroup"];
