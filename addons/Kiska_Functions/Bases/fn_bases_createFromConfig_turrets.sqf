@@ -22,35 +22,11 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_bases_createFromConfig_turrets";
 
-
-
 // TODO:
 // - create a private function that will get the value of a given property name
 // - parse "dynamic" entries for the base root and turret root into hashmaps that will have
 // the name of the property (configName) as a key to its value
 // In order to get the right dynamic class, make a function that will parse a given config path into a hashmap of property name and values
-
-
-// BIS_fnc_getCfgData is really slow, make this into a new kiska utils function
-private _fn_getCfgData = {
-    params [
-        ["_cfg",configNull,[configNull]],
-        ["_isBool",false,[true]]
-    ];
-
-    if (isNumber _cfg) exitWith {
-        private _return = getNumber _cfg;
-        if (_isBool) then {
-            _return = _return > 0;
-        };
-        _return
-    };
-    if (isText _cfg) exitWith { getText _cfg };
-    if (isArray _cfg) exitWith { getArray _cfg };
-
-    nil
-};
-
 
 private _fn_getPropertyValue = {
     params [
@@ -67,7 +43,7 @@ private _fn_getPropertyValue = {
 
     private _turretSetPropertyConfigPath = _turretSetConfigPath >> _property;
     if !(isNull _turretSetPropertyConfigPath) exitWith {
-        [_turretSetPropertyConfigPath,_isBool] call _fn_getCfgData
+        [_turretSetPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
     };
 
     if (_canSelectFromSetRoot) then {
@@ -77,7 +53,7 @@ private _fn_getPropertyValue = {
 
         private _turretSectionPropertyConfigPath = _turretSectionConfigPath >> _property;
         if !(isNull _turretSectionPropertyConfigPath) exitWith {
-            [_turretSectionPropertyConfigPath,_isBool] call _fn_getCfgData
+            [_turretSectionPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
         };
     };
 
@@ -87,7 +63,7 @@ private _fn_getPropertyValue = {
 
         private _baseSectionPropertyConfigPath = _baseConfigPath >> _property
         if !(isNull _baseSectionPropertyConfigPath) exitWith {
-            [_baseSectionPropertyConfigPath,_isBool] call _fn_getCfgData
+            [_baseSectionPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
         };
     };
 

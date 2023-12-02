@@ -616,6 +616,8 @@ class CfgFunctions
             {};
             class getBumperPositionRelative
             {};
+            class getConfigData
+            {};
             class getContainerCargo
             {};
             class getFromNetId
