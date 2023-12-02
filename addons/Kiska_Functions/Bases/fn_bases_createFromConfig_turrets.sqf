@@ -57,7 +57,9 @@ private _fn_getPropertyValue = {
         ["_property","",[""]],
         ["_turretSetConfigPath",configNull,[configNull]],
         ["_baseConfigPath",configNull,[configNull]],
-        ["_isBool",false,[false]]
+        ["_isBool",false,[false]],
+        ["_canSelectFromSetRoot",true,[false]],
+        ["_canSelectFromBaseRoot",true,[false]]
     ];
 
     private _turretSetDynamicValue = [_turretSetConfigPath,_property] call KISKA_fnc_bases_getDynamicPropertyValue;
@@ -68,22 +70,29 @@ private _fn_getPropertyValue = {
         [_turretSetPropertyConfigPath,_isBool] call _fn_getCfgData
     };
 
+    if (_canSelectFromSetRoot) then {
+        private _turretSectionConfigPath = _baseConfigPath >> "turrets";
+        private _turretSectionDynamicValue = [_turretSectionConfigPath,_property] call KISKA_fnc_bases_getDynamicPropertyValue;
+        if !(isNil "_turretSectionDynamicValue") exitWith { _turretSectionDynamicValue };
 
-    // TODO: not all properties can be defined at the set level
-    private _turretSectionConfigPath = _baseConfigPath >> "turrets";
-    private _turretSectionDynamicValue = [_turretSectionConfigPath,_property] call KISKA_fnc_bases_getDynamicPropertyValue;
-    if !(isNil "_turretSectionDynamicValue") exitWith { _turretSectionDynamicValue };
-
-    private _turretSectionPropertyConfigPath = _turretSectionConfigPath >> _property;
-    if !(isNull _turretSectionPropertyConfigPath) exitWith {
-        [_turretSectionPropertyConfigPath,_isBool] call _fn_getCfgData
+        private _turretSectionPropertyConfigPath = _turretSectionConfigPath >> _property;
+        if !(isNull _turretSectionPropertyConfigPath) exitWith {
+            [_turretSectionPropertyConfigPath,_isBool] call _fn_getCfgData
+        };
     };
 
-    
-    // TODO: not all properties can be defined at the root level
-    private _baseRootDynamicValue = [_baseConfigPath,_property] call KISKA_fnc_bases_getDynamicPropertyValue;
-    if !(isNil "_baseRootDynamicValue") exitWith { _baseRootDynamicValue };
+    if (_canSelectFromBaseRoot) then {
+        private _baseRootDynamicValue = [_baseConfigPath,_property] call KISKA_fnc_bases_getDynamicPropertyValue;
+        if !(isNil "_baseRootDynamicValue") exitWith { _baseRootDynamicValue };
 
+        private _baseSectionPropertyConfigPath = _baseConfigPath >> _property
+        if !(isNull _baseSectionPropertyConfigPath) exitWith {
+            [_baseSectionPropertyConfigPath,_isBool] call _fn_getCfgData
+        };
+    };
+
+
+    nil
 };
 
 params [
