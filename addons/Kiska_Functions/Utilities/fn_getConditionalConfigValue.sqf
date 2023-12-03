@@ -109,57 +109,77 @@ if (isNil "_conditionalClassesMap") then {
     localNamespace setVariable ["KISKA_conditionalConfig_parsedConfigMap",_conditionalClassesMap];
 };
 
+private "_propertyValue";
+private _conditionArgs = [_conditionalConfig,configNull,_property];
+
 private _parsedConditionalConfigs = _conditionalClassesMap get _conditionalConfig;
-if (isNil "_parsedConditionalConfigs") then {
-    private _conditionalConfigClasses = configProperties [_conditionalConfig,"isClass _x"];
-    private _parsedConditionalConfigs = [];
-    _conditionalConfigClasses apply {
-        private _meetsStaticRequirements = true;
+if !(isNil "_parsedConditionalConfigs") exitWith {
+    _parsedConditionalConfigs apply {
+        _x params ["_conditionalClassConfig","_condition"];
+        _conditionArgs set [1,_conditionalClassConfig];
 
-        private _requiredPatches = getArray(_x >> "patches");
-        _requiredAddons apply {
-            if ([_x] call KISKA_fnc_isPatchLoaded) then { continue };
-            _meetsStaticRequirements = false;
+        if (
+            (_condition isEqualTo {}) OR 
+            {_conditionArgs call _condition}
+        ) then {
+            _propertyValue = [
+                _conditionalClassConfig >> "properties",
+                _property,
+                _isBool
+            ] call KISKA_fnc_getConfigData;
+
             break;
         };
-        if !(_meetsStaticRequirements) then { continue };
-
-
-        private _requiredAddons = getArray(_x >> "addons");
-        _requiredAddons apply {
-            if ((toLowerANSI _x) in _modDirectoriesLowered) then { continue };
-            _meetsStaticRequirements = false;
-            break;
-        };
-        if !(_meetsStaticRequirements) then { continue };
-
-        private _conditionCode = compile (getText(_x >> "condition"));
-        _parsedConditionalConfigs pushBack [_x,_conditionCode];
     };
 
-    _conditionalClassesMap set [_conditionalConfig,_parsedConditionalConfigs]
+    _propertyValue
 };
 
 
-private _conditionArgs = [_conditionalConfig,configNull,_property];
-private "_propertyValue";
-_parsedConditionalConfigs apply {
-    _x params ["_conditionalClassConfig","_condition"];
-    _conditionArgs set [1,_conditionalClassConfig];
+private _conditionalConfigClasses = configProperties [_conditionalConfig,"isClass _x"];
+private _parsedConditionalConfigs = [];
+_conditionalConfigClasses apply {
+    private _meetsStaticRequirements = true;
 
+    private _requiredPatches = getArray(_x >> "patches");
+    _requiredPatches apply {
+        if ([_x] call KISKA_fnc_isPatchLoaded) then { continue };
+        _meetsStaticRequirements = false;
+        break;
+    };
+    if !(_meetsStaticRequirements) then { continue };
+
+
+    private _requiredAddons = getArray(_x >> "addons");
+    _requiredAddons apply {
+        if ((toLowerANSI _x) in _modDirectoriesLowered) then { continue };
+        _meetsStaticRequirements = false;
+        break;
+    };
+    if !(_meetsStaticRequirements) then { continue };
+
+    
+    private _condition = compile (getText(_x >> "condition"));
+    _parsedConditionalConfigs pushBack [_x,_condition];
+
+
+    _conditionArgs set [1,_conditionalClassConfig];
     if (
-        (_condition isEqualTo {}) OR 
-        {_conditionArgs call _condition}
+        (isNil "_propertyValue") AND 
+        {
+            (_condition isEqualTo {}) OR 
+            {_conditionArgs call _condition}
+        }
     ) then {
         _propertyValue = [
             _conditionalClassConfig >> "properties",
             _property,
             _isBool
         ] call KISKA_fnc_getConfigData;
-
-        break;
     };
 };
+
+_conditionalClassesMap set [_conditionalConfig,_parsedConditionalConfigs]
 
 
 _propertyValue
