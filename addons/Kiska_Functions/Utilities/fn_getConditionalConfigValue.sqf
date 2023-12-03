@@ -7,7 +7,7 @@ Description:
 
     The syntax for a conditional config:
     (begin config example)
-        // `_config` param would be the config path to `MyConditionalClass`
+        // `_conditionalConfig` param would be the config path to `MyConditionalClass`
         class MyConditionalClass
         {
             class ExampleCondition_1
@@ -27,13 +27,20 @@ Description:
                     // 2: <STRING> - The property being searched for
                 condition = "hint str _this; true";
 
-                exampleProperty_1 = 1;
+                // A class filled with the properties that you can get
+                class properties
+                {
+                    exampleProperty_1 = 1;
+                };
             };
 
-            class ExampleCondition_2 : ExampleCondition_1
+            class ExampleCondition_2
             {
-                exampleProperty_1 = 0;
-                exampleProperty_2 = 1;
+                class properties
+                {
+                    exampleProperty_1 = 0;
+                    exampleProperty_2 = 1;
+                };
             };
         };
     (end)
@@ -46,9 +53,13 @@ Description:
      retrievable. Taking the example above again, the `ExampleCondition_1` class does not have `exampleProperty_2`
      defined. But assuming `ExampleCondition_1`'s conditions are met and it is chosen, `KISKA_fnc_getConditionalConfigValue`
      will then return `nil` when searching in `MyConditionalClass` for a value at `exampleProperty_2`.
+    
+    Should any of the conditional properties (`addons`,`patches`,`condition`) be excluded, they will simply 
+     be treated as a `true` value. Meaning that if none of the properties are defined, the conditional class
+     will always be valid.
 
 Parameters:
-    0: _config <CONFIG> - Default: `configNull` - The config path to parse dynamic data from
+    0: _conditionalConfig <CONFIG> - Default: `configNull` - The config path to parse dynamic data from
     1: _property <STRING> - Default: `""` - The config path to parse dynamic data from
     2: _isBool <BOOL> - Default: `false` - Will convert a number value into a `BOOL`. If the value
         is more than `0`, the it will be `true`. Any values `<= 0` will be `false`
@@ -71,18 +82,84 @@ Author:
 scriptName "KISKA_fnc_getConditionalConfigValue";
 
 params [
-    ["_config",configNull,[configNull]],
+    ["_conditionalConfig",configNull,[configNull]],
     ["_property","",[""]],
     ["_isBool",false,[true]]
 ];
 
 
-
-private _loadedModsInfo = call KISKA_fnc_getLoadedModsInfo;
-// TODO cache
-private _mods = _loadedModsInfo apply { 
-    private _modDirectoryName = _x select 1;
-    toLowerANSI _modDirectoryName   
+if (isNull _conditionalConfig) exitWith {
+    ["null config provided",false] call KISKA_fnc_log;
+    nil
 };
 
-// TODO: parse condition classes
+private _loadedModsInfo = call KISKA_fnc_getLoadedModsInfo;
+private _modDirectoriesLowered = uiNamespace getVariable "KISKA_conditionalConfig_loadedMods";
+if (isNil "_modDirectoriesLowered") then {
+    _modDirectoriesLowered = _loadedModsInfo apply { 
+        private _modDirectoryName = _x select 1;
+        toLowerANSI _modDirectoryName   
+    };
+    uiNamespace setVariable ["KISKA_conditionalConfig_loadedMods",_modDirectoriesLowered];
+};
+
+private _conditionalClassesMap = localNamespace getVariable "KISKA_conditionalConfig_parsedConfigMap";
+if (isNil "_conditionalClassesMap") then {
+    _conditionalClassesMap = createHashMap;
+    localNamespace setVariable ["KISKA_conditionalConfig_parsedConfigMap",_conditionalClassesMap];
+};
+
+private _parsedConditionalConfigs = _conditionalClassesMap get _conditionalConfig;
+if (isNil "_parsedConditionalConfigs") then {
+    private _conditionalConfigClasses = configProperties [_conditionalConfig,"isClass _x"];
+    private _parsedConditionalConfigs = [];
+    _conditionalConfigClasses apply {
+        private _meetsStaticRequirements = true;
+
+        private _requiredPatches = getArray(_x >> "patches");
+        _requiredAddons apply {
+            if ([_x] call KISKA_fnc_isPatchLoaded) then { continue };
+            _meetsStaticRequirements = false;
+            break;
+        };
+        if !(_meetsStaticRequirements) then { continue };
+
+
+        private _requiredAddons = getArray(_x >> "addons");
+        _requiredAddons apply {
+            if ((toLowerANSI _x) in _modDirectoriesLowered) then { continue };
+            _meetsStaticRequirements = false;
+            break;
+        };
+        if !(_meetsStaticRequirements) then { continue };
+
+        private _conditionCode = compile (getText(_x >> "condition"));
+        _parsedConditionalConfigs pushBack [_x,_conditionCode];
+    };
+
+    _conditionalClassesMap set [_conditionalConfig,_parsedConditionalConfigs]
+};
+
+
+private _conditionArgs = [_conditionalConfig,configNull,_property];
+private "_propertyValue";
+_parsedConditionalConfigs apply {
+    _x params ["_conditionalClassConfig","_condition"];
+    _conditionArgs set [1,_conditionalClassConfig];
+
+    if (
+        (_condition isEqualTo {}) OR 
+        {_conditionArgs call _condition}
+    ) then {
+        _propertyValue = [
+            _conditionalClassConfig >> "properties",
+            _property,
+            _isBool
+        ] call KISKA_fnc_getConfigData;
+
+        break;
+    };
+};
+
+
+_propertyValue
