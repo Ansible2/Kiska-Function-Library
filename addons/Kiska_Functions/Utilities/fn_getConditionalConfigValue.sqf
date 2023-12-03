@@ -179,7 +179,7 @@ _conditionalConfigClasses apply {
     };
 };
 
-_conditionalClassesMap set [_conditionalConfig,_parsedConditionalConfigs]
+_conditionalClassesMap set [_conditionalConfig,_parsedConditionalConfigs];
 
 
 _propertyValue
