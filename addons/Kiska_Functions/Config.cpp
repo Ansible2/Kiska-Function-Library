@@ -616,11 +616,15 @@ class CfgFunctions
             {};
             class getBumperPositionRelative
             {};
+            class getConditionalConfigValue
+            {};
             class getConfigData
             {};
             class getContainerCargo
             {};
             class getFromNetId
+            {};
+            class getLoadedModsInfo
             {};
             class getMissionLayerObjects
             {};

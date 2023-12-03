@@ -38,7 +38,7 @@ private _fn_getPropertyValue = {
         ["_canSelectFromBaseRoot",true,[false]]
     ];
 
-    private _turretSetDynamicValue = [_turretSetConfigPath,_property] call KISKA_fnc_bases_getDynamicPropertyValue;
+    private _turretSetDynamicValue = [_turretSetConfigPath,_property] call KISKA_fnc_getConditionalConfigValue;
     if !(isNil "_turretSetDynamicValue") exitWith { _turretSetDynamicValue };
 
     private _turretSetPropertyConfigPath = _turretSetConfigPath >> _property;
@@ -48,7 +48,7 @@ private _fn_getPropertyValue = {
 
     if (_canSelectFromSetRoot) then {
         private _turretSectionConfigPath = _baseConfigPath >> "turrets";
-        private _turretSectionDynamicValue = [_turretSectionConfigPath,_property] call KISKA_fnc_bases_getDynamicPropertyValue;
+        private _turretSectionDynamicValue = [_turretSectionConfigPath,_property] call KISKA_fnc_getConditionalConfigValue;
         if !(isNil "_turretSectionDynamicValue") exitWith { _turretSectionDynamicValue };
 
         private _turretSectionPropertyConfigPath = _turretSectionConfigPath >> _property;
@@ -58,7 +58,7 @@ private _fn_getPropertyValue = {
     };
 
     if (_canSelectFromBaseRoot) then {
-        private _baseRootDynamicValue = [_baseConfigPath,_property] call KISKA_fnc_bases_getDynamicPropertyValue;
+        private _baseRootDynamicValue = [_baseConfigPath,_property] call KISKA_fnc_getConditionalConfigValue;
         if !(isNil "_baseRootDynamicValue") exitWith { _baseRootDynamicValue };
 
         private _baseSectionPropertyConfigPath = _baseConfigPath >> _property
