@@ -22,55 +22,6 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_bases_createFromConfig_turrets";
 
-// TODO:
-// - create a private function that will get the value of a given property name
-// - parse "dynamic" entries for the base root and turret root into hashmaps that will have
-// the name of the property (configName) as a key to its value
-// In order to get the right dynamic class, make a function that will parse a given config path into a hashmap of property name and values
-
-private _fn_getPropertyValue = {
-    params [
-        ["_property","",[""]],
-        ["_turretSetConfigPath",configNull,[configNull]],
-        ["_baseConfigPath",configNull,[configNull]],
-        ["_isBool",false,[false]],
-        ["_canSelectFromSetRoot",true,[false]],
-        ["_canSelectFromBaseRoot",true,[false]]
-    ];
-
-    private _turretSetDynamicValue = [_turretSetConfigPath,_property] call KISKA_fnc_getConditionalConfigValue;
-    if !(isNil "_turretSetDynamicValue") exitWith { _turretSetDynamicValue };
-
-    private _turretSetPropertyConfigPath = _turretSetConfigPath >> _property;
-    if !(isNull _turretSetPropertyConfigPath) exitWith {
-        [_turretSetPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
-    };
-
-    if (_canSelectFromSetRoot) then {
-        private _turretSectionConfigPath = _baseConfigPath >> "turrets";
-        private _turretSectionDynamicValue = [_turretSectionConfigPath,_property] call KISKA_fnc_getConditionalConfigValue;
-        if !(isNil "_turretSectionDynamicValue") exitWith { _turretSectionDynamicValue };
-
-        private _turretSectionPropertyConfigPath = _turretSectionConfigPath >> _property;
-        if !(isNull _turretSectionPropertyConfigPath) exitWith {
-            [_turretSectionPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
-        };
-    };
-
-    if (_canSelectFromBaseRoot) then {
-        private _baseRootDynamicValue = [_baseConfigPath,_property] call KISKA_fnc_getConditionalConfigValue;
-        if !(isNil "_baseRootDynamicValue") exitWith { _baseRootDynamicValue };
-
-        private _baseSectionPropertyConfigPath = _baseConfigPath >> _property
-        if !(isNull _baseSectionPropertyConfigPath) exitWith {
-            [_baseSectionPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
-        };
-    };
-
-
-    nil
-};
-
 params [
     ["_baseConfig",configNull,["",configNull]]
 ];
@@ -83,6 +34,59 @@ if (isNull _baseConfig) exitWith {
     ["A null _baseConfig was passed",true] call KISKA_fnc_log;
     []
 };
+
+
+/* ----------------------------------------------------------------------------
+    _fn_getPropertyValue
+---------------------------------------------------------------------------- */
+private _fn_getPropertyValue = {
+    params [
+        ["_property","",[""]],
+        ["_turretSetConfigPath",configNull,[configNull]],
+        "_default",
+        ["_isBool",false,[false]],
+        ["_canSelectFromSetRoot",true,[false]],
+        ["_canSelectFromBaseRoot",true,[false]]
+    ];
+
+    private _turretSetConditionalValue = [_turretSetConfigPath >> "conditional",_property] call KISKA_fnc_getConditionalConfigValue;
+    if !(isNil "_turretSetConditionalValue") exitWith { _turretSetConditionalValue };
+
+    private _turretSetPropertyConfigPath = _turretSetConfigPath >> _property;
+    if !(isNull _turretSetPropertyConfigPath) exitWith {
+        [_turretSetPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
+    };
+
+    private "_propertyValue";
+    if (_canSelectFromSetRoot) then {
+        private _turretSectionConfigPath = _baseConfig >> "turrets";
+        private _turretSectionConditionalValue = [_turretSectionConfigPath >> "conditional",_property] call KISKA_fnc_getConditionalConfigValue;
+        if !(isNil "_turretSectionConditionalValue") exitWith { _turretSectionConditionalValue };
+
+        private _turretSectionPropertyConfigPath = _turretSectionConfigPath >> _property;
+        if !(isNull _turretSectionPropertyConfigPath) then {
+            _propertyValue = [_turretSectionPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
+        };
+    };
+
+    if (_canSelectFromBaseRoot AND (isNil "_propertyValue")) then {
+        private _baseRootConditionalValue = [_baseConfig >> "conditional",_property] call KISKA_fnc_getConditionalConfigValue;
+        if !(isNil "_baseRootConditionalValue") exitWith { _baseRootConditionalValue };
+
+        private _baseSectionPropertyConfigPath = _baseConfig >> _property;
+        if !(isNull _baseSectionPropertyConfigPath) exitWith {
+            _propertyValue = [_baseSectionPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
+        };
+    };
+
+    if (isNil "_propertyValue") then {
+        _default
+    } else {
+        _propertyValue
+    };
+};
+
+
 
 
 private _baseMap = [_baseConfig] call KISKA_fnc_bases_getHashmap;
@@ -101,8 +105,15 @@ private _turretClasses = configProperties [_baseTurretsConfig >> "sets","isClass
 _turretClasses apply {
     private _turretConfig = _x;
 
+    private _turretSpawnPositions = [
+        "spawnPositions",
+        _turretConfig,
+        [],
+        false,
+        false,
+        false
+    ] call _fn_getPropertyValue;
 
-    private _turretSpawnPositions = (_turretConfig >> "spawnPositions") call BIS_fnc_getCfgData;
     if (_turretSpawnPositions isEqualType "") then {
         _turretSpawnPositions = [_turretSpawnPositions] call KISKA_fnc_getMissionLayerObjects;
     };
@@ -111,7 +122,8 @@ _turretClasses apply {
         continue;
     };
 
-    private _turretClassNames = (_turretConfig >> "turretClassNames") call BIS_fnc_getCfgData;
+
+    private _turretClassNames = ["turretClassNames", _turretConfig,[]] call _fn_getPropertyValue;
     if (_turretClassNames isEqualType "") then {
         _turretClassNames = [[_turretConfig],_turretClassNames,false] call KISKA_fnc_callBack;
     };
@@ -121,10 +133,10 @@ _turretClasses apply {
     };
 
 
-    private _numberOfTurrets = (_classConfig >> "numberOfTurrets") call BIS_fnc_getCfgData;
+    private _numberOfTurrets = ["numberOfTurrets", _turretConfig, 0] call _fn_getPropertyValue;
     private _totalNumberOfSpawns = count _turretSpawnPositions;
     if (_numberOfTurrets isEqualType "") then {
-        _numberOfTurrets = [[_totalNumberOfSpawns],_numberOfTurrets,false] call KISKA_fnc_callBack;
+        _numberOfTurrets = [[_turretConfig,_turretSpawnPositions,_totalNumberOfSpawns],_numberOfTurrets,false] call KISKA_fnc_callBack;
     };
     if (_numberOfTurrets < 0) then {
         _numberOfTurrets = _totalNumberOfSpawns
@@ -136,16 +148,26 @@ _turretClasses apply {
         private _spawnPosition = [_turretSpawnPositions] call KISKA_fnc_deleteRandomIndex;
         private _class = [_turretClassNames,""] call KISKA_fnc_selectRandom;
         
-        private _isPostionWithDirection = (_spawnPosition isEqualType []) AND {(count _spawnPosition) > 3};
-        if (_isPostionWithDirection) then {
-            private _direction = _spawnPosition deleteAt 3;
-            private _turret = createVehicle [_class, _spawnPosition, [], 0, "NONE"];
-            _turret setDir _direction;
-            _turrets pushBack _turret;
+        private ["_direction","_positionToSet"];
+        if (_spawnPosition isEqualType objNull) then {
+            _direction = getDir _spawnPosition;
+            _positionToSet = getPosASL _spawnPosition;
+
         } else {
-            private _turret = createVehicle [_class, _spawnPosition, [], 0, "NONE"];
-            _turrets pushBack _turret;
+            private _isPostionWithDirection = (count _spawnPosition) > 3;
+            if (_isPostionWithDirection) then {
+                _direction = _spawnPosition deleteAt 3;
+            } else {
+                _direction = 0;
+            };
+            _positionToSet = ATLToASL _spawnPosition;
+
         };
+
+        _turret = createVehicle [_class, _spawnPosition, [], 0, "NONE"];
+        _turrets pushBack _turret;
+        _turret setPosASL _positionToSet;
+        _turret setDir _direction;
     };
 
     if (_turrets isEqualTo []) then {
@@ -153,19 +175,21 @@ _turretClasses apply {
         continue;
     };
 
-    // TODO: implement new type strategy; needs more thought about how to share 
-    // these classes for both getting gunner classes and infantry sets
-    private _unitClasses = [
-        [_turretConfig,_baseConfig,_baseTurretsConfig]
-    ] call KISKA_fnc_bases_getInfantryClasses;
+    private _unitClasses = ["unitClasses", _turretConfig, []] call _fn_getPropertyValue;
+    if (_unitClasses isEqualType "") then {
+        _unitClasses = [[_turretConfig],_unitClasses] call KISKA_fnc_callBack;
+    };
+    if (_unitClasses isEqualTo []) then {
+        [["Found not unitClasses to use for KISKA base class: ",_turretConfig], true] call KISKA_fnc_log;
+        continue;
+    };
 
-    private _side = [
-        [_turretConfig,_baseConfig,_baseTurretsConfig]
-    ] call KISKA_fnc_bases_getSide;
+    private _side = ["side", _turretConfig, 0] call _fn_getPropertyValue;
+    _side = _side call BIS_fnc_sideType;
 
-    private _enableDynamicSim = (_turretConfig >> "dynamicSim") call BIS_fnc_getCfgDataBool;
-    private _onGunnerCreated = compile getText(_turretConfig >> "onGunnerCreated");
-    private _onUnitMovedInGunner = compile getText(_turretConfig >> "onUnitMovedInGunner");
+    private _enableDynamicSim = ["dynamicSim", _turretConfig, true, true] call _fn_getPropertyValue;
+    private _onGunnerCreated = compile (["onGunnerCreated", _turretConfig, ""] call _fn_getPropertyValue);
+    private _onUnitMovedInGunner = compile (["onUnitMovedInGunner", _turretConfig, ""] call _fn_getPropertyValue);
 
     private _reinforceClass = _turretConfig >> "reinforce";
     _turrets apply {

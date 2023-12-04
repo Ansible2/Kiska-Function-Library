@@ -123,8 +123,7 @@ if !(isNil "_parsedConditionalConfigs") exitWith {
             {_conditionArgs call _condition}
         ) then {
             _propertyValue = [
-                _conditionalClassConfig >> "properties",
-                _property,
+                _conditionalClassConfig >> "properties" >> _property,
                 _isBool
             ] call KISKA_fnc_getConfigData;
 
@@ -137,24 +136,26 @@ if !(isNil "_parsedConditionalConfigs") exitWith {
 
 
 private _conditionalConfigClasses = configProperties [_conditionalConfig,"isClass _x"];
-private _parsedConditionalConfigs = [];
+_parsedConditionalConfigs = [];
 _conditionalConfigClasses apply {
     private _meetsStaticRequirements = true;
 
     private _requiredPatches = getArray(_x >> "patches");
     _requiredPatches apply {
-        if ([_x] call KISKA_fnc_isPatchLoaded) then { continue };
-        _meetsStaticRequirements = false;
-        break;
+        if !([_x] call KISKA_fnc_isPatchLoaded) then { 
+			_meetsStaticRequirements = false;
+			break;
+		};
     };
     if !(_meetsStaticRequirements) then { continue };
 
 
     private _requiredAddons = getArray(_x >> "addons");
     _requiredAddons apply {
-        if ((toLowerANSI _x) in _modDirectoriesLowered) then { continue };
-        _meetsStaticRequirements = false;
-        break;
+        if !((toLowerANSI _x) in _modDirectoriesLowered) then { 
+			_meetsStaticRequirements = false;
+			break;
+		};
     };
     if !(_meetsStaticRequirements) then { continue };
 
@@ -163,7 +164,7 @@ _conditionalConfigClasses apply {
     _parsedConditionalConfigs pushBack [_x,_condition];
 
 
-    _conditionArgs set [1,_conditionalClassConfig];
+    _conditionArgs set [1,_x];
     if (
         (isNil "_propertyValue") AND 
         {
@@ -172,8 +173,7 @@ _conditionalConfigClasses apply {
         }
     ) then {
         _propertyValue = [
-            _conditionalClassConfig >> "properties",
-            _property,
+            _x >> "properties" >> _property,
             _isBool
         ] call KISKA_fnc_getConfigData;
     };
