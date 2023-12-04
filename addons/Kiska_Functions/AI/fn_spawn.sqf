@@ -60,11 +60,11 @@ if (count _spawnPositions < 1) then {
 };
 
 
-if (_numberOfUnits isEqualTo -1) then {
+if (_numberOfUnits < 0) then {
     _numberOfUnits = count _spawnPositions;
 };
 
-if (_numberOfUnitsPerGroup isEqualTo -1) then {
+if (_numberOfUnitsPerGroup < 0) then {
     _numberOfUnitsPerGroup = _numberOfUnits;
 };
 

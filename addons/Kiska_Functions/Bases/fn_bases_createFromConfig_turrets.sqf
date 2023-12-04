@@ -143,6 +143,16 @@ _turretClasses apply {
     };
 
 
+    private _unitClasses = ["unitClasses", _turretConfig, []] call _fn_getPropertyValue;
+    if (_unitClasses isEqualType "") then {
+        _unitClasses = [[_turretConfig],_unitClasses] call KISKA_fnc_callBack;
+    };
+    if (_unitClasses isEqualTo []) then {
+        [["Found no unitClasses to use for KISKA base class: ",_turretConfig], true] call KISKA_fnc_log;
+        continue;
+    };
+
+
     private _turrets = [];
     for "_i" from 1 to _numberOfTurrets do {
         private _spawnPosition = [_turretSpawnPositions] call KISKA_fnc_deleteRandomIndex;
@@ -172,15 +182,6 @@ _turretClasses apply {
 
     if (_turrets isEqualTo []) then {
         [["Created no turrets for KISKA base class: ",_turretConfig], true] call KISKA_fnc_log;
-        continue;
-    };
-
-    private _unitClasses = ["unitClasses", _turretConfig, []] call _fn_getPropertyValue;
-    if (_unitClasses isEqualType "") then {
-        _unitClasses = [[_turretConfig],_unitClasses] call KISKA_fnc_callBack;
-    };
-    if (_unitClasses isEqualTo []) then {
-        [["Found not unitClasses to use for KISKA base class: ",_turretConfig], true] call KISKA_fnc_log;
         continue;
     };
 
