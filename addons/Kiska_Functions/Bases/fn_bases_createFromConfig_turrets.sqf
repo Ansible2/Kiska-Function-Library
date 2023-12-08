@@ -133,7 +133,7 @@ _turretClasses apply {
     };
 
 
-    private _numberOfTurrets = ["numberOfTurrets", _turretConfig, 0] call _fn_getPropertyValue;
+    private _numberOfTurrets = ["numberOfTurrets", _turretConfig, -1] call _fn_getPropertyValue;
     private _totalNumberOfSpawns = count _turretSpawnPositions;
     if (_numberOfTurrets isEqualType "") then {
         _numberOfTurrets = [[_turretConfig,_turretSpawnPositions,_totalNumberOfSpawns],_numberOfTurrets,false] call KISKA_fnc_callBack;
