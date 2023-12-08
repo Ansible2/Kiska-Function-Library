@@ -161,7 +161,7 @@ _infantryClasses apply {
         false
     ] call _fn_getPropertyValue;
     if (_unitsPerGroup isEqualType "") then {
-        _unitsPerGroup = [[_numberOfUnits,_spawnPositions],_unitsPerGroup,false] call KISKA_fnc_callBack;
+        _unitsPerGroup = [[_infantrySetConfig,_numberOfUnits],_unitsPerGroup,false] call KISKA_fnc_callBack;
     };
 
     private _allowedStances = [
@@ -199,7 +199,7 @@ _infantryClasses apply {
         [
             [
                 "Unable to create any units for config: ",
-                _classConfig,
+                _infantrySetConfig,
                 " Check KISKA Base configuration for it."
             ],
             true
@@ -208,9 +208,9 @@ _infantryClasses apply {
     };
 
 
-    [_classConfig,_units] call KISKA_fnc_bases_initAmbientAnimFromClass;
+    [_infantrySetConfig,_units] call KISKA_fnc_bases_initAmbientAnimFromClass;
 
-    private _onUnitsCreated = getText(_classConfig >> "onUnitsCreated");
+    private _onUnitsCreated = getText(_infantrySetConfig >> "onUnitsCreated");
     private _onUnitsCreated = [
         "onUnitsCreated", 
         _infantrySetConfig, 
@@ -220,7 +220,7 @@ _infantryClasses apply {
         false
     ] call _fn_getPropertyValue;
     if (_onUnitsCreated isNotEqualTo "") then {
-        [[_units],_onUnitsCreated,false] call KISKA_fnc_callBack;
+        [[_infantrySetConfig,_units],_onUnitsCreated,false] call KISKA_fnc_callBack;
     };
 
     _base_unitList append _units;
@@ -235,7 +235,7 @@ _infantryClasses apply {
     _base_groupList append _groups;
     _base_infantryGroups append _groups;
     _groups apply {
-        _x setVariable ["KISKA_bases_config",_classConfig];
+        _x setVariable ["KISKA_bases_config",_infantrySetConfig];
     };
 
 
