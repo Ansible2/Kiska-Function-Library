@@ -15,10 +15,10 @@ Parameters:
          
             - `_animSet` <STRING[], (STRING,NUMBER)[], or STRING> - A single snapto animation set or weighted/unweighted array to randomly select from.
             - `_snapToRange` <NUMBER> - This is how far will be searched around the unit to find an object to "snap" onto. Cannot be more then 10m.
-            - `_backupAnims` <STRING[], (STRING,NUMBER)[], or STRING> - Same as `_snapToAnimationSet` but for animations to use in the even that 
-            ALL of the `_snapToAnimationSet` animations fail to be used due to valid objects not being within range.
+            - `_backupAnims` <STRING[], (STRING,NUMBER)[], or STRING> - Same as `_animSet` but for animations to use in the even that 
+            ALL of the `_animSet` animations fail to be used due to valid objects not being within range.
             - `_fallbackFunction` <CODE, ARRAY, or STRING> - (See `KISKA_fnc_callBack`) In the event that
-            a unit is not able to find an object to snap to AND1 no _backupAnims are present, this function will be called with the
+            a unit is not able to find an object to snap to AND no _backupAnims are present, this function will be called with the
             following params. If you still want the unit to be animated in this case, pass `{}`, `""`, or `[]`
                 
                 - 0: _unit <OBJECT> - The unit
@@ -27,8 +27,7 @@ Parameters:
                 - 3: _equipmentLevel <STRING[], (STRING,NUMBER)[], or STRING>
                 - 4: _animationMap <HASHMAP or CONFIG>
 
-    2: _exitOnCombat <BOOL> - True for unit to return to the state it was in prior to
-        KISKA_fnc_ambientAnim being called when they are enter combat behaviour.
+    2: _exitOnCombat <BOOL> - Whether or not units will stop ambient animations upon detecting an enemy.
     3: _equipmentLevel <ARRAY or STRING> - A quick means of temporarily adjusting a unit's equipment to match a scene. Options:
         
         - "": no changes
@@ -87,21 +86,21 @@ scriptName "KISKA_fnc_ambientAnim";
 // TODO: handle remote units being passed
 // TODO: Add supplemental animation sets by using polpox animation viewer
 // TODO: Add LEAN_ON_TABLE animation set
-#define HASHMAP_TYPE createHashMap
 #define DEFAULT_ANIMATION_MAP (configFile >> "KISKA_AmbientAnimations" >> "DefaultAnimationMap")
+private _HASHMAP_TYPE = createHashMap;
 
 params [
     ["_units",objNull,[[],objNull]],
-    ["_animationParams","",["",[],HASHMAP_TYPE]],
+    ["_animationParams","",["",[],_HASHMAP_TYPE]],
     ["_exitOnCombat",false,[true]],
     ["_equipmentLevel","",["",[]]],
-    ["_animationMap",DEFAULT_ANIMATION_MAP,[createHashMap,configNull]]
+    ["_animationMap",DEFAULT_ANIMATION_MAP,[_HASHMAP_TYPE,configNull]]
 ];
 
 
 private ["_fallbackFunction","_snapToRange","_animSet","_backupAnims"];
 private _fallbackFunctionIsPresent = false;
-private _isSnapAnimations = _animationParams isEqualType HASHMAP_TYPE;
+private _isSnapAnimations = _animationParams isEqualType _HASHMAP_TYPE;
 private _parsedSnapToMapErrors = [];
 
 if !(_isSnapAnimations) then {
@@ -355,6 +354,7 @@ private _fn_handleNoSnap = {
 /* -------------------------------------
     _fn_getSetupInfoWithSnap
 ------------------------------------- */
+// TODO:
 // accept that only one set can be be tried from the primary
 // Try extremely hard to dynamically exclude sets from the array (the array can be weighted)
 // shuffle the entire array each time and loop through every set (this would also be hard with weighted arrays)
@@ -430,14 +430,14 @@ private _fn_getSetupInfoWithSnap = {
         };
 
 
-        _snapIdsToUse = _snapAllowanceInfo param [0];
+        _snapIdsToUse = _snapAllowanceInfo select 0;
         if (_snapIdsToUse isEqualType 123) then {
             _usedSnapIds pushBack _snapIdsToUse;
         } else {
             _usedSnapIds append _snapIdsToUse;
         };
 
-        private _relativeObjectInfo = _snapAllowanceInfo param [1];
+        private _relativeObjectInfo = _snapAllowanceInfo select 1;
         [_objectToSnapTo,_unit,_relativeObjectInfo] call KISKA_fnc_setRelativeVectorAndPos;
     };
 
