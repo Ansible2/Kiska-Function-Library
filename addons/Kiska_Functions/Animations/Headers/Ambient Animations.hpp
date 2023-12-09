@@ -3,7 +3,7 @@
 // Animations can have multiple relative points for a single object type
 
 // for instance a "position 1" and "position 2" will be labeled and consistently referencing the same
-/// positions on a say a couch no matter which animation source it is
+/// positions on, say a couch, no matter which animation source it is
 /// perhaps each attachment type can also denote how many seats it takes up in the object
 /// so that something like lying down on a couch takes two slots where sitting takes 1
 
@@ -319,7 +319,7 @@ class KISKA_AmbientAnimations
             attachToLogic = ON;
         };
 
-        class SIT_CHAIR_ARMED_2 : SIT_CHAIR_ARMED_1
+        class SIT_CHAIR_ARMED_1 : SIT_CHAIR_ARMED_1
         {
             animations[] = {
                 "HubSittingChairB_idle1",
