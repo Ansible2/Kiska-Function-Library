@@ -149,7 +149,7 @@ _infantryClasses apply {
         false
     ] call _fn_getPropertyValue;
     if (_numberOfUnits isEqualType "") then {
-        _numberOfUnits = [[_spawnPositions],_numberOfUnits,false] call KISKA_fnc_callBack;
+        _numberOfUnits = [[_infantrySetConfig,_spawnPositions],_numberOfUnits,false] call KISKA_fnc_callBack;
     };
 
     private _unitsPerGroup = [
@@ -210,7 +210,6 @@ _infantryClasses apply {
 
     [_infantrySetConfig,_units] call KISKA_fnc_bases_initAmbientAnimFromClass;
 
-    private _onUnitsCreated = getText(_infantrySetConfig >> "onUnitsCreated");
     private _onUnitsCreated = [
         "onUnitsCreated", 
         _infantrySetConfig, 
