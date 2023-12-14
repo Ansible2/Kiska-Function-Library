@@ -26,6 +26,13 @@ scriptName "KISKA_fnc_bases_createFromConfig_patrols";
 #define DEFAULT_PATROL_SPEED "LIMITED"
 #define DEFAULT_PATROL_COMBATMODE "RED"
 #define DEFAULT_PATROL_FORMATION "STAG COLUMN"
+#define PATROL_TYPE_GENERATED "GENERATED"
+#define PATROL_TYPE_DEFINED "DEFINED"
+#define POINT_ORDER_UNCHANGED 0
+#define POINT_ORDER_RANDOM 1
+#define POINT_ORDER_NAME_NUMERIC 2
+#define DEFAULT_DEFINED_NUMBER_OF_POINTS -1
+#define DEFAULT_GENERATED_NUMBER_OF_POINTS 5
 
 params [
     ["_baseConfig",configNull,["",configNull]]
@@ -186,19 +193,97 @@ _patrolSets apply {
     };
     _waypointArgs params ["_behaviour","_speed","_formation","_combatMode"];
 
-    // TODO: parse patrol instructions
 
-    private _specificPatrolClass = _x >> "SpecificPatrol";
-    if (isClass _specificPatrolClass) then {
-        private _patrolPoints = (_specificPatrolClass >> "patrolPoints") call BIS_fnc_getCfgData;
+    private _patrolType = [
+        "patrolType",
+        _patrolSetConfig,
+        PATROL_TYPE_GENERATED,
+        false,
+        true,
+        false
+    ] call _fn_getPropertyValue;
+
+    if (_patrolType == PATROL_TYPE_DEFINED) then {
+        private _patrolPoints = ["patrolPoints",_patrolSetConfig,[],false,true,false] call _fn_getPropertyValue;
+        private _patrolPointsAreObjects = false;
         if (_patrolPoints isEqualType "") then {
+            _patrolPointsAreObjects = true;
             _patrolPoints = [_patrolPoints] call KISKA_fnc_getMissionLayerObjects;
         };
 
         if (_patrolPoints isEqualTo []) then {
-            [["Retrieved empty patrol points array for config class: ", _x >> "SpecificPatrol"],true] call KISKA_fnc_log;
+            [
+                [
+                    "Retrieved empty patrol points array for config class: ", 
+                    _patrolSetConfig
+                ],
+                true
+            ] call KISKA_fnc_log;
             continue;
         };
+
+        private _numberOfPoints = [
+            "numberOfPoints",
+            _patrolSetConfig,
+            DEFAULT_DEFINED_NUMBER_OF_POINTS,
+            false,
+            true,
+            false
+        ] call _fn_getPropertyValue;
+
+        private _pointOrdering = [
+            "patrolPointOrder",
+            _patrolSetConfig,
+            POINT_ORDER_UNCHANGED,
+            false,
+            true,
+            false
+        ] call _fn_getPropertyValue;
+        
+        private _randomize = false;
+        switch (_pointOrdering) do
+        {
+            case POINT_ORDER_NAME_NUMERIC: {
+                if (!_patrolPointsAreObjects) exitWith {};
+
+                private _patrolPointObjectNames = _patrolPoints apply { vehicleVarName _x };
+                private _patrolPointObjectNames_sorted = [_patrolPointObjectNames] call KISKA_fnc_sortStringsNumerically;
+                private _patrolPoints_sorted = _patrolPoints apply { missionNamespace getVariable _x };
+
+                _patrolPoints = _patrolPoints_sorted;
+            };
+            case POINT_ORDER_RANDOM: { 
+                _randomize = true 
+            };
+        };
+
+        [
+            _group,
+            _patrolPoints,
+            _numberOfPoints,
+            _randomize,
+            _behaviour,
+            _speed,
+            _combatMode,
+            _formation
+        ] call KISKA_fnc_patrolSpecific;
+
+    } else {
+        // TODO: task patrol parsing
+        private _numberOfPoints = [
+            "patrolType",
+            _patrolSetConfig,
+            DEFAULT_GENERATED_NUMBER_OF_POINTS,
+            false,
+            true,
+            false
+        ] call _fn_getPropertyValue;
+
+    };
+
+
+
+    if (isClass _specificPatrolClass) then {
 
         [
             _group,
