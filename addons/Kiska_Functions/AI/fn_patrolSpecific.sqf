@@ -6,7 +6,8 @@ Description:
 
 Parameters:
     0: _group <GROUP or OBJECT> - The group or unit to give waypoints to
-    1: _postions <ARRAY> - An array of possible positions to patrol between, can be either positions or objects
+    1: _postions <(PositionATL[] | Position2D[] | OBJECT)[]> - An array of possible 
+        positions to patrol between. Can be either positions or objects.
     2: _numWaypoints <NUMBER> - The number of waypoints, use -1 to patrol all given positions
 
     (Optional)
