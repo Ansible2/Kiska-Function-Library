@@ -192,6 +192,25 @@ _turretClasses apply {
     private _onGunnerCreated = compile (["onGunnerCreated", _turretConfig, ""] call _fn_getPropertyValue);
     private _onUnitMovedInGunner = compile (["onUnitMovedInGunner", _turretConfig, ""] call _fn_getPropertyValue);
 
+    private _maxElevation = ["maxElevation", _turretConfig, ""] call _fn_getPropertyValue;
+    if (_maxElevation isEqualType "") then { _maxElevation = compile _maxElevation };
+
+    private _minElevation = ["minElevation", _turretConfig, ""] call _fn_getPropertyValue;
+    if (_minElevation isEqualType "") then { _minElevation = compile _minElevation };
+
+    private _maxRotation = ["maxRotation", _turretConfig, ""] call _fn_getPropertyValue;
+    if (_maxRotation isEqualType "") then { _maxRotation = compile _maxRotation };
+
+    private _minRotation = ["minRotation", _turretConfig, ""] call _fn_getPropertyValue;
+    if (_minRotation isEqualType "") then { _minRotation = compile _minRotation };
+
+
+    private _specifiedTurretLimits = [_minRotation,_maxRotation,_minElevation,_maxElevation];
+    private _adjustTurretLimit = [
+        _specifiedTurretLimits,
+        { (_x isNotEqualTo {}) }
+    ] call KISKA_fnc_findIfBool;
+
     private _reinforceClass = _turretConfig >> "reinforce";
     _turrets apply {
         private _group = createGroup _side;
@@ -219,6 +238,42 @@ _turretClasses apply {
                 _eventParams
             ] call CBA_fnc_directCall;
         };
+
+
+        if (_adjustTurretLimit) then {
+            private _turretPath = _x unitTurret _unit;
+            private _defaultTurretLimits = _x getTurretLimits _turretPath;
+            private _newTurretLimits = +_defaultTurretLimits;
+            private _callBackArgs = [_turretConfig,_x,_unit,_defaultTurretLimits];
+            {
+                private _limitIsDefault = _x isEqualTo {};
+                if (_limitIsDefault) then { continue };
+
+                private "_newLimit";
+                if (_x isEqualType {}) then {
+                    _newLimit = [
+                        _x,
+                        _callBackArgs
+                    ] call CBA_fnc_directCall;
+                } else {
+                    _newLimit = _x;
+                };
+
+                _newTurretLimits set [_forEachIndex,_newLimit];
+            } forEach _specifiedTurretLimits;
+
+
+            _newTurretLimits params ["_minTurn", "_maxTurn", "_minElev", "_maxElev"];
+            _x setTurretLimits [
+                _turretPath,
+                _minTurn,
+                _maxTurn,
+                _minElev,
+                _maxElev
+            ];
+        };
+
+
 
         _base_turretGunners pushBack _unit;
         _base_unitList pushBack _unit;
