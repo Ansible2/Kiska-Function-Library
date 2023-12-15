@@ -33,6 +33,8 @@ scriptName "KISKA_fnc_bases_createFromConfig_patrols";
 #define POINT_ORDER_NAME_NUMERIC 2
 #define DEFAULT_DEFINED_NUMBER_OF_POINTS -1
 #define DEFAULT_GENERATED_NUMBER_OF_POINTS 5
+#define DEFAULT_PATROL_RADIUS 500
+#define DEFAULT_WAYPOINT_TYPE "MOVE"
 
 params [
     ["_baseConfig",configNull,["",configNull]]
@@ -58,7 +60,7 @@ private _fn_getPropertyValue = {
         "_default",
         ["_isBool",false,[false]],
         ["_canSelectFromSetRoot",true,[false]],
-        ["_canSelectFromBaseRoot",true,[false]]
+        ["_canSelectFromBaseRoot",false,[false]]
     ];
 
     private _patrolSetConditionalValue = [_patrolSetConfig >> "conditional",_property] call KISKA_fnc_getConditionalConfigValue;
@@ -136,7 +138,7 @@ _patrolSets apply {
     private _spawnPosition = [_spawnPositions] call KISKA_fnc_selectRandom;
 
 
-    private _unitClasses = ["unitClasses", _patrolSetConfig, []] call _fn_getPropertyValue;
+    private _unitClasses = ["unitClasses", _patrolSetConfig, [], false, true, true] call _fn_getPropertyValue;
     if (_unitClasses isEqualType "") then {
         _unitClasses = [[_patrolSetConfig],_unitClasses] call KISKA_fnc_callBack;
     };
@@ -146,26 +148,17 @@ _patrolSets apply {
     };
 
 
-    private _side = ["side", _patrolSetConfig, 0] call _fn_getPropertyValue;
+    private _side = ["side", _patrolSetConfig, 0, false, true, true] call _fn_getPropertyValue;
     _side = _side call BIS_fnc_sideType;
 
 
-    private _numberOfUnits = [
-        "numberOfUnits", 
-        _patrolSetConfig, 
-        1,
-        false,
-        true,
-        false
-    ] call _fn_getPropertyValue;
+    private _numberOfUnits = ["numberOfUnits", _patrolSetConfig, 1] call _fn_getPropertyValue;
     if (_numberOfUnits isEqualType "") then {
-        _numberOfUnits = [[_patrolSetConfig],_numberOfUnits,false] call KISKA_fnc_callBack;
+        _numberOfUnits = [[_patrolSetConfig],_numberOfUnits] call KISKA_fnc_callBack;
     };
 
 
     private _enableDynamicSim = ["dynamicSim", _patrolSetConfig, true, true] call _fn_getPropertyValue;
-
-
     private _group = [
         _numberOfUnits,
         _unitClasses,
@@ -182,29 +175,15 @@ _patrolSets apply {
         ["combatMode",DEFAULT_PATROL_COMBATMODE]
     ] apply {
         _x params ["_propertyName","_default"];
-        [
-            _propertyName,
-            _patrolSetConfig,
-            _default,
-            false,
-            true,
-            false
-        ] call _fn_getPropertyValue
+        [_propertyName,_patrolSetConfig,_default] call _fn_getPropertyValue
     };
     _waypointArgs params ["_behaviour","_speed","_formation","_combatMode"];
 
 
-    private _patrolType = [
-        "patrolType",
-        _patrolSetConfig,
-        PATROL_TYPE_GENERATED,
-        false,
-        true,
-        false
-    ] call _fn_getPropertyValue;
+    private _patrolType = ["patrolType",_patrolSetConfig,PATROL_TYPE_GENERATED] call _fn_getPropertyValue;
 
     if (_patrolType == PATROL_TYPE_DEFINED) then {
-        private _patrolPoints = ["patrolPoints",_patrolSetConfig,[],false,true,false] call _fn_getPropertyValue;
+        private _patrolPoints = ["patrolPoints",_patrolSetConfig,[]] call _fn_getPropertyValue;
         private _patrolPointsAreObjects = false;
         if (_patrolPoints isEqualType "") then {
             _patrolPointsAreObjects = true;
@@ -222,23 +201,8 @@ _patrolSets apply {
             continue;
         };
 
-        private _numberOfPoints = [
-            "numberOfPoints",
-            _patrolSetConfig,
-            DEFAULT_DEFINED_NUMBER_OF_POINTS,
-            false,
-            true,
-            false
-        ] call _fn_getPropertyValue;
-
-        private _pointOrdering = [
-            "patrolPointOrder",
-            _patrolSetConfig,
-            POINT_ORDER_UNCHANGED,
-            false,
-            true,
-            false
-        ] call _fn_getPropertyValue;
+        private _numberOfPoints = ["numberOfPoints",_patrolSetConfig,DEFAULT_DEFINED_NUMBER_OF_POINTS] call _fn_getPropertyValue;
+        private _pointOrdering = ["patrolPointOrder",_patrolSetConfig,POINT_ORDER_UNCHANGED] call _fn_getPropertyValue;
         
         private _randomize = false;
         switch (_pointOrdering) do
@@ -269,56 +233,33 @@ _patrolSets apply {
         ] call KISKA_fnc_patrolSpecific;
 
     } else {
-        // TODO: task patrol parsing
-        private _numberOfPoints = [
-            "patrolType",
-            _patrolSetConfig,
-            DEFAULT_GENERATED_NUMBER_OF_POINTS,
-            false,
-            true,
-            false
-        ] call _fn_getPropertyValue;
-
-    };
-
-
-
-    if (isClass _specificPatrolClass) then {
-
-        [
-            _group,
-            _patrolPoints,
-            getNumber(_specificPatrolClass >> "numberOfPoints"),
-            [_specificPatrolClass >> "random"] call BIS_fnc_getCfgDataBool,
-            _behaviour,
-            _speed,
-            _combatMode,
-            _formation
-        ] call KISKA_fnc_patrolSpecific;
-
-    } else {
-        private _randomPatrolClass = _x >> "RandomPatrol";
-
-        // get params
-        private _patrolCenter = [_randomPatrolClass >> "center"] call BIS_fnc_getCfgDataArray;
-        if (_patrolCenter isEqualTo []) then {
-            _patrolCenter = _spawnPosition;
-        };
-        private _waypointType = getText(_randomPatrolClass >> "waypointType");
-        if (_waypointType isEqualTo "") then {
-            _waypointType = "MOVE";
-        };
-        private _radius = getNumber(_randomPatrolClass >> "radius");
-        if (_radius isEqualTo 0) then {
-            _radius = 500;
+        private _numberOfPoints = ["patrolType",_patrolSetConfig,DEFAULT_GENERATED_NUMBER_OF_POINTS] call _fn_getPropertyValue;
+        if (_numberOfUnits isEqualType "") then {
+            _numberOfUnits = [[_patrolSetConfig],_numberOfUnits] call KISKA_fnc_callBack;
         };
 
+        private _patrolCenter = ["center",_patrolSetConfig,-1] call _fn_getPropertyValue;
+        if (_patrolCenter isEqualTo -1) then { 
+            _patrolCenter = _spawnPosition
+
+        } else {
+            if (_patrolCenter isEqualType "") exitWith {
+                _patrolCenter = [[_patrolSetConfig],_patrolCenter] call KISKA_fnc_callBack;
+            };
+
+            if (_patrolCenter isEqualType []) exitWith {
+                _patrolCenter = [_patrolCenter,[]] call KISKA_fnc_selectRandom;
+            };
+        };
+
+        private _patrolRadius = ["radius",_patrolSetConfig,DEFAULT_PATROL_RADIUS] call _fn_getPropertyValue;
+        private _waypointType = ["wayPointType",_patrolSetConfig,DEFAULT_WAYPOINT_TYPE] call _fn_getPropertyValue;
 
         [
             _group,
             _patrolCenter,
-            _radius,
-            getNumber(_randomPatrolClass >> "numberOfPoints"),
+            _patrolRadius,
+            _numberOfPoints,
             _waypointType,
             _behaviour,
             _combatMode,
@@ -338,7 +279,7 @@ _patrolSets apply {
     ] call _fn_getPropertyValue;
     private _units = units _group;
     if (_onPatrolCreated isNotEqualTo "") then {
-        [[_patrolSetConfig,_units,_group],_onPatrolCreated,false] call KISKA_fnc_callBack;
+        [[_patrolSetConfig,_units,_group],_onPatrolCreated] call KISKA_fnc_callBack;
     };
 
     _base_groupList pushBack _group;
