@@ -319,7 +319,7 @@ class KISKA_AmbientAnimations
             attachToLogic = ON;
         };
 
-        class SIT_CHAIR_ARMED_1 : SIT_CHAIR_ARMED_1
+        class SIT_CHAIR_ARMED_2 : SIT_CHAIR_ARMED_1
         {
             animations[] = {
                 "HubSittingChairB_idle1",
