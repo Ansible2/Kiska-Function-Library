@@ -96,9 +96,9 @@ for "_i" from 1 to _numWaypoints do {
     };
 
     _waypoint setWaypointType "MOVE";
-    _waypoint setWaypointBehaviour _behaviour;
-    _waypoint setWaypointFormation _formation;
-    _waypoint setWaypointSpeed _speed;
+    [_waypoint,_behaviour] remoteExec ["setWaypointBehaviour",2];
+    [_waypoint,_formation] remoteExec ["setWaypointFormation",2];
+    [_waypoint,_speed] remoteExec ["setWaypointSpeed",2];
     _waypoint setWaypointCombatMode _combatMode;
 };
 
