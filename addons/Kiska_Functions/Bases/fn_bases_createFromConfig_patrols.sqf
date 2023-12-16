@@ -120,22 +120,41 @@ private _patrolSets = configProperties [_patrolsConfig >> "sets","isClass _x"];
 _patrolSets apply {
     private _patrolSetConfig = _x;
 
-    private _spawnPositions = [
-        "spawnPositions",
+    private _spawnPosition = [
+        "specificSpawn",
         _patrolSetConfig,
         [],
         false,
         false,
         false
     ] call _fn_getPropertyValue;
-    if (_spawnPositions isEqualType "") then {
-        _spawnPositions = [_spawnPositions] call KISKA_fnc_getMissionLayerObjects;
+
+    if (_spawnPosition isEqualTo []) then {
+        private _spawnPositions = [
+            "spawnPositions",
+            _patrolSetConfig,
+            [],
+            false,
+            false,
+            false
+        ] call _fn_getPropertyValue;
+
+        if (_spawnPositions isEqualType "") then {
+            _spawnPositions = [_spawnPositions] call KISKA_fnc_getMissionLayerObjects;
+        };
+
+        if (_spawnPositions isEqualTo []) then {
+            [["Could not find spawn positions for KISKA bases class: ",_x],true] call KISKA_fnc_log;
+            continue;
+        };
+
+        _spawnPosition = [_spawnPositions] call KISKA_fnc_selectRandom;
+    } else {
+        if (_spawnPosition isEqualType "") then {
+            _spawnPosition = [[_patrolSetConfig],_spawnPosition] call KISKA_fnc_callBack;
+        };
     };
-    if (_spawnPositions isEqualTo []) then {
-        [["Could not find spawn positions for KISKA bases class: ",_x],true] call KISKA_fnc_log;
-        continue;
-    };
-    private _spawnPosition = [_spawnPositions] call KISKA_fnc_selectRandom;
+
 
 
     private _unitClasses = ["unitClasses", _patrolSetConfig, [], false, true, true] call _fn_getPropertyValue;
