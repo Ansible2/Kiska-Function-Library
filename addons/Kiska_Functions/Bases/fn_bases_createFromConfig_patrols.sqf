@@ -252,7 +252,7 @@ _patrolSets apply {
         ] call KISKA_fnc_patrolSpecific;
 
     } else {
-        private _numberOfPoints = ["patrolType",_patrolSetConfig,DEFAULT_GENERATED_NUMBER_OF_POINTS] call _fn_getPropertyValue;
+        private _numberOfPoints = ["numberOfPoints",_patrolSetConfig,DEFAULT_GENERATED_NUMBER_OF_POINTS] call _fn_getPropertyValue;
         if (_numberOfUnits isEqualType "") then {
             _numberOfUnits = [[_patrolSetConfig],_numberOfUnits] call KISKA_fnc_callBack;
         };
