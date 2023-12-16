@@ -90,7 +90,7 @@ if (_landMode isNotEqualTo "LAND") then {
 [_aircraft,_landingPosition,_landMode,_afterLandCode,_keepEngineOn,_landedHeight] spawn {
     params ["_aircraft","_landingPosition","_landMode","_afterLandCode","_keepEngineOn","_landedHeight"];
 
-    _aircraft move _landingPosition;
+    [_aircraft,_landingPosition] remoteExecCall ["move",_aircraft];
     _aircraft setVariable ["KISKA_isLanding",true];
 
     private _landed = false;
