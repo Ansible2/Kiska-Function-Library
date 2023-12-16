@@ -231,7 +231,7 @@ _patrolSets apply {
 
                 private _patrolPointObjectNames = _patrolPoints apply { vehicleVarName _x };
                 private _patrolPointObjectNames_sorted = [_patrolPointObjectNames] call KISKA_fnc_sortStringsNumerically;
-                private _patrolPoints_sorted = _patrolPoints apply { missionNamespace getVariable _x };
+                private _patrolPoints_sorted = _patrolPointObjectNames_sorted apply { missionNamespace getVariable _x };
 
                 _patrolPoints = _patrolPoints_sorted;
             };
