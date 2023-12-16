@@ -79,7 +79,7 @@ if (_group isEqualType objNull) then {
 
 private "_cyclePosition";
 
-for "_i" from 1 to _numWaypoints do {
+for "_i" from 0 to (_numWaypoints - 1) do {
     private "_selectedPosition";
     private "_waypoint";
 
@@ -87,11 +87,11 @@ for "_i" from 1 to _numWaypoints do {
         _selectedPosition = [_positions] call KISKA_fnc_deleteRandomIndex;
         _waypoint = _group addWaypoint [_selectedPosition,0];
     } else {
-        _selectedPosition = _positions select (_i - 1);
+        _selectedPosition = _positions select _i;
         _waypoint = _group addWaypoint [_selectedPosition,0];
     };
 
-    if (_i isEqualTo 1) then {
+    if (_i isEqualTo 0) then {
         _cycleposition = _selectedPosition;
     };
 
