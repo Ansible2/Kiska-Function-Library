@@ -152,10 +152,6 @@ _vehicleDimensions params ["_length","_width","_height"];
 // Not using half dimensions here because of the desire to have
 // the width and height doubled for making sure vehicles
 // don't accidentaly miss a point.
-// Length is not doubled, however, because if a point is deleted too soon, it will affect
-// the vehicle will try to immediately turn into the next point and may not 
-// actually follow a path closely engough and crash into objects
-// _length = _length max MIN_COMPLETION_BOX_LENGTH;
 _vehicle setVariable [
     "KISKA_convoy_vehicleCompletionArea",
     [
