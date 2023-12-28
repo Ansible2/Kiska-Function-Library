@@ -675,9 +675,14 @@ _units apply {
 
 
     if (_exitOnCombat) then {
+        private _eventHandlerConfig = [
+            "KISKA_eventHandlers",
+            "Behaviour"
+        ] call KISKA_fnc_findConfigAny;
+
         private _behaviourEventId = [
             _unit,
-            (configFile >> "KISKA_eventHandlers" >> "Behaviour"),
+            _eventHandlerConfig,
             {
                 params ["_unit","_behaviour","_eventHandlerConfig"];
 

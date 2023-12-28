@@ -54,9 +54,14 @@ if !(isNull _attachToLogic) then {
 
 private _behaviourEventId = _ambientAnimInfoMap getOrDefault ["_behaviourEventId",-1];
 if (_behaviourEventId >= 0) then {
+    private _eventHandlerConfig = [
+        "KISKA_eventHandlers",
+        "Behaviour"
+    ] call KISKA_fnc_findConfigAny;
+    
     [
         _unit,
-        (configFile >> "KISKA_eventHandlers" >> "Behaviour"),
+        _eventHandlerConfig,
         _behaviourEventId
     ] call KISKA_fnc_eventHandler_remove;
 };
