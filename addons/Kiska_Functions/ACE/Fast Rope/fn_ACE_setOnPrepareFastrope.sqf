@@ -23,7 +23,7 @@ Parameters:
         being the time it takes for the ropes to deploy from the given vehicle
         (SEE KISKA_fnc_callBack for array syntax).
         
-        Args:
+        parameters:
             - 0. <OBJECT> - The helicopter conducting a fastrope
 
 Returns:

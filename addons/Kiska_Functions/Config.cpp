@@ -24,6 +24,8 @@ class CfgFunctions
             {};
             class ACE_fastRope
             {};
+            class ACE_setOnPrepareFastrope
+            {};
         };
         class ACE
         {
