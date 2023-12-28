@@ -1,7 +1,7 @@
 #include "Trait Manager Common Defines.hpp"
-#include "\KISKA_Functions\GUIs\Common GUI Headers\KISKA GUI Grid.hpp"
-#include "\KISKA_Functions\GUIs\Common GUI Headers\KISKA GUI Colors.hpp"
-#include "\KISKA_Functions\GUIs\Common GUI Headers\GUI Styles.hpp"
+#include "\KISKA_Functions\Headers\GUI\KISKA GUI Grid.hpp"
+#include "\KISKA_Functions\Headers\GUI\KISKA GUI Colors.hpp"
+#include "\KISKA_Functions\Headers\GUI\GUI Styles.hpp"
 
 class RscText;
 class RscListbox;

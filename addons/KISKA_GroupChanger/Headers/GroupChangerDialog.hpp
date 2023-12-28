@@ -1,7 +1,7 @@
 #include "GroupChangerCommonDefines.hpp"
-#include "\KISKA_Functions\GUIs\Common GUI Headers\KISKA GUI Grid.hpp"
-#include "\KISKA_Functions\GUIs\Common GUI Headers\KISKA GUI Colors.hpp"
-#include "\KISKA_Functions\GUIs\Common GUI Headers\GUI Styles.hpp"
+#include "\KISKA_Functions\Headers\GUI\KISKA GUI Grid.hpp"
+#include "\KISKA_Functions\Headers\GUI\KISKA GUI Colors.hpp"
+#include "\KISKA_Functions\Headers\GUI\GUI Styles.hpp"
 
 #define CHANGER_TRANSPARENCY 0.25
 #define LISTBOX_TRANSPARENCY 0.35
