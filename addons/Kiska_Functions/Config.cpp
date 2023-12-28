@@ -763,7 +763,7 @@ class Extended_PreInit_EventHandlers {
         init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addLoggingCbaSettings.sqf'];";
     };
     class ACE_settings_preInitEvent {
-        init = "call compileScript ['KISKA_functions\ACE\Scripts\addAceCbaSettings.sqf'];";
+        init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addAceCbaSettings.sqf'];";
     };
     class enabledChannel_settings_preInitEvent {
         init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addEnableChannelCbaSettings.sqf'];";    
