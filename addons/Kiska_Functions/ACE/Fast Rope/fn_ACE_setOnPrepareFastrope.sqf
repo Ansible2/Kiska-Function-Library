@@ -3,7 +3,7 @@ Function: KISKA_fnc_ACE_setOnPrepareFastrope
 
 Description:
     Sets the onprepare function of a specific vehicle when it conducts fastroping
-     with KISKA_fnc_fastRope (not any other implementation of ACE fastroping).
+     with KISKA_fnc_ACE_fastRope (not any other implementation of ACE fastroping).
     
     By default, ACE uses a config value (on the vehicle's class) of a string that 
      is the name of the function to call. This function will overwrite that config 
