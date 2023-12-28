@@ -757,7 +757,7 @@ class Extended_PreInit_EventHandlers {
         init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addLoadoutCbaSettings.sqf'];";
     };
     class music_settings_preInitEvent {
-        init = "call compileScript ['KISKA_functions\Music\Scripts\addMusicCbaSettings.sqf'];";
+        init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addMusicCbaSettings.sqf'];";
     };
     class logging_settings_preInitEvent {
         init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addLoggingCbaSettings.sqf'];";
