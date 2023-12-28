@@ -748,7 +748,7 @@ class KISKA_loadouts
 
 class Extended_PreInit_EventHandlers {
     class support_settings_preInitEvent {
-        init = "call compileScript ['KISKA_functions\Supports\Support Framework\Scripts\addSupportCbaSettings.sqf'];";
+        init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addSupportCbaSettings.sqf'];";
     };
     class coef_settings_preInitEvent {
         init = "call compileScript ['KISKA_functions\Scripts\CBA Settings\addCoefCbaSettings.sqf'];";
