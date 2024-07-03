@@ -1,12 +1,13 @@
 #ifdef KISKA_IS_MISSION_TEMPLATE
-	#define ROOT_FOLDER "KISKA_functions"
+	__EXEC(KISKA_FUNCTIONS_ROOT_FOLDER = "KISKA Systems")
 #else
-	#define ROOT_FOLDER "KISKA Systems"
+	__EXEC(KISKA_FUNCTIONS_ROOT_FOLDER = "KISKA_functions")
 #endif
 
 class ACE_FastRope
-{
-	file = ROOT_FOLDER##"\Functions\ACE\Fast Rope";
+{	
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\ACE\Fast Rope");
+
 	class ACE_deployFastRope
 	{};
 	class ACE_deployRopes
@@ -18,7 +19,7 @@ class ACE_FastRope
 };
 class ACE
 {
-	file = ROOT_FOLDER##"\Functions\ACE";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\ACE");
 	class ACE_addSupportMenuAction
 	{
 		preInit = 1;
@@ -30,13 +31,13 @@ class ACE
 };
 class ACEX
 {
-	file = ROOT_FOLDER##"\Functions\ACEX";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\ACEX");
 	class ACEX_setHCTransfer
 	{};
 };
 class AI
 {
-	file = ROOT_FOLDER##"\Functions\AI";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\AI");
 	class AAAZone
 	{};
 	class arty
@@ -84,7 +85,7 @@ class AI
 };
 class Animations
 {
-	file = ROOT_FOLDER##"\Functions\Animations";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Animations");
 	class ambientAnim
 	{};
 	class ambientAnim_addAttachLogicGroup
@@ -106,7 +107,7 @@ class Animations
 };
 class Bases
 {
-	file = ROOT_FOLDER##"\Functions\Bases";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Bases");
 	class bases_createFromConfig
 	{};
 	class bases_createFromConfig_agents
@@ -139,7 +140,7 @@ class Bases
 
 class CIWS
 {
-	file = ROOT_FOLDER##"\Functions\CIWS";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\CIWS");
 	class ciwsInit
 	{};
 	class ciwsAlarm
@@ -150,7 +151,7 @@ class CIWS
 
 class Convoy
 {
-	file = ROOT_FOLDER##"\Functions\Convoy";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Convoy");
 	
 	class convoy_addVehicle
 	{};
@@ -242,7 +243,7 @@ class Convoy
 
 class EventHandlers
 {
-	file = ROOT_FOLDER##"\Functions\EventHandlers";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\EventHandlers");
 	class eventHandler_addFromConfig
 	{};
 	class eventHandler_createCBAStateMachine
@@ -253,7 +254,7 @@ class EventHandlers
 
 class Hashmap
 {
-	file = ROOT_FOLDER##"\Functions\Hashmap";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Hashmap");
 	class hashmap_assignObjectOrGroupKey
 	{};
 	class hashmap_deleteAt
@@ -274,7 +275,7 @@ class Hashmap
 
 class Loadouts
 {
-	file = ROOT_FOLDER##"\Functions\Loadouts";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Loadouts");
 	class assignUnitLoadout
 	{};
 	class randomGear
@@ -289,7 +290,7 @@ class Loadouts
 
 class ManagedRun
 {
-	file = ROOT_FOLDER##"\Functions\Managed Run";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Managed Run");
 	class managedRun_execute
 	{};
 	class managedRun_isDefined
@@ -300,7 +301,7 @@ class ManagedRun
 
 class Music
 {
-	file = ROOT_FOLDER##"\Functions\Music";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Music");
 	class getLatestPlayedMusicID
 	{};
 	class getMusicDuration
@@ -326,7 +327,7 @@ class Music
 };
 class Rally
 {
-	file = ROOT_FOLDER##"\Functions\Rally";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Rally");
 	class addRallyPointDiaryEntry
 	{
 		preInit = 1;
@@ -347,7 +348,7 @@ class Rally
 
 class RandomMusic
 {
-	file = ROOT_FOLDER##"\Functions\Music\Random Music";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Music\Random Music");
 	class randomMusic_getCurrentTrack
 	{};
 	class randomMusic_getTrackInterval
@@ -382,7 +383,7 @@ class RandomMusic
 
 class Respawn
 {
-	file = ROOT_FOLDER##"\Functions\Respawn";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Respawn");
 	class keepInGroup
 	{
 		preInit = 1;
@@ -390,7 +391,7 @@ class Respawn
 };
 class Sound
 {
-	file = ROOT_FOLDER##"\Functions\Sound";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Sound");
 	class ambientNewsRadio
 	{};
 	class battleSound
@@ -413,7 +414,7 @@ class Sound
 
 class SpectrumDevice
 {
-	file = ROOT_FOLDER##"\Functions\Spectrum Device";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Spectrum Device");
 	class spectrum_addSignal
 	{};
 	class spectrum_deleteSignal
@@ -464,7 +465,7 @@ class SpectrumDevice
 
 class Supports
 {
-	file = ROOT_FOLDER##"\Functions\Supports";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Supports");
 	class arsenalSupplyDrop
 	{};
 	class CAS
@@ -486,7 +487,7 @@ class Supports
 };
 class SupportFramework
 {
-	file = ROOT_FOLDER##"\Functions\Support Framework";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework");
 	class addCommMenuItem
 	{};
 	class buildCommandMenu
@@ -528,7 +529,7 @@ class SupportFramework
 };
 class Tasks
 {
-	file = ROOT_FOLDER##"\Functions\Tasks";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Tasks");
 	class createTaskFromConfig
 	{};
 	class endTask
@@ -536,7 +537,7 @@ class Tasks
 };
 class Timeline
 {
-	file = ROOT_FOLDER##"\Functions\Timeline";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Timeline");
 	class timeline_executeEvent
 	{};
 	class timeline_getMainMap
@@ -556,7 +557,7 @@ class Timeline
 };
 class Utilities
 {
-	file = ROOT_FOLDER##"\Functions\Utilities";
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Utilities");
 	class addArsenal
 	{};
 	class addEntityKilledEventHandler
