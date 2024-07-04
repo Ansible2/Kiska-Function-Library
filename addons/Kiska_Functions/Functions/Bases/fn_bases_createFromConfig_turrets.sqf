@@ -158,7 +158,7 @@ _turretClasses apply {
         { (_x isNotEqualTo {}) }
     ] call KISKA_fnc_findIfBool;
 
-    private _reinforceClass = _turretConfig >> "reinforce";
+    private _hasReinforce = !(isNull (_turretConfig >> "reinforce"));
     _turrets apply {
         private _group = createGroup _side;
         private _unitClass = [_unitClasses,""] call KISKA_fnc_selectRandom;
@@ -226,8 +226,9 @@ _turretClasses apply {
         _base_unitList pushBack _unit;
         _base_groupList pushBack _group;
 
-        if (isNull _reinforceClass) then { continue; };
-        [_group,_turretConfig] call KISKA_fnc_bases_initReinforceFromClass;
+        if (_hasReinforce) then { 
+            [_group,_turretConfig] call KISKA_fnc_bases_initReinforceFromClass;
+        };
     };
 
 };
