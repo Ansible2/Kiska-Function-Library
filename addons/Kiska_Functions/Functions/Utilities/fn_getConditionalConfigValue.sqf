@@ -109,11 +109,11 @@ if (isNil "_conditionalClassesMap") then {
     localNamespace setVariable ["KISKA_conditionalConfig_parsedConfigMap",_conditionalClassesMap];
 };
 
+private _alreadyParsedConfigs = _conditionalClassesMap get _conditionalConfig;
 private _conditionArgs = [_conditionalConfig,configNull,_property];
-private _parsedConditionalConfigs = _conditionalClassesMap get _conditionalConfig;
 private "_propertyValue";
-if !(isNil "_parsedConditionalConfigs") exitWith {
-    _parsedConditionalConfigs apply {
+if !(isNil "_alreadyParsedConfigs") exitWith {
+    _alreadyParsedConfigs apply {
         _x params ["_conditionalClassConfig","_condition"];
         _conditionArgs set [1,_conditionalClassConfig];
 
@@ -135,7 +135,7 @@ if !(isNil "_parsedConditionalConfigs") exitWith {
 
 
 private _conditionalConfigClasses = configProperties [_conditionalConfig,"isClass _x"];
-_parsedConditionalConfigs = [];
+_alreadyParsedConfigs = [];
 _conditionalConfigClasses apply {
     private _meetsStaticRequirements = true;
 
@@ -160,7 +160,7 @@ _conditionalConfigClasses apply {
 
     
     private _condition = compile (getText(_x >> "condition"));
-    _parsedConditionalConfigs pushBack [_x,_condition];
+    _alreadyParsedConfigs pushBack [_x,_condition];
 
 
     _conditionArgs set [1,_x];
@@ -178,7 +178,7 @@ _conditionalConfigClasses apply {
     };
 };
 
-_conditionalClassesMap set [_conditionalConfig,_parsedConditionalConfigs];
+_conditionalClassesMap set [_conditionalConfig,_alreadyParsedConfigs];
 
 
 _propertyValue
