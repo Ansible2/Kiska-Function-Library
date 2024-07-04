@@ -109,10 +109,9 @@ if (isNil "_conditionalClassesMap") then {
     localNamespace setVariable ["KISKA_conditionalConfig_parsedConfigMap",_conditionalClassesMap];
 };
 
-private "_propertyValue";
 private _conditionArgs = [_conditionalConfig,configNull,_property];
-
 private _parsedConditionalConfigs = _conditionalClassesMap get _conditionalConfig;
+private "_propertyValue";
 if !(isNil "_parsedConditionalConfigs") exitWith {
     _parsedConditionalConfigs apply {
         _x params ["_conditionalClassConfig","_condition"];
