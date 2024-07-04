@@ -36,60 +36,6 @@ if (isNull _baseConfig) exitWith {
 };
 
 
-/* ----------------------------------------------------------------------------
-    _fn_getPropertyValue
----------------------------------------------------------------------------- */
-private _fn_getPropertyValue = {
-    params [
-        ["_property","",[""]],
-        ["_vehicleSetConfigPath",configNull,[configNull]],
-        "_default",
-        ["_isBool",false,[false]],
-        ["_canSelectFromSetRoot",true,[false]],
-        ["_canSelectFromBaseRoot",true,[false]]
-    ];
-
-    private _turretSetConditionalValue = [_vehicleSetConfigPath >> "conditional",_property] call KISKA_fnc_getConditionalConfigValue;
-    if !(isNil "_turretSetConditionalValue") exitWith { _turretSetConditionalValue };
-
-    private _turretSetPropertyConfigPath = _vehicleSetConfigPath >> _property;
-    if !(isNull _turretSetPropertyConfigPath) exitWith {
-        [_turretSetPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
-    };
-
-    private "_propertyValue";
-    if (_canSelectFromSetRoot) then {
-        private _turretSectionConfigPath = _baseConfig >> "turrets";
-        private _turretSectionConditionalValue = [_turretSectionConfigPath >> "conditional",_property] call KISKA_fnc_getConditionalConfigValue;
-        if !(isNil "_turretSectionConditionalValue") exitWith { _turretSectionConditionalValue };
-
-        private _turretSectionPropertyConfigPath = _turretSectionConfigPath >> _property;
-        if !(isNull _turretSectionPropertyConfigPath) then {
-            _propertyValue = [_turretSectionPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
-        };
-    };
-
-    if (_canSelectFromBaseRoot AND (isNil "_propertyValue")) then {
-        private _baseRootConditionalValue = [_baseConfig >> "conditional",_property] call KISKA_fnc_getConditionalConfigValue;
-        if !(isNil "_baseRootConditionalValue") exitWith { _baseRootConditionalValue };
-
-        private _baseSectionPropertyConfigPath = _baseConfig >> _property;
-        if !(isNull _baseSectionPropertyConfigPath) exitWith {
-            _propertyValue = [_baseSectionPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
-        };
-    };
-
-    if (isNil "_propertyValue") then {
-        _default
-    } else {
-        _propertyValue
-    };
-};
-
-
-
-
-
 private _baseMap = [_baseConfig] call KISKA_fnc_bases_getHashmap;
 private _base_unitList = _baseMap get "unit list";
 private _base_groupList = _baseMap get "group list";
