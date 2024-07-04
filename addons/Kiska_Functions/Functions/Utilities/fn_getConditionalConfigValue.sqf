@@ -93,9 +93,9 @@ if (isNull _conditionalConfig) exitWith {
     nil
 };
 
-private _loadedModsInfo = call KISKA_fnc_getLoadedModsInfo;
 private _modDirectoriesLowered = uiNamespace getVariable "KISKA_conditionalConfig_loadedMods";
 if (isNil "_modDirectoriesLowered") then {
+    private _loadedModsInfo = call KISKA_fnc_getLoadedModsInfo;
     _modDirectoriesLowered = _loadedModsInfo apply { 
         private _modDirectoryName = _x select 1;
         toLowerANSI _modDirectoryName   
