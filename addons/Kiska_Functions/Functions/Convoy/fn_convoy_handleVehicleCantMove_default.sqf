@@ -156,8 +156,7 @@ private _findClearSide = {
     private _middleIndex = (round (_blockedPositionsCount / 2)) - 1;
     private _middleBlockedPosition = _blockedPositions_ATL select _middleIndex;
 
-    private _lastIndex = _blockedPositionsCount - 1;
-    private _lastBlockedPosition = _blockedPositions_ATL select _lastIndex;
+    private _lastBlockedPosition = _blockedPositions_ATL select -1;
 
     private _disabledVehicle_dir = getDirVisual _disabledVehicle;
     private _leftAzimuth = LEFT_AZIMUTH_RELATIVE_NORTH + _disabledVehicle_dir;
