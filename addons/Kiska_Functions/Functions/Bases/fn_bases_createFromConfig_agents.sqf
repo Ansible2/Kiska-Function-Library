@@ -35,60 +35,6 @@ if (isNull _baseConfig) exitWith {
     []
 };
 
-
-/* ----------------------------------------------------------------------------
-    _fn_getPropertyValue
----------------------------------------------------------------------------- */
-private _fn_getPropertyValue = {
-    params [
-        ["_property","",[""]],
-        ["_agentsSetConfig",configNull,[configNull]],
-        "_default",
-        ["_isBool",false,[false]],
-        ["_canSelectFromSetRoot",true,[false]],
-        ["_canSelectFromBaseRoot",true,[false]]
-    ];
-
-    private _agentsSetConditionalValue = [_agentsSetConfig >> "conditional",_property] call KISKA_fnc_getConditionalConfigValue;
-    if !(isNil "_agentsSetConditionalValue") exitWith { _agentsSetConditionalValue };
-
-    private _agentsSetPropertyConfigPath = _agentsSetConfig >> _property;
-    if !(isNull _agentsSetPropertyConfigPath) exitWith {
-        [_agentsSetPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
-    };
-
-    private "_propertyValue";
-    if (_canSelectFromSetRoot) then {
-        private _agentsSectionConfigPath = _baseConfig >> "agents";
-        private _agentsSectionConditionalValue = [_agentsSectionConfigPath >> "conditional",_property] call KISKA_fnc_getConditionalConfigValue;
-        if !(isNil "_agentsSectionConditionalValue") exitWith { _agentsSectionConditionalValue };
-
-        private _agentsSectionPropertyConfigPath = _agentsSectionConfigPath >> _property;
-        if !(isNull _agentsSectionPropertyConfigPath) then {
-            _propertyValue = [_agentsSectionPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
-        };
-    };
-
-    if (_canSelectFromBaseRoot AND (isNil "_propertyValue")) then {
-        private _baseRootConditionalValue = [_baseConfig >> "conditional",_property] call KISKA_fnc_getConditionalConfigValue;
-        if !(isNil "_baseRootConditionalValue") exitWith { _baseRootConditionalValue };
-
-        private _baseSectionPropertyConfigPath = _baseConfig >> _property;
-        if !(isNull _baseSectionPropertyConfigPath) exitWith {
-            _propertyValue = [_baseSectionPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
-        };
-    };
-
-    if (isNil "_propertyValue") then {
-        _default
-    } else {
-        _propertyValue
-    };
-};
-
-
-
-
 private _baseMap = [_baseConfig] call KISKA_fnc_bases_getHashmap;
 private _base_agentsList = _baseMap get "agent list";
 
@@ -111,7 +57,7 @@ _agentClasses apply {
         false,
         false,
         false
-    ] call _fn_getPropertyValue;
+    ] call KISKA_fnc_bases_getPropertyValue;
     if (_spawnPositions isEqualType "") then {
         _spawnPositions = [_spawnPositions] call KISKA_fnc_getMissionLayerObjects;
     };
@@ -128,7 +74,7 @@ _agentClasses apply {
     };
 
 
-    private _unitClasses = ["unitClasses", _agentsSetConfig, []] call _fn_getPropertyValue;
+    private _unitClasses = ["unitClasses", _agentsSetConfig, []] call KISKA_fnc_bases_getPropertyValue;
     if (_unitClasses isEqualType "") then {
         _unitClasses = [[_agentsSetConfig],_unitClasses] call KISKA_fnc_callBack;
     };
@@ -138,7 +84,7 @@ _agentClasses apply {
     };
 
     
-    private _side = ["side", _agentsSetConfig, 0] call _fn_getPropertyValue;
+    private _side = ["side", _agentsSetConfig, 0] call KISKA_fnc_bases_getPropertyValue;
     _side = _side call BIS_fnc_sideType;
 
 
@@ -149,13 +95,13 @@ _agentClasses apply {
         false,
         true,
         false
-    ] call _fn_getPropertyValue;
+    ] call KISKA_fnc_bases_getPropertyValue;
     if (_numberOfUnits isEqualType "") then {
         _numberOfUnits = [[_agentsSetConfig,_spawnPositions],_numberOfUnits,false] call KISKA_fnc_callBack;
     };
 
 
-    private _enableDynamicSim = ["dynamicSim", _agentsSetConfig, true, true] call _fn_getPropertyValue;
+    private _enableDynamicSim = ["dynamicSim", _agentsSetConfig, true, true] call KISKA_fnc_bases_getPropertyValue;
 
 
     private _agents = [];
@@ -192,7 +138,7 @@ _agentClasses apply {
         false,
         true,
         false
-    ] call _fn_getPropertyValue;
+    ] call KISKA_fnc_bases_getPropertyValue;
     if (_onUnitsCreated isNotEqualTo "") then {
         [[_agentsSetConfig,_agents],_onUnitsCreated,false] call KISKA_fnc_callBack;
     };

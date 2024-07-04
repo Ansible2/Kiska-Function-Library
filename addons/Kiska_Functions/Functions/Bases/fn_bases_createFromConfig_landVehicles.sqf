@@ -35,13 +35,11 @@ if (isNull _baseConfig) exitWith {
     []
 };
 
-
 private _baseMap = [_baseConfig] call KISKA_fnc_bases_getHashmap;
 private _base_unitList = _baseMap get "unit list";
 private _base_groupList = _baseMap get "group list";
 private _base_landVehicles = _baseMap get "land vehicles";
 private _base_landVehicleGroups = _baseMap get "land vehicle groups";
-
 
 
 /* ----------------------------------------------------------------------------

@@ -36,60 +36,6 @@ if (isNull _baseConfig) exitWith {
 };
 
 
-/* ----------------------------------------------------------------------------
-    _fn_getPropertyValue
----------------------------------------------------------------------------- */
-private _fn_getPropertyValue = {
-    params [
-        ["_property","",[""]],
-        ["_infantrySetConfig",configNull,[configNull]],
-        "_default",
-        ["_isBool",false,[false]],
-        ["_canSelectFromSetRoot",true,[false]],
-        ["_canSelectFromBaseRoot",true,[false]]
-    ];
-
-    private _infantrySetConditionalValue = [_infantrySetConfig >> "conditional",_property] call KISKA_fnc_getConditionalConfigValue;
-    if !(isNil "_infantrySetConditionalValue") exitWith { _infantrySetConditionalValue };
-
-    private _infantrySetPropertyConfigPath = _infantrySetConfig >> _property;
-    if !(isNull _infantrySetPropertyConfigPath) exitWith {
-        [_infantrySetPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
-    };
-
-    private "_propertyValue";
-    if (_canSelectFromSetRoot) then {
-        private _infantrySectionConfigPath = _baseConfig >> "infantry";
-        private _infantrySectionConditionalValue = [_infantrySectionConfigPath >> "conditional",_property] call KISKA_fnc_getConditionalConfigValue;
-        if !(isNil "_infantrySectionConditionalValue") exitWith { _infantrySectionConditionalValue };
-
-        private _infantrySectionPropertyConfigPath = _infantrySectionConfigPath >> _property;
-        if !(isNull _infantrySectionPropertyConfigPath) then {
-            _propertyValue = [_infantrySectionPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
-        };
-    };
-
-    if (_canSelectFromBaseRoot AND (isNil "_propertyValue")) then {
-        private _baseRootConditionalValue = [_baseConfig >> "conditional",_property] call KISKA_fnc_getConditionalConfigValue;
-        if !(isNil "_baseRootConditionalValue") exitWith { _baseRootConditionalValue };
-
-        private _baseSectionPropertyConfigPath = _baseConfig >> _property;
-        if !(isNull _baseSectionPropertyConfigPath) exitWith {
-            _propertyValue = [_baseSectionPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
-        };
-    };
-
-    if (isNil "_propertyValue") then {
-        _default
-    } else {
-        _propertyValue
-    };
-};
-
-
-
-
-
 private _baseMap = [_baseConfig] call KISKA_fnc_bases_getHashmap;
 private _base_unitList = _baseMap get "unit list";
 private _base_groupList = _baseMap get "group list";
@@ -116,7 +62,7 @@ _infantryClasses apply {
         false,
         false,
         false
-    ] call _fn_getPropertyValue;
+    ] call KISKA_fnc_bases_getPropertyValue;
 
     if (_spawnPositions isEqualType "") then {
         _spawnPositions = [_spawnPositions] call KISKA_fnc_getMissionLayerObjects;
@@ -127,7 +73,7 @@ _infantryClasses apply {
     };
 
 
-    private _unitClasses = ["unitClasses", _infantrySetConfig, []] call _fn_getPropertyValue;
+    private _unitClasses = ["unitClasses", _infantrySetConfig, []] call KISKA_fnc_bases_getPropertyValue;
     if (_unitClasses isEqualType "") then {
         _unitClasses = [[_infantrySetConfig],_unitClasses] call KISKA_fnc_callBack;
     };
@@ -137,7 +83,7 @@ _infantryClasses apply {
     };
 
 
-    private _side = ["side", _infantrySetConfig, 0] call _fn_getPropertyValue;
+    private _side = ["side", _infantrySetConfig, 0] call KISKA_fnc_bases_getPropertyValue;
     _side = _side call BIS_fnc_sideType;
 
     private _numberOfUnits = [
@@ -147,7 +93,7 @@ _infantryClasses apply {
         false,
         true,
         false
-    ] call _fn_getPropertyValue;
+    ] call KISKA_fnc_bases_getPropertyValue;
     if (_numberOfUnits isEqualType "") then {
         _numberOfUnits = [[_infantrySetConfig,_spawnPositions],_numberOfUnits,false] call KISKA_fnc_callBack;
     };
@@ -159,7 +105,7 @@ _infantryClasses apply {
         false,
         true,
         false
-    ] call _fn_getPropertyValue;
+    ] call KISKA_fnc_bases_getPropertyValue;
     if (_unitsPerGroup isEqualType "") then {
         _unitsPerGroup = [[_infantrySetConfig,_numberOfUnits],_unitsPerGroup,false] call KISKA_fnc_callBack;
     };
@@ -171,7 +117,7 @@ _infantryClasses apply {
         false,
         true,
         false
-    ] call _fn_getPropertyValue;
+    ] call KISKA_fnc_bases_getPropertyValue;
 
     private _canPath = [
         "canPath", 
@@ -180,9 +126,9 @@ _infantryClasses apply {
         true,
         true,
         false
-    ] call _fn_getPropertyValue;
+    ] call KISKA_fnc_bases_getPropertyValue;
 
-    private _enableDynamicSim = ["dynamicSim", _infantrySetConfig, true, true] call _fn_getPropertyValue;
+    private _enableDynamicSim = ["dynamicSim", _infantrySetConfig, true, true] call KISKA_fnc_bases_getPropertyValue;
 
     private _units = [
         _numberOfUnits,
@@ -217,7 +163,7 @@ _infantryClasses apply {
         false,
         true,
         false
-    ] call _fn_getPropertyValue;
+    ] call KISKA_fnc_bases_getPropertyValue;
     if (_onUnitsCreated isNotEqualTo "") then {
         [[_infantrySetConfig,_units],_onUnitsCreated,false] call KISKA_fnc_callBack;
     };

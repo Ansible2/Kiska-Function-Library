@@ -36,59 +36,6 @@ if (isNull _baseConfig) exitWith {
 };
 
 
-/* ----------------------------------------------------------------------------
-    _fn_getPropertyValue
----------------------------------------------------------------------------- */
-private _fn_getPropertyValue = {
-    params [
-        ["_property","",[""]],
-        ["_turretSetConfigPath",configNull,[configNull]],
-        "_default",
-        ["_isBool",false,[false]],
-        ["_canSelectFromSetRoot",true,[false]],
-        ["_canSelectFromBaseRoot",true,[false]]
-    ];
-
-    private _turretSetConditionalValue = [_turretSetConfigPath >> "conditional",_property] call KISKA_fnc_getConditionalConfigValue;
-    if !(isNil "_turretSetConditionalValue") exitWith { _turretSetConditionalValue };
-
-    private _turretSetPropertyConfigPath = _turretSetConfigPath >> _property;
-    if !(isNull _turretSetPropertyConfigPath) exitWith {
-        [_turretSetPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
-    };
-
-    private "_propertyValue";
-    if (_canSelectFromSetRoot) then {
-        private _turretSectionConfigPath = _baseConfig >> "turrets";
-        private _turretSectionConditionalValue = [_turretSectionConfigPath >> "conditional",_property] call KISKA_fnc_getConditionalConfigValue;
-        if !(isNil "_turretSectionConditionalValue") exitWith { _turretSectionConditionalValue };
-
-        private _turretSectionPropertyConfigPath = _turretSectionConfigPath >> _property;
-        if !(isNull _turretSectionPropertyConfigPath) then {
-            _propertyValue = [_turretSectionPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
-        };
-    };
-
-    if (_canSelectFromBaseRoot AND (isNil "_propertyValue")) then {
-        private _baseRootConditionalValue = [_baseConfig >> "conditional",_property] call KISKA_fnc_getConditionalConfigValue;
-        if !(isNil "_baseRootConditionalValue") exitWith { _baseRootConditionalValue };
-
-        private _baseSectionPropertyConfigPath = _baseConfig >> _property;
-        if !(isNull _baseSectionPropertyConfigPath) exitWith {
-            _propertyValue = [_baseSectionPropertyConfigPath,_isBool] call KISKA_fnc_getConfigData
-        };
-    };
-
-    if (isNil "_propertyValue") then {
-        _default
-    } else {
-        _propertyValue
-    };
-};
-
-
-
-
 private _baseMap = [_baseConfig] call KISKA_fnc_bases_getHashmap;
 private _base_turretGunners = _baseMap get "turret gunners";
 private _base_unitList = _baseMap get "unit list";
@@ -112,7 +59,7 @@ _turretClasses apply {
         false,
         false,
         false
-    ] call _fn_getPropertyValue;
+    ] call KISKA_fnc_bases_getPropertyValue;
 
     if (_turretSpawnPositions isEqualType "") then {
         _turretSpawnPositions = [_turretSpawnPositions] call KISKA_fnc_getMissionLayerObjects;
@@ -123,7 +70,7 @@ _turretClasses apply {
     };
 
 
-    private _turretClassNames = ["turretClassNames", _turretConfig,[]] call _fn_getPropertyValue;
+    private _turretClassNames = ["turretClassNames", _turretConfig,[]] call KISKA_fnc_bases_getPropertyValue;
     if (_turretClassNames isEqualType "") then {
         _turretClassNames = [[_turretConfig],_turretClassNames,false] call KISKA_fnc_callBack;
     };
@@ -133,7 +80,7 @@ _turretClasses apply {
     };
 
 
-    private _numberOfTurrets = ["numberOfTurrets", _turretConfig, -1] call _fn_getPropertyValue;
+    private _numberOfTurrets = ["numberOfTurrets", _turretConfig, -1] call KISKA_fnc_bases_getPropertyValue;
     private _totalNumberOfSpawns = count _turretSpawnPositions;
     if (_numberOfTurrets isEqualType "") then {
         _numberOfTurrets = [[_turretConfig,_turretSpawnPositions,_totalNumberOfSpawns],_numberOfTurrets,false] call KISKA_fnc_callBack;
@@ -143,7 +90,7 @@ _turretClasses apply {
     };
 
 
-    private _unitClasses = ["unitClasses", _turretConfig, []] call _fn_getPropertyValue;
+    private _unitClasses = ["unitClasses", _turretConfig, []] call KISKA_fnc_bases_getPropertyValue;
     if (_unitClasses isEqualType "") then {
         _unitClasses = [[_turretConfig],_unitClasses] call KISKA_fnc_callBack;
     };
@@ -185,23 +132,23 @@ _turretClasses apply {
         continue;
     };
 
-    private _side = ["side", _turretConfig, 0] call _fn_getPropertyValue;
+    private _side = ["side", _turretConfig, 0] call KISKA_fnc_bases_getPropertyValue;
     _side = _side call BIS_fnc_sideType;
 
-    private _enableDynamicSim = ["dynamicSim", _turretConfig, true, true] call _fn_getPropertyValue;
-    private _onGunnerCreated = compile (["onGunnerCreated", _turretConfig, ""] call _fn_getPropertyValue);
-    private _onUnitMovedInGunner = compile (["onUnitMovedInGunner", _turretConfig, ""] call _fn_getPropertyValue);
+    private _enableDynamicSim = ["dynamicSim", _turretConfig, true, true] call KISKA_fnc_bases_getPropertyValue;
+    private _onGunnerCreated = compile (["onGunnerCreated", _turretConfig, ""] call KISKA_fnc_bases_getPropertyValue);
+    private _onUnitMovedInGunner = compile (["onUnitMovedInGunner", _turretConfig, ""] call KISKA_fnc_bases_getPropertyValue);
 
-    private _maxElevation = ["maxElevation", _turretConfig, ""] call _fn_getPropertyValue;
+    private _maxElevation = ["maxElevation", _turretConfig, ""] call KISKA_fnc_bases_getPropertyValue;
     if (_maxElevation isEqualType "") then { _maxElevation = compile _maxElevation };
 
-    private _minElevation = ["minElevation", _turretConfig, ""] call _fn_getPropertyValue;
+    private _minElevation = ["minElevation", _turretConfig, ""] call KISKA_fnc_bases_getPropertyValue;
     if (_minElevation isEqualType "") then { _minElevation = compile _minElevation };
 
-    private _maxRotation = ["maxRotation", _turretConfig, ""] call _fn_getPropertyValue;
+    private _maxRotation = ["maxRotation", _turretConfig, ""] call KISKA_fnc_bases_getPropertyValue;
     if (_maxRotation isEqualType "") then { _maxRotation = compile _maxRotation };
 
-    private _minRotation = ["minRotation", _turretConfig, ""] call _fn_getPropertyValue;
+    private _minRotation = ["minRotation", _turretConfig, ""] call KISKA_fnc_bases_getPropertyValue;
     if (_minRotation isEqualType "") then { _minRotation = compile _minRotation };
 
 
