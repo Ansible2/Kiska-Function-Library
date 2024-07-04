@@ -52,7 +52,7 @@ private _landVehicleClasses = configProperties [_baseLandVehiclesConfig >> "sets
 _landVehicleClasses apply {
     private _vehicleSetConfig = _x;
 
-    private _side = ["side", _infantrySetConfig, 0] call KISKA_fnc_bases_getPropertyValue;
+    private _side = ["side", _vehicleSetConfig, 0] call KISKA_fnc_bases_getPropertyValue;
     _side = _side call BIS_fnc_sideType;
 
     private _spawnPositions = [
@@ -76,7 +76,7 @@ _landVehicleClasses apply {
         _classNames = [[_vehicleSetConfig],_classNames,false] call KISKA_fnc_callBack;
     };
     if (_classNames isEqualTo []) then {
-        [["Could not find classNames for turrets in KISKA bases class: ",_vehicleSetConfig],true] call KISKA_fnc_log;
+        [["Could not find classNames for land vehicles in KISKA bases class: ",_vehicleSetConfig],true] call KISKA_fnc_log;
         continue;
     };
 
