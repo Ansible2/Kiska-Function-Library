@@ -41,19 +41,17 @@ _reinforceGroupIds apply {
 
 private _priority = _group getVariable ["KISKA_bases_reinforcePriority",-1];
 private _onEnemyDetected = _group getVariable ["KISKA_bases_reinforceOnEnemyDetected",{}];
-private _preventDefault = false;
-
-if (_onEnemyDetected isNotEqualTo {}) then {
-    _preventDefault = [
+if (_onEnemyDetected isNotEqualTo {}) exitWith {
+    [
         _group,
         _detectedTarget,
         _groupsToRespond,
         _priority
     ] call _onEnemyDetected;
+
+    nil
 };
 
-
-if (_preventDefault) exitWith {};
 
 // don't try to fight air vehicles
 private _targetVehicleALT = (getPosATL _detectedTarget) select 2;
