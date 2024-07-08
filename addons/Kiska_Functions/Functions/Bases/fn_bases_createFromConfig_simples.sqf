@@ -24,15 +24,16 @@ scriptName "KISKA_fnc_bases_createFromConfig_simples";
 
 #define DEFAULT_SIMPLE_OFFSET [0, 0, 0.1]
 
-#define SIMPLE_DATA_INDEX_TYPE 0
-#define SIMPLE_DATA_INDEX_OFFSET 1
-#define SIMPLE_DATA_INDEX_VECTORUP 2
-#define SIMPLE_DATA_INDEX_VECTORDIR 3
-#define SIMPLE_DATA_INDEX_ANIMATIONS 4
-#define SIMPLE_DATA_INDEX_SELECTIONS 5
-#define SIMPLE_DATA_INDEX_CREATED_EVENT 6
-#define SIMPLE_DATA_INDEX_FOLLOW_TERRAIN 7
-#define SIMPLE_DATA_INDEX_SUPERSIMPLE 8
+#define SIMPLE_DATA_INDEX_TYPEISCODE 0
+#define SIMPLE_DATA_INDEX_TYPE 1
+#define SIMPLE_DATA_INDEX_OFFSET 2
+#define SIMPLE_DATA_INDEX_VECTORUP 3
+#define SIMPLE_DATA_INDEX_VECTORDIR 4
+#define SIMPLE_DATA_INDEX_ANIMATIONS 5
+#define SIMPLE_DATA_INDEX_SELECTIONS 6
+#define SIMPLE_DATA_INDEX_CREATED_EVENT 7
+#define SIMPLE_DATA_INDEX_FOLLOW_TERRAIN 8
+#define SIMPLE_DATA_INDEX_SUPERSIMPLE 9
 
 
 params [
@@ -49,8 +50,190 @@ if (isNull _baseConfig) exitWith {
 };
 
 private _baseMap = [_baseConfig] call KISKA_fnc_bases_getHashmap;
-private _simplesConfig = _baseConfig >> "Simples";
-private _simplesConfigClasses = configProperties [_simplesConfig,"isClass _x"];
+private _simplesConfig = _baseConfig >> "simples";
+private _simpleConfigSets = configProperties [_simplesConfig,"isClass _x"];
+
+
+private _simpleObjectClassCache = createHashMap;
+private _fn_getSimpleClassData = {
+    params ["_simpleObjectClass"];
+
+    if (_simpleObjectClass in _simpleObjectClassCache) exitWith {
+        _simpleObjectClassCache get _simpleObjectClass
+    };
+
+    private _dataArray = [];
+
+    private _typeIsCode = [
+        "TYPE_IS_CODE",
+        _simpleObjectClass,
+        false,
+        true,
+        false,
+        false
+    ] call KISKA_fnc_bases_getPropertyValue;
+    _dataArray pushBack _typeIsCode;
+
+    private _type = [
+        "type",
+        _simpleObjectClass,
+        "",
+        false,
+        false,
+        false
+    ] call KISKA_fnc_bases_getPropertyValue;
+    if (_typeIsCode) then {
+        _type = compileFinal _type;
+    };
+    _dataArray pushBack _type;
+
+    private _offset = [
+        "offset",
+        _simpleObjectClass,
+        DEFAULT_SIMPLE_OFFSET,
+        false,
+        false,
+        false
+    ] call KISKA_fnc_bases_getPropertyValue;
+    _dataArray pushBack _offset;
+
+    private _vectorUp = [
+        "vectorUp",
+        _simpleObjectClass,
+        [],
+        false,
+        false,
+        false
+    ] call KISKA_fnc_bases_getPropertyValue;
+    _dataArray pushBack _vectorUp;
+
+    private _vectorDir = [
+        "vectorDir",
+        _simpleObjectClass,
+        [],
+        false,
+        false,
+        false
+    ] call KISKA_fnc_bases_getPropertyValue;
+    _dataArray pushBack _vectorDir;
+
+    private _animations = [
+        "animations",
+        _simpleObjectClass,
+        [],
+        false,
+        false,
+        false
+    ] call KISKA_fnc_bases_getPropertyValue;
+    _dataArray pushBack _animations;
+
+    private _selections = [
+        "selections",
+        _simpleObjectClass,
+        [],
+        false,
+        false,
+        false
+    ] call KISKA_fnc_bases_getPropertyValue;
+    _dataArray pushBack _selections;
+
+    private _onObjectCreated = [
+        "onObjectCreated",
+        _simpleObjectClass,
+        "",
+        false,
+        false,
+        false
+    ] call KISKA_fnc_bases_getPropertyValue;
+    _dataArray pushBack (compileFinal _onObjectCreated);
+
+    private _followTerrain = [
+        "followTerrain",
+        _simpleObjectClass,
+        true,
+        true,
+        false,
+        false
+    ] call KISKA_fnc_bases_getPropertyValue;
+    _dataArray pushBack _followTerrain;
+
+    private _superSimple = [
+        "superSimple",
+        _simpleObjectClass,
+        true,
+        true,
+        false,
+        false
+    ] call KISKA_fnc_bases_getPropertyValue;
+    _dataArray pushBack _superSimple;
+
+    
+    _simpleObjectClassCache set [_simpleObjectClass,_dataArray];
+
+
+    _dataArray
+};
+
+
+
+_simpleConfigSets apply {
+    private _simpleSetRootConfig = _x;
+    private _simpleObjectClassesInSet = configProperties [_simpleSetRootConfig,"isClass _x"];
+
+    if (_simpleObjectClassesInSet isEqualTo []) then {
+        [
+            [
+                "Skipped simple bases class: ",_simpleSetRootConfig,
+                " because no simple classes were found"
+            ]
+        ] call KISKA_fnc_log;
+
+        continue;
+    };
+
+    private _spawnPositions = [
+        "spawnPositions",
+        _simpleSetRootConfig,
+        [],
+        false,
+        false,
+        false
+    ] call KISKA_fnc_bases_getPropertyValue;
+    if (_spawnPositions isEqualType "") then {
+        _spawnPositions = [_spawnPositions] call KISKA_fnc_getMissionLayerObjects;
+    };
+    if (_spawnPositions isEqualTo []) then {
+        [["Could not find spawn positions for KISKA bases class: ",_simpleSetRootConfig],true] call KISKA_fnc_log;
+        continue;
+    };
+
+    _spawnPositions apply {
+        private _objectDirection = 0;
+        if ((count _x) > 3) then {
+            _objectDirection = _x deleteAt 3;
+        };
+        // TODO: get objectType
+        private _simpleObjectClass = selectRandom _simpleObjectClassesInSet;
+        private _simpleClassDataParsed = [_simpleObjectClass] call _fn_getSimpleClassData;
+        private _object = [
+            _objectType,
+            _x,
+            _objectDirection,
+            _objectData select SIMPLE_DATA_INDEX_FOLLOW_TERRAIN,
+            _objectData select SIMPLE_DATA_INDEX_SUPERSIMPLE
+        ] call BIS_fnc_createSimpleObject;
+    };
+};
+
+
+
+_baseMap
+
+
+
+
+
+
 
 /* ----------------------------------------------------------------------------
 
