@@ -191,6 +191,15 @@ _simpleConfigSets apply {
         continue;
     };
 
+    private _simpleClassWeights = _simpleObjectClassesInSet apply {
+        private _weightConfig = _x >> "weight";
+        if (isNull _weightConfig) then {
+            continueWith 1;
+        };
+
+        getNumber _weightConfig
+    };
+
     private _spawnPositions = [
         "spawnPositions",
         _simpleSetRootConfig,
@@ -199,202 +208,41 @@ _simpleConfigSets apply {
         false,
         false
     ] call KISKA_fnc_bases_getPropertyValue;
+
     if (_spawnPositions isEqualType "") then {
-        _spawnPositions = [_spawnPositions] call KISKA_fnc_getMissionLayerObjects;
+        private _layerObjects = [_spawnPositions] call KISKA_fnc_getMissionLayerObjects;
+        _spawnPositions = _layerObjects apply {
+            // TODO: This was posASL previously instead of world, if you see placement issues
+            private _position = getPosWorld _x; 
+            _position pushBack (getDir _x);
+            _position
+        };
     };
+
     if (_spawnPositions isEqualTo []) then {
         [["Could not find spawn positions for KISKA bases class: ",_simpleSetRootConfig],true] call KISKA_fnc_log;
         continue;
     };
 
     _spawnPositions apply {
-        private _objectDirection = 0;
+        private "_objectDirection";
         if ((count _x) > 3) then {
-            _objectDirection = _x deleteAt 3;
-        };
-        // TODO: get objectType
-        private _simpleObjectClass = selectRandom _simpleObjectClassesInSet;
-        private _simpleClassDataParsed = [_simpleObjectClass] call _fn_getSimpleClassData;
-        private _object = [
-            _objectType,
-            _x,
-            _objectDirection,
-            _objectData select SIMPLE_DATA_INDEX_FOLLOW_TERRAIN,
-            _objectData select SIMPLE_DATA_INDEX_SUPERSIMPLE
-        ] call BIS_fnc_createSimpleObject;
-    };
-};
-
-
-
-_baseMap
-
-
-
-
-
-
-
-/* ----------------------------------------------------------------------------
-
-    Helper functions
-
----------------------------------------------------------------------------- */
-private _configDataHashMap = createHashMap;
-private _fn_getSimpleClassData = {
-    params ["_config"];
-
-    private "_dataArray";
-    if (_config in _configDataHashMap) then {
-        _dataArray = _configDataHashMap get _config;
-
-    } else {
-        _dataArray = [];
-        
-        private "_type";
-        private _getTypeFunction = getText(_config >> "getTypeFunction");
-        if (_getTypeFunction isNotEqualTo "") then {
-            _type = [[_config],_getTypeFunction] call KISKA_fnc_callBack;
-        } else {
-            _type = (_config >> "type") call BIS_fnc_getCfgData;
-        };
-        _dataArray pushBack _type;
-
-
-        private _offsetConfig = _config >> "offset";
-        if (isArray _offsetConfig) then {
-            _dataArray pushBack (getArray _offsetConfig);
-        } else {
-            _dataArray pushBack [0,0,0.1];
-        };
-
-        _dataArray pushBack (getArray(_config >> "vectorUp"));
-        _dataArray pushBack (getArray(_config >> "vectorDir"));
-        _dataArray pushBack (getArray(_config >> "animations"));
-        _dataArray pushBack (getArray(_config >> "selections"));
-        _dataArray pushBack (compile (getText(_config >> "onObjectCreated")));
-
-        private _followTerrainConfig = _config >> "followTerrain";
-        if (isNumber _followTerrainConfig) then {
-            _dataArray pushBack ([_followTerrainConfig] call BIS_fnc_getCfgDataBool);
-
-        } else {
-            _dataArray pushBack true;
-
-        };
-
-        private _superSimpleConfig = _config >> "superSimple";
-        if (isNumber _superSimpleConfig) then {
-            _dataArray pushBack ([_superSimpleConfig] call BIS_fnc_getCfgDataBool);
-
-        } else {
-            _dataArray pushBack true;
-
-        };
-
-        _configDataHashMap set [_config,_dataArray];
-    };
-
-
-    _dataArray
-};
-
-private _fn_getTypeConfigs = {
-    params ["_parentConfig"];
-    
-    private _unfilteredTypeConfigs = configProperties [_parentConfig,"isClass _x"];
-    private _filteredTypeConfigs = [];
-
-    _unfilteredTypeConfigs apply {
-        private _filterCondition = getText(_x >> "filterCondition");
-        
-        private _conditionIsNotDefined = _filterCondition isEqualTo "";
-        if (
-            _conditionIsNotDefined OR
-            { [_x] call (compile _filterCondition) }
-        ) then {
-            _filteredTypeConfigs pushBack _x;
-        };
-    };
-
-
-    _filteredTypeConfigs
-};
-
-/* ----------------------------------------------------------------------------
-
-    Create objects
-
----------------------------------------------------------------------------- */
-private [
-    "_objectDirection",
-    "_offset",
-    "_vectorUp",
-    "_vectorDir",
-    "_animations",
-    "_selections",
-    "_onObjectCreated"
-];
-_simplesConfigClasses apply {
-    private _topConfig = _x;
-    private _typeConfigs = [_topConfig] call _fn_getTypeConfigs;
-    if (_typeConfigs isEqualTo []) then {
-        [
-            [
-                "Skipped simple bases class: ",_topConfig,
-                " because no simple classes were found after filtering"
-            ]
-        ] call KISKA_fnc_log;
-
-        continue;
-    };
-
-
-    private _positions = (_topConfig >> "positions") call BIS_fnc_getCfgData;
-    if (_positions isEqualType "") then {
-        private _layerObjects = [_positions] call KISKA_fnc_getMissionLayerObjects;
-        _positions = _layerObjects apply {
-            private _position = getPosASL _x; // TODO: This may need to be positions world?
-            _position pushBack (getDir _x);
-
-            _position
-        };
-    };
-
-    if (_positions isEqualTo []) then {
-        [
-            [
-                "Skipped simple bases class: ",_topConfig,
-                " because no positions were found"
-            ]
-        ] call KISKA_fnc_log;
-
-        continue;
-    };
-
-
-    _positions apply {
-        if (count _x > 3) then {
             _objectDirection = _x deleteAt 3;
         } else {
             _objectDirection = 0;
         };
 
-        private _objectClass = selectRandom _typeConfigs;
-        private _objectData = [_objectClass] call _fn_getSimpleClassData;
-        private _objectType = _objectData select SIMPLE_DATA_INDEX_TYPE;
-        if (_objectType isEqualType []) then {
-            _objectType = [_objectType,""] call KISKA_fnc_selectRandom;
-        };
 
+        private _simpleObjectClass = _simpleObjectClassesInSet selectRandomWeighted _simpleClassWeights;
+        private _simpleClassDataParsed = [_simpleObjectClass] call _fn_getSimpleClassData;
+        // FUTURE: simple objects can be local, ideally we would create these as purely local objects
         private _object = [
-            _objectType,
+            _simpleObjectClass,
             _x,
             _objectDirection,
-            _objectData select SIMPLE_DATA_INDEX_FOLLOW_TERRAIN,
-            _objectData select SIMPLE_DATA_INDEX_SUPERSIMPLE
+            _simpleClassDataParsed select SIMPLE_DATA_INDEX_FOLLOW_TERRAIN,
+            _simpleClassDataParsed select SIMPLE_DATA_INDEX_SUPERSIMPLE
         ] call BIS_fnc_createSimpleObject;
-
 
         _offset = _objectData select SIMPLE_DATA_INDEX_OFFSET;
         if (_offset isNotEqualTo []) then {
