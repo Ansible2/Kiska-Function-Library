@@ -17,49 +17,14 @@ class CfgPatches {
 
 // NOTES:
 // copied from squad_expSounds addon config
-// it seems like all the sounds in the range are being used and they shouldn't be
-    // so dist, close, and med are all played no matter what
-// This is still wip hence why all the volumes are 0.1
-// Ideally the only thing that should need to change are the volumes in these classes
-    // the rest can just be inherited
-    // This will require a bit of effort to balance these based on their original values (see reference to original config)
 
+#define DEFAULT_EXPLOSION_VOLUME 0.7
 
 class cfgSoundShaders
 {
     class Squad_AutoCannon_Close_Explosions
     {
-        samples[]=
-        {
-            
-            {
-                "squad_expSounds\autocannon\sounds\destroyable_ammobox_intial_01.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\autocannon\sounds\destroyable_ammobox_intial_02.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\autocannon\sounds\destroyable_ammobox_intial_03.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\autocannon\sounds\destroyable_ammobox_intial_04.ogg",
-                1
-            }
-        };
-        volume=0.1;
-        range=400;
-        rangeCurve[]=
-        {
-            {0,1},
-            {285,0.75},
-            {400,0}
-        };
+        volume=DEFAULT_EXPLOSION_VOLUME;
     };
     class Squad_AutoCannon_Dist_Explosions
     {
@@ -91,7 +56,7 @@ class cfgSoundShaders
                 1
             }
         };
-        volume=0.1;
+        volume=DEFAULT_EXPLOSION_VOLUME;
         range=2500;
         rangeCurve[]=
         {
@@ -101,39 +66,11 @@ class cfgSoundShaders
             {2500,1}
         };
     };
+    
     class Squad_MedEXP_Close_Explosions
     {
-        samples[]=
-        {
-            
-            {
-                "squad_expSounds\med_explosion_sounds\weapon_cache_exp_close_01.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\med_explosion_sounds\weapon_cache_exp_close_02.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\med_explosion_sounds\weapon_cache_exp_close_03.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\med_explosion_sounds\weapon_cache_exp_close_04.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\med_explosion_sounds\weapon_cache_exp_close_05.ogg",
-                1
-            }
-        };
-        volume=0.1;
-        range=450;
-        rangeCurve="CannonCloseShotCurve";
+        volume=DEFAULT_EXPLOSION_VOLUME;
+        rangeCurve = Smooth1Curve;
     };
     class Squad_MedEXP_Mid_Explosions
     {
@@ -165,11 +102,10 @@ class cfgSoundShaders
                 1
             }
         };
-        volume=0.1;
+        volume=DEFAULT_EXPLOSION_VOLUME;
         range=1800;
         rangeCurve="CannonCloseShotCurve";
     };
-    
     class Squad_MedEXP_Dist_Explosions
     {
         samples[]=
@@ -195,7 +131,7 @@ class cfgSoundShaders
                 1
             }
         };
-        volume=0.1;
+        volume=DEFAULT_EXPLOSION_VOLUME;
         range=4200;
         rangeCurve[]=
         {
@@ -205,39 +141,12 @@ class cfgSoundShaders
             {4200,1}
         };
     };
+
+
     class Squad_Launcher_Close_Explosions
     {
-        samples[]=
-        {
-            
-            {
-                "squad_expSounds\Launcher\sounds\imp_rpgHeat_mid_01.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\Launcher\sounds\imp_rpgHeat_mid_02.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\Launcher\sounds\imp_rpgHeat_mid_03.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\Launcher\sounds\imp_rpgHeat_mid_04.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\Launcher\sounds\imp_rpgHeat_mid_05.ogg",
-                1
-            }
-        };
-        volume=0.1;
-        range=450;
-        rangeCurve="CannonCloseShotCurve";
+        volume=DEFAULT_EXPLOSION_VOLUME;
+        rangeCurve = Smooth1Curve;
     };
     class Squad_Launcher_Mid_Explosions
     {
@@ -269,33 +178,16 @@ class cfgSoundShaders
                 1
             }
         };
-        volume=0.1;
+        volume=DEFAULT_EXPLOSION_VOLUME;
         range=3500;
         rangeCurve="CannonCloseShotCurve";
     };
+
+
     class Squad_SmokeLauncher_Close_Explosions
     {
-        samples[]=
-        {
-            
-            {
-                "squad_expSounds\Smoke\sounds\smoke_veh_exp_close_01.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\Smoke\sounds\smoke_veh_exp_close_02.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\Smoke\sounds\smoke_veh_exp_close_03.ogg",
-                1
-            }
-        };
-        volume=0.1;
-        range=250;
-        rangeCurve="CannonCloseShotCurve";
+        volume=DEFAULT_EXPLOSION_VOLUME;
+        rangeCurve = Smooth1Curve;
     };
     class Squad_SmokeLauncher_Mid_Explosions
     {
@@ -317,33 +209,16 @@ class cfgSoundShaders
                 1
             }
         };
-        volume=0.1;
+        volume=DEFAULT_EXPLOSION_VOLUME;
         range=2000;
         rangeCurve="CannonCloseShotCurve";
     };
+
+
     class Squad_Mines_Close_Explosions
     {
-        samples[]=
-        {
-            
-            {
-                "squad_expSounds\Mines\sounds\mine_exp_close_initial_01.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\Mines\sounds\mine_exp_close_initial_02.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\Mines\sounds\mine_exp_close_initial_03.ogg",
-                1
-            }
-        };
-        volume=0.1;
-        range=110;
-        rangeCurve="CannonCloseShotCurve";
+        volume=DEFAULT_EXPLOSION_VOLUME;
+        rangeCurve = Smooth1Curve;
     };
     class Squad_Mines_Mid_Explosions
     {
@@ -375,38 +250,16 @@ class cfgSoundShaders
                 1
             }
         };
-        volume=0.1;
+        volume=DEFAULT_EXPLOSION_VOLUME;
         range=4500;
         rangeCurve="CannonCloseShotCurve";
     };
+
+
     class Squad_IED_Close_Explosions
     {
-        samples[]=
-        {
-            
-            {
-                "squad_expSounds\ied\sounds\ied_exp_close_initial_01.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\ied\sounds\ied_exp_close_initial_02.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\ied\sounds\ied_exp_close_initial_03.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\ied\sounds\ied_exp_close_initial_04.ogg",
-                1
-            }
-        };
-        volume=0.1;
-        range=350;
-        rangeCurve="CannonCloseShotCurve";
+        volume=DEFAULT_EXPLOSION_VOLUME;
+        rangeCurve=Smooth1Curve;
     };
     class Squad_IED_Mid_Explosions
     {
@@ -433,7 +286,7 @@ class cfgSoundShaders
                 1
             }
         };
-        volume=0.1;
+        volume=DEFAULT_EXPLOSION_VOLUME;
         range=2500;
         rangeCurve="CannonCloseShotCurve";
     };
@@ -467,7 +320,7 @@ class cfgSoundShaders
                 1
             }
         };
-        volume=0.1;
+        volume=DEFAULT_EXPLOSION_VOLUME;
         range=6000;
         rangeCurve[]=
         {
@@ -477,39 +330,12 @@ class cfgSoundShaders
             {6000,1}
         };
     };
+
+
     class Squad_Mortar_Close_Explosions
     {
-        samples[]=
-        {
-            
-            {
-                "squad_expSounds\Mortar\sounds\81mm_mortar_exp_close_initial_01.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\Mortar\sounds\81mm_mortar_exp_close_initial_02.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\Mortar\sounds\81mm_mortar_exp_close_initial_03.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\Mortar\sounds\81mm_mortar_exp_close_initial_04.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\Mortar\sounds\81mm_mortar_exp_close_initial_05.ogg",
-                1
-            }
-        };
-        volume=0.1;
-        range=500;
-        rangeCurve="CannonCloseShotCurve";
+        volume=DEFAULT_EXPLOSION_VOLUME;
+        rangeCurve = Smooth1Curve;
     };
     class Squad_Mortar_Mid_Explosions
     {
@@ -536,7 +362,7 @@ class cfgSoundShaders
                 1
             }
         };
-        volume=0.1;
+        volume=DEFAULT_EXPLOSION_VOLUME;
         range=2500;
         rangeCurve="CannonCloseShotCurve";
     };
@@ -570,7 +396,7 @@ class cfgSoundShaders
                 1
             }
         };
-        volume=0.1;
+        volume=DEFAULT_EXPLOSION_VOLUME;
         range=7000;
         rangeCurve[]=
         {
@@ -580,39 +406,12 @@ class cfgSoundShaders
             {7000,1}
         };
     };
+
+
     class Squad_Artillery_Close_Explosions
     {
-        samples[]=
-        {
-            
-            {
-                "squad_expSounds\Artillery\sounds\artillery_impact_close_01.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\Artillery\sounds\artillery_impact_close_02.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\Artillery\sounds\artillery_impact_close_03.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\Artillery\sounds\artillery_impact_close_04.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\Artillery\sounds\artillery_impact_close_05.ogg",
-                1
-            }
-        };
-        volume=0.1;
-        range=700;
-        rangeCurve="CannonCloseShotCurve";
+        volume=DEFAULT_EXPLOSION_VOLUME;
+        rangeCurve = Smooth1Curve;
     };
     class Squad_Artillery_Mid_Explosions
     {
@@ -639,7 +438,7 @@ class cfgSoundShaders
                 1
             }
         };
-        volume=0.1;
+        volume=DEFAULT_EXPLOSION_VOLUME;
         range=5000;
         rangeCurve="CannonCloseShotCurve";
     };
@@ -668,7 +467,7 @@ class cfgSoundShaders
                 1
             }
         };
-        volume=0.1;
+        volume=DEFAULT_EXPLOSION_VOLUME;
         range=14000;
         rangeCurve[]=
         {
@@ -678,36 +477,12 @@ class cfgSoundShaders
             {14000,1}
         };
     };
+
+
     class Squad_Bombs_Close_Explosions
     {
-        samples[]=
-        {
-            
-            {
-                "squad_expSounds\bombs\sounds\JDAM_impact_close_01.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\bombs\sounds\JDAM_impact_close_02.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\bombs\sounds\JDAM_impact_close_03.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\bombs\sounds\JDAM_impact_close_04.ogg",
-                1
-            }
-            
-        };
-        volume=0.1;
-        range=900;
-        rangeCurve="CannonCloseShotCurve";
-        
+        volume=DEFAULT_EXPLOSION_VOLUME;
+        rangeCurve = Smooth1Curve;
     };
     class Squad_Bombs_Mid_Explosions
     {
@@ -734,106 +509,30 @@ class cfgSoundShaders
                 1
             }
         };
-        volume=0.1;
+        volume=DEFAULT_EXPLOSION_VOLUME;
         range=7500;
         rangeCurve="CannonCloseShotCurve";
     };
+
+
     class Squad_SmallVEC_Close_Explosions
     {
-        samples[]=
-        {
-            
-            {
-                "squad_expSounds\vehicles\small\ammo_boom_exp_close_10.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\vehicles\small\ammo_boom_exp_close_11.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\vehicles\small\ammo_boom_exp_close_12.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\vehicles\small\ammo_boom_exp_close_13.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\vehicles\small\ammo_boom_exp_close_14.ogg",
-                1
-            }
-        };
-        volume=0.1;
-        range=800;
-        rangeCurve="CannonCloseShotCurve";
+        volume=DEFAULT_EXPLOSION_VOLUME;
+        rangeCurve = Smooth1Curve;
     };
+
+
     class Squad_HeloVEC_Close_Explosions
     {
-        samples[]=
-        {
-            
-            {
-                "squad_expSounds\vehicles\helismall\chopper_engine_boom_close_01.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\vehicles\helismall\chopper_engine_boom_close_02.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\vehicles\helismall\chopper_engine_boom_close_03.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\vehicles\helismawll\chopper_engine_boom_close_04.ogg",
-                1
-            }
-        };
-        volume=0.1;
-        range=700;
-        rangeCurve="CannonCloseShotCurve";
+        volume=DEFAULT_EXPLOSION_VOLUME;
+        rangeCurve = Smooth1Curve;
     };
+
+
     class Squad_HeavyVEC_Close_Explosions
     {
-        samples[]=
-        {
-            
-            {
-                "squad_expSounds\vehicles\tank\engine_boom_apc_initial_close_01.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\vehicles\tank\engine_boom_apc_initial_close_02.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\vehicles\tank\engine_boom_apc_initial_close_03.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\vehicles\tank\engine_boom_apc_initial_close_04.ogg",
-                1
-            },
-            
-            {
-                "squad_expSounds\vehicles\tank\engine_boom_apc_initial_close_05.ogg",
-                1
-            }
-        };
-        volume=0.1;
-        range=700;
-        rangeCurve="CannonCloseShotCurve";
+        volume=DEFAULT_EXPLOSION_VOLUME;
+        rangeCurve = Smooth1Curve;
     };
     class Squad_HeavyVEC_Mid_Explosions
     {
@@ -865,7 +564,7 @@ class cfgSoundShaders
                 1
             }
         };
-        volume=0.1;
+        volume=DEFAULT_EXPLOSION_VOLUME;
         range=3500;
         rangeCurve="CannonCloseShotCurve";
     };
@@ -899,10 +598,12 @@ class cfgSoundShaders
                 1
             }
         };
-        volume=0.1;
+        volume=DEFAULT_EXPLOSION_VOLUME;
         range=10000;
         rangeCurve="CannonCloseShotCurve";
     };
+
+
     class Squad_HeavyVEC_Pop_Explosions
     {
         samples[]=
@@ -918,7 +619,7 @@ class cfgSoundShaders
                 1
             }
         };
-        volume=0.1;
+        volume=DEFAULT_EXPLOSION_VOLUME;
         range=1000;
         rangeCurve="CannonCloseShotCurve";
     };
@@ -942,7 +643,7 @@ class cfgSoundShaders
                 1
             }
         };
-        volume=0.1;
+        volume=DEFAULT_EXPLOSION_VOLUME;
         range=750;
         rangeCurve="CannonCloseShotCurve";
     };
@@ -2694,7 +2395,7 @@ class cfgSoundShaders
                 1
             }
         };
-        volume=1;
+        volume=DEFAULT_EXPLOSION_VOLUME;
         range=750;
         rangeCurve="CannonCloseShotCurve";
     };
