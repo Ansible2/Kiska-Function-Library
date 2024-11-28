@@ -6,7 +6,7 @@ Function: KISKA_fnc_callingForSupplyDrop_aircraft
 Description:
     Used as a means of expanding on the "expression" property of the CfgCommunicationMenu.
 
-    This is essentially just another level of abrstraction to be able to more easily reuse
+    This is essentially just another level of abstraction to be able to more easily reuse
      code between similar supports and make things easier to read instead of fitting it all
      in the config.
 
