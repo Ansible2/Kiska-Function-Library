@@ -67,10 +67,21 @@ _agentClasses apply {
     };
     _spawnPositions = [_spawnPositions] call CBA_fnc_shuffle;
 
+    private _numberOfUnits = [
+        "numberOfUnits", 
+        _agentsSetConfig, 
+        -1,
+        false,
+        true,
+        false
+    ] call KISKA_fnc_bases_getPropertyValue;
+    if (_numberOfUnits isEqualType "") then {
+        _numberOfUnits = [[_agentsSetConfig,_spawnPositions],_numberOfUnits,false] call KISKA_fnc_callBack;
+    };
 
     private _numberOfSpawns = count _spawnPositions;
-    if ((_numberOfSpawns < _numberOfAgents) OR (_numberOfAgents isEqualTo -1)) then {
-        _numberOfAgents = _numberOfSpawns;
+    if ((_numberOfSpawns < _numberOfUnits) OR (_numberOfUnits isEqualTo -1)) then {
+        _numberOfUnits = _numberOfSpawns;
     };
 
 
@@ -87,22 +98,7 @@ _agentClasses apply {
     private _side = ["side", _agentsSetConfig, 0] call KISKA_fnc_bases_getPropertyValue;
     _side = _side call BIS_fnc_sideType;
 
-
-    private _numberOfUnits = [
-        "numberOfUnits", 
-        _agentsSetConfig, 
-        -1,
-        false,
-        true,
-        false
-    ] call KISKA_fnc_bases_getPropertyValue;
-    if (_numberOfUnits isEqualType "") then {
-        _numberOfUnits = [[_agentsSetConfig,_spawnPositions],_numberOfUnits,false] call KISKA_fnc_callBack;
-    };
-
-
     private _enableDynamicSim = ["dynamicSim", _agentsSetConfig, true, true] call KISKA_fnc_bases_getPropertyValue;
-
 
     private _agents = [];
     for "_i" from 0 to (_numberOfUnits - 1) do {
