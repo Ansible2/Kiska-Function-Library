@@ -237,7 +237,7 @@ _simpleConfigSets apply {
         private _simpleClassDataParsed = [_simpleObjectClass] call _fn_getSimpleClassData;
         // FUTURE: simple objects can be local, ideally we would create these as purely local objects
         private _object = [
-            _simpleObjectClass,
+            _simpleClassDataParsed select SIMPLE_DATA_INDEX_TYPE,
             _x,
             _objectDirection,
             _simpleClassDataParsed select SIMPLE_DATA_INDEX_FOLLOW_TERRAIN,
