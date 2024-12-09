@@ -244,29 +244,29 @@ _simpleConfigSets apply {
             _simpleClassDataParsed select SIMPLE_DATA_INDEX_SUPERSIMPLE
         ] call BIS_fnc_createSimpleObject;
 
-        _offset = _objectData select SIMPLE_DATA_INDEX_OFFSET;
+        _offset = _simpleClassDataParsed select SIMPLE_DATA_INDEX_OFFSET;
         if (_offset isNotEqualTo []) then {
             _object setPosASL (_x vectorAdd _offset);
         };
 
-        _vectorDir = _objectData select SIMPLE_DATA_INDEX_VECTORDIR;
+        _vectorDir = _simpleClassDataParsed select SIMPLE_DATA_INDEX_VECTORDIR;
         if (_vectorDir isNotEqualTo []) then {
             _object setVectorDir _vectorDir;
         };
 
-        _vectorUp = _objectData select SIMPLE_DATA_INDEX_VECTORUP;
+        _vectorUp = _simpleClassDataParsed select SIMPLE_DATA_INDEX_VECTORUP;
         if (_vectorUp isNotEqualTo []) then {
             _object setVectorUp _vectorUp;
         };
 
-        (_objectData select SIMPLE_DATA_INDEX_ANIMATIONS) apply {
+        (_simpleClassDataParsed select SIMPLE_DATA_INDEX_ANIMATIONS) apply {
             _object animate [_x select 0, _x select 1, true];
         };
-        (_objectData select SIMPLE_DATA_INDEX_SELECTIONS) apply {
+        (_simpleClassDataParsed select SIMPLE_DATA_INDEX_SELECTIONS) apply {
             _object hideSelection [_x select 0, (_x select 1) > 0];
         };
 
-        _onObjectCreated = _objectData select SIMPLE_DATA_INDEX_CREATED_EVENT;
+        _onObjectCreated = _simpleClassDataParsed select SIMPLE_DATA_INDEX_CREATED_EVENT;
         if (_onObjectCreated isNotEqualTo {}) then {
             [
                 _onObjectCreated,
