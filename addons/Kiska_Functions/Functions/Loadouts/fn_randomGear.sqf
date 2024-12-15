@@ -87,8 +87,9 @@ removeGoggles _unit;
 
 private _primaryWeaponGearSelector = [
 	_primaryWeapons, 
-	{ 
-		_selectedGear params [
+	{
+        params ["_gear","_unit"];
+		_gear params [
 			"_weapon",
 			["_weaponItems",[]]
 		];
@@ -101,7 +102,8 @@ private _primaryWeaponGearSelector = [
 private _handgunGearSelector = [
 	_handguns, 
 	{ 
-		_selectedGear params [
+        params ["_gear","_unit"];
+		_gear params [
 			"_weapon",
 			["_weaponItems",[]]
 		];
@@ -114,7 +116,8 @@ private _handgunGearSelector = [
 private _secondaryWeaponGearSelector = [
 	_secondaryWeapons, 
 	{ 
-		_selectedGear params [
+        params ["_gear","_unit"];
+		_gear params [
 			"_weapon",
 			["_weaponItems",[]]
 		];
@@ -125,11 +128,11 @@ private _secondaryWeaponGearSelector = [
 ];
 
 [
-	[_uniforms, { _unit forceAddUniform _selectedGear }],
-	[_headgear, { _unit addHeadgear _selectedGear; }],
-	[_facewear, { _unit addGoggles _selectedGear; }],
-	[_vests, { _unit addVest _selectedGear; }],
-	[_backpacks, { _unit addBackpack _selectedGear; }],
+	[_uniforms, { params ["_gear","_unit"]; _unit forceAddUniform _gear }],
+	[_headgear, { params ["_gear","_unit"]; _unit addHeadgear _gear; }],
+	[_facewear, { params ["_gear","_unit"]; _unit addGoggles _gear; }],
+	[_vests, { params ["_gear","_unit"]; _unit addVest _gear; }],
+	[_backpacks, { params ["_gear","_unit"]; _unit addBackpack _gear; }],
 	_primaryWeaponGearSelector,
 	_handgunGearSelector,
 	_secondaryWeaponGearSelector
@@ -142,8 +145,8 @@ private _secondaryWeaponGearSelector = [
 
 	if (_availableGear isEqualTo []) then { continue };
 	
-	private _selectedGear = [_availableGear,_valueType] call KISKA_fnc_selectRandom;
-	[_unit,_selectedGear] call _fn_addGear;
+    private _randomlySelectedGear = [_availableGear,_valueType] call KISKA_fnc_selectRandom;
+	[_randomlySelectedGear, _unit] call _fn_addGear;
 };
 
 nil
