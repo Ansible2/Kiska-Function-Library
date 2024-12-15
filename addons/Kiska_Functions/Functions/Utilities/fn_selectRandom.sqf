@@ -65,7 +65,12 @@ if (isNil "_valueType") exitWith {
     selectRandom _array;
 };
 
-private _isWeightedArray_syntaxOne = (_array isEqualTypeParams [[],[]]) AND ((count _array) isEqualTo 2);
+private _isWeightedArray_syntaxOne = (_array isEqualTypeParams [[],[]]) AND 
+    ((count _array) isEqualTo 2) AND 
+    { 
+        (WEIGHTS isEqualTypeParams [123]) AND 
+        (VALUES_TO_SELECT isEqualTypeParams [_valueType])
+    };
 if (_isWeightedArray_syntaxOne) exitWith {
    VALUES_TO_SELECT selectRandomWeighted WEIGHTS;
 };
