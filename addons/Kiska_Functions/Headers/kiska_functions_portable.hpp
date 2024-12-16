@@ -282,6 +282,8 @@ class Loadouts
 	{};
 	class randomGear
 	{};
+	class randomGearFromConfig
+	{};
 	class randomLoadout
 	{};
 	class savePlayerLoadout
