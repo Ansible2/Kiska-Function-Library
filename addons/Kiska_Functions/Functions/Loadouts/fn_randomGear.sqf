@@ -47,6 +47,20 @@ Examples:
         ] call KISKA_fnc_randomGear;
     (end)
 
+    (begin example)
+        // Weighted array 
+        private _uniforms = [
+            "U_B_CombatUniform_mcam_vest", 0.5,
+            "U_B_CombatUniform_mcam_tshirt", 0.25,
+            "U_B_CombatUniform_mcam", 0.25
+        ];
+
+        [
+            _units,
+            _uniforms
+        ] call KISKA_fnc_randomGear;
+    (end)
+
 Author:
     Ansible2
 ---------------------------------------------------------------------------- */
