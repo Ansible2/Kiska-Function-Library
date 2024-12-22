@@ -24,39 +24,42 @@ scriptName "KISKA_fnc_traitManager_take_buttonClickEvent";
 
 #define DEFAULT_ERROR_MESSAGE "You do not have permission for this trait"
 
-private _selectedIndex = lbCurSel (GET_TM_POOL_LIST_CTRL);
-if (_selectedIndex isNotEqualTo -1) then {
+private _control = GET_TM_POOL_LIST_CTRL;
+private _selectedIndex = lbCurSel _control;
+if (_selectedIndex isEqualTo -1) exitWith {
+    [["Could not find selected index on control",_control],true] call KISKA_fnc_log;
+    nil
+};
 
-    private _trait = toUpperANSI (TM_POOL_GVAR select _selectedIndex);
-    if !(player getUnitTrait _trait) then {
-        // check condition to take
-        private _config = [["KISKA_cfgTraits",_trait]] call KISKA_fnc_findConfigAny;
-        private _condition = "";
-        if !(isNull _config) then {
-           _condition = getText(_config >> "managerCondition");
-        };
+private _trait = toUpperANSI (TM_POOL_GVAR select _selectedIndex);
+private _traitValue = player getUnitTrait _trait;
+if (_traitValue) exitWith {
+    ["You already have this trait"] call KISKA_fnc_errorNotification;
+    nil
+};
 
-        // add to player and update list
-        if (_condition isEqualTo "" OR {[_trait] call (compile _condition)}) then {
-            private _isCustomTrait = !(_trait in RESERVED_TRAITS);
-            player setUnitTrait [_trait,true,_isCustomTrait];
+// check condition to take
+private _config = [["KISKA_cfgTraits",_trait]] call KISKA_fnc_findConfigAny;
+private _condition = "";
+if !(isNull _config) then {
+    _condition = getText(_config >> "managerCondition");
+};
 
-            [_selectedIndex] call KISKA_fnc_traitManager_removeFromPool_global;
+// add to player and update list
+if (_condition isEqualTo "" OR {[_trait] call (compile _condition)}) then {
+    private _isCustomTrait = !(_trait in RESERVED_TRAITS);
+    player setUnitTrait [_trait,true,_isCustomTrait];
 
-        } else {
-            private _message = getText(_config >> "errorMessage");
-            if (_message isEqualTo "") then {
-                _message = DEFAULT_ERROR_MESSAGE;
-            };
+    [_selectedIndex] call KISKA_fnc_traitManager_removeFromPool_global;
 
-            [_message] call KISKA_fnc_errorNotification;
-
-        };
-        
-    } else {
-        ["You already have this trait"] call KISKA_fnc_errorNotification;
-
+} else {
+    private _message = getText(_config >> "errorMessage");
+    if (_message isEqualTo "") then {
+        _message = DEFAULT_ERROR_MESSAGE;
     };
+
+    [_message] call KISKA_fnc_errorNotification;
+
 };
 
 
