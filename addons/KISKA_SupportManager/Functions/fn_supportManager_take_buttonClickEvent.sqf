@@ -31,7 +31,7 @@ if (_hasMaxSupports) then {
 
 } else {
     private _selectedIndex = lbCurSel (GET_SM_POOL_LIST_CTRL);
-    if (_selectedIndex isNotEqualTo -1) exitWith {};
+    if (_selectedIndex isEqualTo -1) exitWith {};
 
     private "_supportClass";
     private _useCount = -1;
