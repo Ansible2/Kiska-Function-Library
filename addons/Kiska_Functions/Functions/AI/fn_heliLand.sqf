@@ -104,7 +104,8 @@ if (_landMode isNotEqualTo "LAND") then {
     _afterLandCode,
     _keepEngineOn,
     _consideredLandedHeightOffset,
-    _helipadToLandAt
+    _helipadToLandAt,
+    _createHelipad
 ] spawn {
     params [
         "_aircraft",
@@ -113,7 +114,8 @@ if (_landMode isNotEqualTo "LAND") then {
         "_afterLandCode",
         "_keepEngineOn",
         "_consideredLandedHeightOffset",
-        "_helipadToLandAt"
+        "_helipadToLandAt",
+        "_createdHelipad"
     ];
 
     [_aircraft,_landingPosition] remoteExecCall ["move",_aircraft];
@@ -164,6 +166,10 @@ if (_landMode isNotEqualTo "LAND") then {
 
     [[_aircraft],_afterLandCode] call KISKA_fnc_callBack;
     [_aircraft,LAND_EVENT,[_aircraft]] call BIS_fnc_callScriptedEventHandler;
+
+    if (_createdHelipad) then {
+        deleteVehicle _helipadToLandAt;
+    };
 };
 
 
