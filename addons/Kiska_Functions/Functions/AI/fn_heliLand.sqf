@@ -8,11 +8,16 @@ Parameters:
     0: _aircraft <OBJECT> - The helicopter
     1: _landingPosition <ARRAY or OBJECT> - Where to land. If object, position ATL is used.
     2: _landMode <STRING> - Options are `"LAND"`, `"GET IN"`, and `"GET OUT"`
-    3: _createHelipad <BOOL> - If true, and invisible helipad will be created. Helipads strongly encourage where a unit will land.
+    3: _landingDirection <NUMBER> - The direction the vehicle should face when landed.
+        `-1` means that there shouldn't be any change to the direction. Be aware that this 
+        will have to `setDir` of the helipad.
     4: _afterLandCode <CODE, STRING, or ARRAY> - Code to `spawn` after the helicopter has landed. See `KISKA_fnc_callBack`.
         
         Parameters:
         - 0: <OBJECT> - The helicopter
+
+    5: _createHelipad <BOOL> - If true, and invisible helipad will be created. Helipads strongly encourage where a unit will land.
+        
 
 Returns:
     <BOOL> - True if helicopter can attempt, false if problem
@@ -37,8 +42,9 @@ params [
     ["_aircraft",objNull,[objNull]],
     ["_landingPosition",[],[[],objNull]],
     ["_landMode","LAND",[""]],
-    ["_createHelipad",true,[true]],
-    ["_afterLandCode",{},[{},"",[]]]
+    ["_landingDirection",-1,[123]],
+    ["_afterLandCode",{},[{},"",[]]],
+    ["_createHelipad",true,[true]]
 ];
 
 if (isNull _aircraft) exitWith {
@@ -66,6 +72,10 @@ if (_landingPosition isEqualType objNull) then {
 
 if (_createHelipad) then {
     _helipadToLandAt = INVISIBLE_PAD_TYPE createVehicle _landingPosition;
+};
+
+if (_landingDirection isNotEqualTo -1) then {
+    _helipadToLandAt setDir _landingDirection;
 };
 
 private _keepEngineOn = false;
