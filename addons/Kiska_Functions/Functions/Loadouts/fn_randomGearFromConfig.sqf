@@ -28,7 +28,7 @@ Description:
 			facewear[] = {
 				"", 1, // empty
 				"G_Shades_Black", 0.5,
-				"G_Tactical_Clear", 0.75
+				"G_Tactical_Clear", 0.75,
 				"G_Tactical_Black", 2
 			};
         };
@@ -36,8 +36,9 @@ Description:
 
 Parameters:
     0: _units : <OBJECT or OBJECT[]> - The unit or units to randomize the gear of.
-    1: _gearConfig : <STRING> - A config that contains weighted or unweighted arrays
-        that match the inputs of `KISKA_fnc_randomGear` ("uniforms", "headgear", etc.)
+    1: _gearConfig : <CONFIG or STRING> - A config that contains weighted or unweighted arrays
+        that match the inputs of `KISKA_fnc_randomGear` ("uniforms", "headgear", etc.).
+        If a STRING, it is assumed it is the className that exists in `missionConfigFile >> "KISKA_RandomGear"`
 
 Returns:
     NOTHING
@@ -53,7 +54,7 @@ Examples:
     (begin example)
         [
             [unit_1, unit_2],
-            missionConfigFile >> "MyRandomGearConfigClass"
+            "MyRandomGearConfigClass"
         ] call KISKA_fnc_randomGearFromConfig;
     (end)
 
@@ -64,13 +65,17 @@ scriptName "KISKA_fnc_randomGearFromConfig";
 
 params [
     ["_units",[],[objNull,[]]],
-    ["_gearConfig",configNull,[configNull]]
+    ["_gearConfig",configNull,["",configNull]]
 ];
 
+if (_gearConfig isEqualType "") then {
+    _gearConfig = missionConfigFile >> "KISKA_RandomGear" >> _gearConfig;
+};
 if (isNull _gearConfig) exitWith {
     ["Null _gearConfig passed",true] call KISKA_fnc_log;
     nil
 };
+
 
 [
 	_units,
