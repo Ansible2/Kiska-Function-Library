@@ -15,8 +15,6 @@ Parameters:
         
         Parameters:
         - 0: <OBJECT> - The helicopter
-
-    5: _createHelipad <BOOL> - If true, and invisible helipad will be created. Helipads strongly encourage where a unit will land.
         
 
 Returns:
@@ -33,7 +31,6 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_heliLand";
 
-#define HELIPAD_BASE "Helipad_base_F"
 #define INVISIBLE_PAD_TYPE "Land_HelipadEmpty_F"
 #define LAND_EVENT "KISKA_landedEvent"
 #define HIGH_LANDED_THRESHOLD 3
@@ -43,8 +40,7 @@ params [
     ["_landingPosition",[],[[],objNull]],
     ["_landMode","LAND",[""]],
     ["_landingDirection",-1,[123]],
-    ["_afterLandCode",{},[{},"",[]]],
-    ["_createHelipad",true,[true]]
+    ["_afterLandCode",{},[{},"",[]]]
 ];
 
 if (isNull _aircraft) exitWith {
@@ -60,20 +56,11 @@ if (!(_aircraft isKindOf "Helicopter") AND {!(_aircraft isKindOf "VTOL_Base_F")}
 [group (currentPilot _aircraft),true] call KISKA_fnc_ACEX_setHCTransfer;
 
 // move command only supports positions, not objects
-private "_helipadToLandAt";
 if (_landingPosition isEqualType objNull) then {
-    private _lzIsHelipad = _createHelipad AND {_landingPosition isKindOf HELIPAD_BASE};
-    if (_lzIsHelipad) then {
-        _helipadToLandAt = _landingPosition;
-        _createHelipad = false;
-    };
     _landingPosition = getPosATL _landingPosition;
 };
 
-if (_createHelipad) then {
-    _helipadToLandAt = INVISIBLE_PAD_TYPE createVehicle _landingPosition;
-};
-
+private _helipadToLandAt = INVISIBLE_PAD_TYPE createVehicle _landingPosition;
 if (_landingDirection isNotEqualTo -1) then {
     _helipadToLandAt setDir _landingDirection;
 };
@@ -104,8 +91,7 @@ if (_landMode isNotEqualTo "LAND") then {
     _afterLandCode,
     _keepEngineOn,
     _consideredLandedHeightOffset,
-    _helipadToLandAt,
-    _createHelipad
+    _helipadToLandAt
 ] spawn {
     params [
         "_aircraft",
@@ -114,8 +100,7 @@ if (_landMode isNotEqualTo "LAND") then {
         "_afterLandCode",
         "_keepEngineOn",
         "_consideredLandedHeightOffset",
-        "_helipadToLandAt",
-        "_createdHelipad"
+        "_helipadToLandAt"
     ];
 
     [_aircraft,_landingPosition] remoteExecCall ["move",_aircraft];
@@ -167,9 +152,7 @@ if (_landMode isNotEqualTo "LAND") then {
     [[_aircraft],_afterLandCode] call KISKA_fnc_callBack;
     [_aircraft,LAND_EVENT,[_aircraft]] call BIS_fnc_callScriptedEventHandler;
 
-    if (_createdHelipad) then {
-        deleteVehicle _helipadToLandAt;
-    };
+    deleteVehicle _helipadToLandAt;
 };
 
 
