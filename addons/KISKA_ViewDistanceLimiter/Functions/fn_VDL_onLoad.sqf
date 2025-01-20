@@ -42,7 +42,7 @@ _display displayAddEventHandler ["Unload", {
     System On Check box
 ---------------------------------------------------------------------------- */
 private _systemOnCheckox = _display displayCtrl VDL_SYSTEM_ON_CHECKBOX_IDC;
-if (missionNamespace getVariable ["KISKA_VDL_isRunning",false]) then {
+if (localNamespace getVariable ["KISKA_VDL_isRunning",false]) then {
     _systemOnCheckox cbSetChecked true;
 };
 
@@ -50,8 +50,8 @@ _systemOnCheckox ctrlAddEventHandler ["CheckedChanged",{
     params ["_control", "_checked"];
     _checked = [false,true] select _checked;
 
-    missionNamespace setVariable ["KISKA_VDL_run",_checked];
-    private _vdlIsRunning = missionNamespace getVariable ["KISKA_VDL_isRunning",false];
+    localNamespace setVariable ["KISKA_VDL_run",_checked];
+    private _vdlIsRunning = localNamespace getVariable ["KISKA_VDL_isRunning",false];
     if (_checked AND !_vdlIsRunning) then {
         #define GET_SLIDER_POS_FOR_CTRLGRP(idc) sliderPosition (((ctrlParent _control) displayCtrl idc) controlsGroupCtrl VDL_SLIDER_IDC)
         [
@@ -71,14 +71,14 @@ _systemOnCheckox ctrlAddEventHandler ["CheckedChanged",{
     Tie View Distance Check box
 ---------------------------------------------------------------------------- */
 private _tieViewDist_checkBox = _display displayCtrl VDL_TIED_DISTANCE_CHECKBOX_IDC;
-if (missionNamespace getVariable ["KISKA_VDL_tiedViewDistance",false]) then {
+if (localNamespace getVariable ["KISKA_VDL_tiedViewDistance",false]) then {
     _tieViewDist_checkBox cbSetChecked true;
 };
 
 _tieViewDist_checkBox ctrlAddEventHandler ["CheckedChanged",{
     params ["", "_checked"];
     _checked = [false,true] select _checked;
-    missionNamespace setVariable ["KISKA_VDL_tiedViewDistance",_checked];
+    localNamespace setVariable ["KISKA_VDL_tiedViewDistance",_checked];
 }];
 
 
@@ -103,7 +103,7 @@ _tieViewDist_checkBox ctrlAddEventHandler ["CheckedChanged",{
         private _varName = _x getVariable [CTRL_GRP_VAR_STR,""];
         private _value = sliderPosition _slider_ctrl;
         profileNamespace setVariable [_varName,_value];
-        missionNamespace setVariable [_varName,_value];
+        localNamespace setVariable [_varName,_value];
     };
 
     saveProfileNamespace;
@@ -124,7 +124,8 @@ private _controlGroups = [];
     [VDL_INCRIMENT_CTRL_GRP_IDC, "KISKA_VDL_increment"]
 ] apply {
     private _control = _display displayCtrl (_x select 0);
-    [_control,_x select 1] call KISKA_fnc_VDL_controlsGroup_onLoad;
+    private _settingVariable = _x select 1;
+    [_control,_settingVariable] call KISKA_fnc_VDL_controlsGroup_onLoad;
     _controlGroups pushBack _control;
 };
 

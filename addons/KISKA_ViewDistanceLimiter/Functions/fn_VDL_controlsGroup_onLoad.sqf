@@ -63,7 +63,7 @@ _setButton_ctrl ctrlAddEventHandler ["ButtonClick",{
     private _value = sliderPosition _slider_ctrl;
 
     profileNamespace setVariable [_varName,_value];
-    missionNamespace setVariable [_varName,_value];
+    localNamespace setVariable [_varName,_value];
 
     saveProfileNamespace;
     ["Saved changes"] call KISKA_fnc_notification;
@@ -98,9 +98,17 @@ _editBox_ctrl ctrlAddEventHandler ["KeyUp",{
 
 
 
-private _defaultValue = getNumber(configFile >> "KISKA_viewDistanceLimiter_dialog" >> "controls" >> ctrlClassName _controlsGroup >> "controls" >> "settingSlider" >> "sliderPosition");
+private _defaultValue = getNumber(
+    configFile >> 
+    "KISKA_viewDistanceLimiter_dialog" >> 
+    "controls" >> 
+    ctrlClassName _controlsGroup >> 
+    "controls" >> 
+    "settingSlider" >> 
+    "sliderPosition"
+);
 private _profileValue = profileNamespace getVariable [_varName,_defaultValue];
-private _currentValue = missionNamespace getVariable [_varName,_profileValue];
+private _currentValue = localNamespace getVariable [_varName,_profileValue];
 
 _editBox_ctrl ctrlSetText (str _currentValue);
 _slider_ctrl sliderSetPosition _currentValue;
