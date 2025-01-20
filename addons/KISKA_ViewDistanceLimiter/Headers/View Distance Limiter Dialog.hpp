@@ -3,10 +3,11 @@
 #include "\KISKA_Functions\Headers\GUI\KISKA GUI Colors.hpp"
 #include "\KISKA_Functions\Headers\GUI\KISKA GUI Styles.hpp"
 
+class KISKA_RscCloseButton;
+
 class ctrlButton;
 class RscXSliderH;
 class RscText;
-class KISKA_RscCloseButton;
 class RscCheckBox;
 class RscControlsGroupNoScrollbars;
 class RscEdit;
