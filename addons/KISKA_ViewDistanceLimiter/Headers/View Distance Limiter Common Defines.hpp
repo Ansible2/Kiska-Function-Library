@@ -2,25 +2,10 @@
 #define GET_VDL_GLOBAL_IS_RUNNING missionNamespace getVariable [VDL_GLOBAL_IS_RUNNING_STR,false]
 #define VDL_GLOBAL_RUN_STR "KISKA_VDL_run"
 
+// TODO: consolidate and remove vars
 
 #define GET_PROFILE_VAR(name,default) profileNamespace getVariable [name,default]
 #define GET_MISSION_VAR(name,default) missionNamespace getVariable [name,default]
-//#define SET_PROFILE_VAR(name,value) profileNamespace setVariable [name,value]
-
-#define VDL_DISPLAY_VAR_STR "KISKA_VDL_display"
-#define GET_VDL_DISPLAY localNamespace getVariable [VDL_DISPLAY_VAR_STR,displayNull]
-
-#define VDL_CONTROL_GRPS_VAR_STR "KISKA_VDL_controlGroups"
-
-
-#define VDL_GLOBAL_TIED_VIEW_DIST_VAR_STR "KISKA_VDL_tiedViewDistance"
-#define GET_VDL_GLOBAL_TIED_VIEW_DIST_VAR   GET_MISSION_VAR(VDL_GLOBAL_TIED_VIEW_DIST_VAR_STR,false)
-
-#define VDL_FPS_VAR_STR "KISKA_VDL_fps"
-#define GET_VDL_FPS_VAR         GET_MISSION_VAR(VDL_FPS_VAR_STR,60)
-
-#define VDL_FREQUENCY_VAR_STR "KISKA_VDL_freq"
-#define GET_VDL_FREQUENCY_VAR   GET_MISSION_VAR(VDL_FREQUENCY_VAR_STR,1)
 
 #define VDL_MIN_DIST_VAR_STR "KISKA_VDL_minDist"
 #define GET_VDL_MIN_DIST_VAR    GET_MISSION_VAR(VDL_MIN_DIST_VAR_STR,600)

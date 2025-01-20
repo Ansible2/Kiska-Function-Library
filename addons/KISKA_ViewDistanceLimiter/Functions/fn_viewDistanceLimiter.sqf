@@ -40,8 +40,8 @@ if (!canSuspend) exitWith {
 };
 
 params [
-    ["_targetFPS",missionNamespace getVariable [VDL_FPS_VAR_STR,60],[123]],
-    ["_checkFreq",missionNamespace getVariable [VDL_FREQUENCY_VAR_STR,0.5],[123]],
+    ["_targetFPS",missionNamespace getVariable ["KISKA_VDL_fps",60],[123]],
+    ["_checkFreq",missionNamespace getVariable ["KISKA_VDL_freq",0.5],[123]],
     ["_minObjectDistance",missionNamespace getVariable [VDL_MIN_DIST_VAR_STR,500],[123]],
     ["_maxObjectDistance",missionNamespace getVariable [VDL_MAX_DIST_VAR_STR,1200],[123]],
     ["_increment",missionNamespace getVariable [VDL_INCREMENT_VAR_STR,25],[123]],
@@ -50,8 +50,8 @@ params [
 
 
 missionNamespace setVariable [VDL_GLOBAL_RUN_STR,true];
-missionNamespace setVariable [VDL_FPS_VAR_STR,_targetFPS];
-missionNamespace setVariable [VDL_FREQUENCY_VAR_STR,_checkFreq];
+missionNamespace setVariable ["KISKA_VDL_fps",_targetFPS];
+missionNamespace setVariable ["KISKA_VDL_freq",_checkFreq];
 if (_minObjectDistance > _maxObjectDistance) then {
     _minObjectDistance = _maxObjectDistance;
 };
@@ -64,8 +64,9 @@ if (_viewDistance < _maxObjectDistance) then {
 missionNamespace setVariable [VDL_VIEW_DIST_VAR_STR,_viewDistance];
 
 
-private "_objectViewDistance";
 private _fn_moveUp = {
+    import "_objectViewDistance";
+
     if (_objectViewDistance < (GET_VDL_MAX_DIST_VAR)) exitWith {
         setObjectViewDistance (_objectViewDistance + (GET_VDL_INCREMENT_VAR));
     };
@@ -74,6 +75,8 @@ private _fn_moveUp = {
     };
 };
 private _fn_moveDown = {
+    import "_objectViewDistance";
+
     if (_objectViewDistance > (GET_VDL_MIN_DIST_VAR)) exitWith {
         setObjectViewDistance (_objectViewDistance - (GET_VDL_INCREMENT_VAR));
     };
@@ -84,25 +87,30 @@ private _fn_moveDown = {
 
 
 missionNamespace setVariable [VDL_GLOBAL_IS_RUNNING_STR,true];
-while {sleep (GET_VDL_FREQUENCY_VAR); GET_VDL_GLOBAL_IS_RUNNING} do {
-    _objectViewDistance = getObjectViewDistance select 0;
-    if (!(GET_VDL_GLOBAL_TIED_VIEW_DIST_VAR) AND ((GET_VDL_VIEW_DIST_VAR) isNotEqualTo viewDistance)) then {
+while {sleep (missionNamespace getVariable ["KISKA_VDL_freq",1]); GET_VDL_GLOBAL_IS_RUNNING} do {
+    private _objectViewDistance = getObjectViewDistance select 0;
+    private _isViewDistanceTied = missionNamespace getVariable ["KISKA_VDL_tiedViewDistance",false];
+    if (
+        (!_isViewDistanceTied) AND 
+        ((GET_VDL_VIEW_DIST_VAR) isNotEqualTo viewDistance)
+    ) then {
         setViewDistance (GET_VDL_VIEW_DIST_VAR);
     };
 
     // is fps at target?
-    if (diag_fps < (GET_VDL_FPS_VAR)) then {
-        // not at target fps
+    if (diag_fps < (missionNamespace getVariable ["KISKA_VDL_fps",60])) then {
         call _fn_moveDown;
     } else {
-        // at target fps
         call _fn_moveUp;
     };
 
-    if (GET_VDL_GLOBAL_TIED_VIEW_DIST_VAR) then {
-        [{
-            setViewDistance (getObjectViewDistance select 0);
-        }] call CBA_fnc_execNextFrame;
+    if (_isViewDistanceTied) then {
+        [
+            {
+                private _objectViewDistance = getObjectViewDistance select 0;
+                setViewDistance _objectViewDistance;
+            }
+        ] call CBA_fnc_execNextFrame;
     };
 };
 

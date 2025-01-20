@@ -31,10 +31,10 @@ params ["_display"];
 /* ----------------------------------------------------------------------------
     unload event
 ---------------------------------------------------------------------------- */
-localNamespace setVariable [VDL_DISPLAY_VAR_STR,_display];
+localNamespace setVariable ["KISKA_VDL_display",_display];
 _display displayAddEventHandler ["Unload", {
     //params ["_display"];
-    localNamespace setVariable [VDL_DISPLAY_VAR_STR,nil];
+    localNamespace setVariable ["KISKA_VDL_display",nil];
 }];
 
 
@@ -70,14 +70,14 @@ _systemOnCheckox ctrlAddEventHandler ["CheckedChanged",{
     Tie View Distance Check box
 ---------------------------------------------------------------------------- */
 private _tieViewDist_checkBox = _display displayCtrl VDL_TIED_DISTANCE_CHECKBOX_IDC;
-if (GET_VDL_GLOBAL_TIED_VIEW_DIST_VAR) then {
+if (missionNamespace getVariable ["KISKA_VDL_tiedViewDistance",false]) then {
     _tieViewDist_checkBox cbSetChecked true;
 };
 
 _tieViewDist_checkBox ctrlAddEventHandler ["CheckedChanged",{
     params ["", "_checked"];
     _checked = [false,true] select _checked;
-    missionNamespace setVariable [VDL_GLOBAL_TIED_VIEW_DIST_VAR_STR,_checked];
+    missionNamespace setVariable ["KISKA_VDL_tiedViewDistance",_checked];
 }];
 
 
@@ -85,7 +85,7 @@ _tieViewDist_checkBox ctrlAddEventHandler ["CheckedChanged",{
     Close button
 ---------------------------------------------------------------------------- */
 (_display displayCtrl VDL_CLOSE_BUTTON_IDC) ctrlAddEventHandler ["ButtonClick",{
-    (GET_VDL_DISPLAY) closeDisplay 2;
+    (localNamespace getVariable ["KISKA_VDL_display",displayNull]) closeDisplay 2;
 }];
 
 
@@ -95,8 +95,8 @@ _tieViewDist_checkBox ctrlAddEventHandler ["CheckedChanged",{
 (_display displayCtrl VDL_SET_ALL_BUTTON_IDC) ctrlAddEventHandler ["ButtonClick",{
     params ["_setButton_ctrl"];
 
-    private _display = localNamespace getVariable [VDL_DISPLAY_VAR_STR,displayNull];
-    (_display getVariable VDL_CONTROL_GRPS_VAR_STR) apply {
+    private _display = localNamespace getVariable ["KISKA_VDL_display",displayNull];
+    (_display getVariable "KISKA_VDL_controlGroups") apply {
         private _slider_ctrl = _x getVariable [CTRL_GRP_SLIDER_CTRL_VAR_STR,controlNull];
 
         private _varName = _x getVariable [CTRL_GRP_VAR_STR,""];
@@ -115,11 +115,11 @@ _tieViewDist_checkBox ctrlAddEventHandler ["CheckedChanged",{
 ---------------------------------------------------------------------------- */
 private _controlGroups = [];
 [
-    [VDL_TARGET_FPS_CTRL_GRP_IDC, VDL_FPS_VAR_STR],
+    [VDL_TARGET_FPS_CTRL_GRP_IDC, "KISKA_VDL_fps"],
     [VDL_MIN_OBJECT_DIST_CTRL_GRP_IDC, VDL_MIN_DIST_VAR_STR],
     [VDL_MAX_OBJECT_DIST_CTRL_GRP_IDC, VDL_MAX_DIST_VAR_STR],
     [VDL_TERRAIN_DIST_CTRL_GRP_IDC, VDL_VIEW_DIST_VAR_STR],
-    [VDL_CHECK_FREQ_CTRL_GRP_IDC, VDL_FREQUENCY_VAR_STR],
+    [VDL_CHECK_FREQ_CTRL_GRP_IDC, "KISKA_VDL_freq"],
     [VDL_INCRIMENT_CTRL_GRP_IDC, VDL_INCREMENT_VAR_STR]
 ] apply {
     private _control = _display displayCtrl (_x select 0);
@@ -127,7 +127,7 @@ private _controlGroups = [];
     _controlGroups pushBack _control;
 };
 
-_display setVariable [VDL_CONTROL_GRPS_VAR_STR,_controlGroups];
+_display setVariable ["KISKA_VDL_controlGroups",_controlGroups];
 
 
 nil
