@@ -1,7 +1,7 @@
 #include "Trait Manager Common Defines.hpp"
 #include "\KISKA_Functions\Headers\GUI\KISKA GUI Grid.hpp"
 #include "\KISKA_Functions\Headers\GUI\KISKA GUI Colors.hpp"
-#include "\KISKA_Functions\Headers\GUI\GUI Styles.hpp"
+#include "\KISKA_Functions\Headers\GUI\KISKA GUI Styles.hpp"
 
 class RscText;
 class RscListbox;
@@ -23,22 +23,22 @@ class KISKA_traitManager_Dialog
 		class traitManager_background_frame: RscText
 		{
 			idc = -1;
-            x = POS_X(-14.5);
-			y = POS_Y(-11);
-			w = POS_W(29);
-			h = POS_H(22);
-			colorBackground[] = GREY_COLOR(0.1,0.65);
+            x = KISKA_POS_X(-14.5);
+			y = KISKA_POS_Y(-11);
+			w = KISKA_POS_W(29);
+			h = KISKA_POS_H(22);
+			colorBackground[] = KISKA_GREY_COLOR(0.1,0.65);
 		};
 		class traitManager_headerText: RscText
 		{
 			idc = -1;
 			text = "Trait Manager"; //--- ToDo: Localize;
 			moving = 1;
-			x = POS_X(-14.5);
-			y = POS_Y(-12);
-			w = POS_W(28);
-			h = POS_H(1);
-			colorBackground[] = PROFILE_BACKGROUND_COLOR(1);
+			x = KISKA_POS_X(-14.5);
+			y = KISKA_POS_Y(-12);
+			w = KISKA_POS_W(28);
+			h = KISKA_POS_H(1);
+			colorBackground[] = KISKA_PROFILE_BACKGROUND_COLOR(1);
 		};
 	};
 
@@ -50,18 +50,18 @@ class KISKA_traitManager_Dialog
 		class traitManager_pool_listBox: RscListbox
 		{
 			idc = TM_POOL_LISTBOX_IDC;
-            x = POS_X(-14);
-			y = POS_Y(-9);
-			w = POS_W(13.5);
-			h = POS_H(18);
-			colorBackground[] = GREY_COLOR(0,0.25);
-			sizeEx = GUI_TEXT_SIZE(2.5);
+            x = KISKA_POS_X(-14);
+			y = KISKA_POS_Y(-9);
+			w = KISKA_POS_W(13.5);
+			h = KISKA_POS_H(18);
+			colorBackground[] = KISKA_GREY_COLOR(0,0.25);
+			sizeEx = KISKA_GUI_TEXT_SIZE(2.5);
 		};
 		class traitManager_current_listBox: traitManager_pool_listBox
 		{
 			idc = TM_CURRENT_LISTBOX_IDC;
-            x = POS_X(0.5);
-			colorBackground[] = GREY_COLOR(0,0.35);
+            x = KISKA_POS_X(0.5);
+			colorBackground[] = KISKA_GREY_COLOR(0,0.35);
 		};
 
 		/* -------------------------------------------------------------------------
@@ -71,17 +71,17 @@ class KISKA_traitManager_Dialog
 		{
 			idc = -1;
 			text = "Trait Pool";
-            x = POS_X(-14);
-			y = POS_Y(-10);
-			w = POS_W(13.5);
-			h = POS_H(1);
-			colorBackground[] = GREY_COLOR(0,1);
+            x = KISKA_POS_X(-14);
+			y = KISKA_POS_Y(-10);
+			w = KISKA_POS_W(13.5);
+			h = KISKA_POS_H(1);
+			colorBackground[] = KISKA_GREY_COLOR(0,1);
 		};
 
 		class traitManager_current_headerText: traitManager_pool_headerText
 		{
 			text = "Current Traits";
-            x = POS_X(0.5);
+            x = KISKA_POS_X(0.5);
 		};
 
 		/* -------------------------------------------------------------------------
@@ -90,26 +90,26 @@ class KISKA_traitManager_Dialog
 		class traitManager_take_button: ctrlButton
 		{
 			idc = TM_TAKE_BUTTON_IDC;
-			style = ST_CENTER;
+			style = KISKA_ST_CENTER;
 			text = "Take";
-            x = POS_X(-10);
-			y = POS_Y(9.5);
-			w = POS_W(5);
-			h = POS_H(1);
+            x = KISKA_POS_X(-10);
+			y = KISKA_POS_Y(9.5);
+			w = KISKA_POS_W(5);
+			h = KISKA_POS_H(1);
 		};
 		class traitManager_store_button: traitManager_take_button
 		{
 			idc = TM_STORE_BUTTON_IDC;
 			text = "Store";
-            x = POS_X(5);
+            x = KISKA_POS_X(5);
 		};
 		class traitManager_close_button: KISKA_RscCloseButton
 		{
 			idc = TM_CLOSE_BUTTON_IDC;
-            x = POS_X(13.5);
-			y = POS_Y(-12);
-			w = POS_W(1);
-			h = POS_H(1);
+            x = KISKA_POS_X(13.5);
+			y = KISKA_POS_Y(-12);
+			w = KISKA_POS_W(1);
+			h = KISKA_POS_H(1);
 		};
 	};
 };

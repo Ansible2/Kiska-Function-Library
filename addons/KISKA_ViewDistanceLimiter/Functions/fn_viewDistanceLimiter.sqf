@@ -32,6 +32,13 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_viewDistanceLimiter";
 
+#define DEFAULT_TARGET_FPS 60
+#define DEFAULT_FREQ 0.5
+#define DEFAULT_MIN_DIST 500
+#define DEFAULT_MAX_DIST 1200
+#define DEFAULT_INCREMENT 25
+#define DEFAULT_VIEW_DIST 3000
+
 if (!hasInterface) exitWith {};
 
 if (!canSuspend) exitWith {
@@ -40,71 +47,89 @@ if (!canSuspend) exitWith {
 };
 
 params [
-    ["_targetFPS",missionNamespace getVariable [VDL_FPS_VAR_STR,60],[123]],
-    ["_checkFreq",missionNamespace getVariable [VDL_FREQUENCY_VAR_STR,0.5],[123]],
-    ["_minObjectDistance",missionNamespace getVariable [VDL_MIN_DIST_VAR_STR,500],[123]],
-    ["_maxObjectDistance",missionNamespace getVariable [VDL_MAX_DIST_VAR_STR,1200],[123]],
-    ["_increment",missionNamespace getVariable [VDL_INCREMENT_VAR_STR,25],[123]],
-    ["_viewDistance",missionNamespace getVariable [VDL_VIEW_DIST_VAR_STR,3000],[123]]
+    ["_targetFPS",localNamespace getVariable ["KISKA_VDL_fps",DEFAULT_TARGET_FPS],[123]],
+    ["_checkFreq",localNamespace getVariable ["KISKA_VDL_freq",DEFAULT_FREQ],[123]],
+    ["_minObjectDistance",localNamespace getVariable ["KISKA_VDL_minDist",DEFAULT_MIN_DIST],[123]],
+    ["_maxObjectDistance",localNamespace getVariable ["KISKA_VDL_maxDist",DEFAULT_MAX_DIST],[123]],
+    ["_increment",localNamespace getVariable ["KISKA_VDL_increment",DEFAULT_INCREMENT],[123]],
+    ["_viewDistance",localNamespace getVariable ["KISKA_VDL_viewDist",DEFAULT_VIEW_DIST],[123]]
 ];
 
 
-missionNamespace setVariable [VDL_GLOBAL_RUN_STR,true];
-missionNamespace setVariable [VDL_FPS_VAR_STR,_targetFPS];
-missionNamespace setVariable [VDL_FREQUENCY_VAR_STR,_checkFreq];
+localNamespace setVariable ["KISKA_VDL_run",true];
+localNamespace setVariable ["KISKA_VDL_fps",_targetFPS];
+localNamespace setVariable ["KISKA_VDL_freq",_checkFreq];
+localNamespace setVariable ["KISKA_VDL_increment",_increment];
 if (_minObjectDistance > _maxObjectDistance) then {
     _minObjectDistance = _maxObjectDistance;
 };
-missionNamespace setVariable [VDL_MIN_DIST_VAR_STR,_minObjectDistance];
-missionNamespace setVariable [VDL_MAX_DIST_VAR_STR,_maxObjectDistance];
-missionNamespace setVariable [VDL_INCREMENT_VAR_STR,_increment];
+localNamespace setVariable ["KISKA_VDL_minDist",_minObjectDistance];
+localNamespace setVariable ["KISKA_VDL_maxDist",_maxObjectDistance];
 if (_viewDistance < _maxObjectDistance) then {
     _viewDistance = _maxObjectDistance;
 };
-missionNamespace setVariable [VDL_VIEW_DIST_VAR_STR,_viewDistance];
+localNamespace setVariable ["KISKA_VDL_viewDist",_viewDistance];
 
 
-private "_objectViewDistance";
 private _fn_moveUp = {
-    if (_objectViewDistance < (GET_VDL_MAX_DIST_VAR)) exitWith {
-        setObjectViewDistance (_objectViewDistance + (GET_VDL_INCREMENT_VAR));
+    import "_objectViewDistance";
+
+    private _maxDistance = localNamespace getVariable ["KISKA_VDL_maxDist",DEFAULT_MAX_DIST];
+    if (_objectViewDistance < _maxDistance) exitWith {
+        private _adjustmentIncrement = localNamespace getVariable ["KISKA_VDL_increment",DEFAULT_INCREMENT];
+        setObjectViewDistance (_objectViewDistance + _adjustmentIncrement);
     };
-    if (_objectViewDistance > (GET_VDL_MAX_DIST_VAR)) exitWith {
-        setObjectViewDistance (GET_VDL_MAX_DIST_VAR);
+    if (_objectViewDistance > _maxDistance) exitWith {
+        setObjectViewDistance _maxDistance;
     };
 };
 private _fn_moveDown = {
-    if (_objectViewDistance > (GET_VDL_MIN_DIST_VAR)) exitWith {
-        setObjectViewDistance (_objectViewDistance - (GET_VDL_INCREMENT_VAR));
+    import "_objectViewDistance";
+
+    private _minDistance = localNamespace getVariable ["KISKA_VDL_minDist",DEFAULT_MIN_DIST];
+    if (_objectViewDistance > _minDistance) exitWith {
+        private _adjustmentIncrement = localNamespace getVariable ["KISKA_VDL_increment",DEFAULT_INCREMENT];
+        setObjectViewDistance (_objectViewDistance - _adjustmentIncrement);
     };
-    if (_objectViewDistance < (GET_VDL_MIN_DIST_VAR)) exitWith {
-        setObjectViewDistance (GET_VDL_MIN_DIST_VAR);
+    if (_objectViewDistance < _minDistance) exitWith {
+        setObjectViewDistance _minDistance;
     };
 };
 
 
-missionNamespace setVariable [VDL_GLOBAL_IS_RUNNING_STR,true];
-while {sleep (GET_VDL_FREQUENCY_VAR); GET_VDL_GLOBAL_IS_RUNNING} do {
-    _objectViewDistance = getObjectViewDistance select 0;
-    if (!(GET_VDL_GLOBAL_TIED_VIEW_DIST_VAR) AND ((GET_VDL_VIEW_DIST_VAR) isNotEqualTo viewDistance)) then {
-        setViewDistance (GET_VDL_VIEW_DIST_VAR);
+localNamespace setVariable ["KISKA_VDL_isRunning",true];
+while {
+    private _adjustmentFrequency = localNamespace getVariable ["KISKA_VDL_freq",DEFAULT_FREQ];
+    sleep _adjustmentFrequency;
+
+    localNamespace getVariable ["KISKA_VDL_isRunning",false]
+} do {
+    private _objectViewDistance = getObjectViewDistance select 0;
+    private _isViewDistanceTied = localNamespace getVariable ["KISKA_VDL_tiedViewDistance",false];
+    private _viewDistance = localNamespace getVariable ["KISKA_VDL_viewDist",DEFAULT_VIEW_DIST];
+    if (
+        (!_isViewDistanceTied) AND 
+        (_viewDistance isNotEqualTo viewDistance)
+    ) then {
+        setViewDistance _viewDistance;
     };
 
-    // is fps at target?
-    if (diag_fps < (GET_VDL_FPS_VAR)) then {
-        // not at target fps
+    private _targetFPS = localNamespace getVariable ["KISKA_VDL_fps",DEFAULT_TARGET_FPS];
+    if (diag_fps < _targetFPS) then {
         call _fn_moveDown;
     } else {
-        // at target fps
         call _fn_moveUp;
     };
 
-    if (GET_VDL_GLOBAL_TIED_VIEW_DIST_VAR) then {
-        [{
-            setViewDistance (getObjectViewDistance select 0);
-        }] call CBA_fnc_execNextFrame;
+    if (_isViewDistanceTied) then {
+        [
+            {
+                private _objectViewDistance = getObjectViewDistance select 0;
+                setViewDistance _objectViewDistance;
+            }
+        ] call CBA_fnc_execNextFrame;
     };
 };
 
 
-missionNamespace setVariable [VDL_GLOBAL_IS_RUNNING_STR,false];
+localNamespace setVariable ["KISKA_VDL_isRunning",false];

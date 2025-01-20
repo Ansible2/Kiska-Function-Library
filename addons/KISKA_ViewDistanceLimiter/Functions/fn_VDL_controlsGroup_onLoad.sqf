@@ -35,7 +35,7 @@ _controlsGroup setVariable [CTRL_GRP_VAR_STR,_varName];
 /* ----------------------------------------------------------------------------
     Slider
 ---------------------------------------------------------------------------- */
-private _slider_ctrl = _controlsGroup controlsGroupCtrl SLIDER_IDC;
+private _slider_ctrl = _controlsGroup controlsGroupCtrl VDL_SLIDER_IDC;
 _controlsGroup setVariable [CTRL_GRP_SLIDER_CTRL_VAR_STR,_slider_ctrl];
 _slider_ctrl ctrlAddEventHandler ["SliderPosChanged",{
     params ["_slider_ctrl", "_newValue"];
@@ -52,8 +52,7 @@ _slider_ctrl ctrlAddEventHandler ["SliderPosChanged",{
 /* ----------------------------------------------------------------------------
     Set Button
 ---------------------------------------------------------------------------- */
-private _setButton_ctrl = _controlsGroup controlsGroupCtrl BUTTON_IDC;
-//_controlsGroup setVariable [CTRL_GRP_BUTTON_CTRL_VAR_STR,_setButton_ctrl];
+private _setButton_ctrl = _controlsGroup controlsGroupCtrl VDL_SET_BUTTON_IDC;
 _setButton_ctrl ctrlAddEventHandler ["ButtonClick",{
     params ["_setButton_ctrl"];
 
@@ -64,7 +63,7 @@ _setButton_ctrl ctrlAddEventHandler ["ButtonClick",{
     private _value = sliderPosition _slider_ctrl;
 
     profileNamespace setVariable [_varName,_value];
-    missionNamespace setVariable [_varName,_value];
+    localNamespace setVariable [_varName,_value];
 
     saveProfileNamespace;
     ["Saved changes"] call KISKA_fnc_notification;
@@ -74,7 +73,7 @@ _setButton_ctrl ctrlAddEventHandler ["ButtonClick",{
 /* ----------------------------------------------------------------------------
     Edit Box
 ---------------------------------------------------------------------------- */
-private _editBox_ctrl = _controlsGroup controlsGroupCtrl EDIT_IDC;
+private _editBox_ctrl = _controlsGroup controlsGroupCtrl VDL_EDIT_BUTTON_IDC;
 _controlsGroup setVariable [CTRL_GRP_EDIT_CTRL_VAR_STR,_editBox_ctrl];
 _editBox_ctrl ctrlAddEventHandler ["KeyUp",{
     params ["_editBox_ctrl"];
@@ -99,9 +98,17 @@ _editBox_ctrl ctrlAddEventHandler ["KeyUp",{
 
 
 
-private _defaultValue = getNumber(configFile >> "KISKA_viewDistanceLimiter_dialog" >> "controls" >> ctrlClassName _controlsGroup >> "controls" >> "settingSlider" >> "sliderPosition");
+private _defaultValue = getNumber(
+    configFile >> 
+    "KISKA_viewDistanceLimiter_dialog" >> 
+    "controls" >> 
+    ctrlClassName _controlsGroup >> 
+    "controls" >> 
+    "settingSlider" >> 
+    "sliderPosition"
+);
 private _profileValue = profileNamespace getVariable [_varName,_defaultValue];
-private _currentValue = missionNamespace getVariable [_varName,_profileValue];
+private _currentValue = localNamespace getVariable [_varName,_profileValue];
 
 _editBox_ctrl ctrlSetText (str _currentValue);
 _slider_ctrl sliderSetPosition _currentValue;
