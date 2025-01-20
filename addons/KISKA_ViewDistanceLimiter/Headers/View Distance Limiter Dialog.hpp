@@ -179,7 +179,7 @@ class KISKA_viewDistanceLimiter_dialog
 				class settingSlider: settingSlider
 				{
 					sliderPosition = 60;
-		            sliderRange[] = {15,144};
+		            sliderRange[] = {15,300};
 		            sliderStep = 1;
 					lineSize = 1;
 				};
