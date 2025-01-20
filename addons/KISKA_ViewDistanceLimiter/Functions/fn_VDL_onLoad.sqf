@@ -123,9 +123,10 @@ private _controlGroups = [];
     [VDL_CHECK_FREQ_CTRL_GRP_IDC, "KISKA_VDL_freq"],
     [VDL_INCRIMENT_CTRL_GRP_IDC, "KISKA_VDL_increment"]
 ] apply {
-    private _control = _display displayCtrl (_x select 0);
-    private _settingVariable = _x select 1;
-    [_control,_settingVariable] call KISKA_fnc_VDL_controlsGroup_onLoad;
+    private _controlIdc = _x select 0;
+    private _control = _display displayCtrl _controlIdc;
+    private _settingVariableName = _x select 1;
+    [_control,_settingVariableName] call KISKA_fnc_VDL_controlsGroup_onLoad;
     _controlGroups pushBack _control;
 };
 
