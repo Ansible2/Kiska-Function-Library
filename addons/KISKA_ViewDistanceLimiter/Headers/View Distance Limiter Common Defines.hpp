@@ -1,42 +1,11 @@
-#define VDL_GLOBAL_IS_RUNNING_STR "KISKA_VDL_isRunning"
-#define GET_VDL_GLOBAL_IS_RUNNING missionNamespace getVariable [VDL_GLOBAL_IS_RUNNING_STR,false]
-#define VDL_GLOBAL_RUN_STR "KISKA_VDL_run"
-
-// TODO: consolidate and remove vars
-
-#define GET_PROFILE_VAR(name,default) profileNamespace getVariable [name,default]
-#define GET_MISSION_VAR(name,default) missionNamespace getVariable [name,default]
-
-#define VDL_MIN_DIST_VAR_STR "KISKA_VDL_minDist"
-#define GET_VDL_MIN_DIST_VAR    GET_MISSION_VAR(VDL_MIN_DIST_VAR_STR,600)
-
-#define VDL_MAX_DIST_VAR_STR "KISKA_VDL_maxDist"
-#define GET_VDL_MAX_DIST_VAR    GET_MISSION_VAR(VDL_MAX_DIST_VAR_STR,1200)
-
-#define VDL_VIEW_DIST_VAR_STR "KISKA_VDL_viewDist"
-#define GET_VDL_VIEW_DIST_VAR   GET_MISSION_VAR(VDL_VIEW_DIST_VAR_STR,3000)
-
-#define VDL_INCREMENT_VAR_STR "KISKA_VDL_increment"
-#define GET_VDL_INCREMENT_VAR   GET_MISSION_VAR(VDL_INCREMENT_VAR_STR,25)
-
-
-#ifndef TO_STRING
-    #define TO_STRING(string) #string
-#endif
-
-
-#define SLIDER_IDC 562701
+#define VDL_SLIDER_IDC 562701
 #define CTRL_GRP_SLIDER_CTRL_VAR_STR "KISKA_VDL_ctrlGrp_slider"
 
-#define EDIT_IDC 562702
+#define VDL_EDIT_BUTTON_IDC 562702
 #define CTRL_GRP_EDIT_CTRL_VAR_STR "KISKA_VDL_ctrlGrp_editBox"
 
-#define BUTTON_IDC 562700
-#define CTRL_GRP_BUTTON_CTRL_VAR_STR "KISKA_VDL_ctrlGrp_setButton"
-
+#define VDL_SET_BUTTON_IDC 562700
 #define CTRL_GRP_VAR_STR "KISKA_VDL_varName"
-
-
 
 #define VDL_IDD 2154
 #define VDL_CLOSE_BUTTON_IDC 21541

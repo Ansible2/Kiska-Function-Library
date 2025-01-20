@@ -42,7 +42,7 @@ _display displayAddEventHandler ["Unload", {
     System On Check box
 ---------------------------------------------------------------------------- */
 private _systemOnCheckox = _display displayCtrl VDL_SYSTEM_ON_CHECKBOX_IDC;
-if (GET_VDL_GLOBAL_IS_RUNNING) then {
+if (missionNamespace getVariable ["KISKA_VDL_isRunning",false]) then {
     _systemOnCheckox cbSetChecked true;
 };
 
@@ -50,9 +50,10 @@ _systemOnCheckox ctrlAddEventHandler ["CheckedChanged",{
     params ["_control", "_checked"];
     _checked = [false,true] select _checked;
 
-    missionNamespace setVariable [VDL_GLOBAL_RUN_STR,_checked];
-    if (_checked AND !(GET_VDL_GLOBAL_IS_RUNNING)) then {
-        #define GET_SLIDER_POS_FOR_CTRLGRP(idc) sliderPosition (((ctrlParent _control) displayCtrl idc) controlsGroupCtrl SLIDER_IDC)
+    missionNamespace setVariable ["KISKA_VDL_run",_checked];
+    private _vdlIsRunning = missionNamespace getVariable ["KISKA_VDL_isRunning",false];
+    if (_checked AND !_vdlIsRunning) then {
+        #define GET_SLIDER_POS_FOR_CTRLGRP(idc) sliderPosition (((ctrlParent _control) displayCtrl idc) controlsGroupCtrl VDL_SLIDER_IDC)
         [
             GET_SLIDER_POS_FOR_CTRLGRP( VDL_TARGET_FPS_CTRL_GRP_IDC ),
             GET_SLIDER_POS_FOR_CTRLGRP( VDL_CHECK_FREQ_CTRL_GRP_IDC ),
@@ -116,11 +117,11 @@ _tieViewDist_checkBox ctrlAddEventHandler ["CheckedChanged",{
 private _controlGroups = [];
 [
     [VDL_TARGET_FPS_CTRL_GRP_IDC, "KISKA_VDL_fps"],
-    [VDL_MIN_OBJECT_DIST_CTRL_GRP_IDC, VDL_MIN_DIST_VAR_STR],
-    [VDL_MAX_OBJECT_DIST_CTRL_GRP_IDC, VDL_MAX_DIST_VAR_STR],
-    [VDL_TERRAIN_DIST_CTRL_GRP_IDC, VDL_VIEW_DIST_VAR_STR],
+    [VDL_MIN_OBJECT_DIST_CTRL_GRP_IDC, "KISKA_VDL_minDist"],
+    [VDL_MAX_OBJECT_DIST_CTRL_GRP_IDC, "KISKA_VDL_maxDist"],
+    [VDL_TERRAIN_DIST_CTRL_GRP_IDC, "KISKA_VDL_viewDist"],
     [VDL_CHECK_FREQ_CTRL_GRP_IDC, "KISKA_VDL_freq"],
-    [VDL_INCRIMENT_CTRL_GRP_IDC, VDL_INCREMENT_VAR_STR]
+    [VDL_INCRIMENT_CTRL_GRP_IDC, "KISKA_VDL_increment"]
 ] apply {
     private _control = _display displayCtrl (_x select 0);
     [_control,_x select 1] call KISKA_fnc_VDL_controlsGroup_onLoad;

@@ -24,7 +24,7 @@ class KISKA_VDL_setting_ctrlGrp: RscControlsGroupNoScrollbars
 	{
 		class setButton : ctrlButton
 		{
-			idc = BUTTON_IDC;
+			idc = VDL_SET_BUTTON_IDC;
 			text = "Button";
 			x = KISKA_POS_W(0.75);
 			y = KISKA_POS_H(0);
@@ -33,7 +33,7 @@ class KISKA_VDL_setting_ctrlGrp: RscControlsGroupNoScrollbars
 		};
 		class settingEditBox: RscEdit
 		{
-			idc = EDIT_IDC;
+			idc = VDL_EDIT_BUTTON_IDC;
 			text = "123";
 			x = KISKA_POS_W(11.5);
 			y = KISKA_POS_H(0);
@@ -42,7 +42,7 @@ class KISKA_VDL_setting_ctrlGrp: RscControlsGroupNoScrollbars
 		};
 		class settingSlider: RscXSliderH
 		{
-			idc = SLIDER_IDC;
+			idc = VDL_SLIDER_IDC;
 			x = KISKA_POS_W(0.75);
 			y = KISKA_POS_H(1);
 			w = KISKA_POS_W(14.75);
