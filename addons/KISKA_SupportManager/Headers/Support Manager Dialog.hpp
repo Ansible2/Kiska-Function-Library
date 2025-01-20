@@ -27,7 +27,7 @@ class KISKA_supportManager_Dialog
 			y = KISKA_POS_Y(-11);
 			w = KISKA_POS_W(29);
 			h = KISKA_POS_H(22);
-			colorBackground[] = GREY_COLOR(0,0.5);
+			colorBackground[] = KISKA_GREY_COLOR(0,0.5);
 		};
 		class supportManager_headerText: RscText
 		{
@@ -38,7 +38,7 @@ class KISKA_supportManager_Dialog
 			y = KISKA_POS_Y(-12);
 			w = KISKA_POS_W(28);
 			h = KISKA_POS_H(1);
-			colorBackground[] = PROFILE_BACKGROUND_COLOR(1);
+			colorBackground[] = KISKA_PROFILE_BACKGROUND_COLOR(1);
 		};
         /* -------------------------------------------------------------------------
 			Text Controls
@@ -51,7 +51,7 @@ class KISKA_supportManager_Dialog
 			y = KISKA_POS_Y(-10);
 			w = KISKA_POS_W(13.5);
 			h = KISKA_POS_H(1);
-			colorBackground[] = GREY_COLOR(0,1);
+			colorBackground[] = KISKA_GREY_COLOR(0,1);
 		};
 		class supportManager_current_headerText: supportManager_pool_headerText
 		{
@@ -72,7 +72,7 @@ class KISKA_supportManager_Dialog
 			y = KISKA_POS_Y(-9);
 			w = KISKA_POS_W(13.5);
 			h = KISKA_POS_H(18);
-			colorBackground[] = GREY_COLOR(0.25,0.35);
+			colorBackground[] = KISKA_GREY_COLOR(0.25,0.35);
 			sizeEx = KISKA_GUI_TEXT_SIZE(2.5);
 		};
 		class supportManager_current_listBox: supportManager_pool_listBox

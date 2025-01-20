@@ -36,7 +36,7 @@ class KISKA_GCH_dialog
 			y = KISKA_POS_Y(-12);
 			w = KISKA_POS_W(32);
 			h = KISKA_POS_H(25);
-			colorBackground[] = GREY_COLOR(0,0.5);
+			colorBackground[] = KISKA_GREY_COLOR(0,0.5);
 		};
 		class KISKA_GCH_headerText: RscText
 		{
@@ -47,7 +47,7 @@ class KISKA_GCH_dialog
 			y = KISKA_POS_Y(-13);
 			w = KISKA_POS_W(31);
 			h = KISKA_POS_H(1);
-			colorBackground[] = PROFILE_BACKGROUND_COLOR(1);
+			colorBackground[] = KISKA_PROFILE_BACKGROUND_COLOR(1);
 		};
 		class KISKA_GCH_sideGroups_headerText: RscText
 		{
@@ -57,7 +57,7 @@ class KISKA_GCH_dialog
 			y = KISKA_POS_Y(-11.5);
 			w = KISKA_POS_W(15);
 			h = KISKA_POS_H(1);
-			colorBackground[] = PROFILE_BACKGROUND_COLOR(1);
+			colorBackground[] = KISKA_PROFILE_BACKGROUND_COLOR(1);
 		};
 		class KISKA_GCH_currentGroup_headerText: RscText
 		{
@@ -67,7 +67,7 @@ class KISKA_GCH_dialog
 			y = KISKA_POS_Y(-10.5);
 			w = KISKA_POS_W(10.5);
 			h = KISKA_POS_H(1);
-			colorBackground[] = PROFILE_BACKGROUND_COLOR(1);
+			colorBackground[] = KISKA_PROFILE_BACKGROUND_COLOR(1);
 		};
 
 		class KISKA_GCH_showAI_text: RscText
@@ -78,7 +78,7 @@ class KISKA_GCH_dialog
 			y = KISKA_POS_Y(-10.5);
 			w = KISKA_POS_W(3.5);
 			h = KISKA_POS_H(1);
-			colorBackground[] = PROFILE_BACKGROUND_COLOR(1);
+			colorBackground[] = KISKA_PROFILE_BACKGROUND_COLOR(1);
 		};
 		class KISKA_GCH_groupLeader_text: RscText
 		{
@@ -88,7 +88,7 @@ class KISKA_GCH_dialog
 			y = KISKA_POS_Y(-11.5);
 			w = KISKA_POS_W(5);
 			h = KISKA_POS_H(1);
-			colorBackground[] = PROFILE_BACKGROUND_COLOR(1);
+			colorBackground[] = KISKA_PROFILE_BACKGROUND_COLOR(1);
 		};
         class KISKA_GCH_canRally_text: RscText
 		{
@@ -98,7 +98,7 @@ class KISKA_GCH_dialog
 			y = KISKA_POS_Y(10);
 			w = KISKA_POS_W(8);
 			h = KISKA_POS_H(1);
-			colorBackground[] = PROFILE_BACKGROUND_COLOR(1);
+			colorBackground[] = KISKA_PROFILE_BACKGROUND_COLOR(1);
 		};
 		class KISKA_GCH_canBeDeleted_text: RscText
 		{
@@ -108,7 +108,7 @@ class KISKA_GCH_dialog
 			y = KISKA_POS_Y(9);
 			w = KISKA_POS_W(8);
 			h = KISKA_POS_H(1);
-			colorBackground[] = PROFILE_BACKGROUND_COLOR(1);
+			colorBackground[] = KISKA_PROFILE_BACKGROUND_COLOR(1);
 		};
         class KISKA_GCH_assignTeam_text: RscText
 		{
@@ -118,7 +118,7 @@ class KISKA_GCH_dialog
 			y = KISKA_POS_Y(8);
 			w = KISKA_POS_W(8);
 			h = KISKA_POS_H(1);
-			colorBackground[] = PROFILE_BACKGROUND_COLOR(1);
+			colorBackground[] = KISKA_PROFILE_BACKGROUND_COLOR(1);
 		};
 	};
 
@@ -185,7 +185,7 @@ class KISKA_GCH_dialog
 			y = KISKA_POS_Y(-10.5);
 			w = KISKA_POS_W(15);
 			h = KISKA_POS_H(21.5);
-			colorBackground[] = GREY_COLOR(0,LISTBOX_TRANSPARENCY);
+			colorBackground[] = KISKA_GREY_COLOR(0,LISTBOX_TRANSPARENCY);
 		};
 		class KISKA_GCH_currentGroup_listBox: RscListbox
 		{
@@ -194,7 +194,7 @@ class KISKA_GCH_dialog
 			y = KISKA_POS_Y(-9.5);
 			w = KISKA_POS_W(15);
 			h = KISKA_POS_H(16.5);
-			colorBackground[] = GREY_COLOR(0,LISTBOX_TRANSPARENCY);
+			colorBackground[] = KISKA_GREY_COLOR(0,LISTBOX_TRANSPARENCY);
 		};
 
 		/* -------------------------------------------------------------------------
@@ -209,7 +209,7 @@ class KISKA_GCH_dialog
 			y = KISKA_POS_Y(7);
 			w = KISKA_POS_W(10);
 			h = KISKA_POS_H(1);
-			colorBackground[] = GREY_COLOR(0,CHANGER_TRANSPARENCY);
+			colorBackground[] = KISKA_GREY_COLOR(0,CHANGER_TRANSPARENCY);
 		};
 
 		/* -------------------------------------------------------------------------
@@ -223,7 +223,7 @@ class KISKA_GCH_dialog
 			y = KISKA_POS_Y(9);
 			w = KISKA_POS_W(7);
 			h = KISKA_POS_H(1);
-			colorBackground[] = GREY_COLOR(0,COMBO_TRANSPARENCY);
+			colorBackground[] = KISKA_GREY_COLOR(0,COMBO_TRANSPARENCY);
 		};
 		class KISKA_GCH_groupCanRallyCombo: KISKA_GCH_groupCanBeDeletedCombo
 		{
@@ -248,7 +248,7 @@ class KISKA_GCH_dialog
 			y = KISKA_POS_Y(-11.5);
 			w = KISKA_POS_W(10);
 			h = KISKA_POS_H(1);
-			colorBackground[] = GREY_COLOR(0,CHANGER_TRANSPARENCY);
+			colorBackground[] = KISKA_GREY_COLOR(0,CHANGER_TRANSPARENCY);
 		};
 
 		/* -------------------------------------------------------------------------

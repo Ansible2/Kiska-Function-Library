@@ -11,8 +11,8 @@ class KISKA_RscCloseButton : RscButtonMenu
     y = KISKA_POS_Y(-10);
     w = KISKA_POS_W(1);
     h = KISKA_POS_H(1);
-    colorText[] = GREY_COLOR(0,1);
-    colorActive[] = GREY_COLOR(0,1);
+    colorText[] = KISKA_GREY_COLOR(0,1);
+    colorActive[] = KISKA_GREY_COLOR(0,1);
     textureNoShortcut = "\A3\3den\Data\Displays\Display3DEN\search_END_ca.paa";
     class ShortcutPos
     {

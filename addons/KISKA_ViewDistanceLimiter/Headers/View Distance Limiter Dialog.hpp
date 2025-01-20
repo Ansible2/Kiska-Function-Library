@@ -70,7 +70,7 @@ class KISKA_viewDistanceLimiter_dialog
         	y = KISKA_POS_Y(-8);
         	w = KISKA_POS_W(16);
         	h = KISKA_POS_H(18.5);
-			colorBackground[] = GREY_COLOR(0,0.25);
+			colorBackground[] = KISKA_GREY_COLOR(0,0.25);
 		};
 		class KISKA_VDL_mainHeaderText: Rsctext
 		{
@@ -82,7 +82,7 @@ class KISKA_viewDistanceLimiter_dialog
         	y = KISKA_POS_Y(-10);
         	w = KISKA_POS_W(15);
         	h = KISKA_POS_H(1);
-			colorBackground[] = PROFILE_BACKGROUND_COLOR(0.65);
+			colorBackground[] = KISKA_PROFILE_BACKGROUND_COLOR(0.65);
 			style = KISKA_ST_CENTER;
 		};
 		class KISKA_VDL_systemOn_headerText: RscText
@@ -94,7 +94,7 @@ class KISKA_viewDistanceLimiter_dialog
         	y = KISKA_POS_Y(-9);
         	w = KISKA_POS_W(3);
         	h = KISKA_POS_H(1);
-			colorBackground[] = GREY_COLOR(0,1);
+			colorBackground[] = KISKA_GREY_COLOR(0,1);
 			sizeEx = KISKA_GUI_TEXT_SIZE(2);
 		};
 		class KISKA_VDL_tiedViewDistance_headerText: RscText
@@ -106,7 +106,7 @@ class KISKA_viewDistanceLimiter_dialog
         	y = KISKA_POS_Y(-9);
         	w = KISKA_POS_W(5);
         	h = KISKA_POS_H(1);
-			colorBackground[] = GREY_COLOR(0,1);
+			colorBackground[] = KISKA_GREY_COLOR(0,1);
 			sizeEx = KISKA_GUI_TEXT_SIZE(2);
 		};
 	};
@@ -143,8 +143,8 @@ class KISKA_viewDistanceLimiter_dialog
         	y = KISKA_POS_Y(-9);
         	w = KISKA_POS_W(1);
         	h = KISKA_POS_H(1);
-			colorText[] = GREY_COLOR(0,1);
-			colorActive[] = GREY_COLOR(0,1);
+			colorText[] = KISKA_GREY_COLOR(0,1);
+			colorActive[] = KISKA_GREY_COLOR(0,1);
 		};
 		class KISKA_VDL_tiedViewDistance_checkBox: RscCheckBox
 		{
@@ -154,8 +154,8 @@ class KISKA_viewDistanceLimiter_dialog
         	y = KISKA_POS_Y(-9);
         	w = KISKA_POS_W(1);
         	h = KISKA_POS_H(1);
-			colorText[] = GREY_COLOR(0,1);
-			colorActive[] = GREY_COLOR(0,1);
+			colorText[] = KISKA_GREY_COLOR(0,1);
+			colorActive[] = KISKA_GREY_COLOR(0,1);
 
 			tooltip = "A tied view distance will make the terrain view distance be the same as and follow the dynamic adjustments of the object view distance";
 		};

@@ -27,7 +27,7 @@ class KISKA_traitManager_Dialog
 			y = KISKA_POS_Y(-11);
 			w = KISKA_POS_W(29);
 			h = KISKA_POS_H(22);
-			colorBackground[] = GREY_COLOR(0.1,0.65);
+			colorBackground[] = KISKA_GREY_COLOR(0.1,0.65);
 		};
 		class traitManager_headerText: RscText
 		{
@@ -38,7 +38,7 @@ class KISKA_traitManager_Dialog
 			y = KISKA_POS_Y(-12);
 			w = KISKA_POS_W(28);
 			h = KISKA_POS_H(1);
-			colorBackground[] = PROFILE_BACKGROUND_COLOR(1);
+			colorBackground[] = KISKA_PROFILE_BACKGROUND_COLOR(1);
 		};
 	};
 
@@ -54,14 +54,14 @@ class KISKA_traitManager_Dialog
 			y = KISKA_POS_Y(-9);
 			w = KISKA_POS_W(13.5);
 			h = KISKA_POS_H(18);
-			colorBackground[] = GREY_COLOR(0,0.25);
+			colorBackground[] = KISKA_GREY_COLOR(0,0.25);
 			sizeEx = KISKA_GUI_TEXT_SIZE(2.5);
 		};
 		class traitManager_current_listBox: traitManager_pool_listBox
 		{
 			idc = TM_CURRENT_LISTBOX_IDC;
             x = KISKA_POS_X(0.5);
-			colorBackground[] = GREY_COLOR(0,0.35);
+			colorBackground[] = KISKA_GREY_COLOR(0,0.35);
 		};
 
 		/* -------------------------------------------------------------------------
@@ -75,7 +75,7 @@ class KISKA_traitManager_Dialog
 			y = KISKA_POS_Y(-10);
 			w = KISKA_POS_W(13.5);
 			h = KISKA_POS_H(1);
-			colorBackground[] = GREY_COLOR(0,1);
+			colorBackground[] = KISKA_GREY_COLOR(0,1);
 		};
 
 		class traitManager_current_headerText: traitManager_pool_headerText
