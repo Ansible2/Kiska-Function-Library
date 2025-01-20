@@ -1,7 +1,7 @@
 #include "Trait Manager Common Defines.hpp"
 #include "\KISKA_Functions\Headers\GUI\KISKA GUI Grid.hpp"
 #include "\KISKA_Functions\Headers\GUI\KISKA GUI Colors.hpp"
-#include "\KISKA_Functions\Headers\GUI\GUI Styles.hpp"
+#include "\KISKA_Functions\Headers\GUI\KISKA GUI Styles.hpp"
 
 class RscText;
 class RscListbox;
@@ -90,7 +90,7 @@ class KISKA_traitManager_Dialog
 		class traitManager_take_button: ctrlButton
 		{
 			idc = TM_TAKE_BUTTON_IDC;
-			style = ST_CENTER;
+			style = KISKA_ST_CENTER;
 			text = "Take";
             x = POS_X(-10);
 			y = POS_Y(9.5);

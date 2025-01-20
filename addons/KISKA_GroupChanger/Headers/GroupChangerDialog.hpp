@@ -1,7 +1,7 @@
 #include "GroupChangerCommonDefines.hpp"
 #include "\KISKA_Functions\Headers\GUI\KISKA GUI Grid.hpp"
 #include "\KISKA_Functions\Headers\GUI\KISKA GUI Colors.hpp"
-#include "\KISKA_Functions\Headers\GUI\GUI Styles.hpp"
+#include "\KISKA_Functions\Headers\GUI\KISKA GUI Styles.hpp"
 
 #define CHANGER_TRANSPARENCY 0.25
 #define LISTBOX_TRANSPARENCY 0.35
@@ -17,7 +17,7 @@ class RscCheckbox;
 
 class KISKA_GCH_button : ctrlButton
 {
-	style = ST_CENTER;
+	style = KISKA_ST_CENTER;
 };
 
 class KISKA_GCH_dialog

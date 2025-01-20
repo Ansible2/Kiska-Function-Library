@@ -1,7 +1,7 @@
 #include "View Distance Limiter Common Defines.hpp"
 #include "\KISKA_Functions\Headers\GUI\KISKA GUI Grid.hpp"
 #include "\KISKA_Functions\Headers\GUI\KISKA GUI Colors.hpp"
-#include "\KISKA_Functions\Headers\GUI\GUI Styles.hpp"
+#include "\KISKA_Functions\Headers\GUI\KISKA GUI Styles.hpp"
 
 class ctrlButton;
 class RscXSliderH;
@@ -83,7 +83,7 @@ class KISKA_viewDistanceLimiter_dialog
         	w = POS_W(15);
         	h = POS_H(1);
 			colorBackground[] = PROFILE_BACKGROUND_COLOR(0.65);
-			style = ST_CENTER;
+			style = KISKA_ST_CENTER;
 		};
 		class KISKA_VDL_systemOn_headerText: RscText
 		{

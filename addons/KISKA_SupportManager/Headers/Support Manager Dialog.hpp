@@ -1,7 +1,7 @@
 #include "Support Manager Common Defines.hpp"
 #include "\KISKA_Functions\Headers\GUI\KISKA GUI Grid.hpp"
 #include "\KISKA_Functions\Headers\GUI\KISKA GUI Colors.hpp"
-#include "\KISKA_Functions\Headers\GUI\GUI Styles.hpp"
+#include "\KISKA_Functions\Headers\GUI\KISKA GUI Styles.hpp"
 
 class RscText;
 class RscListbox;
@@ -87,7 +87,7 @@ class KISKA_supportManager_Dialog
 		class supportManager_take_button: ctrlButton
 		{
 			idc = SM_TAKE_BUTTON_IDC;
-			style = ST_CENTER;
+			style = KISKA_ST_CENTER;
 			text = "Take";
             x = POS_X(-10);
 			y = POS_Y(9.5);
@@ -97,7 +97,7 @@ class KISKA_supportManager_Dialog
 		class supportManager_store_button: supportManager_take_button
 		{
 			idc = SM_STORE_BUTTON_IDC;
-			style = ST_CENTER;
+			style = KISKA_ST_CENTER;
 			text = "Store";
             x = POS_X(5);
 		};
