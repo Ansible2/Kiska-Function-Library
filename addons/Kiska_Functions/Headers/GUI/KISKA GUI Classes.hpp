@@ -7,10 +7,10 @@ class KISKA_RscCloseButton : RscButtonMenu
 {
     idc = -1;
     text = "";
-    x = POS_X(7.5);
-    y = POS_Y(-10);
-    w = POS_W(1);
-    h = POS_H(1);
+    x = KISKA_POS_X(7.5);
+    y = KISKA_POS_Y(-10);
+    w = KISKA_POS_W(1);
+    h = KISKA_POS_H(1);
     colorText[] = GREY_COLOR(0,1);
     colorActive[] = GREY_COLOR(0,1);
     textureNoShortcut = "\A3\3den\Data\Displays\Display3DEN\search_END_ca.paa";
@@ -18,8 +18,8 @@ class KISKA_RscCloseButton : RscButtonMenu
     {
         left = 0;
         top = 0;
-        w = POS_W(1);
-        h = POS_H(1);
+        w = KISKA_POS_W(1);
+        h = KISKA_POS_H(1);
     };
     animTextureNormal = "#(argb,8,8,3)color(1,0,0,0.57)";
     animTextureDisabled = "";

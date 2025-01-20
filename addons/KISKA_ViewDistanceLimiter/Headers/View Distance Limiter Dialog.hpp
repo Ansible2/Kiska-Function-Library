@@ -16,37 +16,37 @@ class KISKA_VDL_setting_ctrlGrp: RscControlsGroupNoScrollbars
 {
 	idc = -1;
 
-	x = POS_X(-7.75);
-	y = POS_Y(1);
-	w = POS_W(15.5);
-	h = POS_H(2.5);
+	x = KISKA_POS_X(-7.75);
+	y = KISKA_POS_Y(1);
+	w = KISKA_POS_W(15.5);
+	h = KISKA_POS_H(2.5);
 	class controls
 	{
 		class setButton : ctrlButton
 		{
 			idc = BUTTON_IDC;
 			text = "Button";
-			x = POS_W(0.75);
-			y = POS_H(0);
-			w = POS_W(10.75);
-			h = POS_H(1);
+			x = KISKA_POS_W(0.75);
+			y = KISKA_POS_H(0);
+			w = KISKA_POS_W(10.75);
+			h = KISKA_POS_H(1);
 		};
 		class settingEditBox: RscEdit
 		{
 			idc = EDIT_IDC;
 			text = "123";
-			x = POS_W(11.5);
-			y = POS_H(0);
-			w = POS_W(4);
-			h = POS_H(1);
+			x = KISKA_POS_W(11.5);
+			y = KISKA_POS_H(0);
+			w = KISKA_POS_W(4);
+			h = KISKA_POS_H(1);
 		};
 		class settingSlider: RscXSliderH
 		{
 			idc = SLIDER_IDC;
-			x = POS_W(0.75);
-			y = POS_H(1);
-			w = POS_W(14.75);
-			h = POS_H(1);
+			x = KISKA_POS_W(0.75);
+			y = KISKA_POS_H(1);
+			w = KISKA_POS_W(14.75);
+			h = KISKA_POS_H(1);
 		};
 
 	};
@@ -66,10 +66,10 @@ class KISKA_viewDistanceLimiter_dialog
 		{
 			idc = -1;
 
-            x = POS_X(-7.5);
-        	y = POS_Y(-8);
-        	w = POS_W(16);
-        	h = POS_H(18.5);
+            x = KISKA_POS_X(-7.5);
+        	y = KISKA_POS_Y(-8);
+        	w = KISKA_POS_W(16);
+        	h = KISKA_POS_H(18.5);
 			colorBackground[] = GREY_COLOR(0,0.25);
 		};
 		class KISKA_VDL_mainHeaderText: Rsctext
@@ -78,10 +78,10 @@ class KISKA_viewDistanceLimiter_dialog
 
 			moving = 1;
 			text = "View Distance Limiter";
-            x = POS_X(-7.5);
-        	y = POS_Y(-10);
-        	w = POS_W(15);
-        	h = POS_H(1);
+            x = KISKA_POS_X(-7.5);
+        	y = KISKA_POS_Y(-10);
+        	w = KISKA_POS_W(15);
+        	h = KISKA_POS_H(1);
 			colorBackground[] = PROFILE_BACKGROUND_COLOR(0.65);
 			style = KISKA_ST_CENTER;
 		};
@@ -90,24 +90,24 @@ class KISKA_viewDistanceLimiter_dialog
 			idc = -1;
 
 			text = "System On:";
-            x = POS_X(-7.5);
-        	y = POS_Y(-9);
-        	w = POS_W(3);
-        	h = POS_H(1);
+            x = KISKA_POS_X(-7.5);
+        	y = KISKA_POS_Y(-9);
+        	w = KISKA_POS_W(3);
+        	h = KISKA_POS_H(1);
 			colorBackground[] = GREY_COLOR(0,1);
-			sizeEx = GUI_TEXT_SIZE(2);
+			sizeEx = KISKA_GUI_TEXT_SIZE(2);
 		};
 		class KISKA_VDL_tiedViewDistance_headerText: RscText
 		{
 			idc = -1;
 
 			text = "Tied View Distance:";
-            x = POS_X(2.5);
-        	y = POS_Y(-9);
-        	w = POS_W(5);
-        	h = POS_H(1);
+            x = KISKA_POS_X(2.5);
+        	y = KISKA_POS_Y(-9);
+        	w = KISKA_POS_W(5);
+        	h = KISKA_POS_H(1);
 			colorBackground[] = GREY_COLOR(0,1);
-			sizeEx = GUI_TEXT_SIZE(2);
+			sizeEx = KISKA_GUI_TEXT_SIZE(2);
 		};
 	};
 
@@ -119,30 +119,30 @@ class KISKA_viewDistanceLimiter_dialog
 		class KISKA_VDL_close_button: KISKA_RscCloseButton
 		{
 			idc = VDL_CLOSE_BUTTON_IDC;
-            x = POS_X(7.5);
-        	y = POS_Y(-10);
-        	w = POS_W(1);
-        	h = POS_H(1);
+            x = KISKA_POS_X(7.5);
+        	y = KISKA_POS_Y(-10);
+        	w = KISKA_POS_W(1);
+        	h = KISKA_POS_H(1);
 		};
 		class KISKA_VDL_setAll_button: ctrlButton
 		{
 			idc = VDL_SET_ALL_BUTTON_IDC;
 
 			text = "Set All Changes";
-            x = POS_X(-3.5);
-        	y = POS_Y(-9);
-        	w = POS_W(6);
-        	h = POS_H(1);
-			sizeEx = GUI_TEXT_SIZE(2);
+            x = KISKA_POS_X(-3.5);
+        	y = KISKA_POS_Y(-9);
+        	w = KISKA_POS_W(6);
+        	h = KISKA_POS_H(1);
+			sizeEx = KISKA_GUI_TEXT_SIZE(2);
 		};
 		class KISKA_VDL_systemOn_checkBox: RscCheckBox
 		{
 			idc = VDL_SYSTEM_ON_CHECKBOX_IDC;
 
-            x = POS_X(-4.5);
-        	y = POS_Y(-9);
-        	w = POS_W(1);
-        	h = POS_H(1);
+            x = KISKA_POS_X(-4.5);
+        	y = KISKA_POS_Y(-9);
+        	w = KISKA_POS_W(1);
+        	h = KISKA_POS_H(1);
 			colorText[] = GREY_COLOR(0,1);
 			colorActive[] = GREY_COLOR(0,1);
 		};
@@ -150,10 +150,10 @@ class KISKA_viewDistanceLimiter_dialog
 		{
 			idc = VDL_TIED_DISTANCE_CHECKBOX_IDC;
 
-            x = POS_X(7.5);
-        	y = POS_Y(-9);
-        	w = POS_W(1);
-        	h = POS_H(1);
+            x = KISKA_POS_X(7.5);
+        	y = KISKA_POS_Y(-9);
+        	w = KISKA_POS_W(1);
+        	h = KISKA_POS_H(1);
 			colorText[] = GREY_COLOR(0,1);
 			colorActive[] = GREY_COLOR(0,1);
 
@@ -166,7 +166,7 @@ class KISKA_viewDistanceLimiter_dialog
 		class KISKA_VDL_targetFPS_ctrlGrp: KISKA_VDL_setting_ctrlGrp
 		{
 			idc = VDL_TARGET_FPS_CTRL_GRP_IDC;
-			y = POS_Y(-7.5);
+			y = KISKA_POS_Y(-7.5);
 
 			class controls : controls
 			{
@@ -195,7 +195,7 @@ class KISKA_viewDistanceLimiter_dialog
 		{
 			idc = VDL_MIN_OBJECT_DIST_CTRL_GRP_IDC;
 
-			y = POS_Y(-4.5);
+			y = KISKA_POS_Y(-4.5);
 
 			class controls : controls
 			{
@@ -223,7 +223,7 @@ class KISKA_viewDistanceLimiter_dialog
 		class KISKA_VDL_maxObjectDist_ctrlGrp: KISKA_VDL_minObjectDist_ctrlGrp
 		{
 			idc = VDL_MAX_OBJECT_DIST_CTRL_GRP_IDC;
-			y = POS_Y(-1.5);
+			y = KISKA_POS_Y(-1.5);
 
 			class controls : controls
 			{
@@ -248,7 +248,7 @@ class KISKA_viewDistanceLimiter_dialog
 		{
 			idc = VDL_TERRAIN_DIST_CTRL_GRP_IDC;
 
-			y = POS_Y(1.5);
+			y = KISKA_POS_Y(1.5);
 			class controls : controls
 			{
 				class setButton: setButton
@@ -271,7 +271,7 @@ class KISKA_viewDistanceLimiter_dialog
 		class KISKA_VDL_checkFreq_ctrlGrp: KISKA_VDL_setting_ctrlGrp
 		{
 			idc = VDL_CHECK_FREQ_CTRL_GRP_IDC;
-			y = POS_Y(4.5);
+			y = KISKA_POS_Y(4.5);
 			class controls : controls
 			{
 				class setButton: setButton
@@ -298,7 +298,7 @@ class KISKA_viewDistanceLimiter_dialog
 		class KISKA_VDL_incriment_ctrlGrp: KISKA_VDL_setting_ctrlGrp
 		{
 			idc = VDL_INCRIMENT_CTRL_GRP_IDC;
-			y = POS_Y(7.5);
+			y = KISKA_POS_Y(7.5);
 
 			class controls : controls
 			{

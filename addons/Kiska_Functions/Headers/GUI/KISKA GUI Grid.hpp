@@ -2,16 +2,16 @@
 
     #define KISKA_GUI_GRID 1
 
-    #define UI_GRID_X (0.5)
-    #define UI_GRID_Y (0.5)
-    #define UI_GRID_W (2.5 * pixelW * pixelGrid)
-    #define UI_GRID_H (2.5 * pixelH * pixelGrid)
+    #define KISKA_UI_GRID_X (0.5)
+    #define KISKA_UI_GRID_Y (0.5)
+    #define KISKA_UI_GRID_W (2.5 * pixelW * pixelGrid)
+    #define KISKA_UI_GRID_H (2.5 * pixelH * pixelGrid)
 
-    #define POS_X(N) N * UI_GRID_W + UI_GRID_X
-    #define POS_Y(N) N * UI_GRID_H + UI_GRID_Y
-    #define POS_W(N) N * UI_GRID_W
-    #define POS_H(N) N * UI_GRID_H
+    #define KISKA_POS_X(N) N * KISKA_UI_GRID_W + KISKA_UI_GRID_X
+    #define KISKA_POS_Y(N) N * KISKA_UI_GRID_H + KISKA_UI_GRID_Y
+    #define KISKA_POS_W(N) N * KISKA_UI_GRID_W
+    #define KISKA_POS_H(N) N * KISKA_UI_GRID_H
 
-    #define GUI_TEXT_SIZE(MULTIPLIER) (pixelH * pixelGrid) * MULTIPLIER
+    #define KISKA_GUI_TEXT_SIZE(MULTIPLIER) (pixelH * pixelGrid) * MULTIPLIER
 
 #endif
