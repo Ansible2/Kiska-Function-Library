@@ -70,41 +70,14 @@ if (_viewDistance < _maxObjectDistance) then {
 };
 localNamespace setVariable ["KISKA_VDL_viewDist",_viewDistance];
 
-
-private _fn_moveUp = {
-    import "_objectViewDistance";
-
-    private _maxDistance = localNamespace getVariable ["KISKA_VDL_maxDist",DEFAULT_MAX_DIST];
-    if (_objectViewDistance < _maxDistance) exitWith {
-        private _adjustmentIncrement = localNamespace getVariable ["KISKA_VDL_increment",DEFAULT_INCREMENT];
-        setObjectViewDistance (_objectViewDistance + _adjustmentIncrement);
-    };
-    if (_objectViewDistance > _maxDistance) exitWith {
-        setObjectViewDistance _maxDistance;
-    };
-};
-private _fn_moveDown = {
-    import "_objectViewDistance";
-
-    private _minDistance = localNamespace getVariable ["KISKA_VDL_minDist",DEFAULT_MIN_DIST];
-    if (_objectViewDistance > _minDistance) exitWith {
-        private _adjustmentIncrement = localNamespace getVariable ["KISKA_VDL_increment",DEFAULT_INCREMENT];
-        setObjectViewDistance (_objectViewDistance - _adjustmentIncrement);
-    };
-    if (_objectViewDistance < _minDistance) exitWith {
-        setObjectViewDistance _minDistance;
-    };
-};
-
-
 localNamespace setVariable ["KISKA_VDL_isRunning",true];
 while {
     private _adjustmentFrequency = localNamespace getVariable ["KISKA_VDL_freq",DEFAULT_FREQ];
     sleep _adjustmentFrequency;
 
-    localNamespace getVariable ["KISKA_VDL_isRunning",false]
+    localNamespace getVariable ["KISKA_VDL_run",false]
 } do {
-    private _objectViewDistance = getObjectViewDistance select 0;
+    private _currentObjectViewDistance = getObjectViewDistance select 0;
     private _isViewDistanceTied = localNamespace getVariable ["KISKA_VDL_tiedViewDistance",false];
     private _viewDistance = localNamespace getVariable ["KISKA_VDL_viewDist",DEFAULT_VIEW_DIST];
     if (
@@ -115,21 +88,32 @@ while {
     };
 
     private _targetFPS = localNamespace getVariable ["KISKA_VDL_fps",DEFAULT_TARGET_FPS];
-    if (diag_fps < _targetFPS) then {
-        call _fn_moveDown;
+    private _adjustmentIncrement = localNamespace getVariable ["KISKA_VDL_increment",DEFAULT_INCREMENT];
+    private _fpsIsHigherThanTarget = diag_fps > _targetFPS;
+    private "_newViewDistance";
+    if (_fpsIsHigherThanTarget) then {
+        private _maxDistance = localNamespace getVariable ["KISKA_VDL_maxDist",DEFAULT_MAX_DIST];
+        _newViewDistance = _currentObjectViewDistance + _adjustmentIncrement;
+        if (_newViewDistance > _maxDistance) then {
+            _newViewDistance = _maxDistance;
+        };
+
     } else {
-        call _fn_moveUp;
+        private _minDistance = localNamespace getVariable ["KISKA_VDL_minDist",DEFAULT_MIN_DIST];
+        _newViewDistance = _currentObjectViewDistance - _adjustmentIncrement;
+        if (_newViewDistance < _minDistance) then {
+            _newViewDistance = _minDistance;
+        };
+
     };
 
+    if (_newViewDistance == _currentObjectViewDistance) then { continue; };
     if (_isViewDistanceTied) then {
-        [
-            {
-                private _objectViewDistance = getObjectViewDistance select 0;
-                setViewDistance _objectViewDistance;
-            }
-        ] call CBA_fnc_execNextFrame;
+        setViewDistance _newViewDistance;
     };
+    setObjectViewDistance _newViewDistance;
 };
 
-
 localNamespace setVariable ["KISKA_VDL_isRunning",false];
+setViewDistance -1;
+setObjectViewDistance -1;
