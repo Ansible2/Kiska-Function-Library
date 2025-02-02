@@ -148,7 +148,7 @@ if (_indexToCopyFrom isNotEqualTo -1) then {
 
 
 private _vehicleDimensions = [_vehicle] call KISKA_fnc_getBoundingBoxDimensions;
-_vehicleDimensions params ["_length","_width","_height"];
+_vehicleDimensions params ["_width","_length","_height"];
 // Not using half dimensions here because of the desire to have
 // the width and height doubled for making sure vehicles
 // don't accidentaly miss a point.

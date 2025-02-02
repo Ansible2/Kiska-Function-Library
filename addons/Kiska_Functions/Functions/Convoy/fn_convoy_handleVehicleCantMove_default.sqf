@@ -106,7 +106,7 @@ private _getBlockedPositions = {
     params ["_vehicleBehind_drivePath","_disabledVehicle"];
 
     private _disabledVehicle_dimensions = [_disabledVehicle] call KISKA_fnc_getBoundingBoxDimensions;
-    _disabledVehicle_dimensions params ["_disabledVehicle_length","_disabledVehicle_width","_disabledVehicle_height"];
+    _disabledVehicle_dimensions params ["_disabledVehicle_width","_disabledVehicle_length","_disabledVehicle_height"];
     // Adding buffers to X and Y because points that are too close to the _disabledVehicle
     // will result in _vehicleBehind crashing into it.
     private _areaX = (_disabledVehicle_width / 2) + X_AREA_BUFFER;
@@ -256,10 +256,10 @@ if (_positionsBlockedByDisabledVehicle_ATL isEqualTo []) exitWith {
 
 
 private _vehicleBehind_dimensions = [_vehicleBehind] call KISKA_fnc_getBoundingBoxDimensions;
-private _vehicleBehind_width = _vehicleBehind_dimensions select 1;
+private _vehicleBehind_width = _vehicleBehind_dimensions select 0;
 
 private _disabledVehicle_dimensions = [_disabledVehicle] call KISKA_fnc_getBoundingBoxDimensions;
-private _disabledVehicle_width = _disabledVehicle_dimensions select 1;
+private _disabledVehicle_width = _disabledVehicle_dimensions select 0;
 private _disabledVehicle_halfWidth = _disabledVehicle_width / 2;
 
 private _requiredSpace = _vehicleBehind_width + _disabledVehicle_halfWidth;
