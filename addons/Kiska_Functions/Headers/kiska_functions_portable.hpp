@@ -333,6 +333,8 @@ class Position
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Positions");
     class drawBoundingBox
     {};
+    class getBoundingBoxCenter
+    {};
     class removeBoundingBoxDraw
     {};
 };
