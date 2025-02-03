@@ -28,8 +28,7 @@ Examples:
     (end)
 
 Author(s):
-    Bohemia Interactive,
-    Modified by: Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_removeBoundingBoxDraw";
 
