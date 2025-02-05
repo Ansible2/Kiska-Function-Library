@@ -95,6 +95,28 @@ class KISKA_CAS_baseClass : KISKA_basicSupport_baseClass
     EXPRESSION_CALL_MASTER(KISKA_CAS_baseClass)
 };
 
+// TODO: implement configuration
+// TODO: add to calling for support master function
+// TODO: add command menu handler function
+
+class KISKA_detailedCloseAirSupport_baseClass : KISKA_basicSupport_baseClass
+{
+    supportTypeId = SUPPORT_TYPE_CLOSE_AIR_SUPPORT_DETAILED;
+
+    icon = CAS_ICON;
+
+    // class names for any vehicle that the player can select from
+    vehicleTypes[] = {
+        "B_Plane_CAS_01_dynamicLoadout_F"
+    };
+
+    EXPRESSION_CALL_MASTER(KISKA_detailedCloseAirSupport_baseClass)
+};
+
+
+
+
+
 /* ----------------------------------------------------------------------------
     Heli CAS
 ---------------------------------------------------------------------------- */
