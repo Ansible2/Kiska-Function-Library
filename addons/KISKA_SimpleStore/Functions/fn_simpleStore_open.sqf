@@ -22,6 +22,13 @@ Parameters:
     2: _fn_getSelectedItems <CODE> - A function that will be called whenever
         `KISKA_fnc_simpleStore_updateSelectedList` is. Must return an array of
         items formatted the same as items returned from `_fn_poolItemToListboxItem`.
+    3: _storeTitle <STRING> - Default `"KISKA Simple Store"` - The text that appears at on the top banner.
+    4: _storePoolTitle <STRING> - Default `"Pool List"` - The text that appears 
+        above the pool list to identify it.
+    5: _storeSelectedItemsTitle <STRING> - Default `"Selected List"` - The text that appears 
+        above the selected items list to identify it.
+    6: _headerBannerBackgroundColor <COLOR(RGBA)> - Default `profile color` - The color 
+        of the store title header.
 
 Returns:
     DISPLAY - The simple store dialog's display
@@ -48,17 +55,24 @@ if !(isNull _currentStore) exitWith {
 };
 
 
-// TODO: allow color of banner parameter?
-// TODO: allow title text change of store
-// TODO: allow changing of the selected items list title
-// TODO: allow changing of the pool items list title
-// TODO: add a function to handle adding items to the pool (and one for global use)
-// TODO: add a function to handle removing items from the pool (and one for global use)
-// TODO: add parameter for fetching selected items
 params [
     ["_storeId","",[""]],
     ["_fn_poolItemToListboxItem",{},[{}]],
-    ["_fn_getSelectedItems",{},[{}]]
+    ["_fn_getSelectedItems",{},[{}]],
+    ["_storeTitle","KISKA Simple Store",[""]],
+    ["_storePoolTitle","Pool List",[""]],
+    ["_storeSelectedItemsTitle","Selected List",[""]],
+    [
+        "_headerBannerBackgroundColor",
+        [
+            (profilenamespace getvariable ['GUI_BCG_RGB_R',0.13]),
+            (profilenamespace getvariable ['GUI_BCG_RGB_G',0.54]),
+            (profilenamespace getvariable ['GUI_BCG_RGB_B',0.21]),
+            1
+        ],
+        [[]],
+        4
+    ]
 ];
 
 if (_storeId isEqualTo "") exitWith {
@@ -72,6 +86,12 @@ if (_fn_getSelectedItems isEqualTo {}) exitWith {
 };
 
 private _display = createDialog ["KISKA_simpleStore_dialog",false];
+private _storeHeaderControl = _display displayCtrl SIMPLE_STORE_HEADER_TEXT_IDC;
+_storeHeaderControl ctrlSetBackgroundColor _headerBannerBackgroundColor;
+_storeHeaderControl ctrlSetText _storeTitle;
+(_display displayCtrl SIMPLE_STORE_POOL_HEADER_TEXT_IDC) ctrlSetText _storePoolTitle;
+(_display displayCtrl SIMPLE_STORE_SELECTED_HEADER_TEXT_IDC) ctrlSetText _storeSelectedItemsTitle;
+
 
 /* ----------------------------------------------------------------------------
     Variables

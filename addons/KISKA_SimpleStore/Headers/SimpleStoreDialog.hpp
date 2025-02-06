@@ -30,22 +30,19 @@ class KISKA_simpleStore_dialog
         };
         class simpleStore_headerText : RscText
         {
-            idc = -1;
+            idc = SIMPLE_STORE_HEADER_TEXT_IDC;
             moving = 1;
-            text = "KISKA Simple Store";
             x = KISKA_POS_X(-14.5);
             y = KISKA_POS_Y(-12);
             w = KISKA_POS_W(28);
             h = KISKA_POS_H(1);
-            colorBackground[] = KISKA_PROFILE_BACKGROUND_COLOR(1);
         };
         /* -------------------------------------------------------------------------
             Text Controls
         ------------------------------------------------------------------------- */
         class simpleStore_pool_headerText : RscText
         {
-            idc = -1;
-            text = "Pool";
+            idc = SIMPLE_STORE_POOL_HEADER_TEXT_IDC;
             x = KISKA_POS_X(-14);
             y = KISKA_POS_Y(-10);
             w = KISKA_POS_W(13.5);
@@ -54,7 +51,7 @@ class KISKA_simpleStore_dialog
         };
         class simpleStore_selected_headerText : simpleStore_pool_headerText
         {
-            text = "Selected";
+            idc = SIMPLE_STORE_SELECTED_HEADER_TEXT_IDC;
             x = KISKA_POS_X(0.5);
         };
     };
