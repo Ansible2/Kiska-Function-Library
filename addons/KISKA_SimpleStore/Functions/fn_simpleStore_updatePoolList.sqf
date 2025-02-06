@@ -41,7 +41,7 @@ if (isNull _storeDisplay) exitWith {
 
 
 private _poolItemsListControl = _storeDisplay getVariable ["KISKA_simpleStore_poolListControl",controlNull];
-private _currentlySelectedIndex = lbCurSel _poolItemsListControl;
+private _previouslySelectedIndex = lbCurSel _poolItemsListControl;
 lbClear _poolItemsListControl;
 
 private _poolItems = [_storeId] call KISKA_fnc_simpleStore_getPoolItems;
@@ -76,7 +76,12 @@ private _fn_poolItemToListboxItem = _storeDisplay getVariable "KISKA_simpleStore
     };
 } forEach _poolItems;
 
-_poolItemsListControl lbSetSelected [_currentlySelectedIndex,true];
+private _maxIndex = (count _poolItems) - 1;
+if (_previouslySelectedIndex > _maxIndex) then {
+    _previouslySelectedIndex = _maxIndex;
+};
+
+_poolItemsListControl lbSetSelected [_previouslySelectedIndex,true];
 
 
 nil

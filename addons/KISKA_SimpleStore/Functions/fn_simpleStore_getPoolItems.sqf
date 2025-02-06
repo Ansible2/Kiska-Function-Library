@@ -31,6 +31,13 @@ if (_storeId isEqualTo "") exitWith {
     nil
 };
 
-
 private _storeIdToPoolItemsMap = call KISKA_fnc_simpleStore_getStoreMap;
-_storeIdToPoolItemsMap getOrDefaultCall [_storeId,{[]}]
+private _poolItems = _storeIdToPoolItemsMap get _storeId;
+
+if (isNil "_poolItems") then { 
+    _poolItems = [];
+    _storeIdToPoolItemsMap set [_storeId,_poolItems];
+};
+
+
+_poolItems

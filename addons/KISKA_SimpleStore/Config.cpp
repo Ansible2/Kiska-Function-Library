@@ -19,6 +19,8 @@ class CfgFunctions
         class SimpleStore
         {
 			file="KISKA_SimpleStore\Functions";
+            class simpleStore_addItemToPool
+            {};
             class simpleStore_getDisplay
             {};
             class simpleStore_getPoolItems
