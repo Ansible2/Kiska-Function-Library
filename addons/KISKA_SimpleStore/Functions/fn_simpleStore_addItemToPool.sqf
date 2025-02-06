@@ -39,7 +39,8 @@ if (_storeId isEqualTo "") exitWith {
 private _poolItems = [_storeId] call KISKA_fnc_simpleStore_getPoolItems;
 _poolItems pushBack _itemToAdd;
 
-// TODO: call update current list because of storing(?)
+[_storeId] call KISKA_fnc_simpleStore_updateSelectedList;
 [_storeId] call KISKA_fnc_simpleStore_updatePoolList;
+
 
 nil

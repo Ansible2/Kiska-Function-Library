@@ -41,5 +41,8 @@ if (_poolItems isNotEqualTo []) then {
     _poolItems deleteAt _poolIndex;  
 };
 
-// TODO: call update current list because of storing(?)
+[_storeId] call KISKA_fnc_simpleStore_updateSelectedList;
 [_storeId] call KISKA_fnc_simpleStore_updatePoolList;
+
+
+nil

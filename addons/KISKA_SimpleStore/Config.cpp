@@ -35,6 +35,8 @@ class CfgFunctions
             {};
             class simpleStore_updatePoolList
             {};
+            class simpleStore_updateSelectedList
+            {};
         };
     };
 };

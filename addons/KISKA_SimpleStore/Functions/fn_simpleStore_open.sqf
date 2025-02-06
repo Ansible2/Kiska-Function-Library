@@ -18,6 +18,10 @@ Parameters:
             - 3: <ARRAY> - Default: `[]` - An RBGA array for the picture's color when selected.
             - 4: <STRING> - Default: `""` - The element's tooltip.
             - 5: <STRING> - Default: `""` - The element's data property.
+    
+    2: _fn_getSelectedItems <CODE> - A function that will be called whenever
+        `KISKA_fnc_simpleStore_updateSelectedList` is. Must return an array of
+        items formatted the same as items returned from `_fn_poolItemToListboxItem`.
 
 Returns:
     DISPLAY - The simple store dialog's display
@@ -53,12 +57,18 @@ if !(isNull _currentStore) exitWith {
 // TODO: add parameter for fetching selected items
 params [
     ["_storeId","",[""]],
-    ["_fn_poolItemToListboxItem",{},[{}]]
+    ["_fn_poolItemToListboxItem",{},[{}]],
+    ["_fn_getSelectedItems",{},[{}]]
 ];
 
 if (_storeId isEqualTo "") exitWith {
     ["_storeId is empty!",true] call KISKA_fnc_log;
-    nil
+    displayNull
+};
+
+if (_fn_getSelectedItems isEqualTo {}) exitWith {
+    ["_fn_getSelectedItems is empty, it must be implemented",true] call KISKA_fnc_log;
+    displayNull
 };
 
 private _display = createDialog ["KISKA_simpleStore_dialog",false];
@@ -70,6 +80,7 @@ localNamespace setVariable ["KISKA_simpleStore_activeDisplay",_display];
 _display setVariable ["KISKA_simpleStore_id",_storeId];
 _display setVariable ["KISKA_simpleStore_poolListControl",_display displayCtrl SIMPLE_STORE_POOL_LIST_IDC];
 _display setVariable ["KISKA_simpleStore_selectedListControl",_display displayCtrl SIMPLE_STORE_SELECTED_LIST_IDC];
+_display setVariable ["KISKA_simpleStore_fn_getSelectedItems",_fn_poolItemToListboxItem];
 if (_fn_poolItemToListboxItem isEqualTo {}) then {
     _fn_poolItemToListboxItem = { _this select 0 };
 };
@@ -98,6 +109,7 @@ _display displayAddEventHandler ["unload",{
 }];
 
 
+[_storeId] call KISKA_fnc_simpleStore_updateSelectedList;
 [_storeId] call KISKA_fnc_simpleStore_updatePoolList;
 
 

@@ -1,9 +1,9 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_simpleStore_updatePoolList
+Function: KISKA_fnc_simpleStore_updateSelectedList
 
 Description:
-    Triggers a refresh of the data that is in the pool list box of the given
-    store.
+    Triggers a refresh of the data that is in the selected items list box of 
+    the given store for the local machine.
 
 Parameters:
     0: _storeId <STRING> - The id for the particular simple store.
@@ -13,13 +13,13 @@ Returns:
 
 Examples:
     (begin example)
-        ["myStore"] call KISKA_fnc_simpleStore_updatePoolList;
+        ["myStore"] call KISKA_fnc_simpleStore_updateSelectedList;
     (end)
 
 Authors:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_simpleStore_updatePoolList";
+scriptName "KISKA_fnc_simpleStore_updateSelectedList";
 
 if !(hasInterface) exitWith {};
 disableSerialization;
@@ -39,19 +39,16 @@ if (isNull _storeDisplay) exitWith {
     nil
 };
 
+private _selectedItemsListControl = _storeDisplay getVariable ["KISKA_simpleStore_selectedListControl",controlNull];
+private _previouslySelectedIndex = lbCurSel _selectedItemsListControl;
+lbClear _selectedItemsListControl;
 
-private _poolItemsListControl = _storeDisplay getVariable ["KISKA_simpleStore_poolListControl",controlNull];
-private _previouslySelectedIndex = lbCurSel _poolItemsListControl;
-lbClear _poolItemsListControl;
+private _fn_getSelectedItems = _storeDisplay getVariable "KISKA_simpleStore_fn_getSelectedItems";
+private _selectedItems = call _fn_getSelectedItems;
+if (_selectedItems isEqualTo []) exitWith { nil };
 
-private _poolItems = [_storeId] call KISKA_fnc_simpleStore_getPoolItems;
-if (_poolItems isEqualTo []) exitWith { nil };
-
-
-private _fn_poolItemToListboxItem = _storeDisplay getVariable "KISKA_simpleStore_fn_poolItemToListboxItem";
 {
-    private _listBoxItem = [_x] call _fn_poolItemToListboxItem;
-    _listBoxItem params [
+    _x params [
         ["_text","",[""]],
         ["_picture","",[""]],
         ["_pictureColor",[],[[]],4],
@@ -74,15 +71,14 @@ private _fn_poolItemToListboxItem = _storeDisplay getVariable "KISKA_simpleStore
     if (_pictureColorSelected isNotEqualTo []) then {
         _element lbSetPictureColor _pictureColorSelected;
     };
-} forEach _poolItems;
+} forEach _selectedItems;
 
-private _maxIndex = (count _poolItems) - 1;
+
+private _maxIndex = (count _selectedItems) - 1;
 if (_previouslySelectedIndex > _maxIndex) then {
     _previouslySelectedIndex = _maxIndex;
 };
 _poolItemsListControl lbSetSelected [_previouslySelectedIndex,true];
-
-lbSort _poolItemsListControl;
 
 
 nil
