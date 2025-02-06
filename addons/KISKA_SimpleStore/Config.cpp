@@ -18,7 +18,7 @@ class CfgFunctions
     {
         class SimpleStore
         {
-			file="KISKA_SimpleStore\Functions";
+            file="KISKA_SimpleStore\Functions";
             class simpleStore_addItemToPool
             {};
             class simpleStore_getDisplay
@@ -30,6 +30,8 @@ class CfgFunctions
             class simpleStore_isStoreOpen
             {};
             class simpleStore_open
+            {};
+            class simpleStore_removeItemFromPool
             {};
             class simpleStore_updatePoolList
             {};

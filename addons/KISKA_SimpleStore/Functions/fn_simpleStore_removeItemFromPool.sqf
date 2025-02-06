@@ -1,12 +1,12 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_simpleStore_addItemToPool
+Function: KISKA_fnc_simpleStore_removeItemFromPool
 
 Description:
-    Adds an entry into the local Simple Store pool for the given id.
+    Removes the provided index from the item pool of a given store
 
 Parameters:
     0: _storeId <STRING> - The id for the particular simple store.
-    1: _itemToAdd <ANY> - Whatever value that is meant to be added.
+    1: _poolIndex <NUMBER> - The index of the item to remove from the item pool.
 
 Returns:
     NOTHING
@@ -15,20 +15,20 @@ Examples:
     (begin example)
         [
             "myStore",
-            "MyValue"
-        ] call KISKA_fnc_supportManager_addToPool;
+            0
+        ] call KISKA_fnc_simpleStore_removeItemFromPool;
     (end)
 
 Authors:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_simpleStore_addItemToPool";
+scriptName "KISKA_fnc_simpleStore_removeItemFromPool";
 
 if (!hasInterface) exitWith {};
 
 params [
     ["_storeId","",[""]],
-    "_itemToAdd"
+    ["_poolIndex",-1,[123]]
 ];
 
 if (_storeId isEqualTo "") exitWith {
@@ -37,9 +37,9 @@ if (_storeId isEqualTo "") exitWith {
 };
 
 private _poolItems = [_storeId] call KISKA_fnc_simpleStore_getPoolItems;
-_poolItems pushBack _itemToAdd;
+if (_poolItems isNotEqualTo []) then {
+    _poolItems deleteAt _poolIndex;  
+};
 
 // TODO: call update current list because of storing(?)
 [_storeId] call KISKA_fnc_simpleStore_updatePoolList;
-
-nil
