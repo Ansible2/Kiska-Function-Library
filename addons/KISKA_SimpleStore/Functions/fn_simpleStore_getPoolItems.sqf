@@ -14,7 +14,7 @@ Examples:
     (begin example)
         private _storeItems = [
             "myStore"
-        ] call KISKA_fnc_simpleStore_open;
+        ] call KISKA_fnc_simpleStore_getPoolItems;
     (end)
 
 Authors:
@@ -32,6 +32,7 @@ if (_storeId isEqualTo "") exitWith {
 };
 
 private _storeIdToPoolItemsMap = call KISKA_fnc_simpleStore_getStoreMap;
+_storeId = toLowerANSI _storeId;
 private _poolItems = _storeIdToPoolItemsMap get _storeId;
 
 if (isNil "_poolItems") then { 

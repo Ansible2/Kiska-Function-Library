@@ -24,6 +24,10 @@ Parameters:
         - `_fn_getSelectedItems` <CODE>: A function that will be called whenever
             `KISKA_fnc_simpleStore_updateSelectedList` is. Must return an array of
             items formatted the same as an item returned from `_fn_poolItemToListboxItem`.
+            Passed the following params:
+                
+                - 0: <STRING> - The store id.
+
         - `_fn_onTake` <CODE>: A function that will be called when the Take button 
             is clicked. Passed the following params:
 
@@ -114,7 +118,7 @@ private "_invalidParamMessage";
     ]
 ] apply {
     _x params ["_var","_default","_types"];
-    private _paramValue = _aircraftParams getOrDefault [_var,_default];
+    private _paramValue = _paramMap getOrDefault [_var,_default];
     if !(_paramValue isEqualTypeAny _types) then {
         _invalidParamMessage = [_var," value ",_paramValue," is invalid, must be -> ",_types] joinString "";
         break;
@@ -164,9 +168,9 @@ localNamespace setVariable ["KISKA_simpleStore_activeDisplay",_display];
 _display setVariable ["KISKA_simpleStore_id",_storeId];
 _display setVariable ["KISKA_simpleStore_poolListControl",_display displayCtrl SIMPLE_STORE_POOL_LIST_IDC];
 _display setVariable ["KISKA_simpleStore_selectedListControl",_display displayCtrl SIMPLE_STORE_SELECTED_LIST_IDC];
-_display setVariable ["KISKA_simpleStore_fn_getSelectedItems"_fn_getSelectedItems];
-_display setVariable ["KISKA_simpleStore_fn_onStore"_fn_onStore];
-_display setVariable ["KISKA_simpleStore_fn_onTake"_fn_onTake];
+_display setVariable ["KISKA_simpleStore_fn_getSelectedItems",_fn_getSelectedItems];
+_display setVariable ["KISKA_simpleStore_fn_onStore",_fn_onStore];
+_display setVariable ["KISKA_simpleStore_fn_onTake",_fn_onTake];
 _display setVariable ["KISKA_simpleStore_fn_poolItemToListboxItem",_paramMap get "_fn_poolItemToListboxItem"];
 
 
@@ -176,12 +180,13 @@ _display setVariable ["KISKA_simpleStore_fn_poolItemToListboxItem",_paramMap get
 (_display displayCtrl SIMPLE_STORE_TAKE_BUTTON_IDC) ctrlAddEventHandler ["ButtonClick", {
     params ["_control"];
     private _simpleStoreDisplay = ctrlParent _control;
-    private _selectedIndex = lbCurSel (_simpleStoreDisplay getVariable "KISKA_simpleStore_poolListControl");
+    private _selectedListboxIndex = lbCurSel (_simpleStoreDisplay getVariable "KISKA_simpleStore_poolListControl");
+    private _selectedIndex = _control lbValue _selectedListboxIndex;
 
     if (_selectedIndex >= 0) then {
         [
-            _selectedIndex,
-            _simpleStoreDisplay getVariable "KISKA_simpleStore_id"
+            _simpleStoreDisplay getVariable "KISKA_simpleStore_id",
+            _selectedIndex
         ] call (_simpleStoreDisplay getVariable "KISKA_simpleStore_fn_onTake");
     };
 }];
@@ -189,12 +194,13 @@ _display setVariable ["KISKA_simpleStore_fn_poolItemToListboxItem",_paramMap get
 (_display displayCtrl SIMPLE_STORE_STORE_BUTTON_IDC) ctrlAddEventHandler ["ButtonClick", {
     params ["_control"];
     private _simpleStoreDisplay = ctrlParent _control;
-    private _selectedIndex = lbCurSel (_simpleStoreDisplay getVariable "KISKA_simpleStore_selectedListControl");
+    private _selectedListboxIndex = lbCurSel (_simpleStoreDisplay getVariable "KISKA_simpleStore_selectedListControl");
+    private _selectedIndex = _control lbValue _selectedListboxIndex;
 
     if (_selectedIndex >= 0) then {
         [
-            _selectedIndex,
-            _simpleStoreDisplay getVariable "KISKA_simpleStore_id"
+            _simpleStoreDisplay getVariable "KISKA_simpleStore_id",
+            _selectedIndex
         ] call (_simpleStoreDisplay getVariable "KISKA_simpleStore_fn_onStore");
     };
 }];

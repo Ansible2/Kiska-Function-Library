@@ -43,33 +43,36 @@ private _selectedItemsListControl = _storeDisplay getVariable ["KISKA_simpleStor
 private _previouslySelectedIndex = lbCurSel _selectedItemsListControl;
 lbClear _selectedItemsListControl;
 
+hint "step 1";
+
 private _fn_getSelectedItems = _storeDisplay getVariable "KISKA_simpleStore_fn_getSelectedItems";
-private _selectedItems = call _fn_getSelectedItems;
+private _selectedItems = [_storeId] call _fn_getSelectedItems;
 if (_selectedItems isEqualTo []) exitWith { nil };
 
+hint str ["items ->",_selectedItems];
 {
     _x params [
         ["_text","",[""]],
         ["_picture","",[""]],
-        ["_pictureColor",[],[[]],4],
-        ["_pictureColorSelected",[],[[]],4],
+        ["_pictureColor",[],[[]]],
+        ["_pictureColorSelected",[],[[]]],
         ["_tooltip","",[""]],
         ["_data","",[""]]
     ];
 
-    private _element = _poolItemsListControl lbAdd _text;
-    _element lbSetValue _forEachIndex; // TODO: NOTE you can use this to determine the original pool item being taken
-    _element lbSetTooltip _tooltip;
-    _element lbSetData _data;
+    private _element = _selectedItemsListControl lbAdd _text;
+    _selectedItemsListControl lbSetValue [_element,_forEachIndex]; // TODO: NOTE you can use this to determine the original pool item being taken
+    _selectedItemsListControl lbSetTooltip [_element,_tooltip];
+    _selectedItemsListControl lbSetData [_element,_data];
 
     if (_picture isNotEqualTo "") then {
-        _element lbSetPicture _picture;
+        _selectedItemsListControl lbSetPicture [_element,_picture];
     };
     if (_pictureColor isNotEqualTo []) then {
-        _element lbSetPictureColor _pictureColor;
+        _selectedItemsListControl lbSetPictureColor [_element,_pictureColor];
     };
     if (_pictureColorSelected isNotEqualTo []) then {
-        _element lbSetPictureColor _pictureColorSelected;
+        _selectedItemsListControl lbSetPictureColor [_element,_pictureColorSelected];
     };
 } forEach _selectedItems;
 
@@ -78,7 +81,7 @@ private _maxIndex = (count _selectedItems) - 1;
 if (_previouslySelectedIndex > _maxIndex) then {
     _previouslySelectedIndex = _maxIndex;
 };
-_poolItemsListControl lbSetSelected [_previouslySelectedIndex,true];
+_selectedItemsListControl lbSetSelected [_previouslySelectedIndex,true];
 
 
 nil

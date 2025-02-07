@@ -25,7 +25,7 @@ scriptName "KISKA_fnc_simpleStore_getStoreMap";
 private _storeIdToPoolItemsMap = localNamespace getVariable "KISKA_simpleStore_storeIdToPoolItemsMap";
 if (isNil "_storeIdToPoolItemsMap") then {
     _storeIdToPoolItemsMap = createHashMap;
-    localNamespace getVariable ["KISKA_simpleStore_storeIdToPoolItemsMap",_storeIdToPoolItemsMap];
+    localNamespace setVariable ["KISKA_simpleStore_storeIdToPoolItemsMap",_storeIdToPoolItemsMap];
 };
 
 

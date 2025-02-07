@@ -54,25 +54,25 @@ private _fn_poolItemToListboxItem = _storeDisplay getVariable "KISKA_simpleStore
     _listBoxItem params [
         ["_text","",[""]],
         ["_picture","",[""]],
-        ["_pictureColor",[],[[]],4],
-        ["_pictureColorSelected",[],[[]],4],
+        ["_pictureColor",[],[[]]],
+        ["_pictureColorSelected",[],[[]]],
         ["_tooltip","",[""]],
         ["_data","",[""]]
     ];
 
     private _element = _poolItemsListControl lbAdd _text;
-    _element lbSetValue _forEachIndex; // TODO: NOTE you can use this to determine the original pool item being taken
-    _element lbSetTooltip _tooltip;
-    _element lbSetData _data;
+    _poolItemsListControl lbSetValue [_element,_forEachIndex]; // TODO: NOTE you can use this to determine the original pool item being taken
+    _poolItemsListControl lbSetTooltip [_element,_tooltip];
+    _poolItemsListControl lbSetData [_element,_data];
 
     if (_picture isNotEqualTo "") then {
-        _element lbSetPicture _picture;
+        _poolItemsListControl lbSetPicture [_element,_picture];
     };
     if (_pictureColor isNotEqualTo []) then {
-        _element lbSetPictureColor _pictureColor;
+        _poolItemsListControl lbSetPictureColor [_element,_pictureColor];
     };
     if (_pictureColorSelected isNotEqualTo []) then {
-        _element lbSetPictureColor _pictureColorSelected;
+        _poolItemsListControl lbSetPictureColor [_element,_pictureColorSelected];
     };
 } forEach _poolItems;
 
