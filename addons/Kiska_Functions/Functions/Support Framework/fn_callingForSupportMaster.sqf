@@ -42,7 +42,7 @@ params [
     ["_count",-1]
 ];
 
-// delete comm menu id from use hash
+// delete comm menu id from use hashmap
 private _supportMap = call KISKA_fnc_getPlayerSupportMap;
 _supportMap deleteAt (_commMenuArgs select 4);
 

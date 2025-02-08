@@ -12,7 +12,7 @@ Description:
     
 Parameters:
     0: _owner <OBJECT> - The person to add the support to
-    1: _itemClass <STRING> - The class as defined in the CfgCommunicationMenu
+    1: _itemConfig <CONFIG> - The config as defined in the CfgCommunicationMenu
     2: _textArguements <ANY> - Any arguements to pass to the text displayed in the menu
     3: _expressionArguments <ANY> - Any arguements to pass to the expression
     4: _notification <STRING> - The class of notification to display when added
@@ -33,7 +33,8 @@ scriptName "KISKA_fnc_addCommMenuItem";
 
 params [
     ["_owner",objNull,[objNull]],
-    ["_itemClass","",[""]],
+    // TODO: ensure all calls pass item config instead of className
+    ["_itemConfig",configNull,[configNull]],
     ["_textArguements",""],
     ["_expressionArguments",-1,[]],
     ["_notification","",[""]],
@@ -42,7 +43,7 @@ params [
 
 private _id = [
     _owner,
-    _itemClass,
+    configName _itemConfig,
     _textArguements,
     _expressionArguments,
     _notification
@@ -50,7 +51,7 @@ private _id = [
 
 if (!(isNil "_id") AND _addToSupportMap) then {
     private _supportMap = call KISKA_fnc_getPlayerSupportMap;
-    _supportMap set [_id,[_itemClass,_expressionArguments]];
+    _supportMap set [_id,[_itemConfig,_expressionArguments]];
 };
 
 

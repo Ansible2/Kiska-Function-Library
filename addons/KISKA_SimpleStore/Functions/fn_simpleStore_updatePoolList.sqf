@@ -50,7 +50,9 @@ if (_poolItems isEqualTo []) exitWith { nil };
 
 private _fn_poolItemToListboxItem = _storeDisplay getVariable "KISKA_simpleStore_fn_poolItemToListboxItem";
 {
-    private _listBoxItem = [_x] call _fn_poolItemToListboxItem;
+    private _listBoxItem = [_x,_forEachIndex] call _fn_poolItemToListboxItem;
+    if (isNil "_listBoxItem") then {continue};
+
     _listBoxItem params [
         ["_text","",[""]],
         ["_picture","",[""]],

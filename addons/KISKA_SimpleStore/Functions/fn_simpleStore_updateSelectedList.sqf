@@ -43,14 +43,13 @@ private _selectedItemsListControl = _storeDisplay getVariable ["KISKA_simpleStor
 private _previouslySelectedIndex = lbCurSel _selectedItemsListControl;
 lbClear _selectedItemsListControl;
 
-hint "step 1";
-
 private _fn_getSelectedItems = _storeDisplay getVariable "KISKA_simpleStore_fn_getSelectedItems";
 private _selectedItems = [_storeId] call _fn_getSelectedItems;
 if (_selectedItems isEqualTo []) exitWith { nil };
 
-hint str ["items ->",_selectedItems];
 {
+    if (isNil "_x") then {continue};
+    
     _x params [
         ["_text","",[""]],
         ["_picture","",[""]],
@@ -61,7 +60,7 @@ hint str ["items ->",_selectedItems];
     ];
 
     private _element = _selectedItemsListControl lbAdd _text;
-    _selectedItemsListControl lbSetValue [_element,_forEachIndex]; // TODO: NOTE you can use this to determine the original pool item being taken
+    _selectedItemsListControl lbSetValue [_element,_forEachIndex];
     _selectedItemsListControl lbSetTooltip [_element,_tooltip];
     _selectedItemsListControl lbSetData [_element,_data];
 

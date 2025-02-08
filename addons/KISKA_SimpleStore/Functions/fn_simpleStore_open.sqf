@@ -11,8 +11,15 @@ Parameters:
         - `_storeId` <STRING>: The id for the particular simple store.
         - `_fn_poolItemToListboxItem` <CODE>: A function that will be called on every
             item in the pool items list to convert it into a listbox item to show
-            in the UI. It accepts a pool item as an arguement in index 0 and must 
-            return an array in the format:
+            in the UI. In the event that the function returns `nil` the item will
+            be excluded from the pool list. 
+
+                Parameters: 
+                
+                - 0: <ANY> - a pool item
+                - 1: <NUMBER> - The index of the item in the pool.
+
+                Returns an array containing:
 
                 - 0: <STRING> - The text of the listbox element.
                 - 1: <STRING> - Default: `""` - A path for the picture of the element.
@@ -34,6 +41,7 @@ Parameters:
                 - 0: <STRING> - The store id.
                 - 1: <NUMBER> - The index of the selected item in the pool. This is the
                     index of the source array, not the index in the list box.
+                - 2: <STRING> - The item's `lbData`.
 
         - `_fn_onStore` <CODE>: A function that will be called when the Store button 
             is clicked. Passed the following params:
@@ -41,6 +49,7 @@ Parameters:
                 - 0: <STRING> - The store id.
                 - 1: <NUMBER> - The index of the selected item in the selected items list. 
                     This is the index of the source array, not the index in the list box.
+                - 2: <STRING> - The item's `lbData`.
 
         - `_storeTitle` <STRING>: Default `"KISKA Simple Store"` - The text that appears at on the top banner.
         - `_storePoolTitle` <STRING>: Default `"Pool List"` - The text that appears 
@@ -186,7 +195,8 @@ _display setVariable ["KISKA_simpleStore_fn_poolItemToListboxItem",_paramMap get
     if (_selectedIndex >= 0) then {
         [
             _simpleStoreDisplay getVariable "KISKA_simpleStore_id",
-            _selectedIndex
+            _selectedIndex,
+            _control lbData _selectedListboxIndex
         ] call (_simpleStoreDisplay getVariable "KISKA_simpleStore_fn_onTake");
     };
 }];
@@ -200,7 +210,8 @@ _display setVariable ["KISKA_simpleStore_fn_poolItemToListboxItem",_paramMap get
     if (_selectedIndex >= 0) then {
         [
             _simpleStoreDisplay getVariable "KISKA_simpleStore_id",
-            _selectedIndex
+            _selectedIndex,
+            _control lbData _selectedListboxIndex
         ] call (_simpleStoreDisplay getVariable "KISKA_simpleStore_fn_onStore");
     };
 }];
