@@ -43,7 +43,7 @@ params [
 ];
 
 // delete comm menu id from use hashmap
-private _supportMap = call KISKA_fnc_getPlayerSupportMap;
+private _supportMap = call KISKA_fnc_commMenu_getSupportMap;
 _supportMap deleteAt (_commMenuArgs select 4);
 
 private _supportConfig = [["CfgCommunicationMenu",_supportClass]] call KISKA_fnc_findConfigAny;

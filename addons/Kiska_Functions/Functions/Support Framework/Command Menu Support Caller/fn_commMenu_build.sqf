@@ -1,10 +1,10 @@
-#include "..\..\Headers\Support Framework\Command Menu Macros.hpp"
+#include "..\..\..\Headers\Support Framework\Command Menu Macros.hpp"
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_buildCommandMenu
+Function: KISKA_fnc_commMenu_build
 
 Description:
     Creates a showCommandingMenu compatible menu global array to be used with
-     KISKA_fnc_commandMenuTree.
+     KISKA_fnc_commMenu_openTree.
 
     This will be saved as a missionNamespace global var.
 
@@ -22,13 +22,13 @@ Returns:
 
 Examples:
     (begin example)
-        _createdMenu = [] call KISKA_fnc_buildCommandMenu
+        _createdMenu = [] call KISKA_fnc_commMenu_build
     (end)
 
 Author(s):
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_buildCommandMenu";
+scriptName "KISKA_fnc_commMenu_build";
 
 params [
     ["_menuName","",[""]],

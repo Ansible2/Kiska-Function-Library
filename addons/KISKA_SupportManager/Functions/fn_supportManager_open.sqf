@@ -46,7 +46,7 @@ private _args = createHashMapFromArray [
                 ["_useCount",-1,[123]]
             ];
             
-            private _supportManagerDetails = _config >> "SupportManagerDetails";
+            private _supportManagerDetails = _config >> "KISKA_supportManagerDetails";
             if ((isNull _config) OR (isNull _supportManagerDetails) ) then {
                 [["_config at index ->",_index," is null"],true] call KISKA_fnc_log;
                 nil
@@ -73,7 +73,7 @@ private _args = createHashMapFromArray [
                     ["_numberOfUsesLeft",-1,[123]]
                 ];
                 
-                private _supportManagerDetails = _config >> "SupportManagerDetails";
+                private _supportManagerDetails = _config >> "KISKA_supportManagerDetails";
                 if ((isNull _config) OR (isNull _supportManagerDetails) ) then {
                     [["_config at index ->",_forEachIndex," is null"],true] call KISKA_fnc_log;
                     nil
@@ -95,7 +95,7 @@ private _args = createHashMapFromArray [
                     getText(_supportManagerDetails >> "tooltip"),
                     getText(_supportManagerDetails >> "data")
                 ]
-            } forEach (call KISKA_fnc_getPlayerSupportMap);
+            } forEach (call KISKA_fnc_commMenu_getSupportMap);
         }
     ],
     [
@@ -123,11 +123,11 @@ private _args = createHashMapFromArray [
                 ["_numberOfUsesLeft",-1]
             ];
 
-            private _supportManagerDetails = _supportConfig >> "SupportManagerDetails";
+            private _supportManagerDetails = _supportConfig >> "KISKA_supportManagerDetails";
             private _condition = getText(_supportManagerDetails >> "managerCondition");
             private _canTakeSupport = (_condition isEqualTo "") OR { [_supportConfig] call (compile _condition) };
             if (_canTakeSupport) exitWith {
-                [player,_supportConfig,"",_numberOfUsesLeft] call KISKA_fnc_addCommMenuItem;
+                [_supportConfig,_numberOfUsesLeft] call KISKA_fnc_commMenu_addSupport;
                 _this remoteExecCall ["KISKA_fnc_simpleStore_removeItemFromPool",0,true];
                 nil
             };

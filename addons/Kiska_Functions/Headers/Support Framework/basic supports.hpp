@@ -21,30 +21,149 @@
     id: String - item ID as returned by BIS_fnc_addCommMenuItem function
 */
 
-/*
-	if a class is to be solely a base one, you need to include _baseClass (EXACTLY AS IT IS CASE SENSITIVE)
-	 somewhere in the class name so that it can be excluded from being added to the shop
-*/
-
 /* ----------------------------------------------------------------------------
-	Base Classes
+    Base Classes
 ---------------------------------------------------------------------------- */
 class KISKA_basicSupport_baseClass
 {
-    text = "I'm a support!"; // text in support menu
+    text = "My Support"; // text in support menu
     subMenu = "";
     expression = ""; // code to compile upon call of menu item
     icon = CALL_ICON; // icon in support menu
     curosr = SUPPORT_CURSOR;
     enable = "cursorOnGround"; // Simple expression condition for enabling the item
     removeAfterExpressionCall = 1;
-
     supportTypeId = SUPPORT_TYPE_CUSTOM;
 
-    // used for support selection menu
-    // _this select 0 is the classname
-    managerCondition = "";
-    conditionMessage = ""; // this message will appear if a player fails the managerCondition check. if empty, a generic message is used
+    class KISKA_supportManagerDetails
+    {
+        /* -------------------------------------------------------------------------------
+            Description: 
+                - text: <STRING> - The text that will appear in the KISKA Support manager
+                    lists for this support.
+
+            Required: 
+                - YES
+
+            Examples:
+                (begin example)
+                    text = "Custom Support";
+                (end)
+        ------------------------------------------------------------------------------- */
+        text = "My Support";
+
+        /* -------------------------------------------------------------------------------
+            Description: 
+                - picture: <STRING> - A path to an icon that will display to the left of the
+                    text in the Support Manager.
+
+            Required: 
+                - NO
+
+            Examples:
+                (begin example)
+                    picture = CALL_ICON;
+                (end)
+        ------------------------------------------------------------------------------- */
+        // picture = "";
+
+        /* -------------------------------------------------------------------------------
+            Description: 
+                - pictureColor: <ARRAY> - An array of RGBA that will determine what color
+                    the support is in the manager (when it has not been used before).
+
+            Required: 
+                - NO
+
+            Examples:
+                (begin example)
+                    pictureColor[] = {1,0,1,1};
+                (end)
+        ------------------------------------------------------------------------------- */
+        // pictureColor[] = {};
+
+        /* -------------------------------------------------------------------------------
+            Description: 
+                - selectedPictureColor: <ARRAY> - An array of RGBA that will determine what color
+                    the support is in the manager (when it has not been used before) and it
+                    is currently selected in a listbox.
+
+            Required: 
+                - NO
+
+            Examples:
+                (begin example)
+                    selectedPictureColor[] = {1,0,1,1};
+                (end)
+        ------------------------------------------------------------------------------- */
+        // selectedPictureColor[] = {};
+
+        /* -------------------------------------------------------------------------------
+            Description: 
+                - tooltip: <STRING> - Tooltip text that will appear when hovering over
+                    a support of this class in the manager.
+
+            Required: 
+                - NO
+
+            Examples:
+                (begin example)
+                    tooltip = "hello tooltip";
+                (end)
+        ------------------------------------------------------------------------------- */
+        // tooltip = "";
+
+        /* -------------------------------------------------------------------------------
+            Description: 
+                - data: <STRING> - Any string data that will be stored and passed with the
+                    support when it is taken or stored.
+
+            Required: 
+                - NO
+
+            Examples:
+                (begin example)
+                    data = "something useful";
+                (end)
+        ------------------------------------------------------------------------------- */
+        // data = "";
+
+        /* -------------------------------------------------------------------------------
+            Description: 
+                - managerCondition: <STRING> - Code that will be compiled and run when
+                    a player attempts to take the support from the support manager.
+                    Must return a <BOOL>, `true` means that the user can take the support,
+                    `false` means that they cant.
+
+                    Parameters:
+                        0: <CONFIG> - The parent config above the KISKA_supportManagerDetails
+
+            Required: 
+                - NO
+
+            Examples:
+                (begin example)
+                    managerCondition = "params ["_supportConfig"]; true";
+                (end)
+        ------------------------------------------------------------------------------- */
+        // managerCondition = "";
+
+        /* -------------------------------------------------------------------------------
+            Description: 
+                - conditionMessage: <STRING> - A message that will appear when the attempting
+                    to take the support results in a failure. A default message is used in
+                    the event this is undefined or `""`.
+
+            Required: 
+                - NO
+
+            Examples:
+                (begin example)
+                    conditionMessage = "You cant take the support";
+                (end)
+        ------------------------------------------------------------------------------- */
+        // conditionMessage = "";
+    };
 };
 
 class KISKA_artillery_baseClass : KISKA_basicSupport_baseClass
@@ -101,7 +220,7 @@ class KISKA_CAS_baseClass : KISKA_basicSupport_baseClass
 };
 
 /* ----------------------------------------------------------------------------
-	Heli CAS
+    Heli CAS
 ---------------------------------------------------------------------------- */
 class KISKA_attackHelicopterCAS_baseClass : KISKA_basicSupport_baseClass
 {
@@ -140,7 +259,7 @@ class KISKA_helicopterCAS_baseClass : KISKA_basicSupport_baseClass
 };
 
 /* ----------------------------------------------------------------------------
-	Supplies
+    Supplies
 ---------------------------------------------------------------------------- */
 class KISKA_arsenalSupplyDrop_baseClass : KISKA_basicSupport_baseClass
 {
@@ -178,7 +297,7 @@ class KISKA_supplyDrop_aircraft_baseClass : KISKA_basicSupport_baseClass
 
 
 /* ----------------------------------------------------------------------------
-	(Fixed-Wing) CAS Templates
+    (Fixed-Wing) CAS Templates
 ---------------------------------------------------------------------------- */
 /*
 // adding custom ammos for attack:
@@ -253,7 +372,7 @@ class KISKA_CAS_napalm_templateClass : KISKA_CAS_baseClass
 };
 
 /* ----------------------------------------------------------------------------
-	Atillery Templates
+    Atillery Templates
 ---------------------------------------------------------------------------- */
 class KISKA_ARTY_155_templateClass : KISKA_artillery_baseClass
 {

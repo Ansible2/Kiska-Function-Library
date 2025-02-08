@@ -1,6 +1,6 @@
-#include "..\..\Headers\Support Framework\Command Menu Macros.hpp"
+#include "..\..\..\Headers\Support Framework\Command Menu Macros.hpp"
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_createVehicleSelectMenu
+Function: KISKA_fnc_commMenu_buildVehicleSelectPanel
 
 Description:
     Creates an array to be used with showCommandingMenu.
@@ -23,7 +23,7 @@ Examples:
 Author(s):
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_createVehicleSelectMenu";
+scriptName "KISKA_fnc_commMenu_buildVehicleSelectPanel";
 
 #define CLASS_ARRAY(DISPLAY_NAME,CLASS) [DISPLAY_NAME,[0],"",CMD_EXECUTE,[["expression", PUSHBACK_AND_PROCEED(CLASS)]], IS_ACTIVE, IS_VISIBLE]
 

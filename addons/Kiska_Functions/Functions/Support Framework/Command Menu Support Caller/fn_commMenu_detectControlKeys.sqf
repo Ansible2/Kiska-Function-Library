@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_detectControlKeys
+Function: KISKA_fnc_commMenu_detectControlKeys
 
 Description:
     Arma 3's support system currently has a bug that allows players to call in
@@ -20,7 +20,7 @@ Examples:
 Author(s):
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_detectControlKeys";
+scriptName "KISKA_fnc_commMenu_detectControlKeys";
 
 #define LEFT_CTRL_CODE 29
 #define RIGHT_CTRL_CODE 157
@@ -34,7 +34,7 @@ if (call KISKA_fnc_isMainMenu) exitWith {
 
 if (!canSuspend) exitWith {
     ["Needs to be run in scheduled, exiting to scheduled...",false] call KISKA_fnc_log;
-    [] spawn KISKA_fnc_detectControlKeys;
+    [] spawn KISKA_fnc_commMenu_detectControlKeys;
 };
 
 

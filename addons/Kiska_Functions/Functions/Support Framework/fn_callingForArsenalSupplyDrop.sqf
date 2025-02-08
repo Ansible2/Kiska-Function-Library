@@ -11,7 +11,7 @@ Description:
      in the config.
 
 Parameters:
-    0: _supportClass <STRING> - The class as defined in the CfgCommunicationMenu
+    0: _supportConfig <CONFIG> - The support config.
     1: _commMenuArgs <ARRAY> - The arguements passed by the CfgCommunicationMenu entry
         
         - 0. _caller <OBJECT> - The player calling for support
@@ -22,14 +22,16 @@ Parameters:
         - 4. _commMenuId <NUMBER> - The ID number of the Comm Menu added by BIS_fnc_addCommMenuItem
         - 5. _supportType <NUMBER> - The Support Type ID
 
-    2: _count <NUMBER> - Used for keeping track of how many of a count a support has left (such as rounds)
+    2: _numberOfUsesLeft <NUMBER> - Used for keeping track of how many of a count a support has left (such as rounds)
 
 Returns:
     NOTHING
 
 Examples:
     (begin example)
-        [] call KISKA_fnc_callingForArsenalSupplyDrop;
+        [
+        
+        ] call KISKA_fnc_callingForArsenalSupplyDrop;
     (end)
 
 Authors:
@@ -42,15 +44,14 @@ scriptName "KISKA_fnc_callingForArsenalSupplyDrop";
 #define ARSENAL_LIFETIME -1
 
 params [
-    "_supportClass",
+    "_supportConfig",
     "_commMenuArgs",
-    ["_useCount",-1]
+    ["_numberOfUsesLeft",-1]
 ];
 
 
-private _supportConfig = [["CfgCommunicationMenu",_supportClass]] call KISKA_fnc_findConfigAny;
 if (isNull _supportConfig) exitWith {
-    [["Could not find class: ",_supportClass," in any config!"],true] call KISKA_fnc_log;
+    ["Null _supportConfig used",true] call KISKA_fnc_log;
     nil
 };
 
@@ -59,11 +60,11 @@ private _menuPathArray = [];
 private _menuVariables = []; // keeps track of global variable names to set to nil when done
 
 // get use count from config if -1
-private _args = _this; // just for readability
+private _thisArgs = _this; // just for readability
 private _useCountConfig = _supportConfig >> "useCount";
-if (_useCount < 0 AND (isNumber _useCountConfig)) then {
-    _useCount = getNumber _useCountConfig;
-    _args set [2,_useCount];
+if (_numberOfUsesLeft < 0 AND (isNumber _useCountConfig)) then {
+    _numberOfUsesLeft = getNumber _useCountConfig;
+    _thisArgs set [2,_numberOfUsesLeft];
 };
 
 /* ----------------------------------------------------------------------------
@@ -74,7 +75,7 @@ if (_vehicles isEqualTo []) then {
     _vehicles = [side (_commMenuArgs select 0),_commMenuArgs select 5] call KISKA_fnc_getSupportVehicleClasses;
 };
 
-private _vehicleMenu = [_vehicles] call KISKA_fnc_createVehicleSelectMenu;
+private _vehicleMenu = [_vehicles] call KISKA_fnc_commMenu_buildVehicleSelectPanel;
 SAVE_AND_PUSH(VEHICLE_SELECT_MENU_STR,_vehicleMenu)
 
 
@@ -112,21 +113,21 @@ SAVE_AND_PUSH(FLYIN_HEIGHT_MENU_STR,_flyInHeightMenu)
 /* ----------------------------------------------------------------------------
     Create Menu Path
 ---------------------------------------------------------------------------- */
-_args pushBack _menuVariables;
+_thisArgs pushBack _menuVariables;
 
 [
     _menuPathArray,
-    [_args, {
+    [_thisArgs, {
         params ["_vehicleClass","_approachBearing","_flyinHeight"];
 
-        private _useCount = _thisArgs select 2;
+        private _numberOfUsesLeft = _thisArgs select 2;
         // if a ctrl key is held and one left clicks to select the support while in the map, they can call in an infinite number of the support
         if (
             visibleMap AND
             (missionNamespace getVariable ["KISKA_ctrlDown",false])
         ) exitWith {
             ["You can't call in a support while holding down a crtl key and in the map. It causes a bug with the support menu."] call KISKA_fnc_errorNotification;
-            ADD_SUPPORT_BACK(_useCount)
+            ADD_SUPPORT_BACK(_numberOfUsesLeft)
         };
 
         private _commMenuArgs = _thisArgs select 1;
@@ -148,18 +149,18 @@ _args pushBack _menuVariables;
         [SUPPORT_TYPE_ARSENAL_DROP] call KISKA_fnc_supportNotification;
 
         // if support still has uses left
-        if (_useCount > 1) then {
-            _useCount = _useCount - 1;
-            ADD_SUPPORT_BACK(_useCount)
+        if (_numberOfUsesLeft > 1) then {
+            _numberOfUsesLeft = _numberOfUsesLeft - 1;
+            ADD_SUPPORT_BACK(_numberOfUsesLeft)
         };
 
         UNLOAD_GLOBALS
     }],
-    [_args, {
+    [_thisArgs, {
         ADD_SUPPORT_BACK(_thisArgs select 2)
         UNLOAD_GLOBALS
     }]
-] spawn KISKA_fnc_commandMenuTree;
+] spawn KISKA_fnc_commMenu_openTree;
 
 
 nil

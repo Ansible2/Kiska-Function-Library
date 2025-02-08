@@ -12,7 +12,7 @@ Description:
      in the config.
 
 Parameters:
-    0: _supportClass <STRING> - The class as defined in the CfgCommunicationMenu
+    0: _supportConfig <CONFIG> - The support config.
     1: _commMenuArgs <ARRAY> - The arguements passed by the CfgCommunicationMenu entry
 
         - 0. _caller <OBJECT> - The player calling for support
@@ -23,14 +23,16 @@ Parameters:
         - 4. _commMenuId <NUMBER> The ID number of the Comm Menu added by BIS_fnc_addCommMenuItem
         - 5. _supportType <NUMBER> - The Support Type ID
 
-    2: _roundCount <NUMBER> - Used for keeping track of how many of a count a support has left (such as rounds)
+    2: _numberOfRoundsLeft <NUMBER> - Used for keeping track of how many of a count a support has left (such as rounds)
 
 Returns:
     NOTHING
 
 Examples:
     (begin example)
-        [] call KISKA_fnc_callingForArty;
+        [
+            
+        ] call KISKA_fnc_callingForArty;
     (end)
 
 Authors:
@@ -45,15 +47,14 @@ scriptName "KISKA_fnc_callingForArty";
 
 
 params [
-    "_supportClass",
+    "_supportConfig",
     "_commMenuArgs",
-    "_roundCount"
+    "_numberOfRoundsLeft"
 ];
 
 
-private _supportConfig = [["CfgCommunicationMenu",_supportClass]] call KISKA_fnc_findConfigAny;
 if (isNull _supportConfig) exitWith {
-    [["Could not find class: ",_supportClass," in any config!"],true] call KISKA_fnc_log;
+    ["null _supportConfig used!",true] call KISKA_fnc_log;
     nil
 };
 
@@ -156,15 +157,15 @@ private _roundsMenu = [
 ];
 private _canSelectRounds = [_supportConfig >> "canSelectRounds"] call BIS_fnc_getCfgDataBool;
 // get default round count from config
-private _args = _this; // just for readability
-if (_roundCount < 0) then {
-    _roundCount = [_supportConfig >> "roundCount"] call BIS_fnc_getCfgData;
-    _args set [2,_roundCount]; // update round count to be passed to KISKA_fnc_commandMenuTree
+private _thisArgs = _this; // just for readability
+if (_numberOfRoundsLeft < 0) then {
+    _numberOfRoundsLeft = [_supportConfig >> "roundCount"] call BIS_fnc_getCfgData;
+    _thisArgs set [2,_numberOfRoundsLeft]; // update round count to be passed to KISKA_fnc_commMenu_openTree
 };
 
 private _roundsString = "";
 if (_canSelectRounds) then {
-    for "_i" from 1 to _roundCount do {
+    for "_i" from 1 to _numberOfRoundsLeft do {
         if (_i <= MAX_KEYS) then {
             _keyCode = _i + 1;
         } else {
@@ -175,8 +176,8 @@ if (_canSelectRounds) then {
     };
 
 } else {
-    _roundsString = [_roundCount,"Round(s)"] joinString " ";
-    _roundsMenu pushBack STD_LINE_PUSH(_roundsString,2,_roundCount);
+    _roundsString = [_numberOfRoundsLeft,"Round(s)"] joinString " ";
+    _roundsMenu pushBack STD_LINE_PUSH(_roundsString,2,_numberOfRoundsLeft);
 
 };
 
@@ -186,12 +187,12 @@ SAVE_AND_PUSH(ROUND_COUNT_MENU_GVAR,_roundsMenu)
 /* ----------------------------------------------------------------------------
     Create Menu
 ---------------------------------------------------------------------------- */
-_args pushBack _menuVariables;
+_thisArgs pushBack _menuVariables;
 
 
 [
     _menuPathArray,
-    [_args, {
+    [_thisArgs, {
         params ["_ammo","_radius","_numberOfRounds"];
 
         private _roundsAvailable = _thisArgs select 2;
@@ -218,11 +219,11 @@ _args pushBack _menuVariables;
 
         UNLOAD_GLOBALS
     }],
-    [_args, {
+    [_thisArgs, {
         ADD_SUPPORT_BACK(_thisArgs select 2)
         UNLOAD_GLOBALS
     }]
-] spawn KISKA_fnc_commandMenuTree;
+] spawn KISKA_fnc_commMenu_openTree;
 
 
 nil

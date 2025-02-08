@@ -23,7 +23,7 @@
 #define WITH_USER(GVAR) "#USER:" + GVAR
 #define TO_STRING(STRING) #STRING
 
-#define ADD_SUPPORT_BACK(COUNT) [(_thisArgs select 1) select 0,_thisArgs select 0,nil,COUNT,""] call KISKA_fnc_addCommMenuItem;
+#define ADD_SUPPORT_BACK(COUNT) [_thisArgs select 0,COUNT] call KISKA_fnc_commMenu_addSupport;
 #define MAX_KEYS 9
 
 #define BEARING_MENU \

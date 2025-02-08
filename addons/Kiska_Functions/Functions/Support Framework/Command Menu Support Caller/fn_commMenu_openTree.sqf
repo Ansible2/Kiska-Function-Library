@@ -1,8 +1,10 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_commandMenuTree
+Function: KISKA_fnc_commMenu_openTree
 
 Description:
-    Creates a command menu tree dynamically instead of needing to define sub menus
+    Opens a command menu tree dynamically instead of needing to define sub menus.
+
+    Such as one built with `KISKA_fnc_commMenu_build`.
 
 Parameters:
     0: _menuPath <ARRAY> - The menu global variable paths (in order)
@@ -20,13 +22,13 @@ Examples:
         [
             ["#USER:myMenu_1","#USER:myMenu_2"],
             "hint str _this"
-        ] spawn KISKA_fnc_commandMenuTree
+        ] spawn KISKA_fnc_commMenu_openTree
     (end)
 
 Author(s):
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_commandMenuTree";
+scriptName "KISKA_fnc_commMenu_openTree";
 
 if (!hasInterface) exitWith {
     ["Can only run on machines with interface",false] call KISKA_fnc_log;
@@ -35,7 +37,7 @@ if (!hasInterface) exitWith {
 
 if (!canSuspend) exitWith {
     ["Must be run in scheduled, exiting to scheduled",true] call KISKA_fnc_log;
-    _this spawn KISKA_fnc_commandMenuTree;
+    _this spawn KISKA_fnc_commMenu_openTree;
 };
 
 params [
@@ -54,7 +56,7 @@ _menuPath apply {
 
     // #user: prepended on the menu name denotes a custom menu
     // The menu options are saved to a global variable in the missionNamespace
-    /// that is the menu's name, minus the ""#user:"
+    /// that is the menu's name, minus the "#user:"
     /// e.g. a menu with the name "#USER:MY_SUBMENU_inCommunication" would be
     /// saved to a global variable MY_SUBMENU_inCommunication
     _menuName = _menuName trim ["#user:",1];

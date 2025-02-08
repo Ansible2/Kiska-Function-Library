@@ -499,19 +499,27 @@ class Supports
     class virtualArty
     {};
 };
-class SupportCaller
+class CommandMenuSupportCaller
 {
-    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Caller");
-    class getPlayerSupportMap
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Command Menu Support Caller\Support Caller");
+    class commMenu_addSupport
+    {};
+    class commMenu_build
+    {};
+    class commMenu_openTree
+    {};
+    class commMenu_buildVehicleSelectPanel
+    {};
+    class commMenu_detectControlKeys
+    {
+        preInit = 1;
+    };
+    class commMenu_getSupportMap
     {};
 };
 class SupportFramework
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework");
-    class addCommMenuItem
-    {};
-    class buildCommandMenu
-    {};
     class callingForArsenalSupplyDrop
     {};
     class callingForSupplyDrop_aircraft
@@ -524,14 +532,6 @@ class SupportFramework
     {};
     class callingForSupportMaster
     {};
-    class commandMenuTree
-    {};
-    class createVehicleSelectMenu
-    {};
-    class detectControlKeys
-    {
-        preInit = 1;
-    };
     class getAmmoClassFromId
     {};
     class getAmmoTitleFromId
