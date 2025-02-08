@@ -506,8 +506,6 @@ class CommandMenuSupportCaller
     {};
     class commMenu_build
     {};
-    class commMenu_openTree
-    {};
     class commMenu_buildVehicleSelectPanel
     {};
     class commMenu_detectControlKeys
@@ -518,12 +516,14 @@ class CommandMenuSupportCaller
     {};
     class commMenu_onSupportSelected
     {};
+    class commMenu_openArsenalSupplyDrop
+    {};
+    class commMenu_openTree
+    {};
 };
 class SupportFramework
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework");
-    class callingForArsenalSupplyDrop
-    {};
     class callingForSupplyDrop_aircraft
     {};
     class callingForArty

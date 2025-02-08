@@ -1,7 +1,7 @@
-#include "..\..\Headers\Support Framework\Command Menu Macros.hpp"
-#include "..\..\Headers\Support Framework\Support Type IDs.hpp"
+#include "..\..\..\Headers\Support Framework\Command Menu Macros.hpp"
+#include "..\..\..\Headers\Support Framework\Support Type IDs.hpp"
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_callingForArsenalSupplyDrop
+Function: KISKA_fnc_commMenu_openArsenalSupplyDrop
 
 Description:
     Used as a means of expanding on the "expression" property of the CfgCommunicationMenu.
@@ -31,13 +31,13 @@ Examples:
     (begin example)
         [
         
-        ] call KISKA_fnc_callingForArsenalSupplyDrop;
+        ] call KISKA_fnc_commMenu_openArsenalSupplyDrop;
     (end)
 
 Authors:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_callingForArsenalSupplyDrop";
+scriptName "KISKA_fnc_commMenu_openArsenalSupplyDrop";
 
 #define ARSENAL_CRATE_TYPE "B_supplyCrate_F"
 #define FLYIN_RADIUS 2000

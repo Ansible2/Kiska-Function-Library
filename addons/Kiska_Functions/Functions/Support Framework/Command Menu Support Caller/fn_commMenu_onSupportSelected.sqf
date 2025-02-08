@@ -82,7 +82,7 @@ if (_supportTypeId isEqualTo SUPPORT_TYPE_CAS) exitWith {
 };
 
 if (_supportTypeId isEqualTo SUPPORT_TYPE_ARSENAL_DROP) exitWith {
-    _this call KISKA_fnc_callingForArsenalSupplyDrop;
+    _this call KISKA_fnc_commMenu_openArsenalSupplyDrop;
 };
 
 if (_supportTypeId isEqualTo SUPPORT_TYPE_SUPPLY_DROP_AIRCRAFT) exitWith {
