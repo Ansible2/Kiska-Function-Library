@@ -529,14 +529,18 @@ class CommandMenuSupportCaller
     class commMenu_openTree
     {};
 };
+class SupportFrameworkConfigs
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework\Support Config Helpers");
+    class supportConfigs_getAmmoClassFromId
+    {};
+};
 class SupportFramework
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework");
-    class getAmmoClassFromId
+    class supportConfigs_getAmmoTitleFromId
     {};
-    class getAmmoTitleFromId
-    {};
-    class getCasTitleFromId
+    class supportConfigs_getCasTitleFromId
     {};
     class getSupportVehicleClasses
     {};

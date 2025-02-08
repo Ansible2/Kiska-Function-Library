@@ -101,7 +101,7 @@ private ["_casTitle","_keyCode"];
             _casTitle = [configFile >> "CfgMagazines" >> (_x select 1)] call BIS_fnc_displayName;
         };
     } else {
-        _casTitle = [_x] call KISKA_fnc_getCasTitleFromId;
+        _casTitle = [_x] call KISKA_fnc_supportConfigs_getCasTitleFromId;
     };
 
     _attackTypeMenu pushBack STD_LINE_PUSH(_casTitle,_keyCode,_x);

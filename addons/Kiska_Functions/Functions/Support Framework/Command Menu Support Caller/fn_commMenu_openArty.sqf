@@ -85,8 +85,8 @@ private ["_ammoClass","_ammoTitle","_keyCode"];
         _ammoTitle = _x select 1;
 
     } else {
-        _ammoClass = [_x] call KISKA_fnc_getAmmoClassFromId;
-        _ammoTitle = [_x] call KISKA_fnc_getAmmoTitleFromId;
+        _ammoClass = [_x] call KISKA_fnc_supportConfigs_getAmmoClassFromId;
+        _ammoTitle = [_x] call KISKA_fnc_supportConfigs_getAmmoTitleFromId;
 
     };
 
