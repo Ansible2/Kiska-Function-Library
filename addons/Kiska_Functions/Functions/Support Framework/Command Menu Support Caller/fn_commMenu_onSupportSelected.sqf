@@ -63,7 +63,7 @@ if (isNil "_supportTypeId") exitWith {
 _commMenuArgs pushBack _supportTypeId;
 
 if (_supportTypeId isEqualTo SUPPORT_TYPE_ARTY) exitWith {
-    _this call KISKA_fnc_callingForArty;
+    _this call KISKA_fnc_commMenu_openArty;
 };
 
 if (_supportTypeId isEqualTo SUPPORT_TYPE_SUPPLY_DROP) exitWith {
@@ -74,11 +74,11 @@ if (
     (_supportTypeId isEqualTo SUPPORT_TYPE_HELI_CAS) OR
     (_supportTypeId isEqualTo SUPPORT_TYPE_ATTACKHELI_CAS)
 ) exitWith {
-    _this call KISKA_fnc_callingForHelicopterCAS;
+    _this call KISKA_fnc_commMenu_openHelicopterCAS;
 };
 
 if (_supportTypeId isEqualTo SUPPORT_TYPE_CAS) exitWith {
-    _this call KISKA_fnc_callingForCAS;
+    _this call KISKA_fnc_commMenu_openCAS;
 };
 
 if (_supportTypeId isEqualTo SUPPORT_TYPE_ARSENAL_DROP) exitWith {
@@ -86,7 +86,7 @@ if (_supportTypeId isEqualTo SUPPORT_TYPE_ARSENAL_DROP) exitWith {
 };
 
 if (_supportTypeId isEqualTo SUPPORT_TYPE_SUPPLY_DROP_AIRCRAFT) exitWith {
-    _this call KISKA_fnc_callingForSupplyDrop_aircraft;
+    _this call KISKA_fnc_commMenu_openSupplyDropAircraft;
 };
 
 /*

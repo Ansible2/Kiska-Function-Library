@@ -1,15 +1,12 @@
-#include "..\..\Headers\Support Framework\Arty Ammo Classes.hpp"
-#include "..\..\Headers\Support Framework\Command Menu Macros.hpp"
-#include "..\..\Headers\Support Framework\Support Type IDs.hpp"
+#include "..\..\..\Headers\Support Framework\Arty Ammo Classes.hpp"
+#include "..\..\..\Headers\Support Framework\Command Menu Macros.hpp"
+#include "..\..\..\Headers\Support Framework\Support Type IDs.hpp"
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_callingForArty
+Function: KISKA_fnc_commMenu_openArty
 
 Description:
-    Used as a means of expanding on the "expression" property of the CfgCommunicationMenu.
-
-    This is essentially just another level of abstraction to be able to more easily reuse
-     code between similar supports and make things easier to read instead of fitting it all
-     in the config.
+   Opens a commanding menu that will allow the player to select the parameters
+   of an artillery strike.
 
 Parameters:
     0: _supportConfig <CONFIG> - The support config.
@@ -32,13 +29,13 @@ Examples:
     (begin example)
         [
             
-        ] call KISKA_fnc_callingForArty;
+        ] call KISKA_fnc_commMenu_openArty;
     (end)
 
 Authors:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_callingForArty";
+scriptName "KISKA_fnc_commMenu_openArty";
 
 #define AMMO_TYPE_MENU_GVAR "KISKA_menu_ammoSelect"
 #define ROUND_COUNT_MENU_GVAR "KISKA_menu_roundCount"

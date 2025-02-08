@@ -518,20 +518,20 @@ class CommandMenuSupportCaller
     {};
     class commMenu_openArsenalSupplyDrop
     {};
+    class commMenu_openArty
+    {};
+    class commMenu_openCAS
+    {};
+    class commMenu_openHelicopterCAS
+    {};
+    class commMenu_openSupplyDropAircraft
+    {};
     class commMenu_openTree
     {};
 };
 class SupportFramework
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework");
-    class callingForSupplyDrop_aircraft
-    {};
-    class callingForArty
-    {};
-    class callingForCAS
-    {};
-    class callingForHelicopterCAS
-    {};
     class getAmmoClassFromId
     {};
     class getAmmoTitleFromId

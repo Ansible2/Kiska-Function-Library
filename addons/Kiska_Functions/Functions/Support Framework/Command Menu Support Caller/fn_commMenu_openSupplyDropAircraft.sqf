@@ -1,14 +1,11 @@
-#include "..\..\Headers\Support Framework\Command Menu Macros.hpp"
-#include "..\..\Headers\Support Framework\Support Type IDs.hpp"
+#include "..\..\..\Headers\Support Framework\Command Menu Macros.hpp"
+#include "..\..\..\Headers\Support Framework\Support Type IDs.hpp"
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_callingForSupplyDrop_aircraft
+Function: KISKA_fnc_commMenu_openSupplyDropAircraft
 
 Description:
-    Used as a means of expanding on the "expression" property of the CfgCommunicationMenu.
-
-    This is essentially just another level of abstraction to be able to more easily reuse
-     code between similar supports and make things easier to read instead of fitting it all
-     in the config.
+    Opens a commanding menu that will allow the player to select the parameters
+    of a supply drop aircraft support.
 
 Parameters:
     0: _supportConfig <CONFIG> - The support config.
@@ -22,7 +19,7 @@ Parameters:
         - 4. _commMenuId <NUMBER> - The ID number of the Comm Menu added by BIS_fnc_addCommMenuItem
         - 5. _supportType <NUMBER> - The Support Type ID
 
-    2: _count <NUMBER> - Used for keeping track of how many of a count a support has left (such as rounds)
+    2: _numberOfUsesLeft <NUMBER> - Used for keeping track of how many of a count a support has left (such as rounds)
 
 Returns:
     NOTHING
@@ -31,13 +28,13 @@ Examples:
     (begin example)
         [
 
-        ] call KISKA_fnc_callingForSupplyDrop_aircraft;
+        ] call KISKA_fnc_commMenu_openSupplyDropAircraft;
     (end)
 
 Authors:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_callingForSupplyDrop_aircraft";
+scriptName "KISKA_fnc_commMenu_openSupplyDropAircraft";
 
 #define FLYIN_RADIUS 2000
 #define ARSENAL_LIFETIME -1

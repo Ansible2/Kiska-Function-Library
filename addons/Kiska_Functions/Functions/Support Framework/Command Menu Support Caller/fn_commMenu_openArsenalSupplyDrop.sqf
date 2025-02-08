@@ -4,11 +4,8 @@
 Function: KISKA_fnc_commMenu_openArsenalSupplyDrop
 
 Description:
-    Used as a means of expanding on the "expression" property of the CfgCommunicationMenu.
-
-    This is essentially just another level of abstraction to be able to more easily reuse
-     code between similar supports and make things easier to read instead of fitting it all
-     in the config.
+    Opens a commanding menu that will allow the player to select the parameters
+    of an arsenal supply drop.
 
 Parameters:
     0: _supportConfig <CONFIG> - The support config.

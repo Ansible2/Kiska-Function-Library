@@ -1,14 +1,11 @@
-#include "..\..\Headers\Support Framework\Command Menu Macros.hpp"
-#include "..\..\Headers\Support Framework\Support Type IDs.hpp"
+#include "..\..\..\Headers\Support Framework\Command Menu Macros.hpp"
+#include "..\..\..\Headers\Support Framework\Support Type IDs.hpp"
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_callingForCAS
+Function: KISKA_fnc_commMenu_openCAS
 
 Description:
-    Used as a means of expanding on the "expression" property of the CfgCommunicationMenu.
-
-    This is essentially just another level of abstraction to be able to more easily reuse
-     code between similar supports and make things easier to read instead of fitting it all
-     in the config.
+    Opens a commanding menu that will allow the player to select the parameters
+    of a version 1 CAS strike.
 
 Parameters:
     0: _supportConfig <CONFIG> - The support config.
@@ -31,13 +28,13 @@ Examples:
     (begin example)
         [
 
-        ] call KISKA_fnc_callingForCAS;
+        ] call KISKA_fnc_commMenu_openCAS;
     (end)
 
 Authors:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_callingForCAS";
+scriptName "KISKA_fnc_commMenu_openCAS";
 
 #define MIN_RADIUS 200
 
