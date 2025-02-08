@@ -2,24 +2,30 @@
 #include "Support Icons.hpp"
 #include "CAS Type IDs.hpp"
 #include "Arty Ammo Type IDs.hpp"
+
 /*
-    This master function for supports is used as go between for error cases such as when
+    // CALL_ON_SUPPORT_SELECTED & EXPRESSION_CALL_ON_SUPPORT_SELECTED
+
+    This function for supports is used as go between for error cases such as when
      a player provides an invalid position (looking at the sky). It will then refund the
      support back to the player.
-*/
-#define CALL_SUPPORT_MASTER(CLASS) "["#CLASS",_this,%1] call KISKA_fnc_callingForSupportMaster"
-#define EXPRESSION_CALL_MASTER(CLASS) expression = CALL_SUPPORT_MASTER(CLASS);
 
-/*
-// expression arguments
+    `%1` denotes the expression arguments passed to BIS_fnc_addCommMenuItem.
+    This is the number of uses left on the support though for this system and originates in
+    in KISKA_fnc_commMenu_addSupport.
 
-[caller, pos, target, is3D, id]
-    caller: Object - unit which called the item, usually player
-    pos: Array in format Position - cursor position
-    target: Object - cursor target
-    is3D: Boolean - true when in 3D scene, false when in map
-    id: String - item ID as returned by BIS_fnc_addCommMenuItem function
+    `_this` is also passed in with the default communication menu system to the `expression`
+    and is and array of the following:
+    
+        0: <OBJECT> - unit which called the item, usually player
+        1: <PositionAGL[]> - cursor position of where the player is looking or their cursor map position
+        2: <OBJECT> - the player's cursor target
+        3: <BOOL> - true when in 3D scene, false when in map
+        4: <STRING> - item ID as returned by BIS_fnc_addCommMenuItem (KISKA_fnc_commMenu_addSupport) function
 */
+#define CALL_ON_SUPPORT_SELECTED(CLASS) "["#CLASS",_this,%1] call KISKA_fnc_commMenu_onSupportSelected"
+#define EXPRESSION_CALL_ON_SUPPORT_SELECTED(CLASS) expression = CALL_ON_SUPPORT_SELECTED(CLASS);
+
 
 /* ----------------------------------------------------------------------------
     Base Classes
@@ -192,7 +198,7 @@ class KISKA_artillery_baseClass : KISKA_basicSupport_baseClass
         AMMO_230_CLUSTER_ID
     };
 
-    EXPRESSION_CALL_MASTER(KISKA_artillery_baseClass)
+    EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_artillery_baseClass)
 };
 
 class KISKA_CAS_baseClass : KISKA_basicSupport_baseClass
@@ -216,7 +222,7 @@ class KISKA_CAS_baseClass : KISKA_basicSupport_baseClass
         "B_Plane_CAS_01_dynamicLoadout_F"
     };
 
-    EXPRESSION_CALL_MASTER(KISKA_CAS_baseClass)
+    EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_CAS_baseClass)
 };
 
 /* ----------------------------------------------------------------------------
@@ -237,7 +243,7 @@ class KISKA_attackHelicopterCAS_baseClass : KISKA_basicSupport_baseClass
         "B_Heli_Attack_01_dynamicLoadout_F"
     };
 
-    EXPRESSION_CALL_MASTER(KISKA_attackHelicopterCAS_baseClass)
+    EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_attackHelicopterCAS_baseClass)
 };
 
 class KISKA_helicopterCAS_baseClass : KISKA_basicSupport_baseClass
@@ -255,7 +261,7 @@ class KISKA_helicopterCAS_baseClass : KISKA_basicSupport_baseClass
         "B_Heli_Transport_01_F"
     };
 
-    EXPRESSION_CALL_MASTER(KISKA_helicopterCAS_baseClass)
+    EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_helicopterCAS_baseClass)
 };
 
 /* ----------------------------------------------------------------------------
@@ -273,7 +279,7 @@ class KISKA_arsenalSupplyDrop_baseClass : KISKA_basicSupport_baseClass
         "B_T_VTOL_01_infantry_F"
     };
 
-    EXPRESSION_CALL_MASTER(KISKA_arsenalSupplyDrop_baseClass)
+    EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_arsenalSupplyDrop_baseClass)
 };
 
 class KISKA_supplyDrop_aircraft_baseClass : KISKA_basicSupport_baseClass
@@ -292,7 +298,7 @@ class KISKA_supplyDrop_aircraft_baseClass : KISKA_basicSupport_baseClass
         "B_T_VTOL_01_infantry_F"
     };
 
-    EXPRESSION_CALL_MASTER(KISKA_supplyDrop_aircraft_baseClass)
+    EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_supplyDrop_aircraft_baseClass)
 };
 
 
@@ -317,7 +323,7 @@ class KISKA_CAS_guns_templateClass : KISKA_CAS_baseClass
         GUN_RUN_ID
     };
 
-    EXPRESSION_CALL_MASTER(KISKA_CAS_guns_templateClass)
+    EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_CAS_guns_templateClass)
 };
 class KISKA_CAS_gunsRockets_templateClass : KISKA_CAS_baseClass
 {
@@ -330,7 +336,7 @@ class KISKA_CAS_gunsRockets_templateClass : KISKA_CAS_baseClass
         ROCKETS_HE_ID
     };
 
-    EXPRESSION_CALL_MASTER(KISKA_CAS_gunsRockets_templateClass)
+    EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_CAS_gunsRockets_templateClass)
 };
 class KISKA_CAS_rockets_templateClass : KISKA_CAS_baseClass
 {
@@ -340,7 +346,7 @@ class KISKA_CAS_rockets_templateClass : KISKA_CAS_baseClass
         ROCKETS_HE_ID
     };
 
-    EXPRESSION_CALL_MASTER(KISKA_CAS_rockets_templateClass)
+    EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_CAS_rockets_templateClass)
 };
 class KISKA_CAS_bombs_templateClass : KISKA_CAS_baseClass
 {
@@ -350,7 +356,7 @@ class KISKA_CAS_bombs_templateClass : KISKA_CAS_baseClass
         BOMB_CLUSTER_ID
     };
 
-    EXPRESSION_CALL_MASTER(KISKA_CAS_bombs_templateClass)
+    EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_CAS_bombs_templateClass)
 };
 class KISKA_CAS_AGM_templateClass : KISKA_CAS_baseClass
 {
@@ -359,7 +365,7 @@ class KISKA_CAS_AGM_templateClass : KISKA_CAS_baseClass
         AGM_ID
     };
 
-    EXPRESSION_CALL_MASTER(KISKA_CAS_AGM_templateClass)
+    EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_CAS_AGM_templateClass)
 };
 class KISKA_CAS_napalm_templateClass : KISKA_CAS_baseClass
 {
@@ -368,7 +374,7 @@ class KISKA_CAS_napalm_templateClass : KISKA_CAS_baseClass
         BOMB_NAPALM_ID
     };
 
-    EXPRESSION_CALL_MASTER(KISKA_CAS_napalm_templateClass)
+    EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_CAS_napalm_templateClass)
 };
 
 /* ----------------------------------------------------------------------------
@@ -384,7 +390,7 @@ class KISKA_ARTY_155_templateClass : KISKA_artillery_baseClass
         AMMO_155_ATMINES_ID
     };
 
-    EXPRESSION_CALL_MASTER(KISKA_ARTY_155_templateClass)
+    EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_ARTY_155_templateClass)
 };
 class KISKA_ARTY_120_templateClass : KISKA_artillery_baseClass
 {
@@ -398,7 +404,7 @@ class KISKA_ARTY_120_templateClass : KISKA_artillery_baseClass
         AMMO_120_SMOKE_ID
     };
 
-    EXPRESSION_CALL_MASTER(KISKA_ARTY_120_templateClass)
+    EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_ARTY_120_templateClass)
 };
 class KISKA_ARTY_82_templateClass : KISKA_artillery_baseClass
 {
@@ -411,7 +417,7 @@ class KISKA_ARTY_82_templateClass : KISKA_artillery_baseClass
         AMMO_82_SMOKE_ID
     };
 
-    EXPRESSION_CALL_MASTER(KISKA_ARTY_82_templateClass)
+    EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_ARTY_82_templateClass)
 };
 class KISKA_ARTY_230_templateClass : KISKA_artillery_baseClass
 {
@@ -422,5 +428,5 @@ class KISKA_ARTY_230_templateClass : KISKA_artillery_baseClass
         AMMO_230_CLUSTER_ID
     };
 
-    EXPRESSION_CALL_MASTER(KISKA_ARTY_230_templateClass)
+    EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_ARTY_230_templateClass)
 };

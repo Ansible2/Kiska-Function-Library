@@ -516,6 +516,8 @@ class CommandMenuSupportCaller
     };
     class commMenu_getSupportMap
     {};
+    class commMenu_onSupportSelected
+    {};
 };
 class SupportFramework
 {
@@ -529,8 +531,6 @@ class SupportFramework
     class callingForCAS
     {};
     class callingForHelicopterCAS
-    {};
-    class callingForSupportMaster
     {};
     class getAmmoClassFromId
     {};

@@ -1,10 +1,12 @@
-#include "..\..\Headers\Support Framework\Command Menu Macros.hpp"
-#include "..\..\Headers\Support Framework\Support Type IDs.hpp"
+#include "..\..\..\Headers\Support Framework\Command Menu Macros.hpp"
+#include "..\..\..\Headers\Support Framework\Support Type IDs.hpp"
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_callingForSupportMaster
+Function: KISKA_fnc_commMenu_onSupportSelected
 
 Description:
     Used as a means of expanding on the "expression" property of the CfgCommunicationMenu.
+
+    This is the typical default means of handling a communication menu support's `expression`.
 
     This is essentially just another level of abstraction to be able to more easily reuse
      code between similar supports and make things easier to read instead of fitting it all
@@ -28,13 +30,13 @@ Returns:
 
 Examples:
     (begin example)
-        ["myClass",_this] call KISKA_fnc_callingForSupportMaster;
+        ["myClass",_this] call KISKA_fnc_commMenu_onSupportSelected;
     (end)
 
 Authors:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_callingForSupportMaster";
+scriptName "KISKA_fnc_commMenu_onSupportSelected";
 
 params [
     ["_supportClass","",[""]],
