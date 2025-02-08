@@ -134,7 +134,7 @@ private _args = createHashMapFromArray [
 
             private _conditionMessage = getText(_config >> "conditionMessage");
             if (_conditionMessage isEqualTo "") then {
-                _conditionMessage = DEFAULT_CANT_TAKE_MESSAGE;
+                _conditionMessage = "You do not have permission for this support";
             };
 
             [_conditionMessage] call KISKA_fnc_errorNotification;
