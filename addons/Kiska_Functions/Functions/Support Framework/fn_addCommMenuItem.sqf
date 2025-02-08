@@ -6,7 +6,7 @@ Description:
     It is mostly made with the purpose of using default values and specifically
      passing a -1 by default to _expressionArguments.
 
-    Also initializes/adds entries to the KISKA_playersSupportMap which is used for
+    Also adds entries to the KISKA_playerSupportMap which is used for
      keeping track of the number of uses left on a support if they are passed between
      the Support Manager.
     
@@ -16,7 +16,7 @@ Parameters:
     2: _textArguements <ANY> - Any arguements to pass to the text displayed in the menu
     3: _expressionArguments <ANY> - Any arguements to pass to the expression
     4: _notification <STRING> - The class of notification to display when added
-    5: _addToHash <BOOL> - Add to KISKA_playersSupportMap
+    5: _addToSupportMap <BOOL> - Add to KISKA_playerSupportMap
 
 Returns:
     <NUMBER> - The comm menu ID
@@ -37,7 +37,7 @@ params [
     ["_textArguements",""],
     ["_expressionArguments",-1,[]],
     ["_notification","",[""]],
-    ["_addToHash",true,[true]]
+    ["_addToSupportMap",true,[true]]
 ];
 
 private _id = [
@@ -48,17 +48,9 @@ private _id = [
     _notification
 ] call BIS_fnc_addCommMenuItem;
 
-if (!isNil "_id") then {
-    if (_addToHash) then {
-        if (isNil "KISKA_playersSupportMap") then {
-            KISKA_playersSupportMap = createHashMap;
-
-        };
-
-        KISKA_playersSupportMap set [_id,[_itemClass,_expressionArguments]];
-
-    };
-
+if (!(isNil "_id") AND _addToSupportMap) then {
+    private _supportMap = call KISKA_fnc_getPlayerSupportMap;
+    _supportMap set [_id,[_itemClass,_expressionArguments]];
 };
 
 

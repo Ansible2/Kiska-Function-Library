@@ -499,6 +499,12 @@ class Supports
     class virtualArty
     {};
 };
+class SupportCaller
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Caller");
+    class getPlayerSupportMap
+    {};
+};
 class SupportFramework
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework");

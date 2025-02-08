@@ -43,7 +43,8 @@ params [
 ];
 
 // delete comm menu id from use hash
-KISKA_playersSupportMap deleteAt (_commMenuArgs select 4);
+private _supportMap = call KISKA_fnc_getPlayerSupportMap;
+_supportMap deleteAt (_commMenuArgs select 4);
 
 private _supportConfig = [["CfgCommunicationMenu",_supportClass]] call KISKA_fnc_findConfigAny;
 if (isNull _supportConfig) exitWith {
@@ -86,8 +87,6 @@ if (_supportTypeId isEqualTo SUPPORT_TYPE_SUPPLY_DROP_AIRCRAFT) exitWith {
     _this call KISKA_fnc_callingForSupplyDrop_aircraft;
 };
 
-
-
 /*
 _commMenuArgs params [
     "_caller",
@@ -98,6 +97,12 @@ _commMenuArgs params [
 ];
 */
 
-[["Unknown _supportTypeId (",_supportTypeId,") used with _supportClass ",_supportClass],true] call KISKA_fnc_log;
+[
+    [
+        "Unknown _supportTypeId (",_supportTypeId,") used with _supportClass ",
+        _supportClass
+    ],
+    true
+] call KISKA_fnc_log;
 
 nil
