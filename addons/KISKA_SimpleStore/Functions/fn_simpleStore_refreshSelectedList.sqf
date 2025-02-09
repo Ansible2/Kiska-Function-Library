@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_simpleStore_updateSelectedList
+Function: KISKA_fnc_simpleStore_refreshSelectedList
 
 Description:
     Triggers a refresh of the data that is in the selected items list box of 
@@ -13,13 +13,13 @@ Returns:
 
 Examples:
     (begin example)
-        ["myStore"] call KISKA_fnc_simpleStore_updateSelectedList;
+        ["myStore"] call KISKA_fnc_simpleStore_refreshSelectedList;
     (end)
 
 Authors:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_simpleStore_updateSelectedList";
+scriptName "KISKA_fnc_simpleStore_refreshSelectedList";
 
 if !(hasInterface) exitWith {};
 disableSerialization;

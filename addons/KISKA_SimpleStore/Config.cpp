@@ -33,9 +33,9 @@ class CfgFunctions
             {};
             class simpleStore_removeItemFromPool
             {};
-            class simpleStore_updatePoolList
+            class simpleStore_refreshPoolList
             {};
-            class simpleStore_updateSelectedList
+            class simpleStore_refreshSelectedList
             {};
         };
     };

@@ -29,7 +29,7 @@ Parameters:
                 - 5: <STRING> - Default: `""` - The element's data property.
         
         - `_fn_getSelectedItems` <CODE>: A function that will be called whenever
-            `KISKA_fnc_simpleStore_updateSelectedList` is. Must return an array of
+            `KISKA_fnc_simpleStore_refreshSelectedList` is. Must return an array of
             items formatted the same as an item returned from `_fn_poolItemToListboxItem`.
             Passed the following params:
                 
@@ -227,8 +227,8 @@ _display displayAddEventHandler ["unload",{
 }];
 
 
-[_storeId] call KISKA_fnc_simpleStore_updateSelectedList;
-[_storeId] call KISKA_fnc_simpleStore_updatePoolList;
+[_storeId] call KISKA_fnc_simpleStore_refreshSelectedList;
+[_storeId] call KISKA_fnc_simpleStore_refreshPoolList;
 
 
 _display

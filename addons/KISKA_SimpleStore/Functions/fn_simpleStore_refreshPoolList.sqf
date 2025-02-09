@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_simpleStore_updatePoolList
+Function: KISKA_fnc_simpleStore_refreshPoolList
 
 Description:
     Triggers a refresh of the data that is in the pool list box of the given
@@ -13,13 +13,13 @@ Returns:
 
 Examples:
     (begin example)
-        ["myStore"] call KISKA_fnc_simpleStore_updatePoolList;
+        ["myStore"] call KISKA_fnc_simpleStore_refreshPoolList;
     (end)
 
 Authors:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_simpleStore_updatePoolList";
+scriptName "KISKA_fnc_simpleStore_refreshPoolList";
 
 if !(hasInterface) exitWith {};
 disableSerialization;

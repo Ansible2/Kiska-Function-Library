@@ -41,8 +41,8 @@ if (_poolItems isNotEqualTo []) then {
     _poolItems deleteAt _poolIndex;  
 };
 
-[_storeId] call KISKA_fnc_simpleStore_updateSelectedList;
-[_storeId] call KISKA_fnc_simpleStore_updatePoolList;
+[_storeId] call KISKA_fnc_simpleStore_refreshSelectedList;
+[_storeId] call KISKA_fnc_simpleStore_refreshPoolList;
 
 
 nil
