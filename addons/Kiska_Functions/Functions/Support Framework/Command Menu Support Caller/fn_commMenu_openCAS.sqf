@@ -66,10 +66,6 @@ private _menuVariables = []; // keeps track of global variable names to set to n
     Vehicle Select Menu
 ---------------------------------------------------------------------------- */
 private _vehicles = [_supportConfig >> "vehicleTypes"] call BIS_fnc_getCfgDataArray;
-if (_vehicles isEqualTo []) then {
-    _vehicles = [side (_commMenuArgs select 0),_commMenuArgs select 5] call KISKA_fnc_getSupportVehicleClasses;
-};
-
 private _vehicleMenu = [_vehicles] call KISKA_fnc_commMenu_buildVehicleSelectPanel;
 SAVE_AND_PUSH(VEHICLE_SELECT_MENU_STR,_vehicleMenu)
 
@@ -150,7 +146,7 @@ _thisArgs pushBack _menuVariables;
             side (_commMenuArgs select 0)
         ] call KISKA_fnc_CAS;
 
-        [SUPPORT_TYPE_CAS] call KISKA_fnc_supportNotification;
+        [SUPPORT_TYPE_CAS] call KISKA_fnc_supports_genericNotification;
 
         // if support still has uses left
         if (_numberOfUsesLeft > 1) then {
