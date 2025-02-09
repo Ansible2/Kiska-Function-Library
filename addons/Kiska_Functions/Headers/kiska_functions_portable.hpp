@@ -503,7 +503,7 @@ class Supports
 };
 class CommandMenuSupportCaller
 {
-    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Command Menu Support Caller\Support Caller");
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework\Command Menu Support Caller");
     class commMenu_addSupport
     {};
     class commMenu_build
