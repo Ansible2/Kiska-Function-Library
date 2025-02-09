@@ -7,15 +7,14 @@ Description:
     It is mostly made with the purpose of using default values and specifically
      passing a `_numberOfUsesLeft` by default to as arguement to the config `expression`.
 
-    Also adds entries to the KISKA_commMenuSupportMap which is used for
-     keeping track of the number of uses left on a support if they are passed between
-     the Support Manager.
+    Also adds entries to the `KISKA_commMenuSupportMap`.
     
 Parameters:
     0: _supportConfig <CONFIG | STRING> - The config as defined in the `CfgCommunicationMenu`
         or a string of a class that is in a `CfgCommunicationMenu` in either the 
         `missionConfigFile`, `campaignConfigFile`, or `configFile`.
-    1: _numberOfUsesLeft <NUMBER> - Default: `-1` - The number of support uses left.
+    1: _numberOfUsesLeft <NUMBER> - Default: `-1` - The number of support uses left or rounds
+        available to use. If less than 0, the configed value will be used.
 
 Returns:
     <NUMBER> - The comm menu ID

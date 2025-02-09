@@ -24,6 +24,8 @@ class CfgFunctions
             {
                 postInit = 1;
             };
+            class supportManager_addToPool
+            {};
             class supportManager_open
             {};
         };
