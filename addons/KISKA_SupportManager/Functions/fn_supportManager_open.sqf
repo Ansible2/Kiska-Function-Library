@@ -18,7 +18,7 @@ Examples:
 Author:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_supportManager_open"
+scriptName "KISKA_fnc_supportManager_open";
 
 if !(hasInterface) exitWith {
     ["Attempting to open support manager with no interface"] call KISKA_fnc_log;
@@ -32,12 +32,11 @@ private _args = createHashMapFromArray [
     ["_storeSelectedItemsTitle","Current Supports"],
     ["_storePoolTitle","Support Pool"],
     ["_storeTitle","Support Manager"],
-    // TODO: test
     [
         "_fn_poolItemToListboxItem",
         {
             params [
-                ["_poolItem",[],[[]],2],
+                ["_poolItem",[],[[]]],
                 ["_index",-1,[123]]
             ];
 
@@ -62,7 +61,6 @@ private _args = createHashMapFromArray [
             ]
         }
     ],
-    // TODO: test
     [
         "_fn_getSelectedItems",
         {
@@ -73,9 +71,9 @@ private _args = createHashMapFromArray [
                     ["_numberOfUsesLeft",-1,[123]]
                 ];
                 
-                private _supportManagerDetails = _config >> "KISKA_supportManagerDetails";
-                if ((isNull _config) OR (isNull _supportManagerDetails) ) then {
-                    [["_config at index ->",_forEachIndex," is null"],true] call KISKA_fnc_log;
+                private _supportManagerDetails = _supportConfig >> "KISKA_supportManagerDetails";
+                if (isNull _supportManagerDetails) then {
+                    [["_supportManagerDetails at index ->",_forEachIndex," is null"],true] call KISKA_fnc_log;
                     nil
                 };
 
@@ -99,7 +97,6 @@ private _args = createHashMapFromArray [
         }
     ],
     [
-        // TODO: test
         "_fn_onTake",
         {
             params ["_storeId","_index"];
@@ -132,7 +129,7 @@ private _args = createHashMapFromArray [
                 nil
             };
 
-            private _conditionMessage = getText(_config >> "conditionMessage");
+            private _conditionMessage = getText(_supportConfig >> "conditionMessage");
             if (_conditionMessage isEqualTo "") then {
                 _conditionMessage = "You do not have permission for this support";
             };
