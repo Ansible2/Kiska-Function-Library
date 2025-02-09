@@ -54,7 +54,7 @@ private _thisArgs = _this; // just for readability
     Vehicle Select Menu
 ---------------------------------------------------------------------------- */
 private _supportDetailsConfig = _supportConfig >> "KISKA_supportDetails";
-private _vehicles = [_supportDetailsConfig >> "vehicleTypes"] call BIS_fnc_getCfgDataArray;
+private _vehicles = getArray(_supportDetailsConfig >> "vehicleTypes");
 private _vehicleMenu = [_vehicles] call KISKA_fnc_commMenu_buildVehicleSelectPanel;
 SAVE_AND_PUSH(VEHICLE_SELECT_MENU_STR,_vehicleMenu)
 
@@ -70,7 +70,7 @@ SAVE_AND_PUSH(BEARING_MENU_STR,_bearingsMenu)
 /* ----------------------------------------------------------------------------
     flyInHeight Menu
 ---------------------------------------------------------------------------- */
-private _flyInHeights = [_supportDetailsConfig >> "flyinHeights"] call BIS_fnc_getCfgDataArray;
+private _flyInHeights = getArray(_supportDetailsConfig >> "flyinHeights");
 if (_flyInHeights isEqualTo []) then {
     _flyInHeights = missionNamespace getVariable ["KISKA_CBA_supp_flyInHeights_arr",[]];
 
@@ -95,9 +95,9 @@ SAVE_AND_PUSH(FLYIN_HEIGHT_MENU_STR,_flyInHeightMenu)
 ---------------------------------------------------------------------------- */
 _thisArgs pushBack _menuVariables;
 
-_thisArgs pushBack ([_supportDetailsConfig >> "crateList"] call BIS_fnc_getCfgDataArray);
-_thisArgs pushBack ([_supportDetailsConfig >> "deleteCargo"] call BIS_fnc_getCfgDataBool);
-_thisArgs pushBack ([_supportDetailsConfig >> "addArsenals"] call BIS_fnc_getCfgDataBool);
+_thisArgs pushBack (getArray(_supportDetailsConfig >> "crateList"));
+_thisArgs pushBack (_supportDetailsConfig >> "deleteCargo" call BIS_fnc_getCfgDataBool);
+_thisArgs pushBack (_supportDetailsConfig >> "addArsenals" call BIS_fnc_getCfgDataBool);
 
 
 [

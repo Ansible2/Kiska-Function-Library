@@ -54,7 +54,7 @@ private _thisArgs = _this; // just for readability
     Vehicle Select Menu
 ---------------------------------------------------------------------------- */
 private _supportDetailsConfig = _supportConfig >> "KISKA_supportDetails";
-private _vehicles = [_supportDetailsConfig >> "vehicleTypes"] call BIS_fnc_getCfgDataArray;
+private _vehicles = getArray(_supportDetailsConfig >> "vehicleTypes");
 private _vehicleMenu = [_vehicles] call KISKA_fnc_commMenu_buildVehicleSelectPanel;
 SAVE_AND_PUSH(VEHICLE_SELECT_MENU_STR,_vehicleMenu)
 
@@ -66,7 +66,7 @@ private _attackTypeMenu = [
     ["Attack Type",false]
 ];
 // get allowed ammo types from config
-private _attackTypes = [_supportDetailsConfig >> "attackTypes"] call BIS_fnc_getCfgDataArray;
+private _attackTypes = getArray(_supportDetailsConfig >> "attackTypes");
 
 // create formatted array to use in menu
 private ["_casTitle","_keyCode"];

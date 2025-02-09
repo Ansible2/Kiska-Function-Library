@@ -62,7 +62,7 @@ private _ammoMenu = [
 ];
 // get allowed ammo types from config
 private _supportDetailsConfig = _supportConfig >> "KISKA_supportDetails";
-private _ammoIds = [_supportDetailsConfig >> "ammoTypes"] call BIS_fnc_getCfgDataArray;
+private _ammoIds = getArray(_supportDetailsConfig >> "ammoTypes");
 
 // create formatted array to use in menu
 private ["_ammoClass","_ammoTitle","_keyCode"];
@@ -95,7 +95,7 @@ SAVE_AND_PUSH(AMMO_TYPE_MENU_GVAR,_ammoMenu)
 /* ----------------------------------------------------------------------------
     Radius Menu
 ---------------------------------------------------------------------------- */
-private _selectableRadiuses = [_supportDetailsConfig >> "radiuses"] call BIS_fnc_getCfgDataArray;
+private _selectableRadiuses = getArray(_supportDetailsConfig >> "radiuses");
 if (_selectableRadiuses isEqualTo []) then {
     _selectableRadiuses = missionNamespace getVariable ["KISKA_CBA_supp_radiuses_arr",[]];
 
@@ -147,7 +147,7 @@ SAVE_AND_PUSH(RADIUS_MENU_GVAR,_radiusMenu)
 private _roundsMenu = [
     ["Number of Rounds",false]
 ];
-private _canSelectRounds = [_supportDetailsConfig >> "canSelectRounds"] call BIS_fnc_getCfgDataBool;
+private _canSelectRounds = (_supportDetailsConfig >> "canSelectRounds") call BIS_fnc_getCfgDataBool;
 private _roundsString = "";
 if (_canSelectRounds) then {
     for "_i" from 1 to _numberOfRoundsLeft do {
