@@ -38,28 +38,16 @@ scriptName "KISKA_fnc_commMenu_openCAS";
 
 #define MIN_RADIUS 200
 
-params [
-    "_supportConfig",
-    "_commMenuArgs",
-    ["_numberOfUsesLeft",-1]
-];
-
+params ["_supportConfig", "_commMenuArgs", "_numberOfUsesLeft"];
 
 if (isNull _supportConfig) exitWith {
     ["null _supportConfig used!",true] call KISKA_fnc_log;
     nil
 };
 
-// get use count from config if -1
-private _thisArgs = _this; // just for readability
-private _useCountConfig = _supportConfig >> "useCount";
-if (_numberOfUsesLeft < 0 AND (isNumber _useCountConfig)) then {
-    _numberOfUsesLeft = getNumber _useCountConfig;
-    _thisArgs set [2,_numberOfUsesLeft];
-};
-
 private _menuPathArray = [];
 private _menuVariables = []; // keeps track of global variable names to set to nil when done
+private _thisArgs = _this; // just for readability
 
 
 /* ----------------------------------------------------------------------------
