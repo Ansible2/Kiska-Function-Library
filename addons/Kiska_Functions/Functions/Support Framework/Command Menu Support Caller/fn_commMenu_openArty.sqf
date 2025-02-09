@@ -43,22 +43,16 @@ scriptName "KISKA_fnc_commMenu_openArty";
 #define MIN_RADIUS 0
 
 
-params [
-    "_supportConfig",
-    "_commMenuArgs",
-    "_numberOfRoundsLeft"
-];
-
+params ["_supportConfig", "_commMenuArgs", "_numberOfRoundsLeft"];
 
 if (isNull _supportConfig) exitWith {
     ["null _supportConfig used!",true] call KISKA_fnc_log;
     nil
 };
 
-
 private _menuPathArray = [];
 private _menuVariables = []; // keeps track of global variable names to set to nil when done
-
+private _thisArgs = _this; // just for readability
 
 /* ----------------------------------------------------------------------------
     Ammo Menu
@@ -67,7 +61,8 @@ private _ammoMenu = [
     ["Select Ammo",false] // menu title
 ];
 // get allowed ammo types from config
-private _ammoIds = [_supportConfig >> "ammoTypes"] call BIS_fnc_getCfgDataArray;
+private _supportDetailsConfig = _supportConfig >> "KISKA_supportDetails";
+private _ammoIds = [_supportDetailsConfig >> "ammoTypes"] call BIS_fnc_getCfgDataArray;
 
 // create formatted array to use in menu
 private ["_ammoClass","_ammoTitle","_keyCode"];
@@ -100,7 +95,7 @@ SAVE_AND_PUSH(AMMO_TYPE_MENU_GVAR,_ammoMenu)
 /* ----------------------------------------------------------------------------
     Radius Menu
 ---------------------------------------------------------------------------- */
-private _selectableRadiuses = [_supportConfig >> "radiuses"] call BIS_fnc_getCfgDataArray;
+private _selectableRadiuses = [_supportDetailsConfig >> "radiuses"] call BIS_fnc_getCfgDataArray;
 if (_selectableRadiuses isEqualTo []) then {
     _selectableRadiuses = missionNamespace getVariable ["KISKA_CBA_supp_radiuses_arr",[]];
 
@@ -152,14 +147,7 @@ SAVE_AND_PUSH(RADIUS_MENU_GVAR,_radiusMenu)
 private _roundsMenu = [
     ["Number of Rounds",false]
 ];
-private _canSelectRounds = [_supportConfig >> "canSelectRounds"] call BIS_fnc_getCfgDataBool;
-// get default round count from config
-private _thisArgs = _this; // just for readability
-if (_numberOfRoundsLeft < 0) then {
-    _numberOfRoundsLeft = [_supportConfig >> "roundCount"] call BIS_fnc_getCfgData;
-    _thisArgs set [2,_numberOfRoundsLeft]; // update round count to be passed to KISKA_fnc_commMenu_openTree
-};
-
+private _canSelectRounds = [_supportDetailsConfig >> "canSelectRounds"] call BIS_fnc_getCfgDataBool;
 private _roundsString = "";
 if (_canSelectRounds) then {
     for "_i" from 1 to _numberOfRoundsLeft do {

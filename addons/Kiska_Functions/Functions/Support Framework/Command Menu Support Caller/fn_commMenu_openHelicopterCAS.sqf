@@ -53,7 +53,8 @@ private _thisArgs = _this; // just for readability
 /* ----------------------------------------------------------------------------
     Vehicle Select Menu
 ---------------------------------------------------------------------------- */
-private _vehicles = [_supportConfig >> "vehicleTypes"] call BIS_fnc_getCfgDataArray;
+private _supportDetailsConfig = _supportConfig >> "KISKA_supportDetails";
+private _vehicles = [_supportDetailsConfig >> "vehicleTypes"] call BIS_fnc_getCfgDataArray;
 private _vehicleMenu = [_vehicles] call KISKA_fnc_commMenu_buildVehicleSelectPanel;
 SAVE_AND_PUSH(VEHICLE_SELECT_MENU_STR,_vehicleMenu)
 
@@ -69,7 +70,7 @@ SAVE_AND_PUSH(BEARING_MENU_STR,_bearingsMenu)
 /* ----------------------------------------------------------------------------
     Radius Menu
 ---------------------------------------------------------------------------- */
-private _selectableRadiuses = [_supportConfig >> "radiuses"] call BIS_fnc_getCfgDataArray;
+private _selectableRadiuses = [_supportDetailsConfig >> "radiuses"] call BIS_fnc_getCfgDataArray;
 if (_selectableRadiuses isEqualTo []) then {
     _selectableRadiuses = missionNamespace getVariable ["KISKA_CBA_supp_radiuses_arr",[]];
 
@@ -117,7 +118,7 @@ SAVE_AND_PUSH(RADIUS_MENU_STR,_radiusMenu)
 /* ----------------------------------------------------------------------------
     flyInHeight Menu
 ---------------------------------------------------------------------------- */
-private _flyInHeights = [_supportConfig >> "flyinHeights"] call BIS_fnc_getCfgDataArray;
+private _flyInHeights = [_supportDetailsConfig >> "flyinHeights"] call BIS_fnc_getCfgDataArray;
 if (_flyInHeights isEqualTo []) then {
     _flyInHeights = missionNamespace getVariable ["KISKA_CBA_supp_flyInHeights_arr",[]];
 
@@ -142,7 +143,7 @@ SAVE_AND_PUSH(FLYIN_HEIGHT_MENU_STR,_flyInHeightMenu)
 ---------------------------------------------------------------------------- */
 _thisArgs pushBack _menuVariables;
 
-private _timeOnStation = [_supportConfig >> "timeOnStation"] call BIS_fnc_getCfgData;
+private _timeOnStation = [_supportDetailsConfig >> "timeOnStation"] call BIS_fnc_getCfgData;
 _thisArgs pushBack _timeOnStation;
 
 [

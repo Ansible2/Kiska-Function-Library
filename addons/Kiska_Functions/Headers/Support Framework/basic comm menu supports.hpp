@@ -57,8 +57,6 @@ class KISKA_basicCommMenuSupport_baseClass
                 (end)
         ------------------------------------------------------------------------------- */
         supportTypeId = SUPPORT_TYPE_CUSTOM;
-
-        
     };
 
     class KISKA_supportManagerDetails
@@ -195,31 +193,110 @@ class KISKA_basicCommMenuSupport_baseClass
 class KISKA_artillery_baseClass : KISKA_basicCommMenuSupport_baseClass
 {
     text = "Artillery Fire Support";
-    supportTypeId = SUPPORT_TYPE_ARTY;
     icon = ARTILLERY_ICON;
-    radiuses[] = {25,50,100};
-    canSelectRounds = 1; // can the caller select a specified number of rounds each call 0 false 1 true
-    roundCount = 8; // starting round count
+    EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_artillery_baseClass)
 
-    ammoTypes[] = {
-        AMMO_155_HE_ID,
-        AMMO_155_CLUSTER_ID,
-        AMMO_155_MINES_ID,
-        AMMO_155_ATMINES_ID,
-        AMMO_120_HE_ID,
-        AMMO_120_CLUSTER_ID,
-        AMMO_120_MINES_ID,
-        AMMO_120_ATMINES_ID,
-        AMMO_120_SMOKE_ID,
-        AMMO_82_HE_ID,
-        AMMO_82_FLARE_ID,
-        AMMO_82_SMOKE_ID,
-        AMMO_230_HE_ID,
-        AMMO_230_CLUSTER_ID
+    class KISKA_commMenuDetails
+    {
+        supportTypeId = SUPPORT_TYPE_ARTY;
     };
 
-    EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_artillery_baseClass)
+    class KISKA_supportDetails
+    {
+        /* -------------------------------------------------------------------------------
+            Description: 
+                - radiuses: <NUMBER[]> - A list of selectable dispersion radiuses (in meters) 
+                    for which the rounds can randomly fall within around the target area.
+
+            Required: 
+                - NO
+            
+            Default:
+                - 25
+
+            Examples:
+                (begin example)
+                    radiuses[] = {25,100};
+                (end)
+        ------------------------------------------------------------------------------- */
+        // radiuses[] = {};
+
+        /* -------------------------------------------------------------------------------
+            Description: 
+                - canSelectRounds: <NUMBER | BOOL> - Whether or not the support caller
+                    can specify the the number of round they would like to fire with each call.
+
+            Required: 
+                - NO
+            
+            Default:
+                - false
+
+            Examples:
+                (begin example)
+                    canSelectRounds = 1;
+                (end)
+        ------------------------------------------------------------------------------- */
+        // canSelectRounds = 1;
+
+        /* -------------------------------------------------------------------------------
+            Description: 
+                - roundCount: <NUMBER> - The total number of rounds available to be fired
+                    with a single instance of this support.
+
+            Required: 
+                - NO
+            
+            Default:
+                - 1
+
+            Examples:
+                (begin example)
+                    roundCount = 10;
+                (end)
+        ------------------------------------------------------------------------------- */
+        // roundCount = 1;
+
+        // TODO: update documentation
+        /* -------------------------------------------------------------------------------
+            Description: 
+                - ammoTypes: <STRING[]> - 
+
+            Required: 
+                - YES
+            
+            Examples:
+                (begin example)
+                    ammoTypes[] = {};
+                (end)
+        ------------------------------------------------------------------------------- */
+        ammoTypes[] = {};
+        
+        // TODO: be able to have flares?
+        // TODO: these ammo ids are stupid
+        // you should be able to just have a list of ammo classnames
+        // and optionally be able to provide a displayname for each
+        ammoTypes[] = {
+            AMMO_155_HE_ID,
+            AMMO_155_CLUSTER_ID,
+            AMMO_155_MINES_ID,
+            AMMO_155_ATMINES_ID,
+            AMMO_120_HE_ID,
+            AMMO_120_CLUSTER_ID,
+            AMMO_120_MINES_ID,
+            AMMO_120_ATMINES_ID,
+            AMMO_120_SMOKE_ID,
+            AMMO_82_HE_ID,
+            AMMO_82_FLARE_ID,
+            AMMO_82_SMOKE_ID,
+            AMMO_230_HE_ID,
+            AMMO_230_CLUSTER_ID
+        };
+    };
+
 };
+
+// TODO: update templates
 
 class KISKA_CAS_baseClass : KISKA_basicCommMenuSupport_baseClass
 {
