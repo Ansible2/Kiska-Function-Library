@@ -1,4 +1,3 @@
-#include "..\..\..\Headers\Support Framework\Command Menu Macros.hpp"
 #include "..\..\..\Headers\Support Framework\Support Type IDs.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_commMenu_onSupportSelected
@@ -23,7 +22,7 @@ Parameters:
         - 3. _is3d <BOOL> - False if in map, true if not
         - 4. _commMenuId <NUMBER> The ID number of the Comm Menu added by BIS_fnc_addCommMenuItem
 
-    2: _count <NUMBER> - Used for keeping track of how many of a count a support has left (such as rounds)
+    2: _useCount <NUMBER> - Used for keeping track of how many of a count a support has left (such as rounds)
 
 Returns:
     NOTHING
@@ -41,7 +40,7 @@ scriptName "KISKA_fnc_commMenu_onSupportSelected";
 params [
     ["_supportClass","",[""]],
     "_commMenuArgs",
-    ["_count",-1]
+    ["_useCount",-1]
 ];
 
 // delete comm menu id from use hashmap
@@ -54,57 +53,43 @@ if (isNull _supportConfig) exitWith {
     nil
 };
 
-private _supportTypeId = [_supportConfig >> "supportTypeId"] call BIS_fnc_getCfgData;
+private _supportTypeId = [_supportConfig >> "KISKA_commMenuDetails" >> "supportTypeId"] call BIS_fnc_getCfgData;
 if (isNil "_supportTypeId") exitWith {
-    [["Did not find a support _supportTypeId for CfgCommunicationMenu class ",_supportClass],true] call KISKA_fnc_log;
+    [["Did not find a support supportTypeId for CfgCommunicationMenu class ",_supportClass],true] call KISKA_fnc_log;
     nil
 };
 
+// TODO: why does this need to be pushed back?
 _commMenuArgs pushBack _supportTypeId;
 
-if (_supportTypeId isEqualTo SUPPORT_TYPE_ARTY) exitWith {
-    _this call KISKA_fnc_commMenu_openArty;
+switch (_supportTypeId) do
+{
+    case SUPPORT_TYPE_ARTY: {
+        _this call KISKA_fnc_commMenu_openArty;
+    };
+    case SUPPORT_TYPE_ATTACKHELI_CAS;
+    case SUPPORT_TYPE_HELI_CAS: {
+        _this call KISKA_fnc_commMenu_openHelicopterCAS;
+    };
+    case SUPPORT_TYPE_CAS: {
+        _this call KISKA_fnc_commMenu_openCAS;
+    };
+    case SUPPORT_TYPE_ARSENAL_DROP: {
+        _this call KISKA_fnc_commMenu_openArsenalSupplyDrop;
+    };
+    case SUPPORT_TYPE_SUPPLY_DROP_AIRCRAFT: {
+        _this call KISKA_fnc_commMenu_openSupplyDropAircraft;
+    };
+    default {
+        [
+            [
+                "Unknown _supportTypeId (",_supportTypeId,") used with _supportClass ",
+                _supportClass
+            ],
+            true
+        ] call KISKA_fnc_log;
+    };
 };
 
-if (_supportTypeId isEqualTo SUPPORT_TYPE_SUPPLY_DROP) exitWith {
-
-};
-
-if (
-    (_supportTypeId isEqualTo SUPPORT_TYPE_HELI_CAS) OR
-    (_supportTypeId isEqualTo SUPPORT_TYPE_ATTACKHELI_CAS)
-) exitWith {
-    _this call KISKA_fnc_commMenu_openHelicopterCAS;
-};
-
-if (_supportTypeId isEqualTo SUPPORT_TYPE_CAS) exitWith {
-    _this call KISKA_fnc_commMenu_openCAS;
-};
-
-if (_supportTypeId isEqualTo SUPPORT_TYPE_ARSENAL_DROP) exitWith {
-    _this call KISKA_fnc_commMenu_openArsenalSupplyDrop;
-};
-
-if (_supportTypeId isEqualTo SUPPORT_TYPE_SUPPLY_DROP_AIRCRAFT) exitWith {
-    _this call KISKA_fnc_commMenu_openSupplyDropAircraft;
-};
-
-/*
-_commMenuArgs params [
-    "_caller",
-    "_targetPosition",
-    "_target",
-    "_is3d",
-    "_commMenuId"
-];
-*/
-
-[
-    [
-        "Unknown _supportTypeId (",_supportTypeId,") used with _supportClass ",
-        _supportClass
-    ],
-    true
-] call KISKA_fnc_log;
 
 nil

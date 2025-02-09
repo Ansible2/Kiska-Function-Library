@@ -30,7 +30,7 @@
 /* ----------------------------------------------------------------------------
     Base Classes
 ---------------------------------------------------------------------------- */
-class KISKA_basicSupport_baseClass
+class KISKA_basicCommMenuSupport_baseClass
 {
     text = "My Support"; // text in support menu
     subMenu = "";
@@ -39,7 +39,27 @@ class KISKA_basicSupport_baseClass
     curosr = SUPPORT_CURSOR;
     enable = "cursorOnGround"; // Simple expression condition for enabling the item
     removeAfterExpressionCall = 1;
-    supportTypeId = SUPPORT_TYPE_CUSTOM;
+
+    // If support is to be used with the KISKA comm menu
+    class KISKA_commMenuDetails
+    {
+        /* -------------------------------------------------------------------------------
+            Description: 
+                - supportTypeId: <NUMBER> - The support type that informs several other
+                    automated pieces of data.
+
+            Required: 
+                - YES
+
+            Examples:
+                (begin example)
+                    supportTypeId = 0;
+                (end)
+        ------------------------------------------------------------------------------- */
+        supportTypeId = SUPPORT_TYPE_CUSTOM;
+
+        
+    };
 
     class KISKA_supportManagerDetails
     {
@@ -172,7 +192,7 @@ class KISKA_basicSupport_baseClass
     };
 };
 
-class KISKA_artillery_baseClass : KISKA_basicSupport_baseClass
+class KISKA_artillery_baseClass : KISKA_basicCommMenuSupport_baseClass
 {
     text = "Artillery Fire Support";
     supportTypeId = SUPPORT_TYPE_ARTY;
@@ -201,7 +221,7 @@ class KISKA_artillery_baseClass : KISKA_basicSupport_baseClass
     EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_artillery_baseClass)
 };
 
-class KISKA_CAS_baseClass : KISKA_basicSupport_baseClass
+class KISKA_CAS_baseClass : KISKA_basicCommMenuSupport_baseClass
 {
     supportTypeId = SUPPORT_TYPE_CAS;
 
@@ -228,7 +248,7 @@ class KISKA_CAS_baseClass : KISKA_basicSupport_baseClass
 /* ----------------------------------------------------------------------------
     Heli CAS
 ---------------------------------------------------------------------------- */
-class KISKA_attackHelicopterCAS_baseClass : KISKA_basicSupport_baseClass
+class KISKA_attackHelicopterCAS_baseClass : KISKA_basicCommMenuSupport_baseClass
 {
     text = "Helicopter Gunship";
 
@@ -246,7 +266,7 @@ class KISKA_attackHelicopterCAS_baseClass : KISKA_basicSupport_baseClass
     EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_attackHelicopterCAS_baseClass)
 };
 
-class KISKA_helicopterCAS_baseClass : KISKA_basicSupport_baseClass
+class KISKA_helicopterCAS_baseClass : KISKA_basicCommMenuSupport_baseClass
 {
     text = "Door Gunner Support";
 
@@ -267,7 +287,7 @@ class KISKA_helicopterCAS_baseClass : KISKA_basicSupport_baseClass
 /* ----------------------------------------------------------------------------
     Supplies
 ---------------------------------------------------------------------------- */
-class KISKA_arsenalSupplyDrop_baseClass : KISKA_basicSupport_baseClass
+class KISKA_arsenalSupplyDrop_baseClass : KISKA_basicCommMenuSupport_baseClass
 {
     text = "Airdropped Arsenal";
     supportTypeId = SUPPORT_TYPE_ARSENAL_DROP;
@@ -282,7 +302,7 @@ class KISKA_arsenalSupplyDrop_baseClass : KISKA_basicSupport_baseClass
     EXPRESSION_CALL_ON_SUPPORT_SELECTED(KISKA_arsenalSupplyDrop_baseClass)
 };
 
-class KISKA_supplyDrop_aircraft_baseClass : KISKA_basicSupport_baseClass
+class KISKA_supplyDrop_aircraft_baseClass : KISKA_basicCommMenuSupport_baseClass
 {
     text = "Airdropped Supplies";
     supportTypeId = SUPPORT_TYPE_SUPPLY_DROP_AIRCRAFT;
