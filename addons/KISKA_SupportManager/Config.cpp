@@ -37,5 +37,3 @@ class Extended_PreInit_EventHandlers {
         init = "call compileScript ['KISKA_SupportManager\Scripts\addSupportManagerCbaSettings.sqf'];";
     };
 };
-
-#include "Headers\Support Manager Dialog.hpp"
