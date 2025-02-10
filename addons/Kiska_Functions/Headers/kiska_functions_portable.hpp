@@ -530,6 +530,8 @@ class CommandMenuSupportCaller
     {};
     class commMenu_openTree
     {};
+    class commMenu_removeSupport
+    {};
 };
 class SupportFrameworkConfigs
 {

@@ -72,7 +72,7 @@ if (_numberOfUsesLeft isEqualTo 0) exitWith {
             _supportConfig
         ],
         true
-        ] call KISKA_fnc_log;
+    ] call KISKA_fnc_log;
     nil
 };
 
