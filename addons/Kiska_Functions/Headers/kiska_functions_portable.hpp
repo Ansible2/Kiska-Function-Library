@@ -648,6 +648,8 @@ class Utilities
     {};
     class getNearestIncriment
     {};
+    class getOrDefaultSet
+    {};
     class getPosRelativeSurface
     {};
     class getRelativeVectorAndPos
