@@ -28,7 +28,7 @@ params [
     ["_index",0,[123]]
 ];
 
-private _items = [STORE_ID,_index] call KISKA_fnc_simpleStore_removeItemFromPool;
+[STORE_ID,_index] call KISKA_fnc_simpleStore_removeItemFromPool;
 
 
 nil
