@@ -533,6 +533,7 @@ class CommandMenuSupportCaller
     class commMenu_removeSupport
     {};
 };
+
 class SupportFrameworkConfigs
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework\Support Config Helpers");
@@ -543,12 +544,16 @@ class SupportFrameworkConfigs
     class supportConfigs_getCasTitleFromId
     {};
 };
-class SupportFrameworkMisc
+class SupportFramework
 {
-    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework\Misc");
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework\Common");
+    class supports_add
+    {};
     class supports_genericNotification
     {};
     class supports_genericRadioMessage
+    {};
+    class supports_getMap
     {};
 };
 class Tasks
