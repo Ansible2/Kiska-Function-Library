@@ -26,12 +26,11 @@ class CfgFunctions
             };
             class supportManager_addToPool
             {};
-            class supportManager_removeFromPool
-            {};
             class supportManager_open
             {};
+            class supportManager_removeFromPool
+            {};
         };
-
     };
 };
 
