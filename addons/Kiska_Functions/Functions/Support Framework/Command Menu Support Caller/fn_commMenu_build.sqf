@@ -11,7 +11,7 @@ Description:
 Parameters:
     0: _menuName : <STRING> - The name of the menu global variable
     1: _menuTitle : <STRING> - The title of the menu that will appear when it is openned
-    2: _menuParams : <ARRAY> - An array of arrays formatted as:
+    2: _menuParams : <ARRAY> - An array of menu arrays formatted as:
         
         - 0. <STRING> - The name of the menu option
         - 1. <NUMBER> - The key code for quick menu select (key 1 is code 2, 2 is 3, etc. use 0 for no key)
@@ -22,7 +22,10 @@ Returns:
 
 Examples:
     (begin example)
-        _createdMenu = [] call KISKA_fnc_commMenu_build
+        private _createdMenu = [
+            "MyMenu",
+            "My Menu"
+        ] call KISKA_fnc_commMenu_build;
     (end)
 
 Author(s):
