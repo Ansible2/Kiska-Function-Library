@@ -504,8 +504,6 @@ class Supports
 class CommandMenuSupportCaller
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework\Command Menu Support Caller");
-    class commMenu_addSupport
-    {};
     class commMenu_build
     {};
     class commMenu_buildVehicleSelectPanel
@@ -517,6 +515,8 @@ class CommandMenuSupportCaller
     class commMenu_getSupportMap
     {};
     class commMenu_onSupportSelected
+    {};
+    class commMenu_onSupportAdded
     {};
     class commMenu_openArsenalSupplyDrop
     {};
