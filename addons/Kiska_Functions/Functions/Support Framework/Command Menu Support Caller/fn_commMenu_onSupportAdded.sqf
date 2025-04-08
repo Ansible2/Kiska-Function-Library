@@ -31,9 +31,8 @@ scriptName "KISKA_fnc_commMenu_onSupportAdded";
 #define SUPPORT_CURSOR "\a3\Ui_f\data\IGUI\Cfg\Cursors\iconCursorSupport_ca.paa"
 
 params [
-    ["_supportId","",[""]],
-    ["_supportConfig",configNull,[configNull]],
-    ["_numberOfUsesLeft",1,[123]]
+    "",
+    ["_supportConfig",configNull,[configNull]]
 ];
 
 private _commMenuDetailsConfig = _supportConfig >> "KISKA_commMenuDetails";
@@ -42,11 +41,4 @@ if (isNull _commMenuDetailsConfig) exitWith {
     nil
 };
 
-private _text = getText(_commMenuDetailsConfig >> "text");
-private _onSupportSelected = getText(_commMenuDetailsConfig >> "onSupportSelected");
-private _icon = getText(_commMenuDetailsConfig >> "icon");
-private _iconText = getText(_commMenuDetailsConfig >> "iconText");
-private _cursor = getText(_commMenuDetailsConfig >> "cursor");
-
-// TODO: add the rest of the logic
-// This essentially needs to replace the logic of BIS_fnc_addCommMenuItem
+call KISKA_fnc_commMenu_refresh;
