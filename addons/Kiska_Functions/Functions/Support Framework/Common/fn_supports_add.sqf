@@ -34,6 +34,13 @@ params [
     ["_numberOfUsesLeft",-1,[123]]
 ];
 
+private _maxAllowedSupports = missionNamespace getVariable ["KISKA_CBA_supportManager_maxSupports",10];
+private _supportMap = call KISKA_fnc_supports_getMap;
+if ((count _supportMap) >= _maxAllowedSupports) exitWith {
+    [["player already has the max number of supports ->",_maxAllowedSupports],true] call KISKA_fnc_log;
+    nil
+};
+
 if (_supportConfig isEqualType "") then {
     _supportConfig = [["CfgCommunicationMenu",_supportConfig]] call KISKA_fnc_findConfigAny;
 };
@@ -83,7 +90,6 @@ if (_onSupportAdded isNotEqualTo "") then {
     [_id,_supportConfig,_numberOfUsesLeft] call _onSupportAddedCompiled;
 };
 
-private _supportMap = call KISKA_fnc_supports_getMap;
 _supportMap set [_id, [_supportConfig,_numberOfUsesLeft]];
 
 
