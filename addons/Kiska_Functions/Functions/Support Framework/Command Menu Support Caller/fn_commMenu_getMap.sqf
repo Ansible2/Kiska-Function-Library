@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_commMenu_getSupportMap
+Function: KISKA_fnc_commMenu_getMap
 
 Description:
     Retrieves the hashmap that contains a players current supports in the 
@@ -14,19 +14,16 @@ Returns:
 
 Examples:
     (begin example)
-        private _supportMap = call KISKA_fnc_commMenu_getSupportMap;
+        private _supportMap = call KISKA_fnc_commMenu_getMap;
     (end)
 
 Author:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_commMenu_getSupportMap";
+scriptName "KISKA_fnc_commMenu_getMap";
 
-private _supportMap = localNamespace getVariable "KISKA_commMenuSupportMap";
-if (isNil "_supportMap") then {
-    _supportMap = createHashMap;
-    localNamespace setVariable ["KISKA_commMenuSupportMap",_supportMap];
-};
-
-
-_supportMap
+[
+    localNamespace,
+    "KISKA_commMenu_supportMap",
+    {createHashMap}
+] call KISKA_fnc_getOrDefaultSet
