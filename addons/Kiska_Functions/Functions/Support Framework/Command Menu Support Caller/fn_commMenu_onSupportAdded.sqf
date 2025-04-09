@@ -9,14 +9,14 @@ Parameters:
     0: _supportId <STRING> - The support's id
     1: _supportConfig <CONFIG> - The support config
     2: _numberOfUsesLeft <NUMBER> - The number of support uses left or rounds
-        available to use. If less than 0, the configed value will be used.
+        available to use.
 
 Returns:
     NOTHING
 
 Examples:
     (begin example)
-        private _commMenuSupportId = [
+        [
             "KISKA_supports_1",
             missionConfigFile >> "CfgCommunicationMenu" >> "MySupport",
             1
@@ -28,10 +28,8 @@ Authors:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_commMenu_onSupportAdded";
 
-#define SUPPORT_CURSOR "\a3\Ui_f\data\IGUI\Cfg\Cursors\iconCursorSupport_ca.paa"
-
 params [
-    "",
+    ["_supportId","",[""]],
     ["_supportConfig",configNull,[configNull]]
 ];
 
@@ -41,4 +39,10 @@ if (isNull _commMenuDetailsConfig) exitWith {
     nil
 };
 
-call KISKA_fnc_commMenu_refresh;
+private _commMenuMap = call KISKA_fnc_commMenu_getMap;
+_commMenuMap set [_supportId,_supportConfig];
+
+call KISKA_fnc_commMenu_refresh
+
+
+nil
