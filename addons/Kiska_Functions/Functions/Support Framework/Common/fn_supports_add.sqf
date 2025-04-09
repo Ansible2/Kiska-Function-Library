@@ -29,6 +29,8 @@ Authors:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_supports_add";
 
+// TODO: notification?
+
 params [
     ["_supportConfig",configNull,[configNull,""]],
     ["_numberOfUsesLeft",-1,[123]]
