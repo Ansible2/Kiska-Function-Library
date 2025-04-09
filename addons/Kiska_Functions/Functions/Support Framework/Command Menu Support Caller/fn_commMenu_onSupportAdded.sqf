@@ -42,7 +42,7 @@ if (isNull _commMenuDetailsConfig) exitWith {
 private _commMenuMap = call KISKA_fnc_commMenu_getMap;
 _commMenuMap set [_supportId,_supportConfig];
 
-call KISKA_fnc_commMenu_refresh
+call KISKA_fnc_commMenu_refresh;
 
 
 nil
