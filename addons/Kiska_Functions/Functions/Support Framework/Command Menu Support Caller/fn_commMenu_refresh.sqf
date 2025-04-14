@@ -2,7 +2,7 @@
 Function: KISKA_fnc_commMenu_refresh
 
 Description:
-    Redefines the `BIS_fnc_addCommMenuItem_menu` array with all the player's
+    Redefines the global `BIS_fnc_addCommMenuItem_menu` array with all the player's
     current comm menu supports.
 
 Parameters:
@@ -21,54 +21,25 @@ Authors:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_commMenu_refresh";
 
-#define SUPPORT_CURSOR "\a3\Ui_f\data\IGUI\Cfg\Cursors\iconCursorSupport_ca.paa"
-
-// TODO: 
-// get loop through all kiska supports finding those that are commMenu supports
-// get the support's details for the comm menu (cache them against the support config)
-// overwrite the BIS_fnc_addCommMenuItem_menu variable with the information as below
-private _text = getText(_commMenuDetailsConfig >> "text");
-private _onSupportSelected = getText(_commMenuDetailsConfig >> "onSupportSelected");
-private _icon = getText(_commMenuDetailsConfig >> "icon");
-private _iconText = getText(_commMenuDetailsConfig >> "iconText");
-private _cursor = getText(_commMenuDetailsConfig >> "cursor");
-
-private _menuIndexed = [
+private _selectionMenu = [
     [localize "STR_rscMenu.hppRscGroupRootMenu_Items_Communication0",true]
 ]; 
 
 {
-    private _supportConfig = _x;
-    private _assignedKey = _foreachindex + 2;
-	_menuIndexed pushBack [_text,[_assignedKey],_submenu,-5,[["expression",_expression]],"1",_enable,_cursor];
-} foreach (call KISKA_fnc_commMenu_getMap);
-
-/*
-private _menu = player getvariable ["BIS_fnc_addCommMenuItem_menu",[]];
-private _menuIndexed = [
-    [localize "STR_rscMenu.hppRscGroupRootMenu_Items_Communication0",true]
-];
-
-{
     _x params [
-        "", // _itemID
+        "",
         "_text",
         "_submenu",
-        "_expression",
+        "_commMenuExpression",
         "_enable",
-        "_cursor",
-        "_icon"
+        "_cursor"
     ];
-    private _assignedKey = _foreachindex + 2;
-	_menuIndexed pushBack [_text,[_assignedKey],_submenu,-5,[["expression",_expression]],"1",_enable,_cursor];
-} foreach _menu;
+    private _keyboardShortcutKey = _foreachindex + 2;
+    _selectionMenu pushBack [_text,[_keyboardShortcutKey],_submenu,-5,[["expression",_expression]],"1",_enable,_cursor];
+} foreach (player getVariable ["BIS_fnc_addCommMenuItem_menu",[]]);
 
-
-missionnamespace setvariable
-[
-	"BIS_fnc_addCommMenuItem_menu",
-	_menuIndexed
-];
-
+missionnamespace setvariable ["BIS_fnc_addCommMenuItem_menu", _selectionMenu];
 ("BIS_fnc_addCommMenuItem" call bis_fnc_rscLayer) cutrsc ["RscCommMenuItems","plain"];
-*/
+
+
+nil

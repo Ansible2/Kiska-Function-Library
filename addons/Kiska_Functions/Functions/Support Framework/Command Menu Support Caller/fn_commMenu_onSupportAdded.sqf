@@ -28,6 +28,8 @@ Authors:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_commMenu_onSupportAdded";
 
+#define SUPPORT_CURSOR "\a3\Ui_f\data\IGUI\Cfg\Cursors\iconCursorSupport_ca.paa"
+
 params [
     ["_supportId","",[""]],
     ["_supportConfig",configNull,[configNull]]
@@ -39,10 +41,74 @@ if (isNull _commMenuDetailsConfig) exitWith {
     nil
 };
 
-private _commMenuMap = call KISKA_fnc_commMenu_getMap;
-_commMenuMap set [_supportId,_supportConfig];
+private _commMenuSupportDetailsMap = [
+    localNamespace,
+    "KISKA_commMenu_supportDetailsMap",
+    {createHashMap}
+] call KISKA_fnc_getOrDefaultSet;
+
+
+private _commMenuSupportDetails = _commMenuSupportDetailsMap getOrDefault [_supportConfig,[]];
+_commMenuSupportDetails params [
+    "_text",
+    "_onSupportCalled",
+    "_icon",
+    "_iconText",
+    "_cursor"
+];
+if (isNil "_commMenuSupportDetails") then {
+    _text = getText(_commMenuDetailsConfig >> "text");
+    _onSupportCalled = getText(_commMenuDetailsConfig >> "onSupportCalled");
+    _icon = getText(_commMenuDetailsConfig >> "icon");
+    _iconText = getText(_commMenuDetailsConfig >> "iconText");
+    _cursor = getText(_commMenuDetailsConfig >> "cursor");
+    if (_cursor isEqualTo "") then {
+        _cursor = SUPPORT_CURSOR;
+    };
+
+    _commMenuSupportDetailsMap set [
+        _supportConfig,
+        [
+            _text,
+            _onSupportCalled,
+            _icon,
+            _iconText,
+            _cursor
+        ]
+    ]
+};
+
+
+private _commMenuExpression = format ["[%1,_pos,_target,_is3D] call KISKA_fnc_commMenu_onSupportSelected;",_supportId];
+private _playerCommMenuItems = [
+    player,
+    "BIS_fnc_addCommMenuItem_menu",
+    {[]}
+] call KISKA_fnc_getOrDefaultSet;
+private _commMenuIndex = _playerCommMenuItems pushBack [
+    _supportId,
+    _text,
+    "", // subMenu unused
+    _commMenuExpression,
+    1, // enable unused
+    _cursor,
+    _icon,
+    _iconText
+];
+private _supportIdToIndexMap = [
+    localNamespace,
+    "KISKA_commMenu_supportIdToIndexMap",
+    {createHashMap}
+] call KISKA_fnc_getOrDefaultSet;
+_supportIdToIndexMap set [_supportId,_commMenuIndex];
+
 
 call KISKA_fnc_commMenu_refresh;
+
+// Close the menu when opened
+if (commandingMenu == "#User:BIS_fnc_addCommMenuItem_menu") then {
+    showcommandingmenu "";
+};
 
 
 nil

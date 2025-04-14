@@ -5,7 +5,12 @@ Description:
     Adds a support to the local player's support KISKA support pool.
 
 Parameters:
-    0: _param <CONFIG | STRING> - 
+    0: _supportConfig <CONFIG | STRING> - Config entry of the support. If a string,
+        the config is expected to be located under a `"KISKA_Supports"` config
+        (e.g. `missionConfigFile >> "KISKA_Supports" >> "MySupport"`) and will
+        be found with `KISKA_fnc_findConfigAny`.
+    1: _numberOfUsesLeft <NUMBER> - Default: `-1` - The number of support uses left 
+        or rounds available to use. If less than 0, the configed value will be used.
 
 Returns:
     <STRING> - The supports id
@@ -13,7 +18,7 @@ Returns:
 Examples:
     (begin example)
         [
-            "MySupport" // MySupport class is defined in "CfgCommunicationMenu"
+            "MySupport" // MySupport class is defined in "KISKA_Supports"
         ] call KISKA_fnc_supports_add;
     (end)
 
@@ -44,7 +49,7 @@ if ((count _supportMap) >= _maxAllowedSupports) exitWith {
 };
 
 if (_supportConfig isEqualType "") then {
-    _supportConfig = [["CfgCommunicationMenu",_supportConfig]] call KISKA_fnc_findConfigAny;
+    _supportConfig = [["KISKA_Supports",_supportConfig]] call KISKA_fnc_findConfigAny;
 };
 if (isNull _supportConfig) exitWith {
     ["Could not find _supportConfig",true] call KISKA_fnc_log;
@@ -73,22 +78,21 @@ if (_numberOfUsesLeft isEqualTo 0) exitWith {
 };
 
 
-private _onSupportAdded = getText(_supportDetailsConfig >> "onSupportAdded");
 private _id = ["KISKA_support"] call KISKA_fnc_generateUniqueId;
+private _onSupportAddedMap = [
+    localNamespace,
+    "KISKA_supports_onSupportAddedMap",
+    {createHashMap}
+] call KISKA_fnc_getOrDefaultSet;
 
-if (_onSupportAdded isNotEqualTo "") then {
-    private _onSupportAddedMap = [
-        localNamespace,
-        "KISKA_supports_onSupportAddedMap",
-        {createHashMap}
-    ] call KISKA_fnc_getOrDefaultSet;
+private _onSupportAddedCompiled = _onSupportAddedMap get _supportConfig;
+if (isNil "_onSupportAddedCompiled") then {
+    private _onSupportAdded = getText(_supportDetailsConfig >> "onSupportAdded");
+    _onSupportAddedCompiled = compileFinal _onSupportAdded;
+    _onSupportAddedMap set [_supportConfig,_onSupportAddedCompiled];
+};
 
-    private _onSupportAddedCompiled = _onSupportAddedMap get _supportConfig;
-    if (isNil "_onSupportAddedCompiled") then {
-        _onSupportAddedCompiled = compileFinal _onSupportAdded;
-        _onSupportAddedMap set [_supportConfig,_onSupportAddedCompiled];
-    };
-
+if (_onSupportAddedCompiled isNotEqualTo {}) then {
     [_id,_supportConfig,_numberOfUsesLeft] call _onSupportAddedCompiled;
 };
 

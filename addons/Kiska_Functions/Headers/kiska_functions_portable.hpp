@@ -512,8 +512,6 @@ class CommandMenuSupportCaller
     {
         preInit = 1;
     };
-    class commMenu_getMap
-    {};
     class commMenu_onSupportSelected
     {};
     class commMenu_onSupportAdded
