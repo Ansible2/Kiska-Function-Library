@@ -38,9 +38,10 @@ Authors:
 scriptName "KISKA_fnc_commMenu_onSupportSelected";
 
 params [
-    ["_supportClass","",[""]],
-    "_commMenuArgs",
-    ["_useCount",-1]
+    "_supportId",
+    "_targetPosition",
+    "_cursorTarget",
+    "_is3D"
 ];
 
 // delete comm menu id from use hashmap
