@@ -101,9 +101,9 @@ private _successfullyCalled = [
     _onSupportCalledCompiled,
     [
         _supportId,
+        _supportConfig,
         _targetPosition,
         _numberOfTimesUsed,
-        _supportConfig,
         _onCallArgs
     ]
 ] call CBA_fnc_directCall;

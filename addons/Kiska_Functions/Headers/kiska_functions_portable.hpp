@@ -555,6 +555,8 @@ class SupportFramework
     {};
     class supports_getMap
     {};
+    class supports_remove
+    {};
 };
 class Tasks
 {
