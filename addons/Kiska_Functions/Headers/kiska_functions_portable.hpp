@@ -547,6 +547,8 @@ class SupportFramework
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework\Common");
     class supports_add
     {};
+    class supports_call
+    {};
     class supports_genericNotification
     {};
     class supports_genericRadioMessage
