@@ -51,14 +51,12 @@ private _commMenuSupportDetailsMap = [
 private _commMenuSupportDetails = _commMenuSupportDetailsMap getOrDefault [_supportConfig,[]];
 _commMenuSupportDetails params [
     "_text",
-    "_onSupportCalled",
     "_icon",
     "_iconText",
     "_cursor"
 ];
 if (isNil "_commMenuSupportDetails") then {
     _text = getText(_commMenuDetailsConfig >> "text");
-    _onSupportCalled = getText(_commMenuDetailsConfig >> "onSupportCalled");
     _icon = getText(_commMenuDetailsConfig >> "icon");
     _iconText = getText(_commMenuDetailsConfig >> "iconText");
     _cursor = getText(_commMenuDetailsConfig >> "cursor");
@@ -70,7 +68,6 @@ if (isNil "_commMenuSupportDetails") then {
         _supportConfig,
         [
             _text,
-            _onSupportCalled,
             _icon,
             _iconText,
             _cursor
@@ -79,7 +76,7 @@ if (isNil "_commMenuSupportDetails") then {
 };
 
 
-private _commMenuExpression = format ["[%1,_pos,_target,_is3D] call KISKA_fnc_commMenu_onSupportSelected;",_supportId];
+private _commMenuExpression = format ["[%1,AGLToASL _pos,_target,_is3D] call KISKA_fnc_commMenu_onSupportSelected;",_supportId];
 private _playerCommMenuItems = [
     player,
     "BIS_fnc_addCommMenuItem_menu",
