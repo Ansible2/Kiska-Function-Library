@@ -512,9 +512,11 @@ class CommandMenuSupportCaller
     {
         preInit = 1;
     };
-    class commMenu_onSupportSelected
-    {};
     class commMenu_onSupportAdded
+    {};
+    class commMenu_onSupportRemoved
+    {};
+    class commMenu_onSupportSelected
     {};
     class commMenu_openArsenalSupplyDrop
     {};
@@ -527,8 +529,6 @@ class CommandMenuSupportCaller
     class commMenu_openSupplyDropAircraft
     {};
     class commMenu_openTree
-    {};
-    class commMenu_removeSupport
     {};
 };
 

@@ -23,10 +23,15 @@ scriptName "KISKA_fnc_commMenu_refresh";
 
 private _selectionMenu = [
     [localize "STR_rscMenu.hppRscGroupRootMenu_Items_Communication0",true]
-]; 
+];
 
+private _idToDetailsMap = [
+    localNamespace,
+    "KISKA_commMenu_supportIdToDetailsMap",
+    {createHashMap}
+] call KISKA_fnc_getOrDefaultSet;
 {
-    _x params [
+    _y params [
         "",
         "_text",
         "_submenu",
@@ -36,7 +41,7 @@ private _selectionMenu = [
     ];
     private _keyboardShortcutKey = _foreachindex + 2;
     _selectionMenu pushBack [_text,[_keyboardShortcutKey],_submenu,-5,[["expression",_expression]],"1",_enable,_cursor];
-} foreach (player getVariable ["BIS_fnc_addCommMenuItem_menu",[]]);
+} foreach _idToDetailsMap;
 
 missionnamespace setvariable ["BIS_fnc_addCommMenuItem_menu", _selectionMenu];
 ("BIS_fnc_addCommMenuItem" call bis_fnc_rscLayer) cutrsc ["RscCommMenuItems","plain"];

@@ -3,7 +3,7 @@ Function: KISKA_fnc_commMenu_onSupportAdded
 
 Description:
     Designed to be an event handler for when a support that's meant to be used in
-     the communication menu is added.
+    the event a support item that is part of the comm menu is added.
     
 Parameters:
     0: _supportId <STRING> - The support's id
@@ -43,11 +43,9 @@ if (isNull _commMenuDetailsConfig) exitWith {
 
 private _commMenuSupportDetailsMap = [
     localNamespace,
-    "KISKA_commMenu_supportDetailsMap",
+    "KISKA_commMenu_configToDetailsMap",
     {createHashMap}
 ] call KISKA_fnc_getOrDefaultSet;
-
-
 private _commMenuSupportDetails = _commMenuSupportDetailsMap getOrDefault [_supportConfig,[]];
 _commMenuSupportDetails params [
     "_text",
@@ -77,28 +75,24 @@ if (isNil "_commMenuSupportDetails") then {
 
 
 private _commMenuExpression = format ["[%1,AGLToASL _pos,_target,_is3D] call KISKA_fnc_commMenu_onSupportSelected;",_supportId];
-private _playerCommMenuItems = [
-    player,
-    "BIS_fnc_addCommMenuItem_menu",
-    {[]}
-] call KISKA_fnc_getOrDefaultSet;
-private _commMenuIndex = _playerCommMenuItems pushBack [
-    _supportId,
-    _text,
-    "", // subMenu unused
-    _commMenuExpression,
-    1, // enable unused
-    _cursor,
-    _icon,
-    _iconText
-];
-private _supportIdToIndexMap = [
+private _idToDetailsMap = [
     localNamespace,
-    "KISKA_commMenu_supportIdToIndexMap",
+    "KISKA_commMenu_supportIdToDetailsMap",
     {createHashMap}
 ] call KISKA_fnc_getOrDefaultSet;
-_supportIdToIndexMap set [_supportId,_commMenuIndex];
-
+private _commMenuIndex = _idToDetailsMap set [
+    _supportId,
+    [
+        _supportId,
+        _text,
+        "", // subMenu unused
+        _commMenuExpression,
+        1, // enable unused
+        _cursor,
+        _icon,
+        _iconText
+    ]
+];
 
 call KISKA_fnc_commMenu_refresh;
 
