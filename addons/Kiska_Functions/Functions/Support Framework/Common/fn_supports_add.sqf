@@ -34,8 +34,6 @@ Authors:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_supports_add";
 
-// TODO: notification?
-
 params [
     ["_supportConfig",configNull,[configNull,""]],
     ["_numberOfUsesLeft",-1,[123]]
@@ -98,5 +96,9 @@ if (_onSupportAddedCompiled isNotEqualTo {}) then {
 
 _supportMap set [_id, [_supportConfig,_numberOfUsesLeft]];
 
+private _notificationClass = _supportDetailsConfig >> "AddedNotifcation";
+if (isClass _notificationClass) then {
+    [_notificationClass] call KISKA_fnc_showNotification;
+};
 
 _id
