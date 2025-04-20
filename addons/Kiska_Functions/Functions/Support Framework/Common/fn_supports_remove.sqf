@@ -10,7 +10,7 @@ Parameters:
     0: _supportId <STRING> - The ID of the support to remove.
 
 Returns:
-    NOTHING
+    <[CONFIG,NUMBER]> - The support config and the number of uses left.
 
 Examples:
     (begin example)
@@ -60,6 +60,4 @@ if (isNil "_onSupportRemovedCompiled") then {
     [_supportId,_supportConfig]
 ] call CBA_fnc_directCall;
 
-_supportMap deleteAt _supportId;
-
-nil
+_supportMap deleteAt _supportId

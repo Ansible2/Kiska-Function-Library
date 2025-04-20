@@ -1,5 +1,6 @@
 #include "..\..\..\Headers\Support Framework\Command Menu Macros.hpp"
 #include "..\..\..\Headers\Support Framework\Support Type IDs.hpp"
+// 173 TODO: redo commMenu open functions
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_commMenu_openCAS
 
