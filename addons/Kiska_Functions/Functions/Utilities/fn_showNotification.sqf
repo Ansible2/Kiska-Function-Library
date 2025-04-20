@@ -41,11 +41,21 @@ Returns:
 
 Examples:
     (begin example)
-        // TODO: write example
+        ["Warning"] call KISKA_fnc_showNotification;
     (end)
     
     (begin example)
-        // TODO: write overwrite example
+        [
+            configFile >> "MyNotifications" >> "MyNotification"
+        ] call KISKA_fnc_showNotification;
+    (end)
+    
+    (begin example)
+        private _map = createHashMapFromArray [
+            ["title","hello world"],
+            ["description","my description"]
+        ];
+        [_map] call KISKA_fnc_showNotification;
     (end)
 
 Authors:
