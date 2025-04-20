@@ -69,15 +69,17 @@ private _args = [
                 "_fn_getSelectedItems",
                 {
                     private _usedIconColor = missionNamespace getVariable ["KISKA_CBA_supportManager_usedIconColor",[0.75,0,0,1]];
-                    {
+                    private _items = [];
+                    (call KISKA_fnc_supports_getMap) apply {
                         _y params [
                             ["_supportConfig",configNull,[configNull]],
-                            ["_numberOfUsesLeft",-1,[123]]
+                            ["_numberOfUsesLeft",-1,[123]],
+                            ["_supportId","",[""]]
                         ];
                         
                         private _supportManagerDetails = _supportConfig >> "KISKA_supportManagerDetails";
                         if (isNull _supportManagerDetails) then {
-                            [["_supportManagerDetails at index -> ",_forEachIndex," is null"],true] call KISKA_fnc_log;
+                            [["_supportManagerDetails for id -> ",_supportId," is null"],true] call KISKA_fnc_log;
                             nil
                         } else {
                             private ["_pictureColor","_selectedPictureColor"];
@@ -88,16 +90,19 @@ private _args = [
                                 _selectedPictureColor = getArray(_supportManagerDetails >> "selectedPictureColor");
                             };
 
-                            [
+                            private _data = _supportId;
+                            _items pushBack [
                                 getText(_supportManagerDetails >> "text"),
                                 getText(_supportManagerDetails >> "picture"),
                                 _pictureColor,
                                 _selectedPictureColor,
                                 getText(_supportManagerDetails >> "tooltip"),
-                                getText(_supportManagerDetails >> "data")
-                            ]
+                                _data
+                            ];
                         };
-                    } forEach (call KISKA_fnc_commMenu_getSupportMap);
+                    };
+
+                    _items
                 }
             ],
             [
@@ -106,7 +111,7 @@ private _args = [
                     params ["_storeId","_index"];
 
                     private _maxAllowedSupports = missionNamespace getVariable ["KISKA_CBA_supportManager_maxSupports",10];
-                    private _hasMaxSupports = count (player getVariable ["BIS_fnc_addCommMenuItem_menu",[]]) isEqualTo _maxAllowedSupports;
+                    private _hasMaxSupports = count (call KISKA_fnc_supports_getMap) isEqualTo _maxAllowedSupports;
                     if (_hasMaxSupports) exitWith { 
                         ["You already have the max supports possible"] call KISKA_fnc_errorNotification;
                         nil
@@ -128,7 +133,7 @@ private _args = [
                     private _condition = getText(_supportManagerDetails >> "managerCondition");
                     private _canTakeSupport = (_condition isEqualTo "") OR { [_supportConfig] call (compile _condition) };
                     if (_canTakeSupport) exitWith {
-                        [_supportConfig,_numberOfUsesLeft] call KISKA_fnc_commMenu_addSupport;
+                        [_supportConfig,_numberOfUsesLeft] call KISKA_fnc_supports_add;
                         _this remoteExecCall ["KISKA_fnc_simpleStore_removeItemFromPool",0,true];
                         nil
                     };
@@ -144,13 +149,10 @@ private _args = [
             [
                 "_fn_onStore",
                 {
-                    params ["_storeId","_index"];
-                    // TODO: implement
-
-                    // [
-                    //     _storeId,
-                    //     myStoreSelectedItems deleteAt _index
-                    // ] call KISKA_fnc_simpleStore_addItemToPool;
+                    params ["","","_data"];
+                    private _supportId = _data;
+                    private _supportConfigAndUses = [_supportId] call KISKA_fnc_supports_remove;
+                    [_supportConfigAndUses] call KISKA_fnc_supportManager_addToPool;
                 }
             ]
         ]
