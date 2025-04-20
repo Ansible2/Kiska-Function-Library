@@ -733,6 +733,8 @@ class Utilities
     {};
     class showHide
     {};
+    class showNotification
+    {};
     class sortStringsNumerically
     {};
     class staticLine
