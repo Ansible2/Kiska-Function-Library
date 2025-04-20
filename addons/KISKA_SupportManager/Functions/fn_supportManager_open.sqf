@@ -73,33 +73,33 @@ private _args = [
                     (call KISKA_fnc_supports_getMap) apply {
                         _y params [
                             ["_supportConfig",configNull,[configNull]],
-                            ["_numberOfUsesLeft",-1,[123]],
-                            ["_supportId","",[""]]
+                            ["_numberOfUsesLeft",-1,[123]]
                         ];
                         
                         private _supportManagerDetails = _supportConfig >> "KISKA_supportManagerDetails";
+                        private _supportId = _x;
                         if (isNull _supportManagerDetails) then {
                             [["_supportManagerDetails for id -> ",_supportId," is null"],true] call KISKA_fnc_log;
-                            nil
-                        } else {
-                            private ["_pictureColor","_selectedPictureColor"];
-                            if (_numberOfUsesLeft isNotEqualTo -1) then {
-                                _pictureColor = _usedIconColor;
-                            } else {
-                                pictureColor = getArray(_supportManagerDetails >> "pictureColor");
-                                _selectedPictureColor = getArray(_supportManagerDetails >> "selectedPictureColor");
-                            };
-
-                            private _data = _supportId;
-                            _items pushBack [
-                                getText(_supportManagerDetails >> "text"),
-                                getText(_supportManagerDetails >> "picture"),
-                                _pictureColor,
-                                _selectedPictureColor,
-                                getText(_supportManagerDetails >> "tooltip"),
-                                _data
-                            ];
+                            continue;
                         };
+
+                        private ["_pictureColor","_selectedPictureColor"];
+                        if (_numberOfUsesLeft isNotEqualTo -1) then {
+                            _pictureColor = _usedIconColor;
+                        } else {
+                            pictureColor = getArray(_supportManagerDetails >> "pictureColor");
+                            _selectedPictureColor = getArray(_supportManagerDetails >> "selectedPictureColor");
+                        };
+
+                        private _data = _supportId;
+                        _items pushBack [
+                            getText(_supportManagerDetails >> "text"),
+                            getText(_supportManagerDetails >> "picture"),
+                            _pictureColor,
+                            _selectedPictureColor,
+                            getText(_supportManagerDetails >> "tooltip"),
+                            _data
+                        ];
                     };
 
                     _items
@@ -152,7 +152,7 @@ private _args = [
                     params ["","","_data"];
                     private _supportId = _data;
                     private _supportConfigAndUses = [_supportId] call KISKA_fnc_supports_remove;
-                    [_supportConfigAndUses] call KISKA_fnc_supportManager_addToPool;
+                    _supportConfigAndUses call KISKA_fnc_supportManager_addToPool;
                 }
             ]
         ]
