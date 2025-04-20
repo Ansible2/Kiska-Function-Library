@@ -278,22 +278,22 @@ class KISKA_artillery_baseClass : KISKA_basicCommMenuSupport_baseClass
         // TODO: these ammo ids are stupid
         // you should be able to just have a list of ammo classnames
         // and optionally be able to provide a displayname for each
-        ammoTypes[] = {
-            AMMO_155_HE_ID,
-            AMMO_155_CLUSTER_ID,
-            AMMO_155_MINES_ID,
-            AMMO_155_ATMINES_ID,
-            AMMO_120_HE_ID,
-            AMMO_120_CLUSTER_ID,
-            AMMO_120_MINES_ID,
-            AMMO_120_ATMINES_ID,
-            AMMO_120_SMOKE_ID,
-            AMMO_82_HE_ID,
-            AMMO_82_FLARE_ID,
-            AMMO_82_SMOKE_ID,
-            AMMO_230_HE_ID,
-            AMMO_230_CLUSTER_ID
-        };
+        // ammoTypes[] = {
+        //     AMMO_155_HE_ID,
+        //     AMMO_155_CLUSTER_ID,
+        //     AMMO_155_MINES_ID,
+        //     AMMO_155_ATMINES_ID,
+        //     AMMO_120_HE_ID,
+        //     AMMO_120_CLUSTER_ID,
+        //     AMMO_120_MINES_ID,
+        //     AMMO_120_ATMINES_ID,
+        //     AMMO_120_SMOKE_ID,
+        //     AMMO_82_HE_ID,
+        //     AMMO_82_FLARE_ID,
+        //     AMMO_82_SMOKE_ID,
+        //     AMMO_230_HE_ID,
+        //     AMMO_230_CLUSTER_ID
+        // };
     };
 
 };
