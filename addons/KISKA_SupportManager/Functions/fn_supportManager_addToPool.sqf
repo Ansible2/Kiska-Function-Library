@@ -1,4 +1,3 @@
-#include "..\Headers\Support Manager Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_supportManager_addToPool
 
