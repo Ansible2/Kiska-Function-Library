@@ -187,31 +187,34 @@ _display setVariable ["KISKA_simpleStore_fn_poolItemToListboxItem",_paramMap get
     Event Handlers
 ---------------------------------------------------------------------------- */
 (_display displayCtrl SIMPLE_STORE_TAKE_BUTTON_IDC) ctrlAddEventHandler ["ButtonClick", {
-    params ["_control"];
-    private _simpleStoreDisplay = ctrlParent _control;
-    private _selectedListboxIndex = lbCurSel (_simpleStoreDisplay getVariable "KISKA_simpleStore_poolListControl");
-    private _selectedIndex = _control lbValue _selectedListboxIndex;
+    params ["_buttonControl"];
+
+    private _simpleStoreDisplay = ctrlParent _buttonControl;
+    private _poolListControl = _simpleStoreDisplay getVariable "KISKA_simpleStore_poolListControl";
+    private _selectedListboxIndex = lbCurSel _poolListControl;
+    private _selectedIndex = _poolListControl lbValue _selectedListboxIndex;
 
     if (_selectedIndex >= 0) then {
         [
             _simpleStoreDisplay getVariable "KISKA_simpleStore_id",
             _selectedIndex,
-            _control lbData _selectedListboxIndex
+            _poolListControl lbData _selectedListboxIndex
         ] call (_simpleStoreDisplay getVariable "KISKA_simpleStore_fn_onTake");
     };
 }];
 
 (_display displayCtrl SIMPLE_STORE_STORE_BUTTON_IDC) ctrlAddEventHandler ["ButtonClick", {
-    params ["_control"];
-    private _simpleStoreDisplay = ctrlParent _control;
-    private _selectedListboxIndex = lbCurSel (_simpleStoreDisplay getVariable "KISKA_simpleStore_selectedListControl");
-    private _selectedIndex = _control lbValue _selectedListboxIndex;
+    params ["_buttonControl"];
+    private _simpleStoreDisplay = ctrlParent _buttonControl;
+    private _selectedListControl = _simpleStoreDisplay getVariable "KISKA_simpleStore_selectedListControl";
+    private _selectedListboxIndex = lbCurSel _selectedListControl;
+    private _selectedIndex = _selectedListControl lbValue _selectedListboxIndex;
 
     if (_selectedIndex >= 0) then {
         [
             _simpleStoreDisplay getVariable "KISKA_simpleStore_id",
             _selectedIndex,
-            _control lbData _selectedListboxIndex
+            _selectedListControl lbData _selectedListboxIndex
         ] call (_simpleStoreDisplay getVariable "KISKA_simpleStore_fn_onStore");
     };
 }];
