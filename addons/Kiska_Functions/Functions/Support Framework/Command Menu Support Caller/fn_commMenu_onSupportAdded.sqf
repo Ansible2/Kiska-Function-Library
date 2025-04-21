@@ -55,7 +55,7 @@ _commMenuSupportDetails params [
     "_cursor",
     "_enableExpression"
 ];
-if (isNil "_commMenuSupportDetails") then {
+if (_commMenuSupportDetails isEqualTo []) then {
     _text = getText(_commMenuDetailsConfig >> "text");
     _icon = getText(_commMenuDetailsConfig >> "icon");
     _iconText = getText(_commMenuDetailsConfig >> "iconText");
@@ -87,7 +87,7 @@ private _idToDetailsMap = [
     "KISKA_commMenu_supportIdToDetailsMap",
     {createHashMap}
 ] call KISKA_fnc_getOrDefaultSet;
-private _commMenuIndex = _idToDetailsMap set [
+_idToDetailsMap set [
     _supportId,
     [
         _supportId,
