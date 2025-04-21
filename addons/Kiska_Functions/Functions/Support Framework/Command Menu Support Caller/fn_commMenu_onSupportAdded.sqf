@@ -81,7 +81,7 @@ if (_commMenuSupportDetails isEqualTo []) then {
 };
 
 
-private _commMenuExpression = format ["[%1,AGLToASL _pos,_target,_is3D] call KISKA_fnc_commMenu_onSupportSelected;",_supportId];
+private _commMenuExpression = format ["['%1',AGLToASL _pos,_target,_is3D] call KISKA_fnc_commMenu_onSupportSelected;",_supportId];
 private _idToDetailsMap = [
     localNamespace,
     "KISKA_commMenu_supportIdToDetailsMap",

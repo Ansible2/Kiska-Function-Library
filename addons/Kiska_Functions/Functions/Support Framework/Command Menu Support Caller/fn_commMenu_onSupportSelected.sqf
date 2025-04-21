@@ -36,7 +36,7 @@ params [
 
 private _supportMap = call KISKA_fnc_supports_getMap;
 private _supportInfo = _supportMap get _supportId;
-_supportId params ["_supportConfig","_numberOfUsesLeft"];
+_supportInfo params ["_supportConfig","_numberOfUsesLeft"];
 
 private _onSupportSelectedMap = [
     localNamespace,
