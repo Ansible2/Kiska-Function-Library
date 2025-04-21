@@ -34,7 +34,6 @@ params [
     "_is3D"
 ];
 
-
 private _supportMap = call KISKA_fnc_supports_getMap;
 private _supportInfo = _supportMap get _supportId;
 _supportId params ["_supportConfig","_numberOfUsesLeft"];
@@ -47,7 +46,7 @@ private _onSupportSelectedMap = [
 
 private _onSupportSelectedCompiled = _onSupportSelectedMap get _supportConfig;
 if (isNil "_onSupportSelectedCompiled") then {
-    private _onSupportSelected = getText(_supportDetailsConfig >> "onSupportSelected");
+    private _onSupportSelected = getText(_supportConfig >> "KISKA_commMenuDetails" >> "onSupportSelected");
     _onSupportSelectedCompiled = compileFinal _onSupportSelected;
     _onSupportSelectedMap set [_supportConfig,_onSupportSelectedCompiled];
 };
@@ -66,35 +65,3 @@ if (isNil "_onSupportSelectedCompiled") then {
 
 
 nil
-
-
-
-
-// switch (_supportTypeId) do
-// {
-//     case SUPPORT_TYPE_ARTY: {
-//         _this call KISKA_fnc_commMenu_openArty;
-//     };
-//     case SUPPORT_TYPE_ATTACKHELI_CAS;
-//     case SUPPORT_TYPE_HELI_CAS: {
-//         _this call KISKA_fnc_commMenu_openHelicopterCAS;
-//     };
-//     case SUPPORT_TYPE_CAS: {
-//         _this call KISKA_fnc_commMenu_openCAS;
-//     };
-//     case SUPPORT_TYPE_ARSENAL_DROP: {
-//         _this call KISKA_fnc_commMenu_openArsenalSupplyDrop;
-//     };
-//     case SUPPORT_TYPE_SUPPLY_DROP_AIRCRAFT: {
-//         _this call KISKA_fnc_commMenu_openSupplyDropAircraft;
-//     };
-//     default {
-//         [
-//             [
-//                 "Unknown _supportTypeId (",_supportTypeId,") used with _supportClass ",
-//                 _supportClass
-//             ],
-//             true
-//         ] call KISKA_fnc_log;
-//     };
-// };
