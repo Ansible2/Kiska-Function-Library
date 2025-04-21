@@ -28,7 +28,8 @@ Authors:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_commMenu_onSupportAdded";
 
-#define SUPPORT_CURSOR "\a3\Ui_f\data\IGUI\Cfg\Cursors\iconCursorSupport_ca.paa"
+#define DEFAULT_SUPPORT_CURSOR "\a3\Ui_f\data\IGUI\Cfg\Cursors\iconCursorSupport_ca.paa"
+#define DEFAULT_ENABLE_EXPRESSION "cursorOnGround"
 
 params [
     ["_supportId","",[""]],
@@ -51,7 +52,8 @@ _commMenuSupportDetails params [
     "_text",
     "_icon",
     "_iconText",
-    "_cursor"
+    "_cursor",
+    "_enableExpression"
 ];
 if (isNil "_commMenuSupportDetails") then {
     _text = getText(_commMenuDetailsConfig >> "text");
@@ -59,7 +61,11 @@ if (isNil "_commMenuSupportDetails") then {
     _iconText = getText(_commMenuDetailsConfig >> "iconText");
     _cursor = getText(_commMenuDetailsConfig >> "cursor");
     if (_cursor isEqualTo "") then {
-        _cursor = SUPPORT_CURSOR;
+        _cursor = DEFAULT_SUPPORT_CURSOR;
+    };
+    _enableExpression = getText(_commMenuDetailsConfig >> "enableExpression");
+    if (_enableExpression isEqualTo "") then {
+        _enableExpression = DEFAULT_ENABLE_EXPRESSION;
     };
 
     _commMenuSupportDetailsMap set [
@@ -68,9 +74,10 @@ if (isNil "_commMenuSupportDetails") then {
             _text,
             _icon,
             _iconText,
-            _cursor
+            _cursor,
+            _enableExpression
         ]
-    ]
+    ];
 };
 
 
@@ -87,7 +94,7 @@ private _commMenuIndex = _idToDetailsMap set [
         _text,
         "", // subMenu unused
         _commMenuExpression,
-        1, // enable unused
+        _enableExpression,
         _cursor,
         _icon,
         _iconText

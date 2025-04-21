@@ -36,11 +36,11 @@ private _idToDetailsMap = [
         "_text",
         "_submenu",
         "_commMenuExpression",
-        "_enable",
+        "_enableExpression",
         "_cursor"
     ];
     private _keyboardShortcutKey = _foreachindex + 2;
-    _selectionMenu pushBack [_text,[_keyboardShortcutKey],_submenu,-5,[["expression",_expression]],"1",_enable,_cursor];
+    _selectionMenu pushBack [_text,[_keyboardShortcutKey],_submenu,-5,[["expression",_expression]],"1",_enableExpression,_cursor];
 } foreach _idToDetailsMap;
 
 missionnamespace setvariable ["BIS_fnc_addCommMenuItem_menu", _selectionMenu];
