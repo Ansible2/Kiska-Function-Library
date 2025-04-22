@@ -56,10 +56,7 @@ if (isNull _supportConfig) exitWith {
 
 private _supportDetailsConfig = _supportConfig >> "KISKA_supportDetails";
 if (_numberOfUsesLeft < 0) then {
-    private _roundCountConfig = _supportDetailsConfig >> "roundCount";
-    if (isNumber _roundCountConfig) exitWith { _numberOfUsesLeft = getNumber(_roundCountConfig); };
-
-    private _useCountConfig = _supportDetailsConfig >> "useCount";
+    private _useCountConfig = _supportDetailsConfig >> "numberOfUses";
     if (isNumber _useCountConfig) exitWith { _numberOfUsesLeft = getNumber(_useCountConfig); };
     
     _numberOfUsesLeft = 1;
