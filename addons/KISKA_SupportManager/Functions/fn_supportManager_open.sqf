@@ -84,7 +84,8 @@ private _args = [
                         };
 
                         private ["_pictureColor","_selectedPictureColor"];
-                        if (_numberOfUsesLeft isNotEqualTo -1) then {
+                        private _configuredNumberOfUses = getNumber(_supportConfig >> "KISKA_supportDetails" >> "numberOfUses");
+                        if (_numberOfUsesLeft isNotEqualTo _configuredNumberOfUses) then {
                             _pictureColor = _usedIconColor;
                         } else {
                             pictureColor = getArray(_supportManagerDetails >> "pictureColor");
