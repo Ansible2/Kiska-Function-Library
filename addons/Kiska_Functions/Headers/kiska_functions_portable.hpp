@@ -339,6 +339,8 @@ class Position
     {};
     class getBoundingBoxCenter
     {};
+    class getMapCursorPosition
+    {};
     class getPositionPlayerLookingAt
     {};
     class removeBoundingBoxDraw
