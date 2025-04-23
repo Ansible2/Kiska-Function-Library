@@ -137,3 +137,11 @@ Parameters:
         missionNamespace setVariable ["KISKA_CBA_supp_flyInHeights_arr",parseSimpleArray _value];
     }
 ] call CBA_fnc_addSetting;
+
+[
+    "KISKA_CBA_lookingAtMarker_color",
+    "COLOR",
+    "3D Marker Color",
+    ["KISKA Support Settings","Helpers"],
+    [1,0.6,1,1]
+] call CBA_fnc_addSetting;

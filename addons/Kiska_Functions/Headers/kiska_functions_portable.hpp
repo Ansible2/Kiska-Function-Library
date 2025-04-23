@@ -333,6 +333,10 @@ class Position
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Positions");
     class drawBoundingBox
     {};
+    class drawLookingAtMarker_start
+    {};
+    class drawLookingAtMarker_stop
+    {};
     class getBoundingBoxCenter
     {};
     class getPositionPlayerLookingAt
