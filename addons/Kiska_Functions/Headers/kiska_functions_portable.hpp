@@ -659,6 +659,8 @@ class Utilities
     {};
     class getOrDefaultSet
     {};
+    class getPositionPlayerLookingAt
+    {};
     class getPosRelativeSurface
     {};
     class getRelativeVectorAndPos
