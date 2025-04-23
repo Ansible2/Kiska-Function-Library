@@ -335,6 +335,8 @@ class Position
     {};
     class getBoundingBoxCenter
     {};
+    class getPositionPlayerLookingAt
+    {};
     class removeBoundingBoxDraw
     {};
 };
@@ -658,8 +660,6 @@ class Utilities
     class getNearestIncriment
     {};
     class getOrDefaultSet
-    {};
-    class getPositionPlayerLookingAt
     {};
     class getPosRelativeSurface
     {};
