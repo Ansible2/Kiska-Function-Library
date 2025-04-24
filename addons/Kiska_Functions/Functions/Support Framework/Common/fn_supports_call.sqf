@@ -112,6 +112,14 @@ if (!_successfullyCalled) exitWith {
     nil
 };
 
+private _notificationClass = _supportDetailsConfig >> "CalledNotifcation";
+if (isClass _notificationClass) then {
+    private _genericNotification = [_notificationClass >> "genericMessageId"] call KISKA_fnc_getConfigData;
+    if !(isNil "_genericNotification") then {
+        [_genericNotification] call KISKA_fnc_supports_genericNotification;
+    };
+};
+
 _numberOfUsesLeft = _numberOfUsesLeft - _numberOfTimesUsed;
 if (_numberOfUsesLeft <= 0) exitWith {
     [_supportId] call KISKA_fnc_supports_remove;
