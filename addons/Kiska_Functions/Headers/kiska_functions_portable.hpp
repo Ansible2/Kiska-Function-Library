@@ -557,6 +557,8 @@ class SupportFramework
     {};
     class supports_genericRadioMessage
     {};
+    class supports_getCommonTargetPosition
+    {};
     class supports_getMap
     {};
     class supports_remove
