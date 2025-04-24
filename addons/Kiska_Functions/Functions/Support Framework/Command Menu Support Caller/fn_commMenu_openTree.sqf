@@ -117,6 +117,7 @@ _menuPath apply {
     
     // wait for player to select and option from the current menu or for them to close the menu
     waitUntil {
+        sleep 0.1;
         if (localNamespace getVariable "KISKA_commMenuTree_proceedToNextMenu") exitWith {true};
         _menuWasClosed = commandingMenu isEqualTo "";
         _menuWasClosed
@@ -125,12 +126,7 @@ _menuPath apply {
 };
 
 private _params = localNamespace getVariable "KISKA_commMenuTree_selectedValues";
-private "_expression";
-if (_menuWasClosed) then {
-    _expression = _exitExpression;
-} else {
-    _expression = _endExpression;
-};
+private _expression = [_endExpression,_exitExpression] select _menuWasClosed;
 [_params, _expression] call KISKA_fnc_callBack;
 [_params, _finally] call KISKA_fnc_callBack;
 
@@ -138,3 +134,6 @@ if (_menuWasClosed) then {
 _menuVariables apply { missionNamespace setVariable [_x,nil] };
 localNamespace setVariable ["KISKA_commMenuTree_selectedValues",nil];
 localNamespace setVariable ["KISKA_commMenuTree_proceedToNextMenu",nil];
+
+
+nil
