@@ -59,7 +59,7 @@ private _notificationSetting = missionNamespace getVariable [_notificationSettin
 if (_notificationSetting isEqualTo NONE) exitWith {};
 
 if (_notificationSetting isEqualTo RADIO_ONLY) exitWith {
-    [_radioMessagetype] call KISKA_fnc_supports_genericRadioMessage;
+    [_radioMessagetype,player,side player] call KISKA_fnc_supports_genericRadioMessage;
 };
 
 if (_notificationSetting isEqualTo TEXT_ONLY) exitWith {
@@ -67,7 +67,7 @@ if (_notificationSetting isEqualTo TEXT_ONLY) exitWith {
 };
 
 if (_notificationSetting isEqualTo BOTH) exitWith {
-    [_radioMessagetype] call KISKA_fnc_supports_genericRadioMessage;
+    [_radioMessagetype,player,side player] call KISKA_fnc_supports_genericRadioMessage;
     ["Support Request Received",5] call KISKA_fnc_notification;
 };
 
