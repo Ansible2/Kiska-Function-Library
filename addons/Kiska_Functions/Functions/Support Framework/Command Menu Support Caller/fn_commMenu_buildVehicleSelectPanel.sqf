@@ -1,4 +1,5 @@
 #include "..\..\..\Headers\Support Framework\Command Menu Macros.hpp"
+// TODO: delete
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_commMenu_buildVehicleSelectPanel
 

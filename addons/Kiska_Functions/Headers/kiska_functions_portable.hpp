@@ -512,10 +512,6 @@ class Supports
 class CommandMenuSupportCaller
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework\Command Menu Support Caller");
-    class commMenu_build
-    {};
-    class commMenu_buildVehicleSelectPanel
-    {};
     class commMenu_detectControlKeys
     {
         preInit = 1;

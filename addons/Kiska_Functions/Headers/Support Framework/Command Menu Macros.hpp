@@ -1,3 +1,4 @@
+// TODO: delete
 #define CMD_EXECUTE -5
 #define IS_ACTIVE "1"
 #define IS_VISIBLE "1"
