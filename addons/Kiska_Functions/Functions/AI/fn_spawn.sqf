@@ -130,9 +130,6 @@ for "_i1" from 1 to _numberOfGroups do {
     // create group
     _group = createGroup [_side,true];
     _group setCombatMode "RED";
-    if (_enableDynamic) then {
-        _group enableDynamicSimulation true;
-    };
 
     // create units for group
     for "_i2" from 1 to _numberOfUnitsPerGroup do {
@@ -184,6 +181,13 @@ for "_i1" from 1 to _numberOfGroups do {
         if (!isNull _unit) then {
             _spawnedUnits pushBack _unit;
         };
+    };
+
+    // ensuring units are moved into their spawn position before
+    // enabling dynamic sin to avoid this bug
+    // https://feedback.bistudio.com/T177900
+    if (_enableDynamic) then {
+        _group enableDynamicSimulation true;
     };
 };
 

@@ -42,7 +42,7 @@ private _sortKeyMap = createHashMap;
         _sortString = [_sortString,_subIndex] joinString ".";
     };
 
-    _sortKeyMap set [_sortString,_x];
+    _sortKeyMap set [parseNumber _sortString,_x];
 } forEach _strings;
 
 private _sortedKeys = keys _sortKeyMap;
