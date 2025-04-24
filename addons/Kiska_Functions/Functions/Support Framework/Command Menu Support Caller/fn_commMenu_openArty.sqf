@@ -8,11 +8,7 @@ Description:
 Parameters:
     0: _supportId <STRING> - The ID of the specific support.
     1: _supportConfig <CONFIG> - The support's config path.
-    2: _targetPosition <PositionASL[]> - The position the player is looking at or 
-        the current position of the player's cursor on the map.
-    3: _numberOfRoundsLeft <NUMBER> - How many rounds this support has left to use.
-    4: _is3d <BOOL> - `false` if player is in the map, `true` if they are looking at the map.
-    5: _cursorTarget <OBJECT> - The player's `cursorTarget`.
+    2: _numberOfRoundsLeft <NUMBER> - How many rounds this support has left to use.
 
 Returns:
     NOTHING
@@ -21,11 +17,7 @@ Examples:
     (begin example)
         [
             "KISKA_support_1",
-            configFile >> "MyArtillerySupport",
-            [0,0,0],
-            20,
-            true,
-            objNull
+            configFile >> "MyArtillerySupport"
         ] call KISKA_fnc_commMenu_openArty;
     (end)
 
@@ -39,7 +31,6 @@ scriptName "KISKA_fnc_commMenu_openArty";
 params [
     ["_supportId","",[""]],
     ["_supportConfig",configNull,[configNull]],
-    ["_targetPosition",[],[[]],3],
     ["_numberOfRoundsLeft",-1,[123]]
 ];
 
@@ -82,6 +73,7 @@ _selectableRadiuses apply {
 ---------------------------------------------------------------------------- */
 private _roundsMenuOptions = [];
 private _canSelectRounds = [_supportDetailsConfig >> "canSelectRounds",true] call KISKA_fnc_getConfigData;
+private _numberOfRoundsLeft = [_supportId] call KISKA_fnc_supports_getNumberOfUsesLeft;
 if (_canSelectRounds) then {
     for "_i" from 1 to _numberOfRoundsLeft do {
         _roundsMenuOptions pushBack [[_i,"Round(s)"] joinString " ",_i]; 
