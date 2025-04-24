@@ -567,6 +567,8 @@ class SupportFramework
     {};
     class supports_getMap
     {};
+    class supports_getNumberOfUsesLeft
+    {};
     class supports_remove
     {};
 };
