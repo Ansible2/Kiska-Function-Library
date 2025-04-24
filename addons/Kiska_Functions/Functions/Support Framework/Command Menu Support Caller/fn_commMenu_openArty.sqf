@@ -38,18 +38,13 @@ Authors:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_commMenu_openArty";
 
-#define AMMO_TYPE_MENU_GVAR "KISKA_menu_ammoSelect"
-#define ROUND_COUNT_MENU_GVAR "KISKA_menu_roundCount"
-#define RADIUS_MENU_GVAR "KISKA_menu_radius"
 #define MIN_RADIUS 0
 
 params [
     ["_supportId","",[""]],
     ["_supportConfig",configNull,[configNull]],
     ["_targetPosition",[],[[]],3],
-    ["_numberOfRoundsLeft",-1,[123]],
-    ["_is3d",false,[true]],
-    ["_cursorTarget",cursorTarget,[objNull]]
+    ["_numberOfRoundsLeft",-1,[123]]
 ];
 
 
@@ -57,45 +52,6 @@ if (isNull _supportConfig) exitWith {
     ["null _supportConfig used!",true] call KISKA_fnc_log;
     nil
 };
-
-private _menuPathArray = [];
-private _menuVariables = []; // keeps track of global variable names to set to nil when done
-
-/* ----------------------------------------------------------------------------
-    Ammo Menu
----------------------------------------------------------------------------- */
-private _ammoMenu = [
-    ["Select Ammo",false] // menu title
-];
-private _supportDetailsConfig = _supportConfig >> "KISKA_supportDetails";
-private "_keyCode";
-{
-    if (_forEachIndex <= MAX_KEYS) then {
-        // key codes are offset by 2 (1 on the number bar is key code 2)
-        _keyCode = _forEachIndex + 2;
-    } else {
-        _keyCode = 0;
-    };
-
-    _x params [
-        "_ammoClass",
-        ["_ammoTitle","Undefined Ammo Title"]
-    ];
-
-    _ammoMenu pushBack [
-        _ammoTitle,
-        [_keyCode],
-        "", // submenu
-        -5 // execute command
-        [["expression", format ["(localNamespace getVariable 'KISKA_commMenuTree_params') pushBack '%1'; localNamespace setVariable ['KISKA_commMenuTree_proceedToNextMenu',true];",_ammoClass]]],
-        "1", // is active
-        "1" // is visible
-    ];
-} forEach (getArray(_supportDetailsConfig >> "ammoTypes"));
-
-missionNamespace setVariable [AMMO_TYPE_MENU_GVAR,_ammoMenu];
-_menuVariables pushBack AMMO_TYPE_MENU_GVAR;
-_menuPathArray pushBack (["#USER:",AMMO_TYPE_MENU_GVAR] joinString "");
 
 
 /* ----------------------------------------------------------------------------
@@ -111,11 +67,9 @@ if (_selectableRadiuses isEqualTo []) then {
 };
 sort _selectableRadiuses;
 
-private _radiusMenu = [
-    ["Area Spread",false]
-];
+private _radiusMenuOptions = [];
 private _pushedMinRadius = false;
-{
+_selectableRadiuses apply {
     private _radius = _x;
     private _isMinRadius = _radius <= MIN_RADIUS;
     if (_pushedMinRadius AND _isMinRadius) then { continue };
@@ -123,95 +77,41 @@ private _pushedMinRadius = false;
         _pushedMinRadius = true;
         _radius = MIN_RADIUS;
     };
-
-    if (_forEachIndex <= MAX_KEYS) then {
-        // key codes are offset by 2 (1 on the number bar is key code 2)
-        _keyCode = _forEachIndex + 2;
-    } else {
-        _keyCode = 0;
-    };
-
-    // _radiusMenu pushBack DISTANCE_LINE(_x,_keyCode);
-    _radiusMenu pushBack [
-        ([_radius,"m"] joinString ""),
-        [_keyCode],
-        "",
-        -5
-        [["expression", format ["(localNamespace getVariable 'KISKA_commMenuTree_params') pushBack %1; localNamespace setVariable ['KISKA_commMenuTree_proceedToNextMenu',true];",_radius]]],
-        "1", // is active
-        "1" // is visible
-    ];
-} forEach _selectableRadiuses;
-
-missionNamespace setVariable [RADIUS_MENU_GVAR,_radiusMenu];
-_menuVariables pushBack RADIUS_MENU_GVAR;
-_menuPathArray pushBack (["#USER:",RADIUS_MENU_GVAR] joinString "");
+    _radiusMenuOptions pushBack [ [_radius,"m"] joinString "", _radius ];
+};
 
 
 /* ----------------------------------------------------------------------------
     Round Count Menu
 ---------------------------------------------------------------------------- */
-private _roundsMenu = [
-    ["Number of Rounds",false]
-];
+private _roundsMenuOptions = [];
 private _canSelectRounds = [_supportDetailsConfig >> "canSelectRounds",true] call KISKA_fnc_getConfigData;
 if (_canSelectRounds) then {
     for "_i" from 1 to _numberOfRoundsLeft do {
-        if (_i <= MAX_KEYS) then {
-            _keyCode = _i + 1;
-        } else {
-            _keyCode = 0;
-        };
-
-        _roundsMenu pushBack [
-            ([_i,"Round(s)"] joinString " "),
-            [_keyCode],
-            "",
-            -5
-            [["expression", format ["(localNamespace getVariable 'KISKA_commMenuTree_params') pushBack %1; localNamespace setVariable ['KISKA_commMenuTree_proceedToNextMenu',true];",_i]]],
-            "1",
-            "1"
-        ];
+        _roundsMenuOptions pushBack [[_i,"Round(s)"] joinString " ",_i]; 
     };
-
 } else {
-    _roundsString = [_numberOfRoundsLeft,"Round(s)"] joinString " ";
-    _roundsMenu pushBack [
-        ([_numberOfRoundsLeft,"Round(s)"] joinString " "),
-        [2],
-        "",
-        -5
-        [["expression", format ["(localNamespace getVariable 'KISKA_commMenuTree_params') pushBack %1; localNamespace setVariable ['KISKA_commMenuTree_proceedToNextMenu',true];",_numberOfRoundsLeft]]],
-        "1",
-        "1"
-    ];
-
+    _roundsMenuOptions pushBack [[_numberOfRoundsLeft,"Round(s)"] joinString " ",_numberOfRoundsLeft]; 
 };
-
-missionNamespace setVariable [ROUND_COUNT_MENU_GVAR,_roundsMenu];
-_menuVariables pushBack ROUND_COUNT_MENU_GVAR;
-_menuPathArray pushBack (["#USER:",ROUND_COUNT_MENU_GVAR] joinString "");
 
 
 /* ----------------------------------------------------------------------------
     Create Menu
 ---------------------------------------------------------------------------- */
-if ([_supportConfig >> "draw3dMarker",true] call KISKA_fnc_getConfigData) then {
+private _draw3dMarker = [_supportDetailsConfig >> "draw3dMarker",true] call KISKA_fnc_getConfigData;
+if (_draw3dMarker) then {
     call KISKA_fnc_drawLookingAtMarker_start;
 };
 
-private _thisArgs = [
-    _menuVariables,
-    _numberOfRoundsLeft,
-    _supportId
-];
-
 [
-    _menuPathArray,
-    [_thisArgs, {
-        params ["_ammo","_radius","_numberOfRounds"];
+    [
+        ["Select Ammo", getArray(_supportDetailsConfig >> "ammoTypes")],
+        ["Area Spread", _radiusMenuOptions],
+        ["Number of Rounds", _roundsMenuOptions]
+    ],
+    [[_supportId], {
+        params ["_ammoClass","_radiusOfFire","_numberOfRoundsToFire"];
 
-        private _roundsAvailable = _thisArgs select 2;
         // if a ctrl key is held and one left clicks to select the support while in the map, they can call in an infinite number of the support
         if (
             visibleMap AND
@@ -221,25 +121,20 @@ private _thisArgs = [
             nil
         };
 
-        // TODO: this should be in another function to find the support position
-        private "_targetPosition";
-        if (visibleMap) then {
-            _targetPosition = call KISKA_fnc_getMapCursorPosition;
-        } else {
-            _targetPosition = call KISKA_fnc_getPositionPlayerLookingAt;
-        };
-
-
-        // TODO: this should be handled in the call event form KISKA_fnc_supports_call
-        [_targetPosition,_ammo,_radius,_numberOfRounds] spawn KISKA_fnc_virtualArty;
-        [SUPPORT_TYPE_ARTY] call KISKA_fnc_supports_genericNotification;
-
-        UNLOAD_GLOBALS
-        call KISKA_fnc_drawLookingAtMarker_stop;
+        _thisArgs params ["_supportId"];
+        [
+            _supportId,
+            call KISKA_fnc_supports_getCommonTargetPosition,
+            _numberOfRoundsToFire,
+            [_ammoClass,_radiusOfFire]
+        ] call KISKA_fnc_supports_call;
     }],
-    [_thisArgs, {
-        UNLOAD_GLOBALS
-        call KISKA_fnc_drawLookingAtMarker_stop;
+    {},
+    [[_draw3dMarker],{
+        _thisArgs params ["_draw3dMarker"];
+        if !(_draw3dMarker) exitWith {};
+        
+        call KISKA_fnc_drawLookingAtMarker_stop 
     }]
 ] spawn KISKA_fnc_openCommandingMenuPath;
 
