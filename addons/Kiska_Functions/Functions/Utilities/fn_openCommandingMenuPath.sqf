@@ -5,26 +5,47 @@ Description:
     Opens a command menu path dynamically instead of needing to define sub menus.
 
 Parameters:
-    // TODO: update _menuPath param description
-    0: _menuPath <ARRAY> - The menu global variable paths (in order)
+    0: _menuPath <ARRAY> - An array of menus to open in their given sequence
+
+        A menu is an array of several components:
+        - 0. _menuTitle : <STRING> - the title of the commanding menu (appears above the menu).
+        - 1. _menuOptions : <[STRING,ANY][]> - an array of `[option label, value]` that will
+            appear in this given order in the commanding menu. If the value is CODE, it will 
+            be called if and when selecting the given option.
+
     1: _endExpression <STRING, CODE, or ARRAY> - The code to be executed at the end of the path.
-        It receives all menu parameters in _this. (see KISKA_fnc_callBack)
+        It receives all menu parameters in _this. (see `KISKA_fnc_callBack`)
     2: _exitExpression <STRING, CODE, or ARRAY> - The code to be executed in the event that
         the menu is closed by the player. It gets all added params up to that point in _this.
-        (see KISKA_fnc_callBack)
+        (see `KISKA_fnc_callBack`)
     3: _finally <STRING, CODE, or ARRAY> - Code that will be executed finally regardless
         of whether the `_endExpression` or `_exitExpression` is triggered.
-        It receives all menu parameters in _this. (see KISKA_fnc_callBack)
+        It receives all menu parameters in _this. (see `KISKA_fnc_callBack`)
 
 Returns:
     NOTHING
 
 Examples:
     (begin example)
-        // TODO: update examples
         [
-            ["#USER:myMenu_1","#USER:myMenu_2"],
-            "hint str _this"
+            [
+                [
+                    "First Menu",
+                    ["option 1","FirstMenu_1"],
+                    ["option 2","FirstMenu_2"]
+                ],
+                [
+                    "Second Menu",
+                    ["option 1","SecondMenu_1"],
+                    ["option 2","SecondMenu_2"]
+                ]
+            ],
+            {
+                hint str ["Reached end of menus with values",_this];
+            },
+            {
+                hint str ["Exited menu prematurely with values",_this];
+            }
         ] spawn KISKA_fnc_openCommandingMenuPath
     (end)
 
@@ -72,7 +93,10 @@ _menuPath apply {
             _keyCode = 0;
         };
 
-        _x params ["_optionTitle","_optionValue"];
+        _x params [
+            ["_optionTitle","",[""]],
+            "_optionValue"
+        ];
         switch (typeName _optionValue) do
         {
             case "CODE": {
@@ -83,7 +107,7 @@ _menuPath apply {
             };
         };
 
-        private _onOptionSelected = format ["(localNamespace getVariable 'KISKA_commandingMenu_selectedValues') pushBack (%1); localNamespace setVariable ['KISKA_commandingMenu_proceedToNextMenu',true];",_optionValue]
+        private _onOptionSelected = format ["(localNamespace getVariable 'KISKA_commandingMenu_selectedValues') pushBack (%1); localNamespace setVariable ['KISKA_commandingMenu_openNextMenu',true];",_optionValue]
         _commandingMenu pushBack [
             _optionTitle,
             [_keyCode],
@@ -105,7 +129,7 @@ _menuPath apply {
     };
 
     // keeps track of whether or not to open the next menu
-    localNamespace setVariable ["KISKA_commandingMenu_proceedToNextMenu",false];
+    localNamespace setVariable ["KISKA_commandingMenu_openNextMenu",false];
 
     private _menuVariableName = ["KISKA_commandingMenu_subMenu"] call KISKA_fnc_generateUniqueId;
     // command menus must be saved to missionNamespace
@@ -117,7 +141,7 @@ _menuPath apply {
     // wait for player to select and option from the current menu or for them to close the menu
     waitUntil {
         sleep 0.1;
-        if (localNamespace getVariable "KISKA_commandingMenu_proceedToNextMenu") exitWith {true};
+        if (localNamespace getVariable "KISKA_commandingMenu_openNextMenu") exitWith {true};
         _menuWasClosed = commandingMenu isEqualTo "";
         _menuWasClosed
     };
@@ -132,7 +156,7 @@ private _expression = [_endExpression,_exitExpression] select _menuWasClosed;
 
 _menuVariables apply { missionNamespace setVariable [_x,nil] };
 localNamespace setVariable ["KISKA_commandingMenu_selectedValues",nil];
-localNamespace setVariable ["KISKA_commandingMenu_proceedToNextMenu",nil];
+localNamespace setVariable ["KISKA_commandingMenu_openNextMenu",nil];
 
 
 nil
