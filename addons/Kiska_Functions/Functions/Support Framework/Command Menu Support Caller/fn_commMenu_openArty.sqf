@@ -241,7 +241,7 @@ private _thisArgs = [
         UNLOAD_GLOBALS
         call KISKA_fnc_drawLookingAtMarker_stop;
     }]
-] spawn KISKA_fnc_commMenu_openTree;
+] spawn KISKA_fnc_openCommandingMenuPath;
 
 
 nil

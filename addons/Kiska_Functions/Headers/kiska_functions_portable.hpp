@@ -532,8 +532,6 @@ class CommandMenuSupportCaller
     {};
     class commMenu_openSupplyDropAircraft
     {};
-    class commMenu_openTree
-    {};
     class commMenu_refresh
     {};
 };
@@ -698,6 +696,8 @@ class Utilities
     class notification
     {};
     class notify
+    {};
+    class openCommandingMenuPath
     {};
     class playDrivePath
     {};

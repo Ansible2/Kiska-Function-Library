@@ -142,7 +142,7 @@ _thisArgs pushBack _menuVariables;
         ADD_SUPPORT_BACK(_thisArgs select 2)
         UNLOAD_GLOBALS
     }]
-] spawn KISKA_fnc_commMenu_openTree;
+] spawn KISKA_fnc_openCommandingMenuPath;
 
 
 nil

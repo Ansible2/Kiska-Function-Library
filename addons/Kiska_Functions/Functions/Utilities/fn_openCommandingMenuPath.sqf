@@ -1,12 +1,11 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_commMenu_openTree
+Function: KISKA_fnc_openCommandingMenuPath
 
 Description:
-    Opens a command menu tree dynamically instead of needing to define sub menus.
-
-    Such as one built with `KISKA_fnc_commMenu_build`.
+    Opens a command menu path dynamically instead of needing to define sub menus.
 
 Parameters:
+    // TODO: update _menuPath param description
     0: _menuPath <ARRAY> - The menu global variable paths (in order)
     1: _endExpression <STRING, CODE, or ARRAY> - The code to be executed at the end of the path.
         It receives all menu parameters in _this. (see KISKA_fnc_callBack)
@@ -26,13 +25,13 @@ Examples:
         [
             ["#USER:myMenu_1","#USER:myMenu_2"],
             "hint str _this"
-        ] spawn KISKA_fnc_commMenu_openTree
+        ] spawn KISKA_fnc_openCommandingMenuPath
     (end)
 
 Author(s):
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_commMenu_openTree";
+scriptName "KISKA_fnc_openCommandingMenuPath";
 
 if (!hasInterface) exitWith {
     ["Can only run on machines with interface",false] call KISKA_fnc_log;
@@ -41,18 +40,18 @@ if (!hasInterface) exitWith {
 
 if (!canSuspend) exitWith {
     ["Must be run in scheduled, exiting to scheduled",true] call KISKA_fnc_log;
-    _this spawn KISKA_fnc_commMenu_openTree;
+    _this spawn KISKA_fnc_openCommandingMenuPath;
 };
 
 params [
     ["_menuPath",[],[[]]],
-    ["_endExpression","",["",{},[]]],
-    ["_exitExpression","",["",{},[]]],
-    ["_finally","",["",{},[]]]
+    ["_endExpression",{},["",{},[]]],
+    ["_exitExpression",{},["",{},[]]],
+    ["_finally",{},["",{},[]]]
 ];
 
 // create a container for holding params from menus
-localNamespace setVariable ["KISKA_commMenuTree_selectedValues",[]];
+localNamespace setVariable ["KISKA_commandingMenu_selectedValues",[]];
 
 private _menuWasClosed = false;
 private _menuVariables = [];
@@ -84,7 +83,7 @@ _menuPath apply {
             };
         };
 
-        private _onOptionSelected = format ["(localNamespace getVariable 'KISKA_commMenuTree_selectedValues') pushBack (%1); localNamespace setVariable ['KISKA_commMenuTree_proceedToNextMenu',true];",_optionValue]
+        private _onOptionSelected = format ["(localNamespace getVariable 'KISKA_commandingMenu_selectedValues') pushBack (%1); localNamespace setVariable ['KISKA_commandingMenu_proceedToNextMenu',true];",_optionValue]
         _commandingMenu pushBack [
             _optionTitle,
             [_keyCode],
@@ -106,9 +105,9 @@ _menuPath apply {
     };
 
     // keeps track of whether or not to open the next menu
-    localNamespace setVariable ["KISKA_commMenuTree_proceedToNextMenu",false];
+    localNamespace setVariable ["KISKA_commandingMenu_proceedToNextMenu",false];
 
-    private _menuVariableName = ["KISKA_commMenuTree_subMenu"] call KISKA_fnc_generateUniqueId;
+    private _menuVariableName = ["KISKA_commandingMenu_subMenu"] call KISKA_fnc_generateUniqueId;
     // command menus must be saved to missionNamespace
     missionNamespace setVariable [_menuVariableName,_commandingMenu];
     _menuVariables pushBack _menuVariableName;
@@ -118,22 +117,22 @@ _menuPath apply {
     // wait for player to select and option from the current menu or for them to close the menu
     waitUntil {
         sleep 0.1;
-        if (localNamespace getVariable "KISKA_commMenuTree_proceedToNextMenu") exitWith {true};
+        if (localNamespace getVariable "KISKA_commandingMenu_proceedToNextMenu") exitWith {true};
         _menuWasClosed = commandingMenu isEqualTo "";
         _menuWasClosed
     };
     if (_menuWasClosed) then { break };
 };
 
-private _params = localNamespace getVariable "KISKA_commMenuTree_selectedValues";
+private _params = localNamespace getVariable "KISKA_commandingMenu_selectedValues";
 private _expression = [_endExpression,_exitExpression] select _menuWasClosed;
 [_params, _expression] call KISKA_fnc_callBack;
 [_params, _finally] call KISKA_fnc_callBack;
 
 
 _menuVariables apply { missionNamespace setVariable [_x,nil] };
-localNamespace setVariable ["KISKA_commMenuTree_selectedValues",nil];
-localNamespace setVariable ["KISKA_commMenuTree_proceedToNextMenu",nil];
+localNamespace setVariable ["KISKA_commandingMenu_selectedValues",nil];
+localNamespace setVariable ["KISKA_commandingMenu_proceedToNextMenu",nil];
 
 
 nil
