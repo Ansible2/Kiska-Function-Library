@@ -8,7 +8,6 @@ Description:
 Parameters:
     0: _supportId <STRING> - The ID of the specific support.
     1: _supportConfig <CONFIG> - The support's config path.
-    2: _numberOfRoundsLeft <NUMBER> - How many rounds this support has left to use.
 
 Returns:
     NOTHING
@@ -30,8 +29,7 @@ scriptName "KISKA_fnc_commMenu_openArty";
 
 params [
     ["_supportId","",[""]],
-    ["_supportConfig",configNull,[configNull]],
-    ["_numberOfRoundsLeft",-1,[123]]
+    ["_supportConfig",configNull,[configNull]]
 ];
 
 
