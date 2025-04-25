@@ -40,6 +40,7 @@ if (isNull _supportConfig) exitWith {
     nil
 };
 
+private _supportDetailsConfig = _supportConfig >> "KISKA_supportDetails";
 
 /* ----------------------------------------------------------------------------
     Radius Menu
