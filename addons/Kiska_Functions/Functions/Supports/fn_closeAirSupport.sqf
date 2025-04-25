@@ -12,7 +12,7 @@ Parameters:
         - `_aircraftClass`: <STRING> Default: `""` - the class of aircraft to spawn.
         - `_side`: <SIDE> Default: `BLUFOR` - The side of the aircraft to spawn.
         - `_allowDamage`: <BOOLEAN> Default: `false` - Whether or not the aircraft and crew take damage.
-        - `_attackPosition`: <PositionASL | OBJECT> Default: `objNull` - The primary position to fire at.
+        - `_attackPosition`: <PositionASL[] | OBJECT> Default: `objNull` - The primary position to fire at.
         - `_directionOfAttack`: <NUMBER> Default: `0` - The direction the aircraft will be facing during it's attack run.
         - `_initialHeightAboveTarget`: <NUMBER> Default: `1300` - The aircraft's initial altitude.
         - `_initialDistanceToTarget`: <NUMBER> Default: `2000` - The distance from the `_attackPosition` the aircraft will spawn.

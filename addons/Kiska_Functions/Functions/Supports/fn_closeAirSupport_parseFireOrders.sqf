@@ -10,23 +10,23 @@ Parameters:
     1: _fireOrders : <[STRING,STRING,NUMBER,NUMBER,STRING,NUMBER][]> - List of fire orders.
 
         A fire single fire order can consist of the following arguments:
-            - 0. <STRING> - The weapon to fire's className. If this is to be 
-                a pylon weapon, simply set to `pylon`.
-            - 1. <STRING> - The weapon to fire's magazine className. If this is
-                to be a pylon magazine, ensure you've set the weapon className to
-                "pylon". If no magazine is provided but a weapon is, the default
-                magazine for the weapon will be used.
-            - 2. <NUMBER> - The number of trigger pulls. If less than 0, all rounds
-                in the magazine will be fired.
-            - 3. <NUMBER> - The amount of seconds between each time the AI pulls the trigger.
-            - 4. <STRING> - Either `"guide_to_original_target"`, `"guide_to_strafe_target"`, or `""`.
-                `guide_to_original_target` will guide each round of the weapon fired directly to the
-                attack position specified. `guide_to_strafe_target` will guide each round onto the
-                stafing target giving the illusion of strafing. Leave empty if no guidance is necessary.
-                This can be performance intensive.
-            - 5. <NUMBER> - For every 0.01 seconds the aircraft is firing these munitions,
-                how much space should there be added to the aicraft's nose position? This
-                will help with strafing a target.
+        - 0. <STRING> - The weapon to fire's className. If this is to be 
+            a pylon weapon, simply set to `pylon`.
+        - 1. <STRING> - The weapon to fire's magazine className. If this is
+            to be a pylon magazine, ensure you've set the weapon className to
+            "pylon". If no magazine is provided but a weapon is, the default
+            magazine for the weapon will be used.
+        - 2. <NUMBER> - The number of trigger pulls. If less than 0, all rounds
+            in the magazine will be fired.
+        - 3. <NUMBER> - The amount of seconds between each time the AI pulls the trigger.
+        - 4. <STRING> - Either `"guide_to_original_target"`, `"guide_to_strafe_target"`, or `""`.
+            `guide_to_original_target` will guide each round of the weapon fired directly to the
+            attack position specified. `guide_to_strafe_target` will guide each round onto the
+            stafing target giving the illusion of strafing. Leave empty if no guidance is necessary.
+            This can be performance intensive.
+        - 5. <NUMBER> - For every 0.01 seconds the aircraft is firing these munitions,
+            how much space should there be added to the aicraft's nose position? This
+            will help with strafing a target.
 
 Returns:
     <[STRING,STRING,NUMBER,NUMBER,STRING,NUMBER][]> - a parsed list of fire orders.
