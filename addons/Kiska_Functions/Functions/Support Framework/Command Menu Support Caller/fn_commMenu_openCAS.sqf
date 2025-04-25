@@ -208,6 +208,10 @@ if (isNull _supportConfig) exitWith {
     nil
 };
 
+private _supportDetailsConfig = _supportConfig >> "KISKA_supportDetails";
+private _vehicleTypes = getArray(_supportDetailsConfig >> "vehicleTypes");
+
+
 
 /* ----------------------------------------------------------------------------
     Radius Menu
