@@ -51,7 +51,7 @@ if (_selectableRadiuses isEqualTo []) then {
         _selectableRadiuses = [200];
     };
 };
-sort _selectableRadiuses;
+_selectableRadiuses sort true;
 
 private _radiusMenuOptions = [];
 private _pushedMinRadius = false;
