@@ -107,7 +107,7 @@ _menuPath apply {
             };
         };
 
-        private _onOptionSelected = format ["(localNamespace getVariable 'KISKA_commandingMenu_selectedValues') pushBack (%1); localNamespace setVariable ['KISKA_commandingMenu_openNextMenu',true];",_optionValue]
+        private _onOptionSelected = format ["(localNamespace getVariable 'KISKA_commandingMenu_selectedValues') pushBack (%1); localNamespace setVariable ['KISKA_commandingMenu_openNextMenu',true];",_optionValue];
         _commandingMenu pushBack [
             _optionTitle,
             [_keyCode],
