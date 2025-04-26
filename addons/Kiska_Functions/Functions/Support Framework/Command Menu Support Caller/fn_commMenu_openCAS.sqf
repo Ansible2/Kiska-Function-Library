@@ -25,6 +25,7 @@ Authors:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_commMenu_openCAS";
 
+#define MY_DIRECTION_VALUE "my direction"
 #define MIN_RADIUS 0
 
 params [
@@ -74,11 +75,11 @@ if (_canSelectAttackDirection) then {
         [270,"W"],
         [315,"NW"]
     ] apply {
-        _x params ["_bearing","_cardinal"]
+        _x params ["_bearing","_cardinal"];
         private _label = [_bearing,_cardinal] joinString " - ";
         [_label,_bearing]
     };
-    
+    _attackDirectionOptions pushBack ["My Direction",MY_DIRECTION_VALUE];
     _menuPath pushBack ["Attack Direction",_attackDirectionOptions];
 };
 
@@ -91,10 +92,11 @@ if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
 
 [
     _menuPath,
-    [[_supportId], {
+    [[_supportId,_aircraftClass], {
+        private _playerDirection = getDir player;
         params [
             "_attackTypeConfig",
-            ["_attackDirection",getDir player]
+            ["_attackDirection",_playerDirection]
         ];
 
         // if a ctrl key is held and one left clicks to select the support while in the map, they can call in an infinite number of the support
@@ -106,13 +108,40 @@ if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
             nil
         };
 
-        _thisArgs params ["_supportId"];
-        // TODO: parse all info from _attackTypeConfig to call KISKA_fnc_closeAirSupport
+        if (_attackDirection isEqualTo MY_DIRECTION_VALUE) then {
+            _attackDirection = _playerDirection;
+        };
+
+        _thisArgs params ["_supportId","_aircraftClass"];
+        private _aircraftParamsMapInitializer = [
+            ["_aircraftClass",_aircraftClass],
+            ["_side",side player],
+            ["_attackPosition",call KISKA_fnc_supports_getCommonTargetPosition],
+            ["_directionOfAttack",_attackDirection]
+        ];
+
+        [
+            "allowDamage",
+            "initialHeightAboveTarget",
+            "initialDistanceToTarget",
+            "breakOffDistance",
+            "numberOfFlaresToDump",
+            "approachSpeed",
+            "vectorToTargetOffset"
+        ] apply {
+            private _cfgData = [_attackTypeConfig >> _x] call KISKA_fnc_getCfgData;
+            if (isNil "_cfgData") then { continue };
+            _aircraftParamsMapInitializer pushBack [["_",_x] joinString "", _cfgData];
+        };
+
         [
             _supportId,
             call KISKA_fnc_supports_getCommonTargetPosition,
             1,
-            []
+            [
+                createHashMapFromArray _aircraftParamsMapInitializer,
+                getArray(_attackTypeConfig >> "fireOrders")
+            ]
         ] call KISKA_fnc_supports_call;
     }],
     {},
