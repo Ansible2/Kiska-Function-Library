@@ -572,6 +572,14 @@ class SupportFramework
     class supports_remove
     {};
 };
+class StandardSupportEvents
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework\Standard Support Events");
+    class supports_onCalledCloseAirSupport
+    {};
+    class supports_onCalledVirtualArty
+    {};
+};
 class Tasks
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Tasks");
