@@ -100,11 +100,11 @@ if (isNil "_onSupportCalledCompiled") then {
 private _successfullyCalled = [
     _onSupportCalledCompiled,
     [
+        _onCallArgs,
         _supportId,
         _supportConfig,
         _targetPosition,
-        _numberOfTimesUsed,
-        _onCallArgs
+        _numberOfTimesUsed
     ]
 ] call CBA_fnc_directCall;
 if (!_successfullyCalled) exitWith {
