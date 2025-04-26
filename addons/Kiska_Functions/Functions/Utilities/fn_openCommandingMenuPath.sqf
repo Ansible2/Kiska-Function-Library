@@ -112,7 +112,7 @@ _menuPath apply {
             _optionTitle,
             [_keyCode],
             "", // submenu
-            -5 // execute command
+            -5, // execute command
             [["expression", _onOptionSelected]],
             "1", // is active
             "1" // is visible
