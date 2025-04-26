@@ -105,8 +105,7 @@ Examples:
     (end)
 
 Author(s):
-    Bohemia Interactive,
-    Modified By: Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_closeAirSupport";
 
