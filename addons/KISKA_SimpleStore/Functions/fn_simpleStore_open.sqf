@@ -9,7 +9,7 @@ Parameters:
     _this <HASHMAP> - A hashmap of the following arguments:
 
         - `_storeId` <STRING>: The id for the particular simple store.
-        - `_fn_poolItemToListboxItem` <CODE>: A function that will be called on every
+        - `_fn_poolItemToListboxItem` <CODE>: A mapping function that will be called on every
             item in the pool items list to convert it into a listbox item to show
             in the UI. In the event that the function returns `nil` the item will
             be excluded from the pool list. 
@@ -19,37 +19,38 @@ Parameters:
                 - 0: <ANY> - a pool item
                 - 1: <NUMBER> - The index of the item in the pool.
 
-                Returns an array containing:
+                Chould return an array containing:
 
                 - 0: <STRING> - The text of the listbox element.
                 - 1: <STRING> - Default: `""` - A path for the picture of the element.
                 - 2: <ARRAY> - Default: `[]` - An RBGA array for the picture's color.
                 - 3: <ARRAY> - Default: `[]` - An RBGA array for the picture's color when selected.
                 - 4: <STRING> - Default: `""` - The element's tooltip.
-                - 5: <STRING> - Default: `""` - The element's data property.
         
         - `_fn_getSelectedItems` <CODE>: A function that will be called whenever
             `KISKA_fnc_simpleStore_refreshSelectedList` is. Must return an array of
-            items formatted the same as an item returned from `_fn_poolItemToListboxItem`.
-            Passed the following params:
+            items formatted the same as an item returned from `_fn_poolItemToListboxItem`
+            with the addition of index 5 being the listbox item's `data` property
+
+            Passed the following args:
                 
                 - 0: <STRING> - The store id.
 
         - `_fn_onTake` <CODE>: A function that will be called when the Take button 
-            is clicked. Passed the following params:
+            is clicked. Passed the following args:
 
                 - 0: <STRING> - The store id.
-                - 1: <NUMBER> - The index of the selected item in the pool. This is the
-                    index of the source array, not the index in the list box.
-                - 2: <STRING> - The item's `lbData`.
+                - 1: <ANY> - Whatever the item from the pool that was selected.
+                - 2: <STRING> - The item's id from the pool items map retrieved from `KISKA_fnc_simpleStore_getPoolItems`.
+                - 3: <NUMBER> - The index of the selected item in the pool list box.
 
         - `_fn_onStore` <CODE>: A function that will be called when the Store button 
-            is clicked. Passed the following params:
+            is clicked. Passed the following args:
 
                 - 0: <STRING> - The store id.
-                - 1: <NUMBER> - The index of the selected item in the selected items list. 
+                - 1: <STRING> - The item's `lbData`.
+                - 2: <NUMBER> - The index of the selected item in the selected items list. 
                     This is the index of the source array, not the index in the list box.
-                - 2: <STRING> - The item's `lbData`.
 
         - `_storeTitle` <STRING>: Default `"KISKA Simple Store"` - The text that appears at on the top banner.
         - `_storePoolTitle` <STRING>: Default `"Pool List"` - The text that appears 
@@ -60,7 +61,7 @@ Parameters:
             of the store title header.
 
 Returns:
-    DISPLAY - The simple store dialog's display
+    <DISPLAY> - The simple store dialog's display
 
 Examples:
     (begin example)
@@ -71,14 +72,14 @@ Examples:
             [
                 "_fn_onTake",
                 {
-                    params ["_storeId","_index"];
+                    params ["_storeId","_itemId"];
                     _this call KISKA_fnc_simpleStore_removeItemFromPool;
                 }
             ],
             [
                 "_fn_onStore",
                 {
-                    params ["_storeId","_index"];
+                    params ["_storeId","_data","_index"];
                     [
                         _storeId,
                         myStoreSelectedItems deleteAt _index
@@ -192,13 +193,16 @@ _display setVariable ["KISKA_simpleStore_fn_poolItemToListboxItem",_paramMap get
     private _simpleStoreDisplay = ctrlParent _buttonControl;
     private _poolListControl = _simpleStoreDisplay getVariable "KISKA_simpleStore_poolListControl";
     private _selectedListboxIndex = lbCurSel _poolListControl;
-    private _selectedIndex = _poolListControl lbValue _selectedListboxIndex;
 
-    if (_selectedIndex >= 0) then {
+    if (_selectedListboxIndex >= 0) then {
+        private _selectedItemId = _poolListControl lbData _selectedListboxIndex;
+        private _storeId = _simpleStoreDisplay getVariable "KISKA_simpleStore_id";
+        private _poolItemsMap = [_storeId] call KISKA_fnc_simpleStore_getPoolItems;
+        private _selectedItem = _poolItemsMap get _selectedItemId;
         [
-            _simpleStoreDisplay getVariable "KISKA_simpleStore_id",
-            _selectedIndex,
-            _poolListControl lbData _selectedListboxIndex
+            _storeId,
+            _selectedItem,
+            _selectedItemId
         ] call (_simpleStoreDisplay getVariable "KISKA_simpleStore_fn_onTake");
     };
 }];
@@ -208,13 +212,12 @@ _display setVariable ["KISKA_simpleStore_fn_poolItemToListboxItem",_paramMap get
     private _simpleStoreDisplay = ctrlParent _buttonControl;
     private _selectedListControl = _simpleStoreDisplay getVariable "KISKA_simpleStore_selectedListControl";
     private _selectedListboxIndex = lbCurSel _selectedListControl;
-    private _selectedIndex = _selectedListControl lbValue _selectedListboxIndex;
 
-    if (_selectedIndex >= 0) then {
+    if (_selectedListboxIndex >= 0) then {
         [
             _simpleStoreDisplay getVariable "KISKA_simpleStore_id",
-            _selectedIndex,
-            _selectedListControl lbData _selectedListboxIndex
+            _selectedListControl lbData _selectedListboxIndex,
+            _selectedListboxIndex
         ] call (_simpleStoreDisplay getVariable "KISKA_simpleStore_fn_onStore");
     };
 }];

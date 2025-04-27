@@ -22,11 +22,8 @@ Authors:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_simpleStore_getStoreMap";
 
-private _storeIdToPoolItemsMap = localNamespace getVariable "KISKA_simpleStore_storeIdToPoolItemsMap";
-if (isNil "_storeIdToPoolItemsMap") then {
-    _storeIdToPoolItemsMap = createHashMap;
-    localNamespace setVariable ["KISKA_simpleStore_storeIdToPoolItemsMap",_storeIdToPoolItemsMap];
-};
-
-
-_storeIdToPoolItemsMap
+[
+    localNamespace,
+    "KISKA_simpleStore_storeIdToPoolItemsMap",
+    {createHashMap}
+] call KISKA_fnc_getOrDefaultSet

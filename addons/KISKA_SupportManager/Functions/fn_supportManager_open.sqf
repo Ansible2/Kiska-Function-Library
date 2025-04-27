@@ -60,8 +60,7 @@ private _args = [
                         getText(_supportManagerDetails >> "picture"),
                         getArray(_supportManagerDetails >> "pictureColor"),
                         getArray(_supportManagerDetails >> "selectedPictureColor"),
-                        getText(_supportManagerDetails >> "tooltip"),
-                        getText(_supportManagerDetails >> "data")
+                        getText(_supportManagerDetails >> "tooltip")
                     ]
                 }
             ],
@@ -109,7 +108,7 @@ private _args = [
             [
                 "_fn_onTake",
                 {
-                    params ["_storeId","_index"];
+                    params ["_storeId","_supportData","_poolItemId"];
 
                     private _maxAllowedSupports = missionNamespace getVariable ["KISKA_CBA_supportManager_maxSupports",10];
                     private _hasMaxSupports = count (call KISKA_fnc_supports_getMap) isEqualTo _maxAllowedSupports;
@@ -118,16 +117,9 @@ private _args = [
                         nil
                     };
 
-                    if (_index < 0) exitWith {
-                        ["Could not find selected index in pool list",true] call KISKA_fnc_log;
-                        nil
-                    };
-
-                    private _poolItems = [_storeId] call KISKA_fnc_simpleStore_getPoolItems;
-                    private _supportData = _poolItems select _index;
                     _supportData params [
-                        "_supportConfig",
-                        ["_numberOfUsesLeft",-1]
+                        ["_supportConfig",configNull,[configNull]],
+                        ["_numberOfUsesLeft",-1,[123]]
                     ];
 
                     private _supportManagerDetails = _supportConfig >> "KISKA_supportManagerDetails";
@@ -135,7 +127,7 @@ private _args = [
                     private _canTakeSupport = (_condition isEqualTo "") OR { [_supportConfig] call (compile _condition) };
                     if (_canTakeSupport) exitWith {
                         [_supportConfig,_numberOfUsesLeft] call KISKA_fnc_supports_add;
-                        _this remoteExecCall ["KISKA_fnc_simpleStore_removeItemFromPool",0,true];
+                        [_poolItemId] call KISKA_fnc_supportManager_removeFromPool;
                         nil
                     };
 
@@ -150,8 +142,7 @@ private _args = [
             [
                 "_fn_onStore",
                 {
-                    params ["","","_data"];
-                    private _supportId = _data;
+                    params ["","_supportId"];
                     private _supportConfigAndUses = [_supportId] call KISKA_fnc_supports_remove;
                     _supportConfigAndUses call KISKA_fnc_supportManager_addToPool;
                 }

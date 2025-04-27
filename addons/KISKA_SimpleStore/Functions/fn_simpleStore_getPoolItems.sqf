@@ -2,17 +2,17 @@
 Function: KISKA_fnc_simpleStore_getPoolItems
 
 Description:
-    Gets the current list of pool items for a particular simple store id.
+    Gets the current map of pool items for a particular simple store id.
 
 Parameters:
     0: _storeId <STRING> - The id for the particular simple store.
 
 Returns:
-    ARRAY - The simple store's list of items
+    <HASHMAP> - The specified simple store's item map
 
 Examples:
     (begin example)
-        private _storeItems = [
+        private _storeItemsMap = [
             "myStore"
         ] call KISKA_fnc_simpleStore_getPoolItems;
     (end)
@@ -33,12 +33,12 @@ if (_storeId isEqualTo "") exitWith {
 
 private _storeIdToPoolItemsMap = call KISKA_fnc_simpleStore_getStoreMap;
 _storeId = toLowerANSI _storeId;
-private _poolItems = _storeIdToPoolItemsMap get _storeId;
+private _poolItemsMap = _storeIdToPoolItemsMap get _storeId;
 
-if (isNil "_poolItems") then { 
-    _poolItems = [];
-    _storeIdToPoolItemsMap set [_storeId,_poolItems];
+if (isNil "_poolItemsMap") then { 
+    _poolItemsMap = createHashMap;
+    _storeIdToPoolItemsMap set [_storeId,_poolItemsMap];
 };
 
 
-_poolItems
+_poolItemsMap

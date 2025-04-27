@@ -2,20 +2,20 @@
 Function: KISKA_fnc_simpleStore_removeItemFromPool
 
 Description:
-    Removes the provided index from the item pool of a given store
+    Removes the item with the provided ID from the item pool of the given store.
 
 Parameters:
     0: _storeId <STRING> - The id for the particular simple store.
-    1: _poolIndex <NUMBER> - The index of the item to remove from the item pool.
+    1: _poolItemId <STRING> - The id of the item to remove from the item pool.
 
 Returns:
-    NOTHING
+    <ANY> - whatever the removed item was
 
 Examples:
     (begin example)
-        [
+        private _removedItem = [
             "myStore",
-            0
+            "KISKA_myStore_item_1"
         ] call KISKA_fnc_simpleStore_removeItemFromPool;
     (end)
 
@@ -28,7 +28,7 @@ if (!hasInterface) exitWith {};
 
 params [
     ["_storeId","",[""]],
-    ["_poolIndex",-1,[123]]
+    ["_poolItemId","",[""]]
 ];
 
 if (_storeId isEqualTo "") exitWith {
@@ -36,13 +36,11 @@ if (_storeId isEqualTo "") exitWith {
     nil
 };
 
-private _poolItems = [_storeId] call KISKA_fnc_simpleStore_getPoolItems;
-if (_poolItems isNotEqualTo []) then {
-    _poolItems deleteAt _poolIndex;  
-};
+private _poolItemsMap = [_storeId] call KISKA_fnc_simpleStore_getPoolItems;
+private _deletedItem = _poolItemsMap deleteAt _poolItemId;
 
 [_storeId] call KISKA_fnc_simpleStore_refreshSelectedList;
 [_storeId] call KISKA_fnc_simpleStore_refreshPoolList;
 
 
-nil
+_deletedItem

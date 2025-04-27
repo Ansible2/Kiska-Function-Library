@@ -2,7 +2,7 @@
 Function: KISKA_fnc_supportManager_addToPool
 
 Description:
-    Adds an entry into the local support manager pool.
+    Adds an entry into the support manager pool globally.
 
 Parameters:
     0: _supportConfig <CONFIG | STRING> - The config or a string of a class 
@@ -12,7 +12,7 @@ Parameters:
         available to use. If less than 0, the configed value will be used.
 
 Returns:
-    NOTHING
+    <STRING> - the item's global identifier which is also used for the JIP queue.
 
 Examples:
     (begin example)
@@ -20,7 +20,7 @@ Examples:
     (end)
 
     (begin example)
-        [
+        private _itemId = [
             configFile >> "CfgCommunicationMenu" >> "MySupport"
         ] call KISKA_fnc_supportManager_addToPool;
     (end)
@@ -47,7 +47,11 @@ if (isNull _supportConfig) exitWith {
     nil
 };
 
-[STORE_ID,[_supportConfig,_numberOfUsesLeft]] call KISKA_fnc_simpleStore_addItemToPool;
+
+private _itemId = [
+    STORE_ID,
+    [_supportConfig,_numberOfUsesLeft]
+] call KISKA_fnc_simpleStore_addItemToPool_global;
 
 
-nil
+_itemId

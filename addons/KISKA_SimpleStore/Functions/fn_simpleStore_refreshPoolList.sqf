@@ -45,12 +45,12 @@ private _previouslySelectedIndex = lbCurSel _poolItemsListControl;
 lbClear _poolItemsListControl;
 
 private _poolItems = [_storeId] call KISKA_fnc_simpleStore_getPoolItems;
-if (_poolItems isEqualTo []) exitWith { nil };
+if ((count _poolItems) < 1) exitWith { nil };
 
 
 private _fn_poolItemToListboxItem = _storeDisplay getVariable "KISKA_simpleStore_fn_poolItemToListboxItem";
 {
-    private _listBoxItem = [_x,_forEachIndex] call _fn_poolItemToListboxItem;
+    private _listBoxItem = [_y,_forEachIndex] call _fn_poolItemToListboxItem;
     if (isNil "_listBoxItem") then {continue};
 
     _listBoxItem params [
@@ -58,14 +58,12 @@ private _fn_poolItemToListboxItem = _storeDisplay getVariable "KISKA_simpleStore
         ["_picture","",[""]],
         ["_pictureColor",[],[[]]],
         ["_pictureColorSelected",[],[[]]],
-        ["_tooltip","",[""]],
-        ["_data","",[""]]
+        ["_tooltip","",[""]]
     ];
 
     private _element = _poolItemsListControl lbAdd _text;
-    _poolItemsListControl lbSetValue [_element,_forEachIndex]; // TODO: NOTE you can use this to determine the original pool item being taken
     _poolItemsListControl lbSetTooltip [_element,_tooltip];
-    _poolItemsListControl lbSetData [_element,_data];
+    _poolItemsListControl lbSetData [_element,_x];
 
     if (_picture isNotEqualTo "") then {
         _poolItemsListControl lbSetPicture [_element,_picture];
@@ -78,13 +76,13 @@ private _fn_poolItemToListboxItem = _storeDisplay getVariable "KISKA_simpleStore
     };
 } forEach _poolItems;
 
+lbSort _poolItemsListControl;
+
 private _maxIndex = (count _poolItems) - 1;
 if (_previouslySelectedIndex > _maxIndex) then {
     _previouslySelectedIndex = _maxIndex;
 };
 _poolItemsListControl lbSetSelected [_previouslySelectedIndex,true];
-
-lbSort _poolItemsListControl;
 
 
 nil
