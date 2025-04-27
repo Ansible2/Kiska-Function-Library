@@ -32,7 +32,7 @@ if (isNull _ctrlMap) exitWith { nil };
 
 getMousePosition params ["_mouseX", "_mouseY"];
 private _position = _ctrlMap ctrlMapScreenToWorld [_mouseX, _mouseY];
-_position pushBack (abs (getTerrainHeight _2dPosition));
+_position pushBack (abs (getTerrainHeight _position));
 
 
 _position
