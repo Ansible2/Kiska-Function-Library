@@ -88,6 +88,7 @@ _menuPath apply {
         [_menuTitle,false]
     ];
     {
+        private "_keyCode";
         if (_forEachIndex <= MAX_KEYS) then {
             // key codes are offset by 2 (1 on the number bar is key code 2)
             _keyCode = _forEachIndex + 2;
@@ -123,7 +124,7 @@ _menuPath apply {
 
     private _menuHasSingleOption = (count _commandingMenu) isEqualTo 2;
     if (_menuHasSingleOption) then {
-        private _singleMenuOption = _menuOptions select 1;
+        private _singleMenuOption = _commandingMenu select 1;
         private _menuOptionExpression = _singleMenuOption select 4;
         private _expressionCode = (_menuOptionExpression select 0) select 1;
         [] call (compile _expressionCode);
