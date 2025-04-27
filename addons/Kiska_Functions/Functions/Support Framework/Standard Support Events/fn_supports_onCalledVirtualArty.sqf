@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_suppports_onCalledVirtualArty
+Function: KISKA_fnc_supports_onCalledVirtualArty
 
 Description:
     The standard translator to handle a virtual artillery configured support's
@@ -25,7 +25,7 @@ Examples:
 Author:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_suppports_onCalledVirtualArty";
+scriptName "KISKA_fnc_supports_onCalledVirtualArty";
 
 params [
     ["_onCallArgs",[],[[]],2],
