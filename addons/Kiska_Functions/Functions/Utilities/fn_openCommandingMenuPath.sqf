@@ -54,6 +54,8 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_openCommandingMenuPath";
 
+#define MAX_KEYS 9
+
 if (!hasInterface) exitWith {
     ["Can only run on machines with interface",false] call KISKA_fnc_log;
     nil
