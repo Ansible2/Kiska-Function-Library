@@ -1,7 +1,3 @@
-#include "Support Type IDs.hpp"
-#include "Support Icons.hpp"
-#include "CAS Type IDs.hpp"
-#include "Arty Ammo Type IDs.hpp"
 // 173 TODO: redo classes and documentation
 
 
