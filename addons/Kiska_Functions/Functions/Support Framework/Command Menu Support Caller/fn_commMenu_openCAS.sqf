@@ -38,19 +38,19 @@ if (isNull _supportConfig) exitWith {
     nil
 };
 
-private _supportDetailsConfig = _supportConfig >> "KISKA_supportDetails";
-private _aircraftClass = getText(_supportDetailsConfig >> "aircraftClass");
+private _commMenuDetailsConfig = _supportConfig >> "KISKA_commMenuDetails";
+private _aircraftClass = getText(_commMenuDetailsConfig >> "aircraftClass");
 if (_aircraftClass isEqualTo "") exitWith {
-    [["`aircraftClass` is not defined in ",_supportDetailsConfig],true] call KISKA_fnc_log;
+    [["`aircraftClass` is not defined in ",_commMenuDetailsConfig],true] call KISKA_fnc_log;
     nil
 };
 
 /* ----------------------------------------------------------------------------
     Attack Type Options
 ---------------------------------------------------------------------------- */
-private _attackTypeClasses = configProperties [_supportDetailsConfig >> "AttackTypes","isClass _x"];
+private _attackTypeClasses = configProperties [_commMenuDetailsConfig >> "AttackTypes","isClass _x"];
 if (_attackTypeClasses isEqualTo []) exitWith {
-    [["No AttackTypes defined in ",_supportDetailsConfig],true] call KISKA_fnc_log;
+    [["No AttackTypes defined in ",_commMenuDetailsConfig],true] call KISKA_fnc_log;
     nil
 };
 private _attackTypeOptions = _attackTypeClasses apply { [getText(_x >> "label"),_x] };
@@ -63,7 +63,7 @@ private _menuPath = [
 /* ----------------------------------------------------------------------------
     Attack Direction Options
 ---------------------------------------------------------------------------- */
-private _canSelectAttackDirection = [_supportDetailsConfig >> "canSelectAttackDirection",true] call KISKA_fnc_getConfigData;
+private _canSelectAttackDirection = [_commMenuDetailsConfig >> "canSelectAttackDirection",true] call KISKA_fnc_getConfigData;
 if (_canSelectAttackDirection) then {
     private _attackDirectionOptions = [
         [0,"N"],
@@ -87,7 +87,7 @@ if (_canSelectAttackDirection) then {
 /* ----------------------------------------------------------------------------
     Create Menu
 ---------------------------------------------------------------------------- */
-private _draw3dMarker = [_supportDetailsConfig >> "draw3dMarker",true] call KISKA_fnc_getConfigData;
+private _draw3dMarker = [_commMenuDetailsConfig >> "draw3dMarker",true] call KISKA_fnc_getConfigData;
 if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
 
 [

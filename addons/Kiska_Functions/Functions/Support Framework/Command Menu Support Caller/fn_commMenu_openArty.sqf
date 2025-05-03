@@ -38,12 +38,12 @@ if (isNull _supportConfig) exitWith {
     nil
 };
 
-private _supportDetailsConfig = _supportConfig >> "KISKA_supportDetails";
+private _commMenuDetailsConfig = _supportConfig >> "KISKA_commMenuDetails";
 
 /* ----------------------------------------------------------------------------
     Radius Menu
 ---------------------------------------------------------------------------- */
-private _selectableRadiuses = getArray(_supportDetailsConfig >> "radiuses");
+private _selectableRadiuses = getArray(_commMenuDetailsConfig >> "radiuses");
 if (_selectableRadiuses isEqualTo []) then {
     _selectableRadiuses = missionNamespace getVariable ["KISKA_CBA_supp_radiuses_arr",[]];
 
@@ -71,7 +71,7 @@ _selectableRadiuses apply {
     Round Count Menu
 ---------------------------------------------------------------------------- */
 private _roundsMenuOptions = [];
-private _canSelectRounds = [_supportDetailsConfig >> "canSelectRounds",true] call KISKA_fnc_getConfigData;
+private _canSelectRounds = [_commMenuDetailsConfig >> "canSelectRounds",true] call KISKA_fnc_getConfigData;
 private _numberOfRoundsLeft = [_supportId] call KISKA_fnc_supports_getNumberOfUsesLeft;
 if (_canSelectRounds) then {
     for "_i" from 1 to _numberOfRoundsLeft do {
@@ -85,14 +85,14 @@ if (_canSelectRounds) then {
 /* ----------------------------------------------------------------------------
     Create Menu
 ---------------------------------------------------------------------------- */
-private _draw3dMarker = [_supportDetailsConfig >> "draw3dMarker",true] call KISKA_fnc_getConfigData;
+private _draw3dMarker = [_commMenuDetailsConfig >> "draw3dMarker",true] call KISKA_fnc_getConfigData;
 if (_draw3dMarker) then {
     call KISKA_fnc_drawLookingAtMarker_start;
 };
 
 [
     [
-        ["Select Ammo", getArray(_supportDetailsConfig >> "ammoTypes")],
+        ["Select Ammo", getArray(_commMenuDetailsConfig >> "ammoTypes")],
         ["Area Spread", _radiusMenuOptions],
         ["Number of Rounds", _roundsMenuOptions]
     ],
