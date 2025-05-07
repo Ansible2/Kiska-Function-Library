@@ -122,7 +122,7 @@ class KISKA_abstract_commMenuCloseAirSupport
         numberOfUses = 1;
         onSupportAdded = "_this call KISKA_fnc_commMenu_onSupportAdded";
         onSupportRemoved = "_this call KISKA_fnc_commMenu_onSupportRemoved";
-        onSupportCalled = "_this call KISKA_fnc_suppports_onCalledCloseAirSupport";
+        onSupportCalled = "_this call KISKA_fnc_supports_onCalledCloseAirSupport";
     };
 
     class KISKA_supportManagerDetails
@@ -200,7 +200,7 @@ class KISKA_support_commMenu_gunsRockets_template : KISKA_abstract_commMenuClose
                         0.5,
                         "guide_to_strafe_target",
                         0.01
-                    }
+                    },
                     {
                         "pylon",
                         "PylonRack_7Rnd_Rocket_04_HE_F",
@@ -223,7 +223,7 @@ class KISKA_support_commMenu_gunsRockets_template : KISKA_abstract_commMenuClose
                         0.5,
                         "guide_to_strafe_target",
                         0.01
-                    }
+                    },
                     {
                         "pylon",
                         "PylonRack_7Rnd_Rocket_04_AP_F",
@@ -246,7 +246,7 @@ class KISKA_support_commMenu_gunsRockets_template : KISKA_abstract_commMenuClose
                         0.05,
                         "",
                         0.1
-                    }
+                    },
                     {
                         "pylon",
                         "PylonRack_7Rnd_Rocket_04_HE_F",
@@ -269,7 +269,7 @@ class KISKA_support_commMenu_gunsRockets_template : KISKA_abstract_commMenuClose
                         0.05,
                         "",
                         0.1
-                    }
+                    },
                     {
                         "pylon",
                         "PylonRack_7Rnd_Rocket_04_AP_F",
@@ -342,7 +342,7 @@ class KISKA_support_commMenu_napalm_template : KISKA_abstract_commMenuCloseAirSu
     class KISKA_commMenuDetails : KISKA_commMenuDetails
     {
         text = "CAS - Napalm";
-        aircraftClass = "B_Plane_CAS_01_dynamicLoadout_F";
+        aircraftClass = "vn_b_air_f4c_hcas";
 
         class AttackTypes
         {
