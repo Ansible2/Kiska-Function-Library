@@ -100,23 +100,24 @@ _menuPath apply {
             ["_optionTitle","",[""]],
             "_optionValue"
         ];
-        switch (typeName _optionValue) do
-        {
-            case "CODE": {
-                _optionValue = ["call",_optionValue] joinString " ";
-            };
-            case "STRING": {
-                _optionValue = [_optionValue] call KISKA_fnc_str;
-            };
-        };
 
-        private _onOptionSelected = format ["(localNamespace getVariable 'KISKA_commandingMenu_selectedValues') pushBack (%1); localNamespace setVariable ['KISKA_commandingMenu_openNextMenu',true];",_optionValue];
+        private _onSelectedCallbackVariableName = ["KISKA_commandingMenu_onOptionSelectedCallback"] call KISKA_fnc_generateUniqueId;
+        _menuVariables pushBack _onSelectedCallbackVariableName;
+        private _onOptionSelected = [[_optionValue],{
+            params ["_optionValue"];
+            private _selectedValues = localNamespace getVariable 'KISKA_commandingMenu_selectedValues';
+            _selectedValues pushBack _optionValue;
+            localNamespace setVariable ['KISKA_commandingMenu_openNextMenu',true];
+        }];
+        missionNamespace setVariable [_onSelectedCallbackVariableName,_onOptionSelected];
+
+        private _expression = format ["(missionNamespace getVariable '%1') call KISKA_fnc_callBack",_onSelectedCallbackVariableName];
         _commandingMenu pushBack [
             _optionTitle,
             [_keyCode],
             "", // submenu
             -5, // execute command
-            [["expression", _onOptionSelected]],
+            [["expression", _expression]],
             "1", // is active
             "1" // is visible
         ];
