@@ -566,6 +566,8 @@ class StandardSupportEvents
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework\Standard Support Events");
     class supports_onCalledCloseAirSupport
     {};
+    class supports_onCalledHelicopterGunner
+    {};
     class supports_onCalledVirtualArty
     {};
 };
