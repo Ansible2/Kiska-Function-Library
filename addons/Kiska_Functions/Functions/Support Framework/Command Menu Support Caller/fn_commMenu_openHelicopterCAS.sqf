@@ -76,14 +76,14 @@ if (_canSelectIngressDirection) then {
 /* ----------------------------------------------------------------------------
     Patrol Zone Radius Menu
 ---------------------------------------------------------------------------- */
-private _selectableRadiuses = getArray(_supportDetailsConfig >> "patrolRadiuses");
+private _selectableRadiuses = getArray(_commMenuDetailsConfig >> "patrolRadiuses");
 if (_selectableRadiuses isEqualTo []) then {
     _selectableRadiuses = missionNamespace getVariable ["KISKA_CBA_supp_radiuses_arr",[]];
 
     if (_selectableRadiuses isEqualTo []) then {
         _selectableRadiuses = [DEFAULT_PATROL_RADIUS];
     };
-}
+};
 private _patrolZoneOptions = _selectableRadiuses apply {
     private _label = [_x,"m"] joinString "";
     [_label,_x]
@@ -94,7 +94,7 @@ _menuPath pushBack ["Patrol Zone Radius",_patrolZoneOptions];
 /* ----------------------------------------------------------------------------
     Patrol Altitude
 ---------------------------------------------------------------------------- */
-private _selectableAltitudes = getArray(_supportDetailsConfig >> "patrolAltitudes");
+private _selectableAltitudes = getArray(_commMenuDetailsConfig >> "patrolAltitudes");
 if (_selectableAltitudes isEqualTo []) then {
     _selectableAltitudes = missionNamespace getVariable ["KISKA_CBA_supp_flyInHeights_arr",[]];
 
@@ -130,7 +130,7 @@ if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
         
         private _playerDirection = getDir player;
         params [
-            ["_ingressDirection",_playerDirection]
+            ["_ingressDirection",_playerDirection],
             "_patrolZoneRadius",
             "_patrolAltitude"
         ];
