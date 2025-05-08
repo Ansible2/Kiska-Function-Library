@@ -369,3 +369,35 @@ class KISKA_support_commMenu_napalm_template : KISKA_abstract_commMenuCloseAirSu
         text = "CAS - Napalm";
     };
 };
+
+
+/* ----------------------------------------------------------------------------
+    Helicopter CAS
+---------------------------------------------------------------------------- */
+class KISKA_abstract_commMenuHelicopterCAS
+{
+    class KISKA_commMenuDetails
+    {
+        icon = CAS_HELI_ICON;
+        aircraftClass = "B_Heli_Attack_01_dynamicLoadout_F";
+        onSupportSelected = "_this call KISKA_fnc_commMenu_openHelicopterCAS";
+        canSelectIngress = ON;
+        draw3dMarker = ON;
+        patrolRadiuses[] = {200};
+        patrolAltitudes[] = {50};
+        patrolDuration = 180;
+    };
+    
+    class KISKA_supportDetails
+    {
+        numberOfUses = 1;
+        onSupportAdded = "_this call KISKA_fnc_commMenu_onSupportAdded";
+        onSupportRemoved = "_this call KISKA_fnc_commMenu_onSupportRemoved";
+        onSupportCalled = "_this call KISKA_fnc_suppports_onCalledHelicopterGunner";
+    };
+
+    class KISKA_supportManagerDetails
+    {
+        picture = CAS_HELI_ICON;
+    };
+};
