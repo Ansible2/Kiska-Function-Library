@@ -600,6 +600,8 @@ class Utilities
     {};
     class clearCargoGlobal
     {};
+    class createAssetAtPosition
+    {};
     class countdown
     {};
     class dataLinkMsg
