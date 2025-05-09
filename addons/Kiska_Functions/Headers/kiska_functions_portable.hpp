@@ -488,8 +488,6 @@ class SpectrumDevice
 class Supports
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Supports");
-    class arsenalSupplyDrop
-    {};
     class CAS
     {};
     class CASAttack
@@ -527,8 +525,6 @@ class CommandMenuSupportCaller
     class commMenu_onSupportRemoved
     {};
     class commMenu_onSupportSelected
-    {};
-    class commMenu_openArsenalSupplyDrop
     {};
     class commMenu_openArty
     {};
