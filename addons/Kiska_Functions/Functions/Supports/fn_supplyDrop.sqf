@@ -61,9 +61,7 @@ params [
     ["_argsMap",[],[createHashMap]]
 ];
 
-private "_invalidArgumentMessage";
-private _paramVariableNames = [];
-private _paramValues = [
+private _paramDetails = [
     ["objectClassNames",{[]},[[]]],
     ["dropPosition",{objNull},[objNull,[]]],
     ["dropAltitude",{100},[123]],
@@ -75,22 +73,13 @@ private _paramValues = [
     ["allowDamage",{true},[false]],
     ["addArsenals",{false},[false]],
     ["clearCargo",{false},[false]]
-] apply {
-    _x params ["_key","_default","_types"];
-    private _paramValue = _argsMap getOrDefaultCall [_key,_default];
-    if !(_paramValue isEqualTypeAny _types) then {
-        _invalidArgumentMessage = [_key," value ",_paramValue," is invalid, must be of types -> ",_types] joinString "";
-        break;
-    };
-
-    _paramVariableNames pushBack (["_",_key] joinString "");
-    _paramValue
-};
-if (!isNil "_invalidArgumentMessage") exitWith {
-    [_invalidArgumentMessage,true] call KISKA_fnc_log;
+];
+private _paramValidationResult = [_argsMap,_paramDetails] call KISKA_fnc_hashMapParams;
+if (_paramValidationResult isEqualType "") exitWith {
+    [_paramValidationResult,true] call KISKA_fnc_log;
     []
 };
-_paramValues params _paramVariableNames;
+(_paramValidationResult select 0) params (_paramValidationResult select 1);
 
 
 if (_objectClassNames isEqualTo []) exitWith {
