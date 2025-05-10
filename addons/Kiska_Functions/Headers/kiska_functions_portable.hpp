@@ -333,7 +333,15 @@ class Position
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Positions");
     class drawBoundingBox
     {};
+    class drawLookingAtMarker_start
+    {};
+    class drawLookingAtMarker_stop
+    {};
     class getBoundingBoxCenter
+    {};
+    class getMapCursorPosition
+    {};
+    class getPositionPlayerLookingAt
     {};
     class removeBoundingBoxDraw
     {};
@@ -480,8 +488,6 @@ class SpectrumDevice
 class Supports
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Supports");
-    class arsenalSupplyDrop
-    {};
     class CAS
     {};
     class CASAttack
@@ -504,47 +510,61 @@ class Supports
     {};
     class virtualArty
     {};
+    class updateFlareEffects
+    {};
 };
-class SupportFramework
+class CommandMenuSupportCaller
 {
-    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework");
-    class addCommMenuItem
-    {};
-    class buildCommandMenu
-    {};
-    class callingForArsenalSupplyDrop
-    {};
-    class callingForSupplyDrop_aircraft
-    {};
-    class callingForArty
-    {};
-    class callingForCAS
-    {};
-    class callingForHelicopterCAS
-    {};
-    class callingForSupportMaster
-    {};
-    class commandMenuTree
-    {};
-    class createVehicleSelectMenu
-    {};
-    class detectControlKeys
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework\Command Menu Support Caller");
+    class commMenu_detectControlKeys
     {
         preInit = 1;
     };
-    class getAmmoClassFromId
+    class commMenu_onSupportAdded
     {};
-    class getAmmoTitleFromId
+    class commMenu_onSupportRemoved
     {};
-    class getCasTitleFromId
+    class commMenu_onSupportSelected
     {};
-    class getSupportVehicleClasses
+    class commMenu_openArty
     {};
-    class supportNotification
+    class commMenu_openCAS
     {};
-    class supportRadio
+    class commMenu_openHelicopterCAS
     {};
-    class updateFlareEffects
+    class commMenu_openSupplyDropAircraft
+    {};
+    class commMenu_refresh
+    {};
+};
+class SupportFramework
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework\Common");
+    class supports_add
+    {};
+    class supports_call
+    {};
+    class supports_genericNotification
+    {};
+    class supports_genericRadioMessage
+    {};
+    class supports_getCommonTargetPosition
+    {};
+    class supports_getMap
+    {};
+    class supports_getNumberOfUsesLeft
+    {};
+    class supports_remove
+    {};
+};
+class StandardSupportEvents
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework\Standard Support Events");
+    class supports_onCalledCloseAirSupport
+    {};
+    class supports_onCalledHelicopterGunner
+    {};
+    class supports_onCalledVirtualArty
     {};
 };
 class Tasks
@@ -646,6 +666,8 @@ class Utilities
     {};
     class getNearestIncriment
     {};
+    class getOrDefaultSet
+    {};
     class getPosRelativeSurface
     {};
     class getRelativeVectorAndPos
@@ -681,6 +703,8 @@ class Utilities
     class notification
     {};
     class notify
+    {};
+    class openCommandingMenuPath
     {};
     class playDrivePath
     {};
@@ -721,6 +745,8 @@ class Utilities
     class setWaypointExecStatement
     {};
     class showHide
+    {};
+    class showNotification
     {};
     class sortStringsNumerically
     {};

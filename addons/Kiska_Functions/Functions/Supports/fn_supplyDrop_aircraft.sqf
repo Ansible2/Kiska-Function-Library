@@ -6,7 +6,7 @@ Description:
 
 Parameters:
     0: _dropPosition : <ARRAY or OBJECT> - The position (area) to drop the arsenal
-      1: _vehicleClass : <STRING> - The class of the vehicle to drop the arsenal
+    1: _vehicleClass : <STRING> - The class of the vehicle to drop the arsenal
     2: _crates : <ARRAY> - An array of strings that are the classnames of the crates to drop
     3: _deleteCargo : <BOOL> - Delete all the default cargo inside the crates
     4: _addArsenal : <BOOL> - add an arsenal to all the crates
@@ -60,7 +60,6 @@ _spawnPosition vectorAdd [0,0,_flyInHeight];
 
 private _relativeDirection = _spawnPosition getDir _dropPosition;
 
-// spawn vehicle
 private _pilotClass = getText(configFile >> "CfgVehicles" >> _vehicleClass >> "Crew");
 private _vehicleArray = [
     _spawnPosition,
