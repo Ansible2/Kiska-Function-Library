@@ -506,7 +506,7 @@ class Supports
     {};
     class supplyDrop
     {};
-    class supplyDrop_aircraft
+    class supplyDropWithAircraft
     {};
     class virtualArty
     {};
@@ -677,6 +677,8 @@ class Utilities
     class getVariableTarget_sendBack
     {};
     class getVectorToTarget
+    {};
+    class hashMapParams
     {};
     class hintDiary
     {};
