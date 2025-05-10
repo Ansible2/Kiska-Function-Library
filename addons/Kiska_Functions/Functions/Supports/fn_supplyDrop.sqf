@@ -27,6 +27,12 @@ Parameters:
         - `distanceToStopVelocityUpdates`: <NUMBER> Default: `80` - At what
             distance to the surface beneath the objects should the velocity
             stop being applied.
+        - `allowDamage`: <BOOL> Default: `true` - Whether or not to automatically
+            disable damage on the dropped objects.
+        - `addArsenals`: <BOOL> Default: `false` - Whether or not to automatically
+            add arsenals to the dropped objects with `KISKA_fnc_addArsenal`.
+        - `clearCargo`: <BOOL> Default: `false` - Whether or not to automatically
+            globally delete the dropped object's cargo with `KISKA_fnc_clearCargoGlobal`.
 
 Returns:
     <OBJECT[]> - The created objects that were dropped.
@@ -65,7 +71,10 @@ private _paramValues = [
     ["parachuteClass",{"b_parachute_02_F"},[""]],
     ["dropZVelocity",{-15},[123]],
     ["velocityUpdateFrequency",{0.1},[123]],
-    ["distanceToStopVelocityUpdates",{80},[123]]
+    ["distanceToStopVelocityUpdates",{80},[123]],
+    ["allowDamage",{true},[false]],
+    ["addArsenals",{false},[false]],
+    ["clearCargo",{false},[false]]
 ] apply {
     _x params ["_key","_default","_types"];
     private _paramValue = _argsMap getOrDefaultCall [_key,_default];
@@ -112,7 +121,9 @@ _objectClassNames apply {
     _objectDropPosition set [2,_aslSpawnHeight];
     private _object = createVehicle [_x,_objectDropPosition,[],0,"FLY"];
     _object setPosASL _objectDropPosition;
-    _object allowDamage false;
+    if (!_allowDamage) then { _object allowDamage false };
+    if (_addArsenals) then { [_object] call KISKA_fnc_addArsenal };
+    if (_clearCargo) then { [_object] call KISKA_fnc_clearCargoGlobal };
     
     private _parachute = createVehicle [_parachuteClass,_objectDropPosition,[],0,"FLY"];
     _parachute setPosASL _objectDropPosition;
