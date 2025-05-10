@@ -2,10 +2,11 @@
 Function: KISKA_fnc_getPosRelativeSurface
 
 Description:
-    Returns a relative position but that the position is at the 0 position for the
-     surface beneath (being either water or the terrain) in an ATL format.
+    Returns a position relative to another, however, the returned position 
+     will be wherever the surface (be it the sea level or terrain level) 
+     is at in an ATL format.
 
-    This means the z will always be 0 or the height of the sea above the terrain level
+    This means the z will always be `0` or the height of the sea above the terrain level
      at the given _centerPosition.
 
 Parameters:
