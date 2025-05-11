@@ -401,3 +401,39 @@ class KISKA_abstract_commMenuHelicopterCAS
         picture = CAS_HELI_ICON;
     };
 };
+
+
+
+/* ----------------------------------------------------------------------------
+    Supply Drop
+---------------------------------------------------------------------------- */
+class KISKA_abstract_commMenuSupplyDrop
+{
+    class KISKA_commMenuDetails
+    {
+        icon = SUPPLY_DROP_ICON;
+        onSupportSelected = "_this call KISKA_fnc_commMenu_openSupplyDrop";
+        draw3dMarker = ON;
+
+        aircraftClass = "";
+        canSelectIngress = ON;
+        dropAltitudes[] = {100,200};
+        spawnDistance = 2000;
+        objectClassNames[] = {"B_supplyCrate_F"};
+        clearCargo = ON;
+        addArsenals = ON;
+    };
+    
+    class KISKA_supportDetails
+    {
+        numberOfUses = 1;
+        onSupportAdded = "_this call KISKA_fnc_commMenu_onSupportAdded";
+        onSupportRemoved = "_this call KISKA_fnc_commMenu_onSupportRemoved";
+        onSupportCalled = "_this call KISKA_fnc_supports_onCalledSupplyDrop";
+    };
+
+    class KISKA_supportManagerDetails
+    {
+        picture = SUPPLY_DROP_ICON;
+    };
+};

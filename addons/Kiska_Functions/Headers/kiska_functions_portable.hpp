@@ -564,7 +564,7 @@ class StandardSupportEvents
     {};
     class supports_onCalledHelicopterGunner
     {};
-    class suppports_onCalledSupplyDrop
+    class supports_onCalledSupplyDrop
     {};
     class supports_onCalledVirtualArty
     {};

@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_suppports_onCalledSupplyDrop
+Function: KISKA_fnc_supports_onCalledSupplyDrop
 
 Description:
     The standard translator to handle a supply drop configured support's
@@ -23,7 +23,7 @@ Examples:
 Author:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_suppports_onCalledSupplyDrop";
+scriptName "KISKA_fnc_supports_onCalledSupplyDrop";
 
 params [
     ["_argsMap",nil,[createHashMap]]
