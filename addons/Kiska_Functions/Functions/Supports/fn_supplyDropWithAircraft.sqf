@@ -89,17 +89,18 @@ if (_dropPositionIsObject) then {
 };
 
 
-private _directionToSpawnPoint = [_directionOfAircraft + 180] call CBA_fnc_simplifyAngle;
-private _spawnPosition = AGLToASL (_dropPosition getPos [_spawnDistance,_directionToSpawnPoint]);
-_spawnPosition set [2,(_spawnPosition select 2) + _dropAltitude];
-
+private _spawnPosition = [
+    _dropPosition,
+    _spawnDistance,
+    _directionOfAircraft + 180,
+    _dropAltitude
+] call KISKA_fnc_getPosRelativeASL;
 private _pilotClass = getText(configFile >> "CfgVehicles" >> _aircraftClass >> "Crew");
 private _vehicleArray = [
-    ATLToASL _spawnPosition,
+    _spawnPosition,
     _directionOfAircraft,
     _aircraftClass,
     _side,
-    false,
     [_pilotClass]
 ] call KISKA_fnc_spawnVehicle;
 _vehicleArray params ["_aircraft","_crew","_group"];

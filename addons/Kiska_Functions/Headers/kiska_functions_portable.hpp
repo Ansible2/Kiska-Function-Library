@@ -343,6 +343,8 @@ class Position
     {};
     class getPositionPlayerLookingAt
     {};
+    class getPosRelativeASL
+    {};
     class removeBoundingBoxDraw
     {};
 };
@@ -669,8 +671,6 @@ class Utilities
     class getNearestIncriment
     {};
     class getOrDefaultSet
-    {};
-    class getPosRelativeSurface
     {};
     class getRelativeVectorAndPos
     {};

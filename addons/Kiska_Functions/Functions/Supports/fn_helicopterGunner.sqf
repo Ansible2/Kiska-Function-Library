@@ -99,16 +99,14 @@ if (!_vehicleExistedBeforeFunction) then {
     private _spawnPosition = [
         _centerPosition,
         SPAWN_DISTANCE,
-        (_approachBearing + 180),
+        _approachBearing + 180,
         _flyInHeight
-    ] call KISKA_fnc_getPosRelativeSurface;
-
+    ] call KISKA_fnc_getPosRelativeASL;
     _vehicleArray = [
         _spawnPosition,
         0,
         _aircraftType,
-        _side, 
-        false
+        _side
     ] call KISKA_fnc_spawnVehicle;
 };
 

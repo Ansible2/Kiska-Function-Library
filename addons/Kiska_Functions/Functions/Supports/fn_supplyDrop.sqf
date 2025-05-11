@@ -56,6 +56,7 @@ scriptName "KISKA_fnc_supplyDrop";
 #define DELAY_FOR_CHUTE_DEPLOYMENT 3
 #define MIN_DISTANCE_TO_STOP_VELOCITY_UPDATES 15
 #define DISTANCE_TO_DETACH 5
+#define VELOCITY_RELEASE_THRESHOLD 0.1
 
 params [
     ["_argsMap",[],[createHashMap]]
@@ -131,7 +132,6 @@ _objectClassNames apply {
                         "_dropZVelocity",
                         "_distanceToStopVelocityUpdates"
                     ];
-                    
 
                     private _distanceToSurface = (getPosVisual _object) select 2;
                     if (_distanceToSurface >= _distanceToStopVelocityUpdates) exitWith {
@@ -140,7 +140,13 @@ _objectClassNames apply {
                         _parachute setVelocity _chuteVelocity;
                     };
 
-                    if (_distanceToSurface <= DISTANCE_TO_DETACH) exitWith {
+                    if (
+                        (_distanceToSurface <= DISTANCE_TO_DETACH) OR
+                        {
+                            private _velocity = velocity _object;
+                            (_velocity select 2) <= VELOCITY_RELEASE_THRESHOLD
+                        }
+                    ) exitWith {
                         detach _object;
                         [_id] call CBA_fnc_removePerFrameHandler;
                     };

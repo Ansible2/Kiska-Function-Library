@@ -164,19 +164,21 @@ if !(isclass _aircraftCfg) exitwith {
     nil
 };
 
+if (_attackPositionIsObject) then {
+    _attackPosition = getPosASL _attackPosition;
+};
+
 private _spawnPosition = [
     _attackPosition,
     _initialDistanceToTarget,
-    (_directionOfAttack + 180)
-] call KISKA_fnc_getPosRelativeSurface;
-_spawnPosition = _spawnPosition vectorAdd [0,0,_initialHeightAboveTarget];
-
+    _directionOfAttack + 180,
+    _initialHeightAboveTarget
+] call KISKA_fnc_getPosRelativeASL;
 private _aircraftSpawnInfo = [
     _spawnPosition,
     _directionOfAttack,
     _aircraftClass,
-    _side,
-    false
+    _side
 ] call KISKA_fnc_spawnVehicle;
 
 _aircraftSpawnInfo params ["_aircraft","_crew","_aircraftGroup"];
@@ -219,9 +221,6 @@ if (_fireOrdersAreInvalid) exitWith {
 /* ----------------------------------------------------------------------------
     Fix planes velocity towards the target
 ---------------------------------------------------------------------------- */
-if (_attackPositionIsObject) then {
-    _attackPosition = getPosASLVisual _attackPosition;
-};
 private _vectors = [_initialPositionWorld vectorAdd _vectorToTargetOffset,_attackPosition] call KISKA_fnc_getVectorToTarget;
 _aircraft setVectorDirAndUp _vectors;
 _vectors params ["_aircraftVectorDirTo","_aircraftVectorUp"];
