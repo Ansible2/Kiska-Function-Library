@@ -142,7 +142,7 @@ private _start = time;
         if ((_aircraft distance2D _dropPosition) <= DROP_POSITION_THRESHHOLD) then {
             private _updatedDropPosition = _aircraft getRelPos [10 * (count _objectClassNames),180];
             _argsMap set ["dropPosition",_updatedDropPosition];
-            [_argsMap] call KISKA_fnc_supplyDrop_test;
+            [_argsMap] call KISKA_fnc_supplyDrop;
             _aircraft setVariable ["KISKA_supplyDrop_isCargoDropped",true];
             _aircraft move (ASLToATL _deletionPosition);
         };

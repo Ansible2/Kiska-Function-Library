@@ -26,6 +26,7 @@ Authors:
 scriptName "KISKA_fnc_commMenu_openSupplyDrop";
 
 #define DEFAULT_DROP_ALTITUDE 100
+#define MY_DIRECTION_VALUE "my direction"
 
 params [
     ["_supportId","",[""]],
@@ -74,7 +75,7 @@ if (_selectableAltitudes isEqualTo []) then {
         _selectableAltitudes = [DEFAULT_DROP_ALTITUDE];
     };
 };
-private _dropAltitudeOptions = _selectableRadiuses apply {
+private _dropAltitudeOptions = _selectableAltitudes apply {
     private _label = [_x,"m"] joinString "";
     [_label,_x]
 };
@@ -123,8 +124,9 @@ if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
         ] apply {
             _x params ["_paramName",["_isBool",false]];
             private _value = [_commMenuDetailsConfig >> _paramName,_isBool] call KISKA_fnc_getConfigData;
+            [[_commMenuDetailsConfig," ",_paramName," ",_value]] call KISKA_fnc_log;
             if (isNil "_value") then { continue };
-            _argsMapInit pushBack [_paramName,_aircraftClass];
+            _argsMapInit pushBack [_paramName,_value];
         };
 
         [
