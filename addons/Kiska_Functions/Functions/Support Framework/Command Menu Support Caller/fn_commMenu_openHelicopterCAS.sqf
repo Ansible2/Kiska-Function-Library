@@ -16,8 +16,8 @@ Examples:
     (begin example)
         [
             "KISKA_support_1",
-            configFile >> "MyCASSupport"
-        ] call KISKA_fnc_commMenu_openCAS;
+            configFile >> "MyHelicopterCAS"
+        ] call KISKA_fnc_commMenu_openHelicopterCAS;
     (end)
 
 Authors:
