@@ -28,7 +28,7 @@ Parameters:
                 a sound that will play when the notification is opened.
             - `soundClose` <STRING>: A string className of a sound defined in `CfgSounds` of 
                 a sound that will play when the notification is closed.
-            - `soundRadio` <>: A string className of a sound defined in `CfgSounds`.
+            - `soundRadio` <STRING>: A string className of a sound defined in `CfgSounds`.
                 Unknown when it plays.
             - `iconSize` <NUMBER>: Ccale of the icon.
 
