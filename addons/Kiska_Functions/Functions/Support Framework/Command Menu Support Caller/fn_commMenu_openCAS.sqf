@@ -105,10 +105,10 @@ if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
 
         _thisArgs params ["_supportId","_aircraftClass"];
         private _aircraftParamsMapInitializer = [
-            ["_aircraftClass",_aircraftClass],
-            ["_side",side player],
-            ["_attackPosition",call KISKA_fnc_supports_getCommonTargetPosition],
-            ["_directionOfAttack",_attackDirection]
+            ["aircraftClass",_aircraftClass],
+            ["side",side player],
+            ["attackPosition",call KISKA_fnc_supports_getCommonTargetPosition],
+            ["directionOfAttack",_attackDirection]
         ];
 
         [
@@ -122,7 +122,7 @@ if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
         ] apply {
             private _cfgData = [_attackTypeConfig >> _x] call KISKA_fnc_getCfgData;
             if (isNil "_cfgData") then { continue };
-            _aircraftParamsMapInitializer pushBack [["_",_x] joinString "", _cfgData];
+            _aircraftParamsMapInitializer pushBack [_x, _cfgData];
         };
 
         [
