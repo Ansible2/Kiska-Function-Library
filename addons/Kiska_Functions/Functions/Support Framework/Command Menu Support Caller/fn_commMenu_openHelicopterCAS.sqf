@@ -102,7 +102,7 @@ if (_selectableAltitudes isEqualTo []) then {
         _selectableAltitudes = [DEFAULT_PATROL_ALTITUDE];
     };
 };
-private _patrolAltitudeOptions = _selectableRadiuses apply {
+private _patrolAltitudeOptions = _selectableAltitudes apply {
     private _label = [_x,"m"] joinString "";
     [_label,_x]
 };
@@ -119,15 +119,6 @@ if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
 [
     _menuPath,
     [[_supportId,_aircraftClass,_patrolDuration], {
-        // if a ctrl key is held and one left clicks to select the support while in the map, they can call in an infinite number of the support
-        if (
-            visibleMap AND
-            (missionNamespace getVariable ["KISKA_ctrlDown",false])
-        ) exitWith {
-            ["You can't call in a support while holding down a crtl key and in the map. It causes a bug with the support menu."] call KISKA_fnc_errorNotification;
-            nil
-        };
-        
         private _playerDirection = getDir player;
         params [
             ["_ingressDirection",_playerDirection],

@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_suppports_onCalledCloseAirSupport
+Function: KISKA_fnc_supports_onCalledCloseAirSupport
 
 Description:
     The standard translator to handle a close air support configured support's
@@ -23,7 +23,7 @@ Examples:
 Author:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_suppports_onCalledCloseAirSupport";
+scriptName "KISKA_fnc_supports_onCalledCloseAirSupport";
 
 params [
     ["_onCallArgs",[],[[]],2]

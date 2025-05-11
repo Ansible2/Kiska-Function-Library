@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_suppports_onCalledHelicopterGunner
+Function: KISKA_fnc_supports_onCalledHelicopterGunner
 
 Description:
     The standard translator to handle a helicopter gunner configured support's
@@ -21,7 +21,7 @@ Examples:
 Author:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_suppports_onCalledHelicopterGunner";
+scriptName "KISKA_fnc_supports_onCalledHelicopterGunner";
 
 params [
     ["_onCallArgs",[],[[]]]

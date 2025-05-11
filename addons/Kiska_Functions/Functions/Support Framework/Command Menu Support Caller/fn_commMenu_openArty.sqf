@@ -98,16 +98,6 @@ if (_draw3dMarker) then {
     ],
     [[_supportId], {
         params ["_ammoClass","_radiusOfFire","_numberOfRoundsToFire"];
-
-        // if a ctrl key is held and one left clicks to select the support while in the map, they can call in an infinite number of the support
-        if (
-            visibleMap AND
-            (missionNamespace getVariable ["KISKA_ctrlDown",false])
-        ) exitWith {
-            ["You can't call in a support while holding down a crtl key and in the map. It causes a bug with the support menu."] call KISKA_fnc_errorNotification;
-            nil
-        };
-
         _thisArgs params ["_supportId"];
         [
             _supportId,

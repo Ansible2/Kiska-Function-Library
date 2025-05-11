@@ -393,7 +393,7 @@ class KISKA_abstract_commMenuHelicopterCAS
         numberOfUses = 1;
         onSupportAdded = "_this call KISKA_fnc_commMenu_onSupportAdded";
         onSupportRemoved = "_this call KISKA_fnc_commMenu_onSupportRemoved";
-        onSupportCalled = "_this call KISKA_fnc_suppports_onCalledHelicopterGunner";
+        onSupportCalled = "_this call KISKA_fnc_supports_onCalledHelicopterGunner";
     };
 
     class KISKA_supportManagerDetails

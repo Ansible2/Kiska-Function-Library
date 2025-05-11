@@ -99,15 +99,6 @@ if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
             ["_attackDirection",_playerDirection]
         ];
 
-        // if a ctrl key is held and one left clicks to select the support while in the map, they can call in an infinite number of the support
-        if (
-            visibleMap AND
-            (missionNamespace getVariable ["KISKA_ctrlDown",false])
-        ) exitWith {
-            ["You can't call in a support while holding down a crtl key and in the map. It causes a bug with the support menu."] call KISKA_fnc_errorNotification;
-            nil
-        };
-
         if (_attackDirection isEqualTo MY_DIRECTION_VALUE) then {
             _attackDirection = _playerDirection;
         };
