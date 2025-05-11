@@ -532,7 +532,7 @@ class CommandMenuSupportCaller
     {};
     class commMenu_openHelicopterCAS
     {};
-    class commMenu_openSupplyDropAircraft
+    class commMenu_openSupplyDrop
     {};
     class commMenu_refresh
     {};
@@ -563,6 +563,8 @@ class StandardSupportEvents
     class supports_onCalledCloseAirSupport
     {};
     class supports_onCalledHelicopterGunner
+    {};
+    class suppports_onCalledSupplyDrop
     {};
     class supports_onCalledVirtualArty
     {};
