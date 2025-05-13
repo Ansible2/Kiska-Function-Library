@@ -144,15 +144,14 @@ class KISKA_support_commMenu_gunRun_template : KISKA_abstract_commMenuCloseAirSu
             {
                 label = "Gun Run";
                 allowDamage = OFF;
-                fireOrders[] = {
+                class FireOrders
+                {
+                    class gun
                     {
-                        "Gatling_30mm_Plane_CAS_01_F",
-                        "",
-                        200,
-                        0.05,
-                        "",
-                        0.1
-                    }
+                        weapon = "Gatling_30mm_Plane_CAS_01_F";
+                        numberOfTriggerPulls = 200;
+                        strafeIncrement = 0.1;
+                    };
                 };
             };
         };
@@ -177,107 +176,80 @@ class KISKA_support_commMenu_gunsRockets_template : KISKA_abstract_commMenuClose
             {
                 label = "Gun Run";
                 allowDamage = OFF;
-                fireOrders[] = {
+                class FireOrders
+                {
+                    class gun
                     {
-                        "Gatling_30mm_Plane_CAS_01_F",
-                        "",
-                        200,
-                        0.05,
-                        "",
-                        0.1
-                    }
+                        weapon = "Gatling_30mm_Plane_CAS_01_F";
+                        numberOfTriggerPulls = 200;
+                        strafeIncrement = 0.1;
+                    };
                 };
             };
             class HERockets
             {
                 label = "HE Rockets";
                 allowDamage = OFF;
-                fireOrders[] = {
+                class FireOrders
+                {
+                    class Pod1
                     {
-                        "pylon",
-                        "PylonRack_7Rnd_Rocket_04_HE_F",
-                        7,
-                        0.5,
-                        "guide_to_strafe_target",
-                        0.01
-                    },
-                    {
-                        "pylon",
-                        "PylonRack_7Rnd_Rocket_04_HE_F",
-                        7,
-                        0.5,
-                        "guide_to_strafe_target",
-                        0.01
-                    }
+                        weapon = "pylon";
+                        mag = "PylonRack_7Rnd_Rocket_04_HE_F";
+                        numberOfTriggerPulls = 7;
+                        timeBetweenShots = 0.5;
+                        weaponProfile = "guide_to_strafe_target";
+                        strafeIncrement = 0.01;
+                    };
+                    class Pod2 : Pod1 
+                    {};
                 };
             };
-            class APRockets
+            class APRockets : HERockets
             {
                 label = "AP Rockets";
-                allowDamage = OFF;
-                fireOrders[] = {
+                class FireOrders : FireOrders
+                {
+                    class Pod1 : Pod1
                     {
-                        "pylon",
-                        "PylonRack_7Rnd_Rocket_04_AP_F",
-                        7,
-                        0.5,
-                        "guide_to_strafe_target",
-                        0.01
-                    },
-                    {
-                        "pylon",
-                        "PylonRack_7Rnd_Rocket_04_AP_F",
-                        7,
-                        0.5,
-                        "guide_to_strafe_target",
-                        0.01
-                    }
+                        mag = "PylonRack_7Rnd_Rocket_04_AP_F";
+                    };
+                    class Pod2 : Pod1 
+                    {};
                 };
             };
             class GunsAndHERockets
             {
                 label = "Guns & HE Rockets";
                 allowDamage = OFF;
-                fireOrders[] = {
+                class FireOrders
+                {
+                    class gun
                     {
-                        "Gatling_30mm_Plane_CAS_01_F",
-                        "",
-                        100,
-                        0.05,
-                        "",
-                        0.1
-                    },
+                        weapon = "Gatling_30mm_Plane_CAS_01_F";
+                        numberOfTriggerPulls = 100;
+                        strafeIncrement = 0.1;
+                    };
+                    class RocketPod
                     {
-                        "pylon",
-                        "PylonRack_7Rnd_Rocket_04_HE_F",
-                        7,
-                        0.5,
-                        "guide_to_strafe_target",
-                        0.01
-                    }
+                        weapon = "pylon";
+                        mag = "PylonRack_7Rnd_Rocket_04_HE_F";
+                        numberOfTriggerPulls = 7;
+                        timeBetweenShots = 0.5;
+                        weaponProfile = "guide_to_strafe_target";
+                        strafeIncrement = 0.01;
+                    };
                 };
             };
-            class GunsAndAPRockets
+            class GunsAndAPRockets : GunsAndHERockets
             {
                 label = "Guns & AP Rockets";
-                allowDamage = OFF;
-                fireOrders[] = {
+                class FireOrders : FireOrders
+                {
+                    class RocketPod : RocketPod
                     {
-                        "Gatling_30mm_Plane_CAS_01_F",
-                        "",
-                        100,
-                        0.05,
-                        "",
-                        0.1
-                    },
-                    {
-                        "pylon",
-                        "PylonRack_7Rnd_Rocket_04_AP_F",
-                        7,
-                        0.5,
-                        "guide_to_strafe_target",
-                        0.01
-                    }
+                        mag = "PylonRack_7Rnd_Rocket_04_AP_F";
+                    };
                 };
             };
         };
@@ -302,30 +274,28 @@ class KISKA_support_commMenu_bombs_template : KISKA_abstract_commMenuCloseAirSup
             {
                 label = "Laserguided Bomb";
                 allowDamage = OFF;
-                fireOrders[] = {
+                class FireOrders
+                {
+                    class bomb
                     {
-                        "pylon",
-                        "PylonMissile_1Rnd_Bomb_04_F",
-                        1,
-                        0.05,
-                        "",
-                        0.1
-                    }
+                        weapon = "pylon";
+                        mag = "PylonMissile_1Rnd_Bomb_04_F";
+                        numberOfTriggerPulls = 1;
+                        timeBetweenShots = 0.05;
+                        weaponProfile = "";
+                        strafeIncrement = 0.1;
+                    };
                 };
             };
-            class ClusterBomb
+            class ClusterBomb : LGB
             {
                 label = "Cluster Bomb";
-                allowDamage = OFF;
-                fireOrders[] = {
+                class FireOrders : FireOrders
+                {
+                    class bomb : bomb
                     {
-                        "pylon",
-                        "PylonMissile_1Rnd_BombCluster_01_F",
-                        1,
-                        0.05,
-                        "",
-                        0.1
-                    }
+                        mag = "PylonMissile_1Rnd_BombCluster_01_F";
+                    };
                 };
             };
         };
@@ -350,15 +320,17 @@ class KISKA_support_commMenu_napalm_template : KISKA_abstract_commMenuCloseAirSu
             {
                 label = "4x Napalm Bombs";
                 allowDamage = OFF;
-                fireOrders[] = {
+                class FireOrders
+                {
+                    class bombs
                     {
-                        "pylon",
-                        "vn_bomb_f4_out_500_blu1b_fb_mag_x4",
-                        4,
-                        0.5,
-                        "guide_to_strafe_target",
-                        1
-                    }
+                        weapon = "pylon";
+                        mag = "vn_bomb_f4_out_500_blu1b_fb_mag_x4";
+                        numberOfTriggerPulls = 4;
+                        timeBetweenShots = 0.5;
+                        weaponProfile = "guide_to_strafe_target";
+                        strafeIncrement = 1;
+                    };
                 };
             };
         };

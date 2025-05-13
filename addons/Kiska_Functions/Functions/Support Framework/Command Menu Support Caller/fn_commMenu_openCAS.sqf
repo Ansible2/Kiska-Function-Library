@@ -92,7 +92,7 @@ if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
 
 [
     _menuPath,
-    [[_supportId,_aircraftClass], {
+    [[_supportId,_aircraftClass,_supportConfig], {
         private _playerDirection = getDir player;
         params [
             "_attackTypeConfig",
@@ -103,7 +103,14 @@ if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
             _attackDirection = _playerDirection;
         };
 
-        _thisArgs params ["_supportId","_aircraftClass"];
+        _thisArgs params ["_supportId","_aircraftClass","_supportConfig"];
+        private _argsMap = [
+            localNamespace,
+            "KISKA_commMenu_parsedCloseAirSupportArgsMap",
+            {createHashMap}
+        ] call KISKA_fnc_getOrDefaultSet;
+
+        private "_fireOrders";
         private _aircraftParamsMapInitializer = [
             ["aircraftClass",_aircraftClass],
             ["side",side player],
@@ -111,18 +118,40 @@ if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
             ["directionOfAttack",_attackDirection]
         ];
 
-        [
-            "allowDamage",
-            "initialHeightAboveTarget",
-            "initialDistanceToTarget",
-            "breakOffDistance",
-            "numberOfFlaresToDump",
-            "approachSpeed",
-            "vectorToTargetOffset"
-        ] apply {
-            private _cfgData = [_attackTypeConfig >> _x] call KISKA_fnc_getCfgData;
-            if (isNil "_cfgData") then { continue };
-            _aircraftParamsMapInitializer pushBack [_x, _cfgData];
+        if (_supportConfig in _argsMap) then {
+            private _cachedArgs = _argsMap get _supportConfig;
+            _aircraftParamsMapInitializer append (_cachedArgs select 0);
+            _fireOrders = _cachedArgs select 1;
+        } else {
+            private _cachedAircraftArgs = [];
+            [
+                "allowDamage",
+                "initialHeightAboveTarget",
+                "initialDistanceToTarget",
+                "breakOffDistance",
+                "numberOfFlaresToDump",
+                "approachSpeed",
+                "vectorToTargetOffset"
+            ] apply {
+                private _cfgData = [_attackTypeConfig >> _x] call KISKA_fnc_getConfigData;
+                if (isNil "_cfgData") then { continue };
+                _cachedAircraftArgs pushBack [_x, _cfgData];
+            };
+            _aircraftParamsMapInitializer append _cachedAircraftArgs;
+
+            private _fireOrderConfigs = configProperties [_attackTypeConfig >> "FireOrders","isClass _x",true];
+            _fireOrders = _fireOrderConfigs apply {
+                [
+                    getText(_x >> "weapon"),
+                    getText(_x >> "mag"),
+                    [_x >> "numberOfTriggerPulls"] call KISKA_fnc_getConfigData,
+                    [_x >> "timeBetweenShots"] call KISKA_fnc_getConfigData,
+                    getText(_x >> "weaponProfile"),
+                    [_x >> "strafeIncrement"] call KISKA_fnc_getConfigData
+                ]
+            };
+
+            _argsMap set [_supportConfig,[_cachedAircraftArgs,_fireOrders]];
         };
 
         [
@@ -131,7 +160,7 @@ if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
             1,
             [
                 createHashMapFromArray _aircraftParamsMapInitializer,
-                getArray(_attackTypeConfig >> "fireOrders")
+                _fireOrders
             ]
         ] call KISKA_fnc_supports_call;
     }],
