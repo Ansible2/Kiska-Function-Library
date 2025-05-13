@@ -31,6 +31,7 @@ params [
     ["_isBool",false,[true]]
 ];
 
+if (isNull _config) exitWith { nil };
 if (isNumber _config) exitWith {
     private _return = getNumber _config;
     if (_isBool) then {
