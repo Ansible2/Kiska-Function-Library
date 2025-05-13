@@ -12,7 +12,7 @@ Parameters:
         is more than `0`, the it will be `true`. Any values `<= 0` will be `false`
 
 Returns:
-    <NUMBER | STRING | ARRAY | BOOL> - The value at the given config path
+    <NUMBER | STRING | ARRAY | BOOL | NIL> - The value at the given config path, `nil` if undefined.
 
 Examples:
     (begin example)
@@ -31,6 +31,7 @@ params [
     ["_isBool",false,[true]]
 ];
 
+if (isNull _config) exitWith { nil };
 if (isNumber _config) exitWith {
     private _return = getNumber _config;
     if (_isBool) then {
