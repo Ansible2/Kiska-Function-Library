@@ -144,10 +144,10 @@ if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
                 [
                     getText(_x >> "weapon"),
                     getText(_x >> "mag"),
-                    [_x >> "numberOfTriggerPulls"] call KISKA_fnc_getConfigData,
-                    [_x >> "timeBetweenShots"] call KISKA_fnc_getConfigData,
+                    [_x >> "numberOfTriggerPulls",-1] call KISKA_fnc_getConfigData,
+                    [_x >> "timeBetweenShots",0.05] call KISKA_fnc_getConfigData,
                     getText(_x >> "weaponProfile"),
-                    [_x >> "strafeIncrement"] call KISKA_fnc_getConfigData
+                    [_x >> "strafeIncrement",0] call KISKA_fnc_getConfigData
                 ]
             };
 
