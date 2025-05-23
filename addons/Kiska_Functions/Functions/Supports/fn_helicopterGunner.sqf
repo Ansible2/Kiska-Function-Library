@@ -99,16 +99,14 @@ if (!_vehicleExistedBeforeFunction) then {
     private _spawnPosition = [
         _centerPosition,
         SPAWN_DISTANCE,
-        (_approachBearing + 180),
+        _approachBearing + 180,
         _flyInHeight
-    ] call KISKA_fnc_getPosRelativeSurface;
-
+    ] call KISKA_fnc_getPosRelativeASL;
     _vehicleArray = [
         _spawnPosition,
         0,
         _aircraftType,
-        _side, 
-        false
+        _side
     ] call KISKA_fnc_spawnVehicle;
 };
 
@@ -452,7 +450,7 @@ _params spawn {
     /* ----------------------------------------------------------------------------
         After support is done
     ---------------------------------------------------------------------------- */
-    //[TYPE_CAS_ABORT,_heliCrew select 0,_side] call KISKA_fnc_supportRadio;
+    //["cas abort",_heliCrew select 0,_side] call KISKA_fnc_supports_genericRadioMessage;
 
     // remove speed limit
     _heli limitSpeed 99999;

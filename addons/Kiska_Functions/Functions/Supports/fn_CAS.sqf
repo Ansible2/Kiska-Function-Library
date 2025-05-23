@@ -230,19 +230,21 @@ if (_exitToDefault) exitwith {
 /* ----------------------------------------------------------------------------
     Position plane towards target
 ---------------------------------------------------------------------------- */
+// angling the plane towards the target
+if (_attackPosition isEqualType objNull) then {
+    _attackPosition = getPosASL _attackPosition;
+};
 private _planeSpawnPosition = [
     _attackPosition,
     _spawnDistance,
-    (_attackDirection + 180)
-] call KISKA_fnc_getPosRelativeSurface;
-
-_planeSpawnPosition = _planeSpawnPosition vectorAdd [0,0,_spawnHeight];
+    _attackDirection + 180,
+    _spawnHeight
+] call KISKA_fnc_getPosRelativeASL;
 private _planeArray = [
 	_planeSpawnPosition,
 	_attackDirection,
 	_planeClass,
-	_side,
-	false
+	_side
 ] call KISKA_fnc_spawnVehicle;
 _planeArray params ["_plane","_crew","_planeGroup"];
 [_planeGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
@@ -275,10 +277,7 @@ _plane setCombatMode "blue";
 if (_attackPositionOffset isNotEqualTo 0) then {
     _attackPosition = AGLToASL(_attackPosition getPos [_attackPositionOffset,_attackDirection]);
 };
-// angling the plane towards the target
-if (_attackPosition isEqualType objNull) then {
-    _attackPosition = getPosASLVisual _attackPosition;
-};
+
 
 
 private _planePositionASL = getPosASLVisual _plane;

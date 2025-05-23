@@ -101,20 +101,18 @@ if (_flyDirection < 0) then {
 };
 
 
-private _flyFromDirection = [_flyDirection + 180] call CBA_fnc_simplifyAngle;
 _dropZone set [2,_flyInHeight];
-
 private _spawnPosition = [
     _dropZone,
     _spawnDistance,
-    _flyFromDirection
-] call KISKA_fnc_getPosRelativeSurface;
-_spawnPosition vectorAdd [0,0,_flyInHeight];
+    _flyDirection + 180,
+    _flyInHeight
+] call KISKA_fnc_getPosRelativeASL;
 
 /* ----------------------------------------------------------------------------
     Create vehicle to drop units
 ---------------------------------------------------------------------------- */
-private _vehicleArray = [_spawnPosition,_flyDirection,_dropVehicleClass,_side,false] call KISKA_fnc_spawnVehicle;
+private _vehicleArray = [_spawnPosition,_flyDirection,_dropVehicleClass,_side] call KISKA_fnc_spawnVehicle;
 private _aircraft = _vehicleArray select 0;
 allCurators apply {
     [_x,[[_aircraft],true]] remoteExec ["addCuratorEditableObjects",2];
