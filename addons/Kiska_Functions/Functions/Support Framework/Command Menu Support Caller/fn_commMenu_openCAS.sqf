@@ -63,8 +63,8 @@ private _menuPath = [
 /* ----------------------------------------------------------------------------
     Attack Direction Options
 ---------------------------------------------------------------------------- */
-private _canSelectAttackDirection = [_commMenuDetailsConfig >> "canSelectAttackDirection",true] call KISKA_fnc_getConfigData;
-if (_canSelectAttackDirection) then {
+private _canSelectIngress = [_commMenuDetailsConfig >> "canSelectIngress",true] call KISKA_fnc_getConfigData;
+if (_canSelectIngress) then {
     private _attackDirectionOptions = [
         [0,"N"],
         [45,"NE"],
