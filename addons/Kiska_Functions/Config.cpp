@@ -24,9 +24,9 @@ class CfgSounds
     #include "Headers\Sound\radio ambient sounds.hpp"
 };
 
-class CfgCommunicationMenu
+class KISKA_supports
 {
-    #include "Headers\Support Framework\basic supports.hpp"
+    #include "Headers\Support Framework\CommonCommMenuSupportTemplates.hpp"
 };
 
 class KISKA_eventHandlers

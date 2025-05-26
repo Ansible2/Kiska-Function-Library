@@ -9,19 +9,19 @@ Parameters:
     0: _aircraftParams : <HASHMAP> - A hashmap of various parameters that affect
         ther aircraft.
 
-        - `_aircraftClass`: <STRING> Default: `""` - the class of aircraft to spawn.
-        - `_side`: <SIDE> Default: `BLUFOR` - The side of the aircraft to spawn.
-        - `_allowDamage`: <BOOLEAN> Default: `false` - Whether or not the aircraft and crew take damage.
-        - `_attackPosition`: <PositionASL | OBJECT> Default: `objNull` - The primary position to fire at.
-        - `_directionOfAttack`: <NUMBER> Default: `0` - The direction the aircraft will be facing during it's attack run.
-        - `_initialHeightAboveTarget`: <NUMBER> Default: `1300` - The aircraft's initial altitude.
-        - `_initialDistanceToTarget`: <NUMBER> Default: `2000` - The distance from the `_attackPosition` the aircraft will spawn.
-        - `_breakOffDistance`: <NUMBER> Default: `500` - The three dimensional distance between the `_attackPosition` 
+        - `aircraftClass`: <STRING> Default: `""` - the class of aircraft to spawn.
+        - `side`: <SIDE> Default: `BLUFOR` - The side of the aircraft to spawn.
+        - `allowDamage`: <BOOLEAN> Default: `false` - Whether or not the aircraft and crew take damage.
+        - `attackPosition`: <PositionASL[] | OBJECT> Default: `objNull` - The primary position to fire at.
+        - `directionOfAttack`: <NUMBER> Default: `0` - The direction the aircraft will be facing during it's attack run.
+        - `initialHeightAboveTarget`: <NUMBER> Default: `1300` - The aircraft's initial altitude.
+        - `initialDistanceToTarget`: <NUMBER> Default: `2000` - The distance from the `_attackPosition` the aircraft will spawn.
+        - `breakOffDistance`: <NUMBER> Default: `500` - The three dimensional distance between the `_attackPosition` 
             and the aircraft at which point it will abandon it's firing orders and egress.
-        - `_numberOfFlaresToDump`: <NUMBER> Default: `4` - The number of flares to fire off after breaking off.
-        - `_approachSpeed`: <NUMBER> Default: `75` - How many meters per second will the 
+        - `numberOfFlaresToDump`: <NUMBER> Default: `4` - The number of flares to fire off after breaking off.
+        - `approachSpeed`: <NUMBER> Default: `75` - How many meters per second will the 
             aircraft be flying while approaching the `_attackPosition`.
-        - `_vectorToTargetOffset`: <NUMBER[]> Default: `[0,0,0]` - Used with `vectorAdd` on the aircraft's
+        - `vectorToTargetOffset`: <NUMBER[]> Default: `[0,0,0]` - Used with `vectorAdd` on the aircraft's
             starting position to get the vector it will follow to engage the target.
             This can be used if an aircraft seems to be firing off target.
 
@@ -37,9 +37,9 @@ Examples:
         // fire gun
         [
             createHashMapFromArray [
-                ["_aircraftClass","B_Plane_CAS_01_dynamicLoadout_F"],
-                ["_numberOfFlaresToDump",4],
-                ["_attackPosition",theTarget]
+                ["aircraftClass","B_Plane_CAS_01_dynamicLoadout_F"],
+                ["numberOfFlaresToDump",4],
+                ["attackPosition",theTarget]
             ],
             [
                 [
@@ -58,9 +58,9 @@ Examples:
         // drop napalm
         [
             createHashMapFromArray [
-                ["_aircraftClass","B_Plane_CAS_01_dynamicLoadout_F"],
-                ["_numberOfFlaresToDump",0],
-                ["_attackPosition",theTarget]
+                ["aircraftClass","B_Plane_CAS_01_dynamicLoadout_F"],
+                ["numberOfFlaresToDump",0],
+                ["attackPosition",theTarget]
             ],
             [
                 [
@@ -79,9 +79,9 @@ Examples:
         // shoot gun and fire rockets
         [
             createHashMapFromArray [
-                ["_aircraftClass","B_Plane_CAS_01_dynamicLoadout_F"],
-                ["_numberOfFlaresToDump",0],
-                ["_attackPosition",theTarget]
+                ["aircraftClass","B_Plane_CAS_01_dynamicLoadout_F"],
+                ["numberOfFlaresToDump",0],
+                ["attackPosition",theTarget]
             ],
             [
                 [
@@ -105,8 +105,7 @@ Examples:
     (end)
 
 Author(s):
-    Bohemia Interactive,
-    Modified By: Ansible2
+    Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_closeAirSupport";
 
@@ -115,9 +114,8 @@ scriptName "KISKA_fnc_closeAirSupport";
 #define TARGET_CLASS_NAME "Sign_Arrow_Large_Cyan_F"
 #define BOUNDING_BOX_TYPE "ViewGeometry"
 
-private _paramMap = createHashMap;
 params [
-    ["_aircraftParams",[],[_paramMap]],
+    ["_aircraftParams",[],[createHashMap]],
     ["_fireOrders",[],[[]]]
 ];
 
@@ -126,39 +124,30 @@ if (_fireOrders isEqualTo []) exitWith {
     nil
 };
 
-private "_invalidAircraftParamMessage";
-[
-    ["_aircraftClass","",[""]],
-    ["_side",BLUFOR,[sideUnknown]],
-    ["_allowDamage",false,[true]],
-    ["_attackPosition",objNull,[[],objNull]],
-    ["_directionOfAttack",0,[123]],
-    ["_initialHeightAboveTarget",1300,[123]],
-    ["_initialDistanceToTarget",2000,[123]],
-    ["_breakOffDistance",500,[123]],
-    ["_numberOfFlaresToDump",4,[123]],
-    ["_approachSpeed",75,[123]],
-    ["_vectorToTargetOffset",[0,0,0],[[]],3]
-] apply {
-    _x params ["_var","_default","_types"];
-    private _paramValue = _aircraftParams getOrDefault [_var,_default];
-    if !(_paramValue isEqualTypeAny _types) then {
-        _invalidAircraftParamMessage = [_var," value ",_paramValue," is invalid, must be -> ",_types] joinString "";
-        break;
-    };
-    _paramMap set [_var,_paramValue];
-};
-
-if (!isNil "_invalidAircraftParamMessage") exitWith {
-    [_invalidAircraftParamMessage,true] call KISKA_fnc_log;
+private _paramDetails = [
+    ["aircraftClass","",[""]],
+    ["side",BLUFOR,[sideUnknown]],
+    ["allowDamage",false,[true]],
+    ["attackPosition",objNull,[[],objNull]],
+    ["directionOfAttack",0,[123]],
+    ["initialHeightAboveTarget",1300,[123]],
+    ["initialDistanceToTarget",2000,[123]],
+    ["breakOffDistance",500,[123]],
+    ["numberOfFlaresToDump",4,[123]],
+    ["approachSpeed",75,[123]],
+    ["vectorToTargetOffset",[0,0,0],[[]]]
+];
+private _paramValidationResult = [_aircraftParams,_paramDetails] call KISKA_fnc_hashMapParams;
+if (_paramValidationResult isEqualType "") exitWith {
+    [_paramValidationResult,true] call KISKA_fnc_log;
     nil
 };
+(_paramValidationResult select 0) params (_paramValidationResult select 1);
 
 
 /* ----------------------------------------------------------------------------
     Position plane towards target
 ---------------------------------------------------------------------------- */
-private _attackPosition = _paramMap get "_attackPosition";
 private _attackPositionIsObject = _attackPosition isEqualType objNull;
 if (
     (_attackPositionIsObject) AND 
@@ -169,36 +158,33 @@ if (
     nil
 };
 
-private _aircraftClass = _paramMap get "_aircraftClass";
 private _aircraftCfg = configfile >> "cfgvehicles" >> _aircraftClass;
 if !(isclass _aircraftCfg) exitwith {
     [["_aircraftClass -> ", _aircraftClass," was not found..."],true] call KISKA_fnc_log;
     nil
 };
 
-private _directionOfAttack = _paramMap get "_directionOfAttack";
-private _initialDistanceToTarget = _paramMap get "_initialDistanceToTarget";
+if (_attackPositionIsObject) then {
+    _attackPosition = getPosASL _attackPosition;
+};
+
 private _spawnPosition = [
     _attackPosition,
     _initialDistanceToTarget,
-    (_directionOfAttack + 180)
-] call KISKA_fnc_getPosRelativeSurface;
-private _initialHeightAboveTarget = _paramMap get "_initialHeightAboveTarget";
-_spawnPosition = _spawnPosition vectorAdd [0,0,_initialHeightAboveTarget];
-
-private _side = _paramMap get "_side";
+    _directionOfAttack + 180,
+    _initialHeightAboveTarget
+] call KISKA_fnc_getPosRelativeASL;
 private _aircraftSpawnInfo = [
     _spawnPosition,
     _directionOfAttack,
     _aircraftClass,
-    _side,
-    false
+    _side
 ] call KISKA_fnc_spawnVehicle;
 
 _aircraftSpawnInfo params ["_aircraft","_crew","_aircraftGroup"];
 
 [_aircraftGroup,true] call KISKA_fnc_ACEX_setHCTransfer;
-if !(_paramMap get "_allowDamage") then {
+if !(_allowDamage) then {
     _aircraft allowDamage false;
     _crew apply {
         _x allowDamage false;
@@ -235,16 +221,10 @@ if (_fireOrdersAreInvalid) exitWith {
 /* ----------------------------------------------------------------------------
     Fix planes velocity towards the target
 ---------------------------------------------------------------------------- */
-if (_attackPositionIsObject) then {
-    _attackPosition = getPosASLVisual _attackPosition;
-};
-private _vectorToTargetOffset = _paramMap get "_vectorToTargetOffset";
 private _vectors = [_initialPositionWorld vectorAdd _vectorToTargetOffset,_attackPosition] call KISKA_fnc_getVectorToTarget;
 _aircraft setVectorDirAndUp _vectors;
 _vectors params ["_aircraftVectorDirTo","_aircraftVectorUp"];
 private _vectorDistanceToTarget = _attackPosition vectorDistance _initialPositionWorld;
-private _breakOffDistance = _paramMap get "_breakOffDistance";
-private _approachSpeed = _paramMap get "_approachSpeed";
 private _flightTime = (_vectorDistanceToTarget - _breakOffDistance) / _approachSpeed;
 private _startTime = time;
 private _timeAfterFlight = _startTime + _flightTime;
@@ -407,7 +387,7 @@ _aircraft addEventHandler ["killed",{
         _initialDistanceToTarget,
         _initialHeightAboveTarget,
         _approachSpeed,
-        _paramMap get "_numberOfFlaresToDump",
+        _numberOfFlaresToDump,
         _fireOrdersParsed
     ]
 ] call CBA_fnc_addPerframeHandler;

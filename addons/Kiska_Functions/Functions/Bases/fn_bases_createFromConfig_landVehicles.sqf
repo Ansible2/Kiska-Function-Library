@@ -114,20 +114,16 @@ _landVehicleClasses apply {
         private _spawnPosition = [_spawnPositions] call KISKA_fnc_deleteRandomIndex;
         private _class = [_classNames,""] call KISKA_fnc_selectRandom;
         
-        private ["_direction","_positionToSet"];
+        private "_spawnDirection";
         if (_spawnPosition isEqualType objNull) then {
-            _direction = getDir _spawnPosition;
-            _positionToSet = getPosASL _spawnPosition;
-
+            _spawnDirection = getDir _spawnPosition;
         } else {
             private _isPostionWithDirection = (count _spawnPosition) > 3;
             if (_isPostionWithDirection) then {
-                _direction = _spawnPosition deleteAt 3;
+                _spawnDirection = _spawnPosition deleteAt 3;
             } else {
-                _direction = 0;
+                _spawnDirection = 0;
             };
-            _positionToSet = ATLToASL _spawnPosition;
-
         };
 
         private _vehicleInfo = [
@@ -135,7 +131,6 @@ _landVehicleClasses apply {
             _spawnDirection,
             _class,
             _side,
-            true,
             _crew,
             true
         ] call KISKA_fnc_spawnVehicle;
