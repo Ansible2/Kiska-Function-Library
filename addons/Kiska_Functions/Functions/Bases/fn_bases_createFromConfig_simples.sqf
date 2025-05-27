@@ -213,7 +213,6 @@ _simpleConfigSets apply {
     if (_spawnPositions isEqualType "") then {
         private _layerObjects = [_spawnPositions] call KISKA_fnc_getMissionLayerObjects;
         _spawnPositions = _layerObjects apply {
-            // TODO: This was posASL previously instead of world, if you see placement issues
             private _position = getPosWorld _x; 
             _position pushBack (getDir _x);
             _position
