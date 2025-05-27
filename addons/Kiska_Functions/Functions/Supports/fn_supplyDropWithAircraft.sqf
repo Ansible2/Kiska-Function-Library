@@ -7,7 +7,7 @@ Description:
     drop.
 
 Parameters:
-    0: <HASHMAP> _argsMap - a map of arguments for the supply drop:
+    0: _argsMap <HASHMAP> - a map of arguments for the supply drop:
 
         - `dropPosition`: <PositionASL[] or OBJECT> - See `KISKA_fnc_supplyDrop`.
         - `dropAltitude`: <NUMBER> - See `KISKA_fnc_supplyDrop`.
