@@ -2,20 +2,20 @@
 Function: KISKA_fnc_bases_getPropertyValue
 
 Description:
-    Used to sift through the various levels of possible properties for a kiska base.
+    Used to sift through the various levels of possible properties for a KISKA base.
 
 Parameters:
     0: _property <STRING> - The property to get the value of
     1: _setConfigPath <CONFIG> - The config of the base set that is being searched
-        (e.g. missionConfigFile >> KISKA_Bases >> MyBase >> infantry >> sets >> MyInfantrySet)
+        (e.g. `missionConfigFile >> KISKA_Bases >> MyBase >> infantry >> sets >> MyInfantrySet`)
     2: _default <ANY> - The default value to return if the property search returns `nil`
     3: _isBool <BOOL> - Whether or not the property should be interpreted as a 
         boolean value (Default: `false`)
     4: _canSelectFromSetRoot <BOOL> - Whether or not the property can be retrieved from
-        the root of the set class (e.g. missionConfigFile >> KISKA_Bases >> MyBase >> infantry)
+        the root of the set class (e.g. `missionConfigFile >> KISKA_Bases >> MyBase >> infantr`y)
         (Default: `true`)
     5: _canSelectFromBaseRoot <BOOL> - Whether or not the property can be retrieved from
-        the root of the KISKA base class (e.g. missionConfigFile >> KISKA_Bases >> MyBase)
+        the root of the KISKA base class (e.g. `missionConfigFile >> KISKA_Bases >> MyBase`)
         (Default: `true`)
 
 Returns:
