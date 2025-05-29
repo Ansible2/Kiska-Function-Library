@@ -67,7 +67,7 @@ Author:
 scriptName "KISKA_fnc_randomGear";
 
 params [
-	["_units",objNull,[objNull]],
+	["_units",objNull,[objNull,[]]],
 	["_uniforms",[],[[]]],
 	["_headgear",[],[[]]],
 	["_facewear",[],[[]]],
