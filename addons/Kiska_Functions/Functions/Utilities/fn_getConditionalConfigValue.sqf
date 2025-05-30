@@ -13,7 +13,7 @@ Description:
             class ExampleCondition_1
             {
                 // A list of addon directories (names) as they would appear in getLoadedModsInfo (case-insensitive).
-                // All addons in the list must be loaded present.
+                // All addons in the list must be loaded.
                 addons[] = { "A3" };
 
                 // A list of CfgPatches classNames that need to be present.
@@ -93,21 +93,22 @@ if (isNull _conditionalConfig) exitWith {
     nil
 };
 
-private _modDirectoriesLowered = uiNamespace getVariable "KISKA_conditionalConfig_loadedMods";
-if (isNil "_modDirectoriesLowered") then {
-    private _loadedModsInfo = call KISKA_fnc_getLoadedModsInfo;
-    _modDirectoriesLowered = _loadedModsInfo apply { 
-        private _modDirectoryName = _x select 1;
-        toLowerANSI _modDirectoryName   
-    };
-    uiNamespace setVariable ["KISKA_conditionalConfig_loadedMods",_modDirectoriesLowered];
-};
+private _modDirectoriesLowered = [
+    uiNamespace,
+    "KISKA_conditionalConfig_loadedMods",
+    {
+        (call KISKA_fnc_getLoadedModsInfo) apply { 
+            private _modDirectoryName = _x select 1;
+            toLowerANSI _modDirectoryName   
+        }
+    }
+] call KISKA_fnc_getOrDefaultSet;
 
-private _conditionalClassesMap = localNamespace getVariable "KISKA_conditionalConfig_parsedConfigMap";
-if (isNil "_conditionalClassesMap") then {
-    _conditionalClassesMap = createHashMap;
-    localNamespace setVariable ["KISKA_conditionalConfig_parsedConfigMap",_conditionalClassesMap];
-};
+private _conditionalClassesMap = [
+    localNamespace,
+    "KISKA_conditionalConfig_parsedConfigMap",
+    {createHashMap}
+] call KISKA_fnc_getOrDefaultSet;
 
 private _alreadyParsedConfigs = _conditionalClassesMap get _conditionalConfig;
 private _conditionArgs = [_conditionalConfig,configNull,_property];
