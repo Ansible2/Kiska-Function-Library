@@ -107,37 +107,33 @@ class Animations
 };
 class Bases
 {
-    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Bases");
-    class bases_createFromConfig
-    {};
-    class bases_createFromConfig_agents
-    {};
-    class bases_createFromConfig_landVehicles
-    {};
-    class bases_createFromConfig_infantry
-    {};
-    class bases_createFromConfig_patrols
-    {};
-    class bases_createFromConfig_simples
-    {};
-    class bases_createFromConfig_turrets
-    {};
-    class bases_getHashmap
-    {};
-    class bases_getInfantryClasses
-    {};
-    class bases_getPropertyValue
-    {};
-    class bases_getSide
-    {};
-    class bases_initAmbientAnimFromClass
-    {};
-    class bases_initReinforceFromClass
-    {};
-    class bases_triggerReaction
-    {};
-    class bases_setupReactivity
-    {};
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Bases");
+	class bases_createFromConfig
+	{};
+	class bases_createFromConfig_agents
+	{};
+	class bases_createFromConfig_landVehicles
+	{};
+	class bases_createFromConfig_infantry
+	{};
+	class bases_createFromConfig_patrols
+	{};
+	class bases_createFromConfig_simples
+	{};
+	class bases_createFromConfig_turrets
+	{};
+	class bases_getHashmap
+	{};
+	class bases_getPropertyValue
+	{};
+	class bases_initAmbientAnimFromClass
+	{};
+	class bases_initReinforceFromClass
+	{};
+	class bases_triggerReaction
+	{};
+	class bases_setupReactivity
+	{};
 };
 
 class CIWS
@@ -277,17 +273,19 @@ class Hashmap
 
 class Loadouts
 {
-    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Loadouts");
-    class assignUnitLoadout
-    {};
-    class randomGear
-    {};
-    class randomLoadout
-    {};
-    class savePlayerLoadout
-    {
-        preInit = 1;
-    };
+	file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Loadouts");
+	class assignUnitLoadout
+	{};
+	class randomGear
+	{};
+	class randomGearFromConfig
+	{};
+	class randomLoadout
+	{};
+	class savePlayerLoadout
+	{
+		preInit = 1;
+	};
 };
 
 class ManagedRun
