@@ -147,6 +147,19 @@ class CIWS
     {};
 };
 
+class Configs
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Configs");
+    class findConfigAny
+    {};
+    class getConfigData
+    {};
+    class getConfigDataConditional
+    {};
+    class getMostSpecificCfgValue
+    {};
+};
+
 class Convoy
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Convoy");
@@ -642,8 +655,6 @@ class Utilities
     {};
     class exportSpawnPositions
     {};
-    class findConfigAny
-    {};
     class findIfBool
     {};
     class generateUniqueId
@@ -652,10 +663,6 @@ class Utilities
     {};
     class getBumperPositionRelative
     {};
-    class getConditionalConfigValue
-    {};
-    class getConfigData
-    {};
     class getContainerCargo
     {};
     class getFromNetId
@@ -663,8 +670,6 @@ class Utilities
     class getLoadedModsInfo
     {};
     class getMissionLayerObjects
-    {};
-    class getMostSpecificCfgValue
     {};
     class getNearestIncriment
     {};
