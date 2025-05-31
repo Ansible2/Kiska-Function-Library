@@ -158,6 +158,8 @@ class Configs
     {};
     class getMostSpecificCfgValue
     {};
+    class hasConditionalClass
+    {};
 };
 
 class Convoy
