@@ -158,7 +158,7 @@ class Configs
     {};
     class getMostSpecificCfgValue
     {};
-    class hasConditionalClass
+    class hasConditionalConfig
     {};
 };
 
@@ -694,6 +694,8 @@ class Utilities
     class isGroupAlive
     {};
     class isAdminOrHost
+    {};
+    class isEmptyCode
     {};
     class isMainMenu
     {};
