@@ -12,6 +12,8 @@ Description:
         {
             class KISKA_conditional
             {
+                cacheResult = 1; // defaults to true
+
                 class ExampleCondition_1
                 {
                     // A list of addon directories (names) as they would appear in getLoadedModsInfo (case-insensitive).
@@ -56,6 +58,11 @@ Description:
 
     In the case that no conditional classes are met or none exist, the `_conditionalConfigParent`'s 
      scope will be searched for the property using `KISKA_fnc_getConfigData`.
+
+    The result of the value initially calculated after all the condition checks is by default 
+     cached with the `cacheResult` property being interpreted as `true`. This means that the compilation
+     and run of the `condition` properties of the classes will be performed only once and that
+     value will be saved. 
 
     Another important note, **only** the highest priority conditional classes' values will be
      retrievable. Taking the example above again, the `ExampleCondition_1` class does not have `exampleProperty_2`
@@ -113,21 +120,30 @@ if !(isClass _conditionalConfig) exitWith {
     GET_PARENT_CONFIG_PROPERTY
 };
 
-private _modDirectoriesLowered = [
-    uiNamespace,
-    "KISKA_conditionalConfig_loadedMods",
-    {
-        (call KISKA_fnc_getLoadedModsInfo) apply { 
-            private _modDirectoryName = _x select 1;
-            toLowerANSI _modDirectoryName   
-        }
-    }
-] call KISKA_fnc_getOrDefaultSet;
-private _conditionalClassesMap = [
-    localNamespace,
-    "KISKA_conditionalConfig_parsedConfigMap",
-    {createHashMap}
-] call KISKA_fnc_getOrDefaultSet;
+
+private _cachedResultMap = localNamespace getVariable "KISKA_conditionalConfig_cachedResultMap";
+if (isNil "_cachedResultMap") then {
+    _cachedResultMap = createHashMap;
+    localNamespace setVariable ["KISKA_conditionalConfig_cachedResultMap",_cachedResultMap];
+};
+private _cachekey = [_conditionalConfig,_property] joinString "/";
+if (_cachekey in _cachedResultMap) exitWith {_cachedResultMap get _cachekey};
+
+
+
+private _modDirectoriesLowered = uiNamespace getVariable "KISKA_conditionalConfig_loadedMods";
+if (isNil "_modDirectoriesLowered") then {
+    _modDirectoriesLowered = (call KISKA_fnc_getLoadedModsInfo) apply { 
+        private _modDirectoryName = _x select 1;
+        toLowerANSI _modDirectoryName   
+    };
+    uiNamespace setVariable ["KISKA_conditionalConfig_loadedMods",_modDirectoriesLowered];
+};
+private _conditionalClassesMap = localNamespace getVariable "KISKA_conditionalConfig_parsedConfigMap";
+if (isNil "_conditionalClassesMap") then {
+    _conditionalClassesMap = createHashMap;
+    localNamespace setVariable ["KISKA_conditionalConfig_parsedConfigMap",_conditionalClassesMap];
+};
 
 
 /* ----------------------------------------------------------------------------
@@ -209,4 +225,16 @@ _conditionalClassesMap set [_conditionalConfig,_alreadyParsedConfigs];
 
 
 if (isNil "_propertyValue") then { _propertyValue = GET_PARENT_CONFIG_PROPERTY };
+
+
+private _cacheResult = [
+    _conditionalClassConfig >> "cacheResult",
+    _isBool,
+    true
+] call KISKA_fnc_getConfigData;
+if (_cacheResult) then {
+    _cachedResultMap set [_cachekey,_propertyValue];
+};
+
+
 _propertyValue
