@@ -148,17 +148,17 @@ if (_storeId isEqualTo "") exitWith {
 };
 
 private _fn_getSelectedItems = _paramMap get "_fn_getSelectedItems";
-if (_fn_getSelectedItems isEqualTo {}) exitWith {
+if (_fn_getSelectedItems call KISKA_fnc_isEmptyCode) exitWith {
     ["_fn_getSelectedItems is empty, it must be implemented",true] call KISKA_fnc_log;
     displayNull
 };
 private _fn_onTake = _paramMap get "_fn_onTake";
-if (_fn_onTake isEqualTo {}) exitWith {
+if (_fn_onTake call KISKA_fnc_isEmptyCode) exitWith {
     ["_fn_onTake is empty, it must be implemented",true] call KISKA_fnc_log;
     displayNull
 };
 private _fn_onStore = _paramMap get "_fn_onStore";
-if (_fn_onStore isEqualTo {}) exitWith {
+if (_fn_onStore call KISKA_fnc_isEmptyCode) exitWith {
     ["_fn_onStore is empty, it must be implemented",true] call KISKA_fnc_log;
     displayNull
 };

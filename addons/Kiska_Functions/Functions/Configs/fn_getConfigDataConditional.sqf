@@ -103,9 +103,8 @@ if (isNull _conditionalConfigParent) exitWith {
     nil
 };
 
-
 private _conditionalConfig = _conditionalConfigParent >> "KISKA_conditional";
-if (isNull _conditionalConfig) exitWith {
+if !(isClass _conditionalConfig) exitWith {
     [
         ["No 'KISKA_conditional' class exists under",_conditionalConfigParent],
         false
@@ -130,6 +129,7 @@ private _conditionalClassesMap = [
     {createHashMap}
 ] call KISKA_fnc_getOrDefaultSet;
 
+
 /* ----------------------------------------------------------------------------
     Use cache if available
 ---------------------------------------------------------------------------- */
@@ -142,7 +142,7 @@ if !(isNil "_alreadyParsedConfigs") exitWith {
         _conditionArgs set [1,_conditionalClassConfig];
 
         if (
-            (_condition isEqualTo {}) OR 
+            (_condition call KISKA_fnc_isEmptyCode) OR 
             {_conditionArgs call _condition}
         ) then {
             _propertyValue = [
@@ -194,7 +194,7 @@ _conditionalConfigClasses apply {
     if (
         (isNil "_propertyValue") AND 
         {
-            (_condition isEqualTo {}) OR 
+            (_condition call KISKA_fnc_isEmptyCode) OR 
             {_conditionArgs call _condition}
         }
     ) then {

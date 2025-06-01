@@ -34,7 +34,7 @@ if (_codeMap isEqualTo -1) then {
     localNamespace setVariable ["KISKA_managedRun_codeMap",_codeMap];
 };
 
-if ((_nameOfCode in _codeMap) AND (_code isEqualTo {})) exitWith {
+if ((_nameOfCode in _codeMap) AND (_code call KISKA_fnc_isEmptyCode)) exitWith {
     _codeMap deleteAt _nameOfCode;
     nil
 };

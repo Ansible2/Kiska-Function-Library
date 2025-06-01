@@ -194,7 +194,7 @@ _turretClasses apply {
             private _newTurretLimits = +_defaultTurretLimits;
             private _callBackArgs = [_turretConfig,_x,_unit,_defaultTurretLimits];
             {
-                private _limitIsDefault = _x isEqualTo {};
+                private _limitIsDefault = _x call KISKA_fnc_isEmptyCode;
                 if (_limitIsDefault) then { continue };
 
                 private "_newLimit";
