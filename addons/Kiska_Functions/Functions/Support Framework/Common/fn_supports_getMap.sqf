@@ -20,8 +20,11 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_supports_getMap";
 
-[
-    localNamespace,
-    "KISKA_supports_playerMap",
-    {createHashMap}
-] call KISKA_fnc_getOrDefaultSet
+private _map = localNamespace getVariable "KISKA_supports_playerMap";
+if !(isNil "_map") exitWith { _map };
+
+_map = createHashMap;
+localNamespace setVariable ["KISKA_supports_playerMap",_map];
+
+
+_map
