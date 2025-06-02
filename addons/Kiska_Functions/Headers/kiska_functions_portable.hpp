@@ -152,6 +152,8 @@ class Configs
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Configs");
     class findConfigAny
     {};
+    class getConditionalConfigClass
+    {};
     class getConfigData
     {};
     class getConfigDataConditional

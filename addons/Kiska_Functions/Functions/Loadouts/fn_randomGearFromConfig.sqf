@@ -10,27 +10,27 @@ Description:
         class MyRandomGearConfigClass
         {
             headgear[] = {
-				"H_Booniehat_khk_hs",
-				"H_HelmetB"
-			};
-			vests[] = {
-				"V_PlateCarrier1_rgr",
-				"V_PlateCarrier2_rgr"
-			};
-			primaryWeapons[] = {
-				{"arifle_MX_F",{"optic_Aco","30Rnd_65x39_caseless_mag"}},
-				{"arifle_MX_F",{"optic_Hamr","30Rnd_65x39_caseless_mag"}}
-			};
-			handguns[] = {
-				{"hgun_Pistol_heavy_01_F"}
-			};
+                "H_Booniehat_khk_hs",
+                "H_HelmetB"
+            };
+            vests[] = {
+                "V_PlateCarrier1_rgr",
+                "V_PlateCarrier2_rgr"
+            };
+            primaryWeapons[] = {
+                {"arifle_MX_F",{"optic_Aco","30Rnd_65x39_caseless_mag"}},
+                {"arifle_MX_F",{"optic_Hamr","30Rnd_65x39_caseless_mag"}}
+            };
+            handguns[] = {
+                {"hgun_Pistol_heavy_01_F"}
+            };
             // Weighted array
-			facewear[] = {
-				"", 1, // empty
-				"G_Shades_Black", 0.5,
-				"G_Tactical_Clear", 0.75,
-				"G_Tactical_Black", 2
-			};
+            facewear[] = {
+                "", 1, // empty
+                "G_Shades_Black", 0.5,
+                "G_Tactical_Clear", 0.75,
+                "G_Tactical_Black", 2
+            };
         };
     (end)
 
@@ -76,17 +76,17 @@ if (isNull _gearConfig) exitWith {
     nil
 };
 
-
+_gearConfig = _gearConfig call KISKA_fnc_getConditionalConfigClass;
 [
-	_units,
-	getArray(_gearConfig >> "uniforms"),
-	getArray(_gearConfig >> "headgear"),
-	getArray(_gearConfig >> "facewear"),
-	getArray(_gearConfig >> "vests"),
-	getArray(_gearConfig >> "backpacks"),
-	getArray(_gearConfig >> "primaryWeapons"),
-	getArray(_gearConfig >> "handguns"),
-	getArray(_gearConfig >> "secondaryWeapons")
+    _units,
+    getArray(_gearConfig >> "uniforms"),
+    getArray(_gearConfig >> "headgear"),
+    getArray(_gearConfig >> "facewear"),
+    getArray(_gearConfig >> "vests"),
+    getArray(_gearConfig >> "backpacks"),
+    getArray(_gearConfig >> "primaryWeapons"),
+    getArray(_gearConfig >> "handguns"),
+    getArray(_gearConfig >> "secondaryWeapons")
 ] call KISKA_fnc_randomGear;
 
 
