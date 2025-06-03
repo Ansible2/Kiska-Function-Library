@@ -127,6 +127,10 @@ _agentClasses apply {
 
     [_agentsSetConfig,_agents] call KISKA_fnc_bases_initAmbientAnimFromClass;
 
+    private _randomGearConfig = _agentsConfig >> "KISKA_RandomGear";
+    if (isClass _randomGearConfig) then {
+        [_agents,_randomGearConfig] call KISKA_fnc_randomGearFromConfig;
+    };
 
     private _onUnitsCreated = [
         "onUnitsCreated", 
