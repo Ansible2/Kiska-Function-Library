@@ -5,7 +5,8 @@ Description:
     Spawns a configed KISKA bases' turrets.
 
 Parameters:
-    0: _baseConfig <CONFIG> - The config path of the base config
+    0: _baseConfig <CONFIG> - The config path of the base config or the string
+        className of a config located in `missionConfigFile >> "KISKA_bases"
 
 Returns:
     <HASHMAP> - see KISKA_fnc_bases_getHashmap
@@ -193,7 +194,7 @@ _turretClasses apply {
             private _newTurretLimits = +_defaultTurretLimits;
             private _callBackArgs = [_turretConfig,_x,_unit,_defaultTurretLimits];
             {
-                private _limitIsDefault = _x isEqualTo {};
+                private _limitIsDefault = _x call KISKA_fnc_isEmptyCode;
                 if (_limitIsDefault) then { continue };
 
                 private "_newLimit";

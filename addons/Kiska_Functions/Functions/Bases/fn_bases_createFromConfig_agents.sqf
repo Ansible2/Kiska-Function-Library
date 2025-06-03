@@ -5,7 +5,8 @@ Description:
     Spawns a configed KISKA bases' agents.
 
 Parameters:
-    0: _baseConfig <CONFIG> - The config path of the base config
+    0: _baseConfig <CONFIG> - The config path of the base config or the string
+        className of a config located in `missionConfigFile >> "KISKA_bases"
 
 Returns:
     <HASHMAP> - see KISKA_fnc_bases_getHashmap
@@ -126,6 +127,15 @@ _agentClasses apply {
 
     [_agentsSetConfig,_agents] call KISKA_fnc_bases_initAmbientAnimFromClass;
 
+    private _randomGearConfig = [
+        "KISKA_randomGear",
+        _agentsSetConfig,
+        true,
+        false
+    ] call KISKA_fnc_bases_getClassConfig;
+    if (isClass _randomGearConfig) then {
+        [_agents,_randomGearConfig] call KISKA_fnc_randomGearFromConfig;
+    };
 
     private _onUnitsCreated = [
         "onUnitsCreated", 

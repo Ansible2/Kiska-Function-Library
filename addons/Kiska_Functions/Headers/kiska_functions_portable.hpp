@@ -108,8 +108,6 @@ class Animations
 class Bases
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Bases");
-    class bases_createFromConfig
-    {};
     class bases_createFromConfig_agents
     {};
     class bases_createFromConfig_landVehicles
@@ -124,11 +122,11 @@ class Bases
     {};
     class bases_getHashmap
     {};
-    class bases_getInfantryClasses
+    class bases_createFromConfig
+    {};
+    class bases_getClassConfig
     {};
     class bases_getPropertyValue
-    {};
-    class bases_getSide
     {};
     class bases_initAmbientAnimFromClass
     {};
@@ -148,6 +146,23 @@ class CIWS
     class ciwsAlarm
     {};
     class ciwsSiren
+    {};
+};
+
+class Configs
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Configs");
+    class findConfigAny
+    {};
+    class getConditionalConfigClass
+    {};
+    class getConfigData
+    {};
+    class getConfigDataConditional
+    {};
+    class getMostSpecificCfgValue
+    {};
+    class hasConditionalConfig
     {};
 };
 
@@ -281,6 +296,8 @@ class Loadouts
     class assignUnitLoadout
     {};
     class randomGear
+    {};
+    class randomGearFromConfig
     {};
     class randomLoadout
     {};
@@ -644,8 +661,6 @@ class Utilities
     {};
     class exportSpawnPositions
     {};
-    class findConfigAny
-    {};
     class findIfBool
     {};
     class generateUniqueId
@@ -654,10 +669,6 @@ class Utilities
     {};
     class getBumperPositionRelative
     {};
-    class getConditionalConfigValue
-    {};
-    class getConfigData
-    {};
     class getContainerCargo
     {};
     class getFromNetId
@@ -665,8 +676,6 @@ class Utilities
     class getLoadedModsInfo
     {};
     class getMissionLayerObjects
-    {};
-    class getMostSpecificCfgValue
     {};
     class getNearestIncriment
     {};
@@ -689,6 +698,8 @@ class Utilities
     class isGroupAlive
     {};
     class isAdminOrHost
+    {};
+    class isEmptyCode
     {};
     class isMainMenu
     {};

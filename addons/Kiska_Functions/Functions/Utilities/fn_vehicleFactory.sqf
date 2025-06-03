@@ -98,7 +98,7 @@ _vehicleTypes apply {
 
                 private _vehicle = createVehicle [_type,ASLToATL _spawnPosition,[],0,"CAN_COLLIDE"];
 
-                if !(_onCreateCode isEqualTo {}) then {
+                if !(_onCreateCode call KISKA_fnc_isEmptyCode) then {
                     [_vehicle] call _onCreateCode;
                 };
 
