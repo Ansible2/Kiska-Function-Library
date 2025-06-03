@@ -17,9 +17,15 @@ Parameters:
     3: _facewear : <STRING[] or (STRING,NUMBER)[]> - Potential facewear (goggles) to wear
     4: _vests : <STRING[] or (STRING,NUMBER)[]> - Potential vests to wear
     5: _backpacks : <STRING[] or (STRING,NUMBER)[]> - Potential backpacks to wear
-    6: _primaryWeapons : <[STRING,(STRING[] | (STRING,NUMBER)[])][]> - Primary weapons and items to add to them (see example)
-    7: _handguns : <[STRING,(STRING[] | (STRING,NUMBER)[])][]> - Handgun weapons and items to add to them
-    8: _secondaryWeapons : <[STRING,(STRING[] | (STRING,NUMBER)[])][]> - Secondary (launcher) weapons and items to add to them
+    6: _primaryWeapons : <[STRING,(STRING[] | (STRING,NUMBER)[])][]> - An array of 
+        primary weapons and items to add to them (see example). The items will be
+        added using `addPrimaryWeaponItem`.
+    7: _handguns : <[STRING,(STRING[] | (STRING,NUMBER)[])][]> - An array of 
+        handgun weapons and items to add to them (see example). The items will be
+        added using `addHandgunItem`.
+    8: _secondaryWeapons : <[STRING,(STRING[] | (STRING,NUMBER)[])][]> - An array of 
+        secondary (launcher) weapons and items to add to them (see example). The items 
+        will be added using `addSecondaryWeaponItem`.
 
 Returns:
     NOTHING
@@ -32,7 +38,7 @@ Examples:
         private _vests = [];
         private _backpacks = [];
         private _primaryWeapons = [
-            // add a mag an optic to rifle
+            // add a mag and optic to rifle
             ["arifle_MXC_F",["optic_Aco","30Rnd_65x39_caseless_mag"]]
         ];
 
