@@ -7,15 +7,15 @@ Description:
 Parameters:
     0: _property <STRING> - The property to get the value of
     1: _setConfigPath <CONFIG> - The config of the base set that is being searched
-        (e.g. `missionConfigFile >> KISKA_Bases >> MyBase >> infantry >> sets >> MyInfantrySet`)
+        (e.g. `missionConfigFile >> "KISKA_Bases" >> "MyBase" >> "infantry" >> "sets" >> "MyInfantrySet"`)
     2: _default <ANY> - The default value to return if the property search returns `nil`
     3: _isBool <BOOL> - Whether or not the property should be interpreted as a 
         boolean value (Default: `false`)
     4: _canSelectFromSetRoot <BOOL> - Whether or not the property can be retrieved from
-        the root of the set class (e.g. `missionConfigFile >> KISKA_Bases >> MyBase >> infantr`y)
+        the root of the set class (e.g. `missionConfigFile >> "KISKA_Bases" >> "MyBase" >> "infantry"`)
         (Default: `true`)
     5: _canSelectFromBaseRoot <BOOL> - Whether or not the property can be retrieved from
-        the root of the KISKA base class (e.g. `missionConfigFile >> KISKA_Bases >> MyBase`)
+        the root of the KISKA base class (e.g. `missionConfigFile >> "KISKA_Bases" >> "MyBase"`)
         (Default: `true`)
 
 Returns:
@@ -23,7 +23,7 @@ Returns:
 
 Examples:
     (begin example)
-        private _turretConfig = missionConfigFile >> KISKA_Bases >> MyBase >> turrets >> sets >> MyTurretSet
+        private _turretConfig = missionConfigFile >> "KISKA_Bases" >> "MyBase" >> "turrets" >> "sets" >> "MyTurretSet";
         private _turretSpawnPositions = [
             "spawnPositions",
             _turretConfig,
@@ -59,7 +59,7 @@ private _configHierarchy = configHierarchy _setConfigPath;
     [_canSelectFromSetRoot,2],
     [_canSelectFromBaseRoot,1]
 ] apply {
-    params ["_canSelectRoot","_hierarchyPosition"];
+    _x params ["_canSelectRoot","_hierarchyPosition"];
     if !(_canSelectRoot) then { continue };
 
     private _rootConfig = _configHierarchy select _hierarchyPosition;
