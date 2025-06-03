@@ -6,7 +6,7 @@ Description:
     the sky.
 
 Parameters:
-    0: <HASHMAP> _argsMap - a map of arguments for the supply drop:
+    0: _argsMap <HASHMAP> - a map of arguments for the supply drop:
 
         - `objectClassNames`: <STRING[]> - a list of classnames of objects that will
             be created and parachute down.
