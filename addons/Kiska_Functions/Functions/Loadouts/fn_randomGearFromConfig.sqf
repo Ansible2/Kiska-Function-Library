@@ -5,6 +5,8 @@ Description:
     Randomizes gear based upon input arrays for each slot. See `KISKA_fnc_randomGear`
      for details on behavior.
 
+    Configs can also be conditional (see `KISKA_fnc_getConditionalConfigClass`).
+
     Here is an example config class for random gear:
     (begin config example)
         class MyRandomGearConfigClass
