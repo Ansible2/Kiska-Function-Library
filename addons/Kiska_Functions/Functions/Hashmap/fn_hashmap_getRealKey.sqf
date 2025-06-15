@@ -27,9 +27,21 @@ scriptName "KISKA_fnc_hashmap_getRealKey";
 
 params ["_key"];
 
-if (_key isEqualType grpNull OR (_key isEqualType objNull)) exitWith {
-    [_key] call KISKA_fnc_hashmap_assignObjectOrGroupKey
-};
+if !(_key isEqualTypeAny [grpNull,objNull]) exitWith { _key };
+private _keyInNamespace = _key getVariable "KISKA_hashmap_realKey";
+if !(isNil "_keyInNamespace") exitWith { _keyInNamespace };
 
 
-_key
+_keyInNamespace = "KISKA_hashmap_realKey" call KISKA_fnc_generateUniqueId;
+_key setVariable ["KISKA_hashmap_realKey",_keyInNamespace];
+private _objectGroupKeyMap = call KISKA_fnc_hashmap_getKiskaObjectGroupKeyMap;
+_objectGroupKeyMap set [_keyInNamespace,_key];
+_key addEventHandler ["Deleted", {
+	params ["_objectOrGroup"];
+	private _key = _objectOrGroup getVariable "KISKA_hashmap_realKey";
+	private _objectGroupKeyMap = [] call KISKA_fnc_hashmap_getKiskaObjectGroupKeyMap;
+    if !(isNil "_key") then { _objectGroupKeyMap deleteAt _key; };
+}];
+
+
+_keyInNamespace

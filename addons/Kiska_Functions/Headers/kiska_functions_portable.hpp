@@ -272,8 +272,6 @@ class EventHandlers
 class Hashmap
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Hashmap");
-    class hashmap_assignObjectOrGroupKey
-    {};
     class hashmap_deleteAt
     {};
     class hashmap_get
