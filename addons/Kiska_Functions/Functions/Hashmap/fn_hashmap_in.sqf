@@ -24,12 +24,6 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_hashmap_in";
 
-params [
-    "_map",
-    "_key"
-];
+params ["_map","_key"];
 
-_key = [_key] call KISKA_fnc_hashmap_getRealKey;
-
-
-_key in _map
+(_key call KISKA_fnc_hashmap_getRealKey) in _map

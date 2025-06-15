@@ -38,5 +38,5 @@ params [
     ["_insertOnly",false,[true]]
 ];
 
-_key = [_key] call KISKA_fnc_hashmap_getRealKey;
+_key = _key call KISKA_fnc_hashmap_getRealKey;
 _map set [_key,_value,_insertOnly];

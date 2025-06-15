@@ -272,8 +272,6 @@ class EventHandlers
 class Hashmap
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Hashmap");
-    class hashmap_assignObjectOrGroupKey
-    {};
     class hashmap_deleteAt
     {};
     class hashmap_get
@@ -315,6 +313,39 @@ class ManagedRun
     class managedRun_isDefined
     {};
     class managedRun_updateCode
+    {};
+};
+
+class MultiKillEvent
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Multi Kill Event");
+    class multiKillEvent_addObjects
+    {};
+    class multiKillEvent_create
+    {};
+    class multiKillEvent_delete
+    {};
+    class multiKillEvent_getContainerMap 
+    {};
+    class multiKillEvent_getEventMap
+    {};
+    class multiKillEvent_getKilledCount 
+    {};
+    class multiKillEvent_getTotal 
+    {};
+    class multiKillEvent_getType 
+    {};
+    class multiKillEvent_isObjectInEvent 
+    {};
+    class multiKillEvent_isThresholdMet 
+    {};
+    class multiKillEvent_onKilled 
+    {};
+    class multiKillEvent_onThresholdMet 
+    {};
+    class multiKillEvent_removeObjects 
+    {};
+    class multiKillEvent_threshold 
     {};
 };
 
@@ -754,8 +785,6 @@ class Utilities
     class setContainerCargo
     {};
     class setRelativeVectorAndPos
-    {};
-    class setupMultiKillEvent
     {};
     class setWaypointExecStatement
     {};

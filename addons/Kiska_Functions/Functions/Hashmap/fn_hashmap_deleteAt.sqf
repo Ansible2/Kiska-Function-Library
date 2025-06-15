@@ -24,12 +24,7 @@ Author:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_hashmap_deleteAt";
 
-params [
-    "_map",
-    "_key"
-];
-
-_key = [_key] call KISKA_fnc_hashmap_getRealKey;
+params ["_map","_key"];
 
 
-_map deleteAt _key;
+_map deleteAt (_key call KISKA_fnc_hashmap_getRealKey);

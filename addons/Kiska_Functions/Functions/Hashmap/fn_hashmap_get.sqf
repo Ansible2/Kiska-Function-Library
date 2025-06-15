@@ -35,7 +35,7 @@ params [
     "_default"
 ];
 
-_key = [_key] call KISKA_fnc_hashmap_getRealKey;
+_key = _key call KISKA_fnc_hashmap_getRealKey;
 
 // while not in every case, there are some instances in which 
 // a nil _default will throw an error if called.
