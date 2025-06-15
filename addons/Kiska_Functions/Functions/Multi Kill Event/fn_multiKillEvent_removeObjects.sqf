@@ -1,12 +1,13 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_multiKillEvent_addObjects
+Function: KISKA_fnc_multiKillEvent_removeObjects
 
 Description:
-    Adds objects to the list that must be killed for a multi kill event to complete.
+    Removes objects from the list that must be killed for a multi kill event 
+     to complete.
 
 Parameters:
     0: _id <STRING> - The multi kill event ID.
-    1: _objects <OBJECT | OBJECT[]> - The objects to add to the multi kill event.
+    1: _objects <OBJECT | OBJECT[]> - The objects to remove from the multi kill event.
 
 Returns:
     NOTHING
@@ -16,20 +17,25 @@ Examples:
         [
             "KISKA_multiKillEvent_uid_0_0",
             MyObject
-        ] call KISKA_fnc_multiKillEvent_addObjects;
+        ] call KISKA_fnc_multiKillEvent_removeObjects;
     (end)
     
     (begin example)
         [
             "KISKA_multiKillEvent_uid_0_0",
             [MyObject_1,MyObject_2]
-        ] call KISKA_fnc_multiKillEvent_addObjects;
+        ] call KISKA_fnc_multiKillEvent_removeObjects;
     (end)
     
 Author:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_multiKillEvent_addObjects";
+scriptName "KISKA_fnc_multiKillEvent_removeObjects";
+
+params [
+    ["_id","",[""]],
+    ["_objects",objNull,[[],objNull]]
+];
 
 params [
     ["_id","",[""]],
@@ -50,36 +56,31 @@ if (_eventMap getOrDefaultCall ["thresholdMet",{true}]) exitWith {
     nil
 };
 
-private _eventHandlerCode = _eventMap get "eventHandlerCode";
 private _previousTotal = _eventMap getOrDefaultCall ["total",{0}];
 private _objectHashSet = _eventMap get "objectHashSet";
-private _eventType = _eventMap get "type";
-private _useMpKilled = _eventType == "MPKILLED";
+private _useMpKilled = (_eventMap get "type") == "MPKILLED";
 private _eventVar = _id + "_killedEventId";
-private _numberAdded = 0;
+private _numberRemoved = 0;
 _objects apply {
+    private "_killedEventId";
     if (
         !(_x isEqualType objNull) OR 
         { !(alive _x) } OR
-        // already part of multi kill event
-        { !(isNil {_x getVariable _eventVar}) }
+        // not part of multi kill event
+        { (isNil {_killedEventId = _x getVariable _eventVar; _killedEventId}) }
     ) then { continue };
 
-    private "_killedEventId";
     if (_useMPKilled) then {
-        _killedEventId = _x addMPEventHandler ["MPKILLED", _eventHandlerCode];
+        _x removeMPEventHandler ["MPKILLED", _killedEventId];
     } else {
-        _killedEventId = _x addEventHandler ["KILLED", _eventHandlerCode];
+        _x removeEventHandler ["KILLED", _killedEventId];
     };
 
-    _x setVariable [_eventVar,_killedEventId];
-    [_objectHashSet, _x, _x] call KISKA_fnc_hashmap_set;
-    _numberAdded = _numberAdded + 1;
+    _x setVariable [_eventVar,nil];
+    [_objectHashSet, _x] call KISKA_fnc_hashmap_deleteAt;
+    _numberRemoved = _numberRemoved + 1;
 };
-_eventMap set ["total",_previousTotal + _numberAdded];
+_eventMap set ["total",_previousTotal - _numberRemoved];
 
 
 nil
-// To solve issue, simply have a hashmap that effectively is a set
-// So all the keys are the objects and their values are also the objects
-// that way you can just use the values command.

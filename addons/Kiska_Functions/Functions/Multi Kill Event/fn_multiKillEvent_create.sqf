@@ -96,7 +96,7 @@ private _onEventTriggered = {
 _eventMap set ["onEventTriggered", _onEventTriggered];
 
 private _eventHandlerCode = [
-    "private _eventId = ",[_eventId] call KISKA_fnc_str,";",
+    "private _eventId =",[_eventId] call KISKA_fnc_str,";",
     "private _eventMap = [_eventId] call KISKA_fnc_multiKillEvent_getEventMap;",
     "private _onEventTriggered = _eventMap getOrDefault ['onEventTriggered',{}];",
     "[_this,_eventMap,_eventId] call _onEventTriggered;"
@@ -110,6 +110,7 @@ if (_useMPKilled) then {
 };
 _eventMap set ["eventHandlerCode", _eventHandlerCode];
 _eventMap set ["type", _type];
+_eventMap set ["objectHashSet", createHashMap];
 
 
 private _containerMap = call KISKA_fnc_multiKillEvent_getContainerMap;

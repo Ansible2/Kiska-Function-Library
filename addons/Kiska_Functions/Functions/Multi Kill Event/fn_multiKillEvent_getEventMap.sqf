@@ -40,6 +40,10 @@ Returns:
 
     - `eventCode`: <CODE> - The code that is attached to the killed eventhandler
     - `type`: <STRING> - Type of event, (`"KILLED"` or `"MPKILLED"`)
+    - `objectHashSet`: <HASHMAP> - A hashmap that effectively acts as a hash set that
+        contains all the objects in the multi kill event. This is meant to be used with
+        the KISKA hashmap function family. The values are all the objects and the keys
+        are effectively the objects themselves.
 
 Examples:
     (begin example)

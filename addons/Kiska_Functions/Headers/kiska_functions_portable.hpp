@@ -316,6 +316,39 @@ class ManagedRun
     {};
 };
 
+class MultiKillEvent
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Multi Kill Event");
+    class multiKillEvent_addObjects
+    {};
+    class multiKillEvent_create
+    {};
+    class multiKillEvent_delete
+    {};
+    class multiKillEvent_getContainerMap 
+    {};
+    class multiKillEvent_getEventMap
+    {};
+    class multiKillEvent_getKilledCount 
+    {};
+    class multiKillEvent_getTotal 
+    {};
+    class multiKillEvent_getType 
+    {};
+    class multiKillEvent_isObjectInEvent 
+    {};
+    class multiKillEvent_isThresholdMet 
+    {};
+    class multiKillEvent_onKilled 
+    {};
+    class multiKillEvent_onThresholdMet 
+    {};
+    class multiKillEvent_removeObjects 
+    {};
+    class multiKillEvent_threshold 
+    {};
+};
+
 class Music
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Music");
@@ -752,8 +785,6 @@ class Utilities
     class setContainerCargo
     {};
     class setRelativeVectorAndPos
-    {};
-    class setupMultiKillEvent
     {};
     class setWaypointExecStatement
     {};
