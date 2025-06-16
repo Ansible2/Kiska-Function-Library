@@ -69,7 +69,7 @@ private _paramValues = _paramDetails apply {
         ["_types",[],[[]]]
     ];
     _key = trim _key;
-    private _paramValue = _argsMap getOrDefaultCall [_key,_default];
+    private _paramValue = _argsMap getOrDefaultCall [_key,{import "_default"; call _default}];
     if ((_types isNotEqualTo []) AND {!(_paramValue isEqualTypeAny _types)}) then {
         _invalidArgumentMessage = [_key," value ",_paramValue," is invalid, must be of types -> ",_types] joinString "";
         break;
