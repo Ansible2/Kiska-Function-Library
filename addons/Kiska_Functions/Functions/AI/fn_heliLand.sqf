@@ -6,7 +6,7 @@ Description:
 
 Parameters:
     0: _aircraft <OBJECT> - The helicopter
-    1: _landingPosition <ARRAY or OBJECT> - Where to land. If object, position ATL is used.
+    1: _landingPosition <PositionASL[] or OBJECT> - Where to land. If object, position ATL is used.
     2: _landMode <STRING> - Options are `"LAND"`, `"GET IN"`, and `"GET OUT"`
     3: _landingDirection <NUMBER> - The direction the vehicle should face when landed.
         `-1` means that there shouldn't be any change to the direction. Be aware that this 
@@ -34,6 +34,8 @@ scriptName "KISKA_fnc_heliLand";
 #define INVISIBLE_PAD_TYPE "Land_HelipadEmpty_F"
 #define LAND_EVENT "KISKA_landedEvent"
 #define HIGH_LANDED_THRESHOLD 3
+#define ALTITUDE_COMPARE_LOG_COUNT 10
+#define VELOCITY_THRESHOLD 5
 
 params [
     ["_aircraft",objNull,[objNull]],
@@ -45,22 +47,28 @@ params [
 
 if (isNull _aircraft) exitWith {
     ["_aircraft is a null object",true] call KISKA_fnc_log;
-    false
+    nil
 };
 
 if (!(_aircraft isKindOf "Helicopter") AND {!(_aircraft isKindOf "VTOL_Base_F")}) exitWith {
     [[_aircraft," is not a helicopter or VTOL, exiting..."],true] call KISKA_fnc_log;
-    false
+    nil
 };
 
 [group (currentPilot _aircraft),true] call KISKA_fnc_ACEX_setHCTransfer;
 
 // move command only supports positions, not objects
 if (_landingPosition isEqualType objNull) then {
-    _landingPosition = getPosATL _landingPosition;
+    if (_landingDirection isEqualTo -1) then {
+        _landingDirection = getDir _landingPosition;
+    };
+    _landingPosition = getPosASL _landingPosition;
 };
 
+// Using a helipad to support the ability to have a landing direction
+// Helicopters will attempt to land in the direction the helipad is facing
 private _helipadToLandAt = INVISIBLE_PAD_TYPE createVehicle _landingPosition;
+_helipadToLandAt setPosASL _landingPosition;
 if (_landingDirection isNotEqualTo -1) then {
     _helipadToLandAt setDir _landingDirection;
 };
@@ -70,6 +78,8 @@ private _consideredLandedHeightOffset = 0.1;
 _landMode = toUpperANSI _landMode;
 if (_landMode isNotEqualTo "LAND") then {
     switch (_landMode) do {
+        case "GETIN";
+        case "GETOUT";
         case "GET IN";
         case "GET OUT": {
             _keepEngineOn = true;
@@ -106,43 +116,69 @@ if (_landMode isNotEqualTo "LAND") then {
     [_aircraft,_landingPosition] remoteExecCall ["move",_aircraft];
     _aircraft setVariable ["KISKA_isLanding",true];
 
-    private _landed = false;
-    private _wasToldToLand = false;
-    waitUntil {
-        sleep 1;
-        if (!alive _aircraft) exitWith {true};
-        // to interrupt a landing aircraft
-        if (_aircraft getVariable ["KISKA_cancelLanding",false]) exitWith {true};
+    private _aircraftPositionLogs = [];
+    private _isWavingOff = {
+        import "_aircraft";
 
-        if !(_wasToldToLand) then {
-            // tell unit to land at position when ready
-            if (unitReady _aircraft) then {
-                _aircraft landAt [_helipadToLandAt,_landMode];
-                _wasToldToLand = true;
-            };
-
-        } else {
-            private _unitAlt = (getPosASL _aircraft) select 2;
-            private _helipadAlt = (getPosASL _helipadToLandAt) select 2;
-            if (
-                (isTouchingGround _aircraft) OR 
-                (_unitAlt <= (_consideredLandedHeightOffset + _helipadAlt))
-            ) then {
-                _landed = true;
-                // reinforce land
-                // sometimes, the helicopter will "land" but immediately take off again
-                // this is why the thing is told to land again
-                sleep 2;
-                _aircraft landAt [_helipadToLandAt,_landMode];
-
-                if (_keepEngineOn) then {
-                    _aircraft engineon true;
-                };
-            };
-
+        private _initialLandPosition = _aircraft getVariable "KISKA_heliLand_initialLZ";
+        private _currentLandStatus = landAt _aircraft;
+        if ((isNil "_initialLandPosition") AND {(_currentLandStatus select 1) == 'found'}) exitWith {
+            _aircraft setVariable ["KISKA_heliLand_initialLZ",_currentLandStatus select 2];
+            false
         };
 
-        _landed
+        private _currentLandingPosition = _currentLandStatus select 2;
+        (_currentLandingPosition vectorDistance _initialLandPosition) > 20
+    };
+
+    private _helipadPosition = getPosASL _helipadToLandAt;
+    private _helipadAltitude = _helipadPosition select 2;
+    private _wasToldToLand = false;
+
+    waitUntil {
+        sleep 1;
+
+        if (
+            !(alive _aircraft) OR 
+            (_aircraft getVariable ["KISKA_cancelLanding",false])
+        ) then { breakWith true };
+
+        if !(_wasToldToLand) exitWith {
+            if (unitReady _aircraft) then {
+                [_aircraft,[_helipadToLandAt,_landMode]] remoteExecCall ["landAt",_aircraft];
+                _wasToldToLand = true;
+            };
+            false
+        };
+
+        private _aircraftPosition = getPosASL _aircraft;
+        private _currentAircraftAltitude = _aircraftPosition select 2;
+        if (
+            (isTouchingGround _aircraft) OR 
+            (_currentAircraftAltitude <= (_consideredLandedHeightOffset + _helipadAltitude))
+        ) then {
+            // reinforce land
+            // sometimes, the helicopter will "land" but immediately take off again
+            // this is why the thing is told to land again
+            sleep 2;
+            [_aircraft,[_helipadToLandAt,_landMode]] remoteExecCall ["landAt",_aircraft];
+
+            if (_keepEngineOn) then {
+                [_aircraft,true] remoteExecCall ["engineOn",_aircraft];
+            };
+
+            breakWith true;
+        };
+
+        if (call _isWavingOff) exitWith {
+            _wasToldToLand = false;
+            sleep 5;
+            _aircraft land "NONE";
+            
+            false
+        };
+
+        false
     };
 
     // variable to track if other code can run
@@ -156,4 +192,4 @@ if (_landMode isNotEqualTo "LAND") then {
 };
 
 
-true
+nil
