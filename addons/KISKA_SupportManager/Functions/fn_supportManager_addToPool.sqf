@@ -6,8 +6,8 @@ Description:
 
 Parameters:
     0: _supportConfig <CONFIG | STRING> - The config or a string of a class 
-    that is in a `KISKA_Supports` class in either the 
-    `missionConfigFile`, `campaignConfigFile`, or `configFile`.
+        that is in a `KISKA_Supports` class in either the 
+        `missionConfigFile`, `campaignConfigFile`, or `configFile`.
     1: _numberOfUsesLeft <NUMBER> - Default: `-1` - The number of support uses left or rounds
         available to use. If less than 0, the configed value will be used.
 
