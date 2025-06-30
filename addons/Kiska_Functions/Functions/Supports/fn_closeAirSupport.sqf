@@ -14,6 +14,8 @@ Parameters:
         - `allowDamage`: <BOOLEAN> Default: `false` - Whether or not the aircraft and crew take damage.
         - `attackPosition`: <PositionASL[] | OBJECT> Default: `objNull` - The primary position to fire at.
         - `directionOfAttack`: <NUMBER> Default: `0` - The direction the aircraft will be facing during it's attack run.
+        - `fireDistance`: <NUMBER> Default: `initialDistanceToTarget` - The distance to the
+            target at which the aircraft will begin firing.
         - `initialHeightAboveTarget`: <NUMBER> Default: `1300` - The aircraft's initial altitude.
         - `initialDistanceToTarget`: <NUMBER> Default: `2000` - The distance from the `_attackPosition` the aircraft will spawn.
         - `breakOffDistance`: <NUMBER> Default: `500` - The three dimensional distance between the `_attackPosition` 
@@ -113,6 +115,7 @@ scriptName "KISKA_fnc_closeAirSupport";
 #define FLARE_LAUNCHER_CLASS "CMFlareLauncher"
 #define TARGET_CLASS_NAME "Sign_Arrow_Large_Cyan_F"
 #define BOUNDING_BOX_TYPE "ViewGeometry"
+#define DEFAULT_FIRE_DISTANCE -1
 
 params [
     ["_aircraftParams",[],[createHashMap]],
@@ -135,7 +138,8 @@ private _paramDetails = [
     ["breakOffDistance",{500},[123]],
     ["numberOfFlaresToDump",{4},[123]],
     ["approachSpeed",{75},[123]],
-    ["vectorToTargetOffset",{[0,0,0]},[[]]]
+    ["vectorToTargetOffset",{[0,0,0]},[[]]],
+    ["fireDistance",{DEFAULT_FIRE_DISTANCE},[123]]
 ];
 private _paramValidationResult = [_aircraftParams,_paramDetails] call KISKA_fnc_hashMapParams;
 if (_paramValidationResult isEqualType "") exitWith {
@@ -144,6 +148,9 @@ if (_paramValidationResult isEqualType "") exitWith {
 };
 (_paramValidationResult select 0) params (_paramValidationResult select 1);
 
+if (_fireDistance isEqualTo DEFAULT_FIRE_DISTANCE) then {
+    _fireDistance = _initialDistanceToTarget;
+};
 
 /* ----------------------------------------------------------------------------
     Position plane towards target
@@ -276,7 +283,8 @@ _aircraft addEventHandler ["killed",{
             "_initialHeightAboveTarget",
             "_approachSpeed",
             "_numberOfFlaresToDump",
-            "_fireOrders"
+            "_fireOrders",
+            "_fireDistance"
         ];
 
         private _updatedAttackPosition = getPosASLVisual _strafeTarget;
@@ -348,7 +356,7 @@ _aircraft addEventHandler ["killed",{
         ];
 
         // if not within range
-        if (_vectorDistanceToTarget > _initialDistanceToTarget) exitWith {};
+        if (_vectorDistanceToTarget > _fireDistance) exitWith {};
 
         if !(_aircraft getVariable ["KISKA_closeAirSupport_isFiring",false]) then {
             private _laserTarget = laserTarget _attackTarget;
@@ -388,7 +396,8 @@ _aircraft addEventHandler ["killed",{
         _initialHeightAboveTarget,
         _approachSpeed,
         _numberOfFlaresToDump,
-        _fireOrdersParsed
+        _fireOrdersParsed,
+        _fireDistance
     ]
 ] call CBA_fnc_addPerframeHandler;
 

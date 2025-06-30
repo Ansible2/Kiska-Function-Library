@@ -1,9 +1,9 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_closeAirSupport_fire
+Function: KISKA_fnc_closeAirSupport_parseFireOrders
 
 Description:
     Parses and validates a list of fire orders for an aircraft to follow to do CAS
-     with `KISKA_fnc_closeAirSupport`
+     with `KISKA_fnc_closeAirSupport`.
 
 Parameters:
     0: _aircraft : <OBJECT> - The aircraft that will be following the fire orders
