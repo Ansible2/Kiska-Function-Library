@@ -125,17 +125,17 @@ if (_fireOrders isEqualTo []) exitWith {
 };
 
 private _paramDetails = [
-    ["aircraftClass","",[""]],
-    ["side",BLUFOR,[sideUnknown]],
-    ["allowDamage",false,[true]],
-    ["attackPosition",objNull,[[],objNull]],
-    ["directionOfAttack",0,[123]],
-    ["initialHeightAboveTarget",1300,[123]],
-    ["initialDistanceToTarget",2000,[123]],
-    ["breakOffDistance",500,[123]],
-    ["numberOfFlaresToDump",4,[123]],
-    ["approachSpeed",75,[123]],
-    ["vectorToTargetOffset",[0,0,0],[[]]]
+    ["aircraftClass",{""},[""]],
+    ["side",{BLUFOR},[sideUnknown]],
+    ["allowDamage",{false},[true]],
+    ["attackPosition",{objNull},[[],objNull]],
+    ["directionOfAttack",{0},[123]],
+    ["initialHeightAboveTarget",{1300},[123]],
+    ["initialDistanceToTarget",{2000},[123]],
+    ["breakOffDistance",{500},[123]],
+    ["numberOfFlaresToDump",{4},[123]],
+    ["approachSpeed",{75},[123]],
+    ["vectorToTargetOffset",{[0,0,0]},[[]]]
 ];
 private _paramValidationResult = [_aircraftParams,_paramDetails] call KISKA_fnc_hashMapParams;
 if (_paramValidationResult isEqualType "") exitWith {
