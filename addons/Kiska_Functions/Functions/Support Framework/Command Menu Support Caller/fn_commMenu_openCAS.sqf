@@ -131,7 +131,8 @@ if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
                 "breakOffDistance",
                 "numberOfFlaresToDump",
                 "approachSpeed",
-                "vectorToTargetOffset"
+                "vectorToTargetOffset",
+                "fireDistance"
             ] apply {
                 private _cfgData = [_attackTypeConfig >> _x] call KISKA_fnc_getConfigData;
                 if (isNil "_cfgData") then { continue };
