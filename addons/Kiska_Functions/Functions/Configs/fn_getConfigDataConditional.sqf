@@ -45,4 +45,8 @@ params [
 ];
 
 private _conditionalConfig = _conditionalConfigParent call KISKA_fnc_getConditionalConfigClass;
+if (isNil "_defaultValue") exitWith {
+    [_conditionalConfig >> _property,_isBool] call KISKA_fnc_getConfigData
+};
+
 [_conditionalConfig >> _property,_isBool,_defaultValue] call KISKA_fnc_getConfigData

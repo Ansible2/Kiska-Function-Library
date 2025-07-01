@@ -43,7 +43,11 @@ params [
     ["_defaultValue",nil,[true,123,"",[]]]
 ];
 
-if (isNull _config) exitWith { _defaultValue };
+if (isNull _config) exitWith { 
+    // nil values as a variable can sometimes throw errors
+    if (isNil "_defaultValue") exitWith {};
+    _defaultValue 
+};
 if (isNumber _config) exitWith {
     private _return = getNumber _config;
     if (_isBool) then {
