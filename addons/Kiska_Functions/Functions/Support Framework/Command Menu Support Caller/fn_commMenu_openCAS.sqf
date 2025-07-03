@@ -136,9 +136,9 @@ if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
             ] apply {
                 _x params ["_paramName",["_isBool",false]];
 
-                private _cfgData = [_attackTypeConfig >> _x,_isBool] call KISKA_fnc_getConfigData;
+                private _cfgData = [_attackTypeConfig >> _paramName,_isBool] call KISKA_fnc_getConfigData;
                 if (isNil "_cfgData") then { continue };
-                _cachedAircraftArgs pushBack [_x, _cfgData];
+                _cachedAircraftArgs pushBack [_paramName, _cfgData];
             };
             _aircraftParamsMapInitializer append _cachedAircraftArgs;
 
