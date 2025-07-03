@@ -71,7 +71,7 @@ _selectableRadiuses apply {
     Round Count Menu
 ---------------------------------------------------------------------------- */
 private _roundsMenuOptions = [];
-private _canSelectRounds = [_commMenuDetailsConfig >> "canSelectRounds",true] call KISKA_fnc_getConfigData;
+private _canSelectRounds = [_commMenuDetailsConfig >> "canSelectRounds",true,true] call KISKA_fnc_getConfigData;
 private _numberOfRoundsLeft = [_supportId] call KISKA_fnc_supports_getNumberOfUsesLeft;
 if (_canSelectRounds) then {
     for "_i" from 1 to _numberOfRoundsLeft do {
@@ -85,7 +85,7 @@ if (_canSelectRounds) then {
 /* ----------------------------------------------------------------------------
     Create Menu
 ---------------------------------------------------------------------------- */
-private _draw3dMarker = [_commMenuDetailsConfig >> "draw3dMarker",true] call KISKA_fnc_getConfigData;
+private _draw3dMarker = [_commMenuDetailsConfig >> "draw3dMarker",true,true] call KISKA_fnc_getConfigData;
 if (_draw3dMarker) then {
     call KISKA_fnc_drawLookingAtMarker_start;
 };

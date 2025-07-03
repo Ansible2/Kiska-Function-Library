@@ -63,7 +63,7 @@ private _menuPath = [
 /* ----------------------------------------------------------------------------
     Attack Direction Options
 ---------------------------------------------------------------------------- */
-private _canSelectIngress = [_commMenuDetailsConfig >> "canSelectIngress",true] call KISKA_fnc_getConfigData;
+private _canSelectIngress = [_commMenuDetailsConfig >> "canSelectIngress",true,true] call KISKA_fnc_getConfigData;
 if (_canSelectIngress) then {
     private _attackDirectionOptions = [
         [0,"N"],
@@ -87,7 +87,7 @@ if (_canSelectIngress) then {
 /* ----------------------------------------------------------------------------
     Create Menu
 ---------------------------------------------------------------------------- */
-private _draw3dMarker = [_commMenuDetailsConfig >> "draw3dMarker",true] call KISKA_fnc_getConfigData;
+private _draw3dMarker = [_commMenuDetailsConfig >> "draw3dMarker",true,true] call KISKA_fnc_getConfigData;
 if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
 
 [
@@ -147,10 +147,10 @@ if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
                 [
                     getText(_x >> "weapon"),
                     getText(_x >> "mag"),
-                    [_x >> "numberOfTriggerPulls",-1] call KISKA_fnc_getConfigData,
-                    [_x >> "timeBetweenShots",0.05] call KISKA_fnc_getConfigData,
+                    [_x >> "numberOfTriggerPulls",false,-1] call KISKA_fnc_getConfigData,
+                    [_x >> "timeBetweenShots",false,0.05] call KISKA_fnc_getConfigData,
                     getText(_x >> "weaponProfile"),
-                    [_x >> "strafeIncrement",0] call KISKA_fnc_getConfigData
+                    [_x >> "strafeIncrement",false,0] call KISKA_fnc_getConfigData
                 ]
             };
 

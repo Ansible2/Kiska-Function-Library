@@ -52,7 +52,7 @@ private _menuPath = [];
 /* ----------------------------------------------------------------------------
     Ingress Direction Options
 ---------------------------------------------------------------------------- */
-private _canSelectIngressDirection = [_commMenuDetailsConfig >> "canSelectIngress",true] call KISKA_fnc_getConfigData;
+private _canSelectIngressDirection = [_commMenuDetailsConfig >> "canSelectIngress",true,true] call KISKA_fnc_getConfigData;
 if (_canSelectIngressDirection) then {
     private _ingressDirectionOptions = [
         [0,"N"],
@@ -113,7 +113,7 @@ _menuPath pushBack ["Patrol Altitude",_patrolAltitudeOptions];
     Create Menu
 ---------------------------------------------------------------------------- */
 private _patrolDuration = getNumber(_commMenuDetailsConfig >> "patrolDuration");
-private _draw3dMarker = [_commMenuDetailsConfig >> "draw3dMarker",true] call KISKA_fnc_getConfigData;
+private _draw3dMarker = [_commMenuDetailsConfig >> "draw3dMarker",true,true] call KISKA_fnc_getConfigData;
 if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
 
 [
