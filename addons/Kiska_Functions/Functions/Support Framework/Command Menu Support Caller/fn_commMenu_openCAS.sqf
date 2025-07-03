@@ -125,7 +125,7 @@ if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
         } else {
             private _cachedAircraftArgs = [];
             [
-                "allowDamage",
+                ["allowDamage",true],
                 "initialHeightAboveTarget",
                 "initialDistanceToTarget",
                 "breakOffDistance",
@@ -134,7 +134,9 @@ if (_draw3dMarker) then { call KISKA_fnc_drawLookingAtMarker_start };
                 "vectorToTargetOffset",
                 "fireDistance"
             ] apply {
-                private _cfgData = [_attackTypeConfig >> _x] call KISKA_fnc_getConfigData;
+                _x params ["_paramName",["_isBool",false]];
+
+                private _cfgData = [_attackTypeConfig >> _x,_isBool] call KISKA_fnc_getConfigData;
                 if (isNil "_cfgData") then { continue };
                 _cachedAircraftArgs pushBack [_x, _cfgData];
             };
