@@ -113,7 +113,7 @@ scriptName "KISKA_fnc_closeAirSupport";
 
 #define TIME_TILL_DELETE 65
 #define FLARE_LAUNCHER_CLASS "CMFlareLauncher"
-#define TARGET_CLASS_NAME "Sign_Arrow_Large_Cyan_F"
+#define TARGET_CLASS_NAME "Sign_Sphere200cm_F"
 #define BOUNDING_BOX_TYPE "ViewGeometry"
 #define DEFAULT_FIRE_DISTANCE -1
 
@@ -173,6 +173,9 @@ if !(isclass _aircraftCfg) exitwith {
 
 if (_attackPositionIsObject) then {
     _attackPosition = getPosASL _attackPosition;
+};
+if ((_attackPosition select 2) < 0) then {
+    _attackPosition set [2,0];
 };
 
 private _spawnPosition = [
@@ -373,8 +376,11 @@ _aircraft addEventHandler ["killed",{
             ] call KISKA_fnc_closeAirSupport_fire;
         } else {
             private _strafeIncrement = _aircraft getVariable ["KISKA_closeAirSupport_strafeIncrement",0.1];
-            private _nextAttackPostition = _strafeTarget getPos [_strafeIncrement,(getDirVisual _aircraft)];
-            _strafeTarget setPosASL (AGLToASL _nextAttackPostition);
+            private _nextAttackPostition = AGLToASL (_strafeTarget getPos [_strafeIncrement,_directionOfAttack]);
+            if ((_nextAttackPostition select 2) < 0) then {
+                _nextAttackPostition set [2,0];
+            };
+            _strafeTarget setPosASL _nextAttackPostition;
         };
 
     },
