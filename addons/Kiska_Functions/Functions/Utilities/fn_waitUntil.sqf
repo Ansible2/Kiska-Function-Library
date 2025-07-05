@@ -20,15 +20,18 @@ Returns:
 
 Examples:
     (begin example)
+        private _variable = 123;
         [
             {
+                params ["_variable"];
                 true
             },
             {
+                params ["_variable"];
                 hint "wait";
             },
             0.5,
-            [],
+            [_variable],
             true
         ] call KISKA_fnc_waitUntil;
     (end)
