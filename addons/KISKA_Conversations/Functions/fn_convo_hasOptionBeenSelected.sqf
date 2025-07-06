@@ -16,7 +16,7 @@ Examples:
     (begin example)
         private _optionConfig = 
             missionConfigFile >> 
-            "CfgKiskaSpeech" >> 
+            "KISKA_speech" >> 
             "MyTopic" >> 
             "conversations" >> 
             "MyOptions" >> 

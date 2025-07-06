@@ -21,4 +21,4 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_speech_getDefaultConfigRoot";
 
-missionConfigFile >> "CfgKiskaSpeech"
+missionConfigFile >> "KISKA_speech"
