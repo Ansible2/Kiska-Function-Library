@@ -535,6 +535,27 @@ class SpectrumDevice
     {};
 };
 
+class Speech
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Speech");
+    class speech_addTopic
+    {};
+    class speech_getBikbPath
+    {};
+    class speech_getDefaultConfigRoot
+    {};
+    class speech_getFsmPath
+    {};
+    class speech_say
+    {};
+    class speech_showSubtitles
+    {};
+    class speech_getTopicEventHandler
+    {};
+    class speech_getTopicName
+    {};
+};
+
 class Supports
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Supports");
