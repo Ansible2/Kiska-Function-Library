@@ -84,15 +84,15 @@ private _fn_afterLineSelected = [
     }
 ];
 
-private _lineName = getText (_selectedOptionConfig >> "line");
-if (_lineName isEqualTo "") exitWith {
+private _line = (_selectedOptionConfig >> "line") call KISKA_fnc_getConfigData;
+if (isNil "_line") exitWith {
     [[],_fn_afterLineSelected] call KISKA_fnc_callBack;
     nil
 };
 
 [
     _topicConfig,
-    _lineName,
+    _line,
     player,
     _speakingTo,
     nil,
