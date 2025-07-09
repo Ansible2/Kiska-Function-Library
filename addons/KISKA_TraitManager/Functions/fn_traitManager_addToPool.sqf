@@ -1,19 +1,26 @@
-#include "..\Headers\Trait Manager Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_traitManager_addToPool
 
 Description:
-    Adds an entry into the local trait manager pool.
+    Adds an entry into the support manager pool globally.
 
 Parameters:
-    0: _entryToAdd <STRING> - The trait to add
+    0: _traitConfig <CONFIG | STRING> - The config of a trait or a string of a class 
+        that is in a `KISKA_Traits` class in either the 
+        `missionConfigFile`, `campaignConfigFile`, or `configFile`.
 
 Returns:
-    NOTHING
+    <STRING> - the item's global identifier which is also used for the JIP queue.
 
 Examples:
     (begin example)
-        ["medic"] call KISKA_fnc_traitManager_addToPool;
+        "someClassInKISKA_Traits" call KISKA_fnc_traitManager_addToPool;
+    (end)
+
+    (begin example)
+        private _itemId = [
+            configFile >> "Traits" >> "MyTrait"
+        ] call KISKA_fnc_traitManager_addToPool;
     (end)
 
 Authors:
@@ -21,26 +28,28 @@ Authors:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_traitManager_addToPool";
 
+#define STORE_ID "kiska-trait-manager"
+
 if !(hasInterface) exitWith {};
 
 params [
-    ["_entryToAdd","",[""]]
+    ["_traitConfig",configNull,[configNull,""]],
+    ["_numberOfUsesLeft",-1,[123]]
 ];
 
-if (_entryToAdd isEqualTo "") exitWith {
-    ["_entryToAdd is empty string!",true] call KISKA_fnc_log;
+if (_traitConfig isEqualType "") then {
+    _traitConfig = [["KISKA_Traits",_traitConfig]] call KISKA_fnc_findConfigAny;
+};
+if (isNull _traitConfig) exitWith {
+    ["Could not find _traitConfig",true] call KISKA_fnc_log;
     nil
 };
 
 
-private _traitPoolArray = GET_TM_POOL;
-_traitPoolArray pushBack _entryToAdd;
-if (isNil TM_POOL_VAR_STR) then {
-    missionNamespace setVariable [TM_POOL_VAR_STR,_traitPoolArray];
-};
-
-call KISKA_fnc_traitManager_updateCurrentList;
-call KISKA_fnc_traitManager_updatePoolList;
+private _itemId = [
+    STORE_ID,
+    _traitConfig
+] call KISKA_fnc_simpleStore_addItemToPool_global;
 
 
-nil
+_itemId
