@@ -32,7 +32,7 @@ if (call KISKA_fnc_isMainMenu) exitWith {
 
 waitUntil {
     if !(isNull player) exitWith {true};
-    sleep 1;
+    sleep 3;
     false
 };
 
