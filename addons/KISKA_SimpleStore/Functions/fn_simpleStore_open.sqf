@@ -16,10 +16,10 @@ Parameters:
 
                 Parameters: 
                 
-                - 0: <ANY> - a pool item
+                - 0: <ANY> - A pool item.
                 - 1: <NUMBER> - The index of the item in the pool.
 
-                Chould return an array containing:
+                Should return an array containing:
 
                 - 0: <STRING> - The text of the listbox element.
                 - 1: <STRING> - Default: `""` - A path for the picture of the element.
@@ -30,7 +30,7 @@ Parameters:
         - `_fn_getSelectedItems` <CODE>: A function that will be called whenever
             `KISKA_fnc_simpleStore_refreshSelectedList` is. Must return an array of
             items formatted the same as an item returned from `_fn_poolItemToListboxItem`
-            with the addition of index 5 being the listbox item's `data` property
+            with the addition of index 5 being the listbox item's `data` property.
 
             Passed the following args:
                 
