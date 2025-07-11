@@ -21,6 +21,7 @@ Author:
 scriptName "KISKA_fnc_traitManager_open";
 
 #define RESERVED_TRAITS ["MEDIC","ENGINEER","EXPLOSIVESPECIALIST","UAVHACKER"]
+#define NUMBER_TRAITS ["LOADCOEF","AUDIBLECOEF","CAMOUFLAGECOEF"]
 
 
 if !(hasInterface) exitWith {
@@ -77,6 +78,8 @@ private _args = [
                     private _items = [];
                     (getAllUnitTraits player) apply {
                         _x params ["_traitName","_traitValue"];
+
+                        if ((toUpperANSI _traitName) in NUMBER_TRAITS) then {continue};
 
                         private _traitConfig = [["KISKA_Traits",_traitConfig]] call KISKA_fnc_findConfigAny;
                         if (isNull _traitConfig) then {
