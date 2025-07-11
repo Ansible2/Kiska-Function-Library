@@ -29,8 +29,7 @@ Authors:
 scriptName "KISKA_fnc_traitManager_addToPool";
 
 #define STORE_ID "kiska-trait-manager"
-
-if !(hasInterface) exitWith {};
+#define NUMBER_TRAITS ["LOADCOEF","AUDIBLECOEF","CAMOUFLAGECOEF"]
 
 params [
     ["_traitConfig",configNull,[configNull,""]],
@@ -45,6 +44,11 @@ if (isNull _traitConfig) exitWith {
     nil
 };
 
+private _traitName = toUpperANSI (configName _traitConfig);
+if (_traitName in NUMBER_TRAITS) exitWith {
+    [[_traitName," is a reserved numerical trait"],true] call KISKA_fnc_log;
+    nil
+};
 
 private _itemId = [
     STORE_ID,
