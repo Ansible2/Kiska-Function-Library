@@ -81,7 +81,7 @@ private _args = [
 
                         if ((toUpperANSI _traitName) in NUMBER_TRAITS) then {continue};
 
-                        private _traitConfig = [["KISKA_Traits",_traitConfig]] call KISKA_fnc_findConfigAny;
+                        private _traitConfig = [["KISKA_Traits",_traitName]] call KISKA_fnc_findConfigAny;
                         if (isNull _traitConfig) then {
                             [["_traitName ", _traitName," is not configured in KISKA_Traits"],false] call KISKA_fnc_log;
                             continue;
@@ -129,7 +129,7 @@ private _args = [
 
                     private _conditionMessage = getText(_traitManagerDetailsConfig >> "conditionMessage");
                     if (_conditionMessage isEqualTo "") then {
-                        _conditionMessage = "You do not have permission for this support";
+                        _conditionMessage = "You do not have permission for this trait";
                     };
 
                     [_conditionMessage] call KISKA_fnc_errorNotification;
