@@ -1,19 +1,24 @@
-#include "..\Headers\Trait Manager Common Defines.hpp"
 /* ----------------------------------------------------------------------------
 Function: KISKA_fnc_traitManager_removeFromPool
 
 Description:
-    Removes the provided index from the pool.
+    Removes the item with the provided ID from the trait manager pool globally.
 
 Parameters:
-    0: _index <NUMBER> - The selected index
+    0: _itemId <STRING> - The ID of the item in the pool to remove.
 
 Returns:
     NOTHING
 
 Examples:
     (begin example)
-        [0] call KISKA_fnc_traitManager_removeFromPool;
+        private _itemId = [
+            configFile >> "KISKA_Traits" >> "MyTrait"
+        ] call KISKA_fnc_traitManager_addToPool;
+        
+        // ... some time later ...
+
+        _itemId call KISKA_fnc_traitManager_removeFromPool;
     (end)
 
 Authors:
@@ -21,18 +26,16 @@ Authors:
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_traitManager_removeFromPool";
 
-if (!hasInterface) exitWith {};
+#define STORE_ID "kiska-trait-manager"
+
+if !(hasInterface) exitWith {};
 
 params [
-    ["_index",-1,[123]]
+    ["_itemId","",[""]]
 ];
 
-private _array = GET_TM_POOL;
-if (_array isNotEqualTo []) then {
-    _array deleteAt _index;
-};
 
-call KISKA_fnc_traitManager_updateCurrentList;
-call KISKA_fnc_traitManager_updatePoolList;
+[STORE_ID,_itemId] call KISKA_fnc_simpleStore_removeItemFromPool_global;
+
 
 nil

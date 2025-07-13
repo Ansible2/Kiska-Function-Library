@@ -12,7 +12,7 @@ Returns:
 
 Examples:
     (begin example)
-        PRE-INIT function
+        POST-INIT function
     (end)
 
 Author:
@@ -38,14 +38,14 @@ if (!canSuspend) exitWith {
 
 waitUntil {
     if !(isNull player) exitWith {true};
-    sleep 0.1;
+    sleep 3;
     false
 };
 
 [
     [
         "Trait Manager GUI",
-        "<execute expression='call KISKA_fnc_traitManager_openDialog;'>Open Trait Manager GUI</execute>"
+        "<execute expression='call KISKA_fnc_traitManager_open;'>Open Trait Manager GUI</execute>"
     ]
 ] call KISKA_fnc_addKiskaDiaryEntry;
 

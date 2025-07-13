@@ -35,6 +35,15 @@ if (_pathArray isEqualTo []) exitWith {
     configNull
 };
 
+private _cache = localNamespace getVariable "KISKA_findConfigAny_cache";
+if (isNil "_cache") then {
+    _cache = createHashmap;
+    localNamespace setVariable ["KISKA_findConfigAny_cache",_cache];
+};
+
+private _cachedValue = _cache get _pathArray;
+if (!isNil "_cachedValue") exitWith { _cachedValue };
+
 private _configFound = false;
 private _configReturn = configNull;
 [missionConfigFile,campaignConfigFile,configFile] apply {
@@ -56,4 +65,5 @@ private _configReturn = configNull;
 };
 
 
+_cache set [_pathArray,_configReturn];
 _configReturn

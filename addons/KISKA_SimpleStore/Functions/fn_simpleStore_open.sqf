@@ -16,10 +16,10 @@ Parameters:
 
                 Parameters: 
                 
-                - 0: <ANY> - a pool item
+                - 0: <ANY> - A pool item.
                 - 1: <NUMBER> - The index of the item in the pool.
 
-                Chould return an array containing:
+                Should return an array containing:
 
                 - 0: <STRING> - The text of the listbox element.
                 - 1: <STRING> - Default: `""` - A path for the picture of the element.
@@ -30,7 +30,7 @@ Parameters:
         - `_fn_getSelectedItems` <CODE>: A function that will be called whenever
             `KISKA_fnc_simpleStore_refreshSelectedList` is. Must return an array of
             items formatted the same as an item returned from `_fn_poolItemToListboxItem`
-            with the addition of index 5 being the listbox item's `data` property
+            with the addition of index 5 being the listbox item's `data` property.
 
             Passed the following args:
                 
@@ -41,8 +41,9 @@ Parameters:
 
                 - 0: <STRING> - The store id.
                 - 1: <ANY> - Whatever the item from the pool that was selected.
-                - 2: <STRING> - The item's id from the pool items map retrieved from `KISKA_fnc_simpleStore_getPoolItems`.
-                - 3: <NUMBER> - The index of the selected item in the pool list box.
+                - 2: <STRING> - The item's id from the pool items map retrieved from 
+                    `KISKA_fnc_simpleStore_getPoolItems`. Will be an empty string (`""`)
+                    if no item is selected.
 
         - `_fn_onStore` <CODE>: A function that will be called when the Store button 
             is clicked. Passed the following args:
@@ -194,7 +195,12 @@ _display setVariable ["KISKA_simpleStore_fn_poolItemToListboxItem",_paramMap get
     private _poolListControl = _simpleStoreDisplay getVariable "KISKA_simpleStore_poolListControl";
     private _selectedListboxIndex = lbCurSel _poolListControl;
 
-    if (_selectedListboxIndex >= 0) then {
+    if (
+        _selectedListboxIndex >= 0 AND 
+        // if a user selects an item and then clicks the button again
+        // lbCurSel still returns the index of the previously selected one
+        {(_poolListControl lbText _selectedListboxIndex) isNotEqualTo ""}
+    ) then {
         private _selectedItemId = _poolListControl lbData _selectedListboxIndex;
         private _storeId = _simpleStoreDisplay getVariable "KISKA_simpleStore_id";
         private _poolItemsMap = [_storeId] call KISKA_fnc_simpleStore_getPoolItems;
@@ -213,7 +219,12 @@ _display setVariable ["KISKA_simpleStore_fn_poolItemToListboxItem",_paramMap get
     private _selectedListControl = _simpleStoreDisplay getVariable "KISKA_simpleStore_selectedListControl";
     private _selectedListboxIndex = lbCurSel _selectedListControl;
 
-    if (_selectedListboxIndex >= 0) then {
+    if (
+        _selectedListboxIndex >= 0 AND 
+        // if a user selects an item and then clicks the button again
+        // lbCurSel still returns the index of the previously selected one
+        {(_selectedListControl lbText _selectedListboxIndex) isNotEqualTo ""}
+    ) then {
         [
             _simpleStoreDisplay getVariable "KISKA_simpleStore_id",
             _selectedListControl lbData _selectedListboxIndex,

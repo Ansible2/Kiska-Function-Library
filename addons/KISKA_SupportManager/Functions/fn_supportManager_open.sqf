@@ -50,8 +50,8 @@ private _args = [
                     ];
                     
                     private _supportManagerDetails = _config >> "KISKA_supportManagerDetails";
-                    if ((isNull _config) OR (isNull _supportManagerDetails) ) then {
-                        [["_config at index ->",_index," is null"],true] call KISKA_fnc_log;
+                    if (isNull _supportManagerDetails) exitWith {
+                        [["_config at index ->",_index," has null KISKA_supportManagerDetails class"],true] call KISKA_fnc_log;
                         nil
                     };
 
