@@ -134,7 +134,7 @@ private _args = [
 
                     private _traitManagerDetailsConfig = _traitConfig >> "KISKA_traitManagerDetails";
                     private _condition = getText(_traitManagerDetailsConfig >> "condition");
-                    private _canTakeTrait = (_condition isEqualTo "") OR { [_traitManagerDetailsConfig] call (compile _condition) };
+                    private _canTakeTrait = (_condition isEqualTo "") OR { [_traitConfig] call (compile _condition) };
                     if (_canTakeTrait) exitWith {
                         private _isCustomTrait = !(_traitName in RESERVED_TRAITS);
                         player setUnitTrait [_traitName,true,_isCustomTrait];
