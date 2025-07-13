@@ -29,8 +29,6 @@ if !(hasInterface) exitWith {
     nil
 };
 
-disableSerialization;
-
 private _args = [
     localNamespace,
     "KISKA_traitManager_openArgs",
@@ -47,7 +45,7 @@ private _args = [
                         ["_traitConfig",configNull,[configNull]],
                         ["_index",-1,[123]]
                     ];
-                   
+                
                     private _traitManagerDetails = _traitConfig >> "KISKA_traitManagerDetails";
                     if (isNull _traitConfig) exitWith {
                         [["_traitConfig at index -> ",_index," is null"],true] call KISKA_fnc_log;
@@ -79,7 +77,13 @@ private _args = [
                     (getAllUnitTraits player) apply {
                         _x params ["_traitName","_traitValue"];
 
-                        if ((toUpperANSI _traitName) in NUMBER_TRAITS) then {continue};
+                        _traitName = toUpperANSI _traitName;
+                        if (
+                            (_traitName in NUMBER_TRAITS) OR
+                            {
+                                (_traitValue isEqualType true) AND {!_traitValue}
+                            }
+                        ) then { continue };
 
                         private _traitConfig = [["KISKA_Traits",_traitName]] call KISKA_fnc_findConfigAny;
                         if (isNull _traitConfig) then {
@@ -95,7 +99,7 @@ private _args = [
 
                         private _traitText = getText(_traitManagerDetails >> "text");
                         if (_traitText isEqualTo "") then {
-                            _traitText = configName _traitConfig;
+                            _traitText = _traitName;
                         };
 
                         _items pushBack [
@@ -104,7 +108,7 @@ private _args = [
                             getArray(_traitManagerDetails >> "pictureColor"),
                             getArray(_traitManagerDetails >> "selectedPictureColor"),
                             getText(_traitManagerDetails >> "tooltip"),
-                            toUpperANSI (configName _traitConfig)
+                            _traitName
                         ];
                     };
 
@@ -114,15 +118,26 @@ private _args = [
             [
                 "_fn_onTake",
                 {
-                    params ["_storeId","_traitConfig","_poolItemId"];
+                    params ["_storeId","_traitConfig","_poolItemId","_selectedIndex"];
+
+                    if (_selectedIndex < 0) exitWith {
+                        ["You must select an item to take"] call KISKA_fnc_errorNotification;
+                    };
+
+                    private _traitName = toUpperANSI (configName _traitConfig);
+                    private _currentTraitValue = player getUnitTrait _traitName;
+                    if (!(isNil "_currentTraitValue") AND {_currentTraitValue}) exitWith {
+                        [
+                            format ["You already possess the %1 trait",_traitName]
+                        ] call KISKA_fnc_errorNotification;
+                    };
 
                     private _traitManagerDetailsConfig = _traitConfig >> "KISKA_traitManagerDetails";
                     private _condition = getText(_traitManagerDetailsConfig >> "condition");
                     private _canTakeTrait = (_condition isEqualTo "") OR { [_traitManagerDetailsConfig] call (compile _condition) };
                     if (_canTakeTrait) exitWith {
-                        private _trait = toUpperANSI (configName _traitConfig);
-                        private _isCustomTrait = !(_trait in RESERVED_TRAITS);
-                        player setUnitTrait [_trait,true,_isCustomTrait];
+                        private _isCustomTrait = !(_traitName in RESERVED_TRAITS);
+                        player setUnitTrait [_traitName,true,_isCustomTrait];
                         [_poolItemId] call KISKA_fnc_traitManager_removeFromPool;
                         nil
                     };
@@ -138,7 +153,11 @@ private _args = [
             [
                 "_fn_onStore",
                 {
-                    params ["","_trait"];
+                    params ["","_trait","_selectedIndex"];
+
+                    if (_selectedIndex < 0) exitWith {
+                        ["You must select an item to store"] call KISKA_fnc_errorNotification;
+                    };
                     
                     private _isCustomTrait = !(_trait in RESERVED_TRAITS);
                     player setUnitTrait [_trait,false,_isCustomTrait];
