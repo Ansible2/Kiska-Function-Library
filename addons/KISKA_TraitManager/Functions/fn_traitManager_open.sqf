@@ -144,7 +144,7 @@ private _args = [
 
                     private _conditionMessage = getText(_traitManagerDetailsConfig >> "conditionMessage");
                     if (_conditionMessage isEqualTo "") then {
-                        _conditionMessage = "You do not have permission for this trait";
+                        _conditionMessage = format ["You do not have permission to take the %1 trait",_traitName];
                     };
 
                     [_conditionMessage] call KISKA_fnc_errorNotification;
