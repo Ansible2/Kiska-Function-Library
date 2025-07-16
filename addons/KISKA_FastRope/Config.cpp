@@ -47,6 +47,85 @@ class CfgMovesMaleSdr : CfgMovesBasic
     };
 };
 
+class CfgVehicles
+{
+    class Helicopter_Base_F;
+    class KISKA_friesBase : Helicopter_Base_F // TODO: change classnames to be clearer (e.g. what is "fries")
+    {
+        destrType = "DestructNo";
+    };
+    class KISKA_friesAnchorBar : KISKA_friesBase 
+    {
+        author = "jokoho48";
+        scope = 1;
+        model = QPATHTOF(data\friesAnchorBar.p3d); // TODO: model path
+        animated = 1;
+        class AnimationSources 
+        {
+            class extendHookRight 
+            {
+                source = "user";
+                initPhase = 0;
+                animPeriod = 1.5;
+            };
+            class extendHookLeft : extendHookRight
+            {};
+        };
+    };
+    class KISKA_friesGantry : KISKA_friesBase {
+        author = "jokoho48";
+        scope = 1;
+        model = QPATHTOF(data\friesGantry.p3d); // TODO: model path
+        animated = 1;
+        class AnimationSources 
+        {
+            class adjustWidth 
+            {
+                source = "user";
+                initPhase = 0.211;
+                animPeriod = 0;
+            };
+            class rotateGantryLeft
+            {
+                source = "user";
+                initPhase = 0;
+                animPeriod = 0;
+            };
+            class rotateGantryRight : rotateGantryLeft
+            {};
+            class hideGantryLeft : rotateGantryLeft
+            {};
+            class hideGantryRight : rotateGantryLeft
+            {};
+        };
+    };
+    class KISKA_friesGantryReverse : KISKA_friesGantry 
+    {
+        class AnimationSources : AnimationSources 
+        {
+            class adjustWidth 
+            {
+                source = "user";
+                initPhase = 0.213;
+                animPeriod = 0;
+            };
+            class rotateGantryLeft 
+            {
+                source = "user";
+                initPhase = 0.5;
+                animPeriod = 0;
+            };
+            class rotateGantryRight 
+            {
+                source = "user";
+                initPhase = 0.5;
+                animPeriod = 0;
+            };
+        };
+    };
+
+};
+
 class CfgSounds 
 {
     class KISKA_fastrope_descending
