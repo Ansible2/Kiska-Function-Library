@@ -22,10 +22,10 @@ class CfgFunctions
     };
 };
 
-class CfgMovesBasic 
+class CfgMovesBasic
 {
     class DefaultDie;
-    class ManActions 
+    class ManActions
     {
         KISKA_FastRoping = "KISKA_FastRoping";
     };
@@ -33,10 +33,10 @@ class CfgMovesBasic
 
 class CfgMovesMaleSdr : CfgMovesBasic
 {
-    class States 
+    class States
     {
         class Crew;
-        class KISKA_FastRoping : Crew 
+        class KISKA_FastRoping : Crew
         {
             file = "\KISKA_Fastrope\animations\fastroping.rtm";
             interpolateTo[] = {"Unconscious", 1};
@@ -54,7 +54,7 @@ class CfgVehicles
     {
         destrType = "DestructNo";
     };
-    class KISKA_friesAnchorBar : KISKA_friesBase 
+    class KISKA_friesAnchorBar : KISKA_friesBase
     {
         author = "jokoho48";
         scope = 1;
@@ -123,6 +123,15 @@ class CfgVehicles
                 animPeriod = 0;
             };
         };
+    };
+
+    class KISKA_FastRope_helper : KISKA_friesBase
+    {
+        author = "KoffeinFlummi";
+        scope = 1;
+        model = "\KISKA_Fastrope\Models\helper.p3d";
+        class Turrets {};
+        class TransportItems {};
     };
 
 };
