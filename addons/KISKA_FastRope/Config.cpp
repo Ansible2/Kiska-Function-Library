@@ -38,7 +38,7 @@ class CfgMovesMaleSdr : CfgMovesBasic
         class Crew;
         class KISKA_FastRoping : Crew 
         {
-            file = "\KISKA_Fastrope\animations\fastroping.rtm"; // TODO: check absolute file path
+            file = "\KISKA_Fastrope\animations\fastroping.rtm";
             interpolateTo[] = {"Unconscious", 1};
             disableWeapons = 1;
             disableWeaponsLong = 1;
@@ -58,7 +58,7 @@ class CfgVehicles
     {
         author = "jokoho48";
         scope = 1;
-        model = QPATHTOF(data\friesAnchorBar.p3d); // TODO: model path
+        model = "\KISKA_Fastrope\Models\friesAnchorBar.p3d";
         animated = 1;
         class AnimationSources 
         {
@@ -72,10 +72,11 @@ class CfgVehicles
             {};
         };
     };
-    class KISKA_friesGantry : KISKA_friesBase {
+    class KISKA_friesGantry : KISKA_friesBase 
+    {
         author = "jokoho48";
         scope = 1;
-        model = QPATHTOF(data\friesGantry.p3d); // TODO: model path
+        model = "\KISKA_Fastrope\Models\friesGantry.p3d";
         animated = 1;
         class AnimationSources 
         {
