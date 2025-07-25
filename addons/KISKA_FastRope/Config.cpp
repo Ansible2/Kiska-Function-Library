@@ -215,7 +215,7 @@ class CfgVehicles
         class KISKA_FastRope
         {
             ropeOrigins[] = {"ropeOriginRight", "ropeOriginLeft"};
-            friesType = "ACE_friesGantryReverse";
+            friesType = "KISKA_friesGantryReverse";
             friesAttachmentPoint[] = {-1.04, 2.5, -0.34};
         };
     };
@@ -225,7 +225,7 @@ class CfgVehicles
         class KISKA_FastRope
         {
             ropeOrigins[] = {"ropeOriginRight", "ropeOriginLeft"};
-            friesType = "ACE_friesGantry";
+            friesType = "KISKA_friesGantry";
             friesAttachmentPoint[] = {1.07, 2.5, -0.5};
         };
     };
