@@ -6,7 +6,7 @@ Description:
     along with custom arguments.
 
 Parameters:
-    0: _defaultArgs <ARRAY> - Default arguements. These would be what a function
+    0: _defaultArgs <ANY> - Default arguements. These would be what a function
         writer would put inside of their code as arguements that will always be passed
         in the _this magic variable
     1: _callBackFunction <CODE, STRING, ARRAY> - Code to call, compile and call, and/or
@@ -35,7 +35,7 @@ Author:
 scriptName "KISKA_fnc_callBack";
 
 params [
-    ["_defaultArgs",[],[[]]],
+    ["_defaultArgs",[]],
     ["_callBackFunction",{},[[],"",{}]],
     ["_runInScheduled",false,[true]]
 ];
