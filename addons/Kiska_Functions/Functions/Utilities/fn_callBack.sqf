@@ -40,55 +40,62 @@ params [
     ["_runInScheduled",false,[true]]
 ];
 
-if (_callBackFunction isEqualType {}) exitWith {
-    [
-        _callBackFunction,
-        _defaultArgs
-    ] call CBA_fnc_directCall;
+
+private "_actualCallBackFunction";
+private _thisArgs = [];
+call {
+    if (_callBackFunction isEqualType {}) exitWith {
+        _actualCallBackFunction = _callBackFunction;
+    };
+
+    if (_callBackFunction isEqualType []) exitWith {
+        if (_callBackFunction isEqualTypeParams [[],""]) exitWith {
+            _thisArgs = _callBackFunction select 0;
+            _actualCallBackFunction = compile (_callBackFunction select 1);
+        };
+
+        if (_callBackFunction isEqualTypeParams [[],{}]) exitWith {
+            _thisArgs = _callBackFunction select 0;
+            _actualCallBackFunction = _callBackFunction select 1;
+        };
+    };
+
+    if (_callBackFunction isEqualType "") exitWith {
+        _actualCallBackFunction = compile _callBackFunction;
+    };
 };
 
-if (_callBackFunction isEqualType "") exitWith {
+if (isNil "_actualCallBackFunction") exitWith {
     [
-        compile _callBackFunction,
-        _defaultArgs
-    ] call CBA_fnc_directCall;
-};
-
-if (
-    !(_callBackFunction isEqualTypeParams [[],""]) AND
-    {!(_callBackFunction isEqualTypeParams [[],{}])}
-) exitWith {
-    [["_callBackFunction improperly configured array. Must be [ARRAY,STRING] or [ARRAY,CODE]. Got: ", _callBackFunction],true] call KISKA_fnc_log;
+        [
+            "_callBackFunction improperly configured:",
+            _callBackFunction
+        ],
+        true
+    ] call KISKA_fnc_log;
     nil
 };
 
-private _thisArgs = _callBackFunction select 0;
-_callBackFunction = _callBackFunction select 1;
-if (_callBackFunction isEqualType "") then {
-    _callBackFunction = compile _callBackFunction;
-};
-
-
-if (_runInScheduled) exitWith {
+if !(_runInScheduled) exitWith {
     [
-        _defaultArgs,
-        _thisArgs,
-        _callBackFunction
-    ] spawn {
-        params ["_defaultArgs","_thisArgs","_callBackFunction"];
-        _defaultArgs call _callBackFunction;
-    };
+        {
+            params ["_defaultArgs","_thisArgs","_actualCallBackFunction"];
+            _defaultArgs call _actualCallBackFunction;
+        },
+        [
+            _defaultArgs,
+            _thisArgs,
+            _actualCallBackFunction
+        ]
+    ] call CBA_fnc_directCall;
 };
 
 
 [
-    {
-        params ["_defaultArgs","_thisArgs","_callBackFunction"];
-        _defaultArgs call _callBackFunction;
-    },
-    [
-        _defaultArgs,
-        _thisArgs,
-        _callBackFunction
-    ]
-] call CBA_fnc_directCall;
+    _defaultArgs,
+    _thisArgs,
+    _callBackFunction
+] spawn {
+    params ["_defaultArgs","_thisArgs","_actualCallBackFunction"];
+    _defaultArgs call _actualCallBackFunction;
+};
