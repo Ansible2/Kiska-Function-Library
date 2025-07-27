@@ -6,8 +6,7 @@ Description:
     Opens a simple store dialog/initializes it if it has not been opened prior.
 
 Parameters:
-    _this <HASHMAP> - A hashmap of the following arguments:
-
+    0: _paramsMap : <HASHMAP> - A hashmap of the following arguments:
         - `_storeId` <STRING>: The id for the particular simple store.
         - `_fn_poolItemToListboxItem` <CODE>: A mapping function that will be called on every
             item in the pool items list to convert it into a listbox item to show
@@ -105,60 +104,51 @@ if !(isNull _currentStore) exitWith {
     displayNull
 };
 
-private _paramMap = _this;
-private "_invalidParamMessage";
-[
-    ["_storeId","",[""]],
-    ["_fn_poolItemToListboxItem",{ _this select 0 },[{}]],
-    ["_fn_getSelectedItems",{},[{}]],
-    ["_fn_onTake",{},[{}]],
-    ["_fn_onStore",{},[{}]],
-    ["_storeTitle","KISKA Simple Store",[""]],
-    ["_storePoolTitle","Pool List",[""]],
-    ["_storeSelectedItemsTitle","Selected List",[""]],
+private _paramsMap = _this;
+private _paramDetails = [
+    ["_storeId",{""},[""]],
+    ["_fn_poolItemToListboxItem",{{ _this select 0 }},[{}]],
+    ["_fn_getSelectedItems",{{}},[{}]],
+    ["_fn_onTake",{{}},[{}]],
+    ["_fn_onStore",{{}},[{}]],
+    ["_storeTitle",{"KISKA Simple Store"},[""]],
+    ["_storePoolTitle",{"Pool List"},[""]],
+    ["_storeSelectedItemsTitle",{"Selected List"},[""]],
     [
         "_headerBannerBackgroundColor",
-        [
-            (profilenamespace getvariable ['GUI_BCG_RGB_R',0.13]),
-            (profilenamespace getvariable ['GUI_BCG_RGB_G',0.54]),
-            (profilenamespace getvariable ['GUI_BCG_RGB_B',0.21]),
-            1
-        ],
-        [[]],
-        4
+        {
+            [
+                (profilenamespace getvariable ['GUI_BCG_RGB_R',0.13]),
+                (profilenamespace getvariable ['GUI_BCG_RGB_G',0.54]),
+                (profilenamespace getvariable ['GUI_BCG_RGB_B',0.21]),
+                1
+            ]
+        },
+        [[]]
     ]
-] apply {
-    _x params ["_var","_default","_types"];
-    private _paramValue = _paramMap getOrDefault [_var,_default];
-    if !(_paramValue isEqualTypeAny _types) then {
-        _invalidParamMessage = [_var," value ",_paramValue," is invalid, must be -> ",_types] joinString "";
-        break;
-    };
-    _paramMap set [_var,_paramValue];
-};
+];
 
-if !(isNil "_invalidParamMessage") exitWith {
-    [_invalidParamMessage,true] call KISKA_fnc_log;
-    displayNull
+private _paramValidationResult = [_paramsMap,_paramDetails] call KISKA_fnc_hashMapParams;
+if (_paramValidationResult isEqualType "") exitWith {
+    [_paramValidationResult,true] call KISKA_fnc_log;
+    nil
 };
+(_paramValidationResult select 0) params (_paramValidationResult select 1);
 
-private _storeId = _paramMap get "_storeId";
+
 if (_storeId isEqualTo "") exitWith {
     ["_storeId is empty!",true] call KISKA_fnc_log;
     displayNull
 };
 
-private _fn_getSelectedItems = _paramMap get "_fn_getSelectedItems";
 if (_fn_getSelectedItems call KISKA_fnc_isEmptyCode) exitWith {
     ["_fn_getSelectedItems is empty, it must be implemented",true] call KISKA_fnc_log;
     displayNull
 };
-private _fn_onTake = _paramMap get "_fn_onTake";
 if (_fn_onTake call KISKA_fnc_isEmptyCode) exitWith {
     ["_fn_onTake is empty, it must be implemented",true] call KISKA_fnc_log;
     displayNull
 };
-private _fn_onStore = _paramMap get "_fn_onStore";
 if (_fn_onStore call KISKA_fnc_isEmptyCode) exitWith {
     ["_fn_onStore is empty, it must be implemented",true] call KISKA_fnc_log;
     displayNull
@@ -166,10 +156,10 @@ if (_fn_onStore call KISKA_fnc_isEmptyCode) exitWith {
 
 private _display = createDialog ["KISKA_simpleStore_dialog",false];
 private _storeHeaderControl = _display displayCtrl SIMPLE_STORE_HEADER_TEXT_IDC;
-_storeHeaderControl ctrlSetBackgroundColor (_paramMap get "_headerBannerBackgroundColor");
-_storeHeaderControl ctrlSetText (_paramMap get "_storeTitle");
-(_display displayCtrl SIMPLE_STORE_POOL_HEADER_TEXT_IDC) ctrlSetText (_paramMap get "_storePoolTitle");
-(_display displayCtrl SIMPLE_STORE_SELECTED_HEADER_TEXT_IDC) ctrlSetText (_paramMap get "_storeSelectedItemsTitle");
+_storeHeaderControl ctrlSetBackgroundColor _headerBannerBackgroundColor;
+_storeHeaderControl ctrlSetText _storeTitle;
+(_display displayCtrl SIMPLE_STORE_POOL_HEADER_TEXT_IDC) ctrlSetText _storePoolTitle;
+(_display displayCtrl SIMPLE_STORE_SELECTED_HEADER_TEXT_IDC) ctrlSetText _storeSelectedItemsTitle;
 
 
 /* ----------------------------------------------------------------------------
@@ -182,7 +172,7 @@ _display setVariable ["KISKA_simpleStore_selectedListControl",_display displayCt
 _display setVariable ["KISKA_simpleStore_fn_getSelectedItems",_fn_getSelectedItems];
 _display setVariable ["KISKA_simpleStore_fn_onStore",_fn_onStore];
 _display setVariable ["KISKA_simpleStore_fn_onTake",_fn_onTake];
-_display setVariable ["KISKA_simpleStore_fn_poolItemToListboxItem",_paramMap get "_fn_poolItemToListboxItem"];
+_display setVariable ["KISKA_simpleStore_fn_poolItemToListboxItem",_fn_poolItemToListboxItem];
 
 
 /* ----------------------------------------------------------------------------
