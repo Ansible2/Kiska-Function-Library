@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_fastRope_getRopeOrigins
+Function: KISKA_fnc_fastRopeEvent_getRopeOrigins
 
 Description:
     Gets the configured rope origins for a particular vehicle/class. This will 
@@ -21,17 +21,17 @@ Returns:
 
 Examples:
     (begin example)
-        private _ropeOrigins = (configOf MyVehicle) call KISKA_fnc_fastRope_getRopeOrigins;
+        private _ropeOrigins = (configOf MyVehicle) call KISKA_fnc_fastRopeEvent_getRopeOrigins;
     (end)
 
     (begin example)
-        private _ropeOrigins = MyVehicle call KISKA_fnc_fastRope_getRopeOrigins;
+        private _ropeOrigins = MyVehicle call KISKA_fnc_fastRopeEvent_getRopeOrigins;
     (end)
 
 Author(s):
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_fastRope_getRopeOrigins";
+scriptName "KISKA_fnc_fastRopeEvent_getRopeOrigins";
 
 #define ROPE_ORIGINS_KEY "ropeOrigins"
 
@@ -41,7 +41,7 @@ params [
 
 if (isNull _vehicleConfig) exitWith { [] };
 
-private _vehicleDataCacheMap = _vehicleConfig call KISKA_fnc_fastRope_getDataCacheMap;
+private _vehicleDataCacheMap = _vehicleConfig call KISKA_fnc_fastRopeEvent_getDataCacheMap;
 private _ropeOrigins = _vehicleDataCacheMap get ROPE_ORIGINS_KEY;
 
 if !(isNil "_ropeOrigins") exitWith { _ropeOrigins };
@@ -50,17 +50,18 @@ if !(isNil "_ropeOrigins") exitWith { _ropeOrigins };
 if (_vehicleConfig isEqualType objNull) then {
     _vehicleConfig = configOf _vehicleConfig;
 };
-private _ropeOrigins = [[
+_ropeOrigins = [[
     "CfgVehicles",
     configName _vehicleConfig,
     "KISKA_fastRope",
-    "ropeOrigins"
+    ROPE_ORIGINS_KEY
 ]] call KISKA_fnc_findConfigAny;
 
-if ( (isNil "_ropeOrigins") OR (_ropeOrigins isEqualType []) ) then {
+if ( (isNil "_ropeOrigins") OR {_ropeOrigins isEqualType []} ) then {
     _ropeOrigins = getArray(_vehicleConfig >> "ace_fastroping_ropeOrigins");
 };
 _vehicleDataCacheMap set [ROPE_ORIGINS_KEY, _ropeOrigins];
 
 
 _ropeOrigins
+

@@ -1,0 +1,187 @@
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_fastRope_do
+
+Description:
+    Sends a vehicle to a given point and fastropes the given units from the helicopter.
+
+    Pilots should ideally be placed in "CARELESS" behaviour when around enemies.
+
+Parameters:
+    0: _vehicle <OBJECT> - The vehicle to fastrope from
+    1: _dropPosition <ARRAY or OBJECT> - The positionASL to drop the units off at; Z coordinate
+        matters
+    2: _unitsToDeploy <CODE, STRING, [ARRAY,CODE], [ARRAY,STRING], OBJECT[], GROUP, or OBJECT> - 
+        An array of units to drop from the _vehicle or code that will run once the helicopter 
+        has reached the drop point that must return an array of object
+        (see `KISKA_fnc_callBack` for examples).
+
+        Parameters:
+        - 0: _vehicle - The drop vehicle
+
+    3: _afterDropCode <CODE, STRING or ARRAY> - Code to execute after the drop is complete, 
+        see `KISKA_fnc_callBack`.
+        
+        Parameters:
+        - 0: _vehicle - The drop vehicle
+
+    4: _hoverHeight <NUMBER> - The height the helicopter should hover above the drop position
+        while units are fastroping. Max is 28, min is 5.
+    5: _ropeOrigins <(String | Vector3D[])[]> - An array of relative (to the vehicle) attachment
+        points for the ropes and/or memory points to `attachTo` the ropes to the vehicle.
+
+Returns:
+    NOTHING
+
+Examples:
+    (begin example)
+        //  basic example
+        [
+            _vehicle,
+            _position,
+            (fullCrew [_vehicle,"cargo"]) apply {
+                _x select 0
+            },
+            {hint "fastrope done"},
+            28,
+            [[0,0,0]]
+        ] call KISKA_fnc_fastRope_do;
+    (end)
+
+    (begin example)
+        // using code instead to defer the list of units to drop
+        // until the helicopter is over the drop point
+        [
+            _vehicle,
+            _position,
+            {
+                params ["_vehicle"];
+
+                (fullCrew [_vehicle,"cargo"]) apply {
+                    _x select 0
+                }
+            },
+            {hint "fastrope done"},
+            28,
+            [[0,0,0]]
+        ] call KISKA_fnc_fastRope_do;
+    (end)
+
+Author(s):
+    Ansible2
+---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_fastRope_do";
+
+#define MIN_HOVER_HEIGHT 5
+#define MAX_HOVER_HEIGHT 28
+#define HOVER_INTERVAL 0.05
+#define CALL_BACK_TYPES [{},"",[]]
+
+params [
+    ["_argsMap",[],[createHashMap]]
+];
+
+private _paramDetails = [
+    ["vehicle",{objNull},[objNull]],
+    ["dropPosition",{[]},[[],objNull]],
+    ["unitsToDeploy",{[]},[[],grpNull,objNull,{},""]],
+    ["afterDropCode",{{}},["",{},[]]],
+    ["hoverHeight",{20},[123]],
+    ["getRopeOrigins",{KISKA_fnc_fastRopeEvent_getRopeOrigins},CALL_BACK_TYPES],
+    ["onInitiated",{KISKA_fnc_fastRopeEvent_onInitiated},CALL_BACK_TYPES]
+];
+private _paramValidationResult = [_argsMap,_paramDetails] call KISKA_fnc_hashMapParams;
+if (_paramValidationResult isEqualType "") exitWith {
+    [_paramValidationResult,true] call KISKA_fnc_log;
+    nil
+};
+(_paramValidationResult select 0) params (_paramValidationResult select 1);
+
+
+/* ----------------------------------------------------------------------------
+    Verify Params
+---------------------------------------------------------------------------- */
+if !(alive _vehicle) exitWith {
+    ["_vehicle is not alive!",true] call KISKA_fnc_log;
+    nil
+};
+
+private _ropeOrigins = [_vehicle,_getRopeOrigins] call KISKA_fnc_callBack;
+if (
+    !(_ropeOrigins isEqualType []) OR
+    {_ropeOrigins isEqualTo []}
+) exitWith {
+    ["No rope origins were provided for the vehicle!",true] call KISKA_fnc_log;
+    nil
+};
+
+if (_dropPosition isEqualType objNull) then {
+    _dropPosition = getPosASL _dropPosition;
+};
+
+
+/* ----------------------------------------------------------------------------
+    Verify _unitsToDeploy
+---------------------------------------------------------------------------- */
+private _unitsToDeployFiltered = [];
+call {
+    if (_unitsToDeploy isEqualType grpNull) exitWith {
+        (units _unitsToDeploy) apply {
+            if !(alive _x) then { continue };
+            _unitsToDeployFiltered pushBack _x;
+        };
+    };
+
+    if (
+        (_unitsToDeploy isEqualType objNull) AND 
+        { alive _unitsToDeploy }
+    ) exitWith {
+        _unitsToDeployFiltered = [_unitsToDeploy];
+    };
+
+    if (_unitsToDeploy isEqualType []) exitWith {
+        private _unitsToDeployIsCode = 
+            (_unitsToDeploy isEqualTypeParams [[],{}]) OR 
+            {_unitsToDeploy isEqualTypeParams [[],""]} OR
+            {_unitsToDeploy isEqualType ""} OR 
+            {_unitsToDeploy isEqualType {}};
+
+        if (_unitsToDeployIsCode) exitWith {
+            _unitsToDeployFiltered = _unitsToDeploy
+        };
+
+        _unitsToDeploy apply {
+            if (_x isEqualType grpNull) then {
+                _unitsToDeployFiltered append (units _x);
+                continue;
+            };
+
+            if ((_x isEqualType objNull) AND {alive _x}) then {
+                _unitsToDeployFiltered pushBackUnique _x;
+                continue;
+            };
+        };
+    };
+};
+
+
+if (_unitsToDeployFiltered isEqualTo []) exitWith {
+    ["Could not find any units to deploy",true] call KISKA_fnc_log;
+    false
+};
+
+
+_hoverHeight = _hoverHeight max MIN_HOVER_HEIGHT;
+_hoverHeight = _hoverHeight min MAX_HOVER_HEIGHT;
+
+
+[
+    {
+        params ["_vehicle","_onInitiated"];
+        [_vehicle,_onInitiated] call KISKA_fnc_callBack;
+    },
+    [_vehicle,_onInitiated]
+] call CBA_fnc_execNextFrame;
+// TODO: replace/change logic(?)
+// [_vehicle] call ace_fastroping_fnc_equipFRIES;
+// some vehicles may fail ace_fastroping_fnc_canPrepareFRIES if not called with ace_fastroping_fnc_equipFRIES first
+// private _canEquipFRIES = [_vehicle] call ace_fastroping_fnc_canPrepareFRIES;

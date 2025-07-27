@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_fastRope_getDataCacheMap
+Function: KISKA_fnc_fastRopeEvent_getDataCacheMap
 
 Description:
     Gets a map that collects any constant data related to the fastrope system
@@ -18,19 +18,19 @@ Returns:
 
 Examples:
     (begin example)
-        private _cacheMap = (configOf MyVehicle) call KISKA_fnc_fastRope_getDataCacheMap;
+        private _cacheMap = (configOf MyVehicle) call KISKA_fnc_fastRopeEvent_getDataCacheMap;
         private _ropeOrigins = _cacheMap get "ropeOrigins";
     (end)
 
     (begin example)
-        private _cacheMap = MyVehicle call KISKA_fnc_fastRope_getDataCacheMap;
+        private _cacheMap = MyVehicle call KISKA_fnc_fastRopeEvent_getDataCacheMap;
         private _ropeOrigins = _cacheMap get "ropeOrigins";
     (end)
 
 Author(s):
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_fastRope_getDataCacheMap";
+scriptName "KISKA_fnc_fastRopeEvent_getDataCacheMap";
 
 params [
     ["_vehicleConfig",configNull,[configNull,objNull]]
