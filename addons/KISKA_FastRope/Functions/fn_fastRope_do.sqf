@@ -86,8 +86,28 @@ private _paramDetails = [
     ["unitsToDeploy",{[]},[[],grpNull,objNull,{},""]],
     ["afterDropCode",{{}},["",{},[]]],
     ["hoverHeight",{20},[123]],
-    ["getRopeOrigins",{KISKA_fnc_fastRopeEvent_getRopeOrigins},CALL_BACK_TYPES],
-    ["onInitiated",{KISKA_fnc_fastRopeEvent_onInitiated},CALL_BACK_TYPES]
+    [
+        "getRopeOrigins",
+        {{
+            params ["_vehicle"];
+            [_vehicle,"ropeOrigins"] call KISKA_fnc_fastRopeEvent_getConfigData
+        }},
+        CALL_BACK_TYPES
+    ],
+    [
+        "onInitiated",
+        {{
+            params ["_vehicle"];
+            private _onInitiated = [
+                _vehicle,
+                "onInitiated"
+            ] call KISKA_fnc_fastRopeEvent_getConfigData;
+            if (_onInitiated isNotEqualTo {}) exitWith { _onInitiated };
+            
+            KISKA_fnc_fastRopeEvent_onInitiated
+        }},
+        CALL_BACK_TYPES
+    ]
 ];
 private _paramValidationResult = [_argsMap,_paramDetails] call KISKA_fnc_hashMapParams;
 if (_paramValidationResult isEqualType "") exitWith {
