@@ -88,7 +88,10 @@ call {
     if (_dataToFetch isEqualTo FRIES_ATTACHMENT_POINT_KEY) exitWith {
         _dataValue = FIND_CONFIG_ANY(FRIES_ATTACHMENT_POINT_KEY);
         if ( (isNil "_dataValue") OR {!(_dataValue isEqualType "")} ) then {
-            _dataValue = getText(_vehicleConfig >> ACE_FRIES_ATTACHMENT_POINT);
+            _dataValue = getArray(_vehicleConfig >> ACE_FRIES_ATTACHMENT_POINT);
+            if (_dataValue isEqualTo []) then {
+                _dataValue = [0,0,0];
+            };
         };
     };
 

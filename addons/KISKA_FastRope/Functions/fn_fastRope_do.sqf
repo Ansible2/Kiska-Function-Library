@@ -104,7 +104,7 @@ private _paramDetails = [
             ] call KISKA_fnc_fastRopeEvent_getConfigData;
             if (_onInitiated isNotEqualTo {}) exitWith { _onInitiated };
             
-            KISKA_fnc_fastRopeEvent_onInitiated
+            KISKA_fnc_fastRopeEvent_onInitiatedDefault
         }},
         CALL_BACK_TYPES
     ]
