@@ -8,21 +8,27 @@ Description:
 
 Parameters:
     0: _vehicle <OBJECT> - The helicopter/vtol to hover
-    1: _hoverPosition <PositionASL[] or OBJECT> - The positionASL to drop the units off at; Z coordinate
-        matters
-    2: _shouldHoverStop <CODE> - Code that should return a boolean to determine if the vehicle should stop its hover.
-        This condition is checked every 0.05s.
+    1: _hoverPosition <PositionASL[] or OBJECT> - The positionASL to drop the 
+        units off at; Z coordinate matters
+    2: _callBackMap <HASHMAP> - A map of callback functions that can be optionally added:
         
-        Parameters:
-        - 0: _vehicle - The drop vehicle
-        - 1: _pilot - The currentPilot of _vehicle
+        - `_shouldHoverStop`: <CODE> - Code that should return a boolean to determine 
+            if the vehicle should stop its hover. This condition is checked every 0.05s.
+            Parameters:
+            - 0: _vehicle - The hover vehicle
+            - 1: _pilot - The `currentPilot` of the vehicle
 
-    3: _onHoverEnd <CODE, STRING, or ARRAY> - Code that executes after the hover completes, see KISKA_fnc_callBack
-        This condition is checked every 0.05s.
-        
-        Parameters:
-        - 0: _vehicle - The drop vehicle
-        - 1: _pilot - The currentPilot of _vehicle
+        - `_onHoverEnd`: <CODE, STRING, or ARRAY> - Code that executes after the 
+            hover completes, see `KISKA_fnc_callBack`
+            Parameters:
+            - 0: _vehicle - The hover vehicle
+            - 1: _pilot - The `currentPilot` of the vehicle
+
+        - `_onHoverStart`: <CODE, STRING, or ARRAY> - Code that executes after the 
+            vehicle has reached the hover position, see `KISKA_fnc_callBack`
+            Parameters:
+            - 0: _vehicle - The hover vehicle
+            - 1: _pilot - The `currentPilot` of the vehicle
 
 Returns:
     NOTHING
@@ -30,14 +36,22 @@ Returns:
 Examples:
     (begin example)
         [
-			myHeli,
-			myHoverPositionASL,
-			{
-				localNamespace getVariable ["stopMyHover",false]
-			},
-			{
-				hint "after hover";
-			}
+            myHeli,
+            myHoverPositionASL,
+            createHashMapFromArray [
+                [
+                    "_shouldHoverStop", 
+                    {
+                        localNamespace getVariable ["stopMyHover",false]
+                    }
+                ],
+                [
+                    "_onHoverEnd",
+                    {
+                        hint "after hover";
+                    }
+                ]
+            ]
         ] call KISKA_fnc_hover;
     (end)
 
@@ -45,6 +59,8 @@ Author(s):
     Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_hover";
+
+// TOOD: implement call back map
 
 #define HOVER_INTERVAL 0.05
 #define START_VELOCITY_CONTROL_DISTANCE 400
@@ -93,7 +109,7 @@ _pilot move (ASLToATL _hoverPosition);
             "_vehicle",
             "_hoverPosition",
             "_shouldHoverStop",
-			"_onHoverEnd"
+            "_onHoverEnd"
         ];
         
         private _pilot = currentPilot _vehicle;
@@ -101,17 +117,17 @@ _pilot move (ASLToATL _hoverPosition);
             !(alive _vehicle) OR
             !(alive _pilot) OR
             { 
-				[_vehicle,_pilot] call _shouldHoverStop 
-			}
+                [_vehicle,_pilot] call _shouldHoverStop 
+            }
         ) exitWith {
             if (_pilot getVariable ["KISKA_hover_hoverAiDisabled",true]) then {
                 _pilot setVariable ["KISKA_hover_hoverAiDisabled",nil];
                 [_pilot,"PATH"] remoteExecCall ["enableAI",_pilot];
             };
 
-			if (_onHoverEnd isNotEqualTo {}) then {
-				[[_vehicle,_pilot],_onHoverEnd] call KISKA_fnc_callBack;
-			};
+            if (_onHoverEnd isNotEqualTo {}) then {
+                [[_vehicle,_pilot],_onHoverEnd] call KISKA_fnc_callBack;
+            };
 
             [_id] call CBA_fnc_removePerFrameHandler;
         };
@@ -151,16 +167,16 @@ _pilot move (ASLToATL _hoverPosition);
         };
 
         _velocityMagnitude = _speed;
-        if ((_currentVehiclePosition_ASL distance2d _hoverPosition) >= DISTANCE_TO_STOP_VELOCITY_ADJUSTMENT) then {
+        if (
+            (_currentVehiclePosition_ASL distance2d _hoverPosition) >= DISTANCE_TO_STOP_VELOCITY_ADJUSTMENT
+        ) then {
             if ( _distanceToHoverPosition <= 15 ) then {
                 _velocityMagnitude = (_distanceToHoverPosition / 10) * 5;
-
             };
 
             private _currentVelocity = velocity _vehicle;
             _currentVelocity = (_currentVehiclePosition_ASL vectorFromTo _hoverPosition) vectorMultiply _velocityMagnitude;
             _vehicle setVelocity _currentVelocity;
-
         };
 
     },

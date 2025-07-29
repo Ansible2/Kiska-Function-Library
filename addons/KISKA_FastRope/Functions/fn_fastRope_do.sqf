@@ -134,10 +134,6 @@ if (
     nil
 };
 
-if (_dropPosition isEqualType objNull) then {
-    _dropPosition = getPosASL _dropPosition;
-};
-
 
 /* ----------------------------------------------------------------------------
     Verify _unitsToDeploy
@@ -190,10 +186,6 @@ if (_unitsToDeployFiltered isEqualTo []) exitWith {
 };
 
 
-_hoverHeight = _hoverHeight max MIN_HOVER_HEIGHT;
-_hoverHeight = _hoverHeight min MAX_HOVER_HEIGHT;
-
-
 [
     {
         params ["_vehicle","_onInitiated"];
@@ -201,7 +193,24 @@ _hoverHeight = _hoverHeight min MAX_HOVER_HEIGHT;
     },
     [_vehicle,_onInitiated]
 ] call CBA_fnc_execNextFrame;
-// TODO: replace/change logic(?)
-// [_vehicle] call ace_fastroping_fnc_equipFRIES;
-// some vehicles may fail ace_fastroping_fnc_canPrepareFRIES if not called with ace_fastroping_fnc_equipFRIES first
-// private _canEquipFRIES = [_vehicle] call ace_fastroping_fnc_canPrepareFRIES;
+
+
+/* ----------------------------------------------------------------------------
+    Move to target and hover
+---------------------------------------------------------------------------- */
+_vehicle setVariable ["KISKA_fastRope_doHover",true];
+_hoverHeight = _hoverHeight max MIN_HOVER_HEIGHT;
+_hoverHeight = _hoverHeight min MAX_HOVER_HEIGHT;
+if (_dropPosition isEqualType objNull) then {
+    _dropPosition = getPosASL _dropPosition;
+};
+private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
+// TODO: use on hover
+[
+    _vehicle,
+    _hoverPosition_ASL,
+    {
+        params ["_vehicle"];
+        isNil {_vehicle getVariable "KISKA_fastRope_doHover"}
+    }
+] call KISKA_fnc_hover;
