@@ -76,8 +76,9 @@ scriptName "KISKA_fnc_fastRope_do";
 #define HOVER_INTERVAL 0.05
 #define CALL_BACK_TYPES [{},"",[]]
 
+private _defaultMap = createHashMap;
 params [
-    ["_argsMap",[],[createHashMap]]
+    ["_argsMap",_defaultMap,[_defaultMap]]
 ];
 
 private _paramDetails = [
@@ -139,6 +140,7 @@ if (
     Verify _unitsToDeploy
 ---------------------------------------------------------------------------- */
 private _unitsToDeployFiltered = [];
+private _unitsToDeployIsCode = false;
 call {
     if (_unitsToDeploy isEqualType grpNull) exitWith {
         (units _unitsToDeploy) apply {
@@ -155,7 +157,7 @@ call {
     };
 
     if (_unitsToDeploy isEqualType []) exitWith {
-        private _unitsToDeployIsCode = 
+        _unitsToDeployIsCode = 
             (_unitsToDeploy isEqualTypeParams [[],{}]) OR 
             {_unitsToDeploy isEqualTypeParams [[],""]} OR
             {_unitsToDeploy isEqualType ""} OR 
@@ -205,12 +207,46 @@ if (_dropPosition isEqualType objNull) then {
     _dropPosition = getPosASL _dropPosition;
 };
 private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
-// TODO: use on hover
+
+private _onHoverStart = [
+    [_unitsToDeployIsCode,_unitsToDeployFiltered], 
+    {
+        params ["_vehicle"];
+        _thisArgs params [
+            "_unitsToDeployIsCode",
+            "_unitsToDeploy"
+        ];
+
+        if (_unitsToDeployIsCode) then {
+            _unitsToDeploy = [[_vehicle],_unitsToDeploy] call KISKA_fnc_callBack;
+        };
+
+        // TODO:
+        // deploy ropes
+        // deploy units
+    }
+];
+
 [
     _vehicle,
     _hoverPosition_ASL,
-    {
-        params ["_vehicle"];
-        isNil {_vehicle getVariable "KISKA_fastRope_doHover"}
-    }
+    createHashMapFromArray [
+        [
+            "_shouldHoverStop",
+            {
+                params ["_vehicle"];
+                !(_vehicle getVariable ["KISKA_fastRope_doHover",false])
+            }
+        ],
+        ["_onHoverStart",_onHoverStart],
+        [
+            "_onHoverEnd",
+            {
+
+            }
+        ]
+    ]
 ] call KISKA_fnc_hover;
+
+
+nil
