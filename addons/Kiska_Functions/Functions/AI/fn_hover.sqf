@@ -25,7 +25,7 @@ Parameters:
             - 1: _pilot - The `currentPilot` of the vehicle
 
         - `_onHoverStart`: <CODE, STRING, or ARRAY> - Code that executes after the 
-            vehicle has reached the hover position, see `KISKA_fnc_callBack`
+            vehicle is within 5m of the hover position, see `KISKA_fnc_callBack`
             Parameters:
             - 0: _vehicle - The hover vehicle
             - 1: _pilot - The `currentPilot` of the vehicle
@@ -69,12 +69,13 @@ scriptName "KISKA_fnc_hover";
 #define ACCELERATION_INCREMENT 0.25
 #define DISTANCE_TO_DISABLE_PILOT_AI 25
 #define DISTANCE_TO_STOP_VELOCITY_ADJUSTMENT 2.5
+#define DISTANCE_TO_TRIGGER_ON_HOVER_START 5
 
+private _defaultMap = createHashMap;
 params [
     ["_vehicle",objNull,[objNull]],
     ["_hoverPosition",[],[objNull,[]],3],
-    ["_shouldHoverStop",{false},[{}]],
-    ["_onHoverEnd",{},["",{},[]]]
+    ["_callBackMap",_defaultMap,[_defaultMap]]
 ];
 
 
@@ -100,24 +101,19 @@ private _pilot = driver _vehicle;
 _pilot setSkill 1;
 _pilot move (ASLToATL _hoverPosition);
 
-
+private _onHoverStartDefined = "_onHoverStart" in _callBackMap;
 // guides helicopter to drop position
 [
     {
         params ["_args", "_id"];
-        _args params [
-            "_vehicle",
-            "_hoverPosition",
-            "_shouldHoverStop",
-            "_onHoverEnd"
-        ];
+        _args params ["_vehicle","_callBackMap"];
         
         private _pilot = currentPilot _vehicle;
         if (
             !(alive _vehicle) OR
             !(alive _pilot) OR
             { 
-                [_vehicle,_pilot] call _shouldHoverStop 
+                [_vehicle,_pilot] call (_callBackMap getOrDefaultCall ["_shouldHoverStop",{{false}},true]) 
             }
         ) exitWith {
             if (_pilot getVariable ["KISKA_hover_hoverAiDisabled",true]) then {
@@ -125,6 +121,7 @@ _pilot move (ASLToATL _hoverPosition);
                 [_pilot,"PATH"] remoteExecCall ["enableAI",_pilot];
             };
 
+            private _onHoverEnd = _callBackMap getOrDefaultCall ["_onHoverEnd",{{}}];
             if (_onHoverEnd isNotEqualTo {}) then {
                 [[_vehicle,_pilot],_onHoverEnd] call KISKA_fnc_callBack;
             };
@@ -133,6 +130,7 @@ _pilot move (ASLToATL _hoverPosition);
         };
         
         private _currentVehiclePosition_ASL = getPosASLVisual _vehicle;
+        private _hoverPosition = _args select 2;
         private _distanceToHoverPosition = _currentVehiclePosition_ASL vectorDistance _hoverPosition;
 
         if (_distanceToHoverPosition > START_VELOCITY_CONTROL_DISTANCE) exitWith {};
@@ -167,9 +165,7 @@ _pilot move (ASLToATL _hoverPosition);
         };
 
         _velocityMagnitude = _speed;
-        if (
-            (_currentVehiclePosition_ASL distance2d _hoverPosition) >= DISTANCE_TO_STOP_VELOCITY_ADJUSTMENT
-        ) then {
+        if (_distanceToHoverPosition >= DISTANCE_TO_STOP_VELOCITY_ADJUSTMENT) then {
             if ( _distanceToHoverPosition <= 15 ) then {
                 _velocityMagnitude = (_distanceToHoverPosition / 10) * 5;
             };
@@ -179,13 +175,26 @@ _pilot move (ASLToATL _hoverPosition);
             _vehicle setVelocity _currentVelocity;
         };
 
+        private _onHoverStartDefined = _args select 3;
+        if (
+            _onHoverStartDefined AND 
+            {_distanceToHoverPosition <= DISTANCE_TO_TRIGGER_ON_HOVER_START} AND 
+            {
+                !(_vehicle getVariable ["KISKA_hover_onHoverStartTriggered",false])
+            }
+        ) then {
+            _vehicle setVariable ["KISKA_hover_onHoverStartTriggered",true];
+            private _onHoverStart = _callBackMap get "_onHoverStart";
+            [[_vehicle,_pilot],_onHoverStart] call KISKA_fnc_callBack;
+        };
+
     },
     HOVER_INTERVAL,
     [
         _vehicle,
+        _callBackMap,
         _hoverPosition,
-        _shouldHoverStop,
-        _onHoverEnd
+        _onHoverStartDefined
     ]
 ] call CBA_fnc_addPerFrameHandler;
 
