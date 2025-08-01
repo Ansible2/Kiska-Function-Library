@@ -108,6 +108,20 @@ private _paramDetails = [
             KISKA_fnc_fastRopeEvent_onInitiatedDefault
         }},
         CALL_BACK_TYPES
+    ],
+    [
+        "onHoverStarted",
+        {{
+            params ["_vehicle"];
+            private _onHoverStarted = [
+                _vehicle,
+                "onHoverStarted"
+            ] call KISKA_fnc_fastRopeEvent_getConfigData;
+            if (_onHoverStarted isNotEqualTo {}) exitWith { _onHoverStarted };
+            
+            KISKA_fnc_fastRopeEvent_onHoverStartedDefault
+        }},
+        CALL_BACK_TYPES
     ]
 ];
 private _paramValidationResult = [_argsMap,_paramDetails] call KISKA_fnc_hashMapParams;
@@ -220,7 +234,8 @@ private _onHoverStart = [
         if (_unitsToDeployIsCode) then {
             _unitsToDeploy = [[_vehicle],_unitsToDeploy] call KISKA_fnc_callBack;
         };
-
+        
+        _vehicle call KISKA_fnc_fastRopeEvent_onHoverStartedDefault;
         // TODO:
         // deploy ropes
         // deploy units
