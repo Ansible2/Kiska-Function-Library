@@ -21,4 +21,5 @@ private _fries = _friesType createVehicle [0,0,0];
 _fries attachTo [_vehicle,_friesAttachmentPoint];
 _vehicle setVariable ["KISKA_fastRope_fries",_fries];
 
+
 nil
