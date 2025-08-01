@@ -36,6 +36,7 @@ scriptName "KISKA_fnc_fastRopeEvent_getConfigData";
 #define ROPE_ORIGINS_KEY "ropeOrigins"
 #define FRIES_ATTACHMENT_POINT_KEY "friesAttachmentPoint"
 #define ON_INITIATED_KEY "onInitiated"
+#define ON_HOVER_STARTED_KEY "onHoverStarted"
 
 #define ACE_ROPE_ORIGINS "ace_fastrope_ropeOrigins"
 #define ACE_FRIES_TYPE "ace_fastrope_friesType"
@@ -99,6 +100,15 @@ call {
         private _onInitiated = FIND_CONFIG_ANY(ON_INITIATED_KEY);
         if (_onInitiated isEqualType "") then {
             _dataValue = compileFinal _onInitiated;
+        } else {
+            _dataValue = {};
+        };
+    };
+
+    if (_dataToFetch isEqualTo ON_HOVER_STARTED_KEY) exitWith {
+        private _onHoverStarted = FIND_CONFIG_ANY(ON_HOVER_STARTED_KEY);
+        if (_onHoverStarted isEqualType "") then {
+            _dataValue = compileFinal _onHoverStarted;
         } else {
             _dataValue = {};
         };
