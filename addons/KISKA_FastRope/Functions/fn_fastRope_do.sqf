@@ -73,10 +73,8 @@ scriptName "KISKA_fnc_fastRope_do";
 
 #define MIN_HOVER_HEIGHT 5
 #define MAX_HOVER_HEIGHT 28
-#define HOVER_INTERVAL 0.05
 #define CALL_BACK_TYPES [{},"",[]]
-#define ROPE_HOOK_OBJECT_CLASS "KISKA_FastRope_helper"
-#define HELPER_OBJECT_CLASS "KISKA_FastRope_helper"
+
 
 private _defaultMap = createHashMap;
 params [
@@ -216,139 +214,13 @@ if (_unitsToDeployFiltered isEqualTo []) exitWith {
 /* ----------------------------------------------------------------------------
     Move to target and hover
 ---------------------------------------------------------------------------- */
-_vehicle setVariable ["KISKA_fastRope_doHover",true];
+_vehicle setVariable ["KISKA_fastRope_unitsDroppedOff",false];
 _hoverHeight = _hoverHeight max MIN_HOVER_HEIGHT;
 _hoverHeight = _hoverHeight min MAX_HOVER_HEIGHT;
 if (_dropPosition isEqualType objNull) then {
     _dropPosition = getPosASL _dropPosition;
 };
 private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
-
-private _onHoverStart = [[
-    _unitsToDeployIsCode,
-    _unitsToDeployFiltered,
-    _ropeOrigins,
-    _hoverHeight
-], {
-    params ["_vehicle"];
-
-    _vehicle call KISKA_fnc_fastRopeEvent_onHoverStartedDefault;
-
-    _thisArgs insert [0,_vehicle];
-    [
-        {
-            params ["_vehicle"];
-            
-            !(alive _vehicle) OR 
-            { [_vehicle] call KISKA_fnc_fastRope_canDeployRopes }
-        },
-        {
-            params [
-                "_vehicle",
-                "_unitsToDeployIsCode",
-                "_unitsToDeploy",
-                "_ropeOrigins",
-                "_hoverHeight"
-            ];
-            
-            if (_unitsToDeployIsCode) then {
-                _unitsToDeploy = [[_vehicle],_unitsToDeploy] call KISKA_fnc_callBack;
-            };
-
-            private _fries = _vehicle getVariable ["KISKA_fastRope_fries",objNull]; // TODO: abstract this away into a function maybe?
-            private _deployedRopeInfo = [];
-            _vehicle setVariable ["KISKA_fastRope_deployedRopeInfo",_deployedRopeInfo];
-            private _ropes = _ropeOrigins apply {
-                private _hook = ROPE_HOOK_OBJECT_CLASS createVehicle [0,0,0];
-                _hook allowDamage false;
-                if (_x isEqualType []) then {
-                    _hook attachTo [_fries,_x];
-                } else {
-                    _hook attachTo [_fries,[0,0,0],_x];
-                };
-
-                // using dummy objects with the hooks so that the ropes
-                // can unwind. Otherwise, they'd need to be attached to
-                // something on the ground instantly at the time of creation
-                // and be their full length.
-                private _ropeAttachmentDummy = createVehicle [
-                    HELPER_OBJECT_CLASS,
-                    ((getPosATL _hook) vectorAdd [0,0,-1]),
-                    [],
-                    0,
-                    "CAN_COLLIDE"
-                ];
-                _ropeAttachmentDummy allowDamage false;
-                _ropeAttachmentDummy disableCollisionWith _vehicle; // TODO: remote exec onto where vehicle is local too? This whole function should probably be executed on where the vehicle is local tbh
-                
-                // TODO: why is there a ropeTop and a ropeBottom and why do we need
-                // dummy objects? It seems like all you need is ropeBottom
-                private _ropeTop = ropeCreate [_ropeAttachmentDummy, [0, 0, 0], _hook, [0, 0, 0], 0.5];
-                private _ropeBottom = ropeCreate [_ropeAttachmentDummy, [0, 0, 0], 1];
-                ropeUnwind [_ropeBottom, 30, _ropelength, false];
-
-                [
-                    _ropeTop,
-                    "RopeBreak",
-                    {
-                        params ["_rope"];
-                        _thisArgs params ["_vehicle", "_ropeAttachmentDummy"];
-                        private _brokenRopeInfo = [_rope,_vehicle] call KISKA_fnc_fastRopeEvent_onRopeBreak;
-
-                        if !(isNil "_brokenRopeInfo") then {
-                            private _unitOnRope = (attachedObjects _ropeAttachmentDummy) findIf {
-                                _x isKindOf "CAManBase"
-                            };
-                            detach _unitOnRope;
-                        };
-                    },
-                    [_vehicle,_ropeAttachmentDummy]
-                ] call CBA_fnc_addBISEventHandler;
-
-                [
-                    _ropeTop,
-                    "RopeBreak",
-                    {
-                        params ["_rope"];
-                        _thisArgs params ["_vehicle"];
-                        [_rope,_vehicle] call KISKA_fnc_fastRopeEvent_onRopeBreak;
-                    },
-                    [_vehicle]
-                ] call CBA_fnc_addBISEventHandler;
-
-                // TODO: make hashmap?
-                _deployedRopeInfo pushBack [
-                    _x,
-                    _ropeTop,
-                    _ropeBottom,
-                    _ropeAttachmentDummy,
-                    _hook,
-                    false,
-                    false
-                ];
-
-                _ropeBottom
-            };
-
-            [
-                {
-                    private _indexOfRopeNotUnwound = _this findIf { !(ropeUnwound _x) };
-                    _indexOfRopeNotUnwound isEqualTo -1
-                },
-                [[_vehicle],{
-                    _thisArgs params ["_vehicle"];
-            
-                    // TODO:
-                    // deploy units
-                }],
-                0.25,
-                _ropes
-            ] call KISKA_fnc_waitUntil;
-        },
-        0.25,
-        _thisArgs
-    ] call KISKA_fnc_waitUntil;
-}];
 
 [
     _vehicle,
@@ -358,10 +230,19 @@ private _onHoverStart = [[
             "_shouldHoverStop",
             {
                 params ["_vehicle"];
-                !(_vehicle getVariable ["KISKA_fastRope_doHover",false])
+                _vehicle getVariable ["KISKA_fastRope_unitsDroppedOff",false]
             }
         ],
-        ["_onHoverStart",_onHoverStart],
+        [
+            "_onHoverStart",
+            [[_unitsToDeployIsCode,_unitsToDeployFiltered,_ropeOrigins,_hoverHeight], {
+                params ["_vehicle"];
+
+                _vehicle call KISKA_fnc_fastRopeEvent_onHoverStartedDefault;
+                _thisArgs insert [0,_vehicle];
+                _thisArgs call KISKA_fnc_fastRope_startDeploymentProcess;
+            }]
+        ],
         [
             "_onHoverEnd",
             {
