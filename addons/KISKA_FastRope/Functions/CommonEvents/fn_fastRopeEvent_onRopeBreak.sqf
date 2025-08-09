@@ -1,4 +1,6 @@
 #define IS_ROPE_BROKEN_INFO_INDEX 6
+#define ROPE_TOP_INFO_INDEX 1
+#define ROPE_BOTTOM_INFO_INDEX 2
 
 params [
     ["_rope",objNull,[objNull]],

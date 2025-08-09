@@ -26,20 +26,21 @@ _ropeOrigins apply {
     // can unwind. Otherwise, they'd need to be attached to
     // something on the ground instantly at the time of creation
     // and be their full length.
-    private _ropeAttachmentDummy = createVehicle [
+    private _unitAttachmentDummy = createVehicle [
         HELPER_OBJECT_CLASS,
         ((getPosATL _hook) vectorAdd [0,0,-1]),
         [],
         0,
         "CAN_COLLIDE"
     ];
-    _ropeAttachmentDummy allowDamage false;
-    _ropeAttachmentDummy disableCollisionWith _vehicle; // TODO: remote exec onto where vehicle is local too? This whole function should probably be executed on where the vehicle is local tbh
+    _unitAttachmentDummy allowDamage false;
+    // TODO: remote exec onto where vehicle is local too? This whole function should probably be executed on where the vehicle is local tbh
+    _unitAttachmentDummy disableCollisionWith _vehicle; 
     
     // TODO: why is there a ropeTop and a ropeBottom and why do we need
     // dummy objects? It seems like all you need is ropeBottom
-    private _ropeTop = ropeCreate [_ropeAttachmentDummy, [0, 0, 0], _hook, [0, 0, 0], 0.5];
-    private _ropeBottom = ropeCreate [_ropeAttachmentDummy, [0, 0, 0], 1];
+    private _ropeTop = ropeCreate [_unitAttachmentDummy, [0, 0, 0], _hook, [0, 0, 0], 0.5];
+    private _ropeBottom = ropeCreate [_unitAttachmentDummy, [0, 0, 0], 1];
     ropeUnwind [_ropeBottom, ROPE_UNWIND_SPEED, _hoverHeight + ROPE_LENGTH_BUFFER, false];
 
     [
@@ -47,17 +48,17 @@ _ropeOrigins apply {
         "RopeBreak",
         {
             params ["_rope"];
-            _thisArgs params ["_vehicle", "_ropeAttachmentDummy"];
+            _thisArgs params ["_vehicle", "_unitAttachmentDummy"];
             private _brokenRopeInfo = [_rope,_vehicle] call KISKA_fnc_fastRopeEvent_onRopeBreak;
 
             if !(isNil "_brokenRopeInfo") then {
-                private _unitOnRope = (attachedObjects _ropeAttachmentDummy) findIf {
+                private _unitOnRope = (attachedObjects _unitAttachmentDummy) findIf {
                     _x isKindOf "CAManBase"
                 };
                 detach _unitOnRope;
             };
         },
-        [_vehicle,_ropeAttachmentDummy]
+        [_vehicle,_unitAttachmentDummy]
     ] call CBA_fnc_addBISEventHandler;
 
     [
@@ -76,7 +77,7 @@ _ropeOrigins apply {
         _x,
         _ropeTop,
         _ropeBottom,
-        _ropeAttachmentDummy,
+        _unitAttachmentDummy,
         _hook,
         false, // rope occupied
         false // rope broken
