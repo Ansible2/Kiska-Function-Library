@@ -13,6 +13,8 @@ params [
 private _fries = _vehicle getVariable ["KISKA_fastRope_fries",objNull]; // TODO: abstract this away into a function maybe?
 private _deployedRopeInfo = [];
 _vehicle setVariable ["KISKA_fastRope_deployedRopeInfo",_deployedRopeInfo];
+private _ropeLength = _hoverHeight + ROPE_LENGTH_BUFFER;
+_vehicle setVariable ["KISKA_fastRope_ropeLength",_ropeLength];
 _ropeOrigins apply {
     private _hook = ROPE_HOOK_OBJECT_CLASS createVehicle [0,0,0];
     _hook allowDamage false;
@@ -37,42 +39,13 @@ _ropeOrigins apply {
     // TODO: remote exec onto where vehicle is local too? This whole function should probably be executed on where the vehicle is local tbh
     _unitAttachmentDummy disableCollisionWith _vehicle; 
     
-    // TODO: why is there a ropeTop and a ropeBottom and why do we need
-    // dummy objects? It seems like all you need is ropeBottom
-    private _ropeTop = ropeCreate [_unitAttachmentDummy, [0, 0, 0], _hook, [0, 0, 0], 0.5];
-    private _ropeBottom = ropeCreate [_unitAttachmentDummy, [0, 0, 0], 1];
-    ropeUnwind [_ropeBottom, ROPE_UNWIND_SPEED, _hoverHeight + ROPE_LENGTH_BUFFER, false];
+    private _ropes = [] call KISKA_fnc_fastRope_createRope;
+    _ropes params ["_ropeTop","_ropeBottom"];
+    ropeUnwind [_ropeBottom, ROPE_UNWIND_SPEED, _ropeLength, false];
 
-    [
-        _ropeTop,
-        "RopeBreak",
-        {
-            params ["_rope"];
-            _thisArgs params ["_vehicle", "_unitAttachmentDummy"];
-            private _brokenRopeInfo = [_rope,_vehicle] call KISKA_fnc_fastRopeEvent_onRopeBreak;
 
-            if !(isNil "_brokenRopeInfo") then {
-                private _unitOnRope = (attachedObjects _unitAttachmentDummy) findIf {
-                    _x isKindOf "CAManBase"
-                };
-                detach _unitOnRope;
-            };
-        },
-        [_vehicle,_unitAttachmentDummy]
-    ] call CBA_fnc_addBISEventHandler;
-
-    [
-        _ropeTop,
-        "RopeBreak",
-        {
-            params ["_rope"];
-            _thisArgs params ["_vehicle"];
-            [_rope,_vehicle] call KISKA_fnc_fastRopeEvent_onRopeBreak;
-        },
-        [_vehicle]
-    ] call CBA_fnc_addBISEventHandler;
-
-    // TODO: make hashmap?
+    // This isn't a hashmap because of maximizing performance in the
+    // dropUnits function
     _deployedRopeInfo pushBack [
         _x,
         _ropeTop,
