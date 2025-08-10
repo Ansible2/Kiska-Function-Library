@@ -50,11 +50,12 @@ private _configReturn = configNull;
     private _configPath = _x;
     _pathArray apply {
         // stop going down this config class path does not exist
-        if !(isClass(_configPath >> _x)) then {
+        private _path = _configPath >> _x;
+        if (isNull _path) then {
             _configFound = false;
             break;
         };
-        _configPath = _configPath >> _x;
+        _configPath = _path;
         _configFound = true;
     };
 
