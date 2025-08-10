@@ -245,10 +245,12 @@ private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
         ],
         [
             "_onHoverEnd",
-            {
-                // TODO: 
-                // egress heli
-            }
+            [[_vehicle,_afterDropCode], {
+                _thisArgs params ["_vehicle","_afterDropCode"];
+
+                _vehicle setVariable ["KISKA_fastRope_unitsDroppedOff",nil];
+                [[_vehicle], _afterDropCode] call KISKA_fnc_callBack;
+            }]
         ]
     ]
 ] call KISKA_fnc_hover;
