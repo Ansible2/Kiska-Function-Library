@@ -42,12 +42,6 @@ scriptName "KISKA_fnc_fastRopeEvent_getConfigData";
 #define ACE_FRIES_TYPE "ace_fastrope_friesType"
 #define ACE_FRIES_ATTACHMENT_POINT "ace_fastrope_friesAttachmentPoint"
 
-#define FIND_CONFIG_ANY(KEY) [[ \
-    "CfgVehicles", \
-    _vehicleConfigName, \
-    "KISKA_fastRope", \
-    KEY \
-]] call KISKA_fnc_findConfigAny
 
 
 params [
@@ -55,11 +49,11 @@ params [
     ["_dataToFetch","",[""]]
 ];
 
+if (isNull _vehicleConfig) exitWith {};
+
 if (_vehicleConfig isEqualType objNull) then {
     _vehicleConfig = configOf _vehicleConfig;
 };
-
-if (isNull _vehicleConfig) exitWith {};
 
 private _overallMap = localNamespace getVariable "KISKA_fastRope_dataCacheMap";
 if (isNil "_overallMap") then {
@@ -72,43 +66,57 @@ private _dataValue = _vehicleDataMap get _dataToFetch;
 if !(isNil "_dataValue") exitWith { _dataValue };
 
 call {
+    #define FIND_CONFIG_ANY(KEY) \
+        [[ \
+            "CfgVehicles", \
+            configName _vehicleConfig, \
+            "KISKA_fastRope", \
+            KEY \
+        ]] call KISKA_fnc_findConfigAny
+
     if (_dataToFetch isEqualTo ROPE_ORIGINS_KEY) exitWith {
-        _dataValue = FIND_CONFIG_ANY(ROPE_ORIGINS_KEY);
-        if ( (isNil "_dataValue") OR {!(_dataValue isEqualType [])} ) then {
+        private _configOfData = FIND_CONFIG_ANY(ROPE_ORIGINS_KEY);
+        if ( (isNull _configOfData) OR { !(isArray _configOfData) } ) then {
             _dataValue = getArray(_vehicleConfig >> ACE_ROPE_ORIGINS);
+        } else {
+            _dataValue = getArray _configOfData;
         };
     };
 
     if (_dataToFetch isEqualTo FRIES_TYPE_KEY) exitWith {
-        _dataValue = FIND_CONFIG_ANY(FRIES_TYPE_KEY);
-        if ( (isNil "_dataValue") OR {!(_dataValue isEqualType "")} ) then {
+        private _configOfData = FIND_CONFIG_ANY(FRIES_TYPE_KEY);
+        if ( (isNull _configOfData) OR { !(isText _configOfData) } ) then {
             _dataValue = getText(_vehicleConfig >> ACE_FRIES_TYPE);
+        } else {
+            _dataValue = getText _configOfData;
         };
     };
 
     if (_dataToFetch isEqualTo FRIES_ATTACHMENT_POINT_KEY) exitWith {
-        _dataValue = FIND_CONFIG_ANY(FRIES_ATTACHMENT_POINT_KEY);
-        if ( (isNil "_dataValue") OR {!(_dataValue isEqualType "")} ) then {
+        private _configOfData = FIND_CONFIG_ANY(FRIES_ATTACHMENT_POINT_KEY);
+        if ( (isNull _configOfData) OR { !(isArray _configOfData) } ) then {
             _dataValue = getArray(_vehicleConfig >> ACE_FRIES_ATTACHMENT_POINT);
             if (_dataValue isEqualTo []) then {
                 _dataValue = [0,0,0];
             };
+        } else {
+            _dataValue = getArray _configOfData;
         };
     };
 
     if (_dataToFetch isEqualTo ON_INITIATED_KEY) exitWith {
-        private _onInitiated = FIND_CONFIG_ANY(ON_INITIATED_KEY);
-        if (_onInitiated isEqualType "") then {
-            _dataValue = compileFinal _onInitiated;
+        private _onInitiatedConfig = FIND_CONFIG_ANY(ON_INITIATED_KEY);
+        if (isText _onInitiatedConfig) then {
+            _dataValue = compileFinal (getText _onInitiatedConfig);
         } else {
             _dataValue = {};
         };
     };
 
     if (_dataToFetch isEqualTo ON_HOVER_STARTED_KEY) exitWith {
-        private _onHoverStarted = FIND_CONFIG_ANY(ON_HOVER_STARTED_KEY);
-        if (_onHoverStarted isEqualType "") then {
-            _dataValue = compileFinal _onHoverStarted;
+        private _onHoverStartedConfig = FIND_CONFIG_ANY(ON_HOVER_STARTED_KEY);
+        if (isText _onHoverStartedConfig) then {
+            _dataValue = compileFinal (getText _onHoverStartedConfig);
         } else {
             _dataValue = {};
         };

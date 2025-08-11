@@ -31,7 +31,7 @@
                     _unitsToDeploy = [[_vehicle],_unitsToDeploy] call KISKA_fnc_callBack;
                 };
 
-                call KISKA_fnc_fastRope_dropUnits;
+                [_vehicle,_unitsToDeploy] call KISKA_fnc_fastRope_dropUnits;
             }],
             0.25,
             _ropes

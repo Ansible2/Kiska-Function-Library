@@ -15,6 +15,7 @@ private _deployedRopeInfo = [];
 _vehicle setVariable ["KISKA_fastRope_deployedRopeInfo",_deployedRopeInfo];
 private _ropeLength = _hoverHeight + ROPE_LENGTH_BUFFER;
 _vehicle setVariable ["KISKA_fastRope_ropeLength",_ropeLength];
+
 _ropeOrigins apply {
     private _hook = ROPE_HOOK_OBJECT_CLASS createVehicle [0,0,0];
     _hook allowDamage false;
@@ -39,7 +40,7 @@ _ropeOrigins apply {
     // TODO: remote exec onto where vehicle is local too? This whole function should probably be executed on where the vehicle is local tbh
     _unitAttachmentDummy disableCollisionWith _vehicle; 
     
-    private _ropes = [] call KISKA_fnc_fastRope_createRope;
+    private _ropes = [_vehicle,_unitAttachmentDummy,_hook] call KISKA_fnc_fastRope_createRope;
     _ropes params ["_ropeTop","_ropeBottom"];
     ropeUnwind [_ropeBottom, ROPE_UNWIND_SPEED, _ropeLength, false];
 
@@ -58,5 +59,3 @@ _ropeOrigins apply {
 
     _ropeBottom
 };
-
-

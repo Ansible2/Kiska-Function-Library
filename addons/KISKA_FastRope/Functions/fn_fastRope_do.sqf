@@ -85,7 +85,7 @@ private _paramDetails = [
     ["vehicle",{objNull},[objNull]],
     ["dropPosition",{[]},[[],objNull]],
     ["unitsToDeploy",{[]},[[],grpNull,objNull,{},""]],
-    ["afterDropCode",{{}},["",{},[]]],
+    ["onDroppedUnits",{{}},["",{},[]]],
     ["hoverHeight",{20},[123]],
     [
         "getRopeOrigins",
@@ -103,9 +103,11 @@ private _paramDetails = [
                 _vehicle,
                 "onInitiated"
             ] call KISKA_fnc_fastRopeEvent_getConfigData;
-            if (_onInitiated isNotEqualTo {}) exitWith { _onInitiated };
+            if (_onInitiated isNotEqualTo {}) exitWith { 
+                [_vehicle] call _onInitiated;
+            };
             
-            KISKA_fnc_fastRopeEvent_onInitiatedDefault
+            [_vehicle] call KISKA_fnc_fastRopeEvent_onInitiatedDefault;
         }},
         CALL_BACK_TYPES
     ],
@@ -117,9 +119,11 @@ private _paramDetails = [
                 _vehicle,
                 "onHoverStarted"
             ] call KISKA_fnc_fastRopeEvent_getConfigData;
-            if (_onHoverStarted isNotEqualTo {}) exitWith { _onHoverStarted };
+            if (_onHoverStarted isNotEqualTo {}) exitWith { 
+                [_vehicle] call _onHoverStarted;
+            };
             
-            KISKA_fnc_fastRopeEvent_onHoverStartedDefault
+            [_vehicle] call KISKA_fnc_fastRopeEvent_onHoverStartedDefault;
         }},
         CALL_BACK_TYPES
     ]
@@ -201,7 +205,6 @@ if (_unitsToDeployFiltered isEqualTo []) exitWith {
     false
 };
 
-
 [
     {
         params ["_vehicle","_onInitiated"];
@@ -235,21 +238,23 @@ private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
         ],
         [
             "_onHoverStart",
-            [[_unitsToDeployIsCode,_unitsToDeployFiltered,_ropeOrigins,_hoverHeight], {
+            [[_unitsToDeployIsCode,_unitsToDeployFiltered,_ropeOrigins,_hoverHeight,_onHoverStarted], {
                 params ["_vehicle"];
 
-                _vehicle call KISKA_fnc_fastRopeEvent_onHoverStartedDefault;
-                _thisArgs insert [0,_vehicle];
+                private _onHoverStarted = _thisArgs deleteAt 4;
+                [_vehicle,_onHoverStarted] call KISKA_fnc_callBack;
+
+                _thisArgs insert [0,[_vehicle]];
                 _thisArgs call KISKA_fnc_fastRope_startDeploymentProcess;
             }]
         ],
         [
             "_onHoverEnd",
-            [[_vehicle,_afterDropCode], {
-                _thisArgs params ["_vehicle","_afterDropCode"];
+            [[_vehicle,_onDroppedUnits], {
+                _thisArgs params ["_vehicle","_onDroppedUnits"];
 
                 _vehicle setVariable ["KISKA_fastRope_unitsDroppedOff",nil];
-                [[_vehicle], _afterDropCode] call KISKA_fnc_callBack;
+                [_vehicle, _onDroppedUnits] call KISKA_fnc_callBack;
             }]
         ]
     ]

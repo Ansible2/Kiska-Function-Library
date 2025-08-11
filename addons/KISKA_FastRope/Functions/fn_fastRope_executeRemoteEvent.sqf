@@ -63,7 +63,7 @@ if (_event == "EndAttachmentDescentLoop") exitWith {
     _ropeUnitAttachmentDummy setMass ATTACHMENT_DUMMY_ORIGINAL_MASS;
     _ropeUnitAttachmentDummy setCenterOfMass ATTACHMENT_DUMMY_ORIGINAL_CENTER_OF_MASS;
 
-
+    // TODO: create new ropes?
     nil
 };
 

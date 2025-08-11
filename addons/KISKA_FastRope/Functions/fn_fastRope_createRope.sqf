@@ -19,10 +19,11 @@ private _ropeBottom = ropeCreate [_unitAttachmentDummy, [0, 0, 0], 1];
 
         if !(isNil "_brokenRopeInfo") then {
             // TODO: can probably just save a variable to the _unitAttachmentDummy namespace
-            private _unitOnRope = (attachedObjects _unitAttachmentDummy) findIf {
+            private _attachedObjects = attachedObjects _unitAttachmentDummy;
+            private _indexOfUnitOnRope = _attachedObjects findIf {
                 _x isKindOf "CAManBase"
             };
-            detach _unitOnRope;
+            detach (_attachedObjects select _indexOfUnitOnRope);
         };
     },
     [_vehicle,_unitAttachmentDummy]
@@ -40,4 +41,4 @@ private _ropeBottom = ropeCreate [_unitAttachmentDummy, [0, 0, 0], 1];
 ] call CBA_fnc_addBISEventHandler;
 
 
-nil
+[_ropeTop,_ropeBottom]

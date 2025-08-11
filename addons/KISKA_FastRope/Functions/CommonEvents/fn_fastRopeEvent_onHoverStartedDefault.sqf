@@ -14,27 +14,36 @@ if !(alive _vehicle) exitWith {};
     "Door_rear_source", 
     "Door_6_source", 
     "CargoDoorR", 
-    "CargoDoorL",
+    "CargoDoorL"
 ] apply { _vehicle animateDoor [_x, 1]; };
 
 ["dvere1_posunZ", "dvere2_posunZ", "doors"] apply {
     _vehicle animateSource [_x, 1];
 };
 
-private _fries = _vehicle getVariable ["KISKA_fastRope_fries", objNull];
+private _fries = _vehicle getVariable ["KISKA_fastRope_fries",objNull];
 private _waitTime = 2;
 if !(isNull _fries) then {
-    ["extendHookRight", "extendHookLeft"] apply {
-        _vehicle animateSource [_x, 1];
-    };
+    [
+        {
+            params ["_fries"];
+            ["extendHookRight", "extendHookLeft"] apply {
+                _fries animateSource [_x, 1];
+            };
+        },
+        [_fries],
+        2
+    ] call CBA_fnc_waitAndExecute;
+    
     _waitTime = 4;
 };
 
 [
     {
+        params ["_vehicle"];
         [_vehicle,true] call KISKA_fnc_fastRope_canDeployRopes
     },
-    [],
+    _this,
     _waitTime
 ] call CBA_fnc_waitAndExecute;
 

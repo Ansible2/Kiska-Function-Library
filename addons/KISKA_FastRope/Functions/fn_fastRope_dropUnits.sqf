@@ -10,6 +10,7 @@
 #define ROPE_BOTTOM_UNWIND_LENGTH 0.5
 #define ATTACH_TO_DUMMY_COORDS [0, 0, -1.45]
 #define ON_GROUND_BUFFER 0.2
+#define ATTACHMENT_DUMMY_DOWNWARD_MASS 80
 
 params [
     ["_vehicle",objNull,[objNull]],
@@ -28,11 +29,11 @@ private _fn_dropUnitLoop = {
     [
         {
             params ["_args","_pfhHandle"];
-            private _unit = _this select 0;
+            private _unit = _args select 0;
             // wait for unit to be outside of vehicle
             if !(isNull (objectParent _unit)) exitWith {};
             
-            private _ropeInfo = _this select 1;
+            private _ropeInfo = _args select 1;
             private _hook = _ropeInfo select ROPE_HOOK_INDEX;
             // TODO: check if rope cut
             // Prevent teleport if hook has been deleted due to rope cut
@@ -43,7 +44,7 @@ private _fn_dropUnitLoop = {
                 [_pfhHandle] call CBA_fnc_removePerFrameHandler;
             };
 
-            private _vehicle = _this select 2;
+            private _vehicle = _args select 2;
             private _ropeLength = _vehicle getVariable "KISKA_fastRope_ropeLength";
             private _ropeUnitAttachmentDummy = _ropeInfo select ROPE_UNIT_ATTACHMENT_DUMMY_INDEX;
             // Move unit down rope
@@ -141,7 +142,7 @@ private _fn_dropUnitLoop = {
 };
 
 private _fn_dropUnitsRecursive = {
-    params ["_vehicle","_unoccupiedRopeInfo"];
+    params ["_vehicle","_unoccupiedRopeInfo","_unitsToDeploy"];
 
     private _unit = _unitsToDeploy deleteAt 0;
     if ((alive _unit) AND {_unit in _vehicle}) then {
@@ -169,8 +170,6 @@ private _fn_dropUnitsRecursive = {
                     [_pilot,"MOVE"] remoteExecCall ["enableAI",_pilot];
                 };
                 
-                // TODO:
-                // cut ropes
                 _ropeDetailArrays apply {
                     _x params ["","_ropeTop","_ropeBottom","_ropeUnitAttachmentDummy","_hook"];
                     
@@ -205,35 +204,35 @@ private _fn_dropUnitsRecursive = {
         ] call KISKA_fnc_waitUntil;
     };
 
-    [
-        {
-            // TODO: handle all ropes broken
-            // TODO: handle vehicle dead
-            private _ropes = _this select 1;
-            private _indexOfUnoccupiedRope = _ropes findIf {
-                !(_x select ROPE_IS_OCCUPIED_INDEX) AND 
-                { !(_x select ROPE_IS_BROKEN_INDEX) }
-            };
-            if (_indexOfUnoccupiedRope isEqualTo -1) exitWith { false };
+    // [
+    //     {
+    //         // TODO: handle all ropes broken
+    //         // TODO: handle vehicle dead
+    //         private _ropes = _this select 1;
+    //         private _indexOfUnoccupiedRope = _ropes findIf {
+    //             !(_x select ROPE_IS_OCCUPIED_INDEX) AND 
+    //             { !(_x select ROPE_IS_BROKEN_INDEX) }
+    //         };
+    //         if (_indexOfUnoccupiedRope isEqualTo -1) exitWith { false };
             
-            private _unoccupiedRopeInfo = _ropes select _indexOfUnoccupiedRope;
-            private _vehicle = _this select 0;
-            _vehicle setVariable ["KISKA_fastRope_unoccupiedRopeInfo",_unoccupiedRopeInfo];
-            true
-        },
-        {
-            params ["_vehicle","","_fn_dropUnitsRecursive"];
-            private _unoccupiedRopeInfo = _vehicle getVariable "KISKA_fastRope_unoccupiedRopeInfo";
-            _vehicle setVariable ["KISKA_fastRope_unoccupiedRopeInfo",nil];
-            [_vehicle,_unoccupiedRopeInfo] call _fn_dropUnitsRecursive;
-        },
-        0.25,
-        [_vehicle,_ropes,_fn_dropUnitsRecursive]
-    ] call KISKA_fnc_waitUntil;
+    //         private _unoccupiedRopeInfo = _ropes select _indexOfUnoccupiedRope;
+    //         private _vehicle = _this select 0;
+    //         _vehicle setVariable ["KISKA_fastRope_unoccupiedRopeInfo",_unoccupiedRopeInfo];
+    //         true
+    //     },
+    //     {
+    //         params ["_vehicle","","_unitsToDeploy","_fn_dropUnitsRecursive"];
+    //         private _unoccupiedRopeInfo = _vehicle getVariable "KISKA_fastRope_unoccupiedRopeInfo";
+    //         _vehicle setVariable ["KISKA_fastRope_unoccupiedRopeInfo",nil];
+    //         [_vehicle,_unoccupiedRopeInfo,_unitsToDeploy] call _fn_dropUnitsRecursive;
+    //     },
+    //     0.25,
+    //     [_vehicle,_ropes,_unitsToDeploy,_fn_dropUnitsRecursive]
+    // ] call KISKA_fnc_waitUntil;
 };
 
 private _ropes = _vehicle getVariable ["KISKA_fastRope_deployedRopeInfo",[]];
-[_vehicle, _ropes select 0] call _fn_dropUnitsRecursive;
+[_vehicle, _ropes select 0, _unitsToDeploy] call _fn_dropUnitsRecursive;
 
 
 nil
