@@ -54,11 +54,25 @@ class CfgVehicles
     class KISKA_friesBase : Helicopter_Base_F // TODO: change classnames to be clearer (e.g. what is "fries")
     {
         destrType = "DestructNo";
+
+        // stops config errors with object being loaded
+        class Turrets {};
+        class ACE_Actions {};
+        class ACE_SelfActions {};
+        ace_cargo_hasCargo = 0;
+        ace_cargo_space = 0;
+        acre_hasInfantryPhone = 0;
+        class AcreRacks {};
+        class AcreIntercoms {};
     };
     class KISKA_friesAnchorBar : KISKA_friesBase
     {
         author = "jokoho48";
         scope = 1;
+        // NOTE:
+        // Textures for this model are configured in the model's .p3d Face Properties
+        // Which can be edited by opening the p3d in Object Builder, selecting
+        // all of the mesh (faces) of the model and pressing E.
         model = "\KISKA_Fastrope\Models\friesAnchorBar.p3d";
         animated = 1;
         class AnimationSources 
@@ -77,6 +91,10 @@ class CfgVehicles
     {
         author = "jokoho48";
         scope = 1;
+        // NOTE:
+        // Textures for this model are configured in the model's .p3d Face Properties
+        // Which can be edited by opening the p3d in Object Builder, selecting
+        // all of the mesh (faces) of the model and pressing E.
         model = "\KISKA_Fastrope\Models\friesGantry.p3d";
         animated = 1;
         class AnimationSources 
