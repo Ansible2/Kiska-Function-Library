@@ -1,13 +1,14 @@
 params [
     "_vehicle",
     "_unitAttachmentDummy",
-    "_hook"
+    "_hook",
+    ["_bottomLength",1,[123]]
 ];
 
 // TODO: why is there a ropeTop and a ropeBottom and why do we need
 // dummy objects? It seems like all you need is ropeBottom
 private _ropeTop = ropeCreate [_unitAttachmentDummy, [0, 0, 0], _hook, [0, 0, 0], 0.5];
-private _ropeBottom = ropeCreate [_unitAttachmentDummy, [0, 0, 0], 1];
+private _ropeBottom = ropeCreate [_unitAttachmentDummy, [0, 0, 0], _bottomLength];
 
 [
     _ropeTop,

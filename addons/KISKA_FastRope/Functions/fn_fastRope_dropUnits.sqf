@@ -7,7 +7,6 @@
 #define ROPE_IS_BROKEN_INDEX 6
 
 #define ROPE_UNWIND_SPEED 6
-#define ROPE_BOTTOM_UNWIND_LENGTH 0.5
 #define ATTACH_TO_DUMMY_COORDS [0, 0, -1.45]
 #define ON_GROUND_BUFFER 0.2
 #define ATTACHMENT_DUMMY_DOWNWARD_MASS 80
@@ -60,16 +59,14 @@ private _fn_dropUnitLoop = {
                 // TODO: why unwind more?
                 private _ropeTop = _ropeInfo select ROPE_TOP_INDEX;
                 [
-                    _ropeTop,
-                    ROPE_UNWIND_SPEED,
-                    _ropeLength
-                ] remoteExecCall ["ropeUnwind",_ropeTop];
-                private _ropeBottom = _ropeInfo select ROPE_BOTTOM_INDEX;
-                [
-                    _ropeBottom,
-                    ROPE_UNWIND_SPEED,
-                    _ropeLength
-                ] remoteExecCall ["ropeUnwind",_ropeBottom];
+                    [_ropeInfo select ROPE_TOP_INDEX, _ropeLength],
+                    [_ropeInfo select ROPE_BOTTOM_INDEX, 0.5]
+                ] apply {
+                    _x params ["_rope","_unwindLength"];
+                    [
+                        [_rope, ROPE_UNWIND_SPEED, _unwindLength]
+                    ] remoteExecCall ["ropeUnwind",_rope];
+                };
             };
 
             private _unitWasAttachedToRope = _unit getVariable ["KISKA_fastRope_attachedToRope",false];
@@ -107,7 +104,6 @@ private _fn_dropUnitLoop = {
                 { !((lifeState _unit) in ["HEALTHY", "INJURED"]) }
             ) exitWith {
                 detach _unit;
-                _ropeInfo set [ROPE_IS_OCCUPIED_INDEX,false];
 
                 [
                     "EndAttachmentDescentLoop",
@@ -120,17 +116,21 @@ private _fn_dropUnitLoop = {
                 ] remoteExecCall ["KISKA_fnc_fastRope_executeRemoteEvent",_unit];
 
                 // TODO: Why recreate the rope???
+                // So that each rope can unwind 
                 deleteVehicle [
                     _ropeTop,
                     (_ropeInfo select ROPE_BOTTOM_INDEX)
                 ];
-                ([
+                private _newRopes = [
                     _vehicle,
                     _ropeUnitAttachmentDummy,
-                    _hook
-                ] call KISKA_fastRope_createRope) params ["_ropeTop","_ropeBottom"];
-                _ropeInfo set [ROPE_TOP_INDEX,_ropeTop];
-                _ropeInfo set [ROPE_BOTTOM_INDEX,_ropeBottom];
+                    _hook,
+                    _ropeLength                    
+                ] call KISKA_fnc_fastRope_createRope;
+
+                _ropeInfo set [ROPE_TOP_INDEX,_newRopes select 0];
+                _ropeInfo set [ROPE_BOTTOM_INDEX,_newRopes select 1];
+                _ropeInfo set [ROPE_IS_OCCUPIED_INDEX,false];
                 
                 [_pfhHandle] call CBA_fnc_removePerFrameHandler;
             };

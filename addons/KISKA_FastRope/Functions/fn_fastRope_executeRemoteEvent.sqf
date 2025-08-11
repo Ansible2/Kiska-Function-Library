@@ -36,10 +36,11 @@ if (_event == "StartAttachmentDescentLoop") exitWith {
 
     private _attachmentLoopId = [
         {
-            _ropeUnitAttachmentDummy setVelocity DUMMY_FAST_ROPE_DESCENT_VELOCITY;
+            // Setting the velocity manually to reduce twitching
+            (_this select 0) setVelocity DUMMY_FAST_ROPE_DESCENT_VELOCITY;
         },
         0,
-        _ropeUnitAttachmentDummy
+        _args
     ] call CBA_fnc_addPerFrameHandler;
     _ropeUnitAttachmentDummy setVariable [ATTACHMENT_DESCENT_LOOP_VAR,_attachmentLoopId];
 
@@ -63,7 +64,6 @@ if (_event == "EndAttachmentDescentLoop") exitWith {
     _ropeUnitAttachmentDummy setMass ATTACHMENT_DUMMY_ORIGINAL_MASS;
     _ropeUnitAttachmentDummy setCenterOfMass ATTACHMENT_DUMMY_ORIGINAL_CENTER_OF_MASS;
 
-    // TODO: create new ropes?
     nil
 };
 
