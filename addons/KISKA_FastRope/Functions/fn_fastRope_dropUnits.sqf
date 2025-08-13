@@ -10,6 +10,8 @@
 #define ATTACH_TO_DUMMY_COORDS [0, 0, -1.45]
 #define ON_GROUND_BUFFER 0.2
 #define ATTACHMENT_DUMMY_DOWNWARD_MASS 80
+#define TIME_UNTIL_ROPE_DELETION 20
+#define FALLING_ROPE_MASS 1000
 
 scriptName "KISKA_fnc_fastRope_dropUnits";
 
@@ -198,19 +200,24 @@ if (_unitsToDeploy isEqualTo []) exitWith {
                     };
                 };
 
-                // Only delete the hook first so the rope falls down.
-                // Note: ropeDetach was used here before, but the command seems a bit broken.
-                // TODO: try ropeDetach
-                deleteVehicle _hook;
+                // Delete hook and top so rope falls
+                deleteVehicle [_hook,_ropeTop];
+
+                // Give rope some extra mass to fall quick
+                [
+                    _ropeUnitAttachmentDummy,
+                    FALLING_ROPE_MASS
+                ] remoteExec ["setMass",_ropeUnitAttachmentDummy];
+
                 [
                     {deleteVehicle _this}, 
-                    [_ropeTop, _ropeBottom, _dummy], 
-                    60
+                    [_ropeBottom, _ropeUnitAttachmentDummy], 
+                    TIME_UNTIL_ROPE_DELETION
                 ] call CBA_fnc_waitAndExecute;
             };
 
-            _vehicle setVariable ["KISKA_fastRope_deployedRopeInfo", nil];
             _vehicle setVariable ["KISKA_fastRope_pilot",nil];
+            
             // TODO: use function?
             _vehicle setVariable ["KISKA_fastRope_unitsDroppedOff",true];
         },

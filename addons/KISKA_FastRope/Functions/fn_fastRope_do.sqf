@@ -252,8 +252,11 @@ private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
             "_onHoverEnd",
             [[_vehicle,_onDroppedUnits], {
                 _thisArgs params ["_vehicle","_onDroppedUnits"];
+                _vehicle setVariable ["KISKA_fastRope_deployedRopeInfo", nil];
+                _vehicle setVariable ["KISKA_fastRope_unitsDroppedOff", nil];
+                _vehicle setVariable ["KISKA_fastRope_ropeLength", nil];
+                _vehicle setVariable ["KISKA_fastRope_deployedRopeInfo", nil];
 
-                _vehicle setVariable ["KISKA_fastRope_unitsDroppedOff",nil];
                 [_vehicle, _onDroppedUnits] call KISKA_fnc_callBack;
             }]
         ]
