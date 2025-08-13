@@ -11,19 +11,43 @@
 #define ON_GROUND_BUFFER 0.2
 #define ATTACHMENT_DUMMY_DOWNWARD_MASS 80
 
+scriptName "KISKA_fnc_fastRope_dropUnits";
+
 params [
     ["_vehicle",objNull,[objNull]],
-    ["_unitsToDeploy",[],[[]]]
+    ["_unitsToDeploy",[],[[]]],
+    ["_isRecursiveCall",false,[true]]
 ];
 
-if !(alive _vehicle) exitWith {};
+if !(_isRecursiveCall) exitWith {
+    if !(alive _vehicle) exitWith {};
 
-private _pilot = currentPilot _vehicle;
-[_pilot,"MOVE"] remoteExecCall ["disableAI",_pilot];
-_vehicle setVariable ["KISKA_fastRope_pilot",_pilot];
+    private _pilot = currentPilot _vehicle;
+    [_pilot,"MOVE"] remoteExec ["disableAI",_pilot];
+    _vehicle setVariable ["KISKA_fastRope_pilot",_pilot];
 
-private _fn_dropUnitLoop = {
-    params ["_unit","_unoccupiedRopeInfo","_vehicle"];
+    [_vehicle, _unitsToDeploy, true] call KISKA_fnc_fastRope_dropUnits;
+};
+
+private _ropeDetailArrays = _vehicle getVariable ["KISKA_fastRope_deployedRopeInfo",[]];
+private _indexOfUnoccupiedRope = _ropeDetailArrays findIf {
+    !(_x select ROPE_IS_OCCUPIED_INDEX) AND 
+    { !(_x select ROPE_IS_BROKEN_INDEX) }
+};
+if (_indexOfUnoccupiedRope isEqualTo -1) exitWith { 
+    hint "ERROR, COULDNT FIND ROPE";
+    // TODO: better error
+};
+
+/* ----------------------------------------------------------------------------
+    Drop Unit
+---------------------------------------------------------------------------- */
+private _unoccupiedRopeInfo = _ropeDetailArrays select _indexOfUnoccupiedRope;
+private _unit = _unitsToDeploy deleteAt 0;
+if ((alive _unit) AND {_unit in _vehicle}) then {
+    _unoccupiedRopeInfo set [ROPE_IS_OCCUPIED_INDEX,true];
+    unassignVehicle _unit;
+    [_unit] allowGetIn false;
 
     [
         {
@@ -55,7 +79,7 @@ private _fn_dropUnitLoop = {
                     "UpdateAttachmentDummyMass",
                     [_ropeUnitAttachmentDummy,getPosASLVisual _hook]
                 ] remoteExecCall ["KISKA_fnc_fastRope_executeRemoteEvent",_ropeUnitAttachmentDummy];
-               
+            
                 // TODO: why unwind more?
                 private _ropeTop = _ropeInfo select ROPE_TOP_INDEX;
                 [
@@ -137,102 +161,87 @@ private _fn_dropUnitLoop = {
 
         }, 
         0, 
-        _this
+        [_unit,_unoccupiedRopeInfo,_vehicle]
     ] call CBA_fnc_addPerFrameHandler;
+    moveOut _unit;
 };
 
-private _fn_dropUnitsRecursive = {
-    params ["_vehicle","_unoccupiedRopeInfo","_unitsToDeploy"];
+/* ----------------------------------------------------------------------------
+    Check for recursion end
+---------------------------------------------------------------------------- */
+if (_unitsToDeploy isEqualTo []) exitWith {
+    [
+        {
+            private _ropeDetailArrays = _this select 1;
+            private _indexOfOccupiedRope = _ropeDetailArrays findIf {_x select ROPE_IS_OCCUPIED_INDEX};
+            private _noRopesInOccupied = _indexOfOccupiedRope isEqualTo -1;
+            _noRopesInOccupied
+        },
+        {
+            params ["_vehicle","_ropeDetailArrays"];
 
-    private _unit = _unitsToDeploy deleteAt 0;
-    if ((alive _unit) AND {_unit in _vehicle}) then {
-        _unoccupiedRopeInfo set [ROPE_IS_OCCUPIED_INDEX,true];
-        unassignVehicle _unit;
-        [_unit] allowGetIn false;
-        [_unit,_unoccupiedRopeInfo,_vehicle] call _fn_dropUnitLoop;
-        moveOut _unit;
-    };
-
-    private _ropeDetailArrays = _vehicle getVariable ["KISKA_fastRope_deployedRopeInfo",[]];
-    if (_unitsToDeploy isEqualTo []) exitWith {
-        [
-            {
-                private _ropeDetailArrays = _this select 1;
-                private _indexOfOccupiedRope = _ropeDetailArrays findIf {_x select ROPE_IS_OCCUPIED_INDEX};
-                private _noRopesInOccupied = _indexOfOccupiedRope isEqualTo -1;
-                _noRopesInOccupied
-            },
-            {
-                params ["_vehicle","_ropeDetailArrays"];
-
-                private _pilot = _vehicle getVariable ["KISKA_fastRope_pilot",objNull];
-                if (alive _pilot) then {
-                    [_pilot,"MOVE"] remoteExecCall ["enableAI",_pilot];
-                };
-                
-                _ropeDetailArrays apply {
-                    _x params ["","_ropeTop","_ropeBottom","_ropeUnitAttachmentDummy","_hook"];
-                    
-                    // Knock unit off rope if occupied
-                    if (_x select ROPE_IS_OCCUPIED_INDEX) then {
-                        private _attachedObjects = attachedObjects _ropeUnitAttachmentDummy;
-                        // Rope is considered occupied when it's broken as well, so check if array is empty
-                        // Note: ropes are not considered attached objects by Arma
-                        if (_attachedObjects isNotEqualTo []) then {
-                            detach (_attachedObjects select 0);
-                        };
-                    };
-
-                    // Only delete the hook first so the rope falls down.
-                    // Note: ropeDetach was used here before, but the command seems a bit broken.
-                    // TODO: try ropeDetach
-                    deleteVehicle _hook;
-                    [
-                        {deleteVehicle _this}, 
-                        [_ropeTop, _ropeBottom, _dummy], 
-                        60
-                    ] call CBA_fnc_waitAndExecute;
-                };
-
-                _vehicle setVariable ["KISKA_fastRope_deployedRopeInfo", nil];
-                _vehicle setVariable ["KISKA_fastRope_pilot",nil];
-                // TODO: use function?
-                _vehicle setVariable ["KISKA_fastRope_unitsDroppedOff",true];
-            },
-            0.25,
-            [_vehicle,_ropeDetailArrays]
-        ] call KISKA_fnc_waitUntil;
-    };
-
-    // [
-    //     {
-    //         // TODO: handle all ropes broken
-    //         // TODO: handle vehicle dead
-    //         private _ropes = _this select 1;
-    //         private _indexOfUnoccupiedRope = _ropes findIf {
-    //             !(_x select ROPE_IS_OCCUPIED_INDEX) AND 
-    //             { !(_x select ROPE_IS_BROKEN_INDEX) }
-    //         };
-    //         if (_indexOfUnoccupiedRope isEqualTo -1) exitWith { false };
+            private _pilot = _vehicle getVariable ["KISKA_fastRope_pilot",objNull];
+            if (alive _pilot) then {
+                [_pilot,"MOVE"] remoteExecCall ["enableAI",_pilot];
+            };
             
-    //         private _unoccupiedRopeInfo = _ropes select _indexOfUnoccupiedRope;
-    //         private _vehicle = _this select 0;
-    //         _vehicle setVariable ["KISKA_fastRope_unoccupiedRopeInfo",_unoccupiedRopeInfo];
-    //         true
-    //     },
-    //     {
-    //         params ["_vehicle","","_unitsToDeploy","_fn_dropUnitsRecursive"];
-    //         private _unoccupiedRopeInfo = _vehicle getVariable "KISKA_fastRope_unoccupiedRopeInfo";
-    //         _vehicle setVariable ["KISKA_fastRope_unoccupiedRopeInfo",nil];
-    //         [_vehicle,_unoccupiedRopeInfo,_unitsToDeploy] call _fn_dropUnitsRecursive;
-    //     },
-    //     0.25,
-    //     [_vehicle,_ropes,_unitsToDeploy,_fn_dropUnitsRecursive]
-    // ] call KISKA_fnc_waitUntil;
+            _ropeDetailArrays apply {
+                _x params ["","_ropeTop","_ropeBottom","_ropeUnitAttachmentDummy","_hook"];
+                
+                // Knock unit off rope if occupied
+                if (_x select ROPE_IS_OCCUPIED_INDEX) then {
+                    private _attachedObjects = attachedObjects _ropeUnitAttachmentDummy;
+                    // Rope is considered occupied when it's broken as well, so check if array is empty
+                    // Note: ropes are not considered attached objects by Arma
+                    if (_attachedObjects isNotEqualTo []) then {
+                        detach (_attachedObjects select 0);
+                    };
+                };
+
+                // Only delete the hook first so the rope falls down.
+                // Note: ropeDetach was used here before, but the command seems a bit broken.
+                // TODO: try ropeDetach
+                deleteVehicle _hook;
+                [
+                    {deleteVehicle _this}, 
+                    [_ropeTop, _ropeBottom, _dummy], 
+                    60
+                ] call CBA_fnc_waitAndExecute;
+            };
+
+            _vehicle setVariable ["KISKA_fastRope_deployedRopeInfo", nil];
+            _vehicle setVariable ["KISKA_fastRope_pilot",nil];
+            // TODO: use function?
+            _vehicle setVariable ["KISKA_fastRope_unitsDroppedOff",true];
+        },
+        0.25,
+        [_vehicle,_ropeDetailArrays]
+    ] call KISKA_fnc_waitUntil;
 };
 
-private _ropes = _vehicle getVariable ["KISKA_fastRope_deployedRopeInfo",[]];
-[_vehicle, _ropes select 0, _unitsToDeploy] call _fn_dropUnitsRecursive;
+
+/* ----------------------------------------------------------------------------
+    Wait to drop next unit
+---------------------------------------------------------------------------- */
+[
+    {
+        // TODO: handle all ropes broken
+        // TODO: handle vehicle dead
+        private _ropeDetailArrays = _this select 2;
+        private _indexOfUnoccupiedRope = _ropeDetailArrays findIf {
+            !(_x select ROPE_IS_OCCUPIED_INDEX) AND 
+            { !(_x select ROPE_IS_BROKEN_INDEX) }
+        };
+
+        _indexOfUnoccupiedRope isNotEqualTo -1 // true = unoccupied rope found
+    },
+    {
+        params ["_vehicle","_unitsToDeploy"];
+        [_vehicle, _unitsToDeploy, true] call KISKA_fnc_fastRope_dropUnits;
+    },
+    0.25,
+    [_vehicle,_unitsToDeploy,_ropeDetailArrays]
+] call KISKA_fnc_waitUntil;
 
 
 nil
