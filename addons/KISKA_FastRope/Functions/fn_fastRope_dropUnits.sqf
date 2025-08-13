@@ -29,6 +29,7 @@ if !(_isRecursiveCall) exitWith {
     [_vehicle, _unitsToDeploy, true] call KISKA_fnc_fastRope_dropUnits;
 };
 
+
 private _ropeDetailArrays = _vehicle getVariable ["KISKA_fastRope_deployedRopeInfo",[]];
 private _indexOfUnoccupiedRope = _ropeDetailArrays findIf {
     !(_x select ROPE_IS_OCCUPIED_INDEX) AND 
@@ -89,7 +90,7 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
                     _x params ["_rope","_unwindLength"];
                     [
                         [_rope, ROPE_UNWIND_SPEED, _unwindLength]
-                    ] remoteExecCall ["ropeUnwind",_rope];
+                    ] remoteExec ["ropeUnwind",_rope];
                 };
             };
 
@@ -100,7 +101,7 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
                 [
                     _ropeUnitAttachmentDummy,
                     _unit
-                ] remoteExecCall ["disableCollisionWith",[_ropeUnitAttachmentDummy,_unit]];
+                ] remoteExec ["disableCollisionWith",[_ropeUnitAttachmentDummy,_unit]];
                 _unit attachTo [_ropeUnitAttachmentDummy, ATTACH_TO_DUMMY_COORDS];
                 
                 [
@@ -151,7 +152,6 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
                     _hook,
                     _ropeLength                    
                 ] call KISKA_fnc_fastRope_createRope;
-
                 _ropeInfo set [ROPE_TOP_INDEX,_newRopes select 0];
                 _ropeInfo set [ROPE_BOTTOM_INDEX,_newRopes select 1];
                 _ropeInfo set [ROPE_IS_OCCUPIED_INDEX,false];
@@ -237,7 +237,14 @@ if (_unitsToDeploy isEqualTo []) exitWith {
     },
     {
         params ["_vehicle","_unitsToDeploy"];
-        [_vehicle, _unitsToDeploy, true] call KISKA_fnc_fastRope_dropUnits;
+        // using this buffer so that if there are multiple ropes
+        // units don't look so much like they are dropping in perfect unison
+        private _deployBuffer = random [0, 0.5, 1];
+        [
+            { _this call KISKA_fnc_fastRope_dropUnits },
+            [_vehicle, _unitsToDeploy, true],
+            _deployBuffer
+        ] call CBA_fnc_waitAndExecute;
     },
     0.25,
     [_vehicle,_unitsToDeploy,_ropeDetailArrays]
