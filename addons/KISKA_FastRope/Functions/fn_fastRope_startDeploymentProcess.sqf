@@ -30,7 +30,8 @@
                 if (_unitsToDeployIsCode) then {
                     _unitsToDeploy = [[_vehicle],_unitsToDeploy] call KISKA_fnc_callBack;
                 };
-
+                
+                private _ropes = _this;
                 [_vehicle,_unitsToDeploy] call KISKA_fnc_fastRope_dropUnits;
             }],
             0.25,
