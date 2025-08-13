@@ -36,6 +36,7 @@ scriptName "KISKA_fnc_fastRopeEvent_getConfigData";
 #define ROPE_ORIGINS_KEY "ropeOrigins"
 #define FRIES_ATTACHMENT_POINT_KEY "friesAttachmentPoint"
 #define ON_INITIATED_KEY "onInitiated"
+#define ON_HOVER_STARTED_KEY "onHoverStarted"
 #define ON_ROPES_CUT_KEY "onRopesCut"
 
 #define ACE_ROPE_ORIGINS "ace_fastrope_ropeOrigins"
