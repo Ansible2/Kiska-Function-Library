@@ -85,7 +85,27 @@ private _paramDetails = [
     ["vehicle",{objNull},[objNull]],
     ["dropPosition",{[]},[[],objNull]],
     ["unitsToDeploy",{[]},[[],grpNull,objNull,{},""]],
-    ["onDroppedUnits",{{}},["",{},[]]],
+    [
+        "onRopesCut",
+        {{
+            params ["_vehicle"];
+            private _onRopesCut = [
+                _vehicle,
+                "onRopesCut"
+            ] call KISKA_fnc_fastRopeEvent_getConfigData;
+            if (_onRopesCut isNotEqualTo {}) exitWith { 
+                [_vehicle] call _onRopesCut;
+            };
+            
+            [_vehicle] call KISKA_fnc_fastRopeEvent_onRopesCutDefault;
+        }},
+        CALL_BACK_TYPES
+    ],
+    [
+        "onDroppedUnits",
+        {{}},
+        CALL_BACK_TYPES
+    ],
     ["hoverHeight",{20},[123]],
     [
         "getRopeOrigins",
@@ -250,13 +270,14 @@ private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
         ],
         [
             "_onHoverEnd",
-            [[_vehicle,_onDroppedUnits], {
-                _thisArgs params ["_vehicle","_onDroppedUnits"];
+            [[_vehicle,_onDroppedUnits,_onRopesCut], {
+                _thisArgs params ["_vehicle","_onDroppedUnits","_onRopesCut"];
                 _vehicle setVariable ["KISKA_fastRope_deployedRopeInfo", nil];
                 _vehicle setVariable ["KISKA_fastRope_unitsDroppedOff", nil];
                 _vehicle setVariable ["KISKA_fastRope_ropeLength", nil];
                 _vehicle setVariable ["KISKA_fastRope_deployedRopeInfo", nil];
-
+                
+                [_vehicle, _onRopesCut] call KISKA_fnc_callBack;
                 [_vehicle, _onDroppedUnits] call KISKA_fnc_callBack;
             }]
         ]
