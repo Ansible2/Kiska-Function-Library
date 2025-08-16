@@ -10,7 +10,8 @@ params [
     ["_hoverHeight",5,[123]]
 ];
 
-private _fries = _vehicle getVariable ["KISKA_fastRope_fries",objNull]; // TODO: abstract this away into a function maybe?
+// defaults to vehicle in case there isn't a bespoke fries system
+private _fries = _vehicle getVariable ["KISKA_fastRope_fries",_vehicle]; // TODO: abstract this away into a function maybe?
 private _deployedRopeInfo = [];
 _vehicle setVariable ["KISKA_fastRope_deployedRopeInfo",_deployedRopeInfo];
 private _ropeLength = _hoverHeight + ROPE_LENGTH_BUFFER;

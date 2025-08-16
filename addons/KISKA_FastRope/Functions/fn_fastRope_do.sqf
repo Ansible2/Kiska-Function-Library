@@ -92,7 +92,7 @@ private _paramDetails = [
             private _onRopesCut = [
                 _vehicle,
                 "onRopesCut"
-            ] call KISKA_fnc_fastRopeEvent_getConfigData;
+            ] call KISKA_fnc_fastRope_getConfigData;
             if (_onRopesCut isNotEqualTo {}) exitWith { 
                 [_vehicle] call _onRopesCut;
             };
@@ -111,7 +111,7 @@ private _paramDetails = [
         "getRopeOrigins",
         {{
             params ["_vehicle"];
-            [_vehicle,"ropeOrigins"] call KISKA_fnc_fastRopeEvent_getConfigData
+            [_vehicle,"ropeOrigins"] call KISKA_fnc_fastRope_getConfigData
         }},
         CALL_BACK_TYPES
     ],
@@ -122,7 +122,7 @@ private _paramDetails = [
             private _onInitiated = [
                 _vehicle,
                 "onInitiated"
-            ] call KISKA_fnc_fastRopeEvent_getConfigData;
+            ] call KISKA_fnc_fastRope_getConfigData;
             if (_onInitiated isNotEqualTo {}) exitWith { 
                 [_vehicle] call _onInitiated;
             };
@@ -138,7 +138,7 @@ private _paramDetails = [
             private _onHoverStarted = [
                 _vehicle,
                 "onHoverStarted"
-            ] call KISKA_fnc_fastRopeEvent_getConfigData;
+            ] call KISKA_fnc_fastRope_getConfigData;
             if (_onHoverStarted isNotEqualTo {}) exitWith { 
                 [_vehicle] call _onHoverStarted;
             };

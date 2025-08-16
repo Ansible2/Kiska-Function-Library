@@ -101,8 +101,8 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
                 _unit setVariable ["KISKA_fastRope_attachedToRope",true];
                 
                 [
-                    _ropeUnitAttachmentDummy,
-                    _unit
+                    _unit,
+                    _ropeUnitAttachmentDummy
                 ] remoteExec ["disableCollisionWith",[_ropeUnitAttachmentDummy,_unit]];
                 _unit attachTo [_ropeUnitAttachmentDummy, ATTACH_TO_DUMMY_COORDS];
                 
@@ -217,9 +217,18 @@ if (_unitsToDeploy isEqualTo []) exitWith {
             };
 
             _vehicle setVariable ["KISKA_fastRope_pilot",nil];
-            
-            // TODO: use function?
-            _vehicle setVariable ["KISKA_fastRope_unitsDroppedOff",true];
+
+            // waiting to say the drop is over to give the cut ropes time
+            // to fall. In tome cases, the rope might clip with the helicopter
+            // while moving and cause damage and/or get stuck to the helicopter and clip
+            [
+                {
+                    // TODO: use function?
+                    (_this select 0) setVariable ["KISKA_fastRope_unitsDroppedOff",true];
+                },
+                [_vehicle],
+                2
+            ] call CBA_fnc_waitAndExecute;
         },
         0.25,
         [_vehicle,_ropeDetailArrays]

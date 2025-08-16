@@ -9,13 +9,13 @@ private _vehicleConfig = configOf _vehicle;
 private _friesType = [
     _vehicleConfig,
     "friesType"
-] call KISKA_fnc_fastRopeEvent_getConfigData;
+] call KISKA_fnc_fastRope_getConfigData;
 if (_friesType isEqualTo "") exitWith {};
 
 private _friesAttachmentPoint = [
     _vehicleConfig,
     "friesAttachmentPoint"
-] call KISKA_fnc_fastRopeEvent_getConfigData;
+] call KISKA_fnc_fastRope_getConfigData;
 
 private _fries = _friesType createVehicle [0,0,0];
 _fries attachTo [_vehicle,_friesAttachmentPoint];

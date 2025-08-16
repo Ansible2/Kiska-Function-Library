@@ -1,36 +1,87 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_fastRopeEvent_getConfigData
+Function: KISKA_fnc_fastRope_getConfigData
 
 Description:
-    // TODO:
+    Retrieves config data relevant to to fastroping. Has some interoperability 
+     with similar properites configured for ACE fastroping. Values are cached
+     after the first retrieval.
+
+    Config data is expected to be defined inside a 
+     `<CONFIG> >> "CfgVehicles" >> <VEHICLE-CLASS> >> "KISKA_fastRope"` config class.
+     This can be under any config and will be located with `KISKA_fnc_findConfigAny`
+     opting for the most specific. This allows consistent config overrides should
+     one choose to do so instead of doing so through SQF.
+
+    (begin config example)
+        // inside description.ext
+        class CfgVehicles
+        {
+            class B_Heli_Light_01_F
+            {
+                class KISKA_FastRope
+                {
+                    ropeOrigins[] = {"ropeOriginRight","ropeOriginLeft"};
+                    friesType = "KISKA_FriesAnchorBar";
+                    friesAttachmentPoint[] = {0,0.550,-0.007};
+                };
+            };
+        };
+    (end)
+    
+    Values that can be retireved:
+
+    - "friesType" <STRING> : The vehicle class of a FRIES attachment point (basically hooks)
+        that the ropes would hang from. If the bespoke KISKA property is not defined, 
+        the ACE property `ace_fastrope_friesType` will also be searched for.
+    - "ropeOrigins" <(PositionRelative[] | STRING)[]> : The relative position of 
+        where the ropes should be attached to the FRIES object or in the case that
+        no "friesType" is defined, the vehicle tself. Expected to be an array of
+        relative positions and/or memory points to `attachTo`. If the bespoke KISKA
+        property is not defined, the ACE property `ace_fastrope_ropeOrigins` will also
+        be searched for.
+    - "friesAttachmentPoint" <PositionRelative[]> : The relative position to use `attachTo`
+        in order to attach the `friesType` to the fast roping vehicle. If the bespoke KISKA
+        property is not defined, the ACE property `ace_fastrope_friesAttachmentPoint` will also
+        be searched for.
+    - "onInitiated" <STRING> : Uncompiled code that runs after the vehicle is told
+        where to fastrope. See the default implementation `KISKA_fnc_fastRopeEvent_onInitiatedDefault`.
+        `_this` will be the <OBJECT> vehicle fastroping.
+    - "onHoverStarted" <STRING> : Uncompiled code that runs once the vehicle has (within ~2m) 
+        reached the intended position that the vehicle will hover to fastrope units down.
+        See the default implementation `KISKA_fnc_fastRopeEvent_onHoverStartedDefault`.
+        `_this` will be the <OBJECT> vehicle fastroping.
+    - "onRopesCut" <STRING> : Uncompiled code that runs once the vehicle has severed the
+        ropes from the vehicle. See the default implementation `KISKA_fnc_fastRopeEvent_onRopesCutDefault`.
+        `_this` will be the <OBJECT> vehicle fastroping.
 
 Parameters:
     0: _vehicleConfig <OBJECT | CONFIG> - The vehicle that a fastrope will be conducted
         from or its config path.
     1: _dataToFetch <STRING> - The data to fetch from the config. CASE-SENSITIVE
+        Options are: "friesType", "ropeOrigins", "friesAttachmentPoint", "
 
 Returns:
-    // TODO:
+    <STRING | ARRAY | CODE> - The configured value or compiled code for the config value.
     
 Examples:
     (begin example)
         private _ropeOrigins = [
             (configOf MyVehicle),
             "ropeOrigins"
-        ] call KISKA_fnc_fastRopeEvent_getConfigData;
+        ] call KISKA_fnc_fastRope_getConfigData;
     (end)
 
     (begin example)
         private _friesType = [
             MyVehicle,
             "friesType"
-        ] call KISKA_fnc_fastRopeEvent_getConfigData;    
+        ] call KISKA_fnc_fastRope_getConfigData;    
     (end)
 
 Author(s):
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_fastRopeEvent_getConfigData";
+scriptName "KISKA_fnc_fastRope_getConfigData";
 
 #define FRIES_TYPE_KEY "friesType"
 #define ROPE_ORIGINS_KEY "ropeOrigins"
@@ -42,8 +93,6 @@ scriptName "KISKA_fnc_fastRopeEvent_getConfigData";
 #define ACE_ROPE_ORIGINS "ace_fastrope_ropeOrigins"
 #define ACE_FRIES_TYPE "ace_fastrope_friesType"
 #define ACE_FRIES_ATTACHMENT_POINT "ace_fastrope_friesAttachmentPoint"
-
-
 
 params [
     ["_vehicleConfig",configNull,[configNull,objNull]],
