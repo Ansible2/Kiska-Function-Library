@@ -12,8 +12,8 @@ params [
 
 // defaults to vehicle in case there isn't a bespoke fries system
 private _fries = _vehicle getVariable ["KISKA_fastRope_fries",_vehicle]; // TODO: abstract this away into a function maybe?
-private _deployedRopeInfo = [];
-_vehicle setVariable ["KISKA_fastRope_deployedRopeInfo",_deployedRopeInfo];
+private _deployedRopeInfoMaps = [];
+_vehicle setVariable ["KISKA_fastRope_deployedRopeInfoMaps",_deployedRopeInfoMaps];
 private _ropeLength = _hoverHeight + ROPE_LENGTH_BUFFER;
 _vehicle setVariable ["KISKA_fastRope_ropeLength",_ropeLength];
 
@@ -41,22 +41,16 @@ _ropeOrigins apply {
     // TODO: remote exec onto where vehicle is local too? This whole function should probably be executed on where the vehicle is local tbh
     _unitAttachmentDummy disableCollisionWith _vehicle; 
     
-    private _ropes = [_vehicle,_unitAttachmentDummy,_hook] call KISKA_fnc_fastRope_createRope;
-    _ropes params ["_ropeTop","_ropeBottom"];
+    private _ropeInfoMap = createHashMapFromArray [
+        ["_hook",_hook],
+        ["_unitAttachmentDummy",_unitAttachmentDummy],
+        ["_isOccupied",false],
+        ["_isBroken",false]
+    ];
+    private _ropes = [_vehicle,_ropeInfoMap] call KISKA_fnc_fastRope_createRope;
+    private _ropeBottom = _this select 1;
     ropeUnwind [_ropeBottom, ROPE_UNWIND_SPEED, _ropeLength, false];
 
-
-    // This isn't a hashmap because of maximizing performance in the
-    // dropUnits function
-    _deployedRopeInfo pushBack [
-        _x,
-        _ropeTop,
-        _ropeBottom,
-        _unitAttachmentDummy,
-        _hook,
-        false, // rope occupied
-        false // rope broken
-    ];
 
     _ropeBottom
 };

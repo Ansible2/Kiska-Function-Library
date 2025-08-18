@@ -1,4 +1,30 @@
-// TODO: header comment
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_fastRopeEvent_onHoverStartedDefault
+
+Description:
+    The default behaviour for when a fastroping vehicle begins hovering over the
+     drop zone. Most of this logic is pulled from ACE.
+    
+    The default behaviour is to not allow the helicopter to deploy ropes until
+     the doors are open and the FRIES hooks are extended. This is designed to
+     work primarily with vanilla helicopters. The idea is to manage animations
+     that should be conducted before the ropes are deployed.
+
+Parameters:
+    0: _vehicle <OBJECT> - The vehicle to fastrope from.
+
+Returns:
+    NOTHING
+
+Examples:
+    (begin example)
+        _vehicle call KISKA_fnc_fastRopeEvent_onHoverStartedDefault;
+    (end)
+
+Author(s):
+    BaerMitUmlaut,
+    Modified By: Ansible2
+---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_fastRopeEvent_onHoverStartedDefault";
 
 params ["_vehicle"];

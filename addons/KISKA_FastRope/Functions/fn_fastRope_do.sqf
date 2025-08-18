@@ -75,7 +75,6 @@ scriptName "KISKA_fnc_fastRope_do";
 #define MAX_HOVER_HEIGHT 28
 #define CALL_BACK_TYPES [{},"",[]]
 
-
 private _defaultMap = createHashMap;
 params [
     ["_argsMap",_defaultMap,[_defaultMap]]
@@ -272,10 +271,9 @@ private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
             "_onHoverEnd",
             [[_vehicle,_onDroppedUnits,_onRopesCut], {
                 _thisArgs params ["_vehicle","_onDroppedUnits","_onRopesCut"];
-                _vehicle setVariable ["KISKA_fastRope_deployedRopeInfo", nil];
+                _vehicle setVariable ["KISKA_fastRope_deployedRopeInfoMaps", nil];
                 _vehicle setVariable ["KISKA_fastRope_unitsDroppedOff", nil];
                 _vehicle setVariable ["KISKA_fastRope_ropeLength", nil];
-                _vehicle setVariable ["KISKA_fastRope_deployedRopeInfo", nil];
                 
                 [_vehicle, _onRopesCut] call KISKA_fnc_callBack;
                 [_vehicle, _onDroppedUnits] call KISKA_fnc_callBack;
