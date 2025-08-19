@@ -1,4 +1,36 @@
-// TODO: header comment
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_fastRope_deployRopes
+
+Description:
+    Creates ropes and deploys them from either the FRIES system or the vehicle
+     from the given `_ropeOrigins`.
+
+Parameters:
+    0: _vehicle <OBJECT> - The vehicle to fastrope from.
+    1: _ropeOrigins <(STRING | PositionRelative[])[]> - An array of relative 
+        (to the FRIES system or vehicle if no FRIES system is used) attachment points 
+        for the ropes and/or memory points to `attachTo` the ropes to the vehicle.
+    2: _hoverHeight <NUMBER> - The height the helicopter should hover above the 
+        drop position while units are fastroping.
+
+Returns:
+    <OBJECT[]> - An array of ropes deployed from each rope origin.
+
+Examples:
+    (begin example)
+        [
+            _vehicle,
+            ["ropeOriginRight","ropeOriginLeft"],
+            20
+        ] call KISKA_fnc_fastRope_deployRopes;
+    (end)
+
+Author(s):
+    BaerMitUmlaut,
+    Modified By: Ansible2
+---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_fastRope_deployRopes";
+
 #define ROPE_HOOK_OBJECT_CLASS "KISKA_FastRope_helper"
 #define HELPER_OBJECT_CLASS "KISKA_FastRope_helper"
 #define ROPE_UNWIND_SPEED 30

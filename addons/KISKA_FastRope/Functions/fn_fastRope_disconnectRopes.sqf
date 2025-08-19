@@ -1,3 +1,24 @@
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_fastRope_disconnectRopes
+
+Description:
+    Disconnects ropes and deletes any helper objects used for the ropes.
+
+Parameters:
+    0: _vehicle <OBJECT> - The vehicle to fastrope from.
+
+Returns:
+    NOTHING
+
+Examples:
+    (begin example)
+        [_vehicle] call KISKA_fnc_fastRope_disconnectRopes;
+    (end)
+
+Author(s):
+    BaerMitUmlaut,
+    Modified By: Ansible2
+---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_fastRope_disconnectRopes";
 
 #define FALLING_ROPE_MASS 1000
@@ -36,6 +57,8 @@ _ropeInfoMaps apply {
         TIME_UNTIL_ROPE_DELETION
     ] call CBA_fnc_waitAndExecute;
 };
+_vehicle setVariable ["KISKA_fastRope_deployedRopeInfoMaps",nil];
+_vehicle setVariable ["KISKA_fastRope_ropeLength", nil];
 
 
 nil

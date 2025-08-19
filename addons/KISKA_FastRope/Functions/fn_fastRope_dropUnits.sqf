@@ -1,10 +1,10 @@
 // TODO: header comment
 
+scriptName "KISKA_fnc_fastRope_dropUnits";
+
 #define ROPE_UNWIND_SPEED 6
 #define ON_GROUND_BUFFER 0.2
 #define ATTACHMENT_DUMMY_DOWNWARD_MASS 80
-
-scriptName "KISKA_fnc_fastRope_dropUnits";
 
 params [
     ["_vehicle",objNull,[objNull]],
