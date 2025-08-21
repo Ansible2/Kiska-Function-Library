@@ -1,5 +1,26 @@
-// TODO: header comment
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_fastRope_dropUnits
 
+Description:
+    Drops the units from the aircraft using fastropes. Will recursively call
+     itself until all the units are dropped.
+
+Parameters:
+    0: _vehicle <OBJECT> - The vehicle to fastrope from.
+    1: _unitsToDeploy <OBJECT[]> - Which units to deploy from the vehicle
+
+Returns:
+    NOTHING
+
+Examples:
+    (begin example)
+        SHOULD NOT BE CALLED DIRECTLY
+    (end)
+
+Author(s):
+    BaerMitUmlaut,
+    Modified By: Ansible2
+---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_fastRope_dropUnits";
 
 #define ROPE_UNWIND_SPEED 6
@@ -26,7 +47,7 @@ private _fn_findUnoccupiedRopeIndex = {
     private _ropeInfoMaps = _this;
     _ropeInfoMaps findIf {
         !(_x getOrDefaultCall ["_isOccupied",{false}]) AND 
-        { !(_x getOrDefaultCall ["_isOccupied",{false}]) }
+        { !(_x getOrDefaultCall ["_isBroken",{false}]) }
     };
 };
 private _ropeInfoMaps = _vehicle getVariable ["KISKA_fastRope_deployedRopeInfoMaps",[]];
@@ -35,6 +56,7 @@ if (_indexOfUnoccupiedRope isEqualTo -1) exitWith {
     hint "ERROR, COULDNT FIND ROPE";
     // TODO: better error
 };
+
 
 /* ----------------------------------------------------------------------------
     Drop Unit
@@ -145,8 +167,7 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
                 ];
                 private _newRopes = [
                     _vehicle,
-                    _ropeUnitAttachmentDummy,
-                    _hook,
+                    _ropeInfoMap,
                     _ropeLength                    
                 ] call KISKA_fnc_fastRope_createRope;
                 
@@ -179,8 +200,8 @@ if (_unitsToDeploy isEqualTo []) exitWith {
                 [_pilot,"MOVE"] remoteExecCall ["enableAI",_pilot];
             };
             
-
             _vehicle setVariable ["KISKA_fastRope_pilot",nil];
+            [_vehicle] call KISKA_fnc_fastRope_disconnectRopes;
 
             // waiting to say the drop is over to give the cut ropes time
             // to fall. In tome cases, the rope might clip with the helicopter
@@ -207,7 +228,7 @@ if (_unitsToDeploy isEqualTo []) exitWith {
     {
         // TODO: handle all ropes broken
         // TODO: handle vehicle dead
-        private _indexOfUnoccupiedRope = (_this select 2) call (_this select 3)
+        private _indexOfUnoccupiedRope = (_this select 2) call (_this select 3);
         _indexOfUnoccupiedRope isNotEqualTo -1 // true = unoccupied rope found
     },
     {

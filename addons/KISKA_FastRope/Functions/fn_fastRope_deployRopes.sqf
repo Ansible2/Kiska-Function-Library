@@ -79,8 +79,9 @@ _ropeOrigins apply {
         ["_isOccupied",false],
         ["_isBroken",false]
     ];
+    _deployedRopeInfoMaps pushBack _ropeInfoMap;
     private _ropes = [_vehicle,_ropeInfoMap] call KISKA_fnc_fastRope_createRope;
-    private _ropeBottom = _this select 1;
+    private _ropeBottom = _ropes select 1;
     ropeUnwind [_ropeBottom, ROPE_UNWIND_SPEED, _ropeLength, false];
 
 

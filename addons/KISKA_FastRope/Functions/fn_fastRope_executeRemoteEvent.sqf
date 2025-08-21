@@ -1,6 +1,55 @@
-#define DESCENT_SOUND_VAR "KISKA_fastrope_descendingSoundHandlerId"
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_fastRope_executeRemoteEvent
 
+Description:
+    Meant to execute a piece of code on a (potentially) remote machine during fastroping.
+
+    Events:
+    - `"UpdateAttachmentDummyMass"` - Adjusts the given attachment dummy's mass
+        and position to prepare it for a unit to fastrope down. Arguments:
+        - _ropeUnitAttachmentDummy <OBJECT> - The unit attachment dummy to adjust.
+        - _hookPosition <PositionASL[]> - The position of the hook the rope is hangning from.
+    - `"StartAttachmentDescentLoop"` - Adds a perframe handler to the local machine
+        that will continuously push the attachment dummy down to give the appearance of
+        sliding down the rope. Arguments:
+        - _ropeUnitAttachmentDummy <OBJECT> - The unit attachment dummy to descend.
+    - `"EndAttachmentDescentLoop"` - Ends the loop added with `"StartAttachmentDescentLoop"`
+        and returns the attachment dummy's mass to normal. Arguments:
+        - _ropeUnitAttachmentDummy <OBJECT> - The unit attachment dummy to stop descending.
+        - _hookPosition <PositionASL[]> - The position of the hook the rope is hangning from.
+    - `"StartFastRopeAnimation"` - Changes the given unit's animation to be that of fastroping
+        and if that unit is a player, will start a loop to continuously play a sliding-down
+        sound. Arguments:
+        - _unit <OBJECT> - The unit fastroping.
+    - `"EndFastRopeAnimation"` - Ends the sound loop made in `"StartFastRopeAnimation"`,
+        resets the unit's animations, and will play a (local 2D) thud sound if the 
+        unit is a player. Arguments: 
+        - _unit <OBJECT> - The unit fastroping.
+
+Parameters:
+    0: _event <STRING> - The remote event to execute. Case Insensitive.
+    1: _args <ANY> - The arguments for the given event.
+
+Returns:
+    NOTHING
+
+Examples:
+    (begin example)
+        [
+            "UpdateAttachmentDummyMass",
+            [_ropeUnitAttachmentDummy,getPosASLVisual _hook]
+        ] remoteExecCall ["KISKA_fnc_fastRope_executeRemoteEvent",_ropeUnitAttachmentDummy];
+    (end)
+
+Author(s):
+    BaerMitUmlaut,
+    Modified By: Ansible2
+---------------------------------------------------------------------------- */
+scriptName "KISKA_fnc_fastRope_executeRemoteEvent";
+
+#define DESCENT_SOUND_VAR "KISKA_fastrope_descendingSoundHandlerId"
 #define ATTACHMENT_DESCENT_LOOP_VAR "KISKA_fastrope_descentAttachmentHandlerId"
+
 #define DUMMY_FAST_ROPE_DESCENT_VELOCITY [0,0,-6]
 
 #define ATTACHMENT_DUMMY_ORIGINAL_MASS 40
@@ -25,7 +74,6 @@ if (_event == "UpdateAttachmentDummyMass") exitWith {
     _ropeUnitAttachmentDummy setPosASL (_hookPosition vectorAdd [0, 0, -2]);
     _ropeUnitAttachmentDummy setVectorUp [0, 0, 1];
 
-
     nil
 };
 
@@ -40,7 +88,7 @@ if (_event == "StartAttachmentDescentLoop") exitWith {
             (_this select 0) setVelocity DUMMY_FAST_ROPE_DESCENT_VELOCITY;
         },
         0,
-        _args
+        _ropeUnitAttachmentDummy
     ] call CBA_fnc_addPerFrameHandler;
     _ropeUnitAttachmentDummy setVariable [ATTACHMENT_DESCENT_LOOP_VAR,_attachmentLoopId];
 
@@ -95,6 +143,12 @@ if (_event == "StartFastRopeAnimation") exitWith {
     if (isPlayer _unit) then {
         private _descentSoundHandlerId = [
             {
+                private _unit = _this select 0;
+                if !(alive _unit) exitWith {
+                    _unit setVariable [DESCENT_SOUND_VAR,nil];
+                    [_this select 1] call CBA_fnc_removePerFrameHandler;
+                };
+
                 playSound "KISKA_fastrope_descending";
             },
             1,
@@ -149,3 +203,6 @@ if (_event == "EndFastRopeAnimation") exitWith {
 
     nil
 };
+
+
+nil

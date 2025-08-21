@@ -44,6 +44,7 @@ if (isNil "_setAttachedUnit") exitWith {
     detach _attachedUnit;
     _ropeInfoMap set ["_attachedUnit",nil];
     _ropeInfoMap set ["_isOccupied",false];
+    _attachedUnit
 };
 
 _ropeInfoMap set ["_attachedUnit",_setAttachedUnit];
@@ -51,4 +52,4 @@ _setAttachedUnit attachTo [_ropeInfoMap get "_unitAttachmentDummy", ATTACH_TO_DU
 _ropeInfoMap set ["_isOccupied",true];
 
 
-nil
+_setAttachedUnit

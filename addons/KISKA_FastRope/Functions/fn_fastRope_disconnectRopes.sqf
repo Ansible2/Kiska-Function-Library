@@ -28,17 +28,7 @@ params ["_vehicle"];
 
 private _ropeInfoMaps = _vehicle getVariable ["KISKA_fastRope_deployedRopeInfoMaps",[]];
 _ropeInfoMaps apply {
-    // Knock unit off rope if occupied
-    private _unitAttachmentDummy = _x getOrDefaultCall ["_unitAttachmentDummy",objNull];
-    if (
-        (_x getOrDefaultCall ["_isOccupied",{false}]) OR
-        {
-            !(isNull ([_unitAttachmentDummy] call KISKA_fnc_fastRope_ropeAttachedUnit))
-        }
-    ) then {
-        detach ([_unitAttachmentDummy] call KISKA_fnc_fastRope_ropeAttachedUnit);
-    };
-
+    [_x] call KISKA_fnc_fastRope_ropeAttachedUnit;
     // Delete hook and top so rope falls
     deleteVehicle [
         _x getOrDefaultCall ["_hook",{objNull}],
@@ -46,6 +36,7 @@ _ropeInfoMaps apply {
     ];
                     
     // Give rope some extra mass to fall quick
+    private _unitAttachmentDummy = _x getOrDefaultCall ["_unitAttachmentDummy",{objNull}];
     [_unitAttachmentDummy, FALLING_ROPE_MASS] remoteExec ["setMass",_unitAttachmentDummy];
 
     [

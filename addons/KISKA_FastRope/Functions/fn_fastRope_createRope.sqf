@@ -51,13 +51,7 @@ _ropeInfoMap set ["_ropeBottom",_ropeBottom];
     {
         _thisArgs params ["_ropeInfoMap"];
         _ropeInfoMap set ["_isBroken",true];
-
-        private _unitAttachmentDummy = _ropeInfoMap get "_unitAttachmentDummy";
-        private _attachedUnit = [_unitAttachmentDummy] call KISKA_fnc_fastRope_ropeAttachedUnit;
-        if !(isNull _attachedUnit) then {
-            [_unitAttachmentDummy,objNull] call KISKA_fnc_fastRope_ropeAttachedUnit;
-            detach _attachedUnit;
-        };
+        [_ropeInfoMap] call KISKA_fnc_fastRope_ropeAttachedUnit;
     },
     [_ropeInfoMap]
 ] call CBA_fnc_addBISEventHandler;
