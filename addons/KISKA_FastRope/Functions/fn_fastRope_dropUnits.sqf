@@ -79,7 +79,6 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
             
             private _ropeInfoMap = _args select 1;
             private _hook = _ropeInfoMap getOrDefaultCall ["_hook",{objNull}];
-            private _ropeUnitAttachmentDummy = _ropeInfoMap getOrDefaultCall ["_unitAttachmentDummy",{objNull}];
             // TODO: check if rope cut
             // Prevent teleport if hook has been deleted due to rope cut
             if (isNull _hook) exitWith {
@@ -90,6 +89,7 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
                 [PER_FRAME_HANDLER_ID] call CBA_fnc_removePerFrameHandler;
             };
 
+            private _ropeUnitAttachmentDummy = _ropeInfoMap getOrDefaultCall ["_unitAttachmentDummy",{objNull}];
             private _vehicle = _args select 2;
             private _ropeLength = _vehicle getVariable "KISKA_fastRope_ropeLength";
             // Move unit down rope
@@ -115,8 +115,8 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
             private _unitWasAttachedToRope = _unit getVariable ["KISKA_fastRope_attachedToRope",false];
             if !(_unitWasAttachedToRope) then {
                 [
-                    _unit,
-                    _ropeUnitAttachmentDummy
+                    _ropeUnitAttachmentDummy,
+                    _unit
                 ] remoteExec ["disableCollisionWith",[_ropeUnitAttachmentDummy,_unit]];
 
                 [_ropeInfoMap,_unit] call KISKA_fnc_fastRope_ropeAttachedUnit;
@@ -208,8 +208,7 @@ if (_unitsToDeploy isEqualTo []) exitWith {
             // while moving and cause damage and/or get stuck to the helicopter and clip
             [
                 {
-                    // TODO: use function?
-                    (_this select 0) setVariable ["KISKA_fastRope_unitsDroppedOff",true];
+                    [(_this select 0),true] call KISKA_fnc_fastRope_areUnitsDroppedOff;
                 },
                 [_vehicle],
                 2

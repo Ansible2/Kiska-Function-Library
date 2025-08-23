@@ -43,7 +43,7 @@ params [
 ];
 
 // defaults to vehicle in case there isn't a bespoke fries system
-private _fries = _vehicle getVariable ["KISKA_fastRope_fries",_vehicle]; // TODO: abstract this away into a function maybe?
+private _fries = _vehicle call KISKA_fnc_fastRope_fries;
 private _deployedRopeInfoMaps = [];
 _vehicle setVariable ["KISKA_fastRope_deployedRopeInfoMaps",_deployedRopeInfoMaps];
 private _ropeLength = _hoverHeight + ROPE_LENGTH_BUFFER;
@@ -70,8 +70,10 @@ _ropeOrigins apply {
         "CAN_COLLIDE"
     ];
     _unitAttachmentDummy allowDamage false;
-    // TODO: remote exec onto where vehicle is local too? This whole function should probably be executed on where the vehicle is local tbh
-    _unitAttachmentDummy disableCollisionWith _vehicle; 
+    [
+        _unitAttachmentDummy,
+        _vehicle
+    ] remoteExec ["disableCollisionWith",[_vehicle,_unitAttachmentDummy]];
     
     private _ropeInfoMap = createHashMapFromArray [
         ["_hook",_hook],

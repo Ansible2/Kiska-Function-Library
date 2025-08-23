@@ -27,8 +27,8 @@ scriptName "KISKA_fnc_fastRopeEvent_onRopesCutDefault";
 
 params ["_vehicle"];
 
-private _fries = _vehicle getVariable ["KISKA_fastRope_fries",objNull];
-if !(isNull _fries) exitWith {
+private _fries = _vehicle call KISKA_fnc_fastRope_fries;
+if (_fries isNotEqualTo _vehicle) exitWith {
     ["extendHookRight", "extendHookLeft"] apply {
         _fries animateSource [_x, 0];
     };

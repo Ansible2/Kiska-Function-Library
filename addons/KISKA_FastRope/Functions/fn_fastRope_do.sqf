@@ -236,7 +236,8 @@ if (_unitsToDeployFiltered isEqualTo []) exitWith {
 /* ----------------------------------------------------------------------------
     Move to target and hover
 ---------------------------------------------------------------------------- */
-_vehicle setVariable ["KISKA_fastRope_unitsDroppedOff",false];
+[_vehicle, false] call KISKA_fnc_fastRope_areUnitsDroppedOff;
+
 _hoverHeight = _hoverHeight max MIN_HOVER_HEIGHT;
 _hoverHeight = _hoverHeight min MAX_HOVER_HEIGHT;
 if (_dropPosition isEqualType objNull) then {
@@ -250,10 +251,7 @@ private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
     createHashMapFromArray [
         [
             "_shouldHoverStop",
-            {
-                params ["_vehicle"];
-                _vehicle getVariable ["KISKA_fastRope_unitsDroppedOff",false]
-            }
+            { (_this select 0) call KISKA_fnc_fastRope_areUnitsDroppedOff }
         ],
         [
             "_onHoverStart",
@@ -271,8 +269,15 @@ private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
             "_onHoverEnd",
             [[_vehicle,_onDroppedUnits,_onRopesCut], {
                 _thisArgs params ["_vehicle","_onDroppedUnits","_onRopesCut"];
-                _vehicle setVariable ["KISKA_fastRope_unitsDroppedOff", nil];
-                
+
+                [_vehicle,false] call KISKA_fnc_fastRope_areUnitsDroppedOff;
+
+                private _fries = _vehicle call KISKA_fnc_fastRope_fries;
+                if (_fries isNotEqualTo _vehicle) then {
+                    deleteVehicle _fries;
+                };
+                [_vehicle,objNull] call KISKA_fnc_fastRope_fries;
+
                 [_vehicle, _onRopesCut] call KISKA_fnc_callBack;
                 [_vehicle, _onDroppedUnits] call KISKA_fnc_callBack;
             }]

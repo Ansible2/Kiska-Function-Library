@@ -47,9 +47,9 @@ if !(alive _vehicle) exitWith {};
     _vehicle animateSource [_x, 1];
 };
 
-private _fries = _vehicle getVariable ["KISKA_fastRope_fries",objNull];
+private _fries = _vehicle call KISKA_fnc_fastRope_fries;
 private _waitTime = 2;
-if !(isNull _fries) then {
+if (_fries isNotEqualTo _vehicle) then {
     [
         {
             params ["_fries"];
