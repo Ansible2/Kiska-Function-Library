@@ -14,11 +14,11 @@ Parameters:
         drop position while units are fastroping.
 
 Returns:
-    <OBJECT[]> - An array of ropes deployed from each rope origin.
+    <HASMAP[]> - An array of information about each rope deployed from all origins (in order).
 
 Examples:
     (begin example)
-        [
+        private _ropeInfoMaps = [
             _vehicle,
             ["ropeOriginRight","ropeOriginLeft"],
             20
@@ -44,8 +44,6 @@ params [
 
 // defaults to vehicle in case there isn't a bespoke fries system
 private _fries = _vehicle call KISKA_fnc_fastRope_fries;
-private _deployedRopeInfoMaps = [];
-_vehicle setVariable ["KISKA_fastRope_deployedRopeInfoMaps",_deployedRopeInfoMaps];
 private _ropeLength = _hoverHeight + ROPE_LENGTH_BUFFER;
 _vehicle setVariable ["KISKA_fastRope_ropeLength",_ropeLength];
 
@@ -81,11 +79,10 @@ _ropeOrigins apply {
         ["_isOccupied",false],
         ["_isBroken",false]
     ];
-    _deployedRopeInfoMaps pushBack _ropeInfoMap;
     private _ropes = [_vehicle,_ropeInfoMap] call KISKA_fnc_fastRope_createRope;
     private _ropeBottom = _ropes select 1;
     ropeUnwind [_ropeBottom, ROPE_UNWIND_SPEED, _ropeLength, false];
 
 
-    _ropeBottom
+    _ropeInfoMap
 };

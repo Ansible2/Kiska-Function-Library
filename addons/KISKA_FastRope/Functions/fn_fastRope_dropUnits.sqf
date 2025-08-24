@@ -7,7 +7,9 @@ Description:
 
 Parameters:
     0: _vehicle <OBJECT> - The vehicle to fastrope from.
-    1: _unitsToDeploy <OBJECT[]> - Which units to deploy from the vehicle
+    1: _unitsToDeploy <OBJECT[]> - Which units to deploy from the vehicle.
+    2: _ropeInfoMaps <HASHMAP[]> - The rope info maps of the ropes deployed
+        from the vehicle.
 
 Returns:
     NOTHING
@@ -30,6 +32,7 @@ scriptName "KISKA_fnc_fastRope_dropUnits";
 params [
     ["_vehicle",objNull,[objNull]],
     ["_unitsToDeploy",[],[[]]],
+    ["_ropeInfoMaps",[],[[]]],
     ["_isRecursiveCall",false,[true]]
 ];
 
@@ -43,25 +46,11 @@ if !(_isRecursiveCall) exitWith {
     [_vehicle, _unitsToDeploy, true] call KISKA_fnc_fastRope_dropUnits;
 };
 
-private _fn_findUnoccupiedRopeIndex = {
-    private _ropeInfoMaps = _this;
-    _ropeInfoMaps findIf {
-        !(_x getOrDefaultCall ["_isOccupied",{false}]) AND 
-        { !(_x getOrDefaultCall ["_isBroken",{false}]) }
-    };
-};
-private _ropeInfoMaps = _vehicle getVariable ["KISKA_fastRope_deployedRopeInfoMaps",[]];
-private _indexOfUnoccupiedRope = _ropeInfoMaps call _fn_findUnoccupiedRopeIndex;
-if (_indexOfUnoccupiedRope isEqualTo -1) exitWith { 
-    hint "ERROR, COULDNT FIND ROPE";
-    // TODO: better error
-};
-
+private _unoccupiedRopeInfoMap = _ropeInfoMaps select _indexOfUnoccupiedRope;
 
 /* ----------------------------------------------------------------------------
     Drop Unit
 ---------------------------------------------------------------------------- */
-private _unoccupiedRopeInfoMap = _ropeInfoMaps select _indexOfUnoccupiedRope;
 private _unit = _unitsToDeploy deleteAt 0;
 if ((alive _unit) AND {_unit in _vehicle}) then {
     _unoccupiedRopeInfoMap set ["_isOccupied",true];
@@ -187,13 +176,16 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
 if (_unitsToDeploy isEqualTo []) exitWith {
     [
         {
+            // TODO: handle all ropes broken
+            // TODO: handle vehicle dead
+            // TODO: handle engine dying
             private _ropeInfoMaps = _this select 1;
             private _indexOfOccupiedRope = _ropeInfoMaps findIf {_x getOrDefaultCall ["_isOccupied",{false}]};
             private _noRopesInOccupied = _indexOfOccupiedRope isEqualTo -1;
             _noRopesInOccupied
         },
         {
-            params ["_vehicle"];
+            params ["_vehicle","_ropeInfoMaps"];
 
             private _pilot = _vehicle getVariable ["KISKA_fastRope_pilot",objNull];
             if (alive _pilot) then {
@@ -201,7 +193,7 @@ if (_unitsToDeploy isEqualTo []) exitWith {
             };
             
             _vehicle setVariable ["KISKA_fastRope_pilot",nil];
-            [_vehicle] call KISKA_fnc_fastRope_disconnectRopes;
+            [_vehicle,_ropeInfoMaps] call KISKA_fnc_fastRope_disconnectRopes;
 
             // waiting to say the drop is over to give the cut ropes time
             // to fall. In tome cases, the rope might clip with the helicopter
@@ -242,7 +234,7 @@ if (_unitsToDeploy isEqualTo []) exitWith {
         ] call CBA_fnc_waitAndExecute;
     },
     0.25,
-    [_vehicle,_unitsToDeploy,_ropeInfoMaps,_fn_findUnoccupiedRopeIndex]
+    [_vehicle,_unitsToDeploy,_ropeInfoMaps]
 ] call KISKA_fnc_waitUntil;
 
 

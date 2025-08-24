@@ -6,6 +6,8 @@ Description:
 
 Parameters:
     0: _vehicle <OBJECT> - The vehicle to fastrope from.
+    1: _ropeInfoMaps <HASHMAP[]> - The rope info maps of the ropes deployed
+        from the vehicle.
 
 Returns:
     NOTHING
@@ -24,9 +26,8 @@ scriptName "KISKA_fnc_fastRope_disconnectRopes";
 #define FALLING_ROPE_MASS 1000
 #define TIME_UNTIL_ROPE_DELETION 20
 
-params ["_vehicle"];
+params ["_vehicle","_ropeInfoMaps"];
 
-private _ropeInfoMaps = _vehicle getVariable ["KISKA_fastRope_deployedRopeInfoMaps",[]];
 _ropeInfoMaps apply {
     [_x] call KISKA_fnc_fastRope_ropeAttachedUnit;
     // Delete hook and top so rope falls
@@ -48,7 +49,6 @@ _ropeInfoMaps apply {
         TIME_UNTIL_ROPE_DELETION
     ] call CBA_fnc_waitAndExecute;
 };
-_vehicle setVariable ["KISKA_fastRope_deployedRopeInfoMaps",nil];
 _vehicle setVariable ["KISKA_fastRope_ropeLength", nil];
 
 

@@ -287,3 +287,20 @@ private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
 
 
 nil
+
+
+
+
+// TODO:
+// If the vehicle dies
+    // Any ropes should be disconnected
+    // Any units attached to ropes will be disconnected
+    // The FRIES system should be deleted
+    // All FRIES objects should be cleaned up
+    // All loops should be stopped
+// If the vehicle's engine is shut off
+    // Any ropes should be disconnected
+    // Any units attached to ropes will be disconnected
+    // The FRIES system should be deleted
+    // All FRIES objects should be cleaned up
+    // All loops should be stopped

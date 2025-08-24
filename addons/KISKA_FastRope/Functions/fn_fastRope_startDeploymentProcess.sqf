@@ -48,13 +48,14 @@ scriptName "KISKA_fnc_fastRope_startDeploymentProcess";
             ["_hoverHeight",5,[123]]
         ];
 
-
         if !(alive _vehicle) exitWith {};
         
-        private _ropes = [_vehicle,_ropeOrigins,_hoverHeight] call KISKA_fnc_fastRope_deployRopes;
+        private _ropeInfoMaps = [_vehicle,_ropeOrigins,_hoverHeight] call KISKA_fnc_fastRope_deployRopes;
         [
             {
-                private _indexOfRopeNotUnwound = _this findIf { !(ropeUnwound _x) };
+                private _indexOfRopeNotUnwound = _this findIf { 
+                    !(ropeUnwound (_x get "_ropeBottom"))
+                };
                 _indexOfRopeNotUnwound isEqualTo -1 // all ropes unwound
             },
             [[_vehicle,_unitsToDeployIsCode,_unitsToDeploy], {
@@ -64,10 +65,10 @@ scriptName "KISKA_fnc_fastRope_startDeploymentProcess";
                     _unitsToDeploy = [[_vehicle],_unitsToDeploy] call KISKA_fnc_callBack;
                 };
                 
-                [_vehicle,_unitsToDeploy] call KISKA_fnc_fastRope_dropUnits;
+                [_vehicle,_unitsToDeploy,_this] call KISKA_fnc_fastRope_dropUnits;
             }],
             0.25,
-            _ropes
+            _ropeInfoMaps
         ] call KISKA_fnc_waitUntil;
     },
     0.25,
