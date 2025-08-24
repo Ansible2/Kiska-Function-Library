@@ -5,7 +5,7 @@ Description:
     The map that links a given timeline id to its info map. This is an internal function
      that you (likely) don't need to use except for altering timelines that have already started.
      
-    See KISKA_fnc_timeline_getInfoMap to retrieve an info map for a given timeline.
+    See `KISKA_fnc_timeline_getInfoMap` to retrieve an info map for a given timeline.
 
 Parameters:
     NONE
