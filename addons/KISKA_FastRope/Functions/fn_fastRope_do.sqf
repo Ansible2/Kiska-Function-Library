@@ -85,24 +85,16 @@ private _paramDetails = [
     ["dropPosition",{[]},[[],objNull]],
     ["unitsToDeploy",{[]},[[],grpNull,objNull,{},""]],
     [
-        "onRopesCut",
+        "onDropEnded",
         {{
-            params ["_vehicle"];
-            private _onRopesCut = [
-                _vehicle,
-                "onRopesCut"
-            ] call KISKA_fnc_fastRope_getConfigData;
-            if (_onRopesCut isNotEqualTo {}) exitWith { 
-                [_vehicle] call _onRopesCut;
-            };
-            
-            [_vehicle] call KISKA_fnc_fastRopeEvent_onRopesCutDefault;
+            params ["_fastRopeInfoMap"];
+            private _vehicleConfig = _fastRopeInfoMap getOrDefaultCall ["_vehicleConfig",{configNull}];
+
+            private _onDropEnded = [_vehicleConfig,"onDropEnded"] call KISKA_fnc_fastRope_getConfigData;
+            if (_onDropEnded isNotEqualTo {}) exitWith { _fastRopeInfoMap call _onDropEnded };
+
+            _fastRopeInfoMap call KISKA_fnc_fastRopeEvent_onDropEndedDefault;
         }},
-        CALL_BACK_TYPES
-    ],
-    [
-        "onDroppedUnits",
-        {{}},
         CALL_BACK_TYPES
     ],
     ["hoverHeight",{20},[123]],
@@ -115,34 +107,15 @@ private _paramDetails = [
         CALL_BACK_TYPES
     ],
     [
-        "onInitiated",
-        {{
-            params ["_vehicle"];
-            private _onInitiated = [
-                _vehicle,
-                "onInitiated"
-            ] call KISKA_fnc_fastRope_getConfigData;
-            if (_onInitiated isNotEqualTo {}) exitWith { 
-                [_vehicle] call _onInitiated;
-            };
-            
-            [_vehicle] call KISKA_fnc_fastRopeEvent_onInitiatedDefault;
-        }},
-        CALL_BACK_TYPES
-    ],
-    [
         "onHoverStarted",
         {{
-            params ["_vehicle"];
-            private _onHoverStarted = [
-                _vehicle,
-                "onHoverStarted"
-            ] call KISKA_fnc_fastRope_getConfigData;
-            if (_onHoverStarted isNotEqualTo {}) exitWith { 
-                [_vehicle] call _onHoverStarted;
-            };
+            params ["_fastRopeInfoMap"];
+            private _vehicleConfig = _fastRopeInfoMap getOrDefaultCall ["_vehicleConfig",{configNull}];
             
-            [_vehicle] call KISKA_fnc_fastRopeEvent_onHoverStartedDefault;
+            private _onHoverStarted = [_vehicleConfig,"onHoverStarted"] call KISKA_fnc_fastRope_getConfigData;
+            if (_onHoverStarted isNotEqualTo {}) exitWith { _fastRopeInfoMap call _onHoverStarted };
+            
+            _fastRopeInfoMap call KISKA_fnc_fastRopeEvent_onHoverStartedDefault;
         }},
         CALL_BACK_TYPES
     ]
@@ -224,22 +197,46 @@ if (_unitsToDeployFiltered isEqualTo []) exitWith {
     false
 };
 
+private _fastRopeInfoMap = createHashMapFromArray [
+    ["_unitsToDeploy",_unitsToDeployFiltered],
+    ["_unitsToDeployIsCode",_unitsToDeployIsCode],
+    ["_ropeOrigins",_ropeOrigins],
+    ["_unitsDroppedOff",false],
+    ["_canDeployRopes",false],
+    ["_vehicle",_vehicle],
+    ["_vehicleConfig",configOf _vehicle]
+];
+
 [
     {
-        params ["_vehicle","_onInitiated"];
-        [_vehicle,_onInitiated] call KISKA_fnc_callBack;
+        params ["_vehicle","_fastRopeInfoMap"];
+
+        if !(alive _vehicle) exitWith {};
+
+        private _vehicleConfig = _fastRopeInfoMap getOrDefaultCall ["_vehicleConfig",{configNull}];
+        private _friesType = [_vehicleConfig,"friesType"] call KISKA_fnc_fastRope_getConfigData;
+
+        if (_friesType isEqualTo "") exitWith {
+            _fastRopeInfoMap set ["_fries",_vehicle];
+        };
+
+        private _friesAttachmentPoint = [_vehicleConfig,"friesAttachmentPoint"] call KISKA_fnc_fastRope_getConfigData;
+        private _fries = _friesType createVehicle [0,0,0];
+        _fries attachTo [_vehicle,_friesAttachmentPoint];
+
+        _fastRopeInfoMap set ["_fries",_fries];
     },
-    [_vehicle,_onInitiated]
+    [_vehicle,_fastRopeInfoMap]
 ] call CBA_fnc_execNextFrame;
 
 
 /* ----------------------------------------------------------------------------
     Move to target and hover
 ---------------------------------------------------------------------------- */
-[_vehicle, false] call KISKA_fnc_fastRope_areUnitsDroppedOff;
-
 _hoverHeight = _hoverHeight max MIN_HOVER_HEIGHT;
 _hoverHeight = _hoverHeight min MAX_HOVER_HEIGHT;
+_fastRopeInfoMap set ["_hoverHeight",_hoverHeight];
+
 if (_dropPosition isEqualType objNull) then {
     _dropPosition = getPosASL _dropPosition;
 };
@@ -251,35 +248,29 @@ private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
     createHashMapFromArray [
         [
             "_shouldHoverStop",
-            { (_this select 0) call KISKA_fnc_fastRope_areUnitsDroppedOff }
+            [_fastRopeInfoMap, {
+                _thisArgs getOrDefaultCall ["_unitsDroppedOff",{true}]
+            }]
         ],
         [
             "_onHoverStart",
-            [[_unitsToDeployIsCode,_unitsToDeployFiltered,_ropeOrigins,_hoverHeight,_onHoverStarted], {
-                params ["_vehicle"];
-
-                private _onHoverStarted = _thisArgs deleteAt 4;
-                [_vehicle,_onHoverStarted] call KISKA_fnc_callBack;
-
-                _thisArgs insert [0,[_vehicle]];
-                _thisArgs call KISKA_fnc_fastRope_startDeploymentProcess;
+            [[_fastRopeInfoMap,_onHoverStarted], {
+                _thisArgs call KISKA_fnc_callBack;
+                (_thisArgs select 0) call KISKA_fnc_fastRope_startDeploymentProcess;
             }]
         ],
         [
             "_onHoverEnd",
-            [[_vehicle,_onDroppedUnits,_onRopesCut], {
-                _thisArgs params ["_vehicle","_onDroppedUnits","_onRopesCut"];
+            [[_fastRopeInfoMap,_onDropEnded], {
+                // TODO: all of this should be handled somewhere else
 
-                [_vehicle,false] call KISKA_fnc_fastRope_areUnitsDroppedOff;
+                
+                _thisArgs params ["_fastRopeInfoMap","_onDropEnded"];
 
-                private _fries = _vehicle call KISKA_fnc_fastRope_fries;
-                if (_fries isNotEqualTo _vehicle) then {
-                    deleteVehicle _fries;
-                };
-                [_vehicle,objNull] call KISKA_fnc_fastRope_fries;
+                private _fries = _fastRopeInfoMap getOrDefaultCall ["_fries",{objNull}];
+                if (_fries isNotEqualTo _vehicle) then { deleteVehicle _fries };
 
-                [_vehicle, _onRopesCut] call KISKA_fnc_callBack;
-                [_vehicle, _onDroppedUnits] call KISKA_fnc_callBack;
+                [_fastRopeInfoMap, _onDropEnded] call KISKA_fnc_callBack;
             }]
         ]
     ]
@@ -289,7 +280,16 @@ private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
 nil
 
 
+// TODO:
+// add a single cleanup script that is capable of interpreting 
+// the current state of the _fastRopeInfoMap to understand
+// how the fastrope cleanup should be handled
 
+
+// TODO:
+// on ropes cut should not be a thing given that it can't be done manually
+// therefore it's redundant with the on dropped units 
+// (which should just be on drop complete)
 
 // TODO:
 // If the vehicle dies

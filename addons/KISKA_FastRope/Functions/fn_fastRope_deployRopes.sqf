@@ -4,25 +4,20 @@ Function: KISKA_fnc_fastRope_deployRopes
 Description:
     Creates ropes and deploys them from either the FRIES system or the vehicle
      from the given `_ropeOrigins`.
+    
+    A HASHMAP[] of information about each rope deployed from all origins (in order)
+     will be placed into the `_ropeInfoMaps` key of the `_fastRopeInfoMap`.
 
 Parameters:
-    0: _vehicle <OBJECT> - The vehicle to fastrope from.
-    1: _ropeOrigins <(STRING | PositionRelative[])[]> - An array of relative 
-        (to the FRIES system or vehicle if no FRIES system is used) attachment points 
-        for the ropes and/or memory points to `attachTo` the ropes to the vehicle.
-    2: _hoverHeight <NUMBER> - The height the helicopter should hover above the 
-        drop position while units are fastroping.
+    0: _fastRopeInfoMap <HASHMAP> - The hashmap that contains various pieces
+        of information pertaining to the given fastrope instance.
 
 Returns:
-    <HASMAP[]> - An array of information about each rope deployed from all origins (in order).
+    NOTHING
 
 Examples:
     (begin example)
-        private _ropeInfoMaps = [
-            _vehicle,
-            ["ropeOriginRight","ropeOriginLeft"],
-            20
-        ] call KISKA_fnc_fastRope_deployRopes;
+        // SHOULD NOT BE CALLED DIRECTLY
     (end)
 
 Author(s):
@@ -36,18 +31,13 @@ scriptName "KISKA_fnc_fastRope_deployRopes";
 #define ROPE_UNWIND_SPEED 30
 #define ROPE_LENGTH_BUFFER 5
 
-params [
-    ["_vehicle",objNull,[objNull]],
-    ["_ropeOrigins",[],[[]]],
-    ["_hoverHeight",5,[123]]
-];
+params ["_fastRopeInfoMap"];
 
-// defaults to vehicle in case there isn't a bespoke fries system
-private _fries = _vehicle call KISKA_fnc_fastRope_fries;
+private _fries = _fastRopeInfoMap get "_fries";
 private _ropeLength = _hoverHeight + ROPE_LENGTH_BUFFER;
-_vehicle setVariable ["KISKA_fastRope_ropeLength",_ropeLength];
+_fastRopeInfoMap set ["_ropeLength",_ropeLength];
 
-_ropeOrigins apply {
+private _ropeInfoMaps = _ropeOrigins apply {
     private _hook = ROPE_HOOK_OBJECT_CLASS createVehicle [0,0,0];
     _hook allowDamage false;
     if (_x isEqualType []) then {
@@ -79,10 +69,12 @@ _ropeOrigins apply {
         ["_isOccupied",false],
         ["_isBroken",false]
     ];
-    private _ropes = [_vehicle,_ropeInfoMap] call KISKA_fnc_fastRope_createRope;
+    private _ropes = [_ropeInfoMap] call KISKA_fnc_fastRope_createRope;
     private _ropeBottom = _ropes select 1;
     ropeUnwind [_ropeBottom, ROPE_UNWIND_SPEED, _ropeLength, false];
 
 
     _ropeInfoMap
 };
+
+

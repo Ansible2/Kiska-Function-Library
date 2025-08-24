@@ -8,8 +8,7 @@ Description:
      `_ropeInfoMap` under `"_ropeTop"` and `"_ropeBottom"` keys.
 
 Parameters:
-    0: _vehicle <OBJECT> - The vehicle to fastrope from.
-    1: _ropeInfoMap <HASMAP> - The info map for the specific rope that is being created.
+    0: _ropeInfoMap <HASMAP> - The info map for the specific rope that is being created.
     2: _bottomLength <NUMBER> - Default: `1` - The length of the bottom segment of
         the rope which is effectively the rope itself for most purposes.
 
@@ -19,7 +18,6 @@ Returns:
 Examples:
     (begin example)
         private _newRopeSegments = [
-            _vehicle,
             _ropeInfoMap,
             18                    
         ] call KISKA_fnc_fastRope_createRope;
@@ -32,7 +30,6 @@ Author(s):
 scriptName "KISKA_fnc_fastRope_createRope";
 
 params [
-    "_vehicle",
     "_ropeInfoMap",
     ["_bottomLength",1,[123]]
 ];

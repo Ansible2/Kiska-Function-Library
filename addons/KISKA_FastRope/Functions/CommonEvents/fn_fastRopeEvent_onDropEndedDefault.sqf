@@ -1,34 +1,39 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_fastRopeEvent_onRopesCutDefault
+Function: KISKA_fnc_fastRopeEvent_onDropEndedDefault
 
 Description:
-    The default behaviour for when a fastroping vehicle has severed connection
-     to the ropes.
+    The default behaviour for when a fastroping vehicle has either completed its
+     dropping off of units or the vehicle has encountered something that caused
+     the fastrope to end.
     
     The default behaviour is to attempt to close any doors of the vehicle and
      retract the hooks of the fries system. This is targetted at vanilla vehicles.
 
 Parameters:
-    0: _vehicle <OBJECT> - The vehicle to fastrope from.
+    0: _fastRopeInfoMap <HASHMAP> - The hashmap that contains various pieces
+        of information pertaining to the given fastrope instance.
 
 Returns:
     NOTHING
 
 Examples:
     (begin example)
-        _vehicle call KISKA_fnc_fastRopeEvent_onRopesCutDefault;
+        _fastRopeInfoMap call KISKA_fnc_fastRopeEvent_onDropEndedDefault;
     (end)
 
 Author(s):
     BaerMitUmlaut,
     Modified By: Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_fastRopeEvent_onRopesCutDefault";
+scriptName "KISKA_fnc_fastRopeEvent_onDropEndedDefault";
 
-params ["_vehicle"];
+params ["_fastRopeInfoMap"];
 
-private _fries = _vehicle call KISKA_fnc_fastRope_fries;
-if (_fries isNotEqualTo _vehicle) exitWith {
+private _vehicle = _fastRopeInfoMap getOrDefaultCall ["_vehicle",{objNull}];
+if !(alive _vehicle) exitWith {};
+
+private _fries = _fastRopeInfoMap getOrDefaultCall ["_fries",{objNull}];
+if (!(isNull _fries) AND {_fries isNotEqualTo _vehicle}) exitWith {
     ["extendHookRight", "extendHookLeft"] apply {
         _fries animateSource [_x, 0];
     };

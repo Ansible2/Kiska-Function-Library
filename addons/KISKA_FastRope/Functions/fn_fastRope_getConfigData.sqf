@@ -43,16 +43,13 @@ Description:
         in order to attach the `friesType` to the fast roping vehicle. If the bespoke KISKA
         property is not defined, the ACE property `ace_fastrope_friesAttachmentPoint` will also
         be searched for.
-    - "onInitiated" <STRING> : Uncompiled code that runs after the vehicle is told
-        where to fastrope. See the default implementation `KISKA_fnc_fastRopeEvent_onInitiatedDefault`.
-        `_this` will be the <OBJECT> vehicle fastroping.
     - "onHoverStarted" <STRING> : Uncompiled code that runs once the vehicle has (within ~2m) 
         reached the intended position that the vehicle will hover to fastrope units down.
         See the default implementation `KISKA_fnc_fastRopeEvent_onHoverStartedDefault`.
-        `_this` will be the <OBJECT> vehicle fastroping.
-    - "onRopesCut" <STRING> : Uncompiled code that runs once the vehicle has severed the
-        ropes from the vehicle. See the default implementation `KISKA_fnc_fastRopeEvent_onRopesCutDefault`.
-        `_this` will be the <OBJECT> vehicle fastroping.
+        `_this` will be the <HASHMAP> fastrope info map.
+    - "onDropEnded" <STRING> : Uncompiled code that runs once the vehicle has severed the
+        ropes from the vehicle. See the default implementation `KISKA_fnc_fastRopeEvent_onDropEndedDefault`.
+        `_this` will be the <HASHMAP> fastrope info map.
 
 Parameters:
     0: _vehicleConfig <OBJECT | CONFIG> - The vehicle that a fastrope will be conducted
@@ -86,9 +83,8 @@ scriptName "KISKA_fnc_fastRope_getConfigData";
 #define FRIES_TYPE_KEY "friesType"
 #define ROPE_ORIGINS_KEY "ropeOrigins"
 #define FRIES_ATTACHMENT_POINT_KEY "friesAttachmentPoint"
-#define ON_INITIATED_KEY "onInitiated"
 #define ON_HOVER_STARTED_KEY "onHoverStarted"
-#define ON_ROPES_CUT_KEY "onRopesCut"
+#define ON_DROP_ENDED_KEY "onDropEnded"
 
 #define ACE_ROPE_ORIGINS "ace_fastrope_ropeOrigins"
 #define ACE_FRIES_TYPE "ace_fastrope_friesType"
@@ -154,15 +150,6 @@ call {
         };
     };
 
-    if (_dataToFetch isEqualTo ON_INITIATED_KEY) exitWith {
-        private _onInitiatedConfig = FIND_CONFIG_ANY(ON_INITIATED_KEY);
-        if (isText _onInitiatedConfig) then {
-            _dataValue = compileFinal (getText _onInitiatedConfig);
-        } else {
-            _dataValue = {};
-        };
-    };
-
     if (_dataToFetch isEqualTo ON_HOVER_STARTED_KEY) exitWith {
         private _onHoverStartedConfig = FIND_CONFIG_ANY(ON_HOVER_STARTED_KEY);
         if (isText _onHoverStartedConfig) then {
@@ -172,10 +159,10 @@ call {
         };
     };
 
-    if (_dataToFetch isEqualTo ON_ROPES_CUT_KEY) exitWith {
-        private _onRopesCutConfig = FIND_CONFIG_ANY(ON_ROPES_CUT_KEY);
-        if (isText _onRopesCutConfig) then {
-            _dataValue = compileFinal (getText _onRopesCutConfig);
+    if (_dataToFetch isEqualTo ON_DROP_ENDED_KEY) exitWith {
+        private _onDropEndedConfig = FIND_CONFIG_ANY(ON_DROP_ENDED_KEY);
+        if (isText _onDropEndedConfig) then {
+            _dataValue = compileFinal (getText _onDropEndedConfig);
         } else {
             _dataValue = {};
         };

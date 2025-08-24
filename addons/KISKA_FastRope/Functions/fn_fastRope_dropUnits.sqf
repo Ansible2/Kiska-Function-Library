@@ -154,11 +154,7 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
                     _ropeTop,
                     (_ropeInfoMap get "_ropeBottom")
                 ];
-                private _newRopes = [
-                    _vehicle,
-                    _ropeInfoMap,
-                    _ropeLength                    
-                ] call KISKA_fnc_fastRope_createRope;
+                [_ropeInfoMap,_ropeLength] call KISKA_fnc_fastRope_createRope;
                 
                 [PER_FRAME_HANDLER_ID] call CBA_fnc_removePerFrameHandler;
             };

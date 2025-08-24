@@ -11,14 +11,15 @@ Description:
      that should be conducted before the ropes are deployed.
 
 Parameters:
-    0: _vehicle <OBJECT> - The vehicle to fastrope from.
+    0: _fastRopeInfoMap <HASHMAP> - The hashmap that contains various pieces
+        of information pertaining to the given fastrope instance.
 
 Returns:
     NOTHING
 
 Examples:
     (begin example)
-        _vehicle call KISKA_fnc_fastRopeEvent_onHoverStartedDefault;
+        _fastRopeInfoMap call KISKA_fnc_fastRopeEvent_onHoverStartedDefault;
     (end)
 
 Author(s):
@@ -27,11 +28,10 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_fastRopeEvent_onHoverStartedDefault";
 
-params ["_vehicle"];
+params ["_fastRopeInfoMap"];
 
+private _vehicle = _fastRopeInfoMap getOrDefaultCall ["_vehicle",{objNull}];
 if !(alive _vehicle) exitWith {};
-
-[_vehicle,false] call KISKA_fnc_fastRope_canDeployRopes;
 
 [
     "door_R", 
@@ -47,9 +47,9 @@ if !(alive _vehicle) exitWith {};
     _vehicle animateSource [_x, 1];
 };
 
-private _fries = _vehicle call KISKA_fnc_fastRope_fries;
+private _fries = _fastRopeInfoMap getOrDefaultCall ["_fries",{objNull}];
 private _waitTime = 2;
-if (_fries isNotEqualTo _vehicle) then {
+if (!(isNull _fries) AND {_fries isNotEqualTo _vehicle}) then {
     [
         {
             params ["_fries"];
@@ -65,11 +65,8 @@ if (_fries isNotEqualTo _vehicle) then {
 };
 
 [
-    {
-        params ["_vehicle"];
-        [_vehicle,true] call KISKA_fnc_fastRope_canDeployRopes
-    },
-    _this,
+    { _this set ["_canDeployRopes",true] },
+    _fastRopeInfoMap,
     _waitTime
 ] call CBA_fnc_waitAndExecute;
 

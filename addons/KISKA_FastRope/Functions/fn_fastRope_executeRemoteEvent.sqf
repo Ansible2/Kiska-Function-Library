@@ -63,6 +63,9 @@ params [
 ];
 
 
+/* ----------------------------------------------------------------------------
+    UpdateAttachmentDummyMass
+---------------------------------------------------------------------------- */
 if (_event == "UpdateAttachmentDummyMass") exitWith {
     _args params [
         ["_ropeUnitAttachmentDummy",objNull,[objNull]],
@@ -77,6 +80,9 @@ if (_event == "UpdateAttachmentDummyMass") exitWith {
     nil
 };
 
+/* ----------------------------------------------------------------------------
+    StartAttachmentDescentLoop
+---------------------------------------------------------------------------- */
 if (_event == "StartAttachmentDescentLoop") exitWith {
     _args params [
         ["_ropeUnitAttachmentDummy",objNull,[objNull]]
@@ -96,6 +102,9 @@ if (_event == "StartAttachmentDescentLoop") exitWith {
     nil
 };
 
+/* ----------------------------------------------------------------------------
+    EndAttachmentDescentLoop
+---------------------------------------------------------------------------- */
 if (_event == "EndAttachmentDescentLoop") exitWith {
     _args params [
         ["_ropeUnitAttachmentDummy",objNull,[objNull]],
@@ -116,7 +125,9 @@ if (_event == "EndAttachmentDescentLoop") exitWith {
 };
 
 
-
+/* ----------------------------------------------------------------------------
+    _fn_playAnimation
+---------------------------------------------------------------------------- */
 private _fn_playAnimation = {
     params ["_unit","_animation"];
 
@@ -134,6 +145,9 @@ private _fn_playAnimation = {
     };
 };
 
+/* ----------------------------------------------------------------------------
+    StartFastRopeAnimation
+---------------------------------------------------------------------------- */
 if (_event == "StartFastRopeAnimation") exitWith {
     _args params [
         ["_unit",objNull,[objNull]]
@@ -161,6 +175,9 @@ if (_event == "StartFastRopeAnimation") exitWith {
     nil
 };
 
+/* ----------------------------------------------------------------------------
+    EndFastRopeAnimation
+---------------------------------------------------------------------------- */
 if (_event == "EndFastRopeAnimation") exitWith {
     _args params [
         ["_unit",objNull,[objNull]],
