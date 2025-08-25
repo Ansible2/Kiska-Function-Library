@@ -6,17 +6,15 @@ Description:
      itself until all the units are dropped.
 
 Parameters:
-    0: _vehicle <OBJECT> - The vehicle to fastrope from.
-    1: _unitsToDeploy <OBJECT[]> - Which units to deploy from the vehicle.
-    2: _ropeInfoMaps <HASHMAP[]> - The rope info maps of the ropes deployed
-        from the vehicle.
+    0: _fastRopeInfoMap <HASHMAP> - The hashmap that contains various pieces
+        of information pertaining to the given fastrope instance.
 
 Returns:
     NOTHING
 
 Examples:
     (begin example)
-        SHOULD NOT BE CALLED DIRECTLY
+        // SHOULD NOT BE CALLED DIRECTLY
     (end)
 
 Author(s):
@@ -30,27 +28,32 @@ scriptName "KISKA_fnc_fastRope_dropUnits";
 #define ATTACHMENT_DUMMY_DOWNWARD_MASS 80
 
 params [
-    ["_vehicle",objNull,[objNull]],
-    ["_unitsToDeploy",[],[[]]],
-    ["_ropeInfoMaps",[],[[]]],
+    "_fastRopeInfoMap",
     ["_isRecursiveCall",false,[true]]
 ];
 
 if !(_isRecursiveCall) exitWith {
-    if !(alive _vehicle) exitWith {};
+    private _vehicle = _fastRopeInfoMap getOrDefaultCall ["_vehicle",{objNull}];
+    if !(alive _vehicle) exitWith {
+        _fastRopeInfoMap call KISKA_fnc_fastRope_end;
+        nil
+    };
 
     private _pilot = currentPilot _vehicle;
     [_pilot,"MOVE"] remoteExec ["disableAI",_pilot];
-    _vehicle setVariable ["KISKA_fastRope_pilot",_pilot];
-
-    [_vehicle, _unitsToDeploy, true] call KISKA_fnc_fastRope_dropUnits;
+    _fastRopeInfoMap set ["_pilot",_pilot];
+    private _ropeInfoMaps = _fastRopeInfoMap get "_ropeInfoMaps";
+    _fastRopeInfoMap set ["_unoccupiedRopeInfoMap",_ropeInfoMaps select 0];
+    [_fastRopeInfoMap, true] call KISKA_fnc_fastRope_dropUnits;
 };
 
-private _unoccupiedRopeInfoMap = _ropeInfoMaps select _indexOfUnoccupiedRope;
 
 /* ----------------------------------------------------------------------------
     Drop Unit
 ---------------------------------------------------------------------------- */
+private _unoccupiedRopeInfoMap = _fastRopeInfoMap get "_unoccupiedRopeInfoMap";
+private _vehicle = _fastRopeInfoMap getOrDefaultCall ["_vehicle",{objNull}];
+private _unitsToDeploy = _fastRopeInfoMap getOrDefaultCall ["_unitsToDeploy",{[]}];
 private _unit = _unitsToDeploy deleteAt 0;
 if ((alive _unit) AND {_unit in _vehicle}) then {
     _unoccupiedRopeInfoMap set ["_isOccupied",true];
@@ -59,6 +62,12 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
 
     [
         {
+            // TODO: handle dead vehicle
+            // TODO: handle vehicle engine died
+            // TODO: clearer handling of what happens in this loop if the rope breaks
+
+
+
             #define PER_FRAME_HANDLER_ID _this select 1
 
             params ["_args"];
@@ -68,7 +77,6 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
             
             private _ropeInfoMap = _args select 1;
             private _hook = _ropeInfoMap getOrDefaultCall ["_hook",{objNull}];
-            // TODO: check if rope cut
             // Prevent teleport if hook has been deleted due to rope cut
             if (isNull _hook) exitWith {
                 [_ropeInfoMap] call KISKA_fnc_fastRope_ropeAttachedUnit;
@@ -80,7 +88,7 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
 
             private _ropeUnitAttachmentDummy = _ropeInfoMap getOrDefaultCall ["_unitAttachmentDummy",{objNull}];
             private _vehicle = _args select 2;
-            private _ropeLength = _vehicle getVariable "KISKA_fastRope_ropeLength";
+            private _ropeLength = _args select 3;
             // Move unit down rope
             if (
                 (getMass _ropeUnitAttachmentDummy) isNotEqualTo ATTACHMENT_DUMMY_DOWNWARD_MASS
@@ -123,7 +131,7 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
             };
 
             if (_unitWasAttachedToRope AND {isNull (attachedTo _unit)}) exitWith {
-                _ropeInfoMap set ["_isOccupied",false];
+                [_ropeInfoMap] call KISKA_fnc_fastRope_ropeAttachedUnit;
                 [PER_FRAME_HANDLER_ID] call CBA_fnc_removePerFrameHandler;
             };
 
@@ -158,10 +166,9 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
                 
                 [PER_FRAME_HANDLER_ID] call CBA_fnc_removePerFrameHandler;
             };
-
         }, 
         0, 
-        [_unit,_unoccupiedRopeInfoMap,_vehicle]
+        [_unit, _unoccupiedRopeInfoMap, _vehicle, _fastRopeInfoMap get "_ropeLength"]
     ] call CBA_fnc_addPerFrameHandler;
     moveOut _unit;
 };
@@ -169,42 +176,29 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
 /* ----------------------------------------------------------------------------
     Check for recursion end
 ---------------------------------------------------------------------------- */
+_fastRopeInfoMap set ["_unoccupiedRopeInfoMap",nil];
 if (_unitsToDeploy isEqualTo []) exitWith {
     [
         {
-            // TODO: handle all ropes broken
-            // TODO: handle vehicle dead
             // TODO: handle engine dying
-            private _ropeInfoMaps = _this select 1;
-            private _indexOfOccupiedRope = _ropeInfoMaps findIf {_x getOrDefaultCall ["_isOccupied",{false}]};
-            private _noRopesInOccupied = _indexOfOccupiedRope isEqualTo -1;
-            _noRopesInOccupied
+            if (
+                !(alive (_this select 0)) OR
+                { (_this select 2) getOrDefaultCall ["_allRopesBroken",{false},true] }
+            ) exitWith { true };
+
+            private _indexOfOccupiedRope = (_this select 1) findIf { 
+                _x getOrDefaultCall ["_isOccupied",{false}] 
+            };
+            _indexOfOccupiedRope isEqualTo -1 // no ropes occupied
         },
         {
-            params ["_vehicle","_ropeInfoMaps"];
-
-            private _pilot = _vehicle getVariable ["KISKA_fastRope_pilot",objNull];
-            if (alive _pilot) then {
-                [_pilot,"MOVE"] remoteExecCall ["enableAI",_pilot];
-            };
-            
-            _vehicle setVariable ["KISKA_fastRope_pilot",nil];
-            [_vehicle,_ropeInfoMaps] call KISKA_fnc_fastRope_disconnectRopes;
-
-            // waiting to say the drop is over to give the cut ropes time
-            // to fall. In tome cases, the rope might clip with the helicopter
-            // while moving and cause damage and/or get stuck to the helicopter and clip
-            [
-                {
-                    [(_this select 0),true] call KISKA_fnc_fastRope_areUnitsDroppedOff;
-                },
-                [_vehicle],
-                2
-            ] call CBA_fnc_waitAndExecute;
+            (_this select 2) call KISKA_fnc_fastRope_end;
         },
         0.25,
-        [_vehicle,_ropeInfoMaps]
+        [_vehicle,_ropeInfoMaps,_fastRopeInfoMap]
     ] call KISKA_fnc_waitUntil;
+
+    nil
 };
 
 
@@ -213,24 +207,46 @@ if (_unitsToDeploy isEqualTo []) exitWith {
 ---------------------------------------------------------------------------- */
 [
     {
-        // TODO: handle all ropes broken
-        // TODO: handle vehicle dead
-        private _indexOfUnoccupiedRope = (_this select 2) call (_this select 3);
-        _indexOfUnoccupiedRope isNotEqualTo -1 // true = unoccupied rope found
+        // TODO: handle engine dying
+        private _fastRopeInfoMap = _this select 2;
+        if (
+            !(alive (_this select 0)) OR
+            { _fastRopeInfoMap getOrDefaultCall ["_allRopesBroken",{false},true] }
+        ) exitWith { true };
+
+        private _continue = false;
+        (_this select 1) apply {
+            if (
+                !(_x getOrDefaultCall ["_isOccupied", {false}]) AND 
+                { !(_x getOrDefaultCall ["_isBroken", {false}]) }
+            ) then {
+                _fastRopeInfoMap set ["_unoccupiedRopeInfoMap",_x];
+                break;
+            };
+        };
+
+        _continue
     },
     {
-        params ["_vehicle","_unitsToDeploy"];
+        private _fastRopeInfoMap = _this select 2;
+        private _unoccupiedRopeInfoMap = _fastRopeInfoMap get "_unoccupiedRopeInfoMap";
+        private _vehicleIsDeadOrRopesBroke = isNil "_unoccupiedRopeInfoMap";
+        if (_vehicleIsDeadOrRopesBroke) exitWith {
+            _fastRopeInfoMap call KISKA_fnc_fastRope_end;
+            nil
+        };
+
         // using this buffer so that if there are multiple ropes
         // units don't look so much like they are dropping in perfect unison
         private _deployBuffer = random [0, 0.5, 1];
         [
             { _this call KISKA_fnc_fastRope_dropUnits },
-            [_vehicle, _unitsToDeploy, true],
+            [_fastRopeInfoMap, true],
             _deployBuffer
         ] call CBA_fnc_waitAndExecute;
     },
     0.25,
-    [_vehicle,_unitsToDeploy,_ropeInfoMaps]
+    [_vehicle,_ropeInfoMaps,_fastRopeInfoMap]
 ] call KISKA_fnc_waitUntil;
 
 

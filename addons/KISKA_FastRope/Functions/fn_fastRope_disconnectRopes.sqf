@@ -5,8 +5,7 @@ Description:
     Disconnects ropes and deletes any helper objects used for the ropes.
 
 Parameters:
-    0: _vehicle <OBJECT> - The vehicle to fastrope from.
-    1: _ropeInfoMaps <HASHMAP[]> - The rope info maps of the ropes deployed
+    0: _ropeInfoMaps <HASHMAP[]> - The rope info maps of the ropes deployed
         from the vehicle.
 
 Returns:
@@ -14,7 +13,7 @@ Returns:
 
 Examples:
     (begin example)
-        [_vehicle] call KISKA_fnc_fastRope_disconnectRopes;
+        _ropeInfoMaps call KISKA_fnc_fastRope_disconnectRopes;
     (end)
 
 Author(s):
@@ -26,9 +25,11 @@ scriptName "KISKA_fnc_fastRope_disconnectRopes";
 #define FALLING_ROPE_MASS 1000
 #define TIME_UNTIL_ROPE_DELETION 20
 
-params ["_vehicle","_ropeInfoMaps"];
+params ["_ropeInfoMaps"];
 
 _ropeInfoMaps apply {
+    if (_x getOrDefaultCall ["_isDisconnected",{false}]) then { continue };
+
     [_x] call KISKA_fnc_fastRope_ropeAttachedUnit;
     // Delete hook and top so rope falls
     deleteVehicle [
@@ -48,8 +49,9 @@ _ropeInfoMaps apply {
         ], 
         TIME_UNTIL_ROPE_DELETION
     ] call CBA_fnc_waitAndExecute;
+    
+    _x set ["_isDisconnected",true];
 };
-_vehicle setVariable ["KISKA_fastRope_ropeLength", nil];
 
 
 nil

@@ -9,7 +9,7 @@ Description:
 
 Parameters:
     0: _ropeInfoMap <HASMAP> - The info map for the specific rope that is being created.
-    2: _bottomLength <NUMBER> - Default: `1` - The length of the bottom segment of
+    1: _bottomLength <NUMBER> - Default: `1` - The length of the bottom segment of
         the rope which is effectively the rope itself for most purposes.
 
 Returns:
@@ -42,12 +42,26 @@ _ropeInfoMap set ["_ropeTop",_ropeTop];
 private _ropeBottom = ropeCreate [_unitAttachmentDummy, [0, 0, 0], _bottomLength];
 _ropeInfoMap set ["_ropeBottom",_ropeBottom];
 
+
+#define ON_ROPE_BROKEN \
+    _thisArgs params ["_ropeInfoMap"]; \
+    if !(_ropeInfoMap getOrDefaultCall ["_isBroken",{false}]) then { \
+        _ropeInfoMap set ["_isBroken",true]; \
+        private _fastRopeInfoMap = _ropeInfoMap get "_fastRopeInfoMap"; \
+        private _numberOfBrokenRopes = _fastRopeInfoMap getOrDefaultCall ["_numberOfBrokenRopes",{0},true]; \
+        _numberOfBrokenRopes = _numberOfBrokenRopes + 1; \
+        _fastRopeInfoMap set ["_numberOfBrokenRopes",_numberOfBrokenRopes]; \
+        private _totalNumberOfRopes = count (_fastRopeInfoMap getOrDefaultCall ["_ropeInfoMaps",{[]}]); \
+        if (_numberOfBrokenRopes >= _totalNumberOfRopes) then { \
+            _fastRopeInfoMap set ["_allRopesBroken",true]; \
+        }; \
+    };
+
 [
     _ropeTop,
     "RopeBreak",
     {
-        _thisArgs params ["_ropeInfoMap"];
-        _ropeInfoMap set ["_isBroken",true];
+        ON_ROPE_BROKEN
         [_ropeInfoMap] call KISKA_fnc_fastRope_ropeAttachedUnit;
     },
     [_ropeInfoMap]
@@ -57,8 +71,7 @@ _ropeInfoMap set ["_ropeBottom",_ropeBottom];
     _ropeBottom,
     "RopeBreak",
     {
-        _thisArgs params ["_ropeInfoMap"];
-        _ropeInfoMap set ["_isBroken",true];
+        ON_ROPE_BROKEN
     },
     [_ropeInfoMap]
 ] call CBA_fnc_addBISEventHandler;

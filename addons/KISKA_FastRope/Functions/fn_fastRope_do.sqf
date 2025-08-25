@@ -201,7 +201,7 @@ private _fastRopeInfoMap = createHashMapFromArray [
     ["_unitsToDeploy",_unitsToDeployFiltered],
     ["_unitsToDeployIsCode",_unitsToDeployIsCode],
     ["_ropeOrigins",_ropeOrigins],
-    ["_unitsDroppedOff",false],
+    ["_fastRopeEnded",false],
     ["_canDeployRopes",false],
     ["_vehicle",_vehicle],
     ["_vehicleConfig",configOf _vehicle]
@@ -249,7 +249,7 @@ private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
         [
             "_shouldHoverStop",
             [_fastRopeInfoMap, {
-                _thisArgs getOrDefaultCall ["_unitsDroppedOff",{true}]
+                _thisArgs getOrDefaultCall ["_fastRopeEnded",{true}]
             }]
         ],
         [
@@ -262,14 +262,7 @@ private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
         [
             "_onHoverEnd",
             [[_fastRopeInfoMap,_onDropEnded], {
-                // TODO: all of this should be handled somewhere else
-
-                
                 _thisArgs params ["_fastRopeInfoMap","_onDropEnded"];
-
-                private _fries = _fastRopeInfoMap getOrDefaultCall ["_fries",{objNull}];
-                if (_fries isNotEqualTo _vehicle) then { deleteVehicle _fries };
-
                 [_fastRopeInfoMap, _onDropEnded] call KISKA_fnc_callBack;
             }]
         ]

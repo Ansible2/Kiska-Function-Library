@@ -67,7 +67,8 @@ private _ropeInfoMaps = _ropeOrigins apply {
         ["_hook",_hook],
         ["_unitAttachmentDummy",_unitAttachmentDummy],
         ["_isOccupied",false],
-        ["_isBroken",false]
+        ["_isBroken",false],
+        ["_fastRopeInfoMap",_fastRopeInfoMap]
     ];
     private _ropes = [_ropeInfoMap] call KISKA_fnc_fastRope_createRope;
     private _ropeBottom = _ropes select 1;
