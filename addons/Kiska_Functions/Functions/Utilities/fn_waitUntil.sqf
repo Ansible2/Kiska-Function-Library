@@ -45,7 +45,7 @@ params [
     ["_condition",{},[{},"",[]]],
     ["_onConditionMet",{},[{},"",[]]],
     ["_interval",0.5,[123]],
-    ["_parameters",[],[[]]],
+    ["_parameters",[]],
     ["_unscheduled",true,[true]]
 ];
 
