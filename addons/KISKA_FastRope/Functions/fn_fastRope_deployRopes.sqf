@@ -34,10 +34,10 @@ scriptName "KISKA_fnc_fastRope_deployRopes";
 params ["_fastRopeInfoMap"];
 
 private _fries = _fastRopeInfoMap get "_fries";
-private _ropeLength = _hoverHeight + ROPE_LENGTH_BUFFER;
+private _ropeLength = (_fastRopeInfoMap get "_hoverHeight") + ROPE_LENGTH_BUFFER;
 _fastRopeInfoMap set ["_ropeLength",_ropeLength];
 
-private _ropeInfoMaps = _ropeOrigins apply {
+private _ropeInfoMaps = (_fastRopeInfoMap get "_ropeOrigins") apply {
     private _hook = ROPE_HOOK_OBJECT_CLASS createVehicle [0,0,0];
     _hook allowDamage false;
     if (_x isEqualType []) then {
@@ -78,4 +78,7 @@ private _ropeInfoMaps = _ropeOrigins apply {
     _ropeInfoMap
 };
 
+_fastRopeInfoMap set ["_ropeInfoMaps",_ropeInfoMaps];
 
+
+nil

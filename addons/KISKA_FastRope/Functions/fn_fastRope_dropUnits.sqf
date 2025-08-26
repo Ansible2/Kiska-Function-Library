@@ -32,8 +32,8 @@ params [
     ["_isRecursiveCall",false,[true]]
 ];
 
+private _vehicle = _fastRopeInfoMap getOrDefaultCall ["_vehicle",{objNull}];
 if !(_isRecursiveCall) exitWith {
-    private _vehicle = _fastRopeInfoMap getOrDefaultCall ["_vehicle",{objNull}];
     if !(alive _vehicle) exitWith {
         _fastRopeInfoMap call KISKA_fnc_fastRope_end;
         nil
@@ -52,7 +52,6 @@ if !(_isRecursiveCall) exitWith {
     Drop Unit
 ---------------------------------------------------------------------------- */
 private _unoccupiedRopeInfoMap = _fastRopeInfoMap get "_unoccupiedRopeInfoMap";
-private _vehicle = _fastRopeInfoMap getOrDefaultCall ["_vehicle",{objNull}];
 private _unitsToDeploy = _fastRopeInfoMap getOrDefaultCall ["_unitsToDeploy",{[]}];
 private _unit = _unitsToDeploy deleteAt 0;
 if ((alive _unit) AND {_unit in _vehicle}) then {
@@ -213,14 +212,21 @@ if (_unitsToDeploy isEqualTo []) exitWith {
             !(alive (_this select 0)) OR
             { _fastRopeInfoMap getOrDefaultCall ["_allRopesBroken",{false},true] }
         ) exitWith { true };
-
         private _continue = false;
+        private _current = (_this select 1) apply {
+            [
+                _x getOrDefaultCall ["_isOccupied", {false}],
+                _x getOrDefaultCall ["_isBroken", {false}]
+            ]
+        };
+
         (_this select 1) apply {
             if (
                 !(_x getOrDefaultCall ["_isOccupied", {false}]) AND 
                 { !(_x getOrDefaultCall ["_isBroken", {false}]) }
             ) then {
                 _fastRopeInfoMap set ["_unoccupiedRopeInfoMap",_x];
+                _continue = true;
                 break;
             };
         };

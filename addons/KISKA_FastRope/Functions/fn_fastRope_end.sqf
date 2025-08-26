@@ -3,17 +3,50 @@ scriptName "KISKA_fnc_fastRope_end";
 
 #define TIME_TILL_FRIES_DELETED 10
 #define TIME_TILL_NORMAL_END 2
+#define FALLING_ROPE_MASS 1000
+#define TIME_UNTIL_ROPE_DELETION 20
 
 params ["_fastRopeInfoMap"];
-
-private _ropeInfoMaps = _fastRopeInfoMap getOrDefaultCall ["_ropeInfoMaps", {[]}];
-_ropeInfoMaps call KISKA_fnc_fastRope_disconnectRopes;
 
 private _pilot = _fastRopeInfoMap getOrDefaultCall ["_pilot", {objNull}];
 if (alive _pilot) then {
     [_pilot,"MOVE"] remoteExecCall ["enableAI",_pilot];
 };
 
+/* ----------------------------------------------------------------------------
+    Disconnect ropes
+---------------------------------------------------------------------------- */
+private _ropeInfoMaps = _fastRopeInfoMap getOrDefaultCall ["_ropeInfoMaps", {[]}];
+_ropeInfoMaps apply {
+    if (_x getOrDefaultCall ["_isDisconnected",{false}]) then { continue };
+
+    [_x] call KISKA_fnc_fastRope_ropeAttachedUnit;
+    // Delete hook and top so rope falls
+    deleteVehicle [
+        _x getOrDefaultCall ["_hook",{objNull}],
+        _x getOrDefaultCall ["_ropeTop",{objNull}]
+    ];
+                    
+    // Give rope some extra mass to fall quick
+    private _unitAttachmentDummy = _x getOrDefaultCall ["_unitAttachmentDummy",{objNull}];
+    [_unitAttachmentDummy, FALLING_ROPE_MASS] remoteExec ["setMass",_unitAttachmentDummy];
+
+    [
+        {deleteVehicle _this}, 
+        [
+            _x getOrDefaultCall ["_ropeBottom",{objNull}], 
+            _unitAttachmentDummy
+        ], 
+        TIME_UNTIL_ROPE_DELETION
+    ] call CBA_fnc_waitAndExecute;
+    
+    _x set ["_isDisconnected",true];
+};
+
+
+/* ----------------------------------------------------------------------------
+    Delete Fries
+---------------------------------------------------------------------------- */
 private _vehicle = _fastRopeInfoMap getOrDefaultCall ["_vehicle", {objNull}];
 private _fries = _fastRopeInfoMap getOrDefaultCall ["_fries", {objNull}];
 if (
@@ -30,6 +63,9 @@ if (
 };
 
 
+/* ----------------------------------------------------------------------------
+    Mark fast rope as ended
+---------------------------------------------------------------------------- */
 if !(alive _vehicle) exitWith {
     _fastRopeInfoMap set ["_fastRopeEnded",true];
 };

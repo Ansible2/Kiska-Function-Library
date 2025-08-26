@@ -242,15 +242,15 @@ if (_dropPosition isEqualType objNull) then {
 };
 private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
 
+private _fastRopeInfoMap_var = ["KISKA_fastRope_infoMap"] call KISKA_fnc_generateUniqueId;
+localNamespace setVariable [_fastRopeInfoMap_var,_fastRopeInfoMap_var];
 [
     _vehicle,
     _hoverPosition_ASL,
     createHashMapFromArray [
         [
             "_shouldHoverStop",
-            [_fastRopeInfoMap, {
-                _thisArgs getOrDefaultCall ["_fastRopeEnded",{true}]
-            }]
+            compileFinal (format ['(localNamespace getVariable %1) getOrDefaultCall ["_fastRopeEnded",{true}]',_fastRopeInfoMap_var])
         ],
         [
             "_onHoverStart",
@@ -261,8 +261,9 @@ private _hoverPosition_ASL = _dropPosition vectorAdd [0,0,_hoverHeight];
         ],
         [
             "_onHoverEnd",
-            [[_fastRopeInfoMap,_onDropEnded], {
-                _thisArgs params ["_fastRopeInfoMap","_onDropEnded"];
+            [[_fastRopeInfoMap,_onDropEnded,_fastRopeInfoMap_var], {
+                _thisArgs params ["_fastRopeInfoMap","_onDropEnded","_fastRopeInfoMap_var"];
+                localNamespace setVariable [_fastRopeInfoMap_var,nil];
                 [_fastRopeInfoMap, _onDropEnded] call KISKA_fnc_callBack;
             }]
         ]

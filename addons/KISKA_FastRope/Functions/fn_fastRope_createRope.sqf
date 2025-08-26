@@ -37,6 +37,7 @@ params [
 // TODO: why is there a ropeTop and a ropeBottom and why do we need
 // dummy objects? It seems like all you need is ropeBottom
 private _unitAttachmentDummy = _ropeInfoMap get "_unitAttachmentDummy";
+private _hook = _ropeInfoMap get "_hook";
 private _ropeTop = ropeCreate [_unitAttachmentDummy, [0, 0, 0], _hook, [0, 0, 0], 0.5];
 _ropeInfoMap set ["_ropeTop",_ropeTop];
 private _ropeBottom = ropeCreate [_unitAttachmentDummy, [0, 0, 0], _bottomLength];
@@ -61,6 +62,7 @@ _ropeInfoMap set ["_ropeBottom",_ropeBottom];
     _ropeTop,
     "RopeBreak",
     {
+        hint "tope broken";
         ON_ROPE_BROKEN
         [_ropeInfoMap] call KISKA_fnc_fastRope_ropeAttachedUnit;
     },
@@ -71,6 +73,7 @@ _ropeInfoMap set ["_ropeBottom",_ropeBottom];
     _ropeBottom,
     "RopeBreak",
     {
+        hint "bottom broken";
         ON_ROPE_BROKEN
     },
     [_ropeInfoMap]
