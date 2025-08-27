@@ -60,7 +60,6 @@ _ropeInfoMap set ["_ropeBottom",_ropeBottom];
     _ropeTop,
     "RopeBreak",
     {
-        hint "tope broken";
         ON_ROPE_BROKEN
         [_ropeInfoMap] call KISKA_fnc_fastRope_ropeAttachedUnit;
     },
@@ -71,7 +70,6 @@ _ropeInfoMap set ["_ropeBottom",_ropeBottom];
     _ropeBottom,
     "RopeBreak",
     {
-        hint "bottom broken";
         ON_ROPE_BROKEN
     },
     [_ropeInfoMap]
