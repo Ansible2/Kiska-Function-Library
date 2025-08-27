@@ -1,4 +1,26 @@
-// TODO: document
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_fastRope_end
+
+Description:
+    Handles much of the cleanup of a fastrope in the event that the helicopter
+     should cease the fastrope or has dropped off all the units.
+
+Parameters:
+    0: _fastRopeInfoMap <HASHMAP> - The hashmap that contains various pieces
+        of information pertaining to the given fastrope instance.
+
+Returns:
+    NOTHING
+
+Examples:
+    (begin example)
+        // SHOULD NOT BE CALLED DIRECTLY
+    (end)
+
+Author(s):
+    BaerMitUmlaut,
+    Modified By: Ansible2
+---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_fastRope_end";
 
 #define TIME_TILL_FRIES_DELETED 10
@@ -7,6 +29,8 @@ scriptName "KISKA_fnc_fastRope_end";
 #define TIME_UNTIL_ROPE_DELETION 20
 
 params ["_fastRopeInfoMap"];
+
+if (_fastRopeInfoMap getOrDefaultCall ["_queuedEnd", {false}]) exitWith {};
 
 private _pilot = _fastRopeInfoMap getOrDefaultCall ["_pilot", {objNull}];
 if (alive _pilot) then {
@@ -62,6 +86,7 @@ if (
     ] call CBA_fnc_waitAndExecute;
 };
 
+_fastRopeInfoMap set ["_queuedEnd",true];
 
 /* ----------------------------------------------------------------------------
     Mark fast rope as ended

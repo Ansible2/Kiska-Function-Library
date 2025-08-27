@@ -32,6 +32,7 @@ Author(s):
 scriptName "KISKA_fnc_fastRope_ropeAttachedUnit";
 
 #define ATTACH_TO_DUMMY_COORDS [0, 0, -1.45]
+#define ROPE_UNWIND_SPEED 6
 
 private _DEFAULT_MAP = createHashMap;
 params [
@@ -39,17 +40,76 @@ params [
     ["_setAttachedUnit",nil,[objNull]]
 ];
 
-if (isNil "_setAttachedUnit") exitWith {
-    private _attachedUnit = _ropeInfoMap getOrDefaultCall ["_attachedUnit",{objNull}];
+private _ropeUnitAttachmentDummy = _ropeInfoMap getOrDefaultCall ["_unitAttachmentDummy", {objNull}];
+private _detachUnit = isNil "_setAttachedUnit";
+if (_detachUnit) exitWith {
+    private _attachedUnit = _ropeInfoMap getOrDefaultCall ["_attachedUnit", {objNull}];
+    private _currentPosition = getPosVisual _attachedUnit;
     detach _attachedUnit;
     _ropeInfoMap set ["_attachedUnit",nil];
     _ropeInfoMap set ["_isOccupied",false];
-    _attachedUnit
+
+    if !(isNull _attachedUnit) then {
+        // TODO: fix
+        // if units are detached while on the rope, they
+        // will not be sent to the rope origin instead of where they were
+        if (
+            ((_currentPosition select 2) > 0.5) AND 
+            {!(isTouchingGround _attachedUnit)}
+        ) then {
+            _attachedUnit setPosASL (AGLToASL _currentPosition);
+        };
+        _attachedUnit setVariable ["KISKA_fastRope_attachedToRope",nil];
+
+        private _hook = _ropeInfoMap getOrDefaultCall ["_hook", {objNull}];
+        [
+            "EndAttachmentDescentLoop",
+            [_ropeUnitAttachmentDummy,getPosASLVisual _hook]
+        ] remoteExecCall ["KISKA_fnc_fastRope_executeRemoteEvent",_ropeUnitAttachmentDummy];
+
+        [
+            "EndFastRopeAnimation",
+            [_attachedUnit,_reachedGround]
+        ] remoteExecCall ["KISKA_fnc_fastRope_executeRemoteEvent",_attachedUnit];
+    };
+
+    nil
 };
 
+
+[
+    "UpdateAttachmentDummyMass",
+    [_ropeUnitAttachmentDummy,getPosASLVisual _hook]
+] remoteExecCall ["KISKA_fnc_fastRope_executeRemoteEvent",_ropeUnitAttachmentDummy];
+
+[
+    [_ropeInfoMap get "_ropeTop", _ropeInfoMap get "_ropeLength"],
+    [_ropeInfoMap get "_ropeBottom", 0.5]
+] apply {
+    _x params ["_rope","_unwindLength"];
+    [ [_rope, ROPE_UNWIND_SPEED, _unwindLength] ] remoteExec ["ropeUnwind",_rope];
+};
+
+[
+    _ropeUnitAttachmentDummy,
+    _setAttachedUnit
+] remoteExec ["disableCollisionWith",[_ropeUnitAttachmentDummy,_setAttachedUnit]];
+
 _ropeInfoMap set ["_attachedUnit",_setAttachedUnit];
-_setAttachedUnit attachTo [_ropeInfoMap get "_unitAttachmentDummy", ATTACH_TO_DUMMY_COORDS];
 _ropeInfoMap set ["_isOccupied",true];
+_setAttachedUnit attachTo [_ropeInfoMap get "_unitAttachmentDummy", ATTACH_TO_DUMMY_COORDS];
+
+[
+    "StartFastRopeAnimation",
+    _setAttachedUnit
+] remoteExecCall ["KISKA_fnc_fastRope_executeRemoteEvent",_setAttachedUnit];
+
+[
+    "StartAttachmentDescentLoop",
+    _ropeUnitAttachmentDummy
+] remoteExecCall ["KISKA_fnc_fastRope_executeRemoteEvent",_ropeUnitAttachmentDummy];
+
+_setAttachedUnit setVariable ["KISKA_fastRope_attachedToRope",true];
 
 
 _setAttachedUnit
