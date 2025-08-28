@@ -27,17 +27,24 @@ params ["_fastRopeInfoMap"];
 
 [
     {
-        !(alive (_this getOrDefaultCall ["_vehicle",{objNull}])) OR 
+        !(_this call KISKA_fnc_fastRope_isVehicleStillCapable) OR 
         { _this getOrDefaultCall ["_canDeployRopes",{true}] }
     },
     {
-        private _vehicle = _this getOrDefaultCall ["_vehicle",{objNull}];
-        if !(alive _vehicle) exitWith {};
+        if (
+            !(_this call KISKA_fnc_fastRope_isVehicleStillCapable)
+        ) exitWith {
+            _this call KISKA_fnc_fastRope_end;
+            nil
+        };
         
         _this call KISKA_fnc_fastRope_deployRopes;
         [
             {
-                // TODO: what if vehicle dies while deploying ropes
+                if (
+                    !(_this call KISKA_fnc_fastRope_isVehicleStillCapable)
+                ) exitWith { true };
+                
                 private _ropeInfoMaps = _this get "_ropeInfoMaps";
                 private _indexOfRopeNotUnwound = _ropeInfoMaps findIf { 
                     !(ropeUnwound (_x get "_ropeBottom"))

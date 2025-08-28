@@ -17,8 +17,36 @@ class CfgFunctions
     {
         class FastRope
         {
-			file = "KISKA_FastRope\Functions";
-            
+            file = "KISKA_FastRope\Functions";
+            class fastRope_createRope
+            {};
+            class fastRope_deployRopes
+            {};
+            class fastRope_do
+            {};
+            class fastRope_dropUnits
+            {};
+            class fastRope_end
+            {};
+            class fastRope_executeRemoteEvent
+            {};
+            class fastRope_getConfigData
+            {};
+            class fastRope_isVehicleStillCapable
+            {};
+            class fastRope_ropeAttachedUnit
+            {};
+            class fastRope_startDeploymentProcess
+            {};
+        };
+
+        class FastRopeCommonEvents
+        {
+            file = "KISKA_FastRope\Functions\CommonEvents";
+            class fastRopeEvent_onDropEndedDefault
+            {};
+            class fastRopeEvent_onHoverStartedDefault
+            {};
         };
     };
 };
@@ -153,9 +181,19 @@ class CfgVehicles
         class TransportItems {};
     };
 
+    class Heli_Light_01_base_F;
+    class Heli_Light_01_base_F : Heli_Light_01_base_F
+    {
+        class KISKA_FastRope
+        {
+            ropeOrigins[] = {"ropeOriginRight","ropeOriginLeft"};
+            friesType = "KISKA_FriesAnchorBar";
+            friesAttachmentPoint[] = {0,0.550,-0.007};
+        };
+    };
 
-    class Helicopter_Base_H;
-    class Heli_Light_02_base_F : Helicopter_Base_H 
+    class Heli_Light_02_base_F;
+    class Heli_Light_02_base_F : Heli_Light_02_base_F 
     {
         class KISKA_FastRope
         {
@@ -166,7 +204,8 @@ class CfgVehicles
         };
     };
 
-    class Heli_Attack_02_base_F : Helicopter_Base_F 
+    class Heli_Attack_02_base_F;
+    class Heli_Attack_02_base_F : Heli_Attack_02_base_F 
     {
         class KISKA_FastRope
         {
@@ -177,9 +216,9 @@ class CfgVehicles
         };
     };
 
-    class Heli_Transport_01_base_F : Helicopter_Base_H 
+    class Heli_Transport_01_base_F;
+    class Heli_Transport_01_base_F : Heli_Transport_01_base_F 
     {
-        // GVAR(enabled) = 2; // probably not needed
         class KISKA_FastRope
         {
             ropeOrigins[] = {"ropeOriginRight", "ropeOriginLeft"};
@@ -188,10 +227,9 @@ class CfgVehicles
         };
     };
 
-    class Heli_Transport_02_base_F : Helicopter_Base_H 
+    class Heli_Transport_02_base_F;
+    class Heli_Transport_02_base_F : Heli_Transport_02_base_F 
     {
-
-        // GVAR(enabled) = 1;
         class KISKA_FastRope
         {
             ropeOrigins[] = {
@@ -200,17 +238,11 @@ class CfgVehicles
             };
         };
 
-        // TODO: don't know why this is needed(?)
-        // class UserActions {
-        //     class Ramp_Open;
-        //     class Ramp_Close: Ramp_Open {
-        //         condition = QUOTE([ARR_3(this,'CargoRamp_Open',[ARR_3([0],[1],[2])])] call FUNC(canCloseRamp));
-        //     };
-        // };
     };
-    class Heli_Transport_03_base_F : Helicopter_Base_H 
+
+    class Heli_Transport_03_base_F;
+    class Heli_Transport_03_base_F : Heli_Transport_03_base_F 
     {
-        // GVAR(enabled) = 1;
         class KISKA_FastRope
         {
             ropeOrigins[] = {
@@ -218,18 +250,11 @@ class CfgVehicles
                 {-0.87, -5.29, -0.11}
             };
         };
-
-        // TODO: don't know why this is needed(?)
-        // class UserActions {
-        //     class Ramp_Open;
-        //     class Ramp_Close: Ramp_Open {
-        //         condition = QUOTE([ARR_3(this,'Door_rear_source',[ARR_3([0],[3],[4])])] call FUNC(canCloseRamp));
-        //     };
-        // };
     };
-    class Heli_light_03_base_F : Helicopter_Base_F 
+
+    class Heli_light_03_base_F;
+    class Heli_light_03_base_F : Heli_light_03_base_F 
     {
-        // GVAR(enabled) = 2;
         class KISKA_FastRope
         {
             ropeOrigins[] = {"ropeOriginRight", "ropeOriginLeft"};
@@ -237,9 +262,10 @@ class CfgVehicles
             friesAttachmentPoint[] = {-1.04, 2.5, -0.34};
         };
     };
-    class Heli_light_03_unarmed_base_F : Heli_light_03_base_F 
+
+    class Heli_light_03_unarmed_base_F;
+    class Heli_light_03_unarmed_base_F : Heli_light_03_unarmed_base_F 
     {
-        // GVAR(enabled) = 2;
         class KISKA_FastRope
         {
             ropeOrigins[] = {"ropeOriginRight", "ropeOriginLeft"};
@@ -248,9 +274,9 @@ class CfgVehicles
         };
     };
 
-    class O_Heli_Transport_04_bench_F : Helicopter_Base_H 
+    class O_Heli_Transport_04_bench_F;
+    class O_Heli_Transport_04_bench_F : O_Heli_Transport_04_bench_F 
     {
-        // GVAR(enabled) = 1;
         class KISKA_FastRope
         {
             ropeOrigins[] = {
@@ -261,9 +287,10 @@ class CfgVehicles
             };
         };
     };
-    class O_Heli_Transport_04_covered_F : Helicopter_Base_H 
+
+    class O_Heli_Transport_04_covered_F;
+    class O_Heli_Transport_04_covered_F : O_Heli_Transport_04_covered_F 
     {
-        // GVAR(enabled) = 1;
         class KISKA_FastRope
         {
             ropeOrigins[] = {
@@ -271,14 +298,6 @@ class CfgVehicles
                 {-1.02, -4.7, -0.03}
             };
         };
-
-        // TODO: why?
-        // class UserActions: UserActions {
-        //     class CloseDoor_6;
-        //     class Ramp_Close: CloseDoor_6 {
-        //         condition = QUOTE([ARR_3(this,'Door_6_source',[ARR_4([0],[1],[2],[3])])] call FUNC(canCloseRamp));
-        //     };
-        // };
     };
 };
 

@@ -36,6 +36,7 @@ params ["_fastRopeInfoMap"];
 private _fries = _fastRopeInfoMap get "_fries";
 private _ropeLength = (_fastRopeInfoMap get "_hoverHeight") + ROPE_LENGTH_BUFFER;
 _fastRopeInfoMap set ["_ropeLength",_ropeLength];
+private _vehicle = _fastRopeInfoMap get "_vehicle";
 
 private _ropeInfoMaps = (_fastRopeInfoMap get "_ropeOrigins") apply {
     private _hook = ROPE_HOOK_OBJECT_CLASS createVehicle [0,0,0];

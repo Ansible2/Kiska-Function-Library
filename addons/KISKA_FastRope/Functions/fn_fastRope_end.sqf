@@ -4,6 +4,9 @@ Function: KISKA_fnc_fastRope_end
 Description:
     Handles much of the cleanup of a fastrope in the event that the helicopter
      should cease the fastrope or has dropped off all the units.
+    
+    Important note: FRIES objects are deleted ten seconds after this function is
+     called so it can be used in the `onDropEnd` event.
 
 Parameters:
     0: _fastRopeInfoMap <HASHMAP> - The hashmap that contains various pieces
@@ -77,8 +80,6 @@ if (
     !(isNull _fries) AND 
     {_fries isNotEqualTo _vehicle}
 ) then {
-    // TODO: there has to be a more robust way of allowing
-    // this to be used in the onDropEnd event and deleted here...
     [
         { deleteVehicle _this },
         [_fries],

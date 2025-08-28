@@ -30,14 +30,16 @@ params [
     ["_isRecursiveCall",false,[true]]
 ];
 
+if (
+    !(_fastRopeInfoMap call KISKA_fnc_fastRope_isVehicleStillCapable)
+) exitWith {
+    _fastRopeInfoMap call KISKA_fnc_fastRope_end;
+    nil
+};
+
 private _vehicle = _fastRopeInfoMap getOrDefaultCall ["_vehicle",{objNull}];
 private _ropeInfoMaps = _fastRopeInfoMap get "_ropeInfoMaps";
 if !(_isRecursiveCall) exitWith {
-    if !(alive _vehicle) exitWith {
-        _fastRopeInfoMap call KISKA_fnc_fastRope_end;
-        nil
-    };
-
     private _pilot = currentPilot _vehicle;
     [_pilot,"MOVE"] remoteExec ["disableAI",_pilot];
     _fastRopeInfoMap set ["_pilot",_pilot];
@@ -67,29 +69,29 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
             if !(isNull (objectParent _unit)) exitWith {};
             
             private _ropeInfoMap = _args select 1;
+            // for reasons I don't understand, if _hook is not assigned to a variable when checking
+            // isNull, the function will silently fail... 
+            // cant use `(isNull (_ropeInfoMap getOrDefaultCall ["_hook",{objNull}]))
             private _hook = _ropeInfoMap getOrDefaultCall ["_hook",{objNull}];
+            private _unitWasAttachedToRope = _unit getVariable ["KISKA_fastRope_attachedToRope",false];
             // Prevent teleport if hook has been deleted due to rope cut
-            if (isNull _hook) exitWith {
+            if (
+                (isNull _hook) OR
+                {(_args select 4) getOrDefaultCall ["_queuedEnd", {false}]} OR
+                {_unitWasAttachedToRope AND {isNull (attachedTo _unit)}}
+            ) exitWith {
                 [_ropeInfoMap] call KISKA_fnc_fastRope_ropeAttachedUnit;
-                [_unit,[0,0,1]] remoteExecCall ["setVectorUp",_unit];
                 [PER_FRAME_HANDLER_ID] call CBA_fnc_removePerFrameHandler;
             };
 
-            private _ropeUnitAttachmentDummy = _ropeInfoMap getOrDefaultCall ["_unitAttachmentDummy",{objNull}];
-            private _vehicle = _args select 2;
-            private _unitWasAttachedToRope = _unit getVariable ["KISKA_fastRope_attachedToRope",false];
             if !(_unitWasAttachedToRope) exitWith {
                 [_ropeInfoMap,_unit] call KISKA_fnc_fastRope_ropeAttachedUnit;
-            };
-
-            if (_unitWasAttachedToRope AND {isNull (attachedTo _unit)}) exitWith {
-                [_ropeInfoMap] call KISKA_fnc_fastRope_ropeAttachedUnit;
-                [PER_FRAME_HANDLER_ID] call CBA_fnc_removePerFrameHandler;
             };
 
             private _ropeTop = _ropeInfoMap get "_ropeTop";
             private _reachedGround = ((getPosVisual _unit) select 2) < ON_GROUND_BUFFER;
             private _ropeLength = _args select 3;
+            private _vehicle = _args select 2;
             if (
                 _reachedGround OR
                 { (ropeLength _ropeTop) isEqualTo _ropeLength } OR
@@ -108,7 +110,13 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
             };
         }, 
         0, 
-        [_unit, _unoccupiedRopeInfoMap, _vehicle, _fastRopeInfoMap get "_ropeLength"]
+        [
+            _unit, 
+            _unoccupiedRopeInfoMap, 
+            _vehicle, 
+            _fastRopeInfoMap get "_ropeLength", 
+            _fastRopeInfoMap
+        ]
     ] call CBA_fnc_addPerFrameHandler;
     moveOut _unit;
 };
@@ -120,11 +128,8 @@ _fastRopeInfoMap set ["_unoccupiedRopeInfoMap",nil];
 if (_unitsToDeploy isEqualTo []) exitWith {
     [
         {
-            private _vehicle = _this select 0;
             if (
-                !(alive _vehicle) OR
-                { !(isEngineOn _vehicle) } OR
-                { (_this select 2) getOrDefaultCall ["_allRopesBroken",{false},true] }
+                !((_this select 2) call KISKA_fnc_fastRope_isVehicleStillCapable)
             ) exitWith { true };
 
             private _indexOfOccupiedRope = (_this select 1) findIf { 
@@ -149,11 +154,8 @@ if (_unitsToDeploy isEqualTo []) exitWith {
 [
     {
         private _fastRopeInfoMap = _this select 2;
-        private _vehicle = _this select 0;
         if (
-            !(alive _vehicle) OR
-            { !(isEngineOn _vehicle) } OR
-            { _fastRopeInfoMap getOrDefaultCall ["_allRopesBroken",{false},true] }
+            !(_fastRopeInfoMap call KISKA_fnc_fastRope_isVehicleStillCapable)
         ) exitWith { true };
         
         private _continue = false;

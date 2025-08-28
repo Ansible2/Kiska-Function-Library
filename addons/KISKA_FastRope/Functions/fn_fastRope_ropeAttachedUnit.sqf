@@ -44,21 +44,11 @@ private _ropeUnitAttachmentDummy = _ropeInfoMap getOrDefaultCall ["_unitAttachme
 private _detachUnit = isNil "_setAttachedUnit";
 if (_detachUnit) exitWith {
     private _attachedUnit = _ropeInfoMap getOrDefaultCall ["_attachedUnit", {objNull}];
-    private _currentPosition = getPosVisual _attachedUnit;
     detach _attachedUnit;
     _ropeInfoMap set ["_attachedUnit",nil];
     _ropeInfoMap set ["_isOccupied",false];
 
     if !(isNull _attachedUnit) then {
-        // TODO: fix
-        // if units are detached while on the rope, they
-        // will not be sent to the rope origin instead of where they were
-        if (
-            ((_currentPosition select 2) > 0.5) AND 
-            {!(isTouchingGround _attachedUnit)}
-        ) then {
-            _attachedUnit setPosASL (AGLToASL _currentPosition);
-        };
         _attachedUnit setVariable ["KISKA_fastRope_attachedToRope",nil];
 
         private _hook = _ropeInfoMap getOrDefaultCall ["_hook", {objNull}];
