@@ -4,19 +4,6 @@
     __EXEC(KISKA_FUNCTIONS_ROOT_FOLDER = "KISKA_functions")
 #endif
 
-class ACE_FastRope
-{	
-    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\ACE\Fast Rope");
-
-    class ACE_deployFastRope
-    {};
-    class ACE_deployRopes
-    {};
-    class ACE_fastRope
-    {};
-    class ACE_setOnPrepareFastrope
-    {};
-};
 class ACE
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\ACE");

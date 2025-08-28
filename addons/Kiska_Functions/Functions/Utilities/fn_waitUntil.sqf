@@ -9,7 +9,7 @@ Parameters:
         If `(_interval <= 0) AND (_unscheduled isEqualTo true)`, this will only accept CODE
         or `STRING` as an arguement for performance reasons and `_parameters` will be available in `_this`.
         (See KISKA_fnc_callBack)
-    1: _function <CODE, STRING, or ARRAY> - The code to execute upon condition being reached.
+    1: _onConditionMet <CODE, STRING, or ARRAY> - The code to execute upon condition being reached.
         (See KISKA_fnc_callBack)
     2: _interval <NUMBER> - How often to check the condition
     3: _parameters <ARRAY> - An array of local parameters that can be accessed with _this
@@ -43,9 +43,9 @@ scriptName "KISKA_fnc_waitUntil";
 
 params [
     ["_condition",{},[{},"",[]]],
-    ["_function",{},[{},"",[]]],
+    ["_onConditionMet",{},[{},"",[]]],
     ["_interval",0.5,[123]],
-    ["_parameters",[],[[]]],
+    ["_parameters",[]],
     ["_unscheduled",true,[true]]
 ];
 
@@ -67,8 +67,8 @@ if (
 if (_condition isEqualType "") then {
     _condition = compileFinal _condition;
 };
-if (_function isEqualType "") then {
-    _function = compileFinal _function;
+if (_onConditionMet isEqualType "") then {
+    _onConditionMet = compileFinal _onConditionMet;
 };
 
 
@@ -82,10 +82,10 @@ if (_unscheduled AND _isPerframe) exitWith {
             _parameters call _condition
         },
         {
-            params ["_parameters","_function",""];
-            [_parameters,_function] call KISKA_fnc_callBack;
+            params ["_parameters","_onConditionMet",""];
+            [_parameters,_onConditionMet] call KISKA_fnc_callBack;
         },
-        [_parameters,_function,_condition]
+        [_parameters,_onConditionMet,_condition]
     ] call CBA_fnc_waitUntilAndExecute;
 };
 
@@ -98,14 +98,14 @@ if (_unscheduled) exitWith {
         {
             (_this select 0) params [
                 "_condition",
-                "_function",
+                "_onConditionMet",
                 "_interval",
                 "_parameters"
             ];
 
             private _conditionMet = [_parameters,_condition] call KISKA_fnc_callBack;
             if (_conditionMet) exitWith {
-                [_parameters,_function] call KISKA_fnc_callBack;
+                [_parameters,_onConditionMet] call KISKA_fnc_callBack;
 
                 private _id = _this select 1;
                 [_id] call CBA_fnc_removePerFrameHandler;
@@ -122,14 +122,14 @@ if (_unscheduled) exitWith {
 /* -----------------------------------
     Scheduled
 ----------------------------------- */
-[_interval,_function,_condition,_parameters] spawn {
-    params ["_interval","_function","_condition","_parameters"];
+[_interval,_onConditionMet,_condition,_parameters] spawn {
+    params ["_interval","_onConditionMet","_condition","_parameters"];
 
     waitUntil {
         sleep _interval;
         private _conditionMet = [_parameters,_condition] call KISKA_fnc_callBack;
         if (_conditionMet) exitWith {
-            [_parameters,_function] call KISKA_fnc_callBack;
+            [_parameters,_onConditionMet] call KISKA_fnc_callBack;
             true
         };
 

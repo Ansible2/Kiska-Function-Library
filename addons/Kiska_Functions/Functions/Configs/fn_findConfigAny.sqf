@@ -2,23 +2,23 @@
 Function: KISKA_fnc_findConfigAny
 
 Description:
-    Searchs missionConfigFile, campaignConfigFile, and the configFile
+    Searchs `missionConfigFile`, `campaignConfigFile`, and the `configFile`
      (in that order) to find a config based upon the sub paths provided.
 
     Returns the first one it finds.
 
-    The BIS counterpart to this is BIS_fnc_loadClass and while it can be about 0.0005-0.0010ms
+    The BIS counterpart to this is `BIS_fnc_loadClass` and while it can be about 0.0005-0.0010ms
      faster if the path is short (about 2 entries). It can yield about 0.005ms faster in various cases.
 
 Parameters:
-    0: _pathArray : <ARRAY> - The array in string format
+    0: _pathArray : <STRING[]> - A config path broken up into individual pieces
 
 Returns:
     <CONFIG> - The first config path if found or configNull if not
 
 Examples:
     (begin example)
-        _configPath = [["CfgMusic","Music_Intro_02_MissionStart"]] call KISKA_fnc_findConfigAny;
+        private _configPath = [["CfgMusic","Music_Intro_02_MissionStart"]] call KISKA_fnc_findConfigAny;
     (end)
 
 Author(s):
@@ -50,11 +50,12 @@ private _configReturn = configNull;
     private _configPath = _x;
     _pathArray apply {
         // stop going down this config class path does not exist
-        if !(isClass(_configPath >> _x)) then {
+        private _path = _configPath >> _x;
+        if (isNull _path) then {
             _configFound = false;
             break;
         };
-        _configPath = _configPath >> _x;
+        _configPath = _path;
         _configFound = true;
     };
 
