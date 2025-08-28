@@ -7,63 +7,112 @@ Description:
     Pilots should ideally be placed in "CARELESS" behaviour when around enemies.
 
 Parameters:
-    0: _vehicle <OBJECT> - The vehicle to fastrope from
-    1: _dropPosition <ARRAY or OBJECT> - The positionASL to drop the units off at; Z coordinate
-        matters
-    2: _unitsToDeploy <CODE, STRING, [ARRAY,CODE], [ARRAY,STRING], OBJECT[], GROUP, or OBJECT> - 
-        An array of units to drop from the _vehicle or code that will run once the helicopter 
-        has reached the drop point that must return an array of object
-        (see `KISKA_fnc_callBack` for examples).
+    0: _argsMap <HASHMAP> - A hashmap of various parameters for the fastrope.
+        - `vehicle`: <OBJECT> - The vehicle to fastrope units from.
+        - `dropPosition`: <PositionsASL[] | OBJECT> - The position to drop units off.
+        - `hoverHeight`: <NUMBER> - The height above the drop position that the helicopter
+            will hover. Defaults to `20`, min is `5`, max is `28`.
+        - `unitsToDeploy`: <CODE, STRING, [ARRAY,CODE], [ARRAY,STRING], OBJECT[], GROUP, or OBJECT> - 
+            An array of units to drop from the `_vehicle` or code that will run once the helicopter 
+            has reached the drop point that must return an OBJECT[].
+            (see `KISKA_fnc_callBack` for examples).
 
-        Parameters:
-        - 0: _vehicle - The drop vehicle
+            Parameters:
+                - 0: <OBJECT> - The fastrope vehicle.
 
-    3: _afterDropCode <CODE, STRING or ARRAY> - Code to execute after the drop is complete, 
-        see `KISKA_fnc_callBack`.
-        
-        Parameters:
-        - 0: _vehicle - The drop vehicle
+        - `onDropEnded`: <CODE, STRING, [ARRAY,CODE]> - Code that will be executed once
+            all the units have been dropped off, the vehicle's engine is no longer on,
+            or the vehicle is no longer alive. The default behaviour can be found
+            in `KISKA_fnc_fastRopeEvent_onDropEndedDefault`. However, the vehicle's config
+            will also be searched for the event first (see `KISKA_fnc_fastRope_getConfigData`).
+            (see `KISKA_fnc_callBack` for type examples).
 
-    4: _hoverHeight <NUMBER> - The height the helicopter should hover above the drop position
-        while units are fastroping. Max is 28, min is 5.
-    5: _ropeOrigins <(String | Vector3D[])[]> - An array of relative (to the vehicle) attachment
-        points for the ropes and/or memory points to `attachTo` the ropes to the vehicle.
+            Parameters:
+                - 0: <HASHMAP> - A hashmap containing various pieces of information
+                    pertaining to the drop.
+
+        - `onDropComplete`: <CODE, STRING, [ARRAY,CODE]> - Code that will be executed once
+            all the units have been dropped off, the vehicle's engine is no longer on,
+            or the vehicle is no longer alive, AND the `onDropEnded` has run. This
+            defaults to empty code and is used in case a user does not want to overwrite
+            `onDropEnded`'s behaviour.
+            (see `KISKA_fnc_callBack` for type examples).
+
+            Parameters:
+                - 0: <HASHMAP> - A hashmap containing various pieces of information
+                    pertaining to the drop.
+
+        - `onHoverStarted`: <CODE, STRING, [ARRAY,CODE]> - Code that will be executed once
+            the vehicle has approixmately reached its hover position. The default behaviour can be found
+            in `KISKA_fnc_fastRopeEvent_onHoverStartedDefault`. However, the vehicle's config
+            will also be searched for the event first (see `KISKA_fnc_fastRope_getConfigData`).
+            (see `KISKA_fnc_callBack` for type examples).
+
+            Parameters:
+                - 0: <HASHMAP> - A hashmap containing various pieces of information
+                    pertaining to the drop.
+
+        - `getRopeOrigins`: <CODE, STRING, [ARRAY,CODE]> - Code that will be executed once
+            in and must return a type of `(STRING | PostiionRelative[])[]`. These will be where ropes
+            will hang from relative to either String entries are memory points. The default 
+            behaviour is to get the rope origins from the vehicle's config using
+            `KISKA_fnc_fastRope_getConfigData`.
+            (see `KISKA_fnc_callBack` for type examples).
+
+            Parameters:
+                - 0: <OBJECT> - The fastrope vehicle.
 
 Returns:
     NOTHING
 
 Examples:
     (begin example)
-        //  basic example
-        [
-            _vehicle,
-            _position,
-            (fullCrew [_vehicle,"cargo"]) apply {
-                _x select 0
-            },
-            {hint "fastrope done"},
-            28,
-            [[0,0,0]]
-        ] call KISKA_fnc_fastRope_do;
+        private _paramsMap = createHashMapFromArray [
+            ["vehicle",MyHelicopter],
+            ["dropPosition",MyDropPosition],
+            [
+                "unitsToDeploy",
+                (fullCrew [_vehicle,"cargo"]) apply {
+                    _x select 0
+                }
+            ],
+            [
+                "onDropComplete",
+                {
+                    hint "fastrope done"
+                }
+            ]
+        ];
+        _paramsMap call KISKA_fnc_fastRope_do;
     (end)
 
     (begin example)
         // using code instead to defer the list of units to drop
         // until the helicopter is over the drop point
-        [
-            _vehicle,
-            _position,
-            {
-                params ["_vehicle"];
-
-                (fullCrew [_vehicle,"cargo"]) apply {
-                    _x select 0
+        private _paramsMap = createHashMapFromArray [
+            ["vehicle",MyHelicopter],
+            ["dropPosition",MyDropPosition],
+            [
+                "unitsToDeploy",
+                {
+                    params ["_vehicle"];
+                    (fullCrew [_vehicle,"cargo"]) apply {
+                        _x select 0
+                    }
                 }
-            },
-            {hint "fastrope done"},
-            28,
-            [[0,0,0]]
-        ] call KISKA_fnc_fastRope_do;
+            ],
+            [
+                "onDropComplete",
+                {
+                    hint "fastrope done"
+                }
+            ],
+            [
+                "getRopeOrigins",
+                { [[0,0,0]] }
+            ]
+        ];
+        _paramsMap call KISKA_fnc_fastRope_do;
     (end)
 
 Author(s):
@@ -84,6 +133,7 @@ private _paramDetails = [
     ["vehicle",{objNull},[objNull]],
     ["dropPosition",{[]},[[],objNull]],
     ["unitsToDeploy",{[]},[[],grpNull,objNull,{},""]],
+    ["hoverHeight",{20},[123]],
     [
         "onDropEnded",
         {{
@@ -97,7 +147,11 @@ private _paramDetails = [
         }},
         CALL_BACK_TYPES
     ],
-    ["hoverHeight",{20},[123]],
+    [
+        "onDropComplete",
+        {{}},
+        CALL_BACK_TYPES
+    ],
     [
         "getRopeOrigins",
         {{
@@ -261,10 +315,11 @@ localNamespace setVariable [_fastRopeInfoMap_var,_fastRopeInfoMap];
         ],
         [
             "_onHoverEnd",
-            [[_fastRopeInfoMap,_onDropEnded,_fastRopeInfoMap_var], {
-                _thisArgs params ["_fastRopeInfoMap","_onDropEnded","_fastRopeInfoMap_var"];
+            [[_fastRopeInfoMap,_onDropEnded,_fastRopeInfoMap_var,_onDropComplete], {
+                _thisArgs params ["_fastRopeInfoMap","_onDropEnded","_fastRopeInfoMap_var","_onDropComplete"];
                 localNamespace setVariable [_fastRopeInfoMap_var,nil];
                 [_fastRopeInfoMap, _onDropEnded] call KISKA_fnc_callBack;
+                [_fastRopeInfoMap, _onDropComplete] call KISKA_fnc_callBack;
             }]
         ]
     ]
