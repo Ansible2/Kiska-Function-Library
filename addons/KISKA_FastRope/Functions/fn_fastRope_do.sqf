@@ -8,10 +8,14 @@ Description:
 
 Parameters:
     0: _argsMap <HASHMAP> - A hashmap of various parameters for the fastrope.
+
         - `vehicle`: <OBJECT> - The vehicle to fastrope units from.
+
         - `dropPosition`: <PositionsASL[] | OBJECT> - The position to drop units off.
+
         - `hoverHeight`: <NUMBER> - The height above the drop position that the helicopter
             will hover. Defaults to `20`, min is `5`, max is `28`.
+
         - `unitsToDeploy`: <CODE, STRING, [ARRAY,CODE], [ARRAY,STRING], OBJECT[], GROUP, or OBJECT> - 
             An array of units to drop from the `_vehicle` or code that will run once the helicopter 
             has reached the drop point that must return an OBJECT[].
@@ -64,7 +68,7 @@ Parameters:
             (see `KISKA_fnc_callBack` for type examples).
 
             Parameters:
-            
+
                 - 0: <OBJECT> - The fastrope vehicle.
 
 Returns:
