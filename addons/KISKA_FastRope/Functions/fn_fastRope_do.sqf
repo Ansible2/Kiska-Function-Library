@@ -18,6 +18,7 @@ Parameters:
             (see `KISKA_fnc_callBack` for examples).
 
             Parameters:
+
                 - 0: <OBJECT> - The fastrope vehicle.
 
         - `onDropEnded`: <CODE, STRING, [ARRAY,CODE]> - Code that will be executed once
@@ -28,6 +29,7 @@ Parameters:
             (see `KISKA_fnc_callBack` for type examples).
 
             Parameters:
+
                 - 0: <HASHMAP> - A hashmap containing various pieces of information
                     pertaining to the drop.
 
@@ -39,6 +41,7 @@ Parameters:
             (see `KISKA_fnc_callBack` for type examples).
 
             Parameters:
+
                 - 0: <HASHMAP> - A hashmap containing various pieces of information
                     pertaining to the drop.
 
@@ -49,6 +52,7 @@ Parameters:
             (see `KISKA_fnc_callBack` for type examples).
 
             Parameters:
+
                 - 0: <HASHMAP> - A hashmap containing various pieces of information
                     pertaining to the drop.
 
@@ -60,6 +64,7 @@ Parameters:
             (see `KISKA_fnc_callBack` for type examples).
 
             Parameters:
+            
                 - 0: <OBJECT> - The fastrope vehicle.
 
 Returns:

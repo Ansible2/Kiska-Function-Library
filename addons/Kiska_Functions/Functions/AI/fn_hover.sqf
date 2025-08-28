@@ -14,19 +14,25 @@ Parameters:
         
         - `_shouldHoverStop`: <CODE> - Code that should return a boolean to determine 
             if the vehicle should stop its hover. This condition is checked every 0.05s.
+            
             Parameters:
+
             - 0: _vehicle - The hover vehicle
             - 1: _pilot - The `currentPilot` of the vehicle
 
         - `_onHoverEnd`: <CODE, STRING, or ARRAY> - Code that executes after the 
             hover completes, see `KISKA_fnc_callBack`
+            
             Parameters:
+            
             - 0: _vehicle - The hover vehicle
             - 1: _pilot - The `currentPilot` of the vehicle
 
         - `_onHoverStart`: <CODE, STRING, or ARRAY> - Code that executes after the 
             vehicle is within 5m of the hover position, see `KISKA_fnc_callBack`
+            
             Parameters:
+            
             - 0: _vehicle - The hover vehicle
             - 1: _pilot - The `currentPilot` of the vehicle
 
@@ -59,8 +65,6 @@ Author(s):
     Ansible2
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_hover";
-
-// TOOD: implement call back map
 
 #define HOVER_INTERVAL 0.05
 #define START_VELOCITY_CONTROL_DISTANCE 400

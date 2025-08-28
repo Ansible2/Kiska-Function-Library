@@ -13,6 +13,7 @@ Parameters:
     5: _codeOnComplete : <CODE, STRING, or ARRAY> - Code to run upon completion of disembark. See KISKA_fnc_callBack
         
         Parameters:
+        
         - 0: <OBJECT> - The vehicle, crew (ARRAY), and crew groups (ARRAY)
         - 1: <OBJECT[]> - The crew of the vehicle
         - 2: <GROUP[]> - All the groups that are in the vehicle crew
