@@ -111,7 +111,7 @@ private _onHoverStartDefined = "_onHoverStart" in _callBackMap;
         private _pilot = currentPilot _vehicle;
         if (
             !(alive _vehicle) OR
-            {!(isEngineOn _vehicle)} // in case engine dies
+            {!(isEngineOn _vehicle)} OR // in case engine dies
             {!(alive _pilot)} OR
             { 
                 [_vehicle,_pilot] call (_callBackMap getOrDefaultCall ["_shouldHoverStop",{{false}},true]) 
