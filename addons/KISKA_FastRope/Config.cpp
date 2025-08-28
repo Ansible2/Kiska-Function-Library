@@ -79,7 +79,7 @@ class CfgMovesMaleSdr : CfgMovesBasic
 class CfgVehicles
 {
     class Helicopter_Base_F;
-    class KISKA_friesBase : Helicopter_Base_F // TODO: change classnames to be clearer (e.g. what is "fries")
+    class KISKA_friesBase : Helicopter_Base_F
     {
         destrType = "DestructNo";
 
@@ -181,8 +181,7 @@ class CfgVehicles
         class TransportItems {};
     };
 
-    class Heli_Light_01_base_F;
-    class Heli_Light_01_base_F : Heli_Light_01_base_F
+    class Heli_Light_01_base_F : Helicopter_Base_F
     {
         class KISKA_FastRope
         {
@@ -192,8 +191,7 @@ class CfgVehicles
         };
     };
 
-    class Heli_Light_02_base_F;
-    class Heli_Light_02_base_F : Heli_Light_02_base_F 
+    class Heli_Light_02_base_F : Helicopter_Base_F
     {
         class KISKA_FastRope
         {
@@ -204,8 +202,7 @@ class CfgVehicles
         };
     };
 
-    class Heli_Attack_02_base_F;
-    class Heli_Attack_02_base_F : Heli_Attack_02_base_F 
+    class Heli_Attack_02_base_F : Helicopter_Base_F
     {
         class KISKA_FastRope
         {
@@ -216,8 +213,7 @@ class CfgVehicles
         };
     };
 
-    class Heli_Transport_01_base_F;
-    class Heli_Transport_01_base_F : Heli_Transport_01_base_F 
+    class Heli_Transport_01_base_F : Helicopter_Base_F
     {
         class KISKA_FastRope
         {
@@ -227,8 +223,7 @@ class CfgVehicles
         };
     };
 
-    class Heli_Transport_02_base_F;
-    class Heli_Transport_02_base_F : Heli_Transport_02_base_F 
+    class Heli_Transport_02_base_F : Helicopter_Base_F
     {
         class KISKA_FastRope
         {
@@ -240,8 +235,7 @@ class CfgVehicles
 
     };
 
-    class Heli_Transport_03_base_F;
-    class Heli_Transport_03_base_F : Heli_Transport_03_base_F 
+    class Heli_Transport_03_base_F : Helicopter_Base_F
     {
         class KISKA_FastRope
         {
@@ -252,8 +246,7 @@ class CfgVehicles
         };
     };
 
-    class Heli_light_03_base_F;
-    class Heli_light_03_base_F : Heli_light_03_base_F 
+    class Heli_light_03_base_F : Helicopter_Base_F
     {
         class KISKA_FastRope
         {
@@ -263,8 +256,7 @@ class CfgVehicles
         };
     };
 
-    class Heli_light_03_unarmed_base_F;
-    class Heli_light_03_unarmed_base_F : Heli_light_03_unarmed_base_F 
+    class Heli_light_03_unarmed_base_F : Heli_light_03_base_F
     {
         class KISKA_FastRope
         {
@@ -274,8 +266,8 @@ class CfgVehicles
         };
     };
 
-    class O_Heli_Transport_04_bench_F;
-    class O_Heli_Transport_04_bench_F : O_Heli_Transport_04_bench_F 
+    class Heli_Transport_04_base_F;
+    class O_Heli_Transport_04_bench_F : Heli_Transport_04_base_F
     {
         class KISKA_FastRope
         {
@@ -288,8 +280,7 @@ class CfgVehicles
         };
     };
 
-    class O_Heli_Transport_04_covered_F;
-    class O_Heli_Transport_04_covered_F : O_Heli_Transport_04_covered_F 
+    class O_Heli_Transport_04_covered_F : Heli_Transport_04_base_F
     {
         class KISKA_FastRope
         {
