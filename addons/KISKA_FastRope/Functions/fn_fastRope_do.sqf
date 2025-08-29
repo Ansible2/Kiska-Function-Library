@@ -23,7 +23,7 @@ Parameters:
 
             Parameters:
 
-                - 0: <OBJECT> - The fastrope vehicle.
+            - 0: <OBJECT> - The fastrope vehicle.
 
         - `onDropEnded`: <CODE, STRING, [ARRAY,CODE]> - Code that will be executed once
             all the units have been dropped off, the vehicle's engine is no longer on,
@@ -34,8 +34,7 @@ Parameters:
 
             Parameters:
 
-                - 0: <HASHMAP> - A hashmap containing various pieces of information
-                    pertaining to the drop.
+            - 0: <HASHMAP> - A hashmap containing various pieces of information pertaining to the drop.
 
         - `onDropComplete`: <CODE, STRING, [ARRAY,CODE]> - Code that will be executed once
             all the units have been dropped off, the vehicle's engine is no longer on,
@@ -46,8 +45,7 @@ Parameters:
 
             Parameters:
 
-                - 0: <HASHMAP> - A hashmap containing various pieces of information
-                    pertaining to the drop.
+            - 0: <HASHMAP> - A hashmap containing various pieces of information pertaining to the drop.
 
         - `onHoverStarted`: <CODE, STRING, [ARRAY,CODE]> - Code that will be executed once
             the vehicle has approixmately reached its hover position. The default behaviour can be found
@@ -57,8 +55,7 @@ Parameters:
 
             Parameters:
 
-                - 0: <HASHMAP> - A hashmap containing various pieces of information
-                    pertaining to the drop.
+            - 0: <HASHMAP> - A hashmap containing various pieces of information pertaining to the drop.
 
         - `getRopeOrigins`: <CODE, STRING, [ARRAY,CODE]> - Code that will be executed once
             in and must return a type of `(STRING | PostiionRelative[])[]`. These will be where ropes
@@ -68,8 +65,8 @@ Parameters:
             (see `KISKA_fnc_callBack` for type examples).
 
             Parameters:
-
-                - 0: <OBJECT> - The fastrope vehicle.
+            
+            - 0: <OBJECT> - The fastrope vehicle.
 
 Returns:
     NOTHING
