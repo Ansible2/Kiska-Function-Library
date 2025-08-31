@@ -10,7 +10,8 @@ Parameters:
 Returns:
     <HASHMAP> - a hashmap containing data about the base:
 
-    - `unit list`: <OBJECT[]> - All spawned units (includes turret units)
+    - `unit list`: <OBJECT[]> - All spawned units (includes turret units, 
+        DOES NOT include simple units)
     - `group list`: <GROUP[]> - All spawned groups (does NOT include turret units)
     - `turret gunners`: <OBJECT[]> - All turret units
     - `infantry units`: <OBJECT[]> - All infantry spawned units
@@ -20,6 +21,7 @@ Returns:
     - `land vehicles`: <OBJECT[]> - All land spawned vehicles
     - `land vehicle groups`: <GROUP[]> - All land vehicle crew groups
     - `agent list`: <OBJECT[]> - All spawned agents
+    - `simple units`: <OBJECT[]> - All spawned simple units
 
 Examples:
     (begin example)
@@ -66,7 +68,8 @@ _baseData = createHashMapFromArray [
     ["patrol groups",[]],
     ["land vehicles",[]],
     ["land vehicle groups",[]],
-    ["agent list",[]]
+    ["agent list",[]],
+    ["simple units",[]]
 ];
 KISKA_bases_map set [_baseName,_baseData];
 

@@ -105,6 +105,8 @@ class Bases
     {};
     class bases_createFromConfig_simples
     {};
+    class bases_createFromConfig_simpleUnits
+    {};
     class bases_createFromConfig_turrets
     {};
     class bases_getHashmap
