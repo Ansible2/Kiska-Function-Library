@@ -3,15 +3,15 @@ Function: KISKA_fnc_invisibleWalls_replaceCommon
 
 Description:
     Replaces several VR blocks with KISKA versions that do not have a shadow
-    and will set them to be invisible. Should the KISKA versions without shadows
-    be unavailable, the vanilla counterpart (with a shadow) will be used instead.
+     and will set them to be invisible. Should the KISKA versions without shadows
+     be unavailable, the vanilla counterpart (with a shadow) will be used instead.
 
     When replacing an object, if the object to replace is only local to the machine
-    then the created invisible wall will also be local and vice a versa.
+     then the created invisible wall will also be local and vice a versa.
 
     WARNING: This function runs several world sized nearObjects scans. It is recommended
-        that this function be run ONCE and during initialization if possible.
-        Any object replaced with an invisible wall will be DELETED.
+     that this function be run ONCE and during initialization if possible.
+     Any object replaced with an invisible wall will be DELETED.
 
     These are the types of walls that will be replaced and their replacements:
     
