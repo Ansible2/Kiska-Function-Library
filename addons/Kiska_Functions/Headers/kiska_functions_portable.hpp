@@ -282,6 +282,10 @@ class InvisibleWalls
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\InvisibleWalls");
     class invisibleWalls_create
     {};
+    class invisibleWalls_init
+    {
+        postInit = 1;
+    };
     class invisibleWalls_replaceCommon
     {};
 };
