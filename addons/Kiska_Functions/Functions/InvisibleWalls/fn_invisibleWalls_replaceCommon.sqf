@@ -13,6 +13,25 @@ Description:
         that this function be run ONCE and during initialization if possible.
         Any object replaced with an invisible wall will be DELETED.
 
+    These are the types of walls that will be replaced and their replacements:
+    
+    (begin example)
+        [
+            // [TYPE TO REPLACE, TYPE TO REPLACE WITH]
+            ["Land_VR_Block_01_F","KISKA_Land_VR_Block_01_F_No_Shadow"],
+            ["Land_VR_Slope_01_F","KSIKA_Land_VR_Slope_01_F_No_Shadow"],
+            ["Land_VR_Block_03_F","KSIKA_Land_VR_Block_03_F_No_Shadow"],
+            ["Land_VR_Block_02_F","KSIKA_Land_VR_Block_02_F_No_Shadow"],
+            ["Land_VR_Block_04_F","KSIKA_Land_VR_Block_04_F_No_Shadow"],
+            ["Land_VR_Shape_01_cube_1m_F","KSIKA_Land_VR_Shape_01_cube_1m_F_No_Shadow"],
+            ["Land_VR_CoverObject_01_kneelHigh_F","KSIKA_Land_VR_CoverObject_01_kneelHigh_F_No_Shadow"],
+            ["Land_VR_CoverObject_01_standHigh_F","KSIKA_Land_VR_CoverObject_01_standHigh_F_No_Shadow"],
+            ["Land_VR_CoverObject_01_kneel_F","KSIKA_Land_VR_CoverObject_01_kneel_F_No_Shadow"],
+            ["Land_VR_CoverObject_01_kneelLow_F","KSIKA_Land_VR_CoverObject_01_kneelLow_F_No_Shadow"],
+            ["Land_VR_CoverObject_01_stand_F","KSIKA_Land_VR_CoverObject_01_stand_F_No_Shadow"]
+        ]
+    (end)
+
 Parameters:
     NONE
 
