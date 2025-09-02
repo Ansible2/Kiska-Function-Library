@@ -4,7 +4,7 @@ Function: KISKA_fnc_getConfigData
 Description:
     Retrieves the value located at a given config path.
 
-    Faster than BIS_fnc_getCfgData.
+    Faster than `BIS_fnc_getCfgData`.
 
 Parameters:
     0: _config <CONFIG> - Default: `configNull` - The config path to get data from

@@ -277,6 +277,19 @@ class Hashmap
     {};
 };
 
+class InvisibleWalls
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\InvisibleWalls");
+    class invisibleWalls_create
+    {};
+    class invisibleWalls_init
+    {
+        postInit = 1;
+    };
+    class invisibleWalls_replaceCommon
+    {};
+};
+
 class Loadouts
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Loadouts");
@@ -743,6 +756,8 @@ class Utilities
     class isEmptyCode
     {};
     class isMainMenu
+    {};
+    class isLocalOnly
     {};
     class isPatchLoaded
     {};
