@@ -80,7 +80,7 @@ private _globalWalls = [];
     private _localObjects = [];
     private _globalObjects = [];
     _objectsToReplace apply {
-        if (_x call KISKA_fnc_isLocalOnly) then {
+        if (_x call KISKA_fnc_isObjectLocalOnly) then {
             _localObjects pushBack _x;
             continue;
         };
