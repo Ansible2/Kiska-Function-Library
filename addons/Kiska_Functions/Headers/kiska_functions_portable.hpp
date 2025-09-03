@@ -757,7 +757,7 @@ class Utilities
     {};
     class isMainMenu
     {};
-    class isLocalOnly
+    class isObjectLocalOnly
     {};
     class isPatchLoaded
     {};
