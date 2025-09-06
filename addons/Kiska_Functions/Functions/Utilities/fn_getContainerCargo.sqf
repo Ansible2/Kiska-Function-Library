@@ -83,7 +83,7 @@ private _totalCargo = [
 ];
 
 if (_totalCargo isEqualTo EMPTY_RETURN) exitWith {
-    [["No cargo found in ",_primaryContainer],true] call KISKA_fnc_log;
+    [["No cargo found in ",_primaryContainer],false] call KISKA_fnc_log;
     []
 };
 
