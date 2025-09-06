@@ -4,7 +4,7 @@ Function: KISKA_fnc_CBA_players
 Description:
     Copied function `CBA_fnc_players` from CBA3.
 
-    Executes a code once in and unscheduled environment on the next frame.
+    Reports all (human) player objects. Does not include headless client entities.
 
 Parameters:
     NONE
@@ -23,6 +23,8 @@ Author(s):
 ---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_CBA_players";
 
-(allUnits + allDeadMen) select {
+private _units = allUnits;
+_units append allDeadMen;
+_units select {
     (isPlayer _x) AND { !(_x isKindOf "HeadlessClient_F") }
 }
