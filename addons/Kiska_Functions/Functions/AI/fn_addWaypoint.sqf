@@ -88,6 +88,10 @@ private _optionalParamDetails = [
     ["onComplete",{{}},["",{},[]]]
 ];
 private _optionalParams = [_optionalArgsMap,_optionalParamDetails] call KISKA_fnc_hashMapParams;
+if (_optionalMapParams isEqualType "") exitWith {
+    [_optionalMapParams,true] call KISKA_fnc_log;
+    []
+};
 (_optionalParams select 0) params (_optionalParams select 1);
 
 
