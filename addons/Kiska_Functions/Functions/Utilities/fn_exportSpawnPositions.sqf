@@ -59,8 +59,8 @@ private _string = _returnArray joinString ("," + endl);
 _string = _string trim [",",2];
 
 if (_convertToConfig) then {
-    _string = [_string,"[","{"] call CBA_fnc_replace;
-    _string = [_string,"]","}"] call CBA_fnc_replace;
+    _string = _string regexReplace ["[","{"];
+    _string = _string regexReplace ["]","}"];
 };
 copyToClipboard _string;
 
