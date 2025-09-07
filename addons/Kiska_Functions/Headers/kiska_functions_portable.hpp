@@ -69,6 +69,8 @@ class AI
     {};
     class stalk
     {};
+    class taskPatrol
+    {};
     class vlsFireAt
     {};
 };

@@ -8,7 +8,7 @@ Parameters:
     0: _group <GROUP or OBJECT> - The group or unit to give waypoints to.
     1: _center <MARKER, OBJECT, LOCATION, GROUP, TASK, WAYPOINT[], or Position[]> - 
         The position to place the waypoint's center.
-    2: _type <STRING> Default: `"MOVE"` - The type of waypoint to create.
+    2: _wpType <STRING> Default: `"MOVE"` - The type of waypoint to create.
         See `setWaypointType` for options.
     
     3: _optionalArgsMap <HASHMAP> - A hashmap of various parameters for the waypoint.
@@ -61,7 +61,7 @@ private _defaultMap = createHashMap;
 params [
     ["_group",grpNull,[grpNull,objNull]],
     ["_center",[],[objNull, grpNull, "", locationNull, taskNull, [], 0]],
-    ["_type","MOVE",[""]],
+    ["_wpType","MOVE",[""]],
     ["_optionalArgsMap",_defaultMap,[_defaultMap]]
 ];
 
@@ -71,11 +71,14 @@ if (isNull _group) exitWith {
     []
 };
 
-_position = _position call KISKA_fnc_CBA_getPos;
-if (isNull _position) exitWith {
-    ["null group position",true] call KISKA_fnc_log;
+if (
+    (_center isEqualTypeAny [grpNull,objNull]) AND 
+    {isNull _center}
+) exitWith {
+    ["null center passed",true] call KISKA_fnc_log;
     []
 };
+_center = _center call KISKA_fnc_CBA_getPos;
 
 private _optionalParamDetails = [
     ["randomRadius",{0},[123]],
@@ -95,8 +98,8 @@ if (_optionalMapParams isEqualType "") exitWith {
 (_optionalParams select 0) params (_optionalParams select 1);
 
 
-private _waypoint = _group addWaypoint [_position, _randomRadius];
-_waypoint setWaypointType _type;
+private _waypoint = _group addWaypoint [_center, _randomRadius];
+_waypoint setWaypointType _wpType;
 _waypoint setWaypointBehaviour _behaviour;
 _waypoint setWaypointCombatMode _combatMode;
 _waypoint setWaypointSpeed _speed;
