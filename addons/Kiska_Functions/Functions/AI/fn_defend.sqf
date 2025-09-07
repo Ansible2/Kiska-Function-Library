@@ -52,7 +52,7 @@ if !(local _group) exitWith {
 };
 
 _position = [_position, _group] select (_position isEqualTo []);
-_position = _position call CBA_fnc_getPos;
+_position = _position call KISKA_fnc_CBA_getPos;
 
 if (_patrol isEqualType true) then {
     _patrol = [0, 0.1] select _patrol;
