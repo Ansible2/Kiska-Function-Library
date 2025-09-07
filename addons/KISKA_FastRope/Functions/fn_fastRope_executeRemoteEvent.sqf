@@ -114,7 +114,7 @@ if (_event == "EndAttachmentDescentLoop") exitWith {
     private _attachmentLoopId = _ropeUnitAttachmentDummy getVariable ATTACHMENT_DESCENT_LOOP_VAR;
     if !(isNil "_attachmentLoopId") then {
         _ropeUnitAttachmentDummy setVariable [ATTACHMENT_DESCENT_LOOP_VAR,nil];
-        [_attachmentLoopId] call CBA_fnc_removePerFrameHandler;
+        [_attachmentLoopId] call KISKA_fnc_CBA_removePerFrameHandler;
     };
 
     _ropeUnitAttachmentDummy setPosASL (_hookPosition vectorAdd [0, 0, -1]);
@@ -160,7 +160,7 @@ if (_event == "StartFastRopeAnimation") exitWith {
                 private _unit = _this select 0;
                 if !(alive _unit) exitWith {
                     _unit setVariable [DESCENT_SOUND_VAR,nil];
-                    [_this select 1] call CBA_fnc_removePerFrameHandler;
+                    [_this select 1] call KISKA_fnc_CBA_removePerFrameHandler;
                 };
 
                 playSound "KISKA_fastrope_descending";
@@ -190,7 +190,7 @@ if (_event == "EndFastRopeAnimation") exitWith {
     private _descentSoundHandlerId = _unit getVariable DESCENT_SOUND_VAR;
     if !(isNil "_descentSoundHandlerId") then {
         _unit setVariable [DESCENT_SOUND_VAR,nil];
-        [_descentSoundHandlerId] call CBA_fnc_removePerFrameHandler;
+        [_descentSoundHandlerId] call KISKA_fnc_CBA_removePerFrameHandler;
     };
 
     if (_reachedGround AND {isPlayer _unit}) then {

@@ -148,7 +148,7 @@ _objectClassNames apply {
                         }
                     ) exitWith {
                         detach _object;
-                        [_id] call CBA_fnc_removePerFrameHandler;
+                        [_id] call KISKA_fnc_CBA_removePerFrameHandler;
                     };
                 },
                 _velocityUpdateFrequency,

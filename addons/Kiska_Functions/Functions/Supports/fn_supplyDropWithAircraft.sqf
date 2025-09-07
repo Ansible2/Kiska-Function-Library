@@ -137,7 +137,7 @@ private _start = time;
             
             deleteVehicleCrew _aircraft;
             deleteVehicle _aircraft;
-            [_id] call CBA_fnc_removePerFrameHandler;
+            [_id] call KISKA_fnc_CBA_removePerFrameHandler;
         };
 
         if ((_aircraft distance2D _dropPosition) <= DROP_POSITION_THRESHHOLD) then {

@@ -108,7 +108,7 @@ if (_unscheduled) exitWith {
                 [_parameters,_onConditionMet] call KISKA_fnc_callBack;
 
                 private _id = _this select 1;
-                [_id] call CBA_fnc_removePerFrameHandler;
+                [_id] call KISKA_fnc_CBA_removePerFrameHandler;
             };
         },
         _interval,

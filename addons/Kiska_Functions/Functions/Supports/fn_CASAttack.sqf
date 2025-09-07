@@ -73,7 +73,7 @@ _plane setVariable ["KISKA_CAS_guidedFireEvent",{
             ];
 
             if (isNull _projectile) exitWith { 
-                [_id] call CBA_fnc_removePerFrameHandler;
+                [_id] call KISKA_fnc_CBA_removePerFrameHandler;
             };
 
             private _interval = linearConversion [_startTime,_timeAfterFlight,time,0,1];

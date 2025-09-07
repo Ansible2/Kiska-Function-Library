@@ -344,7 +344,7 @@ _aircraft addEventHandler ["killed",{
                 TIME_TILL_DELETE
             ] call CBA_fnc_waitAndExecute;
 
-            [_id] call CBA_fnc_removePerFrameHandler;
+            [_id] call KISKA_fnc_CBA_removePerFrameHandler;
         };
 
         //--- Set the plane approach vector

@@ -74,7 +74,7 @@ Parameters:
                             };
 
                             localNamespace setVariable ["KISKA_CBA_walkWeight_perframeHandlerId",nil];
-                            [_perframeId] call CBA_fnc_removePerFrameHandler;
+                            [_perframeId] call KISKA_fnc_CBA_removePerFrameHandler;
                         };
 
                         private _paused = localNamespace getVariable ["KISKA_CBA_walkWeight_pause",false];

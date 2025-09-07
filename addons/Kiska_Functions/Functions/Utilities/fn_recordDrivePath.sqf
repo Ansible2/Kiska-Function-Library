@@ -51,7 +51,7 @@ private _id = [
         ];
         if (isNull _unit) then {
             ["Recording failed, _unit is null"] call KISKA_fnc_errorNotification;
-            [_id] call CBA_fnc_removePerFrameHandler;
+            [_id] call KISKA_fnc_CBA_removePerFrameHandler;
 
             // remove display event
             private _keyDownEventId = localNamespace getVariable ["KISKA_drivePathRecordingDisplayEvent_id", -1];
@@ -70,7 +70,7 @@ private _id = [
 
             } else {
                 copyToClipboard (str _path);
-                [_id] call CBA_fnc_removePerFrameHandler;
+                [_id] call KISKA_fnc_CBA_removePerFrameHandler;
 
             };
         };

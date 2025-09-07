@@ -97,7 +97,7 @@ _aircraft addEventHandler ["Fired", {
 
                         private _time = time;
                         if ((isNull _projectile) OR (_time > (_timeAfterFlight + 60))) exitWith {
-                            [_id] call CBA_fnc_removePerFrameHandler;
+                            [_id] call KISKA_fnc_CBA_removePerFrameHandler;
                         };
 
                         private _interval = linearConversion [_startTime,_timeAfterFlight,_time,0,1];
