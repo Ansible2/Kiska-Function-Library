@@ -66,7 +66,7 @@ _agentClasses apply {
         [["Could not find spawn positions for KISKA bases class: ",_x],true] call KISKA_fnc_log;
         continue;
     };
-    _spawnPositions = [_spawnPositions] call CBA_fnc_shuffle;
+    _spawnPositions = [_spawnPositions] call KISKA_fnc_CBA_shuffle;
 
     private _numberOfUnits = [
         "numberOfUnits", 
