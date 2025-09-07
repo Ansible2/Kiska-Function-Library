@@ -86,7 +86,7 @@ if (_unscheduled AND _isPerframe) exitWith {
             [_parameters,_onConditionMet] call KISKA_fnc_callBack;
         },
         [_parameters,_onConditionMet,_condition]
-    ] call CBA_fnc_waitUntilAndExecute;
+    ] call KISKA_fnc_CBA_waitUntilAndExecute;
 };
 
 

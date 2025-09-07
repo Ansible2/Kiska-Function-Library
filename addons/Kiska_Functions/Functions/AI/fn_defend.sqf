@@ -150,7 +150,7 @@ _units apply {
                             };
                         },
                         [_unit,_pos,_hold]
-                    ] call CBA_fnc_waitUntilAndExecute;
+                    ] call KISKA_fnc_CBA_waitUntilAndExecute;
                 */
 
                     // This command causes AI to repeatedly attempt to crouch when engaged

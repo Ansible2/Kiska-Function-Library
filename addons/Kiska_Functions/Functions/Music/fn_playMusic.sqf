@@ -186,7 +186,7 @@ if (_durationToPlayTrack > 0) then {
             _fadeTime,
             _previousTrackID
         ]
-    ] call CBA_fnc_waitUntilAndExecute;
+    ] call KISKA_fnc_CBA_waitUntilAndExecute;
 };
 
 

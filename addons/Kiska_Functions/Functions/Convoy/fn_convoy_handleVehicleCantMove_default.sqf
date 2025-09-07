@@ -385,7 +385,7 @@ private _relativeDismountPosition = [
     },
     [_disabledVehicle,_relativeDismountPosition],
     10
-] call CBA_fnc_waitUntilAndExecute;
+] call KISKA_fnc_CBA_waitUntilAndExecute;
 
 
 nil
