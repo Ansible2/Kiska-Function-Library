@@ -8,8 +8,13 @@ Description:
 
 Parameters:
     0: _argsMap : <HASHMAP> - Any hashmap.
-    1: _paramDetails : <[STRING,CODE,ANY[]][]> - An array of 
-        [hashmap key, code that returns a default value, an array of valid types]
+    1: _paramDetails : <[STRING,CODE,ANY[],(NUMBER | NUMBER[])][]> - An array of 
+        [
+            hashmap key, 
+            code that returns a default value, 
+            an array of valid types,
+            if value is an array, the valid number of entries in that array
+        ]
 
 Returns:
     [ANY[],STRING[]] or STRING - An array of variable values from the hashmap and their 
@@ -66,7 +71,8 @@ private _paramValues = _paramDetails apply {
     _x params [
         ["_key","",[""]],
         ["_default",{},[{}]],
-        ["_types",[],[[]]]
+        ["_types",[],[[]]],
+        ["_expectedArrayCount",-1,[123,[]]]
     ];
     _key = trim _key;
     private _paramValue = _argsMap getOrDefaultCall [_key,{import "_default"; call _default}];
@@ -81,6 +87,23 @@ private _paramValues = _paramDetails apply {
     };
 
     _paramVariableNames pushBack _variableName;
+
+    if (
+        (_paramValue isEqualType []) AND 
+        {
+            (
+                (_expectedArrayCount isEqualType 123) AND
+                {
+                    (_expectedArrayCount > 0) AND {(count _paramValue) isNotEqualTo _expectedArrayCount} 
+                }
+            ) OR
+            {!(count _paramValue) in _expectedArrayCount}
+        }
+    ) then {
+        _invalidArgumentMessage = [_key," value ",_paramValue," is an invalid number of entries, must have a count of -> ",_expectedArrayCount] joinString "";
+        break;
+    };
+
     _paramValue
 };
 if (!isNil "_invalidArgumentMessage") exitWith { _invalidArgumentMessage };
