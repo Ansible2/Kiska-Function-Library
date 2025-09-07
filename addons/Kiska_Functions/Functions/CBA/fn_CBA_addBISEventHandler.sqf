@@ -47,10 +47,10 @@ params [
 
 private _argsId = "KISKA_CBA_addBISEventHandler_argId" call KISKA_fnc_generateUniqueId;
 private _subjectInEvent = ["_this select 0","missionNamespace"] select (_subject isEqualTo missionNamespace);
-private _eventFunction = "
+private _eventFunction = format ["
     ((%2) getVariable '%1') params ['_thisFnc','_thisArgs','_thisType','_thisId'];
     call _thisFnc;
-" format [_argsId,_subjectInEvent];
+",_argsId,_subjectInEvent];
 
 private _id = call {
     if (_subject isEqualType objNull) exitWith {
