@@ -1,3 +1,6 @@
+if !(["cba_common"] call KISKA_fnc_isPatchLoaded) exitWith {};
+
+
 /*
 [
     "Commy_ViewDistance", // Internal setting name, should always contain a tag! This will be the global variable which takes the value of the setting.

@@ -1,3 +1,5 @@
+if !(["cba_common"] call KISKA_fnc_isPatchLoaded) exitWith {};
+
 /*
 Parameters:
     _setting     - Unique setting name. Matches resulting variable name <STRING>

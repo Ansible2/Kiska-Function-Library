@@ -1,7 +1,7 @@
 #include "..\Headers\Icon Info Indexes.hpp"
 #include "..\Headers\Compass Globals.hpp"
 
-if (["cba_common"] call KISKA_fnc_isPatchLoaded) exitWith {};
+if !(["cba_common"] call KISKA_fnc_isPatchLoaded) exitWith {};
 
 /* ----------------------------------------------------------------------------
     Toggle Options
