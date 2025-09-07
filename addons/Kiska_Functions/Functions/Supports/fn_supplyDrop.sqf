@@ -107,7 +107,7 @@ _dropPosition set [2,_terrainHeighAtDropPosition];
 private _aslSpawnHeight = _terrainHeighAtDropPosition + _dropAltitude;
 private _objectSpawnCenter = _dropPosition vectorAdd [0,0,_dropAltitude];
 _objectClassNames apply {
-    private _objectDropPosition = [_objectSpawnCenter,_dropPositionRadius] call CBA_fnc_randPos;
+    private _objectDropPosition = [_objectSpawnCenter,_dropPositionRadius] call KISKA_fnc_CBA_randPos;
     _objectDropPosition set [2,_aslSpawnHeight];
     private _object = createVehicle [_x,_objectDropPosition,[],0,"FLY"];
     _object setPosASL _objectDropPosition;

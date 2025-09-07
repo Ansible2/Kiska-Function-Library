@@ -52,7 +52,7 @@ if (_launchPosIsObject AND {isNUll _launchPos}) exitWith {
 
 if (_launchPos isEqualTo []) then {
     // get firing position and give it some alititude
-    _launchPos = [_target,LAUNCHER_RAND_SPAWN_DISTANCE] call CBA_fnc_randPos;
+    _launchPos = [_target,LAUNCHER_RAND_SPAWN_DISTANCE] call KISKA_fnc_CBA_randPos;
     _launchPos = _launchPos vectorAdd [0,0,LAUNCHER_RAND_SPAWN_ALT];
 };
 if (_launchPosIsObject) then {
