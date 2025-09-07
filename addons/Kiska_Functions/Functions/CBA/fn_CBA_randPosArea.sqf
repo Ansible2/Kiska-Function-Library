@@ -17,19 +17,19 @@ Returns:
 
 Example:
     (begin example)
-        private _position = [[center, a, b, angle, isRectangle]] call CBA_fnc_randPosArea;
+        private _position = [[center, a, b, angle, isRectangle]] call KISKA_fnc_CBA_randPosArea;
     (end)
 
     (begin example)
-        private _position = [marker, true] call CBA_fnc_randPosArea;
+        private _position = [marker, true] call KISKA_fnc_CBA_randPosArea;
     (end)
 
     (begin example)
-        private _position = [trigger] call CBA_fnc_randPosArea;
+        private _position = [trigger] call KISKA_fnc_CBA_randPosArea;
     (end)
 
     (begin example)
-        private _position = [location] call CBA_fnc_randPosArea;
+        private _position = [location] call KISKA_fnc_CBA_randPosArea;
     (end)
 
 Author(s):
