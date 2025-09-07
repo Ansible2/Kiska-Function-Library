@@ -105,6 +105,7 @@ private _group = group _pilot;
     Handle Speed
 ------------------------------------- */
 private _distanceToCargo2d = _heli distance2D _liftObject;
+private _limitSpeedId = -1;
 if (_distanceToCargo2d <= LIMIT_SPEED_DISTANCE) then {
 
     if !(["KISKA_limitSpeed"] call KISKA_fnc_managedRun_isDefined) then {
@@ -121,47 +122,42 @@ if (_distanceToCargo2d <= LIMIT_SPEED_DISTANCE) then {
     };
 
     private _speedLimit = ((_distanceToCargo2d / DISTANCE_STEP_SIZE) * SPEED_STEP_SIZE) min SPEED_STEP_SIZE;
-    private _limitSpeedId = [
+    _limitSpeedId = [
         "KISKA_limitSpeed",
         [_heli,_speedLimit],
         _heli
     ] call KISKA_fnc_managedRun_execute;
-
-    _pilot setVariable ["KISKA_slingLoad_limitSpeedId",_limitSpeedId];
 };
 
 /* -------------------------------------
     Hook cargo
 ------------------------------------- */
-_pilot setVariable ["KISKA_slingLoad_onHook",{
-    params ["_pilot"];
-
-    private _heli = objectParent _pilot;
-    private _limitSpeedId = _pilot getVariable ["KISKA_slingLoad_limitSpeedId",-1];
-    if (_limitSpeedId >= 0) then {
-        [
-            "KISKA_limitSpeed",
-            // BOHEMIA BUG: wiki states that -1 will remove a speed limit, however, at least for helicopters, that does not seem to be the case
-            [_heli,999999],
-            _heli,
-            _limitSpeedId
-        ] call KISKA_fnc_managedRun_execute;
-    };
-
-    _pilot setVariable ["KISKA_slingLoad_limitSpeedId",nil];
-}];
-
 [
     _group,
     _liftObject,
-    -1,
     "HOOK",
-    "SAFE",
-    "BLUE",
-    "UNCHANGED",
-    "NO CHANGE",
-    "[this] call (this getVariable ['KISKA_slingLoad_onHook',{}]); this setVariable ['KISKA_slingLoad_onHook',nil];"
-] call CBA_fnc_addWaypoint;
+    createHashMapFromArray [
+        ["randomRadius",-1],
+        ["behaviour","SAFE"],
+        ["combatMode","BLUE"],
+        [
+            "onComplete", 
+            [[_heli,_limitSpeedId], {
+                _thisArgs params ["_heli","_limitSpeedId"];
+                if (_limitSpeedId >= 0) then {
+                    [
+                        "KISKA_limitSpeed",
+                        // BOHEMIA BUG: wiki states that -1 will remove a speed limit, 
+                        // however, at least for helicopters, that does not seem to be the case
+                        [_heli,999999],
+                        _heli,
+                        _limitSpeedId
+                    ] call KISKA_fnc_managedRun_execute;
+                };
+            }]
+        ]
+    ]
+] call KISKA_fnc_addWaypoint;
 
 
 /* -------------------------------------
@@ -172,34 +168,30 @@ if (_flightPath isNotEqualTo []) then {
         [
             _group,
             _x,
-            -1,
-            "MOVE"
-        ] call CBA_fnc_addWaypoint;
+            "MOVE",
+            createHashMapFromArray [
+                ["randomRadius",-1]
+            ]
+        ] call KISKA_fnc_addWaypoint;
     };
 };
-
-_pilot setVariable ["KISKA_postSlingLoadCode",_afterDropCode];
-_pilot setVariable ["KISKA_slingLoad_onUnhook",{
-    params ["_pilot"];
-
-    private _heli = objectParent _pilot;
-    private _afterDropCode = _pilot getVariable ['KISKA_postSlingLoadCode',{}]; 
-    [[_pilot,_heli],_afterDropCode] call KISKA_fnc_callBack; 
-
-    _pilot setVariable ['KISKA_postSlingLoadCode',nil];
-}];
 
 [
     _group,
     _dropOffPoint,
-    -1,
     "UNHOOK",
-    "UNCHANGED",
-    "NO CHANGE",
-    "UNCHANGED",
-    "NO CHANGE",
-    "[this] call (this getVariable ['KISKA_slingLoad_onUnhook',{}]); this setVariable ['KISKA_slingLoad_onUnhook',nil];"
-] call CBA_fnc_addWaypoint;
+    createHashMapFromArray [
+        ["randomRadius",-1],
+        [
+            "onComplete", 
+            [[_heli,_pilot,_afterDropCode],{
+                _thisArgs params ["_heli","_pilot","_afterDropCode"];
+                [[_pilot,_heli],_afterDropCode] call KISKA_fnc_callBack; 
+
+            }]
+        ]
+    ]
+] call KISKA_fnc_addWaypoint;
 
 
 [_pilot, _group, waypoints _group];
