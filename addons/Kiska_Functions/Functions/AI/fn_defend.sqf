@@ -163,7 +163,17 @@ _units apply {
 };
 
 // Unassigned (or combat reacted) units will patrol
-[_group, _position, _radius, 5, "sad", "safe", "red", "limited"] call CBA_fnc_taskPatrol;
-
+[
+    _group,
+    _position,
+    _radius,
+    5,
+    createHashMapFromArray [
+        ["behaviour","safe"],
+        ["combatMode","red"],
+        ["speed","limited"],
+        ["type","sad"]
+    ]
+] call KISKA_fnc_taskPatrol;
 
 nil
