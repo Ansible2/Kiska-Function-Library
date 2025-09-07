@@ -217,7 +217,7 @@ private _fn_waitToFireOnTarget = {
         // get turrets rotational angle
         _turretVector = _turret weaponDirection (currentWeapon _turret);
         _turretDir = (_turretVector select 0) atan2 (_turretVector select 1);
-        _turretDir = [_turretDir] call CBA_fnc_simplifyAngle;
+        _turretDir = _turretDir call KISKA_fnc_CBA_simplifyAngle;
         // get relative rotational angle to the target
         _relativeDir = _turret getDir _target;
         // get the degree between where the target is at relative to the turret position and its actual gun

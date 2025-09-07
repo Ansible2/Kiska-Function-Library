@@ -167,6 +167,8 @@ class CBA
     {};
     class CBA_shuffle
     {};
+    class CBA_simplifyAngle
+    {};
     class CBA_waitAndExecute
     {};
     class CBA_waitUntilAndExecute
