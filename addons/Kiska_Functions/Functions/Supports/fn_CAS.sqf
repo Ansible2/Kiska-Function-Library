@@ -153,7 +153,7 @@ if (isClass _pylonConfig) then {
             [
                 (configFile >> "cfgWeapons" >> _x),
                 (configFile >> "cfgWeapons" >> "cannonCore")
-            ] call CBA_fnc_inheritsFrom;
+            ] call KISKA_fnc_CBA_inheritsFrom;
         };
 
         private _cannonClass = "";
