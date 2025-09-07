@@ -165,6 +165,8 @@ class CBA
     {};
     class CBA_removePerFrameHandler
     {};
+    class CBA_shuffle
+    {};
     class CBA_waitAndExecute
     {};
     class CBA_waitUntilAndExecute
