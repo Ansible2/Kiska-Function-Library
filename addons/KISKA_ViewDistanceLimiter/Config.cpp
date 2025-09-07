@@ -6,7 +6,6 @@ class CfgPatches
 		weapons[]={};
 		requiredVersion=0.1;
 		requiredAddons[]={
-			"cba_main",
 			"KISKA_Functions"
 		};
 	};
