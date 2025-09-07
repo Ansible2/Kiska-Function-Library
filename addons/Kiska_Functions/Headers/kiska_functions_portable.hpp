@@ -127,6 +127,46 @@ class Bases
     {};
 };
 
+class CBA
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\CBA");
+    
+    class CBA_addBISEventHandler
+    {};
+    class CBA_addPerFrameHandler
+    {};
+    class CBA_compileFinal
+    {};
+    class CBA_directCall
+    {};
+    class CBA_execNextFrame
+    {};
+    class CBA_getGroup
+    {};
+    class CBA_getPos
+    {};
+    class CBA_initPerFrameHandler_postInit
+    {
+        postInit = 1;
+    };
+    class CBA_initPerFrameHandler_preInit
+    {
+        preInit = 1;
+    };
+    class CBA_players
+    {};
+    class CBA_randPos
+    {};
+    class CBA_randPosArea
+    {};
+    class CBA_removePerFrameHandler
+    {};
+    class CBA_waitAndExecute
+    {};
+    class CBA_waitUntilAndExecute
+    {};
+};
+
 class CIWS
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\CIWS");
