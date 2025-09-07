@@ -102,7 +102,7 @@ private _displayId = [
         };
     },
     [_id,_unit]
-] call CBA_fnc_addBISEventHandler;
+] call KISKA_fnc_CBA_addBISEventHandler;
 localNamespace setVariable ["KISKA_drivePathRecordingDisplayEvent_id", _displayId];
 
 

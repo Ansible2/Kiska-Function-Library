@@ -64,7 +64,7 @@ _ropeInfoMap set ["_ropeBottom",_ropeBottom];
         [_ropeInfoMap] call KISKA_fnc_fastRope_ropeAttachedUnit;
     },
     [_ropeInfoMap]
-] call CBA_fnc_addBISEventHandler;
+] call KISKA_fnc_CBA_addBISEventHandler;
 
 [
     _ropeBottom,
@@ -73,7 +73,7 @@ _ropeInfoMap set ["_ropeBottom",_ropeBottom];
         ON_ROPE_BROKEN
     },
     [_ropeInfoMap]
-] call CBA_fnc_addBISEventHandler;
+] call KISKA_fnc_CBA_addBISEventHandler;
 
 
 [_ropeTop,_ropeBottom]
