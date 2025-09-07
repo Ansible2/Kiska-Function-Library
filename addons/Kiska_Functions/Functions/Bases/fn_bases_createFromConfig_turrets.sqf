@@ -170,7 +170,7 @@ _turretClasses apply {
             [
                 _onGunnerCreated,
                 _eventParams
-            ] call CBA_fnc_directCall;
+            ] call KISKA_fnc_CBA_directCall;
         };
 
 
@@ -184,7 +184,7 @@ _turretClasses apply {
             [
                 _onUnitMovedInGunner,
                 _eventParams
-            ] call CBA_fnc_directCall;
+            ] call KISKA_fnc_CBA_directCall;
         };
 
 
@@ -202,7 +202,7 @@ _turretClasses apply {
                     _newLimit = [
                         _x,
                         _callBackArgs
-                    ] call CBA_fnc_directCall;
+                    ] call KISKA_fnc_CBA_directCall;
                 } else {
                     _newLimit = _x;
                 };

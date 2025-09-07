@@ -24,7 +24,7 @@ if (canSuspend) exitWith {
     [
         {_this call KISKA_fnc_netId},
         _this
-    ] call CBA_fnc_directCall;
+    ] call KISKA_fnc_CBA_directCall;
 };
 
 params [

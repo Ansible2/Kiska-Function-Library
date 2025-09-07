@@ -58,6 +58,6 @@ if (isNil "_onSupportRemovedCompiled") then {
 [
     _onSupportRemovedCompiled,
     [_supportId,_supportConfig]
-] call CBA_fnc_directCall;
+] call KISKA_fnc_CBA_directCall;
 
 _supportMap deleteAt _supportId

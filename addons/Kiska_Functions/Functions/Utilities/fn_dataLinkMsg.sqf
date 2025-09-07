@@ -41,7 +41,7 @@ if (canSuspend) exitWith {
     [
         KISKA_fnc_datalinkMsg,
         _this
-    ] call CBA_fnc_directCall;
+    ] call KISKA_fnc_CBA_directCall;
 };
 
 params [
