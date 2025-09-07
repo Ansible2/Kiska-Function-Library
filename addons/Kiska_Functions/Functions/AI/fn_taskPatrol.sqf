@@ -71,7 +71,7 @@ params [
     ["_waypointArgsMap",_defaultMap,[_defaultMap]]
 ];
 
-_group = _group call CBA_fnc_getGroup;
+_group = _group call KISKA_fnc_CBA_getGroup;
 if (isNull _group) exitWith {
     ["null group",true] call KISKA_fnc_log;
     []

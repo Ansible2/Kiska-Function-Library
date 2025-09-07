@@ -32,7 +32,7 @@ params [
     ["_deleteMarker",true,[true]]
 ];
 
-_groupToRemove = [_groupToRemove] call CBA_fnc_getGroup;
+_groupToRemove = [_groupToRemove] call KISKA_fnc_CBA_getGroup;
 
 if (isNull _groupToRemove) exitWith {
     ["_groupToRemove was null",true] call KISKA_fnc_log;

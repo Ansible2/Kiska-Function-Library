@@ -44,7 +44,7 @@ params [
 ];
 
 // Input validation stuff here
-_group = _group call CBA_fnc_getGroup;
+_group = _group call KISKA_fnc_CBA_getGroup;
 // Don't create waypoints on each machine
 if !(local _group) exitWith {
     [["Found that ",_group," was not local, exiting..."],true] call KISKA_fnc_log;
