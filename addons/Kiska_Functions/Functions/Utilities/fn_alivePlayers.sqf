@@ -27,7 +27,7 @@ params [
 private "_alivePlayers";
 
 if (_seperateHeadless) then {
-    _alivePlayers = (call CBA_fnc_players) select {alive _x};
+    _alivePlayers = (call KISKA_fnc_CBA_players) select {alive _x};
 } else {
     _alivePlayers = allPlayers select {alive _x};
 };
