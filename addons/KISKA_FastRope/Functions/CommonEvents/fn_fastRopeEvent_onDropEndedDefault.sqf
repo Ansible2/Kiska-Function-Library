@@ -58,7 +58,7 @@ if (!(isNull _fries) AND {_fries isNotEqualTo _vehicle}) exitWith {
         }, 
         _vehicle, 
         2
-    ] call CBA_fnc_waitAndExecute;
+    ] call KISKA_fnc_CBA_waitAndExecute;
 };
 
 [

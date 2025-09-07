@@ -175,7 +175,7 @@ private _fn_checkIfStopAlarm = {
         },
         [_turret,_searchDistance,_engageTypes],
         5
-    ] call CBA_fnc_waitAndExecute;
+    ] call KISKA_fnc_CBA_waitAndExecute;
 };
 
 // turrets don't like to watch objects consistently, so we'll use their position instead for doWatch

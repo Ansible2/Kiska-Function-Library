@@ -90,7 +90,7 @@ if !(vehicleReceiveRemoteTargets _launcher) then {
         {(_this select 0) setVehicleReceiveRemoteTargets false},
         [_launcher],
         3
-    ] call CBA_fnc_waitAndExecute;
+    ] call KISKA_fnc_CBA_waitAndExecute;
 };
 
 private _side = side _launcher;

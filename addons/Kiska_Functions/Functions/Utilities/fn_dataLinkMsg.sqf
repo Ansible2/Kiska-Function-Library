@@ -74,4 +74,4 @@ params [
     },
     [_message,_playSound],
     _waitTime
-] call CBA_fnc_waitAndExecute;
+] call KISKA_fnc_CBA_waitAndExecute;

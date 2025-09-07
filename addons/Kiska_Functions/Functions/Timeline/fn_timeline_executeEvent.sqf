@@ -80,7 +80,7 @@ if (_waitFor isEqualType 123) exitWith {
         KISKA_fnc_timeline_executeEvent,
         _nextEventParams,
         _waitFor
-    ] call CBA_fnc_waitAndExecute;
+    ] call KISKA_fnc_CBA_waitAndExecute;
 
     nil
 };

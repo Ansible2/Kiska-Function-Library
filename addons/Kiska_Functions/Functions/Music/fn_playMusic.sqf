@@ -172,12 +172,12 @@ if (_durationToPlayTrack > 0) then {
                                 _currentTrackID
                             ],
                             _durationToPlayTrack
-                        ] call CBA_fnc_waitAndExecute;
+                        ] call KISKA_fnc_CBA_waitAndExecute;
                     };
                 },
                 _this,
                 _fadeTime
-            ] call CBA_fnc_waitAndExecute;
+            ] call KISKA_fnc_CBA_waitAndExecute;
 
         },
         [

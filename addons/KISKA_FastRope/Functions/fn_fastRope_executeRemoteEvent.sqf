@@ -214,7 +214,7 @@ if (_event == "EndFastRopeAnimation") exitWith {
             }, 
             [_unit, _currentWeapon], 
             2
-        ] call CBA_fnc_waitAndExecute;
+        ] call KISKA_fnc_CBA_waitAndExecute;
     };
 
 

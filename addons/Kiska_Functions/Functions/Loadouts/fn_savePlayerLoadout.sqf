@@ -56,7 +56,7 @@ player addEventHandler ["RESPAWN", {
             },
             [],
             0.5
-        ] call CBA_fnc_waitAndExecute;
+        ] call KISKA_fnc_CBA_waitAndExecute;
     };
 
     private _doDeleteBody = missionNamespace getVariable ["KISKA_CBA_deleteBody",false];

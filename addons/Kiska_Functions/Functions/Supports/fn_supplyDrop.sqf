@@ -163,7 +163,7 @@ _objectClassNames apply {
             _distanceToStopVelocityUpdates
         ],
         DELAY_FOR_CHUTE_DEPLOYMENT
-    ] call CBA_fnc_waitAndExecute;
+    ] call KISKA_fnc_CBA_waitAndExecute;
 
 
     _object

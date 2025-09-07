@@ -59,7 +59,7 @@ if (!(isNull _fries) AND {_fries isNotEqualTo _vehicle}) then {
         },
         [_fries],
         2
-    ] call CBA_fnc_waitAndExecute;
+    ] call KISKA_fnc_CBA_waitAndExecute;
     
     _waitTime = 4;
 };
@@ -68,7 +68,7 @@ if (!(isNull _fries) AND {_fries isNotEqualTo _vehicle}) then {
     { _this set ["_canDeployRopes",true] },
     _fastRopeInfoMap,
     _waitTime
-] call CBA_fnc_waitAndExecute;
+] call KISKA_fnc_CBA_waitAndExecute;
 
 
 nil

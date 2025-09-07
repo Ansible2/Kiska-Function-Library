@@ -188,7 +188,7 @@ if (_unitsToDeploy isEqualTo []) exitWith {
             { _this call KISKA_fnc_fastRope_dropUnits },
             [_fastRopeInfoMap, true],
             _deployBuffer
-        ] call CBA_fnc_waitAndExecute;
+        ] call KISKA_fnc_CBA_waitAndExecute;
     },
     0.25,
     [_vehicle,_ropeInfoMaps,_fastRopeInfoMap]

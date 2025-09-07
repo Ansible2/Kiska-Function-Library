@@ -65,7 +65,7 @@ _ropeInfoMaps apply {
             _unitAttachmentDummy
         ], 
         TIME_UNTIL_ROPE_DELETION
-    ] call CBA_fnc_waitAndExecute;
+    ] call KISKA_fnc_CBA_waitAndExecute;
     
     _x set ["_isDisconnected",true];
 };
@@ -84,7 +84,7 @@ if (
         { deleteVehicle _this },
         [_fries],
         TIME_TILL_FRIES_DELETED
-    ] call CBA_fnc_waitAndExecute;
+    ] call KISKA_fnc_CBA_waitAndExecute;
 };
 
 _fastRopeInfoMap set ["_queuedEnd",true];
@@ -104,5 +104,5 @@ if !(alive _vehicle) exitWith {
     },
     [_fastRopeInfoMap],
     TIME_TILL_NORMAL_END
-] call CBA_fnc_waitAndExecute;
+] call KISKA_fnc_CBA_waitAndExecute;
 

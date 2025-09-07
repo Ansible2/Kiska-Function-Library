@@ -124,7 +124,7 @@ _aircraft addEventHandler ["Fired", {
             },
             [_aircraft, _projectile, _targetToGuideTo],
             GUIDED_WEAPON_ACCELERATION_TIME
-        ] call CBA_fnc_waitAndExecute;
+        ] call KISKA_fnc_CBA_waitAndExecute;
     };
 }];
 
@@ -208,7 +208,7 @@ _aircraft setVariable ["KISKA_fnc_closeAirSupport_originalTargetGuidedWeapons",_
                 _isFinalOrder && (_i isEqualTo _numberOfTriggerPulls)
             ],
             _fireIntervalTotal
-        ] call CBA_fnc_waitAndExecute;
+        ] call KISKA_fnc_CBA_waitAndExecute;
 
         _fireIntervalTotal = _fireIntervalTotal + _timeBetweenShots;
     };

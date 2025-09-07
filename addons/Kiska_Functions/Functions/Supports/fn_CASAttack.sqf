@@ -111,7 +111,7 @@ _plane addEventHandler ["Fired", {
             _plane getVariable ["KISKA_CAS_guidedFireEvent",{}],
             [_plane, _projectile],
             0.1  // allow the projectile to get some speed
-        ] call CBA_fnc_waitAndExecute;
+        ] call KISKA_fnc_CBA_waitAndExecute;
     };
 }];
 
@@ -245,7 +245,7 @@ _plane setVariable ["KISKA_CAS_completedFiring",false];
         },
         [_planeInfo, _fireInfo, _isFinal],
         _fireIntervalTotal
-    ] call CBA_fnc_waitAndExecute;
+    ] call KISKA_fnc_CBA_waitAndExecute;
 
     _fireIntervalTotal = _fireIntervalTotal + _fireInterval;
 } forEach _fireQueue;
