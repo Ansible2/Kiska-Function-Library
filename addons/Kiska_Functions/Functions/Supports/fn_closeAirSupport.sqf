@@ -405,7 +405,7 @@ _aircraft addEventHandler ["killed",{
         _fireOrdersParsed,
         _fireDistance
     ]
-] call CBA_fnc_addPerframeHandler;
+] call KISKA_fnc_CBA_addPerFrameHandler;
 
 
 nil

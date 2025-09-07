@@ -153,7 +153,7 @@ _objectClassNames apply {
                 },
                 _velocityUpdateFrequency,
                 _this
-            ] call CBA_fnc_addPerFrameHandler;
+            ] call KISKA_fnc_CBA_addPerFrameHandler;
         },
         [
             _object,

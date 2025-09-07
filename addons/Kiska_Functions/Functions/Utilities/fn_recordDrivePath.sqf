@@ -79,7 +79,7 @@ private _id = [
     },
     _frequency,
     [_unit,_path,_recordSpeed]
-] call CBA_fnc_addPerFrameHandler;
+] call KISKA_fnc_CBA_addPerFrameHandler;
 ["Started unit recording, press escape key to stop"] call KISKA_fnc_notification;
 
 disableSerialization;

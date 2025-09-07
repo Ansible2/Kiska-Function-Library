@@ -120,7 +120,7 @@ _aircraft addEventHandler ["Fired", {
                         _timeAfterFlight,
                         _positionToGuideTo
                     ]
-                ] call CBA_fnc_addPerFrameHandler;
+                ] call KISKA_fnc_CBA_addPerFrameHandler;
             },
             [_aircraft, _projectile, _targetToGuideTo],
             GUIDED_WEAPON_ACCELERATION_TIME

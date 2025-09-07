@@ -441,7 +441,7 @@ private _timeAfterFlight = time + _flightTime;
 		_attackDistance,
 		_spawnHeight
 	]
-] call CBA_fnc_addPerframeHandler;
+] call KISKA_fnc_CBA_addPerFrameHandler;
 
 
 nil

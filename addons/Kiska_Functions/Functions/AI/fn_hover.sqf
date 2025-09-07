@@ -201,7 +201,7 @@ private _onHoverStartDefined = "_onHoverStart" in _callBackMap;
         _hoverPosition,
         _onHoverStartDefined
     ]
-] call CBA_fnc_addPerFrameHandler;
+] call KISKA_fnc_CBA_addPerFrameHandler;
 
 
 nil

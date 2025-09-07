@@ -95,7 +95,7 @@ if (_event == "StartAttachmentDescentLoop") exitWith {
         },
         0,
         _ropeUnitAttachmentDummy
-    ] call CBA_fnc_addPerFrameHandler;
+    ] call KISKA_fnc_CBA_addPerFrameHandler;
     _ropeUnitAttachmentDummy setVariable [ATTACHMENT_DESCENT_LOOP_VAR,_attachmentLoopId];
 
 
@@ -167,7 +167,7 @@ if (_event == "StartFastRopeAnimation") exitWith {
             },
             1,
             _unit
-        ] call CBA_fnc_addPerFrameHandler;
+        ] call KISKA_fnc_CBA_addPerFrameHandler;
         _unit setVariable [DESCENT_SOUND_VAR,_descentSoundHandlerId];
     };
 

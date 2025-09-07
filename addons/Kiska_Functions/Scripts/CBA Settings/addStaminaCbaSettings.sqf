@@ -92,7 +92,7 @@ Parameters:
                         player forceWalk true;
                     },
                     2
-                ] call CBA_fnc_addPerFrameHandler;
+                ] call KISKA_fnc_CBA_addPerFrameHandler;
 
                 localNamespace setVariable ["KISKA_CBA_walkWeight_perframeHandlerId",_perframeId];
             };

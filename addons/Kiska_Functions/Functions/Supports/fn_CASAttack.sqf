@@ -96,7 +96,7 @@ _plane setVariable ["KISKA_CAS_guidedFireEvent",{
             _timeAfterFlight,
             _attackPosition
         ]
-    ] call CBA_fnc_addPerFrameHandler;
+    ] call KISKA_fnc_CBA_addPerFrameHandler;
 }];
 
 

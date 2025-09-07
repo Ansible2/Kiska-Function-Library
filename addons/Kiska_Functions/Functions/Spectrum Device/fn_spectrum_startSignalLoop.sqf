@@ -123,7 +123,7 @@ localNamespace setVariable ["KISKA_spectrum_updateLoopRunning",true];
                 missionNamespace setVariable ["#EM_Values", _generatedSignalValues];
             },
             UPDATE_SIGNAL_EVERY
-        ] call CBA_fnc_addPerFrameHandler;
+        ] call KISKA_fnc_CBA_addPerFrameHandler;
     },
     LOOP_TIME_WHEN_SEARCHING_FOR_DEVICE
 ] call KISKA_fnc_waitUntil;
