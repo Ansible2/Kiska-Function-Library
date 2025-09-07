@@ -17,7 +17,8 @@ Parameters:
         The entity to find the position of.
 
 Returns:
-    <PostionAGLS[]> - The resulting position.
+    <PostionAGLS[] or Position[]> - The resulting position, if the passed `_entity`
+        was an array (and not a waypoint array), then a copy is returned.
 
 Example:
     (begin example)
