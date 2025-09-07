@@ -27,6 +27,8 @@ class AI
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\AI");
     class AAAZone
     {};
+    class addWaypoint
+    {};
     class arty
     {};
     class attack
