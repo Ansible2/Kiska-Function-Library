@@ -3,7 +3,7 @@ Function: KISKA_fnc_getContainerCargo
 
 Description:
     Saves the cargo of a container in a formatterd array to be used with
-     KISKA_fnc_pasteContainerCargo for copying cargos of containers.
+     `KISKA_fnc_setContainerCargo` for copying cargos of containers.
 
     Exact ammo counts will be preserved even inside of an item such as magazines
      inside of a vest or backpack.
@@ -13,12 +13,11 @@ Parameters:
 
 Returns:
     <ARRAY> - Formatted array of all items in cargo space of a container.
-        Used with KISKA_fnc_setContainerCargo.
-        Will return [] if no cargo is present.
+        Used with `KISKA_fnc_setContainerCargo`. Will return `[]` if no cargo is present.
 
 Examples:
     (begin example)
-        [container] call KISKA_fnc_getContainerCargo;
+        private _cargo = [container] call KISKA_fnc_getContainerCargo;
     (end)
 
 Author:
