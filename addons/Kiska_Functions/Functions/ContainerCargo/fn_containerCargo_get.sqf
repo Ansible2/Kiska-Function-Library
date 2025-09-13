@@ -1,9 +1,9 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_getContainerCargo
+Function: KISKA_fnc_containerCargo_get
 
 Description:
     Saves the cargo of a container in a formatterd array to be used with
-     `KISKA_fnc_setContainerCargo` for copying cargos of containers.
+     `KISKA_fnc_containerCargo_set` for copying cargos of containers.
 
     Exact ammo counts will be preserved even inside of an item such as magazines
      inside of a vest or backpack.
@@ -13,17 +13,17 @@ Parameters:
 
 Returns:
     <ARRAY> - Formatted array of all items in cargo space of a container.
-        Used with `KISKA_fnc_setContainerCargo`. Will return `[]` if no cargo is present.
+        Used with `KISKA_fnc_containerCargo_set`. Will return `[]` if no cargo is present.
 
 Examples:
     (begin example)
-        private _cargo = [container] call KISKA_fnc_getContainerCargo;
+        private _cargo = [container] call KISKA_fnc_containerCargo_get;
     (end)
 
 Author:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_getContainerCargo";
+scriptName "KISKA_fnc_containerCargo_get";
 
 #define EMPTY_RETURN [[[],[]],[],[],[[],[]],[]]
 
@@ -38,7 +38,6 @@ if (isNull _primaryContainer) exitWith {
 
 // for containers within the primary container (vests, backpacks, etc.)
 private _containers = everyContainer _primaryContainer;
-
 private _containersInfo = [];
 if (_containers isNotEqualTo []) then {
 
@@ -59,14 +58,16 @@ if (_containers isNotEqualTo []) then {
 
 };
 
-// sort through weapons
-private _weaponsCargo = [];
 private _weaponsInContainer = weaponsItemsCargo _primaryContainer;
-if (_weaponsInContainer isNotEqualTo []) then {
-    _weaponsInContainer apply {
-        _weaponsCargo pushBack [_x,1];
-    };
+private _weaponsCountMap = createHashMap;
+_weaponsInContainer apply {
+    private _currentWeaponCount = _weaponsCountMap getOrDefaultCall [_x,{0}];
+    _currentWeaponCount = _currentWeaponCount + 1;
+    _weaponsCountMap set [_x,_currentWeaponCount];
 };
+private _weaponsCargo = [];
+_weaponsCountMap apply { _weaponsCargo pushBack [_x,_y] };
+
 
 private _totalCargo = [
 
@@ -81,10 +82,7 @@ private _totalCargo = [
     _containersInfo
 ];
 
-if (_totalCargo isEqualTo EMPTY_RETURN) exitWith {
-    [["No cargo found in ",_primaryContainer],false] call KISKA_fnc_log;
-    []
-};
+if (_totalCargo isEqualTo EMPTY_RETURN) exitWith { [] };
 
 
 _totalCargo

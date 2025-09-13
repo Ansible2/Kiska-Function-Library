@@ -154,6 +154,12 @@ class Configs
     class hasConditionalConfig
     {};
 };
+class ContainerCargo
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\ContainerCargo");
+    class containerCargo_get
+    {};
+};
 
 class Convoy
 {
@@ -722,8 +728,6 @@ class Utilities
     class getBoundingBoxDimensions
     {};
     class getBumperPositionRelative
-    {};
-    class getContainerCargo
     {};
     class getFromNetId
     {};
