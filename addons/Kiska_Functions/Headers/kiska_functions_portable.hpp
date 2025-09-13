@@ -168,6 +168,8 @@ class ContainerCargo
     {};
     class containerCargo_setFromConfig
     {};
+    class containerCargo_toHashmap
+    {};
 };
 
 class Convoy
