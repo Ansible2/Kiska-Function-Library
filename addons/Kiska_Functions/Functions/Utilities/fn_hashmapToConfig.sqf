@@ -77,7 +77,7 @@ _classMap apply {
         _stringArray append [
             [_classname,_propertyIndentationLevel] call _fn_prependSpaces,
             ["{",_propertyIndentationLevel] call _fn_prependSpaces,
-            [_value,_propertyIndentationLevel] call hashmapToConfig,
+            [_value,_propertyIndentationLevel] call KISKA_fnc_hashmapToConfig,
             ["};",_propertyIndentationLevel] call _fn_prependSpaces
         ];
         continue;
