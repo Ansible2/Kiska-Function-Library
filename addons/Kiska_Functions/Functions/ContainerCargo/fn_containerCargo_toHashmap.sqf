@@ -149,8 +149,8 @@ private _magazinesClassMap = _classMap get "magazines";
     _mapForMagazine set [_profileName, _profileMap];
 
     private _maxRounds = [_magazineClassname] call _fn_getMaxMagazineRoundCount;
-    if (_y isNotEqualTo _maxRounds) then {
-        _profileMap set ["ammo",_y];
+    if (_ammoCount isNotEqualTo _maxRounds) then {
+        _profileMap set ["ammo",_ammoCount];
     };
 } forEach _magazineCountMap;
 
