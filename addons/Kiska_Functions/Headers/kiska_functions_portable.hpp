@@ -162,9 +162,11 @@ class ContainerCargo
     {};
     class containerCargo_getContainerType
     {};
-    class containerCargo_getFromConafig
+    class containerCargo_getFromConfig
     {};
     class containerCargo_set
+    {};
+    class containerCargo_setFromConfig
     {};
 };
 
