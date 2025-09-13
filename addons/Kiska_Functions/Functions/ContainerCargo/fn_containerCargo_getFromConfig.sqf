@@ -133,8 +133,9 @@ Description:
     (end example)
 
 Parameters:
-    0: _config <CONFIG> - The config class where the manifest for the container
-        is defined.
+    0: _config <CONFIG | STRING> - The config class where the manifest for the container
+        is defined. If of type STRING, this should be a classname defined in 
+        `missionConfigFile >> "KISKA_cargo"`.
 
 Returns:
     <ARRAY> - An array of cargo compatible with `KISKA_fnc_containerCargo_set`.
@@ -159,6 +160,9 @@ params [
     ["_config",configNull,[configNull]]
 ];
 
+if (_config isEqualType "") then {
+    _config = missionConfigFile >> "KISKA_cargo" >> _config;
+};
 if (isNull _config) exitWith { [] };
 
 private _fn_getMaxMagazineRoundCount = {
