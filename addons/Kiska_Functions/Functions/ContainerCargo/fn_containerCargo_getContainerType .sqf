@@ -4,7 +4,7 @@ Function: KISKA_fnc_containerCargo_getContainerType
 Description:
     Used to retrieve the type of container that a given class is.
 
-    Will only return a value if the classname is that of a vest, uniform, or backpac.
+    Will only return a value if the classname is that of a vest, uniform, or backpack.
 
 Parameters:
     0: _classname <STRING> - The classname of the container to find the type of.
