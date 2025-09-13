@@ -758,6 +758,8 @@ class Utilities
     {};
     class hashMapParams
     {};
+    class hashmapToConfig
+    {};
     class hintDiary
     {};
     class idCounter
