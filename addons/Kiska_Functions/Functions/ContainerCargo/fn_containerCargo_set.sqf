@@ -1,32 +1,32 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_setContainerCargo
+Function: KISKA_fnc_containerCargo_set
 
 Description:
-    Takes a cargo array formatted from KISKA_fnc_getContainerCargo and adds it to another container.
+    Takes a cargo array formatted from `KISKA_fnc_containerCargo_get` and adds it to another container.
     Exact ammo counts will be preserved even inside of an item, such as magazines inside of a vest or backpack.
 
 Parameters:
     0: _containerToLoad <OBJECT> - The container to add the cargo to.
     1: _cargo <ARRAY or OBJECT> - An array of various items, magazines, and weapons formatted from 
-        KISKA_fnc_getContainerCargo or the object to copy from
+        `KISKA_fnc_containerCargo_get` or the object to copy from
 
 Returns:
     <BOOL> - True if cargo was set
 
 Examples:
     (begin example)
-        [container,otherContainer] call KISKA_fnc_setContainerCargo;
+        [container,otherContainer] call KISKA_fnc_containerCargo_set;
     (end)
 
     (begin example)
-        private _cargoToCopy = [otherContainer] call KISKA_fnc_getContainerCargo;
-        [container,_cargoToCopy] call KISKA_fnc_setContainerCargo;
+        private _cargoToCopy = [otherContainer] call KISKA_fnc_containerCargo_get;
+        [container,_cargoToCopy] call KISKA_fnc_containerCargo_set;
     (end)
 
 Author:
     Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_setContainerCargo";
+scriptName "KISKA_fnc_containerCargo_set";
 
 params [
     ["_containerToLoad",objNull,[objNull]],
@@ -39,7 +39,7 @@ if (isNull _containerToLoad) exitWith {
 };
 
 if (_cargo isEqualType objNull) then {
-    _cargo = [_cargo] call KISKA_fnc_getContainerCargo;
+    _cargo = [_cargo] call KISKA_fnc_containerCargo_get;
 };
 
 if (_cargo isEqualTo []) exitWith {
@@ -104,7 +104,7 @@ if (_containers isNotEqualTo []) then {
         private _index = _containersIn_containerToLoad findIf {(_x select 0) == _containerClass};
         private _containerWithinContainer = (_containersIn_containerToLoad deleteAt _index) select 1;
 
-        [_containerWithinContainer,_containerInfo select 1] call KISKA_fnc_setContainerCargo;
+        [_containerWithinContainer,_containerInfo select 1] call KISKA_fnc_containerCargo_set;
     };
 };
 

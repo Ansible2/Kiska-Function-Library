@@ -154,10 +154,13 @@ class Configs
     class hasConditionalConfig
     {};
 };
+
 class ContainerCargo
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\ContainerCargo");
     class containerCargo_get
+    {};
+    class containerCargo_set
     {};
 };
 
@@ -810,8 +813,6 @@ class Utilities
     class resetMove
     {};
     class selectRandom
-    {};
-    class setContainerCargo
     {};
     class setRelativeVectorAndPos
     {};
