@@ -316,7 +316,7 @@ _aircraft addEventHandler ["killed",{
                     },
                     [_pilot],
                     _i
-                ] call CBA_fnc_waitAndExecute;
+                ] call KISKA_fnc_CBA_waitAndExecute;
             };
             
             // give the aircraft some time to get out of audible distance before deletion
@@ -342,9 +342,9 @@ _aircraft addEventHandler ["killed",{
                 },
                 _aircraftSpawnInfo,
                 TIME_TILL_DELETE
-            ] call CBA_fnc_waitAndExecute;
+            ] call KISKA_fnc_CBA_waitAndExecute;
 
-            [_id] call CBA_fnc_removePerFrameHandler;
+            [_id] call KISKA_fnc_CBA_removePerFrameHandler;
         };
 
         //--- Set the plane approach vector
@@ -405,7 +405,7 @@ _aircraft addEventHandler ["killed",{
         _fireOrdersParsed,
         _fireDistance
     ]
-] call CBA_fnc_addPerframeHandler;
+] call KISKA_fnc_CBA_addPerFrameHandler;
 
 
 nil

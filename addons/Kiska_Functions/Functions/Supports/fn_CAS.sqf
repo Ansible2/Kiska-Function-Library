@@ -153,7 +153,7 @@ if (isClass _pylonConfig) then {
             [
                 (configFile >> "cfgWeapons" >> _x),
                 (configFile >> "cfgWeapons" >> "cannonCore")
-            ] call CBA_fnc_inheritsFrom;
+            ] call KISKA_fnc_CBA_inheritsFrom;
         };
 
         private _cannonClass = "";
@@ -345,7 +345,7 @@ private _timeAfterFlight = time + _flightTime;
 					},
 					[_pilot],
 					_i
-				] call CBA_fnc_waitAndExecute;
+				] call KISKA_fnc_CBA_waitAndExecute;
 			};
 
 			// give the plane some time to get out of audible distance before deletion
@@ -369,9 +369,9 @@ private _timeAfterFlight = time + _flightTime;
 				},
 				_planeArray,
 				TIME_TILL_DELETE
-			] call CBA_fnc_waitAndExecute;
+			] call KISKA_fnc_CBA_waitAndExecute;
 
-			[_id] call CBA_fnc_removePerFrameHandler;
+			[_id] call KISKA_fnc_CBA_removePerFrameHandler;
 		};
 
 		//--- Set the plane approach vector
@@ -441,7 +441,7 @@ private _timeAfterFlight = time + _flightTime;
 		_attackDistance,
 		_spawnHeight
 	]
-] call CBA_fnc_addPerframeHandler;
+] call KISKA_fnc_CBA_addPerFrameHandler;
 
 
 nil

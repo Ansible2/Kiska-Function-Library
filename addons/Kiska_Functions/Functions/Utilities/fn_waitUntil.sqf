@@ -86,7 +86,7 @@ if (_unscheduled AND _isPerframe) exitWith {
             [_parameters,_onConditionMet] call KISKA_fnc_callBack;
         },
         [_parameters,_onConditionMet,_condition]
-    ] call CBA_fnc_waitUntilAndExecute;
+    ] call KISKA_fnc_CBA_waitUntilAndExecute;
 };
 
 
@@ -108,12 +108,12 @@ if (_unscheduled) exitWith {
                 [_parameters,_onConditionMet] call KISKA_fnc_callBack;
 
                 private _id = _this select 1;
-                [_id] call CBA_fnc_removePerFrameHandler;
+                [_id] call KISKA_fnc_CBA_removePerFrameHandler;
             };
         },
         _interval,
         _this
-    ] call CBA_fnc_addPerFrameHandler;
+    ] call KISKA_fnc_CBA_addPerFrameHandler;
 
     nil
 };

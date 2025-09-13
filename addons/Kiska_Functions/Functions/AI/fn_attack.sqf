@@ -36,7 +36,7 @@ params [
     ["_override",false,[true]]
 ];
 
-_group = _group call CBA_fnc_getGroup;
+_group = _group call KISKA_fnc_CBA_getGroup;
 
 // Don't create waypoints on each machine
 if !(local _group) exitWith {
@@ -49,7 +49,16 @@ if (_override) then {
     [_group,-1,true] call KISKA_fnc_clearWaypoints;
 };
 
-[_group, _position, _radius, "SAD", _behaviour, _combatMode] call CBA_fnc_addWaypoint;
+[
+    _group,
+    _position,
+    "SAD",
+    createHashMapFromArray [
+        ["randomRadius",_radius],
+        ["behaviour",_behaviour],
+        ["combatMode",_combatMode]
+    ]
+] call KISKA_fnc_addWaypoint;
 
 
 nil

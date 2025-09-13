@@ -44,7 +44,7 @@ params [
 ];
 
 // Input validation stuff here
-_group = _group call CBA_fnc_getGroup;
+_group = _group call KISKA_fnc_CBA_getGroup;
 // Don't create waypoints on each machine
 if !(local _group) exitWith {
     [["Found that ",_group," was not local, exiting..."],true] call KISKA_fnc_log;
@@ -52,7 +52,7 @@ if !(local _group) exitWith {
 };
 
 _position = [_position, _group] select (_position isEqualTo []);
-_position = _position call CBA_fnc_getPos;
+_position = _position call KISKA_fnc_CBA_getPos;
 
 if (_patrol isEqualType true) then {
     _patrol = [0, 0.1] select _patrol;
@@ -150,7 +150,7 @@ _units apply {
                             };
                         },
                         [_unit,_pos,_hold]
-                    ] call CBA_fnc_waitUntilAndExecute;
+                    ] call KISKA_fnc_CBA_waitUntilAndExecute;
                 */
 
                     // This command causes AI to repeatedly attempt to crouch when engaged
@@ -163,7 +163,17 @@ _units apply {
 };
 
 // Unassigned (or combat reacted) units will patrol
-[_group, _position, _radius, 5, "sad", "safe", "red", "limited"] call CBA_fnc_taskPatrol;
-
+[
+    _group,
+    _position,
+    _radius,
+    5,
+    createHashMapFromArray [
+        ["behaviour","safe"],
+        ["combatMode","red"],
+        ["speed","limited"],
+        ["type","sad"]
+    ]
+] call KISKA_fnc_taskPatrol;
 
 nil

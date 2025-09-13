@@ -131,7 +131,7 @@ private _onHoverStartDefined = "_onHoverStart" in _callBackMap;
                 [[_vehicle,_pilot],_onHoverEnd] call KISKA_fnc_callBack;
             };
 
-            [_id] call CBA_fnc_removePerFrameHandler;
+            [_id] call KISKA_fnc_CBA_removePerFrameHandler;
         };
         
         private _currentVehiclePosition_ASL = getPosASLVisual _vehicle;
@@ -201,7 +201,7 @@ private _onHoverStartDefined = "_onHoverStart" in _callBackMap;
         _hoverPosition,
         _onHoverStartDefined
     ]
-] call CBA_fnc_addPerFrameHandler;
+] call KISKA_fnc_CBA_addPerFrameHandler;
 
 
 nil

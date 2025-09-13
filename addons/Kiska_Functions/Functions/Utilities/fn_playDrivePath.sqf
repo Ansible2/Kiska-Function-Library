@@ -56,4 +56,4 @@ if !(isAgent teamMember _driver) then {
     },
     [_vehicle,_pathArray],
     1
-] call CBA_fnc_waitAndExecute;
+] call KISKA_fnc_CBA_waitAndExecute;

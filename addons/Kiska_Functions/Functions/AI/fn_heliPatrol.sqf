@@ -93,8 +93,17 @@ _helicopter flyInHeight _patrolHeight;
     _landingZone pushBack 0;
 
     [_helicopterGroup] call KISKA_fnc_clearWaypoints;
-    [_helicopterGroup,_landingZone,0,"TR UNLOAD","AWARE","WHITE","NORMAL"] call CBA_fnc_addwaypoint;
-
+    [
+        _helicopterGroup,
+        _landingZone,
+        "TR UNLOAD",
+        createHashMapFromArray [
+            ["randomRadius",0],
+            ["behaviour","AWARE"],
+            ["combatMode","WHITE"],
+            ["speed","NORMAL"]
+        ]
+    ] call KISKA_fnc_addWaypoint;
 
     // waituntil the helicopter is about to land
     waitUntil {

@@ -79,7 +79,7 @@ if (_target isEqualType []) then {
             _launcher removeEventHandler ["fired", _thisID];
         },
         [_target]
-    ] call CBA_fnc_addBISEventHandler;
+    ] call KISKA_fnc_CBA_addBISEventHandler;
 };
 
 // check if vehicle can recieve remote targets
@@ -90,7 +90,7 @@ if !(vehicleReceiveRemoteTargets _launcher) then {
         {(_this select 0) setVehicleReceiveRemoteTargets false},
         [_launcher],
         3
-    ] call CBA_fnc_waitAndExecute;
+    ] call KISKA_fnc_CBA_waitAndExecute;
 };
 
 private _side = side _launcher;

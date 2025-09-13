@@ -71,7 +71,7 @@ localNamespace setVariable ["KISKA_spectrum_updateLoopRunning",true];
                 private _hasSpectrumDeviceEquipped = SPECTRUM_WEAPON_CLASS in (toLowerANSI (currentWeapon player));
                 if (!(alive player) OR !_hasSpectrumDeviceEquipped) exitWith {
                     private _perframeId = _this select 1;
-                    [_perframeId] call CBA_fnc_removePerFrameHandler;
+                    [_perframeId] call KISKA_fnc_CBA_removePerFrameHandler;
                     localNamespace setVariable ["KISKA_spectrum_updateLoopRunning",false];
                     call KISKA_fnc_spectrum_startSignalLoop;
                 };
@@ -123,7 +123,7 @@ localNamespace setVariable ["KISKA_spectrum_updateLoopRunning",true];
                 missionNamespace setVariable ["#EM_Values", _generatedSignalValues];
             },
             UPDATE_SIGNAL_EVERY
-        ] call CBA_fnc_addPerFrameHandler;
+        ] call KISKA_fnc_CBA_addPerFrameHandler;
     },
     LOOP_TIME_WHEN_SEARCHING_FOR_DEVICE
 ] call KISKA_fnc_waitUntil;

@@ -171,7 +171,7 @@ if (_isNewRandomMusicSet) then {
         _usedMusicTracks
     ],
     _waitTime
-] call CBA_fnc_waitAndExecute;
+] call KISKA_fnc_CBA_waitAndExecute;
 
 
 nil

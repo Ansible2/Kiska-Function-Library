@@ -271,7 +271,7 @@ _simpleConfigSets apply {
             [
                 _onObjectCreated,
                 [_object]
-            ] call CBA_fnc_directCall;
+            ] call KISKA_fnc_CBA_directCall;
         };
     };
 };

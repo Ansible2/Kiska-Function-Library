@@ -164,4 +164,4 @@ _vehicle setVariable ["KISKA_convoy_currentUnconsciousDriver",nil];
 
 nil
    
-},_this,WAIT_TIME] call CBA_fnc_waitAndExecute;
+},_this,WAIT_TIME] call KISKA_fnc_CBA_waitAndExecute;

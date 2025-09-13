@@ -2,13 +2,13 @@
 Function: KISKA_fnc_setWaypointExecStatement
 
 Description:
-    Sets the (execution) statement of a given waypoint using an interface that allows
-     arg passing.
+    Sets the (execution) statement of a given waypoint using an interface that 
+     allows for the passing of arguments.
 
-    This statement will only be executed on the machine where added.
+    This statement will only be executed on the machine where it was added.
 
-    Be aware that this will create variables on the provided waypoint's group. If a waypoint
-     is deleted, the variable on the group will still remain.
+    Be aware that this will create variables on the provided waypoint's group. 
+     If a waypoint is deleted, the variable on the group will still remain.
 
 Parameters:
     0: _waypoint <WAYPOINT> - Default: `[]` - The waypoint you would like to the execution

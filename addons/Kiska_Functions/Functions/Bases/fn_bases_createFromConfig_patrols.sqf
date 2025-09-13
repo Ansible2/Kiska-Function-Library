@@ -227,12 +227,14 @@ _patrolSets apply {
             _patrolCenter,
             _patrolRadius,
             _numberOfPoints,
-            _waypointType,
-            _behaviour,
-            _combatMode,
-            _speed,
-            _formation
-        ] call CBA_fnc_taskPatrol;
+            createHashMapFromArray [
+                ["behaviour",_behaviour],
+                ["combatMode",_combatMode],
+                ["formation",_formation],
+                ["speed",_speed],
+                ["type",_waypointType]
+            ]
+        ] call KISKA_fnc_taskPatrol;
     };
 
 

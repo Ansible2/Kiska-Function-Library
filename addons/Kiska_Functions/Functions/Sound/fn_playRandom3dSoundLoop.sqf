@@ -169,7 +169,7 @@ private _playNextSound = {
         _playNextSound,
         _params,
         _timeUntilNextSound
-    ] call CBA_fnc_waitAndExecute;
+    ] call KISKA_fnc_CBA_waitAndExecute;
 };
 
 private _id = ["KISKA_random3dSoundLoop"] call KISKA_fnc_idCounter;

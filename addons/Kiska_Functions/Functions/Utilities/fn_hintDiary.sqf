@@ -31,7 +31,7 @@ if (canSuspend) exitWith {
     [
         {_this call KISKA_fnc_hintDiary},
         _this
-    ] call CBA_fnc_directCall;
+    ] call KISKA_fnc_CBA_directCall;
 };
 
 params [

@@ -287,7 +287,7 @@ private _fastRopeInfoMap = createHashMapFromArray [
         _fastRopeInfoMap set ["_fries",_fries];
     },
     [_vehicle,_fastRopeInfoMap]
-] call CBA_fnc_execNextFrame;
+] call KISKA_fnc_CBA_execNextFrame;
 
 
 /* ----------------------------------------------------------------------------

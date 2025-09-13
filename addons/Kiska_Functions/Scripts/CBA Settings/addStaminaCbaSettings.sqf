@@ -1,3 +1,6 @@
+if !(["cba_common"] call KISKA_fnc_isPatchLoaded) exitWith {};
+
+
 /*
 Parameters:
     _setting     - Unique setting name. Matches resulting variable name <STRING>
@@ -74,7 +77,7 @@ Parameters:
                             };
 
                             localNamespace setVariable ["KISKA_CBA_walkWeight_perframeHandlerId",nil];
-                            [_perframeId] call CBA_fnc_removePerFrameHandler;
+                            [_perframeId] call KISKA_fnc_CBA_removePerFrameHandler;
                         };
 
                         private _paused = localNamespace getVariable ["KISKA_CBA_walkWeight_pause",false];
@@ -92,7 +95,7 @@ Parameters:
                         player forceWalk true;
                     },
                     2
-                ] call CBA_fnc_addPerFrameHandler;
+                ] call KISKA_fnc_CBA_addPerFrameHandler;
 
                 localNamespace setVariable ["KISKA_CBA_walkWeight_perframeHandlerId",_perframeId];
             };

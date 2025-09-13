@@ -106,7 +106,7 @@ private _successfullyCalled = [
         _targetPosition,
         _numberOfTimesUsed
     ]
-] call CBA_fnc_directCall;
+] call KISKA_fnc_CBA_directCall;
 if (!_successfullyCalled) exitWith {
     [[_supportId," was not successfully called."], false] call KISKA_fnc_log;
     nil

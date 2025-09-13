@@ -137,7 +137,7 @@ private _start = time;
             
             deleteVehicleCrew _aircraft;
             deleteVehicle _aircraft;
-            [_id] call CBA_fnc_removePerFrameHandler;
+            [_id] call KISKA_fnc_CBA_removePerFrameHandler;
         };
 
         if ((_aircraft distance2D _dropPosition) <= DROP_POSITION_THRESHHOLD) then {
@@ -157,7 +157,7 @@ private _start = time;
         _start,
         _argsMap
     ]
-] call CBA_fnc_addPerFrameHandler;
+] call KISKA_fnc_CBA_addPerFrameHandler;
 
 
 nil

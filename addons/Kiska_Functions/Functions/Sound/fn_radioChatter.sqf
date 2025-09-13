@@ -159,7 +159,7 @@ private _randomBuffer = random [1,5,10];
     },
     [_followSource, _soundParams, _chatterId],
     (_soundDuration + _randomBuffer)
-] call CBA_fnc_waitAndExecute;
+] call KISKA_fnc_CBA_waitAndExecute;
 
 
 _chatterId

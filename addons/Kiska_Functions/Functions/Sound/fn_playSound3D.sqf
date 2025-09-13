@@ -96,7 +96,7 @@ if (_soundArray isEqualTo []) exitWith {
 };
 
 private _soundPath = _soundArray select 0;
-if ([_soundConfig, missionConfigFile] call CBA_fnc_inheritsFrom) then {
+if ([_soundConfig, missionConfigFile] call KISKA_fnc_CBA_inheritsFrom) then {
     _soundPath = getMissionPath + _soundPath;
 };
 

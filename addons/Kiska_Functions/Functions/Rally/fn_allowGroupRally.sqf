@@ -31,7 +31,7 @@ params [
     ["_groupToAdd",grpNull,[objNull,grpNull]]
 ];
 
-_groupToAdd = [_groupToAdd] call CBA_fnc_getGroup;
+_groupToAdd = [_groupToAdd] call KISKA_fnc_CBA_getGroup;
 
 if (isNull _groupToAdd) exitWith {
     ["_groupToAdd was null",true] call KISKA_fnc_log;

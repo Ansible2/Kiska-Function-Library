@@ -161,7 +161,7 @@ private _killedVehicle_drivePath = [_killedVehicle] call KISKA_fnc_convoy_getVeh
         _killedVehicle
     ],
     WAIT_TIME_FOR_VEHICLE
-] call CBA_fnc_waitAndExecute;
+] call KISKA_fnc_CBA_waitAndExecute;
 
 
 nil

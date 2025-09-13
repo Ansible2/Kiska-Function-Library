@@ -74,7 +74,7 @@ if (_lifetime >= 0) then {
         },
         [_object],
         _lifetime
-    ] call CBA_fnc_waitAndExecute;
+    ] call KISKA_fnc_CBA_waitAndExecute;
 };
 
 

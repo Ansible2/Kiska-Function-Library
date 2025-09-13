@@ -87,7 +87,7 @@ if !(_runInScheduled) exitWith {
             _thisArgs,
             _actualCallBackFunction
         ]
-    ] call CBA_fnc_directCall;
+    ] call KISKA_fnc_CBA_directCall;
 };
 
 

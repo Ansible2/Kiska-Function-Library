@@ -31,7 +31,7 @@ params [
     ["_groupToCheck",grpNull,[objNull,grpNull]]
 ];
 
-_groupToCheck = [_groupToCheck] call CBA_fnc_getGroup;
+_groupToCheck = [_groupToCheck] call KISKA_fnc_CBA_getGroup;
 
 if (isNull _groupToCheck) exitWith {
     ["_groupToCheck was null",true] call KISKA_fnc_log;

@@ -61,7 +61,7 @@ if (isNil "_onSupportSelectedCompiled") then {
         _is3D,
         _cursorTarget
     ]
-] call CBA_fnc_directCall;
+] call KISKA_fnc_CBA_directCall;
 
 
 nil

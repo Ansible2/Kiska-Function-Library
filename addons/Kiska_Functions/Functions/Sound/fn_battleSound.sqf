@@ -134,7 +134,7 @@ if (_duration > 0) then {
         KISKA_fnc_stopBattleSound,
         [_battleSoundId],
         _duration
-    ] call CBA_fnc_waitAndExecute;
+    ] call KISKA_fnc_CBA_waitAndExecute;
 
     _duration = -1;
 };
@@ -167,7 +167,7 @@ private _timeBetweenNextCall = _intensityArray vectorMultiply 4;
         [_distance,random _distance] select _distanceIsArray
     ],
     _timeUntilSecondSound
-] call CBA_fnc_waitAndExecute;
+] call KISKA_fnc_CBA_waitAndExecute;
 
 
 [
@@ -182,7 +182,7 @@ private _timeBetweenNextCall = _intensityArray vectorMultiply 4;
         _battleSoundId
     ],
     (_timeUntilSecondSound + (random _timeBetweenNextCall))
-] call CBA_fnc_waitAndExecute;
+] call KISKA_fnc_CBA_waitAndExecute;
 
 
 _battleSoundId

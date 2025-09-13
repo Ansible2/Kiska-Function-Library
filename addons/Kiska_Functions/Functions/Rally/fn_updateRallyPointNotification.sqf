@@ -24,7 +24,7 @@ scriptName "KISKA_fnc_updateRallyPointNotification";
 
 if (!hasInterface) exitWith {};
 
-[["MESSAGE",1.1,HEADER_COLOR],"Rally Point Was Updated",false] call CBA_fnc_notify;
+[["MESSAGE",1.1,HEADER_COLOR],"Rally Point Was Updated",3,false] call KISKA_fnc_notify;
 
 
 nil

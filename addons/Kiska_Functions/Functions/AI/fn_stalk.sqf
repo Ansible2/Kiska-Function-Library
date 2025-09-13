@@ -122,7 +122,17 @@ while {
     private _stalkerGroupLeader = leader _stalkerGroup;
     private _distance2DBetweenGroups = _stalkerGroupLeader distance2D _stalked;
     if (_distance2DBetweenGroups > 50) then {
-        [_stalkerGroup, _stalked, 25, "MOVE", "AWARE", "YELLOW", "FULL"] call CBA_fnc_addWaypoint;
+        [
+            _stalkerGroup,
+            _stalked,
+            "MOVE",
+            createHashMapFromArray [
+                ["randomRadius",25],
+                ["behaviour","AWARE"],
+                ["combatMode","YELLOW"],
+                ["speed","FULL"]
+            ]
+        ] call KISKA_fnc_addWaypoint;
     } else {
         // if not slept before and remoteExecCalled (not just remoteExec'd) unit will just stand still
         sleep 0.5;

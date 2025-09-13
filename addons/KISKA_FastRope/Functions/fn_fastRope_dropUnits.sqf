@@ -81,7 +81,7 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
                 {_unitWasAttachedToRope AND {isNull (attachedTo _unit)}}
             ) exitWith {
                 [_ropeInfoMap] call KISKA_fnc_fastRope_ropeAttachedUnit;
-                [PER_FRAME_HANDLER_ID] call CBA_fnc_removePerFrameHandler;
+                [PER_FRAME_HANDLER_ID] call KISKA_fnc_CBA_removePerFrameHandler;
             };
 
             if !(_unitWasAttachedToRope) exitWith {
@@ -106,7 +106,7 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
                 ];
                 [_ropeInfoMap,_ropeLength] call KISKA_fnc_fastRope_createRope;
                 
-                [PER_FRAME_HANDLER_ID] call CBA_fnc_removePerFrameHandler;
+                [PER_FRAME_HANDLER_ID] call KISKA_fnc_CBA_removePerFrameHandler;
             };
         }, 
         0, 
@@ -117,7 +117,7 @@ if ((alive _unit) AND {_unit in _vehicle}) then {
             _fastRopeInfoMap get "_ropeLength", 
             _fastRopeInfoMap
         ]
-    ] call CBA_fnc_addPerFrameHandler;
+    ] call KISKA_fnc_CBA_addPerFrameHandler;
     moveOut _unit;
 };
 
@@ -188,7 +188,7 @@ if (_unitsToDeploy isEqualTo []) exitWith {
             { _this call KISKA_fnc_fastRope_dropUnits },
             [_fastRopeInfoMap, true],
             _deployBuffer
-        ] call CBA_fnc_waitAndExecute;
+        ] call KISKA_fnc_CBA_waitAndExecute;
     },
     0.25,
     [_vehicle,_ropeInfoMaps,_fastRopeInfoMap]

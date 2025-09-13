@@ -47,7 +47,7 @@ if (_headlessClients isEqualTo []) exitWith {
             },
             [_checkInterval],
             _checkInterval
-        ] call CBA_fnc_waitAndExecute;
+        ] call KISKA_fnc_CBA_waitAndExecute;
     };
 };
 

@@ -1,3 +1,6 @@
+if !(["cba_common"] call KISKA_fnc_isPatchLoaded) exitWith {};
+
+
 private _listOptions = [
     [0,1,2,3],
     [

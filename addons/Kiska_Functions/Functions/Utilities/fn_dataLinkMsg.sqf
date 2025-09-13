@@ -41,7 +41,7 @@ if (canSuspend) exitWith {
     [
         KISKA_fnc_datalinkMsg,
         _this
-    ] call CBA_fnc_directCall;
+    ] call KISKA_fnc_CBA_directCall;
 };
 
 params [
@@ -74,4 +74,4 @@ params [
     },
     [_message,_playSound],
     _waitTime
-] call CBA_fnc_waitAndExecute;
+] call KISKA_fnc_CBA_waitAndExecute;

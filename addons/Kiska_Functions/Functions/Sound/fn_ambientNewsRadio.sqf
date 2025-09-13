@@ -91,7 +91,7 @@ if (_duration > 0) then {
         },
         [_3dSoundLoopId],
         _duration
-    ] call CBA_fnc_waitAndExecute;
+    ] call KISKA_fnc_CBA_waitAndExecute;
 };
 
 
