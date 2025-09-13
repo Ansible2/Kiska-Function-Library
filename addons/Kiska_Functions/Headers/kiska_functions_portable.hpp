@@ -155,6 +155,23 @@ class Configs
     {};
 };
 
+class ContainerCargo
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\ContainerCargo");
+    class containerCargo_get
+    {};
+    class containerCargo_getContainerType
+    {};
+    class containerCargo_getFromConfig
+    {};
+    class containerCargo_set
+    {};
+    class containerCargo_setFromConfig
+    {};
+    class containerCargo_toHashmap
+    {};
+};
+
 class Convoy
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Convoy");
@@ -723,8 +740,6 @@ class Utilities
     {};
     class getBumperPositionRelative
     {};
-    class getContainerCargo
-    {};
     class getFromNetId
     {};
     class getLoadedModsInfo
@@ -744,6 +759,8 @@ class Utilities
     class getVectorToTarget
     {};
     class hashMapParams
+    {};
+    class hashmapToConfig
     {};
     class hintDiary
     {};
@@ -806,8 +823,6 @@ class Utilities
     class resetMove
     {};
     class selectRandom
-    {};
-    class setContainerCargo
     {};
     class setRelativeVectorAndPos
     {};
