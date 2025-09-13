@@ -160,6 +160,8 @@ class ContainerCargo
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\ContainerCargo");
     class containerCargo_get
     {};
+    class containerCargo_getContainerType
+    {};
     class containerCargo_set
     {};
 };
