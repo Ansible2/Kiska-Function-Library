@@ -162,6 +162,8 @@ class ContainerCargo
     {};
     class containerCargo_getContainerType
     {};
+    class containerCargo_getFromConafig
+    {};
     class containerCargo_set
     {};
 };
