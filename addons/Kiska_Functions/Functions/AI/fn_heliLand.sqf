@@ -141,7 +141,6 @@ if (_landMode isNotEqualTo "LAND") then {
 
         if !(_wasToldToLand) exitWith {
             if (unitReady _aircraft) then {
-                hint "was told to land";
                 [_aircraft,[_helipadToLandAt,_landMode]] remoteExecCall ["landAt",_aircraft];
                 _wasToldToLand = true;
             };
@@ -154,8 +153,6 @@ if (_landMode isNotEqualTo "LAND") then {
             (isTouchingGround _aircraft) OR 
             (_currentAircraftAltitude <= (_consideredLandedHeightOffset + _helipadAltitude))
         ) then {
-            hint "touchdown";
-
             // reinforce land
             // sometimes, the helicopter will "land" but immediately take off again
             // this is why the thing is told to land again
@@ -170,11 +167,9 @@ if (_landMode isNotEqualTo "LAND") then {
         };
 
         if (call _isWavingOff) exitWith {
-            hint "is waving off";
             _wasToldToLand = false;
             sleep 2;
             _aircraft land "NONE";
-            hint "cancelled landing";
             
             false
         };
