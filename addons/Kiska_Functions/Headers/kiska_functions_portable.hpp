@@ -175,6 +175,14 @@ class CBA
     {};
 };
 
+class CBA_stateMachine
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\CBA\StateMachine");
+
+    class CBA_stateMachine_create
+    {};
+};
+
 class CIWS
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\CIWS");
