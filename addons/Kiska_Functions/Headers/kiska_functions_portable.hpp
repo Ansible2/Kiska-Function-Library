@@ -338,11 +338,13 @@ class Hashmap
     {};
     class hashmap_get
     {};
-    class hashmap_getKiskaObjectGroupKeyMap
+    class hashmap_getVariableKeyMap
     {};
-    class hashmap_getObjectOrGroupFromRealKey
+    class hashmap_getVariableFromRealKey
     {};
     class hashmap_getRealKey
+    {};
+    class hashmap_purgeVariableKeyMap
     {};
     class hashmap_in
     {};
