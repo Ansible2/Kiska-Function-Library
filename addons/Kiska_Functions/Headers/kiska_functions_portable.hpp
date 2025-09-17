@@ -717,6 +717,7 @@ class StandardSupportEvents
     class supports_onCalledVirtualArty
     {};
 };
+
 class Tasks
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Tasks");
