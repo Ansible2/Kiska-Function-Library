@@ -715,6 +715,8 @@ class stateMachine
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\StateMachine");
 
+    class stateMachine_addTransition
+    {};
     class stateMachine_create
     {};
     class stateMachine_onEachFrame
