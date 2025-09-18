@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-Function: KISKA_fnc_CBA_stateMachine_create
+Function: KISKA_fnc_stateMachine_create
 
 Description:
     Copied function `CBA_stateMachine_fnc_create` from CBA.
@@ -22,62 +22,57 @@ Example:
         private _stateMachine = [
             [MyObject_1,MyObject_2],
             true
-        ] call KISKA_fnc_CBA_stateMachine_create;
+        ] call KISKA_fnc_stateMachine_create;
     (end)
 
     (begin example)
-        private _stateMachine = call KISKA_fnc_CBA_stateMachine_create;
+        private _stateMachine = call KISKA_fnc_stateMachine_create;
     (end)
 
 Author(s):
     BaerMitUmlaut,
     Modified By: Ansible2
 ---------------------------------------------------------------------------- */
-scriptName "KISKA_fnc_CBA_stateMachine_create";
+scriptName "KISKA_fnc_stateMachine_create";
 
 params [
     ["_list", [], [[], {}]],
     ["_skipNull", false, [true]]
 ];
 
-if (isNil "KISKA_CBA_stateMachines") then {
-    KISKA_CBA_stateMachines = [];
-};
-
-#ifdef STATEMACHINE_PERFORMANCE_COUNTERS
-    if (isNil "KISKA_CBA_stateMachine_performanceCounters") then {
-        KISKA_CBA_stateMachine_performanceCounters = [];
-    };
-    KISKA_CBA_stateMachine_performanceCounters pushBack [];
-#endif
+if (isNil "KISKA_stateMachines") then { KISKA_stateMachines = createHashMap };
 
 private _updateCode = {};
 if (_list isEqualType {}) then {
     _updateCode = _list;
     _list = [] call _updateCode;
-} else {
-    // Filter list in case null elements were passed
-    if (_skipNull) then {
-        _list = _list select {!isNull _x};
-    };
 };
 
-private _guid = ["KISKA_CBA_stateMachine"] call KISKA_fnc_generateUniqueId;
+if (_skipNull) then {
+    _list = _list select {!isNull _x};
+};
+
+
+private _guid = ["KISKA_stateMachine"] call KISKA_fnc_generateUniqueId;
 private _stateMachine = createHashMapFromArray [
-    ["KISKA_CBA_stateMachine_nextUniqueStateID",0],
-    ["KISKA_CBA_stateMachine_tick",0],
-    ["KISKA_CBA_stateMachine_states",[]],
-    ["KISKA_CBA_stateMachine_list",_list],
-    ["KISKA_CBA_stateMachine_skipNull",_skipNull],
-    ["KISKA_CBA_stateMachine_updateCode",_updateCode],
-    ["KISKA_CBA_stateMachine_id",_guid]
+    ["nextUniqueStateID",0],
+    ["currentListIndex",0],
+    ["states",[]],
+    ["performanceCounters",[]],
+    ["list",_list],
+    ["skipNull",_skipNull],
+    ["updateCode",_updateCode],
+    ["guid",_guid]
 ];
 
-if (isNil { localNamespace getVariable "KISKA_CBA_stateMachine_frameHandlerId" }) then {
+KISKA_stateMachines set [_guid,_stateMachine];
+
+if (isNil { localNamespace getVariable "KISKA_stateMachine_frameHandlerId" }) then {
     private _eventId = addMissionEventHandler ["EachFrame", {
-        call KISKA_fnc_CBA_stateMachine_clockwork
+        call KISKA_fnc_stateMachine_onEachFrame
     }];
-    localNamespace setVariable ["KISKA_CBA_stateMachine_frameHandlerId",_eventId];
+    localNamespace setVariable ["KISKA_stateMachine_frameHandlerId",_eventId];
 };
+
 
 _stateMachine

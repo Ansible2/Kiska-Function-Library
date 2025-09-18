@@ -175,14 +175,6 @@ class CBA
     {};
 };
 
-class CBA_stateMachine
-{
-    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\CBA\StateMachine");
-
-    class CBA_stateMachine_create
-    {};
-};
-
 class CIWS
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\CIWS");
@@ -705,6 +697,7 @@ class SupportFramework
     class supports_remove
     {};
 };
+
 class StandardSupportEvents
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework\Standard Support Events");
@@ -715,6 +708,16 @@ class StandardSupportEvents
     class supports_onCalledSupplyDrop
     {};
     class supports_onCalledVirtualArty
+    {};
+};
+
+class stateMachine
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\StateMachine");
+
+    class stateMachine_create
+    {};
+    class stateMachine_onEachFrame
     {};
 };
 
