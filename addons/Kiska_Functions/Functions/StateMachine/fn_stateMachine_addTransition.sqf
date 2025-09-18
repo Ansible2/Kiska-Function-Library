@@ -14,10 +14,12 @@ Parameters:
         return BOOL.
     4: _onTransition <CODE> Default: `{}` - code that gets executed once transition 
         happens.
-    5: _transitionName <CODE> Default: `"NONAME"` - Name for this specific transition.
+    5: _transitionId <STRING> Default: `""` - A unique identifier for the transition.
+        If an empty string, `KISKA_fnc_generateUniqueId` will be used to create an id. 
+        The id will be all caps.
 
 Returns:
-    NOTHING
+    <STRING> - The transition's id.
 
 Example:
     (begin example)
@@ -48,7 +50,7 @@ params [
     ["_targetState", "", [""]],
     ["_condition", {}, [{}]],
     ["_onTransition", {}, [{}]],
-    ["_transitionName", "NONAME", [""]]
+    ["_transitionId", "", [""]]
 ];
 
 private _states = _stateMachine get "states";
@@ -86,7 +88,12 @@ private _transitions = _stateMachine getOrDefaultCall [
     { [] },
     true
 ];
-_transitions pushBack [_transitionName, _condition, _targetState, _onTransition];
+
+if (_transitionId isEqualTo "") then {
+    _transitionId = ["KISKA_stateMachine_transition"] call KISKA_fnc_generateUniqueId;
+};
+_transitionId = toUpperANSI _transitionId;
+_transitions pushBack [_transitionId, _condition, _targetState, _onTransition];
 
 
-nil
+_transitionId

@@ -5,7 +5,10 @@ Description:
     Copied function `CBA_stateMachine_fnc_create` from CBA.
 
     Creates a stateMachine instance. A stateMachine loops over a given list of
-     entities, processing only a single entity in the list per frame.
+     entities, processing only a single entity in the list per frame. 
+
+    NOTE: A created state machine does not begin executing each frame until it
+     has at least one state that has been added (`KISKA_fnc_stateMachine_addState`).
 
 Parameters:
     0: _list <CODE | ARRAY> - List of anything over which the state machine will
@@ -53,7 +56,6 @@ if (_skipNull) then {
 };
 
 
-private _guid = ["KISKA_stateMachine"] call KISKA_fnc_generateUniqueId;
 private _stateMachine = createHashMapFromArray [
     ["nextUniqueStateID",0],
     ["currentListIndex",0],
@@ -62,10 +64,8 @@ private _stateMachine = createHashMapFromArray [
     ["list",_list],
     ["skipNull",_skipNull],
     ["updateCode",_updateCode],
-    ["guid",_guid]
+    ["guid", ["KISKA_stateMachine"] call KISKA_fnc_generateUniqueId ]
 ];
-
-KISKA_stateMachines set [_guid,_stateMachine];
 
 if (isNil { localNamespace getVariable "KISKA_stateMachine_frameHandlerId" }) then {
     private _eventId = addMissionEventHandler ["EachFrame", {

@@ -35,9 +35,9 @@ KISKA_stateMachines apply {
 
     private _stateMachineMap = _x;
 
-    private _list = _stateMachineMap get "KISKA_stateMachine_list";
-    private _skipNull = _stateMachineMap get "KISKA_stateMachine_skipNull";
-    private _currentIndex = _stateMachineMap get "KISKA_stateMachine_currentListIndex";
+    private _list = _stateMachineMap get "list";
+    private _skipNull = _stateMachineMap get "skipNull";
+    private _currentIndex = _stateMachineMap get "currentListIndex";
     private _listCount = count _list;
     if (_skipNull) then {
         while {
@@ -50,7 +50,7 @@ KISKA_stateMachines apply {
 
     // When the list was iterated through, jump back to start and update it
     if (_currentIndex >= _listCount) then {
-        private _updateCode = _stateMachineMap get "KISKA_stateMachine_updateCode";
+        private _updateCode = _stateMachineMap get "updateCode";
         _currentIndex = 0;
         if (_updateCode isNotEqualTo {}) then {
             _list = [] call _updateCode;
@@ -59,11 +59,11 @@ KISKA_stateMachines apply {
                 _list = _list select {!(isNull _x)};
             };
 
-            _stateMachineMap set ["KISKA_stateMachine_list", _list];
+            _stateMachineMap set ["list", _list];
         };
     };
 
-    private _guid = _stateMachineMap get "KISKA_stateMachine_guid";
+    private _guid = _stateMachineMap get "guid";
     if (_list isEqualTo []) then {
         #ifdef STATEMACHINE_PERFORMANCE_COUNTERS
             LOG_PERFORMANCE
@@ -71,7 +71,7 @@ KISKA_stateMachines apply {
         continue;
     };
 
-    _stateMachineMap set ["KISKA_stateMachine_currentListIndex", _currentIndex + 1];
+    _stateMachineMap set ["currentListIndex", _currentIndex + 1];
 
     private _currentListItem = _list select _currentIndex;
     private _currentItemStateVar = ["KISKA_stateMachine_state",_guid] joinString "-";
@@ -93,7 +93,7 @@ KISKA_stateMachines apply {
         _currentListItem call (_stateMachineMap get ([_thisState,"onStateEntered"] joinString "_"));
     };
 
-    _currentListItem call (_stateMachineMap get ([_thisState,"onState"] joinString "_"));
+    _currentListItem call (_stateMachineMap get ([_thisState,"whileStateActive"] joinString "_"));
 
     private _thisOrigin = _thisState; // the state we're coming from
     (_stateMachineMap get ([_thisState,"transitions"] joinString "_")) apply {
