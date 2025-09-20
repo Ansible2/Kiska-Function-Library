@@ -723,6 +723,8 @@ class stateMachine
     {};
     class stateMachine_createFromConfig
     {};
+    class stateMachine_delete
+    {};
     class stateMachine_onEachFrame
     {};
 };
