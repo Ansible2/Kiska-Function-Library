@@ -99,7 +99,7 @@ KISKA_stateMachines apply {
     private _thisOrigin = _thisState; // the state we're coming from
     (_stateMachineMap get ([_thisState,"transitions"] joinString "_")) apply {
         _x params [
-            "_thisTransition", // the current transition we're in
+            "_thisTransition", // the transion that will possibly be conducted
             "_condition", 
             "_thisTarget", // the state we're transitioning to
             "_onTransition"

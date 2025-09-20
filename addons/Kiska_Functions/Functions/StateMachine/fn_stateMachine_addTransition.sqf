@@ -12,8 +12,22 @@ Parameters:
     2: _targetState <STRING> - The state that the transition will be going towards.
     3: _condition <CODE> - Condition under which the transition will happen. Should
         return BOOL.
+        
+        Parameters:
+        - `_this` - Whatever the current item in the list is.
+        - `_thisOrigin`: <STRING> - The name of the previous state.
+        - `_thisTransition`: <STRING> - The name of the transition that was completed.
+        - `_thisTarget`: <STRING> - The name of the state that was entered.
+    
     4: _onTransition <CODE> Default: `{}` - code that gets executed once transition 
         happens.
+
+        Parameters:
+        - `_this` - Whatever the current item in the list is.
+        - `_thisOrigin`: <STRING> - The name of the previous state.
+        - `_thisTransition`: <STRING> - The name of the transition that was completed.
+        - `_thisTarget`: <STRING> - The name of the state that was entered.
+
     5: _transitionId <STRING> Default: `""` - A unique identifier for the transition.
         If an empty string, `KISKA_fnc_generateUniqueId` will be used to create an id. 
         The id will be all caps.
