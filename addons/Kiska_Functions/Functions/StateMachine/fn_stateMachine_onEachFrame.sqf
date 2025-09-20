@@ -26,7 +26,7 @@ scriptName "KISKA_fnc_stateMachine_onEachFrame";
 
 #define LOG_PERFORMANCE \
     private _perfRunTime = diag_tickTime - _perfStartTime; \
-    (KISKA_stateMachine_performanceCounters get _guid) pushBack _perfRunTime;
+    (_stateMachineMap get "performanceCounters") pushBack _perfRunTime;
 
 KISKA_stateMachines apply {
     #ifdef STATEMACHINE_PERFORMANCE_COUNTERS
@@ -64,7 +64,7 @@ KISKA_stateMachines apply {
         };
     };
 
-    private _guid = _stateMachineMap get "guid";
+    private _guid = _x;
     if (_list isEqualTo []) then {
         #ifdef STATEMACHINE_PERFORMANCE_COUNTERS
             LOG_PERFORMANCE
