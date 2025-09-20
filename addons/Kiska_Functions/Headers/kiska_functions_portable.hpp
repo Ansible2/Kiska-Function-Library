@@ -725,6 +725,8 @@ class stateMachine
     {};
     class stateMachine_delete
     {};
+    class stateMachine_getCurrentState
+    {};
     class stateMachine_onEachFrame
     {};
 };
