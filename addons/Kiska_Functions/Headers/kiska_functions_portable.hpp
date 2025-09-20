@@ -727,6 +727,8 @@ class stateMachine
     {};
     class stateMachine_getCurrentState
     {};
+    class stateMachine_manualTransition
+    {};
     class stateMachine_onEachFrame
     {};
 };
