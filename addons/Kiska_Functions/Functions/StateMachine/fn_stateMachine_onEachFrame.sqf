@@ -33,7 +33,7 @@ KISKA_stateMachines apply {
         private _perfStartTime = diag_tickTime;
     #endif
 
-    private _stateMachineMap = _x;
+    private _stateMachineMap = _y;
 
     private _list = _stateMachineMap get "list";
     private _skipNull = _stateMachineMap get "skipNull";
@@ -50,8 +50,9 @@ KISKA_stateMachines apply {
 
     // When the list was iterated through, jump back to start and update it
     if (_currentIndex >= _listCount) then {
-        private _updateCode = _stateMachineMap get "updateCode";
         _currentIndex = 0;
+        
+        private _updateCode = _stateMachineMap get "updateCode";
         if (_updateCode isNotEqualTo {}) then {
             _list = [] call _updateCode;
 
