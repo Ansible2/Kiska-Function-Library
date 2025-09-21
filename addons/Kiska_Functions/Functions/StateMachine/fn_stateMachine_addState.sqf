@@ -44,7 +44,7 @@ Returns:
 
 Example:
     (begin example)
-        private _stateId = [_stateMachineMap, {}] call CBA_statemachine_fnc_addState;
+        private _stateId = [_stateMachineMap, {}] call KISKA_fnc_stateMachine_addState;
     (end)
 
 Author(s):
