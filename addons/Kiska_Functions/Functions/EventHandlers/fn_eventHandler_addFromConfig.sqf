@@ -37,28 +37,33 @@ if (isNull _config) exitWith {
     -1
 };
 
-if !([_entityToAddEventHandlerTo] call (compile getText(_config >> "entityCondition"))) exitWith {
+if !(
+    [_entityToAddEventHandlerTo] call (compile getText(_config >> "entityCondition"))
+) exitWith {
     ["_entityToAddEventHandlerTo failed condition check!",true] call KISKA_fnc_log;
     -1
 };
 
 private _stateMachine_config = _config >> "stateMachine";
 private _stateMachine_name = getText(_stateMachine_config >> "name");
-private _stateMachine = localNamespace getVariable [_stateMachine_name,locationNull];
-if (isNull _stateMachine) then {
-    _stateMachine = [_stateMachine_config] call KISKA_fnc_eventhandler_createCBAStateMachine;
-    localNamespace setVariable [_stateMachine_name,_stateMachine];
-    _stateMachine setVariable ["KISKA_entity_eventhandlerCount_map",createHashMap];
+private _eventhandlerStateMachineMap = [
+    localNamespace,
+    "KISKA_eventHandlers_stateMachineMap",
+    {createHashMap}
+] call KISKA_fnc_getOrDefaultSet;
+
+private _stateMachine = _eventhandlerStateMachineMap get _stateMachine_name;
+if (isNil "_stateMachine") then {
+    _stateMachine = [_stateMachine_config] call KISKA_fnc_stateMachine_createFromConfig;
+    _eventhandlerStateMachineMap set [_stateMachine_name,_stateMachine];
+    _stateMachine set ["KISKA_eventHandlers_entityCount_map",createHashMap];
 };
 
-private _entityList = _stateMachine getVariable ["CBA_statemachine_list", []];
-if !(_entityToAddEventHandlerTo in _entityList) then {
-    _entityList pushBack _entityToAddEventHandlerTo;
-};
+private _entityList = _stateMachine get "list";
+_entityList pushBackUnique _entityToAddEventHandlerTo;
 
 // tracking number of events for use when removing events
-private _eventHandlerCount_map = _stateMachine getVariable "KISKA_entity_eventhandlerCount_map";
-private _currentNumberOfEventsOnEntity = [_eventHandlerCount_map,_entityToAddEventHandlerTo,0] call KISKA_fnc_hashmap_get;
+private _eventHandlerCount_map = _stateMachine get "KISKA_eventHandlers_entityCount_map";
 
 private _eventId = [
     _entityToAddEventHandlerTo,
@@ -66,9 +71,18 @@ private _eventId = [
     _code
 ] call BIS_fnc_addScriptedEventhandler;
 
+private _currentNumberOfEventsOnEntity = [
+    _eventHandlerCount_map,
+    _entityToAddEventHandlerTo,
+    0
+] call KISKA_fnc_hashmap_get;
 _currentNumberOfEventsOnEntity = _currentNumberOfEventsOnEntity + 1;
 // update number of events on entity
-[_eventHandlerCount_map,_entityToAddEventHandlerTo,_currentNumberOfEventsOnEntity] call KISKA_fnc_hashmap_set;
+[
+    _eventHandlerCount_map,
+    _entityToAddEventHandlerTo,
+    _currentNumberOfEventsOnEntity
+] call KISKA_fnc_hashmap_set;
 
 
 _eventId

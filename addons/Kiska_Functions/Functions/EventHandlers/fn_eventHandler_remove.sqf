@@ -42,8 +42,14 @@ if (isNull _eventConfig) exitWith {
 };
 
 private _stateMachine_name = getText(_eventConfig >> "stateMachine" >> "name");
-private _stateMachine = localNamespace getVariable [_stateMachine_name,locationNull];
-if (isNull _stateMachine) exitWith {
+private _eventhandlerStateMachineMap = [
+    localNamespace,
+    "KISKA_eventHandlers_stateMachineMap",
+    {createHashMap}
+] call KISKA_fnc_getOrDefaultSet;
+
+private _stateMachine = _eventhandlerStateMachineMap get _stateMachine_name;
+if (isNil "_stateMachine") then {
     [["Statemachine: ", _stateMachine_name," has not been instantiated yet!"],false] call KISKA_fnc_log;
     false
 };
@@ -54,7 +60,7 @@ private _removed = [_removeFrom, _eventName, _id] call BIS_fnc_removeScriptedEve
 
 // remove from statemachine list if no events are left for this machine
 if (_removed) then {
-    private _eventCountMap = _stateMachine getVariable "KISKA_entity_eventhandlerCount_map";
+    private _eventCountMap = _stateMachine get "KISKA_eventHandlers_entityCount_map";
     private _numberOfEvents = [_eventCountMap,_removeFrom] call KISKA_fnc_hashmap_get;
 
     _numberOfEvents = _numberOfEvents - 1;
@@ -62,7 +68,7 @@ if (_removed) then {
     if (_numberOfEvents isEqualTo 0) then {
         [_eventCountMap,_removeFrom] call KISKA_fnc_hashmap_deleteAt;
 
-        private _entityList = _stateMachine getVariable "CBA_statemachine_list";
+        private _entityList = _stateMachine get "list";
         _entityList deleteAt (_entityList find _removeFrom);
     };
 };

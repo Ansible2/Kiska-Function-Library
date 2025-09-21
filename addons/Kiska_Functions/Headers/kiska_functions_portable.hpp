@@ -317,8 +317,6 @@ class EventHandlers
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\EventHandlers");
     class eventHandler_addFromConfig
     {};
-    class eventHandler_createCBAStateMachine
-    {};
     class eventHandler_remove
     {};
 };
