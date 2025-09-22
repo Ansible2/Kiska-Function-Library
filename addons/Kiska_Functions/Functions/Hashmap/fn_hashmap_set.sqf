@@ -2,10 +2,11 @@
 Function: KISKA_fnc_hashmap_set
 
 Description:
-    Sets a key/value pair in a hashmap but also supports objects and groups as keys.
+    Sets a key/value pair in a hashmap but also supports namespace types
+     such as objects and groups as keys.
 
     Ideally, not something that should be used if the map is not intended to
-     also hold groups and objects as keys.
+     also hold nullable or namespace types as keys.
 
 Parameters:
     0: _map <HASHMAP> - The map to insert in to
@@ -38,5 +39,8 @@ params [
     ["_insertOnly",false,[true]]
 ];
 
-_key = _key call KISKA_fnc_hashmap_getRealKey;
-_map set [_key,_value,_insertOnly];
+_map set [
+    _key call KISKA_fnc_hashmap_getRealKey,
+    _value,
+    _insertOnly
+];

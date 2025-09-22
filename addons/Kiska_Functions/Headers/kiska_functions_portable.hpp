@@ -317,8 +317,6 @@ class EventHandlers
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\EventHandlers");
     class eventHandler_addFromConfig
     {};
-    class eventHandler_createCBAStateMachine
-    {};
     class eventHandler_remove
     {};
 };
@@ -330,11 +328,13 @@ class Hashmap
     {};
     class hashmap_get
     {};
-    class hashmap_getKiskaObjectGroupKeyMap
+    class hashmap_getVariableKeyMap
     {};
-    class hashmap_getObjectOrGroupFromRealKey
+    class hashmap_getVariableFromRealKey
     {};
     class hashmap_getRealKey
+    {};
+    class hashmap_purgeVariableKeyMap
     {};
     class hashmap_in
     {};
@@ -695,6 +695,7 @@ class SupportFramework
     class supports_remove
     {};
 };
+
 class StandardSupportEvents
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Support Framework\Standard Support Events");
@@ -707,6 +708,31 @@ class StandardSupportEvents
     class supports_onCalledVirtualArty
     {};
 };
+
+class stateMachine
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\StateMachine");
+
+    class stateMachine_addState
+    {};
+    class stateMachine_addTransition
+    {};
+    class stateMachine_create
+    {};
+    class stateMachine_createFromConfig
+    {};
+    class stateMachine_delete
+    {};
+    class stateMachine_dumpPerformanceCounters
+    {};
+    class stateMachine_getCurrentState
+    {};
+    class stateMachine_manualTransition
+    {};
+    class stateMachine_onEachFrame
+    {};
+};
+
 class Tasks
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Tasks");

@@ -2,14 +2,15 @@
 Function: KISKA_fnc_convoy_create
 
 Description:
-    Creates an advanced KISKA convoy. Vehicles should be already physically placed in the order
-     that they intend to travel in. If creating in an urban setting, ensure vehicles 
-     are in a straight line so that they do not initially crash into a building.
+    Creates an advanced KISKA convoy. Vehicles should be already physically 
+     placed in the order that they intend to travel in. If creating in an urban
+     setting, ensure vehicles are in a straight line so that they do not initially
+     crash into a building.
     
-    This will create a CBA statemachine that processes one vehicle a frame. It manages the speed
-     of the vehicle relative to the vehicle in front to keep a desired spacing between them. 
-     The space between each vehicle can be customized for that specific vehicle or any 
-     individual one.
+    This will create a KISKA statemachine that processes one vehicle a frame. It 
+     manages the speed of the vehicle relative to the vehicle in front to keep a 
+     desired spacing between them. The space between each vehicle can be customized 
+     for that specific vehicle or any individual one.
     
     The first vehicle added to the convoy WILL NOT have its movement managed in any capacity.
      All other vehicles will essentially follow the path of the lead vehicle. You should 
@@ -56,13 +57,13 @@ if (_convoySeperation < 10) then {
 private _stateMachine = [
     [],
     true
-] call CBA_stateMachine_fnc_create;
+] call KISKA_fnc_stateMachine_create;
 
 
 private _convoyHashMap = createHashMap;
-// when using skip null in CBA_stateMachine_fnc_create
+// when using skip null in KISKA_fnc_stateMachine_create
 // a new array will be created and saved in the statemachine's namespace
-private _convoyVehicles = _stateMachine getVariable "CBA_statemachine_list";
+private _convoyVehicles = _stateMachine get "list";
 _convoyHashMap set ["_convoyVehicles",_convoyVehicles];
 _convoyHashMap set ["_speedLimitPoints",createHashMap];
 
@@ -82,7 +83,7 @@ _vics apply {
 private _mainState = [
     _stateMachine,
     KISKA_fnc_convoy_onEachFrame
-] call CBA_stateMachine_fnc_addState;
+] call KISKA_fnc_stateMachine_addState;
 
 
 _convoyHashMap
