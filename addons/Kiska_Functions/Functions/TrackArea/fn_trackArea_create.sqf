@@ -82,7 +82,7 @@ _id
 
 // TODO:
 // An Area Checker is a single entity
-//  This can inlcude multiple areas to check
+//  This can include multiple areas to check
     // Areas could be saved using a KISKA hashmap function so they are not duplicated and can be precisely controlled
     // This could however prove to be too slow to function reasonably
     // Especially of concern is how to handle null entities like triggers and locations if they unexpectedly are deleted (might not even matter though)

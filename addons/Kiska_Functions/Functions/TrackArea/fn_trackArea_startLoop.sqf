@@ -29,9 +29,23 @@ private _perFrameHandlerId = [
         params ["_args"];
         _args params ["_trackAreaId","_trackAreaInfoMap"];
 
-        // TODO: logic to see who's in or out
+        private _allTrackedObjects = _trackAreaInfoMap get "trackedObjects";
+        if (_allTrackedObjects isEqualTo []) exitWith {};
 
+        private _inAreaObjects = [];
+        private _outOfBoundsObjects = _allTrackedObjects;
+        (_trackAreaInfoMap get "areas") apply {
+            if (_outOfBoundsObjects isEqualTo []) then { break };
 
+            private _objectsInThisArea = _outOfBoundsObjects inAreaArray _x;
+            _inAreaObjects append _objectsInThisArea;
+            _outOfBoundsObjects = _outOfBoundsObjects - _inAreaObjects;
+        };
+        private _previouslyOutOfBoundsObjects = _trackAreaInfoMap getOrDefaultCall ["outOfBoundsObjects",{[]},true];
+        private _objectsThatHaveLeft = _outOfBoundsObjects - _previouslyOutOfBoundsObjects;
+        private _objectsThatHaveReturned = _inAreaObjects arrayIntersect _previouslyOutOfBoundsObjects;
+        _trackAreaInfoMap set ["outOfBoundsObjects",_outOfBoundsObjects];
+        // TODO: handle objects returning and leaving events
     },
     _trackAreaInfoMap getOrDefaultCall ["checkFrequency",{0},true],
     [_trackAreaId,_trackAreaInfoMap]
