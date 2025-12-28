@@ -147,6 +147,8 @@ class CBA
     {};
     class CBA_getGroup
     {};
+    class CBA_getPerFrameHandlerDelay
+    {};
     class CBA_getPos
     {};
     class CBA_initPerFrameHandler_postInit
@@ -164,6 +166,8 @@ class CBA
     class CBA_randPosArea
     {};
     class CBA_removePerFrameHandler
+    {};
+    class CBA_setPerFrameHandlerDelay
     {};
     class CBA_shuffle
     {};
