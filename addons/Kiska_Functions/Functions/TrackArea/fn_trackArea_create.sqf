@@ -49,15 +49,15 @@ params [
     ["_start",true,[true]]
 ];
 
-private _overallMap = [
+private _containerMap = [
     localNamespace,
-    "KISKA_trackArea_globalMap",
+    "KISKA_trackArea_containerMap",
     {createHashMap}
 ] call KISKA_fnc_getOrDefaultSet;
 
 
 private _id = ["KISKA_trackArea"] call KISKA_fnc_generateUniqueId;
-_overallMap set [
+_containerMap set [
     _id,
     createHashMapFromArray [
         ["onExited",_onExited],

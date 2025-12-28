@@ -10,13 +10,13 @@ if (isNil "_area") exitWith {
     nil
 };
 
-private _overallMap = [
+private _containerMap = [
     localNamespace,
-    "KISKA_trackArea_globalMap",
+    "KISKA_trackArea_containerMap",
     {createHashMap}
 ] call KISKA_fnc_getOrDefaultSet;
 
-private _trackAreaInfoMap = _overallMap get _trackAreaId;
+private _trackAreaInfoMap = _containerMap get _trackAreaId;
 if (isNil "_trackAreaInfoMap") exitWith {
     [["_trackAreaId ",_trackAreaId," does not exist"],true] call KISKA_fnc_log;
     nil
