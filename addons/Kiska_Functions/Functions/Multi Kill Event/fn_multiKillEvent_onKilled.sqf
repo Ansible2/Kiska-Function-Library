@@ -44,7 +44,10 @@ params [
 ];
 
 private _eventMap = _id call KISKA_fnc_multiKillEvent_getEventMap;
-if (isNil "_eventMap") exitWith {};
+if (isNil "_eventMap") exitWith {
+    [["_id ",_id," does not exist"]] call KISKA_fnc_log;
+    nil
+};
 if (isNil "_onKilled") exitWith { _eventMap get "onKilled" };
 
 _eventMap set ["onKilled",_onKilled];
