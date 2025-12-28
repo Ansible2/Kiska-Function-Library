@@ -7,11 +7,7 @@ Description:
     Removes a per frame handler created with `KISKA_fnc_CBA_addPerFrameHandler`.
 
 Parameters:
-    0: _function <CODE> - Code that will execute that the given interval.
-    1: _delay <NUMBER> Default: `0` - The number of seconds between each execution.
-        If `0`, the code will be executed every frame.
-    2: _args <ANY> Default: `[]` - Parameters passed to the function executing. This will be the 
-        same reference every execution.
+    0: _handle <NUMBER> - The function handle you wish to remove.
 
 Returns:
     <BOOL> - `true` if removed successful, `false` otherwise.
