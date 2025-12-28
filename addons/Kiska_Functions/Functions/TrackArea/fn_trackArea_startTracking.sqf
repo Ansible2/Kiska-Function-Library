@@ -1,4 +1,4 @@
-scriptName "KISKA_fnc_trackArea_startLoop";
+scriptName "KISKA_fnc_trackArea_startTracking";
 
 #define PER_FRAME_HANDLER_KEY "perFrameHandlerId"
 
