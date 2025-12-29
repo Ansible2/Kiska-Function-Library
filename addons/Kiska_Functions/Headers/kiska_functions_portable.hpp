@@ -147,6 +147,8 @@ class CBA
     {};
     class CBA_getGroup
     {};
+    class CBA_getPerFrameHandlerDelay
+    {};
     class CBA_getPos
     {};
     class CBA_initPerFrameHandler_postInit
@@ -164,6 +166,8 @@ class CBA
     class CBA_randPosArea
     {};
     class CBA_removePerFrameHandler
+    {};
+    class CBA_setPerFrameHandlerDelay
     {};
     class CBA_shuffle
     {};
@@ -759,6 +763,32 @@ class Timeline
     class timeline_start
     {};
     class timeline_stop
+    {};
+};
+class TrackArea
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\TrackArea");
+    class trackArea_addArea
+    {};
+    class trackArea_addObject
+    {};
+    class trackArea_checkFrequency
+    {};
+    class trackArea_create
+    {};
+    class trackArea_delete
+    {};
+    class trackArea_onExited
+    {};
+    class trackArea_onReturned
+    {};
+    class trackArea_removeArea
+    {};
+    class trackArea_removeObject
+    {};
+    class trackArea_startTracking
+    {};
+    class trackArea_stopTracking
     {};
 };
 class Utilities
