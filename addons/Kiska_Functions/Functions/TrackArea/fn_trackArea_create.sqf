@@ -41,6 +41,7 @@ Examples:
         [
             [trigger_1,trigger_2],
             [player],
+            1,
             {
                 params ["_objects"];
                 hint str ["objects that left",_objects];
@@ -48,8 +49,7 @@ Examples:
             {
                 params ["_objects"];
                 hint str ["objects that returned",_objects];
-            },
-            1
+            }
         ] call KISKA_fnc_trackArea_create;
     (end)
 
