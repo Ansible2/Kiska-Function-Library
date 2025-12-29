@@ -1,3 +1,26 @@
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_trackArea_addObject
+
+Description:
+    Adds an object to the given tracker to that will continously check whether
+     it is inside the tracker's defined areas. Duplicate entries will be filtered
+     from the list of tracked objects.
+
+Parameters:
+    0: _trackAreaId <STRING> - The area tracker ID.
+    1: _object <OBJECT> - An object that will be tracked.
+
+Returns:
+    NOTHING
+
+Examples:
+    (begin example)
+        [_trackAreaId, player] call KISKA_fnc_trackArea_addObject;
+    (end)
+
+Author:
+    Ansible2
+---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_trackArea_addObject";
 
 params [
