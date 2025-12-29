@@ -1,3 +1,24 @@
+/* ----------------------------------------------------------------------------
+Function: KISKA_fnc_trackArea_startTracking
+
+Description:
+    Begins the looping process of actually checking what tracked objects are within
+     the tracked areas or not.
+
+Parameters:
+    0: _trackAreaId <STRING> - The area tracker ID.
+
+Returns:
+    NOTHING
+
+Examples:
+    (begin example)
+        _trackAreaId call KISKA_fnc_trackArea_startTracking;
+    (end)
+
+Author:
+    Ansible2
+---------------------------------------------------------------------------- */
 scriptName "KISKA_fnc_trackArea_startTracking";
 
 #define PER_FRAME_HANDLER_KEY "perFrameHandlerId"
@@ -58,6 +79,8 @@ private _perFrameHandlerId = [
     _trackAreaInfoMap getOrDefaultCall ["checkFrequency",{0},true],
     [_trackAreaId,_trackAreaInfoMap]
 ] call KISKA_fnc_CBA_addPerFrameHandler;
+
+_trackAreaInfoMap set [PER_FRAME_HANDLER_KEY,_perFrameHandlerId];
 
 
 nil
