@@ -765,6 +765,32 @@ class Timeline
     class timeline_stop
     {};
 };
+class TrackArea
+{
+    file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\TrackArea");
+    class trackArea_addArea
+    {};
+    class trackArea_addObject
+    {};
+    class trackArea_checkFrequency
+    {};
+    class trackArea_create
+    {};
+    class trackArea_delete
+    {};
+    class trackArea_onExited
+    {};
+    class trackArea_onReturned
+    {};
+    class trackArea_removeArea
+    {};
+    class trackArea_removeObject
+    {};
+    class trackArea_startTracking
+    {};
+    class trackArea_stopTracking
+    {};
+};
 class Utilities
 {
     file = __EVAL(KISKA_FUNCTIONS_ROOT_FOLDER + "\Functions\Utilities");
