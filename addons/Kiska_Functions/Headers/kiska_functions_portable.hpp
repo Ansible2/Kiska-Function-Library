@@ -778,6 +778,8 @@ class TrackArea
     {};
     class trackArea_delete
     {};
+    class trackArea_isRunning
+    {};
     class trackArea_onExited
     {};
     class trackArea_onReturned
