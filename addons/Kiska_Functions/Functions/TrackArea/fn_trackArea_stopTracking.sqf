@@ -50,7 +50,7 @@ if !(PER_FRAME_HANDLER_KEY in _trackAreaInfoMap) exitWith {
 
 private _perFrameHandlerId = _trackAreaInfoMap get PER_FRAME_HANDLER_KEY;
 _perFrameHandlerId call KISKA_fnc_CBA_removePerFrameHandler;
-_trackAreaInfoMap set [PER_FRAME_HANDLER_KEY,nil];
+_trackAreaInfoMap deleteAt PER_FRAME_HANDLER_KEY;
 
 
 nil
